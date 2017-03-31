@@ -1,0 +1,6 @@
+{
+    "variants": {
+        "normal": { "model": "car:tank" },
+        "inventory": { "model": "car:tank" }
+    }
+}

@@ -1,0 +1,8 @@
+{
+    "variants": {
+        "facing=north": { "model": "car:tar_slope" },
+        "facing=south": { "model": "car:tar_slope", "y": 180},
+        "facing=west":  { "model": "car:tar_slope", "y": 270 },
+        "facing=east":  { "model": "car:tar_slope", "y": 90 }
+    }
+}

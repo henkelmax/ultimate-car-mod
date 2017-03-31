@@ -1,0 +1,6 @@
+{
+    "variants": {
+        "valid=true": { "model": "car:car_workshop_center" },
+        "valid=false": { "model": "car:car_workshop" }
+    }
+}

@@ -1,0 +1,15 @@
+{
+    "parent": "block/block",
+    "display": {
+        "gui": {
+            "rotation": [ 30, 315, 0 ],
+            "translation": [ 0, 0, 0],
+            "scale":[ 0.625, 0.625, 0.625 ]
+        },
+        "firstperson_righthand": {
+            "rotation": [ 30, 315, 0 ],
+            "translation": [ 0, 0, 0],
+            "scale":[ 0.4, 0.4, 0.4 ]
+        }
+    }
+}

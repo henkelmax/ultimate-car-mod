@@ -1,0 +1,10 @@
+{
+    "engine_idle": {"category": "master","sounds": [{"name": "car:engine_idle","stream": false}]},
+    "engine_start": {"category": "master","sounds": [{"name": "car:engine_start","stream": false}]},
+    "engine_stop": {"category": "master","sounds": [{"name": "car:engine_stop","stream": false}]},
+    "engine_high": {"category": "master","sounds": [{"name": "car:engine_high","stream": false}]},
+    "engine_fail": {"category": "master","sounds": [{"name": "car:engine_fail","stream": false}]},
+    "car_crash": {"category": "master","sounds": [{"name": "car:car_crash","stream": false}]},
+    "gas_station": {"category": "master","sounds": [{"name": "car:gas_station","stream": false}]},
+    "generator": {"category": "master","sounds": [{"name": "car:generator","stream": false}]}
+}

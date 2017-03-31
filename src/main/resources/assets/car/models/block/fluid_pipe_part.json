@@ -1,0 +1,21 @@
+{
+    "textures": {
+		"particle": "car:blocks/fluid_pipe",
+        "0": "car:blocks/fluid_pipe"
+    },
+    "elements": [
+        {
+            "name": "part",
+            "from": [ 6.0, 6.0, 0.0 ], 
+            "to": [ 10.0, 10.0, 6.0 ], 
+            "faces": {
+                "north": { "texture": "#0", "uv": [ 0.0, 4.0, 4.0, 8.0 ] },
+                "east": { "texture": "#0", "uv": [ 10.0, 0.0, 16.0, 4.0 ] },
+                "south": { "texture": "#0", "uv": [ 0.0, 4.0, 4.0, 8.0 ] },
+                "west": { "texture": "#0", "uv": [ 0.0, 0.0, 6.0, 4.0 ] },
+                "up": { "texture": "#0", "uv": [ 0.0, 0.0, 6.0, 4.0 ], "rotation": 90 },
+                "down": { "texture": "#0", "uv": [ 0.0, 0.0, 6.0, 4.0 ], "rotation": 90 }
+            }
+        }
+    ]
+}

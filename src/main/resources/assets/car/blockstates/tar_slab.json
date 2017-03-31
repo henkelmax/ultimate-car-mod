@@ -1,0 +1,6 @@
+{
+    "variants": {
+        "normal": { "model": "car:tar_slab" },
+        "inventory": { "model": "car:tar_slab" }
+    }
+}

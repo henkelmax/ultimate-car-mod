@@ -1,0 +1,16 @@
+[
+{
+  "modid": "car",
+  "name": "Car Mod",
+  "description": "Car Mod",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "http://maxhenkel.de/",
+  "authorList": ["Max Henkel"],
+  "credits": "",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]

@@ -1,0 +1,103 @@
+{
+    "forge_marker": 1,
+    "defaults": {
+        "uvlock": true
+    },
+    "variants": {
+        "normal": [{
+            "model": "car:fluid_extractor"
+        }],
+        "facing": {
+            "north": {
+                "submodel": {
+                    "extractor_north": { "model": "car:fluid_extractor", "y": 0 },
+                    "cable_core": { "model": "car:fluid_pipe_core"}
+               }
+            },
+            "south": {
+                "submodel": {
+                    "extractor_south": { "model": "car:fluid_extractor", "y": 180 },
+                    "cable_core": { "model": "car:fluid_pipe_core"}
+               }
+            },
+            "east": {
+                "submodel": {
+                    "extractor_east": { "model": "car:fluid_extractor", "y": 90 },
+                    "cable_core": { "model": "car:fluid_pipe_core"}
+               }
+            },
+            "west": {
+                "submodel": {
+                    "extractor_west": { "model": "car:fluid_extractor", "y": 270 },
+                    "cable_core": { "model": "car:fluid_pipe_core"}
+               }
+            },
+            "up": {
+                "submodel": {
+                    "extractor_up": { "model": "car:fluid_extractor", "x": 270 },
+                    "cable_core": { "model": "car:fluid_pipe_core"}
+               }
+            },
+            "down": {
+                "submodel": {
+                    "extractor_down": { "model": "car:fluid_extractor", "x": 90 },
+                    "cable_core": { "model": "car:fluid_pipe_core"}
+               }
+            }
+        },
+        "down": {
+            "true": {
+                "submodel": {
+                    "cable_down": { "model": "car:fluid_pipe_part", "x": 90 }
+               }
+            },
+            "false": {
+            }
+        },
+        "east": {
+            "true": {
+                "submodel": {
+                    "cable_east": { "model": "car:fluid_pipe_part", "y": 90 }
+               }
+            },
+            "false": {
+            }
+        },
+        "north": {
+            "true": {
+                "submodel": {
+                    "cable_north": { "model": "car:fluid_pipe_part" }
+               }
+            },
+            "false": {
+            }
+        },
+        "south": {
+            "true": {
+                "submodel": {
+                    "cable_south": { "model": "car:fluid_pipe_part", "y": 180 }
+               }
+            },
+            "false": {
+            }
+        },
+        "up": {
+            "true": {
+                "submodel": {
+                    "cable_up": { "model": "car:fluid_pipe_part", "x": 270 }
+               }
+            },
+            "false": {
+            }
+        },
+        "west": {
+            "true": {
+                "submodel": {
+                    "cable_west": { "model": "car:fluid_pipe_part", "y": 270 }
+               }
+            },
+            "false": {
+            }
+        }
+    }
+}

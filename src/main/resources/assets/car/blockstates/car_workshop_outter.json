@@ -1,0 +1,13 @@
+{
+    "variants": {
+        "position=0": { "model": "car:car_workshop_outter" },
+        "position=1": { "model": "car:car_workshop_outter_north" },
+        "position=2": { "model": "car:car_workshop_outter_northeast" },
+        "position=3": { "model": "car:car_workshop_outter_east" },
+        "position=4": { "model": "car:car_workshop_outter_southeast" },
+        "position=5": { "model": "car:car_workshop_outter_south" },
+        "position=6": { "model": "car:car_workshop_outter_southwest" },
+        "position=7": { "model": "car:car_workshop_outter_west" },
+        "position=8": { "model": "car:car_workshop_outter_northwest" }
+    }
+}

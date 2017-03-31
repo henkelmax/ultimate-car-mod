@@ -1,0 +1,17 @@
+{
+    "variants": {
+        "facing=north,powered=false": { "model": "car:blastfurnace" },
+        "facing=south,powered=false": { "model": "car:blastfurnace", "y": 180 },
+        "facing=west,powered=false": { "model": "car:blastfurnace", "y": 270 },
+        "facing=east,powered=false": { "model": "car:blastfurnace", "y": 90 },
+        "facing=up,powered=false": { "model": "car:blastfurnace" },
+        "facing=down,powered=false": { "model": "car:blastfurnace" },
+        "facing=north,powered=true": { "model": "car:blastfurnace_powered" },
+        "facing=south,powered=true": { "model": "car:blastfurnace_powered", "y": 180 },
+        "facing=west,powered=true": { "model": "car:blastfurnace_powered", "y": 270 },
+        "facing=east,powered=true": { "model": "car:blastfurnace_powered", "y": 90 },
+        "facing=up,powered=true": { "model": "car:blastfurnace_powered" },
+        "facing=down,powered=true": { "model": "car:blastfurnace_powered" },
+        "inventory": { "model": "car:blastfurnace" }
+    }
+}

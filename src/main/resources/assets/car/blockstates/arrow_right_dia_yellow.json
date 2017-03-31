@@ -1,0 +1,8 @@
+{
+    "variants": {
+        "facing=north": { "model": "car:arrow_right_dia_yellow" },
+        "facing=south": { "model": "car:arrow_right_dia_yellow", "y": 180 },
+        "facing=west":  { "model": "car:arrow_right_dia_yellow", "y": 270 },
+        "facing=east":  { "model": "car:arrow_right_dia_yellow", "y": 90 }
+    }
+}

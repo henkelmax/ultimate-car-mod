@@ -1,0 +1,12 @@
+{
+    "parent": "block/cube",
+    "textures": {
+        "up": "car:blocks/car_workshop_top_7",
+        "down": "car:blocks/car_workshop_inside",
+        "north": "car:blocks/car_workshop_inside",
+		"south": "car:blocks/car_workshop_side_1",
+		"east": "car:blocks/car_workshop_side_1",
+		"west": "car:blocks/car_workshop_inside",
+		"particle": "car:blocks/car_workshop_inside"
+    }
+}

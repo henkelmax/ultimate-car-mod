@@ -1,0 +1,8 @@
+{
+    "parent": "block/orientable",
+    "textures": {
+        "top": "blocks/iron_block",
+        "front": "car:blocks/blastfurnace",
+        "side": "blocks/iron_block"
+    }
+}
