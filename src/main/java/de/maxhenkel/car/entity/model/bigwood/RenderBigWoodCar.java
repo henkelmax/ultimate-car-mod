@@ -57,6 +57,7 @@ public class RenderBigWoodCar extends Render<EntityCarBigWood> {
 
 	@Override
 	protected ResourceLocation getEntityTexture(EntityCarBigWood entity) {
+		
 		switch(entity.getType()){
 		case OAK:
 			return new ResourceLocation(Main.MODID, "textures/entity/car_big_wood_oak.png");

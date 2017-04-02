@@ -1,7 +1,5 @@
 package de.maxhenkel.car.entity.car;
 
-import java.util.Random;
-
 import de.maxhenkel.car.entity.car.base.EntityCarInventoryBase;
 import de.maxhenkel.car.fluids.ModFluids;
 import de.maxhenkel.car.reciepe.CarCraftingManager;
@@ -18,17 +16,17 @@ import net.minecraftforge.fluids.Fluid;
 
 public class EntityCarBigWood extends EntityCarInventoryBase{
 
-	private static final DataParameter<Integer> TYPE = EntityDataManager.<Integer>createKey(EntityCarWood.class,
+	private static final DataParameter<Integer> TYPE = EntityDataManager.<Integer>createKey(EntityCarBigWood.class,
 			DataSerializers.VARINT);
 	
 	public EntityCarBigWood(World worldIn) {
-		this(worldIn, EnumType.values()[new Random().nextInt(EnumType.values().length)]);
+		this(worldIn, EnumType.DARK_OAK);
 	}
 	
 	public EntityCarBigWood(World worldIn, EnumType type) {
 		super(worldIn);
 		setType(type);
-		this.setSize(1.5F, 1.6F);
+		setSize(1.5F, 1.6F);
 		fuelTick=20;
 		maxFuel=1500;
 		maxSpeed=0.48F;

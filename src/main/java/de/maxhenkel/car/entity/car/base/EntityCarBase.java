@@ -228,7 +228,7 @@ public abstract class EntityCarBase extends Entity {
 		}
 
 		setSpeed(speed);
-
+		//System.out.println(speed);
 		float rotationSpeed = 0;
 		if (Math.abs(speed) > 0.02F) {
 			float s = (float) (0.5F / Math.pow(speed, 2));
