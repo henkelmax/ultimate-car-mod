@@ -199,6 +199,11 @@ public abstract class EntityVehicleBase extends Entity{
 	}
 	
 	@Override
+	protected boolean canTriggerWalking() {
+		return false;
+	}
+	
+	@Override
 	public boolean processInitialInteract(EntityPlayer player, ItemStack stack, EnumHand hand) {
 		if (!player.isSneaking()) {
 			if(player.getRidingEntity()!=this){
