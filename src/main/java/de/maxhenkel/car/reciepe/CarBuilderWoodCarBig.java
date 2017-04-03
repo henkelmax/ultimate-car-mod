@@ -1,7 +1,6 @@
 package de.maxhenkel.car.reciepe;
 
 import de.maxhenkel.car.entity.car.EntityCarBigWood;
-import de.maxhenkel.car.entity.car.EntityCarWood;
 import de.maxhenkel.car.entity.car.base.EntityCarBase;
 import net.minecraft.block.BlockPlanks.EnumType;
 import net.minecraft.world.World;
@@ -16,7 +15,7 @@ public class CarBuilderWoodCarBig implements ICarbuilder{
 	
 	@Override
 	public EntityCarBase build(World world) {
-		EntityCarBigWood car=new EntityCarBigWood(world);//type
+		EntityCarBigWood car=new EntityCarBigWood(world, type);
 		car.setFuel(100);
 		return car;
 	}

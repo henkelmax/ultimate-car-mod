@@ -93,6 +93,56 @@ public class CarCraftingManager {
 				Character.valueOf('C'), new ItemStack(Blocks.CHEST),
 				Character.valueOf('F'), new ItemStack(ModItems.CAR_TANK),
 				Character.valueOf('P'), new ItemStack(ModItems.CAR_BODY_PART_WOOD, 1, 0));
+		
+		addRecipe(new CarBuilderWoodCarBig(EnumType.SPRUCE), "car_big_wood_spruce", "WSSUC", "EPFPP", "TTXTT", 
+				Character.valueOf('W'), new ItemStack(ModItems.WINDSHIELD),
+				Character.valueOf('S'), new ItemStack(ModItems.CAR_SEAT),
+				Character.valueOf('E'), new ItemStack(ModItems.ENGINE_3_CYLINDER),
+				Character.valueOf('T'), new ItemStack(ModItems.WOODEN_WHEEL),
+				Character.valueOf('U'), new ItemStack(ModItems.CONTROL_UNIT),
+				Character.valueOf('C'), new ItemStack(Blocks.CHEST),
+				Character.valueOf('F'), new ItemStack(ModItems.CAR_TANK),
+				Character.valueOf('P'), new ItemStack(ModItems.CAR_BODY_PART_WOOD, 1, 1));
+		
+		addRecipe(new CarBuilderWoodCarBig(EnumType.BIRCH), "car_big_wood_birch", "WSSUC", "EPFPP", "TTXTT", 
+				Character.valueOf('W'), new ItemStack(ModItems.WINDSHIELD),
+				Character.valueOf('S'), new ItemStack(ModItems.CAR_SEAT),
+				Character.valueOf('E'), new ItemStack(ModItems.ENGINE_3_CYLINDER),
+				Character.valueOf('T'), new ItemStack(ModItems.WOODEN_WHEEL),
+				Character.valueOf('U'), new ItemStack(ModItems.CONTROL_UNIT),
+				Character.valueOf('C'), new ItemStack(Blocks.CHEST),
+				Character.valueOf('F'), new ItemStack(ModItems.CAR_TANK),
+				Character.valueOf('P'), new ItemStack(ModItems.CAR_BODY_PART_WOOD, 1, 2));
+		
+		addRecipe(new CarBuilderWoodCarBig(EnumType.JUNGLE), "car_big_wood_jungle", "WSSUC", "EPFPP", "TTXTT", 
+				Character.valueOf('W'), new ItemStack(ModItems.WINDSHIELD),
+				Character.valueOf('S'), new ItemStack(ModItems.CAR_SEAT),
+				Character.valueOf('E'), new ItemStack(ModItems.ENGINE_3_CYLINDER),
+				Character.valueOf('T'), new ItemStack(ModItems.WOODEN_WHEEL),
+				Character.valueOf('U'), new ItemStack(ModItems.CONTROL_UNIT),
+				Character.valueOf('C'), new ItemStack(Blocks.CHEST),
+				Character.valueOf('F'), new ItemStack(ModItems.CAR_TANK),
+				Character.valueOf('P'), new ItemStack(ModItems.CAR_BODY_PART_WOOD, 1, 3));
+		
+		addRecipe(new CarBuilderWoodCarBig(EnumType.ACACIA), "car_big_wood_acacia", "WSSUC", "EPFPP", "TTXTT", 
+				Character.valueOf('W'), new ItemStack(ModItems.WINDSHIELD),
+				Character.valueOf('S'), new ItemStack(ModItems.CAR_SEAT),
+				Character.valueOf('E'), new ItemStack(ModItems.ENGINE_3_CYLINDER),
+				Character.valueOf('T'), new ItemStack(ModItems.WOODEN_WHEEL),
+				Character.valueOf('U'), new ItemStack(ModItems.CONTROL_UNIT),
+				Character.valueOf('C'), new ItemStack(Blocks.CHEST),
+				Character.valueOf('F'), new ItemStack(ModItems.CAR_TANK),
+				Character.valueOf('P'), new ItemStack(ModItems.CAR_BODY_PART_WOOD, 1, 4));
+		
+		addRecipe(new CarBuilderWoodCarBig(EnumType.DARK_OAK), "car_big_wood_dark_oak", "WSSUC", "EPFPP", "TTXTT", 
+				Character.valueOf('W'), new ItemStack(ModItems.WINDSHIELD),
+				Character.valueOf('S'), new ItemStack(ModItems.CAR_SEAT),
+				Character.valueOf('E'), new ItemStack(ModItems.ENGINE_3_CYLINDER),
+				Character.valueOf('T'), new ItemStack(ModItems.WOODEN_WHEEL),
+				Character.valueOf('U'), new ItemStack(ModItems.CONTROL_UNIT),
+				Character.valueOf('C'), new ItemStack(Blocks.CHEST),
+				Character.valueOf('F'), new ItemStack(ModItems.CAR_TANK),
+				Character.valueOf('P'), new ItemStack(ModItems.CAR_BODY_PART_WOOD, 1, 5));
 	}
 
 	public void addRecipe(ICarbuilder builder , String name, Object... recipeComponents) {

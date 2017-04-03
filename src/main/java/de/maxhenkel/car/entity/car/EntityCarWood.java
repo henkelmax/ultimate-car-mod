@@ -42,7 +42,7 @@ public class EntityCarWood extends EntityCarInventoryBase{
 	@Override
 	protected void entityInit() {
 		super.entityInit();
-		this.dataManager.register(TYPE, Integer.valueOf(0));
+		this.dataManager.register(TYPE, EnumType.OAK.getMetadata());
 	}
 
 	public void setType(EnumType type) {

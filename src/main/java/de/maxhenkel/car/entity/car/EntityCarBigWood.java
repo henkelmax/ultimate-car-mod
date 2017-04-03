@@ -20,7 +20,7 @@ public class EntityCarBigWood extends EntityCarInventoryBase{
 			DataSerializers.VARINT);
 	
 	public EntityCarBigWood(World worldIn) {
-		this(worldIn, EnumType.DARK_OAK);
+		this(worldIn, EnumType.OAK);
 	}
 	
 	public EntityCarBigWood(World worldIn, EnumType type) {
@@ -55,7 +55,7 @@ public class EntityCarBigWood extends EntityCarInventoryBase{
 	@Override
 	protected void entityInit() {
 		super.entityInit();
-		this.dataManager.register(TYPE, Integer.valueOf(0));
+		this.dataManager.register(TYPE, EnumType.OAK.getMetadata());
 	}
 
 	public void setType(EnumType type) {
