@@ -43,6 +43,7 @@ public class ModBlocks {
 	public static final BlockFluidPipe FLUID_PIPE=new BlockFluidPipe();
 	public static final BlockDynamo DYNAMO=new BlockDynamo();
 	public static final BlockCrank CRANK=new BlockCrank();
+	public static final BlockSignPost SIGN_POST=new BlockSignPost();
 	
 	public static final BlockPaint[] PAINTS;
 	public static final BlockPaint[] YELLOW_PAINTS;
@@ -88,6 +89,7 @@ public class ModBlocks {
 		registerBlock(ModBlocks.FLUID_EXTRACTOR);
 		registerBlock(ModBlocks.DYNAMO);
 		registerBlock(ModBlocks.CRANK);
+		registerBlock(ModBlocks.SIGN_POST);
 		
 		for(BlockPaint block:ModBlocks.PAINTS){
 			registerBlock(block);
@@ -124,6 +126,7 @@ public class ModBlocks {
 		addRenderBlock(ModBlocks.FLUID_PIPE);
 		addRenderBlock(ModBlocks.DYNAMO);
 		addRenderBlock(ModBlocks.CRANK);
+		addRenderBlock(ModBlocks.SIGN_POST);
 		
 		for (BlockPaint block : ModBlocks.PAINTS) {
 			addRenderBlock(block);

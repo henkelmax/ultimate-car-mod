@@ -1,0 +1,21 @@
+{
+    "textures": {
+        "0": "car:blocks/sign_post",
+		"particle": "car:blocks/sign_post"
+    },
+    "elements": [
+        {
+            "name": "Cube",
+            "from": [ 7.0, 0.0, 7.0 ], 
+            "to": [ 9.0, 16.0, 9.0 ], 
+            "faces": {
+                "north": { "texture": "#0", "uv": [ 7.0, 0.0, 9.0, 16.0 ] },
+                "east": { "texture": "#0", "uv": [ 9.0, 0.0, 7.0, 16.0 ] },
+                "south": { "texture": "#0", "uv": [ 7.0, 0.0, 9.0, 16.0 ] },
+                "west": { "texture": "#0", "uv": [ 9.0, 0.0, 7.0, 16.0 ] },
+                "up": { "texture": "#0", "uv": [ 8.0, 0.0, 9.0, 1.0 ] },
+                "down": { "texture": "#0", "uv": [ 8.0, 0.0, 9.0, 1.0 ] }
+            }
+        }
+    ]
+}
