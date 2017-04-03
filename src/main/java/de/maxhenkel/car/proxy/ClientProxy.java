@@ -13,6 +13,7 @@ import de.maxhenkel.car.entity.car.EntityCarWood;
 import de.maxhenkel.car.entity.model.bigwood.RenderFactoryBigWoodCar;
 import de.maxhenkel.car.entity.model.wood.RenderFactoryWoodCar;
 import de.maxhenkel.car.events.KeyEvents;
+import de.maxhenkel.car.events.PlayerEvents;
 import de.maxhenkel.car.events.RenderEvents;
 import de.maxhenkel.car.items.ModItems;
 import net.minecraft.block.Block;
@@ -51,6 +52,7 @@ public class ClientProxy extends CommonProxy {
 		super.init(event);
 		MinecraftForge.EVENT_BUS.register(new KeyEvents());
 		MinecraftForge.EVENT_BUS.register(new RenderEvents());
+		MinecraftForge.EVENT_BUS.register(new PlayerEvents());
 
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityFuelStation.class,
 				new TileentitySpecialRendererFuelStation());

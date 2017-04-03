@@ -1,13 +1,11 @@
 package de.maxhenkel.car.events;
 
 import org.lwjgl.input.Keyboard;
-
 import de.maxhenkel.car.entity.car.base.EntityCarBase;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.world.World;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent;
@@ -53,7 +51,7 @@ public class KeyEvents {
 
 		Minecraft minecraft = Minecraft.getMinecraft();
 
-		World world = minecraft.theWorld;
+		//World world = minecraft.theWorld;
 		
 		EntityPlayer player=minecraft.thePlayer;
 
