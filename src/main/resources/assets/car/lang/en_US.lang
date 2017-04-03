@@ -1,5 +1,6 @@
 gui.fuel=%s %% Fuel
 gui.damage=%s %% Damage
+gui.done=Done
 tile.tar.name=Asphalt
 tile.tar_slope.name=Asphalt Slope
 tile.tar_slope_flat_upper.name=Upper Asphalt Slope (Flat)

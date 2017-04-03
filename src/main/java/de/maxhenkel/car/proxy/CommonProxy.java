@@ -14,6 +14,7 @@ import de.maxhenkel.car.blocks.tileentity.TileEntityFluidExtractor;
 import de.maxhenkel.car.blocks.tileentity.TileEntityFuelStation;
 import de.maxhenkel.car.blocks.tileentity.TileEntityGenerator;
 import de.maxhenkel.car.blocks.tileentity.TileEntityOilMill;
+import de.maxhenkel.car.blocks.tileentity.TileEntitySignCar;
 import de.maxhenkel.car.blocks.tileentity.TileEntitySplitTank;
 import de.maxhenkel.car.blocks.tileentity.TileEntityTank;
 import de.maxhenkel.car.entity.car.EntityCarBigWood;
@@ -108,6 +109,7 @@ public class CommonProxy {
 		GameRegistry.registerTileEntity(TileEntityCable.class, "TileEntityCable");
 		GameRegistry.registerTileEntity(TileEntityFluidExtractor.class, "TileEntityFluidExtractor");
 		GameRegistry.registerTileEntity(TileEntityDynamo.class, "TileEntityDynamo");
+		GameRegistry.registerTileEntity(TileEntitySignCar.class, "TileEntitySign");
 		
 		MinecraftForge.addGrassSeed(new ItemStack(ModItems.CANOLA_SEEDS), 8);
 	}
