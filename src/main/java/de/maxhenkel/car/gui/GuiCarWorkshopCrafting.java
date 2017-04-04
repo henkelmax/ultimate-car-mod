@@ -84,7 +84,7 @@ public class GuiCarWorkshopCrafting extends GuiContainer {
 	}
 	
 	private void drawCar(EntityCarBase car){
-		MathTools.drawCarOnScreen(xSize / 2, 55, 25, rotoation, car);
+		MathTools.drawCarOnScreen(xSize / 2, 55, 23, rotoation, car);
 		float parts = Minecraft.getMinecraft().getRenderPartialTicks();
 		rotoation += parts / 4;
 		if (!(rotoation < 360)) {

@@ -27,7 +27,7 @@ public class CarRecipeWrapper implements IRecipeWrapper{
 	@Override
 	public void drawInfo(Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
 		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-		MathTools.drawCarOnScreen(recipeWidth-30, recipeHeight-54/4, 20, rotoation, car);
+		MathTools.drawCarOnScreen(recipeWidth-30, recipeHeight-54/4, 18, rotoation, car);
 		
 		float parts = Minecraft.getMinecraft().getRenderPartialTicks();
 		rotoation += parts / 4;
@@ -56,12 +56,12 @@ public class CarRecipeWrapper implements IRecipeWrapper{
 	}
 
 	@Override
-	public List getInputs() {
+	public List<ItemStack> getInputs() {
 		return Arrays.asList(recipe.getInputs());
 	}
 
 	@Override
-	public List getOutputs() {
+	public List<ItemStack> getOutputs() {
 		return Collections.emptyList();
 	}
 

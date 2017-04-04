@@ -67,8 +67,19 @@ public class Reciepes {
 				Character.valueOf('B'), Blocks.IRON_BLOCK });
 		
 		//Wheel
-		GameRegistry.addRecipe(new ItemStack(ModItems.WOODEN_WHEEL, 1), new Object[] { "XPX", "PPP", "XPX",
-				Character.valueOf('P'), Blocks.PLANKS});
+		GameRegistry.addRecipe(new ItemStack(ModItems.WHEEL, 1), new Object[] { "XWX", "WIW", "XWX",
+				Character.valueOf('W'), new ItemStack(Blocks.WOOL, 1, 15),
+				Character.valueOf('I'), Items.IRON_INGOT});
+		
+		//Axle
+		GameRegistry.addRecipe(new ItemStack(ModItems.AXLE, 1), new Object[] { "WSW",
+				Character.valueOf('W'), ModItems.WHEEL,
+				Character.valueOf('S'), ModItems.IRON_STICK});
+		
+		//Container
+		GameRegistry.addRecipe(new ItemStack(ModItems.CONTAINER, 1), new Object[] { "ICI", "CXC", "ICI",
+				Character.valueOf('I'), Items.IRON_INGOT,
+				Character.valueOf('C'), Blocks.CHEST});
 		
 		//Control unit
 		GameRegistry.addRecipe(new ItemStack(ModItems.CONTROL_UNIT, 1), new Object[] { "IRI", "RSR", "IRI",

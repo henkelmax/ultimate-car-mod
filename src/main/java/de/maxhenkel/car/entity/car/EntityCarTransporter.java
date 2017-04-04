@@ -69,9 +69,9 @@ public class EntityCarTransporter extends EntityCarInventoryBase{
 	@Override
 	public float getsideOffsetForPassenger(int i, Entity passenger) {
 		if(i<=0){
-			return -0.4F;
+			return -0.38F;
 		}
-		return 0.4F;
+		return 0.38F;
 	}
 	
 	@Override

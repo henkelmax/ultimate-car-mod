@@ -94,7 +94,7 @@ public class GuiCarWorkshopRepair extends GuiContainer {
 
 	private void drawCar(EntityCarBase car) {
 		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-		MathTools.drawCarOnScreen(xSize / 2, 55, 25, rotoation, car);
+		MathTools.drawCarOnScreen(xSize / 2, 55, 23, rotoation, car);
 		float parts = Minecraft.getMinecraft().getRenderPartialTicks();
 		rotoation += parts / 4;
 		if (!(rotoation < 360)) {

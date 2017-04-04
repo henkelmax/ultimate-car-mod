@@ -1,6 +1,6 @@
 {
     "parent": "item/generated",
     "textures": {
-        "layer0": "car:items/wooden_wheel"
+        "layer0": "car:items/wheel"
     }
 }
