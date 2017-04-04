@@ -3,9 +3,10 @@ package de.maxhenkel.car.entity.car;
 import java.util.Random;
 import de.maxhenkel.car.entity.car.base.EntityCarInventoryBase;
 import de.maxhenkel.car.fluids.ModFluids;
-import de.maxhenkel.car.reciepe.CarCraftingManager;
-import de.maxhenkel.car.reciepe.ICarRecipe;
+import de.maxhenkel.car.reciepe.CarBuilderWoodCar;
+import de.maxhenkel.car.reciepe.ICarbuilder;
 import net.minecraft.block.BlockPlanks.EnumType;
+import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
@@ -27,6 +28,16 @@ public class EntityCarWood extends EntityCarInventoryBase{
 	public EntityCarWood(World worldIn, EnumType type) {
 		super(worldIn);
 		setType(type);
+	}
+	
+	@Override
+	public float getRotationModifier() {
+		return 0.5F;
+	}
+	
+	@Override
+	public float getOffsetForPassenger(int i, Entity passenger) {
+		return 0;
 	}
 
 	@Override
@@ -66,8 +77,8 @@ public class EntityCarWood extends EntityCarInventoryBase{
 	}
 
 	@Override
-	public ICarRecipe getRecipe() {
-		return CarCraftingManager.getInstance().getReciepeByName("car_wood_" +getType().getName());
+	public ICarbuilder getBuilder() {
+		return new CarBuilderWoodCar(getType());
 	}
 
 	

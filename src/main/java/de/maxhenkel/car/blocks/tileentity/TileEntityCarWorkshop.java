@@ -1,10 +1,9 @@
 package de.maxhenkel.car.blocks.tileentity;
 
 import java.util.List;
-
 import javax.annotation.Nullable;
-
 import de.maxhenkel.car.ItemTools;
+import de.maxhenkel.car.blocks.BlockCarWorkshopOutter;
 import de.maxhenkel.car.blocks.ModBlocks;
 import de.maxhenkel.car.entity.car.base.EntityCarBase;
 import de.maxhenkel.car.entity.car.base.EntityCarDamageBase;
@@ -18,7 +17,6 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -128,7 +126,7 @@ public class TileEntityCarWorkshop extends TileEntityBase implements ICarCraftin
 	}
 
 	private IBlockState getState(int meta) {
-		return ModBlocks.CAR_WORKSHOP_OUTTER.getDefaultState().withProperty(ModBlocks.CAR_WORKSHOP_OUTTER.POSITION,
+		return ModBlocks.CAR_WORKSHOP_OUTTER.getDefaultState().withProperty(BlockCarWorkshopOutter.POSITION,
 				meta);
 	}
 
@@ -194,48 +192,18 @@ public class TileEntityCarWorkshop extends TileEntityBase implements ICarCraftin
 
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
-		NBTTagList list = new NBTTagList();
-
-		for (int i = 0; i < craftingMatrix.getSizeInventory(); i++) {
-			if (craftingMatrix.getStackInSlot(i) != null) {
-				NBTTagCompound tag = new NBTTagCompound();
-				craftingMatrix.getStackInSlot(i).writeToNBT(tag);
-				list.appendTag(tag);
-			}
-		}
-
-		compound.setTag("slots", list);
+		ItemTools.saveInventory(compound, "crafting", craftingMatrix);
 		
-		NBTTagList repairList = new NBTTagList();
-
-		for (int i = 0; i < repairInventory.getSizeInventory(); i++) {
-			if (repairInventory.getStackInSlot(i) != null) {
-				NBTTagCompound tag = new NBTTagCompound();
-				repairInventory.getStackInSlot(i).writeToNBT(tag);
-				repairList.appendTag(tag);
-			}
-		}
-		compound.setTag("repair_slots", repairList);
+		ItemTools.saveInventory(compound, "repair", repairInventory);
 
 		return super.writeToNBT(compound);
 	}
 
 	@Override
 	public void readFromNBT(NBTTagCompound compound) {
-		NBTTagList list = compound.getTagList("slots", 10);
-
-		for (int i = 0; i < list.tagCount(); i++) {
-			NBTTagCompound tag = list.getCompoundTagAt(i);
-			ItemStack stack = ItemStack.loadItemStackFromNBT(tag);
-			craftingMatrix.setInventorySlotContents(i, stack);
-		}
+		ItemTools.readInventory(compound, "crafting", craftingMatrix);
 		
-		NBTTagList repairList = compound.getTagList("repair_slots", 10);
-		for (int i = 0; i < repairList.tagCount(); i++) {
-			NBTTagCompound tag = repairList.getCompoundTagAt(i);
-			ItemStack stack = ItemStack.loadItemStackFromNBT(tag);
-			repairInventory.setInventorySlotContents(i, stack);
-		}
+		ItemTools.readInventory(compound, "repair", repairInventory);
 
 		super.readFromNBT(compound);
 	}

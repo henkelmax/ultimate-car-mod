@@ -9,11 +9,11 @@ import net.minecraft.util.ResourceLocation;
 
 public abstract class RenderCarBase<T extends EntityVehicleBase> extends Render<T> {
 
-	protected ModelBase model;
-
 	public RenderCarBase(RenderManager renderManagerIn) {
 		super(renderManagerIn);
 	}
+	
+	public abstract ModelBase getModel(T entity);
 
 	public void doRender(T entity, double x, double y, double z, float entityYaw, float partialTicks) {
 		GlStateManager.pushMatrix();
@@ -26,7 +26,7 @@ public abstract class RenderCarBase<T extends EntityVehicleBase> extends Render<
 			GlStateManager.enableOutlineMode(this.getTeamColor(entity));
 		}
 
-		model.render(entity, partialTicks, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
+		getModel(entity).render(entity, partialTicks, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
 
 		if (this.renderOutlines) {
 			GlStateManager.disableOutlineMode();

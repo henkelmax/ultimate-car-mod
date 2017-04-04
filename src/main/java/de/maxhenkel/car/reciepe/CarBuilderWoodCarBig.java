@@ -20,4 +20,9 @@ public class CarBuilderWoodCarBig implements ICarbuilder{
 		return car;
 	}
 
+	@Override
+	public String getName() {
+		return "car_big_wood_" +type.getName();
+	}
+	
 }

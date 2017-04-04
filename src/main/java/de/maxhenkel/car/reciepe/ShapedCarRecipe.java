@@ -7,12 +7,10 @@ public class ShapedCarRecipe implements ICarRecipe{
 
 	private ItemStack[] pattern;
 	private ICarbuilder result;
-	private String name;
 	
-	public ShapedCarRecipe(ItemStack[] pattern, ICarbuilder result, String name) {
+	public ShapedCarRecipe(ItemStack[] pattern, ICarbuilder result) {
 		this.pattern=pattern;
 		this.result=result;
-		this.name=name;
 	}
 	
 	@Override
@@ -48,7 +46,7 @@ public class ShapedCarRecipe implements ICarRecipe{
 
 	@Override
 	public String getName() {
-		return name;
+		return result.getName();
 	}
 
 }

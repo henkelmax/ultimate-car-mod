@@ -2,9 +2,10 @@ package de.maxhenkel.car.entity.car;
 
 import de.maxhenkel.car.entity.car.base.EntityCarInventoryBase;
 import de.maxhenkel.car.fluids.ModFluids;
-import de.maxhenkel.car.reciepe.CarCraftingManager;
-import de.maxhenkel.car.reciepe.ICarRecipe;
+import de.maxhenkel.car.reciepe.CarBuilderWoodCarBig;
+import de.maxhenkel.car.reciepe.ICarbuilder;
 import net.minecraft.block.BlockPlanks.EnumType;
+import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
@@ -33,6 +34,23 @@ public class EntityCarBigWood extends EntityCarInventoryBase{
 	}
 	
 	@Override
+	public float getOffsetForPassenger(int i, Entity passenger) {
+		if (getPassengers().size() > 1) {
+			if (i == 0) {
+				return 0.2F;
+			} else {
+				return -0.6F;
+			}
+		}
+		return 0;
+	}
+	
+	@Override
+	public float getRotationModifier() {
+		return 0.5F;
+	}
+	
+	@Override
 	public int getPassengerSize() {
 		return 2;
 	}
@@ -45,11 +63,6 @@ public class EntityCarBigWood extends EntityCarInventoryBase{
 	@Override
 	public boolean isValidFuel(Fluid fluid) {
 		return fluid.equals(ModFluids.BIO_DIESEL);
-	}
-
-	@Override
-	public ICarRecipe getRecipe() {
-		return CarCraftingManager.getInstance().getReciepeByName("car_big_wood_" +getType().getName());
 	}
 	
 	@Override
@@ -76,5 +89,10 @@ public class EntityCarBigWood extends EntityCarInventoryBase{
 	protected void readEntityFromNBT(NBTTagCompound compound) {
 		setType(EnumType.byMetadata(compound.getInteger("type")));
 		super.readEntityFromNBT(compound);
+	}
+
+	@Override
+	public ICarbuilder getBuilder() {
+		return new CarBuilderWoodCarBig(getType());
 	}
 }

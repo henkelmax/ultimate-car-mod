@@ -3,17 +3,25 @@ package de.maxhenkel.car.entity.model.bigwood;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.entity.car.EntityCarBigWood;
 import de.maxhenkel.car.entity.model.RenderCarBase;
+import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.util.ResourceLocation;
 
 public class RenderBigWoodCar extends RenderCarBase<EntityCarBigWood> {
 
+	private ModelBase model;
+	
 	public RenderBigWoodCar(RenderManager renderManagerIn) {
 		super(renderManagerIn);
 		this.shadowSize = 0.5F;
 		this.model=new ModelBigWoodCar();
 	}
 
+	@Override
+	public ModelBase getModel(EntityCarBigWood entity) {
+		return model;
+	}
+	
 	@Override
 	public float getHeightOffset() {
 		return 1.48F;

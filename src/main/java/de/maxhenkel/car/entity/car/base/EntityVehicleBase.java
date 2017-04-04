@@ -86,6 +86,8 @@ public abstract class EntityVehicleBase extends Entity{
 		this.applyYawToEntity(entityToUpdate);
 	}
 	
+	public abstract float getOffsetForPassenger(int i, Entity passenger);
+	
 	@Override
 	public void updatePassenger(Entity passenger) {
 		if (!isPassenger(passenger)) {
@@ -96,14 +98,10 @@ public abstract class EntityVehicleBase extends Entity{
 
 		List<Entity> passengers = getPassengers();
 
-		if (passengers.size() > 1) {
+		if (passengers.size() > 0) {
 			int i = passengers.indexOf(passenger);
 
-			if (i == 0) {
-				f = 0.2F;
-			} else {
-				f = -0.6F;
-			}
+			f=getOffsetForPassenger(i, passenger);
 		}
 
 		Vec3d vec3d = (new Vec3d((double) f, 0.0D, 0.0D))

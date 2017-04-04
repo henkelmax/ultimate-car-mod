@@ -3,14 +3,22 @@ package de.maxhenkel.car.entity.model.wood;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.entity.car.EntityCarWood;
 import de.maxhenkel.car.entity.model.RenderCarBase;
+import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.util.ResourceLocation;
 
 public class RenderWoodCar extends RenderCarBase<EntityCarWood> {
-
+	
+	private ModelBase model;
+	
 	public RenderWoodCar(RenderManager renderManagerIn) {
 		super(renderManagerIn);
 		this.model=new ModelWoodCar();
+	}
+	
+	@Override
+	public ModelBase getModel(EntityCarWood entity) {
+		return model;
 	}
 	
 	@Override

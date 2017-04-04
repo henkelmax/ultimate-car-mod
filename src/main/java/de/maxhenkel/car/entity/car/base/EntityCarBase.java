@@ -8,7 +8,9 @@ import de.maxhenkel.car.net.MessageControlCar;
 import de.maxhenkel.car.net.MessageCrash;
 import de.maxhenkel.car.net.MessageStartCar;
 import de.maxhenkel.car.proxy.CommonProxy;
+import de.maxhenkel.car.reciepe.CarCraftingManager;
 import de.maxhenkel.car.reciepe.ICarRecipe;
+import de.maxhenkel.car.reciepe.ICarbuilder;
 import de.maxhenkel.car.sounds.ModSounds;
 import de.maxhenkel.car.sounds.SoundLoopHigh;
 import de.maxhenkel.car.sounds.SoundLoopIdle;
@@ -121,7 +123,8 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 
 	public void destroyCar(boolean dropParts) {
 		if (dropParts) {
-			ICarRecipe reciepe = getRecipe();
+			ICarbuilder builder=getBuilder();
+			ICarRecipe reciepe = CarCraftingManager.getInstance().getReciepeByName(builder.getName());
 			if (reciepe != null) {
 				for (ItemStack stack : reciepe.getInputs()) {
 					if (shouldDropItemWithChance(stack)) {
@@ -137,7 +140,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 		return rand.nextInt(10) != 0;
 	}
 
-	public abstract ICarRecipe getRecipe();
+	public abstract ICarbuilder getBuilder();
 
 	private void controlCar() {
 
@@ -163,7 +166,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 		
 		float rotationSpeed = 0;
 		if (Math.abs(speed) > 0.02F) {
-			rotationSpeed = MathHelper.abs(0.5F / (float)Math.pow(speed, 2));
+			rotationSpeed = MathHelper.abs(getRotationModifier() / (float)Math.pow(speed, 2));
 			
 			rotationSpeed = MathHelper.clamp_float(rotationSpeed, minRotationSpeed, maxRotationSpeed);
 		}
@@ -200,6 +203,8 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 			this.motionZ = calculateMotionZ(getSpeed(), rotationYaw);
 		}
 	}
+	
+	public abstract float getRotationModifier();
 
 	public void onCollision(float speed) {
 		if (worldObj.isRemote) {

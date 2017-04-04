@@ -7,4 +7,6 @@ public interface ICarbuilder {
 
 	public EntityCarBase build(World world);
 	
+	public String getName();
+	
 }
