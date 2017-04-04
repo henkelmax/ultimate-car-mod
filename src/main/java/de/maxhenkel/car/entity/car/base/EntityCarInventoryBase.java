@@ -10,23 +10,29 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 
 public abstract class EntityCarInventoryBase extends EntityCarFuelBase implements IInventory{
 
-	protected IInventory inventory;
+	protected IInventory internalInventory;
+	protected IInventory externalInventory;
 	
 	public EntityCarInventoryBase(World worldIn) {
 		super(worldIn);
 		
-		this.inventory=new InventoryBasic(new TextComponentTranslation("container.car").getFormattedText(), false, getInventorySize());
+		this.internalInventory=new InventoryBasic(getCarName().getFormattedText(), false, 27);
+		this.externalInventory=new InventoryBasic(getCarName().getFormattedText(), false, getExternalInventorySize());
 	}
 	
 	@Override
 	public boolean processInitialInteract(EntityPlayer player, ItemStack stack, EnumHand hand) {
 		if(canPlayerAccessInventory(player) && player.isSneaking()){
-			player.displayGUIChest(this);
+			if(getExternalInventorySize()<=0){
+				player.displayGUIChest(this);
+			}else{
+				player.displayGUIChest(externalInventory);
+			}
+			
 			return true;
 		}
 		return super.processInitialInteract(player, stack, hand);
@@ -36,13 +42,14 @@ public abstract class EntityCarInventoryBase extends EntityCarFuelBase implement
 		return true;
 	}
 	
-	public int getInventorySize(){
-		return 27;
+	public int getExternalInventorySize(){
+		return 0;
 	}
 	
 	@Override
 	public void destroyCar(boolean dropParts) {
 		InventoryHelper.dropInventoryItems(worldObj, this, this);
+		InventoryHelper.dropInventoryItems(worldObj, this, externalInventory);
 		super.destroyCar(dropParts);
 	}
 	
@@ -58,105 +65,121 @@ public abstract class EntityCarInventoryBase extends EntityCarFuelBase implement
 	protected void readEntityFromNBT(NBTTagCompound compound) {
 		super.readEntityFromNBT(compound);
 		
-		NBTTagList list = compound.getTagList("inventory", 10);
+		readInventory("inventory", compound, internalInventory);
+		
+		if(getExternalInventorySize()>0){
+			readInventory("external_inventory", compound, externalInventory);
+		}
+	}
+	
+	public static void readInventory(String name, NBTTagCompound compound, IInventory inv){
+		NBTTagList list = compound.getTagList(name, 10);
 		
 		for (int i = 0; i < list.tagCount(); i++) {
 			NBTTagCompound tag = list.getCompoundTagAt(i);
 			ItemStack stack=ItemStack.loadItemStackFromNBT(tag);
-			inventory.setInventorySlotContents(i, stack);
+			inv.setInventorySlotContents(i, stack);
 		}
+	}
+	
+	public static void writeInventory(String name, NBTTagCompound compound, IInventory inv){
+		NBTTagList list = new NBTTagList();
+
+		for (int i = 0; i < inv.getSizeInventory(); i++) {
+			if (inv.getStackInSlot(i) != null) {
+				NBTTagCompound tag = new NBTTagCompound();
+				inv.getStackInSlot(i).writeToNBT(tag);
+				list.appendTag(tag);
+			}
+		}
+
+		compound.setTag(name, list);
 	}
 	
 	@Override
 	protected void writeEntityToNBT(NBTTagCompound compound) {
 		super.writeEntityToNBT(compound);
 		
-		NBTTagList list = new NBTTagList();
-
-		for (int i = 0; i < inventory.getSizeInventory(); i++) {
-			if (inventory.getStackInSlot(i) != null) {
-				NBTTagCompound tag = new NBTTagCompound();
-				inventory.getStackInSlot(i).writeToNBT(tag);
-				list.appendTag(tag);
-			}
+		writeInventory("inventory", compound, internalInventory);
+		
+		if(getExternalInventorySize()>0){
+			writeInventory("external_inventory", compound, externalInventory);
 		}
-
-		compound.setTag("inventory", list);
 	}
 
 	@Override
 	public int getSizeInventory() {
-		return inventory.getSizeInventory();
+		return internalInventory.getSizeInventory();
 	}
 
 	@Override
 	public ItemStack getStackInSlot(int index) {
-		return inventory.getStackInSlot(index);
+		return internalInventory.getStackInSlot(index);
 	}
 
 	@Override
 	public ItemStack decrStackSize(int index, int count) {
-		return inventory.decrStackSize(index, count);
+		return internalInventory.decrStackSize(index, count);
 	}
 
 	@Override
 	public ItemStack removeStackFromSlot(int index) {
-		return inventory.removeStackFromSlot(index);
+		return internalInventory.removeStackFromSlot(index);
 	}
 
 	@Override
 	public void setInventorySlotContents(int index, ItemStack stack) {
-		inventory.setInventorySlotContents(index, stack);
+		internalInventory.setInventorySlotContents(index, stack);
 	}
 
 	@Override
 	public int getInventoryStackLimit() {
-		return inventory.getInventoryStackLimit();
+		return internalInventory.getInventoryStackLimit();
 	}
 
 	@Override
 	public void markDirty() {
-		inventory.markDirty();
+		internalInventory.markDirty();
 	}
 
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer player) {
-		return inventory.isUseableByPlayer(player);
+		return internalInventory.isUseableByPlayer(player);
 	}
 
 	@Override
 	public void openInventory(EntityPlayer player) {
-		inventory.openInventory(player);
+		internalInventory.openInventory(player);
 	}
 
 	@Override
 	public void closeInventory(EntityPlayer player) {
-		inventory.closeInventory(player);
+		internalInventory.closeInventory(player);
 	}
 
 	@Override
 	public boolean isItemValidForSlot(int index, ItemStack stack) {
-		return inventory.isItemValidForSlot(index, stack);
+		return internalInventory.isItemValidForSlot(index, stack);
 	}
 
 	@Override
 	public int getField(int id) {
-		return inventory.getField(id);
+		return internalInventory.getField(id);
 	}
 
 	@Override
 	public void setField(int id, int value) {
-		inventory.setField(id, value);
+		internalInventory.setField(id, value);
 	}
 
 	@Override
 	public int getFieldCount() {
-		return inventory.getFieldCount();
+		return internalInventory.getFieldCount();
 	}
 
 	@Override
 	public void clear() {
-		inventory.clear();
+		internalInventory.clear();
 	}
 
 }
