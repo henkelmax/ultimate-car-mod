@@ -11,16 +11,22 @@ import net.minecraft.util.ResourceLocation;
 public class RenderTransporter extends RenderCarBase<EntityCarTransporter> {
 
 	private ModelBase modelTransporter;
+	private ModelBase modelTransporterContainer;
 	
 	public RenderTransporter(RenderManager renderManagerIn) {
 		super(renderManagerIn);
 		this.shadowSize = 0.5F;
-		this.modelTransporter=new ModelTransporter();
+		this.modelTransporter=new ModelTransporter(false);
+		this.modelTransporterContainer=new ModelTransporter(true);
 	}
 	
 	@Override
 	public ModelBase getModel(EntityCarTransporter entity) {
-		return modelTransporter;
+		if(entity.getHasContainer()){
+			return modelTransporterContainer;
+		}else{
+			return modelTransporter;
+		}
 	}
 
 	@Override
@@ -30,13 +36,17 @@ public class RenderTransporter extends RenderCarBase<EntityCarTransporter> {
 	
 	@Override
 	public void setupRotation(EntityCarTransporter entity, float f1, float f2) {
-		GlStateManager.rotate(180.0F - f1, 0.0F, 1.0F, 0.0F);
+		super.setupRotation(entity, f1, f2);
 		GlStateManager.rotate(180.0F, 1.0F, 0.0F, 0.0F);
-		GlStateManager.scale(-1.0F, -1.0F, 1.0F);
 	}
 	
 	@Override
 	protected ResourceLocation getEntityTexture(EntityCarTransporter entity) {
-		return new ResourceLocation(Main.MODID, "textures/entity/car_transporter.png");
+		switch (entity.getType()) {
+		case RED:
+			return new ResourceLocation(Main.MODID, "textures/entity/car_transporter_red.png");
+		default:
+			return new ResourceLocation(Main.MODID, "textures/entity/car_transporter_red.png");
+		}
 	}
 }

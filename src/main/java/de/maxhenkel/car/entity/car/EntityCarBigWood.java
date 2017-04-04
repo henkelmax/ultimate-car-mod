@@ -34,7 +34,7 @@ public class EntityCarBigWood extends EntityCarInventoryBase{
 	}
 	
 	@Override
-	public float getOffsetForPassenger(int i, Entity passenger) {
+	public float getFrontOffsetForPassenger(int i, Entity passenger) {
 		if (getPassengers().size() > 1) {
 			if (i == 0) {
 				return 0.2F;

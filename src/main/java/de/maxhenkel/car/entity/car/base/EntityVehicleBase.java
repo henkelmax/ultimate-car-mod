@@ -86,7 +86,13 @@ public abstract class EntityVehicleBase extends Entity{
 		this.applyYawToEntity(entityToUpdate);
 	}
 	
-	public abstract float getOffsetForPassenger(int i, Entity passenger);
+	public float getFrontOffsetForPassenger(int i, Entity passenger){
+		return 0.0F;
+	}
+	
+	public float getsideOffsetForPassenger(int i, Entity passenger){
+		return 0.0F;
+	}
 	
 	@Override
 	public void updatePassenger(Entity passenger) {
@@ -94,17 +100,19 @@ public abstract class EntityVehicleBase extends Entity{
 			return;
 		}
 
-		float f = 0.0F;
+		double front = 0.0F;
+		double side = 0.0F;
 
 		List<Entity> passengers = getPassengers();
 
 		if (passengers.size() > 0) {
 			int i = passengers.indexOf(passenger);
 
-			f=getOffsetForPassenger(i, passenger);
+			front=getFrontOffsetForPassenger(i, passenger);
+			side=getsideOffsetForPassenger(i, passenger);
 		}
 
-		Vec3d vec3d = (new Vec3d((double) f, 0.0D, 0.0D))
+		Vec3d vec3d = (new Vec3d(front, 0.0D, side))
 				.rotateYaw(-this.rotationYaw * 0.017453292F - ((float) Math.PI / 2F));
 		passenger.setPosition(this.posX + vec3d.xCoord, this.posY + getMountedYOffset(), this.posZ + vec3d.zCoord);
 		passenger.rotationYaw += this.deltaRotation;
