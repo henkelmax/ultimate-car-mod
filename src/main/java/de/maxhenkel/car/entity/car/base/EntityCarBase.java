@@ -359,7 +359,11 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 	}
 
 	public void setStarted(boolean started) {
-		if (!started) {
+		setStarted(started, true);
+	}
+	
+	public void setStarted(boolean started, boolean playsound) {
+		if (!started&&playsound) {
 			playStopSound();
 		}
 		this.dataManager.set(STARTED, Boolean.valueOf(started));
@@ -411,7 +415,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 
 	@Override
 	protected void readEntityFromNBT(NBTTagCompound compound) {
-		setStarted(compound.getBoolean("started"));
+		setStarted(compound.getBoolean("started"), false);
 	}
 
 	@Override
@@ -453,6 +457,10 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 
 	public SoundEvent getHighSound() {
 		return ModSounds.engine_high;
+	}
+	
+	public int getStartSoundTime(){
+		return 1600;
 	}
 
 	@SideOnly(Side.CLIENT)

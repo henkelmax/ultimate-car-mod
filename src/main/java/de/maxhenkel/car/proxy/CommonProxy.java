@@ -18,6 +18,7 @@ import de.maxhenkel.car.blocks.tileentity.TileEntitySignCar;
 import de.maxhenkel.car.blocks.tileentity.TileEntitySplitTank;
 import de.maxhenkel.car.blocks.tileentity.TileEntityTank;
 import de.maxhenkel.car.entity.car.EntityCarBigWood;
+import de.maxhenkel.car.entity.car.EntityCarSport;
 import de.maxhenkel.car.entity.car.EntityCarTransporter;
 import de.maxhenkel.car.entity.car.EntityCarWood;
 import de.maxhenkel.car.fluids.ModFluids;
@@ -99,6 +100,9 @@ public class CommonProxy {
 		
 		EntityRegistry.registerModEntity(EntityCarTransporter.class,
 				"car_transporter", 3725, Main.instance(), 64, 1, true);
+		
+		EntityRegistry.registerModEntity(EntityCarSport.class,
+				"car_sport", 3726, Main.instance(), 64, 1, true);
 		
 		NetworkRegistry.INSTANCE.registerGuiHandler(Main.instance(), new GuiHandler());
 		

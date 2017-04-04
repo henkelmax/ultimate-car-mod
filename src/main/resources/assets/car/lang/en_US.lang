@@ -108,6 +108,7 @@ item.car_body_part_wood.acacia.name=Acacia Car Body part
 item.car_body_part_wood.big_oak.name=Dark Oak Car Body part
 item.iron_stick.name=Iron Stick
 item.engine_3_cylinder.name=3 Cylinder Engine
+item.engine_6_cylinder.name=6 Cylinder Engine
 item.car_tank.name=Car Tank
 item.control_unit.name=Control Unit
 item.canister.name=Canister
@@ -180,6 +181,9 @@ entity.car.car_big_wood.name=Big Wood Car
 
 entity.car_transporter.name=Transporter
 entity.car.car_transporter.name=Transporter
+
+entity.car_sport.name=Sportscar
+entity.car.car_sport.name=Sportscar
 
 entity.car_wood_oak.name=Oak Wood Car
 entity.car_wood_birch.name=Birch Wood Car

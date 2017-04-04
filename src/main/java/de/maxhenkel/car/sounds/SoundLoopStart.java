@@ -28,7 +28,7 @@ public class SoundLoopStart extends SoundLoopCar {
 	
 	@Override
 	public boolean isDonePlaying() {
-		this.donePlaying=(System.currentTimeMillis()-timeStarted)>1600;
+		this.donePlaying=(System.currentTimeMillis()-timeStarted)>car.getStartSoundTime();
 		return donePlaying;
 	}
 	

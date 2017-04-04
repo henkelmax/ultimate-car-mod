@@ -170,6 +170,18 @@ public class CarCraftingManager {
 					Character.valueOf('P'), new ItemStack(Blocks.STAINED_HARDENED_CLAY, 1, color.getMetadata()));
 		}
 		
+		for(EnumDyeColor color:EnumDyeColor.values()){
+			addRecipe(new CarBuilderSport(color), "WSUCX", "EPPPP", "TXFXT", 
+					Character.valueOf('W'), new ItemStack(ModItems.WINDSHIELD),
+					Character.valueOf('S'), new ItemStack(ModItems.CAR_SEAT),
+					Character.valueOf('E'), new ItemStack(ModItems.ENGINE_6_CYLINDER),
+					Character.valueOf('T'), new ItemStack(ModItems.AXLE),
+					Character.valueOf('U'), new ItemStack(ModItems.CONTROL_UNIT),
+					Character.valueOf('C'), new ItemStack(Blocks.CHEST),
+					Character.valueOf('F'), new ItemStack(ModItems.CAR_TANK),
+					Character.valueOf('P'), new ItemStack(Blocks.STAINED_HARDENED_CLAY, 1, color.getMetadata()));
+		}
+		
 	}
 
 	public void addRecipe(ICarbuilder builder, Object... recipeComponents) {

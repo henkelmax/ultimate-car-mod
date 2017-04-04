@@ -19,6 +19,11 @@ public class ModSounds {
 	public static SoundEvent engine_idle;
 	public static SoundEvent engine_high;
 	public static SoundEvent engine_fail;
+	public static SoundEvent sport_engine_stop;
+	public static SoundEvent sport_engine_start;
+	public static SoundEvent sport_engine_idle;
+	public static SoundEvent sport_engine_high;
+	public static SoundEvent sport_engine_fail;
 	public static SoundEvent car_crash;
 	public static SoundEvent gas_ststion;
 	public static SoundEvent generator;
@@ -29,6 +34,11 @@ public class ModSounds {
 		engine_idle = registerSound("engine_idle");
 		engine_high = registerSound("engine_high");
 		engine_fail = registerSound("engine_fail");
+		sport_engine_stop = registerSound("sport_engine_stop");
+		sport_engine_start = registerSound("sport_engine_start");
+		sport_engine_idle = registerSound("sport_engine_idle");
+		sport_engine_high = registerSound("sport_engine_high");
+		sport_engine_fail = registerSound("sport_engine_fail");
 		car_crash = registerSound("car_crash");
 		gas_ststion = registerSound("gas_station");
 		generator = registerSound("generator");

@@ -21,6 +21,7 @@ public class ModItems {
 	public static final ItemCraftingComponent IRON_STICK = new ItemCraftingComponent("iron_stick");
 	public static final ItemCraftingComponent ENGINE_PISTON = new ItemCraftingComponent("engine_piston");
 	public static final ItemCraftingComponent ENGINE_3_CYLINDER = new ItemCraftingComponent("engine_3_cylinder");
+	public static final ItemCraftingComponent ENGINE_6_CYLINDER = new ItemCraftingComponent("engine_6_cylinder");
 	public static final ItemCraftingComponent CAR_SEAT = new ItemCraftingComponent("car_seat");
 	public static final ItemCraftingComponent WINDSHIELD = new ItemCraftingComponent("windshield");
 	public static final ItemCraftingComponent WHEEL = new ItemCraftingComponent("wheel");
@@ -52,6 +53,7 @@ public class ModItems {
 		registerItem(IRON_STICK);
 		registerItem(ENGINE_PISTON);
 		registerItem(ENGINE_3_CYLINDER);
+		registerItem(ENGINE_6_CYLINDER);
 		registerItem(CAR_SEAT);
 		registerItem(WINDSHIELD);
 		registerItem(WHEEL);
@@ -78,6 +80,7 @@ public class ModItems {
 		addRenderItem(IRON_STICK);
 		addRenderItem(ENGINE_PISTON);
 		addRenderItem(ENGINE_3_CYLINDER);
+		addRenderItem(ENGINE_6_CYLINDER);
 		addRenderItem(CAR_SEAT);
 		addRenderItem(WINDSHIELD);
 		addRenderItem(WHEEL);

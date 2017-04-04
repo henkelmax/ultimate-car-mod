@@ -9,9 +9,11 @@ import de.maxhenkel.car.blocks.tileentity.render.TileEntitySpecialRendererSplitT
 import de.maxhenkel.car.blocks.tileentity.render.TileEntitySpecialRendererTank;
 import de.maxhenkel.car.blocks.tileentity.render.TileentitySpecialRendererFuelStation;
 import de.maxhenkel.car.entity.car.EntityCarBigWood;
+import de.maxhenkel.car.entity.car.EntityCarSport;
 import de.maxhenkel.car.entity.car.EntityCarTransporter;
 import de.maxhenkel.car.entity.car.EntityCarWood;
 import de.maxhenkel.car.entity.model.bigwood.RenderFactoryBigWoodCar;
+import de.maxhenkel.car.entity.model.sport.RenderFactorySport;
 import de.maxhenkel.car.entity.model.transporter.RenderFactoryTransporter;
 import de.maxhenkel.car.entity.model.wood.RenderFactoryWoodCar;
 import de.maxhenkel.car.events.KeyEvents;
@@ -39,6 +41,7 @@ public class ClientProxy extends CommonProxy {
 		RenderingRegistry.registerEntityRenderingHandler(EntityCarWood.class, new RenderFactoryWoodCar());
 		RenderingRegistry.registerEntityRenderingHandler(EntityCarBigWood.class, new RenderFactoryBigWoodCar());
 		RenderingRegistry.registerEntityRenderingHandler(EntityCarTransporter.class, new RenderFactoryTransporter());
+		RenderingRegistry.registerEntityRenderingHandler(EntityCarSport.class, new RenderFactorySport());
 
 		registerFluidModel(ModBlocks.METHANOL);
 		registerFluidModel(ModBlocks.CANOLA_OIL);

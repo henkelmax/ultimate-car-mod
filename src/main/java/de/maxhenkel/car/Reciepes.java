@@ -66,6 +66,10 @@ public class Reciepes {
 				Character.valueOf('F'), Items.FLINT, Character.valueOf('P'), ModItems.ENGINE_PISTON, 
 				Character.valueOf('B'), Blocks.IRON_BLOCK });
 		
+		GameRegistry.addRecipe(new ItemStack(ModItems.ENGINE_6_CYLINDER, 1), new Object[] { "III", "EIE", "III",
+				Character.valueOf('I'), Items.IRON_INGOT, 
+				Character.valueOf('E'), ModItems.ENGINE_3_CYLINDER });
+		
 		//Wheel
 		GameRegistry.addRecipe(new ItemStack(ModItems.WHEEL, 1), new Object[] { "XWX", "WIW", "XWX",
 				Character.valueOf('W'), new ItemStack(Blocks.WOOL, 1, 15),
