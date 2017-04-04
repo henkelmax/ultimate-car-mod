@@ -42,11 +42,6 @@ public class RenderTransporter extends RenderCarBase<EntityCarTransporter> {
 	
 	@Override
 	protected ResourceLocation getEntityTexture(EntityCarTransporter entity) {
-		switch (entity.getType()) {
-		case RED:
-			return new ResourceLocation(Main.MODID, "textures/entity/car_transporter_red.png");
-		default:
-			return new ResourceLocation(Main.MODID, "textures/entity/car_transporter_red.png");
-		}
+		return new ResourceLocation(Main.MODID, "textures/entity/car_transporter_" +entity.getType().getName() +".png");
 	}
 }
