@@ -24,7 +24,7 @@ public class RenderSport extends RenderCarBase<EntityCarSport> {
 
 	@Override
 	public float getHeightOffset() {
-		return 0F;
+		return 0.035F;
 	}
 	
 	@Override

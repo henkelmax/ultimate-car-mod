@@ -171,7 +171,7 @@ public class CarCraftingManager {
 		}
 		
 		for(EnumDyeColor color:EnumDyeColor.values()){
-			addRecipe(new CarBuilderSport(color), "WSUCX", "EPPPP", "TXFXT", 
+			addRecipe(new CarBuilderSport(color), "XWSUC", "EPPPP", "TXFXT", 
 					Character.valueOf('W'), new ItemStack(ModItems.WINDSHIELD),
 					Character.valueOf('S'), new ItemStack(ModItems.CAR_SEAT),
 					Character.valueOf('E'), new ItemStack(ModItems.ENGINE_6_CYLINDER),

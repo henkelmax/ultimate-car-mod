@@ -28,8 +28,8 @@ public class EntityCarSport extends EntityCarInventoryBase{
 	public EntityCarSport(World worldIn, EnumDyeColor type) {
 		super(worldIn);
 		setType(type);
-		setSize(1.4F, 1.6F);
-		fuelTick=10;
+		setSize(1.4F, 1.2F);
+		fuelTick=12;
 		fuelIdleTick=150;
 		maxFuel=1500;
 		maxSpeed=0.65F;

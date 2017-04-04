@@ -5,6 +5,7 @@ import de.maxhenkel.car.fluids.ModFluids;
 import de.maxhenkel.car.reciepe.CarBuilderTransporter;
 import de.maxhenkel.car.reciepe.ICarbuilder;
 import net.minecraft.entity.Entity;
+import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
@@ -35,15 +36,13 @@ public class EntityCarTransporter extends EntityCarInventoryBase{
 		maxSpeed=0.4F;
 		setHasContainer(hasContainer);
 		setType(color);
-	}
-	
-	@Override
-	public int getExternalInventorySize() {
-		if(getHasContainer()){
-			return 54;
+		
+		if(hasContainer){
+			this.externalInventory=new InventoryBasic(getCarName().getFormattedText(), false, 54);
 		}else{
-			return 27;
+			this.externalInventory=new InventoryBasic(getCarName().getFormattedText(), false, 27);
 		}
+		
 	}
 	
 	@Override

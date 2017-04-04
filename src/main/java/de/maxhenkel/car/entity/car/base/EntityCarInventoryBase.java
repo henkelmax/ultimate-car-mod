@@ -21,13 +21,13 @@ public abstract class EntityCarInventoryBase extends EntityCarFuelBase implement
 		super(worldIn);
 		
 		this.internalInventory=new InventoryBasic(getCarName().getFormattedText(), false, 27);
-		this.externalInventory=new InventoryBasic(getCarName().getFormattedText(), false, getExternalInventorySize());
+		this.externalInventory=new InventoryBasic(getCarName().getFormattedText(), false, 0);
 	}
 	
 	@Override
 	public boolean processInitialInteract(EntityPlayer player, ItemStack stack, EnumHand hand) {
 		if(canPlayerAccessInventory(player) && player.isSneaking()){
-			if(getExternalInventorySize()<=0){
+			if(externalInventory.getSizeInventory()<=0){
 				player.displayGUIChest(this);
 			}else{
 				player.displayGUIChest(externalInventory);
@@ -40,10 +40,6 @@ public abstract class EntityCarInventoryBase extends EntityCarFuelBase implement
 	
 	public boolean canPlayerAccessInventory(EntityPlayer player){
 		return true;
-	}
-	
-	public int getExternalInventorySize(){
-		return 0;
 	}
 	
 	@Override
@@ -67,7 +63,7 @@ public abstract class EntityCarInventoryBase extends EntityCarFuelBase implement
 		
 		readInventory("inventory", compound, internalInventory);
 		
-		if(getExternalInventorySize()>0){
+		if(externalInventory.getSizeInventory()>0){
 			readInventory("external_inventory", compound, externalInventory);
 		}
 	}
@@ -102,7 +98,7 @@ public abstract class EntityCarInventoryBase extends EntityCarFuelBase implement
 		
 		writeInventory("inventory", compound, internalInventory);
 		
-		if(getExternalInventorySize()>0){
+		if(externalInventory.getSizeInventory()>0){
 			writeInventory("external_inventory", compound, externalInventory);
 		}
 	}
