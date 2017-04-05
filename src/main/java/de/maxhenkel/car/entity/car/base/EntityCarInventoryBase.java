@@ -1,5 +1,6 @@
 package de.maxhenkel.car.entity.car.base;
 
+import de.maxhenkel.car.ItemTools;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.gui.GuiHandler;
 import net.minecraft.entity.player.EntityPlayer;
@@ -8,7 +9,6 @@ import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 
@@ -61,46 +61,16 @@ public abstract class EntityCarInventoryBase extends EntityCarFuelBase implement
 	protected void readEntityFromNBT(NBTTagCompound compound) {
 		super.readEntityFromNBT(compound);
 		
-		readInventory("inventory", compound, internalInventory);
-		
-		if(externalInventory.getSizeInventory()>0){
-			readInventory("external_inventory", compound, externalInventory);
-		}
+		ItemTools.readInventory(compound, "int_inventory", internalInventory);
+		ItemTools.readInventory(compound, "ext_inventory", externalInventory);
 	}
-	
-	public static void readInventory(String name, NBTTagCompound compound, IInventory inv){
-		NBTTagList list = compound.getTagList(name, 10);
-		
-		for (int i = 0; i < list.tagCount(); i++) {
-			NBTTagCompound tag = list.getCompoundTagAt(i);
-			ItemStack stack=ItemStack.loadItemStackFromNBT(tag);
-			inv.setInventorySlotContents(i, stack);
-		}
-	}
-	
-	public static void writeInventory(String name, NBTTagCompound compound, IInventory inv){
-		NBTTagList list = new NBTTagList();
 
-		for (int i = 0; i < inv.getSizeInventory(); i++) {
-			if (inv.getStackInSlot(i) != null) {
-				NBTTagCompound tag = new NBTTagCompound();
-				inv.getStackInSlot(i).writeToNBT(tag);
-				list.appendTag(tag);
-			}
-		}
-
-		compound.setTag(name, list);
-	}
-	
 	@Override
 	protected void writeEntityToNBT(NBTTagCompound compound) {
 		super.writeEntityToNBT(compound);
 		
-		writeInventory("inventory", compound, internalInventory);
-		
-		if(externalInventory.getSizeInventory()>0){
-			writeInventory("external_inventory", compound, externalInventory);
-		}
+		ItemTools.saveInventory(compound, "int_inventory", internalInventory);
+		ItemTools.saveInventory(compound, "ext_inventory", externalInventory);
 	}
 
 	@Override
