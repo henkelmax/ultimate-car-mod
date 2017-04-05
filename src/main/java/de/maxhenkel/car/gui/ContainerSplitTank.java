@@ -7,12 +7,12 @@ import net.minecraft.inventory.Slot;
 
 public class ContainerSplitTank extends ContainerBase{
 
-	private IInventory playerInv;
+	//private IInventory playerInv;
 	private TileEntitySplitTank tile;
 	
 	public ContainerSplitTank(IInventory playerInv, TileEntitySplitTank tile) {
 		this.tile=tile;
-		this.playerInv=playerInv;
+		//this.playerInv=playerInv;
 		
 		for (int i = 0; i < 3; ++i) {
 			for (int j = 0; j < 9; ++j) {

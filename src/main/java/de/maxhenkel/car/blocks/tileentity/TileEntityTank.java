@@ -68,7 +68,7 @@ public class TileEntityTank extends TileEntityBase implements IFluidHandler, ITi
 			return;
 		}
 
-		FluidStack stack = FluidUtil.tryFluidTransfer(otherTank, this, (-dif) / 2, true);
+		FluidUtil.tryFluidTransfer(otherTank, this, (-dif) / 2, true);
 	}
 
 	public void checkDown() {

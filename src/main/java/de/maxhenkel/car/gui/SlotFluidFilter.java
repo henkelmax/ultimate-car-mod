@@ -13,16 +13,16 @@ import net.minecraftforge.fluids.FluidUtil;
 public class SlotFluidFilter extends Slot{
 	
 	private TileEntityFluidExtractor tile;
-	private IInventory inv;
+	//private IInventory inv;
 	private int index;
-	private EntityPlayer player;
+	//private EntityPlayer player;
 	
 	public SlotFluidFilter(IInventory inv, int index, int xPosition, int yPosition, TileEntityFluidExtractor tile, EntityPlayer player) {
 		super(inv, index, xPosition, yPosition);
 		this.tile=tile;
-		this.inv=inv;
+	//	this.inv=inv;
 		this.index=index;
-		this.player=player;
+	//	this.player=player;
 		
 		setFluidContained(tile.getFilter());
 	}

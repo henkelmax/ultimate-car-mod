@@ -7,12 +7,12 @@ import net.minecraft.inventory.Slot;
 
 public class ContainerGenerator extends ContainerBase{
 
-	private IInventory playerInv;
+	//private IInventory playerInv;
 	private TileEntityGenerator tile;
 	
 	public ContainerGenerator(IInventory playerInv, TileEntityGenerator tile) {
 		this.tile=tile;
-		this.playerInv=playerInv;
+		//this.playerInv=playerInv;
 		
 		for (int i = 0; i < 3; i++) {
 			for (int j = 0; j < 9; j++) {

@@ -5,10 +5,10 @@ import net.minecraft.entity.player.EntityPlayer;
 public class ContainerPainter extends ContainerBase{
 
 	private InventoryPainter inv;
-	private EntityPlayer player;
+	//private EntityPlayer player;
 	
 	public ContainerPainter(EntityPlayer player, boolean isYellow) {
-		this.player=player;
+		//this.player=player;
 		this.inv=new InventoryPainter(isYellow);
 		
 		for (int j = 0; j < 3; j++) {

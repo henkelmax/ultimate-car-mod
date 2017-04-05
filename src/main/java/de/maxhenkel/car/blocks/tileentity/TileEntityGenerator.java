@@ -4,6 +4,7 @@ import cofh.api.energy.IEnergyProvider;
 import cofh.api.energy.IEnergyReceiver;
 import de.maxhenkel.car.Config;
 import de.maxhenkel.car.FluidUtils;
+import de.maxhenkel.car.blocks.BlockGui;
 import de.maxhenkel.car.blocks.ModBlocks;
 import de.maxhenkel.car.energy.EnergyUtil;
 import net.minecraft.block.state.IBlockState;
@@ -103,7 +104,7 @@ public class TileEntityGenerator extends TileEntityBase implements ITickable, IF
 	public void setBlockEnabled(boolean enabled) {
 		IBlockState state = worldObj.getBlockState(getPos());
 		if (state.getBlock().equals(ModBlocks.GENERATOR)) {
-			if(state.getValue(ModBlocks.GENERATOR.POWERED)!=enabled){
+			if(state.getValue(BlockGui.POWERED)!=enabled){
 				ModBlocks.GENERATOR.setPowered(worldObj, pos, state, enabled);
 			}
 		}

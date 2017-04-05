@@ -9,10 +9,10 @@ import net.minecraft.inventory.Slot;
 public class ContainerFluidExtractor extends ContainerBase{
 
 	private IInventory playerInv;
-	private TileEntityFluidExtractor tile;
+	//private TileEntityFluidExtractor tile;
 	
 	public ContainerFluidExtractor(EntityPlayer player, TileEntityFluidExtractor tile) {
-		this.tile=tile;
+		//this.tile=tile;
 		this.playerInv=player.inventory;
 		
 		addSlotToContainer(new SlotFluidFilter(new InventoryBasic("", false, 1), 0, 26, 25, tile, player));

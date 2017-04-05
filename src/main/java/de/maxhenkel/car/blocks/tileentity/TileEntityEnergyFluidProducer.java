@@ -74,7 +74,7 @@ public abstract class TileEntityEnergyFluidProducer extends TileEntityBase imple
 				if (ItemTools.isStackEmpty(output)) {
 					inventory.setInventorySlotContents(1, getOutputItem());
 				} else if (output.stackSize < output.getMaxStackSize()) {
-					if (output.areItemsEqual(output, getOutputItem())) {
+					if (ItemStack.areItemsEqual(output, getOutputItem())) {
 						output.stackSize++;
 						inventory.setInventorySlotContents(1, output);
 					}

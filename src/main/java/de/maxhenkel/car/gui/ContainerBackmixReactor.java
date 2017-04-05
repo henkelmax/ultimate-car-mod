@@ -7,12 +7,12 @@ import net.minecraft.inventory.Slot;
 
 public class ContainerBackmixReactor extends ContainerBase{
 
-	private IInventory playerInv;
+	//private IInventory playerInv;
 	private TileEntityBackmixReactor tile;
 	
 	public ContainerBackmixReactor(IInventory playerInv, TileEntityBackmixReactor tile) {
 		this.tile=tile;
-		this.playerInv=playerInv;
+		//this.playerInv=playerInv;
 		
 		for (int i = 0; i < 3; ++i) {
 			for (int j = 0; j < 9; ++j) {

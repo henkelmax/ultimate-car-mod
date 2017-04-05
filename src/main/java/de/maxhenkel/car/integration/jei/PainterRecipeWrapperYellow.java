@@ -54,14 +54,14 @@ public class PainterRecipeWrapperYellow implements IRecipeWrapper{
 	}
 
 	@Override
-	public List getInputs() {
+	public List<ItemStack> getInputs() {
 		List<ItemStack> list=new ArrayList<ItemStack>();
 		list.add(new ItemStack(ModItems.PAINTER_YELLOW));
 		return list;
 	}
 
 	@Override
-	public List getOutputs() {
+	public List<ItemStack> getOutputs() {
 		List<ItemStack> list=new ArrayList<ItemStack>();
 		
 		for(BlockPaint b:ModBlocks.YELLOW_PAINTS){
