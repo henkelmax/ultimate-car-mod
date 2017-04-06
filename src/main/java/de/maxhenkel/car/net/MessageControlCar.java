@@ -1,11 +1,9 @@
 package de.maxhenkel.car.net;
 
-import java.util.List;
 import java.util.UUID;
-
-import de.maxhenkel.car.PredicateUUID;
 import de.maxhenkel.car.entity.car.base.EntityCarBase;
 import io.netty.buffer.ByteBuf;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
@@ -25,12 +23,12 @@ public class MessageControlCar implements IMessage, IMessageHandler<MessageContr
 		this.uuid=new UUID(0, 0);
 	}
 	
-	public MessageControlCar(boolean forward, boolean backward, boolean left, boolean right, EntityCarBase car) {
+	public MessageControlCar(boolean forward, boolean backward, boolean left, boolean right, EntityPlayer player) {
 		this.forward = forward;
 		this.backward = backward;
 		this.left = left;
 		this.right = right;
-		this.uuid=car.getUniqueID();
+		this.uuid=player.getUniqueID();
 	}
 
 	@Override
@@ -38,15 +36,19 @@ public class MessageControlCar implements IMessage, IMessageHandler<MessageContr
 		if(ctx.side.equals(Side.SERVER)){
 			EntityPlayer player=ctx.getServerHandler().playerEntity;
 			
-			List<EntityCarBase> list=player.worldObj.getEntities(EntityCarBase.class, new PredicateUUID(message.uuid));
-			
-			if(list.isEmpty()){
+			if(!player.getUniqueID().equals(message.uuid)){
 				return null;
 			}
 			
-			EntityCarBase car=list.get(0);	
+			Entity e=player.getRidingEntity();
+				
+			if(!(e instanceof EntityCarBase)){
+				return null;
+			}
 			
-			car.updateControls(message.forward, message.backward, message.left, message.right);
+			EntityCarBase car=(EntityCarBase) e;
+			
+			car.updateControls(message.forward, message.backward, message.left, message.right, player);
 		}
 		return null;
 	}

@@ -234,7 +234,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 		this.motionY += -0.2D;
 	}
 
-	public void updateControls(boolean forward, boolean backward, boolean left, boolean right) {
+	public void updateControls(boolean forward, boolean backward, boolean left, boolean right, EntityPlayer player) {
 		boolean needsUpdate = false;
 
 		if (isForward() != forward) {
@@ -257,7 +257,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 			needsUpdate = true;
 		}
 		if (this.worldObj.isRemote && needsUpdate) {
-			CommonProxy.simpleNetworkWrapper.sendToServer(new MessageControlCar(forward, backward, left, right, this));
+			CommonProxy.simpleNetworkWrapper.sendToServer(new MessageControlCar(forward, backward, left, right, player));
 		}
 	}
 

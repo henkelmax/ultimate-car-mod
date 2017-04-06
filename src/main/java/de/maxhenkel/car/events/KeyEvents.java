@@ -64,7 +64,7 @@ public class KeyEvents {
 		EntityCarBase car=(EntityCarBase) riding;
 		
 		if(player.equals(car.getDriver())){
-			car.updateControls(keyForward.isKeyDown(), keyBack.isKeyDown(), keyLeft.isKeyDown(), keyRight.isKeyDown());
+			car.updateControls(keyForward.isKeyDown(), keyBack.isKeyDown(), keyLeft.isKeyDown(), keyRight.isKeyDown(), player);
 			
 			if(keyStart.isKeyDown()){
 				if(!wasStartPressed){
