@@ -1,5 +1,7 @@
 package de.maxhenkel.car.net;
 
+import java.util.UUID;
+
 import de.maxhenkel.car.Main;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
@@ -15,22 +17,28 @@ public class MessageOpenGui implements IMessage, IMessageHandler<MessageOpenGui,
 	private int posY;
 	private int posZ;
 	private int guiID;
+	private UUID uuid;
 	
 	public MessageOpenGui() {
-		
+		this.uuid=new UUID(0, 0);
 	}
 	
-	public MessageOpenGui(BlockPos pos, int guiID) {
+	public MessageOpenGui(BlockPos pos, int guiID, EntityPlayer player) {
 		this.posX=pos.getX();
 		this.posY=pos.getY();
 		this.posZ=pos.getZ();
 		this.guiID=guiID;
+		this.uuid=player.getUniqueID();
 	}
 
 	@Override
 	public IMessage onMessage(MessageOpenGui message, MessageContext ctx) {
 		if(ctx.side.equals(Side.SERVER)){
 			EntityPlayer player=ctx.getServerHandler().playerEntity;
+			
+			if(!player.getUniqueID().equals(message.uuid)){
+				return null;
+			}
 			
 			player.openGui(Main.instance(), message.guiID, player.worldObj, message.posX, message.posY, message.posZ);
 			
@@ -52,6 +60,9 @@ public class MessageOpenGui implements IMessage, IMessageHandler<MessageOpenGui,
 		this.posZ=buf.readInt();
 		this.guiID=buf.readInt();
 		
+		long l1=buf.readLong();
+		long l2=buf.readLong();
+		this.uuid=new UUID(l1, l2);
 	}
 
 	@Override
@@ -60,6 +71,9 @@ public class MessageOpenGui implements IMessage, IMessageHandler<MessageOpenGui,
 		buf.writeInt(posY);
 		buf.writeInt(posZ);
 		buf.writeInt(guiID);
+		
+		buf.writeLong(uuid.getMostSignificantBits());
+		buf.writeLong(uuid.getLeastSignificantBits());
 	}
 
 }

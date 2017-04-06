@@ -116,6 +116,13 @@ public class EntityCarTransporter extends EntityCarInventoryBase{
 	@Override
 	protected void readEntityFromNBT(NBTTagCompound compound) {
 		setHasContainer(compound.getBoolean("has_container"));
+		
+		if(getHasContainer()){
+			this.externalInventory=new InventoryBasic(getCarName().getFormattedText(), false, 54);
+		}else{
+			this.externalInventory=new InventoryBasic(getCarName().getFormattedText(), false, 27);
+		}
+		
 		setType(EnumDyeColor.byMetadata(compound.getInteger("type")));
 		super.readEntityFromNBT(compound);
 	}

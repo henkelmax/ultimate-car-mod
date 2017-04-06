@@ -65,6 +65,15 @@ public class KeyEvents {
 		
 		if(player.equals(car.getDriver())){
 			car.updateControls(keyForward.isKeyDown(), keyBack.isKeyDown(), keyLeft.isKeyDown(), keyRight.isKeyDown());
+			
+			if(keyStart.isKeyDown()){
+				if(!wasStartPressed){
+					car.startCarEngine(player);
+					wasStartPressed=true;
+				}
+			}else{
+				wasStartPressed=false;
+			}
 		}
 		
 		if(keyCarGui.isKeyDown()){
@@ -76,14 +85,6 @@ public class KeyEvents {
 			wasGuiPressed=false;
 		}
 		
-		if(keyStart.isKeyDown()){
-			if(!wasStartPressed){
-				car.startCarEngine();
-				wasStartPressed=true;
-			}
-		}else{
-			wasStartPressed=false;
-		}
 	}
 
 }

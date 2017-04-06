@@ -208,7 +208,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 
 	public void onCollision(float speed) {
 		if (worldObj.isRemote) {
-			CommonProxy.simpleNetworkWrapper.sendToServer(new MessageCrash(speed));
+			CommonProxy.simpleNetworkWrapper.sendToServer(new MessageCrash(speed, this));
 		}
 		setSpeed(0.01F);
 		this.motionX = 0;
@@ -257,26 +257,26 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 			needsUpdate = true;
 		}
 		if (this.worldObj.isRemote && needsUpdate) {
-			CommonProxy.simpleNetworkWrapper.sendToServer(new MessageControlCar(forward, backward, left, right));
+			CommonProxy.simpleNetworkWrapper.sendToServer(new MessageControlCar(forward, backward, left, right, this));
 		}
 	}
 
-	public void startCarEngine() {
+	public void startCarEngine(EntityPlayer player) {
 		if (isStarted()) {
 			setStarted(false);
 			if (worldObj.isRemote) {
-				CommonProxy.simpleNetworkWrapper.sendToServer(new MessageStartCar(false));
+				CommonProxy.simpleNetworkWrapper.sendToServer(new MessageStartCar(false, player));
 			}
 		} else if (getDriver() != null && canStartCarEngine(getDriver())) {
 			setStarted(true);
 			checkStartLoop();
 			if (worldObj.isRemote) {
-				CommonProxy.simpleNetworkWrapper.sendToServer(new MessageStartCar(false));
+				CommonProxy.simpleNetworkWrapper.sendToServer(new MessageStartCar(false, player));
 			}
 		} else {
 			playEngineFailSound();
 			if (worldObj.isRemote) {
-				CommonProxy.simpleNetworkWrapper.sendToServer(new MessageStartCar(true));
+				CommonProxy.simpleNetworkWrapper.sendToServer(new MessageStartCar(true, player));
 			}
 		}
 	}
@@ -327,7 +327,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 
 	public void openCarGUi(EntityPlayer player) {
 		if (worldObj.isRemote) {
-			CommonProxy.simpleNetworkWrapper.sendToServer(new MessageCarGui(true));
+			CommonProxy.simpleNetworkWrapper.sendToServer(new MessageCarGui(true, player));
 		}
 	}
 

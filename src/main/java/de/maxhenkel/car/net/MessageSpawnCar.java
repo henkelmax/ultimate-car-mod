@@ -1,5 +1,7 @@
 package de.maxhenkel.car.net;
 
+import java.util.UUID;
+
 import de.maxhenkel.car.blocks.tileentity.TileEntityCarWorkshop;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
@@ -15,9 +17,10 @@ public class MessageSpawnCar implements IMessage, IMessageHandler<MessageSpawnCa
 	private int posX;
 	private int posY;
 	private int posZ;
+	private UUID uuid;
 	
 	public MessageSpawnCar() {
-		
+		this.uuid=new UUID(0, 0);
 	}
 	
 	public MessageSpawnCar(BlockPos pos) {
@@ -30,6 +33,10 @@ public class MessageSpawnCar implements IMessage, IMessageHandler<MessageSpawnCa
 	public IMessage onMessage(MessageSpawnCar message, MessageContext ctx) {
 		if(ctx.side.equals(Side.SERVER)){
 			EntityPlayer player=ctx.getServerHandler().playerEntity;
+			
+			if(!player.getUniqueID().equals(message.uuid)){
+				return null;
+			}
 			
 			TileEntity te=player.worldObj.getTileEntity(new BlockPos(message.posX, message.posY, message.posZ));
 			
@@ -48,7 +55,10 @@ public class MessageSpawnCar implements IMessage, IMessageHandler<MessageSpawnCa
 		this.posX=buf.readInt();
 		this.posY=buf.readInt();
 		this.posZ=buf.readInt();
-		
+	
+		long l1=buf.readLong();
+		long l2=buf.readLong();
+		this.uuid=new UUID(l1, l2);
 	}
 
 	@Override
@@ -56,6 +66,9 @@ public class MessageSpawnCar implements IMessage, IMessageHandler<MessageSpawnCa
 		buf.writeInt(posX);
 		buf.writeInt(posY);
 		buf.writeInt(posZ);
+		
+		buf.writeLong(uuid.getMostSignificantBits());
+		buf.writeLong(uuid.getLeastSignificantBits());
 	}
 
 }

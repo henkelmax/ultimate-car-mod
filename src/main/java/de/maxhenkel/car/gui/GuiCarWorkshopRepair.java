@@ -149,11 +149,11 @@ public class GuiCarWorkshopRepair extends GuiContainer {
 		if (button.id == buttonBack.id) {
 			if (tile.getWorld().isRemote) {
 				CommonProxy.simpleNetworkWrapper.sendToServer(
-						new MessageOpenGui(tile.getPos(), GuiHandler.GUI_CAR_WORKSHOP_CRAFTING).open(player));
+						new MessageOpenGui(tile.getPos(), GuiHandler.GUI_CAR_WORKSHOP_CRAFTING, player).open(player));
 			}
 		} else if (button.id == buttonRepair.id) {
 			if (tile.getWorld().isRemote) {
-				CommonProxy.simpleNetworkWrapper.sendToServer(new MessageRepairCar(tile.getPos()));
+				CommonProxy.simpleNetworkWrapper.sendToServer(new MessageRepairCar(tile.getPos(), player));
 			}
 		}
 	}

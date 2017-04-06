@@ -18,7 +18,6 @@ public class MessageStartFuel implements IMessage, IMessageHandler<MessageStartF
 	private int posZ;
 	
 	public MessageStartFuel() {
-		
 	}
 	
 	public MessageStartFuel(BlockPos pos, boolean start) {
@@ -53,7 +52,6 @@ public class MessageStartFuel implements IMessage, IMessageHandler<MessageStartF
 		this.posX=buf.readInt();
 		this.posY=buf.readInt();
 		this.posZ=buf.readInt();
-
 	}
 
 	@Override
@@ -62,7 +60,6 @@ public class MessageStartFuel implements IMessage, IMessageHandler<MessageStartF
 		buf.writeInt(posX);
 		buf.writeInt(posY);
 		buf.writeInt(posZ);
-
 	}
 
 }
