@@ -19,9 +19,11 @@ public class KeyEvents {
 	
 	private KeyBinding keyCarGui;
 	private KeyBinding keyStart;
+	private KeyBinding keyHorn;
 	
 	private boolean wasStartPressed;
 	private boolean wasGuiPressed;
+	private boolean wasHornPressed;
 
 	public KeyEvents() {
 		this.keyForward = new KeyBinding("key.car_forward", Keyboard.KEY_W, "category.car");
@@ -41,6 +43,9 @@ public class KeyEvents {
 		
 		this.keyStart = new KeyBinding("key.car_start", Keyboard.KEY_R, "category.car");
 		ClientRegistry.registerKeyBinding(keyStart);
+		
+		this.keyHorn = new KeyBinding("key.car_horn", Keyboard.KEY_H, "category.car");
+		ClientRegistry.registerKeyBinding(keyHorn);
 	}
 
 	@SubscribeEvent
@@ -73,6 +78,15 @@ public class KeyEvents {
 				}
 			}else{
 				wasStartPressed=false;
+			}
+			
+			if(keyHorn.isKeyDown()){
+				if(!wasHornPressed){
+					car.onHornPressed(player);
+					wasHornPressed=true;
+				}
+			}else{
+				wasHornPressed=false;
 			}
 		}
 		

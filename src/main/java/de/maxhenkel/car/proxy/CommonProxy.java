@@ -25,6 +25,7 @@ import de.maxhenkel.car.fluids.ModFluids;
 import de.maxhenkel.car.gui.GuiHandler;
 import de.maxhenkel.car.items.ModItems;
 import de.maxhenkel.car.net.MessageCarGui;
+import de.maxhenkel.car.net.MessageCarHorn;
 import de.maxhenkel.car.net.MessageControlCar;
 import de.maxhenkel.car.net.MessageCrash;
 import de.maxhenkel.car.net.MessageOpenGui;
@@ -71,6 +72,7 @@ public class CommonProxy {
 		CommonProxy.simpleNetworkWrapper.registerMessage(MessageSpawnCar.class, MessageSpawnCar.class, 7, Side.SERVER);
 		CommonProxy.simpleNetworkWrapper.registerMessage(MessageOpenGui.class, MessageOpenGui.class, 8, Side.SERVER);
 		CommonProxy.simpleNetworkWrapper.registerMessage(MessageRepairCar.class, MessageRepairCar.class, 9, Side.SERVER);
+		CommonProxy.simpleNetworkWrapper.registerMessage(MessageCarHorn.class, MessageCarHorn.class, 10, Side.SERVER);
 
 		ModSounds.init();
 		

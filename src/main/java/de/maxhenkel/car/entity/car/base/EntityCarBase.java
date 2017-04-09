@@ -4,6 +4,7 @@ import java.util.List;
 import de.maxhenkel.car.Config;
 import de.maxhenkel.car.MathTools;
 import de.maxhenkel.car.net.MessageCarGui;
+import de.maxhenkel.car.net.MessageCarHorn;
 import de.maxhenkel.car.net.MessageControlCar;
 import de.maxhenkel.car.net.MessageCrash;
 import de.maxhenkel.car.net.MessageStartCar;
@@ -434,6 +435,10 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 	public void playCrashSound() {
 		ModSounds.playSound(getCrashSound(), worldObj, getPosition(), null, SoundCategory.NEUTRAL, Config.carVolume);
 	}
+	
+	public void playHornSound() {
+		ModSounds.playSound(getHornSound(), worldObj, getPosition(), null, SoundCategory.NEUTRAL, Config.carVolume);
+	}
 
 	public SoundEvent getStopSound() {
 		return ModSounds.engine_stop;
@@ -457,6 +462,10 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 
 	public SoundEvent getHighSound() {
 		return ModSounds.engine_high;
+	}
+	
+	public SoundEvent getHornSound() {
+		return ModSounds.car_horn;
 	}
 	
 	public int getStartSoundTime(){
@@ -490,6 +499,14 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 		if (startLoop == null || startLoop.isDonePlaying()) {
 			startLoop = new SoundLoopStart(worldObj, this, getStartSound(), SoundCategory.NEUTRAL);
 			ModSounds.playSoundLoop(startLoop, worldObj);
+		}
+	}
+
+	public void onHornPressed(EntityPlayer player) {
+		if (worldObj.isRemote) {
+			CommonProxy.simpleNetworkWrapper.sendToServer(new MessageCarHorn(true, player));
+		}else{
+			playHornSound();
 		}
 	}
 
