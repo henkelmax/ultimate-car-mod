@@ -231,6 +231,8 @@ public class Reciepes {
 				Character.valueOf('C'), ModItems.CONTROL_UNIT});
 		
 		
+		//Key
+		GameRegistry.addRecipe(new ReciepeKey());
 	}
 	
 }

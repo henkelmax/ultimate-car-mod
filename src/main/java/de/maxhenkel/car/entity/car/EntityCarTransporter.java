@@ -1,6 +1,6 @@
 package de.maxhenkel.car.entity.car;
 
-import de.maxhenkel.car.entity.car.base.EntityCarInventoryBase;
+import de.maxhenkel.car.entity.car.base.EntityCarLockBase;
 import de.maxhenkel.car.fluids.ModFluids;
 import de.maxhenkel.car.reciepe.CarBuilderTransporter;
 import de.maxhenkel.car.reciepe.ICarbuilder;
@@ -16,7 +16,7 @@ import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
 
-public class EntityCarTransporter extends EntityCarInventoryBase{
+public class EntityCarTransporter extends EntityCarLockBase{
 	
 	private static final DataParameter<Boolean> HAS_CONTAINER = EntityDataManager.<Boolean>createKey(EntityCarTransporter.class,
 			DataSerializers.BOOLEAN);

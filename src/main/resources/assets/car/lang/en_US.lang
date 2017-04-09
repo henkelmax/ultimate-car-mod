@@ -117,6 +117,7 @@ item.wrench.name=Wrench
 item.hammer.name=Hammer
 item.screw_driver.name=Screw Driver
 item.cable_insulator.name=Cable Insulator
+item.key.name=Key
 
 button.start=Start
 button.stop=Stop
@@ -171,7 +172,9 @@ messgae.blocks_on_top=No space. Please remove blocks above
 messgae.no_reciepe=No valid reciepe
 messgae.no_repair_items=No Repair Items
 messgae.no_car=No Car
-
+message.car_locked=This Car is locked!
+message.car_out_of_range=Key out of range
+message.key_no_car=This key does not belong to a Car
 
 entity.car_wood.name=Wood Car
 entity.car.car_wood.name=Wood Car

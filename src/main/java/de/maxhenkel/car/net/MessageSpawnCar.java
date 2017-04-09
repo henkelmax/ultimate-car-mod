@@ -4,6 +4,7 @@ import java.util.UUID;
 
 import de.maxhenkel.car.blocks.tileentity.TileEntityCarWorkshop;
 import io.netty.buffer.ByteBuf;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
@@ -27,6 +28,10 @@ public class MessageSpawnCar implements IMessage, IMessageHandler<MessageSpawnCa
 		this.posX=pos.getX();
 		this.posY=pos.getY();
 		this.posZ=pos.getZ();
+		
+		EntityPlayer player=Minecraft.getMinecraft().thePlayer;
+		
+		this.uuid=player.getUniqueID();
 	}
 
 	@Override

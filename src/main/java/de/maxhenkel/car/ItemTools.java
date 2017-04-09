@@ -34,13 +34,13 @@ public class ItemTools {
 	}
 
 	public static ItemStack decrItemStack(int amount, ItemStack stack, EntityPlayer player) {
-		if (player.capabilities.isCreativeMode) {
+		if (player!=null&&player.capabilities.isCreativeMode) {
 			return stack;
 		}
 
 		stack.stackSize -= amount;
-		if (amount <= 0) {
-			amount = 0;
+		if (stack.stackSize <= 0) {
+			stack.stackSize = 0;
 			return null;
 		}
 

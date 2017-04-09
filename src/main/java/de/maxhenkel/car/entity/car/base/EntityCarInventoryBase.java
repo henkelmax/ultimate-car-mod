@@ -26,7 +26,7 @@ public abstract class EntityCarInventoryBase extends EntityCarFuelBase implement
 	
 	@Override
 	public boolean processInitialInteract(EntityPlayer player, ItemStack stack, EnumHand hand) {
-		if(canPlayerAccessInventory(player) && player.isSneaking()){
+		if(canPlayerAccessInventoryExternal(player) && player.isSneaking()){
 			if(externalInventory.getSizeInventory()<=0){
 				player.displayGUIChest(this);
 			}else{
@@ -38,15 +38,15 @@ public abstract class EntityCarInventoryBase extends EntityCarFuelBase implement
 		return super.processInitialInteract(player, stack, hand);
 	}
 	
-	public boolean canPlayerAccessInventory(EntityPlayer player){
+	public boolean canPlayerAccessInventoryExternal(EntityPlayer player){
 		return true;
 	}
 	
 	@Override
-	public void destroyCar(boolean dropParts) {
+	public void destroyCar(EntityPlayer player, boolean dropParts) {
 		InventoryHelper.dropInventoryItems(worldObj, this, this);
 		InventoryHelper.dropInventoryItems(worldObj, this, externalInventory);
-		super.destroyCar(dropParts);
+		super.destroyCar(player, dropParts);
 	}
 	
 	@Override

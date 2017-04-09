@@ -36,6 +36,7 @@ public class ModItems {
 	public static final ItemCraftingComponent CABLE_INSULATOR = new ItemCraftingComponent("cable_insulator");
 	public static final ItemCraftingComponent AXLE = new ItemCraftingComponent("axle");
 	public static final ItemCraftingComponent CONTAINER = new ItemCraftingComponent("container");
+	public static final ItemKey KEY = new ItemKey();
 	
 	public static Item CANOLA_OIL_BUCKET;
 	public static Item METHANOL_BUCKET;
@@ -68,6 +69,7 @@ public class ModItems {
 		registerItem(SCREW_DRIVER);
 		registerItem(HAMMER);
 		registerItem(CABLE_INSULATOR);
+		registerItem(KEY);
 	}
 
 	public static void registerItemsClient() {
@@ -95,6 +97,7 @@ public class ModItems {
 		addRenderItem(SCREW_DRIVER);
 		addRenderItem(HAMMER);
 		addRenderItem(CABLE_INSULATOR);
+		addRenderItem(KEY);
 	}
 	
 	private static void addRenderItem(Item item) {

@@ -111,15 +111,14 @@ public abstract class EntityCarDamageBase extends EntityCarBase {
 		
 		if(player.capabilities.isCreativeMode){
 			if (player.isSneaking()) {
-				destroyCar(false);
+				destroyCar(player, false);
 				return true;
 			}
 			return false;
 		}
 		
-		
 		if(getDamage()>=90&&amount>2){
-			destroyCar(true);
+			destroyCar(player, true);
 		}
 		
 		return false;

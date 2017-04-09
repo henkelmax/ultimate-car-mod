@@ -28,6 +28,8 @@ public class ModSounds {
 	public static SoundEvent gas_ststion;
 	public static SoundEvent generator;
 	public static SoundEvent car_horn;
+	public static SoundEvent car_lock;
+	public static SoundEvent car_unlock;
 
 	public static void init(){
 		engine_stop = registerSound("engine_stop");
@@ -44,6 +46,8 @@ public class ModSounds {
 		gas_ststion = registerSound("gas_station");
 		generator = registerSound("generator");
 		car_horn = registerSound("car_horn");
+		car_lock = registerSound("car_lock");
+		car_unlock = registerSound("car_unlock");
 	}
 	
 	public static SoundEvent registerSound(String soundName) {

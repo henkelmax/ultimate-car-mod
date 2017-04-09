@@ -1,6 +1,6 @@
 package de.maxhenkel.car.entity.car;
 
-import de.maxhenkel.car.entity.car.base.EntityCarInventoryBase;
+import de.maxhenkel.car.entity.car.base.EntityCarLockBase;
 import de.maxhenkel.car.fluids.ModFluids;
 import de.maxhenkel.car.reciepe.CarBuilderWoodCarBig;
 import de.maxhenkel.car.reciepe.ICarbuilder;
@@ -15,7 +15,7 @@ import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
 
-public class EntityCarBigWood extends EntityCarInventoryBase{
+public class EntityCarBigWood extends EntityCarLockBase{
 
 	private static final DataParameter<Integer> TYPE = EntityDataManager.<Integer>createKey(EntityCarBigWood.class,
 			DataSerializers.VARINT);

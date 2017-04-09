@@ -2,6 +2,7 @@ package de.maxhenkel.car.entity.car.base;
 
 import java.util.List;
 import de.maxhenkel.car.Config;
+import de.maxhenkel.car.ItemTools;
 import de.maxhenkel.car.MathTools;
 import de.maxhenkel.car.net.MessageCarGui;
 import de.maxhenkel.car.net.MessageCarHorn;
@@ -122,12 +123,15 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 		}
 	}
 
-	public void destroyCar(boolean dropParts) {
+	public void destroyCar(EntityPlayer player, boolean dropParts) {
 		if (dropParts) {
 			ICarbuilder builder=getBuilder();
 			ICarRecipe reciepe = CarCraftingManager.getInstance().getReciepeByName(builder.getName());
 			if (reciepe != null) {
 				for (ItemStack stack : reciepe.getInputs()) {
+					if(ItemTools.isStackEmpty(stack)){
+						continue;
+					}
 					if (shouldDropItemWithChance(stack)) {
 						InventoryHelper.spawnItemStack(worldObj, posX, posY, posZ, stack);
 					}
