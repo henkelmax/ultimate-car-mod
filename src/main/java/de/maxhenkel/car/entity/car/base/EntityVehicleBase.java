@@ -5,6 +5,7 @@ import javax.annotation.Nullable;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.MathHelper;
@@ -44,6 +45,29 @@ public abstract class EntityVehicleBase extends Entity{
 		super.onUpdate();
 		this.tickLerp();
 		
+	}
+	
+	@Override
+	protected void removePassenger(Entity passenger) {
+		super.removePassenger(passenger);
+		if(passenger instanceof EntityPlayer){
+			EntityPlayer player=(EntityPlayer) passenger;
+			EnumFacing facing=getHorizontalFacing();
+			
+			double offsetX=0;
+			double offsetZ=0;
+			
+			AxisAlignedBB playerbb=player.getEntityBoundingBox();
+			double playerHitboxWidth=(playerbb.maxX-playerbb.minX)/2;
+			double carHitboxWidth=width/2;
+			
+			double offset=playerHitboxWidth+carHitboxWidth+0.2;
+			
+			offsetX+=facing.getFrontOffsetX()*offset;
+			offsetZ+=facing.getFrontOffsetZ()*offset;
+			
+			player.setPositionAndUpdate(posX+offsetX, posY, posZ+offsetZ);
+		}
 	}
 	
 	public EntityPlayer getDriver() {

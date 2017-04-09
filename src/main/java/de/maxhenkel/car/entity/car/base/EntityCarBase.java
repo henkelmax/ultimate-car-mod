@@ -91,7 +91,11 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 	}
 
 	public void checkPush() {
-		List<EntityPlayer> list = this.worldObj.getEntitiesWithinAABB(EntityPlayer.class,
+		if(getCollisionBoundingBox()==null){
+			return;
+		}
+
+		List<EntityPlayer> list = worldObj.getEntitiesWithinAABB(EntityPlayer.class,
 				getCollisionBoundingBox().expand(0.2, 0, 0.2),
 				EntitySelectors.<EntityPlayer>getTeamCollisionPredicate(this));
 
