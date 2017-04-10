@@ -13,9 +13,9 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 public class Main{
 	
     public static final String MODID = "car";
-    public static final String VERSION = "1.0.8";
+    public static final String VERSION = "1.0.9";
     public static final String MC_VERSION = "[1.10.2]";
-    public static final int VERSION_NUMBER = 9;
+    public static final int VERSION_NUMBER = 10;
 
 	@Instance
     private static Main instance;
