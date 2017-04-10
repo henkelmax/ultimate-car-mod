@@ -21,6 +21,7 @@ import de.maxhenkel.car.entity.car.EntityCarBigWood;
 import de.maxhenkel.car.entity.car.EntityCarSport;
 import de.maxhenkel.car.entity.car.EntityCarTransporter;
 import de.maxhenkel.car.entity.car.EntityCarWood;
+import de.maxhenkel.car.events.ConfigEvents;
 import de.maxhenkel.car.fluids.ModFluids;
 import de.maxhenkel.car.gui.GuiHandler;
 import de.maxhenkel.car.items.ModItems;
@@ -34,6 +35,7 @@ import de.maxhenkel.car.net.MessageRepairCar;
 import de.maxhenkel.car.net.MessageSpawnCar;
 import de.maxhenkel.car.net.MessageStartCar;
 import de.maxhenkel.car.net.MessageStartFuel;
+import de.maxhenkel.car.net.MessageSyncConfig;
 import de.maxhenkel.car.net.MessageSyncTileEntity;
 import de.maxhenkel.car.sounds.ModSounds;
 import net.minecraft.item.Item;
@@ -73,6 +75,7 @@ public class CommonProxy {
 		CommonProxy.simpleNetworkWrapper.registerMessage(MessageOpenGui.class, MessageOpenGui.class, 8, Side.SERVER);
 		CommonProxy.simpleNetworkWrapper.registerMessage(MessageRepairCar.class, MessageRepairCar.class, 9, Side.SERVER);
 		CommonProxy.simpleNetworkWrapper.registerMessage(MessageCarHorn.class, MessageCarHorn.class, 10, Side.SERVER);
+		CommonProxy.simpleNetworkWrapper.registerMessage(MessageSyncConfig.class, MessageSyncConfig.class, 11, Side.CLIENT);
 
 		ModSounds.init();
 		
@@ -120,6 +123,8 @@ public class CommonProxy {
 		GameRegistry.registerTileEntity(TileEntityFluidExtractor.class, "TileEntityFluidExtractor");
 		GameRegistry.registerTileEntity(TileEntityDynamo.class, "TileEntityDynamo");
 		GameRegistry.registerTileEntity(TileEntitySignCar.class, "TileEntitySign");
+		
+		MinecraftForge.EVENT_BUS.register(new ConfigEvents());
 		
 		MinecraftForge.addGrassSeed(new ItemStack(ModItems.CANOLA_SEEDS), 8);
 	}

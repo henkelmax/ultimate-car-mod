@@ -16,6 +16,8 @@ import net.minecraftforge.fluids.FluidRegistry;
 
 public class Config {
 
+	public static Configuration config;
+	
 	public static int backmixReactorEnergyStorage=10000;
 	public static int backmixReactorEnergyUsage=10;
 	public static int backmixReactorFluidStorage=3000;
@@ -63,8 +65,10 @@ public class Config {
 	public static float carVolume=0.1F;
 	
 	public static boolean thirdPersonEnter;
+	public static boolean carGroundSpeed;
 	
 	public static void init(Configuration config){
+		Config.config=config;
 		
 		backmixReactorEnergyStorage=config.getInt("backmix_reactor_energy_storage", "machines.backmix_reactor", 10000, 100, Short.MAX_VALUE, "");
 		backmixReactorEnergyUsage=config.getInt("backmix_reactor_energy_usage", "machines.backmix_reactor", 10, 1, Short.MAX_VALUE, "");
@@ -144,6 +148,8 @@ public class Config {
 		carVolume=config.getFloat("car_volume", "car", 0.1F, 0F, 1F, "");
 		
 		thirdPersonEnter=config.getBoolean("third_person_when_enter_car", "car", true, "");
+		
+		carGroundSpeed=config.getBoolean("car_ground_speed", "car", false, "");
 		
 		config.save();
 	}

@@ -2,6 +2,7 @@ package de.maxhenkel.car.entity.car.base;
 
 import java.util.List;
 import de.maxhenkel.car.Config;
+import de.maxhenkel.car.IDrivable;
 import de.maxhenkel.car.ItemTools;
 import de.maxhenkel.car.MathTools;
 import de.maxhenkel.car.net.MessageCarGui;
@@ -17,7 +18,10 @@ import de.maxhenkel.car.sounds.ModSounds;
 import de.maxhenkel.car.sounds.SoundLoopHigh;
 import de.maxhenkel.car.sounds.SoundLoopIdle;
 import de.maxhenkel.car.sounds.SoundLoopStart;
+import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -28,6 +32,7 @@ import net.minecraft.util.EntitySelectors;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.World;
@@ -160,14 +165,27 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 			setRight(false);
 		}
 
+		float modifier=1;
+		
+		if(Config.carGroundSpeed){
+			modifier=getModifier();
+		}
+		
+		float maxSp=maxSpeed*modifier;
+		float maxBackSp=maxReverseSpeed*modifier;
+		
 		float speed = MathTools.subtractToZero(getSpeed(), rollResistance);
 
 		if (isForward()) {
-			speed = Math.min(speed + acceleration, maxSpeed);
+			if(speed<=maxSp){
+				speed = Math.min(speed + acceleration, maxSp);
+			}
 		}
 		
 		if (isBackward()) {
-			speed = Math.max(speed - acceleration, -maxReverseSpeed);
+			if(speed>=-maxBackSp){
+				speed = Math.max(speed - acceleration, -maxBackSp);
+			}
 		}
 
 		setSpeed(speed);
@@ -211,6 +229,25 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 			this.motionX = calculateMotionX(getSpeed(), rotationYaw);
 			this.motionZ = calculateMotionZ(getSpeed(), rotationYaw);
 		}
+	}
+	
+	public float getModifier(){
+		BlockPos pos=getPosition().down();
+		IBlockState state=worldObj.getBlockState(pos);
+		
+		Block b=state.getBlock();
+		
+		if(b.equals(Blocks.AIR)){
+			return 1;
+		}
+		
+		if(!(b instanceof IDrivable)){
+			return 0.5F;
+		}
+		
+		IDrivable drivable=(IDrivable) b;
+		
+		return drivable.getSpeedModifier();
 	}
 	
 	public abstract float getRotationModifier();
