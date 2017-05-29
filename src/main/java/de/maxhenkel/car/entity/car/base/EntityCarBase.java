@@ -74,6 +74,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 	public EntityCarBase(World worldIn) {
 		super(worldIn);
 		this.setSize(1.3F, 1.6F);
+		this.stepHeight=Config.carStepHeight;
 	}
 
 	@Override

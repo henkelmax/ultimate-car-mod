@@ -1,7 +1,7 @@
 package de.maxhenkel.car.entity.car;
 
+import de.maxhenkel.car.Config;
 import de.maxhenkel.car.entity.car.base.EntityCarLockBase;
-import de.maxhenkel.car.fluids.ModFluids;
 import de.maxhenkel.car.reciepe.CarBuilderSport;
 import de.maxhenkel.car.reciepe.ICarbuilder;
 import de.maxhenkel.car.sounds.ModSounds;
@@ -49,7 +49,7 @@ public class EntityCarSport extends EntityCarLockBase{
 	
 	@Override
 	public boolean isValidFuel(Fluid fluid) {
-		return fluid.equals(ModFluids.BIO_DIESEL);
+		return fluid.equals(Config.carFuel);
 	}
 
 	@Override

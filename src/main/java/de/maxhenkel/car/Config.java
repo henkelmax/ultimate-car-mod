@@ -66,6 +66,8 @@ public class Config {
 	
 	public static boolean thirdPersonEnter;
 	public static boolean carGroundSpeed;
+	public static float carStepHeight;
+	public static Fluid carFuel;
 	
 	public static void init(Configuration config){
 		Config.config=config;
@@ -150,6 +152,17 @@ public class Config {
 		thirdPersonEnter=config.getBoolean("third_person_when_enter_car", "car", true, "");
 		
 		carGroundSpeed=config.getBoolean("car_ground_speed", "car", false, "");
+		
+		carStepHeight=config.getFloat("car_step_height", "car", 0.6F, 0.1F, 128F, "The height a car can drive up");
+		
+		String carFuelStr=config.getString("car_fuel", "car", "bio_diesel", "The fuel all cars drive with");
+		
+		Fluid f=FluidRegistry.getFluid(carFuelStr);
+		if(f==null){
+			f=ModFluids.BIO_DIESEL;
+		}
+		
+		carFuel=f;
 		
 		config.save();
 	}
