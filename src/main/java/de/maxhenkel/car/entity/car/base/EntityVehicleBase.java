@@ -18,7 +18,7 @@ public abstract class EntityVehicleBase extends Entity{
 
 	private int steps;
 	private double clientX;
-	//private double clientY;
+	private double clientY;
 	private double clientZ;
 	private double clientYaw;
 	private double clientPitch;
@@ -190,14 +190,14 @@ public abstract class EntityVehicleBase extends Entity{
 	private void tickLerp() {
 		if (this.steps > 0 && !this.canPassengerSteer()) {
 			double x = posX + (clientX - posX) / (double) steps;
-			//double y = posY + (clientY - posY) / (double) steps;
+			double y = posY + (clientY - posY) / (double) steps;
 			double z = posZ + (clientZ - posZ) / (double) steps;
 			double d3 = MathHelper.wrapDegrees(clientYaw - (double) rotationYaw);
 			this.rotationYaw = (float) ((double) rotationYaw + d3 / (double) steps);
 			this.rotationPitch = (float) ((double) rotationPitch
 					+ (clientPitch - (double) rotationPitch) / (double) steps);
 			steps--;
-			setPosition(x, posY, z);
+			setPosition(x, y, z);
 			setRotation(rotationYaw, rotationPitch);
 		}
 	}
@@ -209,13 +209,13 @@ public abstract class EntityVehicleBase extends Entity{
 	public void setPositionAndRotationDirect(double x, double y, double z, float yaw, float pitch,
 			int posRotationIncrements, boolean teleport) {
 		this.clientX = x;
-		//this.clientY = y;
+		this.clientY = y;
 		this.clientZ = z;
 		this.clientYaw = (double) yaw;
 		this.clientPitch = (double) pitch;
 		this.steps = 10;
 		
-		posY=y;
+		//posY=y;
 		//this.setPosition(x, y, z);
 		//this.setRotation(yaw, pitch);
 	}
