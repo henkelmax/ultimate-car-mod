@@ -202,4 +202,10 @@ entity.car.car_wood_jungle.name=Jungle Wood Car
 entity.car.car_wood_acacia.name=Acacia Wood Car
 entity.car.car_wood_dark_oak.name=Dark Oak Wood Car
 
+message.update=An update is available
+message.update.hover=Download the new version
+message.download=Download
+message.name=Car
+
+
 

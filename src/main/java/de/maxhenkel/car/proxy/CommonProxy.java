@@ -22,6 +22,7 @@ import de.maxhenkel.car.entity.car.EntityCarSport;
 import de.maxhenkel.car.entity.car.EntityCarTransporter;
 import de.maxhenkel.car.entity.car.EntityCarWood;
 import de.maxhenkel.car.events.ConfigEvents;
+import de.maxhenkel.car.events.UpdateCheckEvents;
 import de.maxhenkel.car.fluids.ModFluids;
 import de.maxhenkel.car.gui.GuiHandler;
 import de.maxhenkel.car.items.ModItems;
@@ -125,6 +126,7 @@ public class CommonProxy {
 		GameRegistry.registerTileEntity(TileEntitySignCar.class, "TileEntitySign");
 		
 		MinecraftForge.EVENT_BUS.register(new ConfigEvents());
+		MinecraftForge.EVENT_BUS.register(new UpdateCheckEvents());
 		
 		MinecraftForge.addGrassSeed(new ItemStack(ModItems.CANOLA_SEEDS), 8);
 	}

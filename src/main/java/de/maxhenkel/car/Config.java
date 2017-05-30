@@ -69,6 +69,8 @@ public class Config {
 	public static float carStepHeight;
 	public static Fluid carFuel;
 	
+	public static boolean checkUpdates;
+	
 	public static void init(Configuration config){
 		Config.config=config;
 		
@@ -163,6 +165,8 @@ public class Config {
 		}
 		
 		carFuel=f;
+		
+		checkUpdates=config.getBoolean("check_updates", "general", true, "Check for updates");
 		
 		config.save();
 	}
