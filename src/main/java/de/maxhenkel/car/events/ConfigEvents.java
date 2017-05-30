@@ -29,6 +29,6 @@ public class ConfigEvents {
 			Config.init(Config.config);
 		}
 		
-		CommonProxy.simpleNetworkWrapper.sendTo(new MessageSyncConfig(Config.carGroundSpeed), player);
+		CommonProxy.simpleNetworkWrapper.sendTo(new MessageSyncConfig(Config.carGroundSpeed, Config.carStepHeight), player);
 	}
 }
