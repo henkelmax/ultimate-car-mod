@@ -1,5 +1,7 @@
 package de.maxhenkel.car.blocks;
 
+import java.util.List;
+
 import de.maxhenkel.car.ModCreativeTabs;
 import de.maxhenkel.car.blocks.tileentity.TileEntityTank;
 import net.minecraft.block.BlockContainer;
@@ -15,6 +17,7 @@ import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
@@ -72,6 +75,20 @@ public class BlockTank extends BlockContainer {
 		stack.setTagCompound(compound);
 
 		spawnAsEntity(worldIn, pos, stack);
+	}
+	
+	@Override
+	public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
+		if(stack.hasTagCompound()&&stack.getTagCompound().hasKey("fluid")){
+			NBTTagCompound fluidComp=stack.getTagCompound().getCompoundTag("fluid");
+			FluidStack fluidStack=FluidStack.loadFluidStackFromNBT(fluidComp);
+			
+			if(fluidStack!=null){
+				tooltip.add(new TextComponentTranslation("tooltip.fluid", fluidStack.getLocalizedName()).getFormattedText());
+				tooltip.add(new TextComponentTranslation("tooltip.amount", fluidStack.amount).getFormattedText());
+			}
+		}
+		super.addInformation(stack, player, tooltip, advanced);
 	}
 
 	@Override

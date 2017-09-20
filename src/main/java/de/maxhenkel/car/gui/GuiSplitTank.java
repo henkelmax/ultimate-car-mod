@@ -20,8 +20,8 @@ public class GuiSplitTank extends GuiContainer {
 	private IInventory playerInv;
 	private TileEntitySplitTank tile;
 
-	public GuiSplitTank(IInventory playerInv, TileEntitySplitTank tile) {
-		super(new ContainerSplitTank(playerInv, tile));
+	public GuiSplitTank(TileEntitySplitTank tile, IInventory playerInv) {
+		super(new ContainerSplitTank(tile, playerInv));
 		this.playerInv = playerInv;
 		this.tile = tile;
 

@@ -1,7 +1,6 @@
 package de.maxhenkel.car.blocks.tileentity.render;
 
 import org.lwjgl.opengl.GL11;
-
 import de.maxhenkel.car.blocks.tileentity.TileEntityTank;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
@@ -18,28 +17,29 @@ public class TileEntitySpecialRendererTank extends TileEntitySpecialRenderer<Til
 
 	@Override
 	public void renderTileEntityAt(TileEntityTank te, double x, double y, double z, float f, int i) {
-		float time = te.getWorld().getTotalWorldTime() + f;
-
 		bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
-
+		
 		GlStateManager.pushMatrix();
 		GlStateManager.translate(x, y, z);
 		GlStateManager.disableBlend();
-		float fluid = te.getFillPercent();
+		
+		float amount = te.getFillPercent();
 		FluidStack stack = te.getFluid();
-		if (fluid > 0 && stack != null) {
-			renderFluid(stack.getFluid(), time, fluid, 0.01F);
+		if (amount > 0 && stack != null) {
+			renderFluid(stack.getFluid(), amount, 0.0F);
 		}
 		GlStateManager.popMatrix();
 	}
 
-	public static void renderFluid(Fluid fluid, float time, float amount, float yStart) {
+	public static void renderFluid(Fluid fluid, float amount, float yStart) {
 		GlStateManager.disableLighting();
 		GlStateManager.color(1, 1, 1, 1);
-
-		TextureAtlasSprite texture = Minecraft.getMinecraft().getTextureMapBlocks()
-				.getAtlasSprite(fluid.getStill().toString());
-
+		GlStateManager.pushMatrix();
+		GlStateManager.scale(0.98F, 0.98F, 0.98F);
+		GlStateManager.translate(0.01F, 0.01F, 0.01F);
+		
+		TextureAtlasSprite texture = Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(fluid.getStill().toString());
+		
 		final double uMin = texture.getMinU();
 		final double uMax = texture.getMaxU();
 		final double vMin = texture.getMinV();
@@ -52,7 +52,7 @@ public class TileEntitySpecialRendererTank extends TileEntitySpecialRenderer<Til
 
 		buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
 
-		float s = 0.01F;
+		float s = 0.0F;
 
 		// North
 		buffer.pos(1 - s, yStart, 0 + s).tex(uMax, vMin).endVertex();
@@ -91,6 +91,7 @@ public class TileEntitySpecialRendererTank extends TileEntitySpecialRenderer<Til
 		buffer.pos(1 - s, yStart + amount - s * 2, 0 + s).tex(uMax, vMin).endVertex();
 
 		tessellator.draw();
+		GlStateManager.popMatrix();
 		GlStateManager.enableLighting();
 	}
 

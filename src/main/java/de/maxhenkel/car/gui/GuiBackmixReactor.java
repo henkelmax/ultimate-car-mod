@@ -19,8 +19,8 @@ public class GuiBackmixReactor extends GuiContainer {
 	private IInventory playerInv;
 	private TileEntityBackmixReactor tile;
 
-	public GuiBackmixReactor(IInventory playerInv, TileEntityBackmixReactor tile) {
-		super(new ContainerBackmixReactor(playerInv, tile));
+	public GuiBackmixReactor(TileEntityBackmixReactor tile, IInventory playerInv) {
+		super(new ContainerBackmixReactor(tile, playerInv));
 		this.playerInv = playerInv;
 		this.tile = tile;
 

@@ -62,7 +62,6 @@ public class TileEntityBackmixReactor extends TileEntityBase
 
 	@Override
 	public void update() {
-
 		if (worldObj.isRemote) {
 			return;
 		}

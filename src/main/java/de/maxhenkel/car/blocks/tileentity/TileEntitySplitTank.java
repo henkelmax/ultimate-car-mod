@@ -4,6 +4,7 @@ import de.maxhenkel.car.Config;
 import de.maxhenkel.car.fluids.ModFluids;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -32,7 +33,10 @@ public class TileEntitySplitTank extends TileEntityBase implements ITickable, IF
 	public int generatingTime;
 	private int timeToGenerate;
 
+	protected InventoryBasic inventory;
+
 	public TileEntitySplitTank() {
+		this.inventory = new InventoryBasic("", false, 0);
 		this.currentMix = 0;
 		this.maxMix = Config.splitTankFluidStorage;
 
@@ -70,7 +74,7 @@ public class TileEntitySplitTank extends TileEntityBase implements ITickable, IF
 						currentGlycerin += glycerinGeneration;
 					}
 				}
-				//synchronize();
+				// synchronize();
 			}
 		} else {
 			if (currentMix >= mixUsage) {
@@ -83,15 +87,20 @@ public class TileEntitySplitTank extends TileEntityBase implements ITickable, IF
 
 			}
 		}
+
+		if (worldObj.getTotalWorldTime() % 200 == 0) {
+			synchronize();
+		}
+
 		markDirty();
 	}
-	
-	public float getBioDieselPerc(){
-		return ((float)currentBioDiesel)/((float)maxBioDiesel);
+
+	public float getBioDieselPerc() {
+		return ((float) currentBioDiesel) / ((float) maxBioDiesel);
 	}
-	
-	public float getGlycerinPerc(){
-		return ((float)currentGlycerin)/((float)maxGlycerin);
+
+	public float getGlycerinPerc() {
+		return ((float) currentGlycerin) / ((float) maxGlycerin);
 	}
 
 	@Override
@@ -127,7 +136,7 @@ public class TileEntitySplitTank extends TileEntityBase implements ITickable, IF
 			break;
 		}
 	}
-	
+
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
 		compound.setInteger("mix", currentMix);
@@ -136,16 +145,16 @@ public class TileEntitySplitTank extends TileEntityBase implements ITickable, IF
 		compound.setInteger("time", timeToGenerate);
 		return super.writeToNBT(compound);
 	}
-	
+
 	@Override
 	public void readFromNBT(NBTTagCompound compound) {
-		currentMix=compound.getInteger("mix");
-		currentBioDiesel=compound.getInteger("bio_diesel");
-		currentGlycerin=compound.getInteger("glycerin");
-		currentMix=compound.getInteger("timeToGenerate");
+		currentMix = compound.getInteger("mix");
+		currentBioDiesel = compound.getInteger("bio_diesel");
+		currentGlycerin = compound.getInteger("glycerin");
+		timeToGenerate = compound.getInteger("timeToGenerate");
 		super.readFromNBT(compound);
 	}
-	
+
 	@Override
 	public SPacketUpdateTileEntity getUpdatePacket() {
 		return new SPacketUpdateTileEntity(this.pos, 1, getUpdateTag());
@@ -167,73 +176,8 @@ public class TileEntitySplitTank extends TileEntityBase implements ITickable, IF
 	}
 
 	@Override
-	public String getName() {
-		return getDisplayName().getFormattedText();
-	}
-
-	@Override
 	public ITextComponent getDisplayName() {
 		return new TextComponentTranslation("tile.split_tank.name");
-	}
-
-	@Override
-	public boolean hasCustomName() {
-		return false;
-	}
-
-	@Override
-	public int getSizeInventory() {
-		return 0;
-	}
-
-	@Override
-	public ItemStack getStackInSlot(int index) {
-		return null;
-	}
-
-	@Override
-	public ItemStack decrStackSize(int index, int count) {
-		return null;
-	}
-
-	@Override
-	public ItemStack removeStackFromSlot(int index) {
-		return null;
-	}
-
-	@Override
-	public void setInventorySlotContents(int index, ItemStack stack) {
-
-	}
-
-	@Override
-	public int getInventoryStackLimit() {
-		return 0;
-	}
-
-	@Override
-	public boolean isUseableByPlayer(EntityPlayer player) {
-		return true;
-	}
-
-	@Override
-	public void openInventory(EntityPlayer player) {
-
-	}
-
-	@Override
-	public void closeInventory(EntityPlayer player) {
-
-	}
-
-	@Override
-	public boolean isItemValidForSlot(int index, ItemStack stack) {
-		return false;
-	}
-
-	@Override
-	public void clear() {
-
 	}
 
 	@Override
@@ -392,6 +336,71 @@ public class TileEntitySplitTank extends TileEntityBase implements ITickable, IF
 			}
 			return new FluidStack(ModFluids.BIO_DIESEL, amount);
 		}
+	}
+
+	@Override
+	public String getName() {
+		return inventory.getName();
+	}
+
+	@Override
+	public boolean hasCustomName() {
+		return inventory.hasCustomName();
+	}
+
+	@Override
+	public int getSizeInventory() {
+		return inventory.getSizeInventory();
+	}
+
+	@Override
+	public ItemStack getStackInSlot(int index) {
+		return inventory.getStackInSlot(index);
+	}
+
+	@Override
+	public ItemStack decrStackSize(int index, int count) {
+		return inventory.decrStackSize(index, count);
+	}
+
+	@Override
+	public ItemStack removeStackFromSlot(int index) {
+		return inventory.removeStackFromSlot(index);
+	}
+
+	@Override
+	public void setInventorySlotContents(int index, ItemStack stack) {
+		inventory.setInventorySlotContents(index, stack);
+	}
+
+	@Override
+	public int getInventoryStackLimit() {
+		return inventory.getInventoryStackLimit();
+	}
+
+	@Override
+	public boolean isUseableByPlayer(EntityPlayer player) {
+		return inventory.isUseableByPlayer(player);
+	}
+
+	@Override
+	public void openInventory(EntityPlayer player) {
+		inventory.openInventory(player);
+	}
+
+	@Override
+	public void closeInventory(EntityPlayer player) {
+		inventory.closeInventory(player);
+	}
+
+	@Override
+	public boolean isItemValidForSlot(int index, ItemStack stack) {
+		return inventory.isItemValidForSlot(index, stack);
+	}
+
+	@Override
+	public void clear() {
+		inventory.clear();
 	}
 
 }

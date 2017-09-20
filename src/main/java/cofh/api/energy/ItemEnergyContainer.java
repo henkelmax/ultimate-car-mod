@@ -5,11 +5,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
 /**
- * Reference implementation of {@link IEnergyContainerItem}. Use/extend this or
- * implement your own.
- * 
+ * Reference implementation of {@link IEnergyContainerItem}. Use/extend this or implement your own.
+ *
  * @author King Lemming
- * 
  */
 public class ItemEnergyContainer extends Item implements IEnergyContainerItem {
 
@@ -44,20 +42,23 @@ public class ItemEnergyContainer extends Item implements IEnergyContainerItem {
 		return this;
 	}
 
-	public void setMaxTransfer(int maxTransfer) {
+	public ItemEnergyContainer setMaxTransfer(int maxTransfer) {
 
 		setMaxReceive(maxTransfer);
 		setMaxExtract(maxTransfer);
+		return this;
 	}
 
-	public void setMaxReceive(int maxReceive) {
+	public ItemEnergyContainer setMaxReceive(int maxReceive) {
 
 		this.maxReceive = maxReceive;
+		return this;
 	}
 
-	public void setMaxExtract(int maxExtract) {
+	public ItemEnergyContainer setMaxExtract(int maxExtract) {
 
 		this.maxExtract = maxExtract;
+		return this;
 	}
 
 	/* IEnergyContainerItem */
@@ -68,7 +69,8 @@ public class ItemEnergyContainer extends Item implements IEnergyContainerItem {
 			container.setTagCompound(new NBTTagCompound());
 		}
 		int energy = container.getTagCompound().getInteger("Energy");
-		int energyReceived = Math.min(this.capacity - energy, Math.min(this.maxReceive, maxReceive));
+		int energyReceived = Math.min(capacity - energy, Math.min(this.maxReceive, maxReceive));
+
 		if (!simulate) {
 			energy += energyReceived;
 			container.getTagCompound().setInteger("Energy", energy);
@@ -78,11 +80,13 @@ public class ItemEnergyContainer extends Item implements IEnergyContainerItem {
 
 	@Override
 	public int extractEnergy(ItemStack container, int maxExtract, boolean simulate) {
-		if ((container.getTagCompound() == null) || (!container.getTagCompound().hasKey("Energy"))) {
+
+		if (container.getTagCompound() == null || !container.getTagCompound().hasKey("Energy")) {
 			return 0;
 		}
 		int energy = container.getTagCompound().getInteger("Energy");
 		int energyExtracted = Math.min(energy, Math.min(this.maxExtract, maxExtract));
+
 		if (!simulate) {
 			energy -= energyExtracted;
 			container.getTagCompound().setInteger("Energy", energy);
@@ -92,7 +96,8 @@ public class ItemEnergyContainer extends Item implements IEnergyContainerItem {
 
 	@Override
 	public int getEnergyStored(ItemStack container) {
-		if ((container.getTagCompound() == null) || (!container.getTagCompound().hasKey("Energy"))) {
+
+		if (container.getTagCompound() == null || !container.getTagCompound().hasKey("Energy")) {
 			return 0;
 		}
 		return container.getTagCompound().getInteger("Energy");
@@ -100,6 +105,7 @@ public class ItemEnergyContainer extends Item implements IEnergyContainerItem {
 
 	@Override
 	public int getMaxEnergyStored(ItemStack container) {
+
 		return capacity;
 	}
 

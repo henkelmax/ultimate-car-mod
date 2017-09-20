@@ -5,9 +5,8 @@ import net.minecraft.inventory.IInventory;
 
 public class ContainerOilMill extends ContainerEnergyFluidProducer {
 
-	public ContainerOilMill(IInventory playerInv, TileEntityEnergyFluidProducer tile) {
-		super(playerInv, tile);
-		
+	public ContainerOilMill(TileEntityEnergyFluidProducer tile, IInventory playerInv) {
+		super(tile, playerInv);
 	}
 
 }

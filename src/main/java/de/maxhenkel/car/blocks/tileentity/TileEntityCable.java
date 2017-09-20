@@ -30,7 +30,7 @@ public class TileEntityCable extends TileEntityBase implements ITickable, IEnerg
 	@Override
 	public void update() {
 		
-		if(worldObj.isRemote){
+		if (worldObj.isRemote) {
 			return;
 		}
 		

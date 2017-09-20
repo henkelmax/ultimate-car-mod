@@ -5,9 +5,8 @@ import net.minecraft.inventory.IInventory;
 
 public class ContainerBlastFurnace extends ContainerEnergyFluidProducer{
 
-	public ContainerBlastFurnace(IInventory playerInv, TileEntityEnergyFluidProducer tile) {
-		super(playerInv, tile);
-		
+	public ContainerBlastFurnace(TileEntityEnergyFluidProducer tileInv, IInventory playerInv) {
+		super(tileInv, playerInv);
 	}
 
 }

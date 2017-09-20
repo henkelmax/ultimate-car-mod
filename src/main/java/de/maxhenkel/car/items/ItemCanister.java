@@ -218,7 +218,7 @@ public class ItemCanister extends Item {
 		NBTTagCompound f = new NBTTagCompound();
 		stack.writeToNBT(f);
 		comp.setTag("fuel", f);
-		return fueledAmount>0;
+		return true;
 	}
 
 }

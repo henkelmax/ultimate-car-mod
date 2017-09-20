@@ -18,7 +18,7 @@ public abstract class GuiEnergyFluidProducer extends GuiContainer {
 
 	public GuiEnergyFluidProducer(ContainerEnergyFluidProducer container) {
 		super(container);
-		this.playerInv = container.getPlayerInv();
+		this.playerInv = container.getPlayerInventory();
 		this.tile = container.getTile();
 
 		xSize = 176;

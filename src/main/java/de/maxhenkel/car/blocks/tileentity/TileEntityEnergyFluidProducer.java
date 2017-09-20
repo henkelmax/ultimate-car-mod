@@ -12,7 +12,6 @@ import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.util.EnumFacing;
@@ -189,17 +188,7 @@ public abstract class TileEntityEnergyFluidProducer extends TileEntityBase imple
 		compound.setInteger("time_generated", timeToGenerate);
 		compound.setInteger("fluid_stored", currentMillibuckets);
 
-		NBTTagList list = new NBTTagList();
-
-		for (int i = 0; i < inventory.getSizeInventory(); i++) {
-			if (inventory.getStackInSlot(i) != null) {
-				NBTTagCompound tag = new NBTTagCompound();
-				inventory.getStackInSlot(i).writeToNBT(tag);
-				list.appendTag(tag);
-			}
-		}
-
-		compound.setTag("slots", list);
+		ItemTools.saveInventory(compound, "slots", inventory);
 
 		return super.writeToNBT(compound);
 	}
@@ -210,14 +199,8 @@ public abstract class TileEntityEnergyFluidProducer extends TileEntityBase imple
 		timeToGenerate = compound.getInteger("time_generated");
 		currentMillibuckets = compound.getInteger("fluid_stored");
 
-		NBTTagList list = compound.getTagList("slots", 10);
-
-		for (int i = 0; i < list.tagCount(); i++) {
-			NBTTagCompound tag = list.getCompoundTagAt(i);
-			ItemStack stack = ItemStack.loadItemStackFromNBT(tag);
-			inventory.setInventorySlotContents(i, stack);
-		}
-
+		ItemTools.readInventory(compound, "slots", inventory);
+		
 		super.readFromNBT(compound);
 	}
 

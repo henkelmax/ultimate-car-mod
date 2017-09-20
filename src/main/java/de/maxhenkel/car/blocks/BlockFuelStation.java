@@ -34,7 +34,7 @@ public class BlockFuelStation extends BlockOrientableHorizontal {
 		useNeighborBrightness = true;
 
 	}
-	
+
 	@Override
 	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn,
 			EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
@@ -100,7 +100,7 @@ public class BlockFuelStation extends BlockOrientableHorizontal {
 			return AABB_EAST_WEST;
 		}
 	}
-	
+
 	@Override
 	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, World worldIn, BlockPos pos) {
 		return new AxisAlignedBB(0, 0, 0, 1, 2, 1);
@@ -139,7 +139,7 @@ public class BlockFuelStation extends BlockOrientableHorizontal {
 		super.breakBlock(worldIn, pos, state);
 
 		IBlockState stateUp = worldIn.getBlockState(pos.up());
-		if (stateUp.getBlock().equals(ModBlocks.FUEL_STATION_TOP)) {
+		if (stateUp != null && stateUp.getBlock() != null && stateUp.getBlock().equals(ModBlocks.FUEL_STATION_TOP)) {
 			worldIn.setBlockToAir(pos.up());
 		}
 	}

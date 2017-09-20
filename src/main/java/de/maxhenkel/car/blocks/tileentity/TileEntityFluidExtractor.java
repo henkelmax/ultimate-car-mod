@@ -52,6 +52,9 @@ public class TileEntityFluidExtractor extends TileEntityBase implements ITickabl
 
 	@Override
 	public void update() {
+		if(worldObj.isRemote){
+			return;
+		}
 		updateExtractHandler();
 		
 		if(extractHandler==null){

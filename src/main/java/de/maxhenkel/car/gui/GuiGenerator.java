@@ -20,8 +20,8 @@ public class GuiGenerator extends GuiContainer {
 	private IInventory playerInv;
 	private TileEntityGenerator tile;
 
-	public GuiGenerator(IInventory playerInv, TileEntityGenerator tile) {
-		super(new ContainerGenerator(playerInv, tile));
+	public GuiGenerator(TileEntityGenerator tile, IInventory playerInv) {
+		super(new ContainerGenerator(tile, playerInv));
 		this.playerInv = playerInv;
 		this.tile = tile;
 

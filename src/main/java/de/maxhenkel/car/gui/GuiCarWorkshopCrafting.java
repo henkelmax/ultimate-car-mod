@@ -35,7 +35,7 @@ public class GuiCarWorkshopCrafting extends GuiContainer {
 	public GuiCarWorkshopCrafting(ContainerCarWorkshopCrafting container) {
 		super(container);
 		this.player=container.getPlayer();
-		this.playerInv = container.getPlayerInv();
+		this.playerInv = container.getPlayerInventory();
 		this.tile = container.getTile();
 
 		xSize = 176;

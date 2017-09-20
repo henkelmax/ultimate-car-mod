@@ -23,10 +23,12 @@ public class TileEntityTank extends TileEntityBase implements IFluidHandler, ITi
 
 	@Override
 	public void update() {
-		/*if (world.isRemote) {
-			return;
-		}*/
-
+		if (!worldObj.isRemote) {
+			if (worldObj.getTotalWorldTime() % 20 == 0) {
+				synchronize();
+			}
+		}
+		
 		if (fluid == null) {
 			return;
 		}
@@ -39,7 +41,6 @@ public class TileEntityTank extends TileEntityBase implements IFluidHandler, ITi
 			}
 			checkSide(facing);
 		}
-
 	}
 
 	public void checkSide(EnumFacing side) {
@@ -106,7 +107,7 @@ public class TileEntityTank extends TileEntityBase implements IFluidHandler, ITi
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
 
-		if (fluid != null) {
+		if (fluid != null && fluid.amount > 0) {
 			NBTTagCompound comp = new NBTTagCompound();
 
 			fluid.writeToNBT(comp);
@@ -121,7 +122,9 @@ public class TileEntityTank extends TileEntityBase implements IFluidHandler, ITi
 	public void readFromNBT(NBTTagCompound compound) {
 		if (compound.hasKey("fluid")) {
 			NBTTagCompound comp = compound.getCompoundTag("fluid");
-			this.fluid = FluidStack.loadFluidStackFromNBT(comp);
+			fluid = FluidStack.loadFluidStackFromNBT(comp);
+		} else {
+			fluid = null;
 		}
 		super.readFromNBT(compound);
 	}
@@ -184,7 +187,7 @@ public class TileEntityTank extends TileEntityBase implements IFluidHandler, ITi
 
 			if (doFill) {
 				fluid = new FluidStack(resource.getFluid(), amount);
-				//synchronize();
+				// synchronize();
 				markDirty();
 			}
 
@@ -194,7 +197,7 @@ public class TileEntityTank extends TileEntityBase implements IFluidHandler, ITi
 
 			if (doFill) {
 				fluid.amount += amount;
-				//synchronize();
+				// synchronize();
 				markDirty();
 			}
 
@@ -220,7 +223,7 @@ public class TileEntityTank extends TileEntityBase implements IFluidHandler, ITi
 				if (fluid.amount <= 0) {
 					fluid = null;
 				}
-				//synchronize();
+				// synchronize();
 				markDirty();
 			}
 
@@ -245,7 +248,7 @@ public class TileEntityTank extends TileEntityBase implements IFluidHandler, ITi
 			if (fluid.amount <= 0) {
 				fluid = null;
 			}
-			//synchronize();
+			// synchronize();
 			markDirty();
 		}
 

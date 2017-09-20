@@ -19,7 +19,7 @@ public class GuiCar extends GuiContainer{
 	private EntityCarInventoryBase car;
 	
 	public GuiCar(IInventory playerInv, EntityCarInventoryBase car) {
-		super(new ContainerCar(playerInv, car));
+		super(new ContainerCar(car, playerInv));
 		this.playerInv=playerInv;
 		this.car=car;
 		

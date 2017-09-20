@@ -20,8 +20,8 @@ public class GuiFluidExtractor extends GuiContainer {
 	private IInventory playerInv;
 	private TileEntityFluidExtractor tile;
 
-	public GuiFluidExtractor(EntityPlayer player, TileEntityFluidExtractor tile) {
-		super(new ContainerFluidExtractor(player, tile));
+	public GuiFluidExtractor(TileEntityFluidExtractor tile, EntityPlayer player) {
+		super(new ContainerFluidExtractor(tile, player));
 		this.playerInv = player.inventory;
 		this.tile = tile;
 

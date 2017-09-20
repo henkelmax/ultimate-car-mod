@@ -146,6 +146,8 @@ tooltip.mix=Stored Canola Methanol Mix: %s mb
 tooltip.progress=Progress %s%%
 tooltip.damage=Damage %s%%
 tooltip.methanol=Stored Methanol: %s mb
+tooltip.fluid=Fluid: %s
+tooltip.amount=Amount: %smb
 
 fluid.canola_oil=Canola Oil
 fluid.methanol=Methanol
@@ -201,11 +203,6 @@ entity.car.car_wood_spruce.name=Spruce Wood Car
 entity.car.car_wood_jungle.name=Jungle Wood Car
 entity.car.car_wood_acacia.name=Acacia Wood Car
 entity.car.car_wood_dark_oak.name=Dark Oak Wood Car
-
-message.update=An update is available
-message.update.hover=Download the new version
-message.download=Download
-message.name=Car
 
 
 

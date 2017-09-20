@@ -37,7 +37,7 @@ public class GuiHandler implements IGuiHandler{
 		if(id==GUI_CAR){
 			EntityCarInventoryBase car=getCar(player);
 			if(car!=null){
-				return new ContainerCar(player.inventory, car);
+				return new ContainerCar(car, player.inventory);
 			}
 		}else if(id==GUI_PAINTER){
 			return new ContainerPainter(player, false);
@@ -51,42 +51,42 @@ public class GuiHandler implements IGuiHandler{
 		}else if(id==GUI_OIL_MILL){
 			TileEntity te=world.getTileEntity(new BlockPos(x, y, z));
 			if(te!=null&&te instanceof TileEntityOilMill){
-				return new ContainerOilMill(player.inventory, (TileEntityOilMill) te);
+				return new ContainerOilMill((TileEntityOilMill) te, player.inventory);
 			}
 		}else if(id==GUI_BLAST_FURNACE){
 			TileEntity te=world.getTileEntity(new BlockPos(x, y, z));
 			if(te!=null&&te instanceof TileEntityBlastFurnace){
-				return new ContainerBlastFurnace(player.inventory, (TileEntityBlastFurnace) te);
+				return new ContainerBlastFurnace((TileEntityBlastFurnace) te, player.inventory);
 			}
 		}else if(id==GUI_BACKMIX_REACTOR){
 			TileEntity te=world.getTileEntity(new BlockPos(x, y, z));
 			if(te!=null&&te instanceof TileEntityBackmixReactor){
-				return new ContainerBackmixReactor(player.inventory, (TileEntityBackmixReactor) te);
+				return new ContainerBackmixReactor((TileEntityBackmixReactor) te, player.inventory);
 			}
 		}else if(id==GUI_GENERATOR){
 			TileEntity te=world.getTileEntity(new BlockPos(x, y, z));
 			if(te!=null&&te instanceof TileEntityGenerator){
-				return new ContainerGenerator(player.inventory, (TileEntityGenerator) te);
+				return new ContainerGenerator((TileEntityGenerator) te, player.inventory);
 			}
 		}else if(id==GUI_SPLITTANK){
 			TileEntity te=world.getTileEntity(new BlockPos(x, y, z));
 			if(te!=null&&te instanceof TileEntitySplitTank){
-				return new ContainerSplitTank(player.inventory, (TileEntitySplitTank) te);
+				return new ContainerSplitTank((TileEntitySplitTank) te, player.inventory);
 			}
 		}else if(id==GUI_CAR_WORKSHOP_CRAFTING){
 			TileEntity te=world.getTileEntity(new BlockPos(x, y, z));
 			if(te!=null&&te instanceof TileEntityCarWorkshop){
-				return new ContainerCarWorkshopCrafting(player, (TileEntityCarWorkshop) te);
+				return new ContainerCarWorkshopCrafting((TileEntityCarWorkshop) te, player);
 			}
 		}else if(id==GUI_CAR_WORKSHOP_REPAIR){
 			TileEntity te=world.getTileEntity(new BlockPos(x, y, z));
 			if(te!=null&&te instanceof TileEntityCarWorkshop){
-				return new ContainerCarWorkshopRepair(player, (TileEntityCarWorkshop) te);
+				return new ContainerCarWorkshopRepair((TileEntityCarWorkshop) te, player);
 			}
 		}else if(id==GUI_FLUID_EXTRACTOR){
 			TileEntity te=world.getTileEntity(new BlockPos(x, y, z));
 			if(te!=null&&te instanceof TileEntityFluidExtractor){
-				return new ContainerFluidExtractor(player, (TileEntityFluidExtractor) te);
+				return new ContainerFluidExtractor((TileEntityFluidExtractor) te, player);
 			}
 		}
 		
@@ -115,42 +115,42 @@ public class GuiHandler implements IGuiHandler{
 		}else if(id==GUI_OIL_MILL){
 			TileEntity te=world.getTileEntity(new BlockPos(x, y, z));
 			if(te!=null&&te instanceof TileEntityOilMill){
-				return new GuiOilMill(new ContainerOilMill(player.inventory, (TileEntityOilMill) te));
+				return new GuiOilMill(new ContainerOilMill((TileEntityOilMill) te, player.inventory));
 			}
 		}else if(id==GUI_BLAST_FURNACE){
 			TileEntity te=world.getTileEntity(new BlockPos(x, y, z));
 			if(te!=null&&te instanceof TileEntityBlastFurnace){
-				return new GuiBlastFurnace(new ContainerBlastFurnace(player.inventory, (TileEntityBlastFurnace) te));
+				return new GuiBlastFurnace(new ContainerBlastFurnace((TileEntityBlastFurnace) te, player.inventory));
 			}
 		}else if(id==GUI_BACKMIX_REACTOR){
 			TileEntity te=world.getTileEntity(new BlockPos(x, y, z));
 			if(te!=null&&te instanceof TileEntityBackmixReactor){
-				return new GuiBackmixReactor(player.inventory, (TileEntityBackmixReactor) te);
+				return new GuiBackmixReactor((TileEntityBackmixReactor) te, player.inventory);
 			}
 		}else if(id==GUI_GENERATOR){
 			TileEntity te=world.getTileEntity(new BlockPos(x, y, z));
 			if(te!=null&&te instanceof TileEntityGenerator){
-				return new GuiGenerator(player.inventory, (TileEntityGenerator) te);
+				return new GuiGenerator((TileEntityGenerator) te, player.inventory);
 			}
 		}else if(id==GUI_SPLITTANK){
 			TileEntity te=world.getTileEntity(new BlockPos(x, y, z));
 			if(te!=null&&te instanceof TileEntitySplitTank){
-				return new GuiSplitTank(player.inventory, (TileEntitySplitTank) te);
+				return new GuiSplitTank((TileEntitySplitTank) te, player.inventory);
 			}
 		}else if(id==GUI_CAR_WORKSHOP_CRAFTING){
 			TileEntity te=world.getTileEntity(new BlockPos(x, y, z));
 			if(te!=null&&te instanceof TileEntityCarWorkshop){
-				return new GuiCarWorkshopCrafting(new ContainerCarWorkshopCrafting(player, (TileEntityCarWorkshop) te));
+				return new GuiCarWorkshopCrafting(new ContainerCarWorkshopCrafting((TileEntityCarWorkshop) te, player));
 			}
 		}else if(id==GUI_CAR_WORKSHOP_REPAIR){
 			TileEntity te=world.getTileEntity(new BlockPos(x, y, z));
 			if(te!=null&&te instanceof TileEntityCarWorkshop){
-				return new GuiCarWorkshopRepair(new ContainerCarWorkshopRepair(player, (TileEntityCarWorkshop) te));
+				return new GuiCarWorkshopRepair(new ContainerCarWorkshopRepair((TileEntityCarWorkshop) te, player));
 			}
 		}else if(id==GUI_FLUID_EXTRACTOR){
 			TileEntity te=world.getTileEntity(new BlockPos(x, y, z));
 			if(te!=null&&te instanceof TileEntityFluidExtractor){
-				return new GuiFluidExtractor(player, (TileEntityFluidExtractor) te);
+				return new GuiFluidExtractor((TileEntityFluidExtractor) te, player);
 			}
 		}
 		

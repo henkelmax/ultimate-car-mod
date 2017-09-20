@@ -24,11 +24,11 @@ public class MessageSyncTileEntity implements IMessage, IMessageHandler<MessageS
 		
 	}
 	
-	public MessageSyncTileEntity(BlockPos pos, TileEntity tileEntity) {
+	public MessageSyncTileEntity(BlockPos pos, NBTTagCompound tileTag) {
 		this.posX=pos.getX();
 		this.posY=pos.getY();
 		this.posZ=pos.getZ();
-		this.tag=tileEntity.writeToNBT(new NBTTagCompound());
+		this.tag=tileTag;
 	}
 
 	@SideOnly(Side.CLIENT)

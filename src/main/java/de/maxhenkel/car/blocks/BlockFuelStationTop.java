@@ -27,13 +27,14 @@ public class BlockFuelStationTop extends Block {
 		setSoundType(SoundType.METAL);
 		useNeighborBrightness = true;
 	}
-	
+
 	@Override
 	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn,
 			EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
-		return ModBlocks.FUEL_STATION.onBlockActivated(worldIn, pos.down(), worldIn.getBlockState(pos.down()), playerIn, hand, heldItem, side, hitX, hitY, hitZ);
+		return ModBlocks.FUEL_STATION.onBlockActivated(worldIn, pos.down(), worldIn.getBlockState(pos.down()), playerIn,
+				hand, heldItem, side, hitX, hitY, hitZ);
 	}
-	
+
 	@Override
 	public boolean isBlockNormalCube(IBlockState state) {
 		return false;
@@ -68,7 +69,7 @@ public class BlockFuelStationTop extends Block {
 	public boolean canPlaceTorchOnTop(IBlockState state, IBlockAccess world, BlockPos pos) {
 		return false;
 	}
-	
+
 	@Override
 	public EnumPushReaction getMobilityFlag(IBlockState state) {
 		return EnumPushReaction.BLOCK;
@@ -76,20 +77,24 @@ public class BlockFuelStationTop extends Block {
 
 	@Override
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-		IBlockState stateDown=source.getBlockState(pos.down());
-		if(!stateDown.getBlock().equals(ModBlocks.FUEL_STATION)){
+		IBlockState stateDown = source.getBlockState(pos.down());
+		if (stateDown == null || stateDown.getBlock() == null || !stateDown.getBlock().equals(ModBlocks.FUEL_STATION)) {
 			return NULL_AABB;
 		}
-		
-		EnumFacing facing=stateDown.getValue(BlockOrientableHorizontal.FACING);
-		
-		if(facing.equals(EnumFacing.NORTH)||facing.equals(EnumFacing.SOUTH)){
+
+		EnumFacing facing = stateDown.getValue(BlockOrientableHorizontal.FACING);
+
+		if (facing == null) {
+			return NULL_AABB;
+		}
+
+		if (facing.equals(EnumFacing.NORTH) || facing.equals(EnumFacing.SOUTH)) {
 			return BlockFuelStation.AABB_NORTH_SOUTH.offset(0, -1, 0);
-		}else{
+		} else {
 			return BlockFuelStation.AABB_EAST_WEST.offset(0, -1, 0);
 		}
 	}
-	
+
 	@Override
 	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, World worldIn, BlockPos pos) {
 		return NULL_AABB;
@@ -99,45 +104,45 @@ public class BlockFuelStationTop extends Block {
 	public EnumBlockRenderType getRenderType(IBlockState state) {
 		return EnumBlockRenderType.MODEL;
 	}
-	
+
 	@Override
 	public boolean canPlaceBlockAt(World worldIn, BlockPos pos) {
 		return false;
 	}
-	
+
 	@Override
 	public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
 		super.breakBlock(worldIn, pos, state);
-		IBlockState stateDown=worldIn.getBlockState(pos.down());
-		if(stateDown.getBlock().equals(ModBlocks.FUEL_STATION)){
+		IBlockState stateDown = worldIn.getBlockState(pos.down());
+		if (stateDown != null && stateDown.getBlock() != null && stateDown.getBlock().equals(ModBlocks.FUEL_STATION)) {
 			worldIn.setBlockToAir(pos.down());
 		}
 	}
-	
+
 	@Override
 	public void onBlockHarvested(World worldIn, BlockPos pos, IBlockState state, EntityPlayer player) {
 		super.onBlockHarvested(worldIn, pos, state, player);
-		
-		if(player.capabilities.isCreativeMode){
+
+		if (player != null && player.capabilities.isCreativeMode) {
 			return;
 		}
-		
-		IBlockState stateDown=worldIn.getBlockState(pos.down());
-		if(stateDown.getBlock().equals(ModBlocks.FUEL_STATION)){
+
+		IBlockState stateDown = worldIn.getBlockState(pos.down());
+		if (stateDown != null && stateDown.getBlock() != null && stateDown.getBlock().equals(ModBlocks.FUEL_STATION)) {
 			ModBlocks.FUEL_STATION.dropBlockAsItem(worldIn, pos.down(), stateDown, 0);
 			worldIn.setBlockToAir(pos.down());
 		}
 	}
-	
+
 	@Override
 	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos,
 			EntityPlayer player) {
-		
-		IBlockState stateDown=world.getBlockState(pos.down());
-		if(stateDown.getBlock().equals(ModBlocks.FUEL_STATION)){
+
+		IBlockState stateDown = world.getBlockState(pos.down());
+		if (stateDown != null && stateDown.getBlock() != null && stateDown.getBlock().equals(ModBlocks.FUEL_STATION)) {
 			return ModBlocks.FUEL_STATION.getPickBlock(stateDown, target, world, pos.down(), player);
 		}
-		
+
 		return super.getPickBlock(stateDown, target, world, pos, player);
 	}
 
