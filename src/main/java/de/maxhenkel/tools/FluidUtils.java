@@ -1,29 +1,39 @@
 package de.maxhenkel.tools;
 
-import javax.annotation.Nullable;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
+import javax.annotation.Nullable;
 import de.maxhenkel.car.Config;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 
 public class FluidUtils {
-
-	public static boolean isFuelForFuelStation(Fluid fluid) {
-		//return fluid.equals(ModFluids.BIO_DIESEL);
-		return Config.validFuelStationFluids.contains(fluid);
-	}
-
-	public static int getGenerationFactor(Fluid fluid) {
-		Integer i=Config.generationFactors.get(fluid);
-		if(i==null||i<0){
-			return 0;
+	
+	public static boolean containsFluid(List<FluidSelector> list, Fluid fluid){
+		for(FluidSelector sel:list){
+			if(sel.isValid(fluid)){
+				return true;
+			}
 		}
-		return i;
+		
+		return false;
 	}
-
-	public static boolean isFluidForGenerator(Fluid fluid) {
-		return getGenerationFactor(fluid)>0;
+	
+	public static boolean isFluidGeneratable(Fluid fluid) {
+		return getInt(Config.generationFactors, fluid)>0;
+	}
+	
+	public static int getInt(Map<FluidSelector, Integer> map, Fluid fluid){
+		for(Entry<FluidSelector, Integer> entry:map.entrySet()){
+			if(entry.getKey().isValid(fluid)){
+				return entry.getValue();
+			}
+		}
+		
+		return 0;
 	}
 
 	@Nullable

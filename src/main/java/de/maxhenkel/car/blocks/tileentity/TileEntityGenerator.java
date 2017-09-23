@@ -58,9 +58,9 @@ public class TileEntityGenerator extends TileEntityBase
 		}
 
 		if (currentFluid != null && currentMillibuckets > 0
-				&& (storedEnergy + FluidUtils.getGenerationFactor(currentFluid)) <= maxStorage) {
+				&& (storedEnergy + FluidUtils.getInt(Config.generationFactors, currentFluid)) <= maxStorage) {
 			currentMillibuckets--;
-			storedEnergy += FluidUtils.getGenerationFactor(currentFluid);
+			storedEnergy += FluidUtils.getInt(Config.generationFactors, currentFluid);
 
 			if (currentMillibuckets <= 0) {
 				currentMillibuckets = 0;
@@ -96,7 +96,7 @@ public class TileEntityGenerator extends TileEntityBase
 	}
 
 	public boolean isEnabled() {
-		int fuelGen = FluidUtils.getGenerationFactor(currentFluid);
+		int fuelGen = FluidUtils.getInt(Config.generationFactors, currentFluid);
 		if (currentMillibuckets > 0 && storedEnergy + fuelGen < maxStorage) {
 			return true;
 		}
@@ -217,7 +217,7 @@ public class TileEntityGenerator extends TileEntityBase
 
 			@Override
 			public boolean canFillFluidType(FluidStack fluidStack) {
-				if (FluidUtils.isFluidForGenerator(fluidStack.getFluid())
+				if (FluidUtils.isFluidGeneratable(fluidStack.getFluid())
 						&& (currentFluid == null || currentFluid.equals(fluidStack.getFluid()))) {
 					return true;
 				}
@@ -244,7 +244,7 @@ public class TileEntityGenerator extends TileEntityBase
 	@Override
 	public int fill(FluidStack resource, boolean doFill) {
 
-		if ((currentFluid == null && FluidUtils.isFluidForGenerator(resource.getFluid()))
+		if ((currentFluid == null && FluidUtils.isFluidGeneratable(resource.getFluid()))
 				|| resource.getFluid().equals(currentFluid)) {
 			int amount = Math.min(maxMillibuckets - currentMillibuckets, resource.amount);
 			if (doFill) {

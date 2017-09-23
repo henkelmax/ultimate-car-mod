@@ -5,6 +5,7 @@ import de.maxhenkel.car.Config;
 import de.maxhenkel.car.entity.car.base.EntityCarLockBase;
 import de.maxhenkel.car.reciepe.CarBuilderWoodCar;
 import de.maxhenkel.car.reciepe.ICarbuilder;
+import de.maxhenkel.tools.FluidUtils;
 import net.minecraft.block.BlockPlanks.EnumType;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
@@ -41,7 +42,7 @@ public class EntityCarWood extends EntityCarLockBase{
 	
 	@Override
 	public boolean isValidFuel(Fluid fluid) {
-		return fluid.equals(Config.carFuel);
+		return FluidUtils.containsFluid(Config.validCarFuels, fluid);
 	}
 	
 	@Override

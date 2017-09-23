@@ -125,7 +125,6 @@ public abstract class EntityCarFuelBase extends EntityCarDamageBase implements I
 	protected void readEntityFromNBT(NBTTagCompound compound) {
 		super.readEntityFromNBT(compound);
 		setFuel(compound.getInteger("fuel"));
-		//setFuel(1000);//TETSTSTSTTS
 	}
 	
 	@Override

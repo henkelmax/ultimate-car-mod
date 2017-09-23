@@ -4,15 +4,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-
 import de.maxhenkel.car.fluids.ModFluids;
+import de.maxhenkel.tools.ConfigTools;
+import de.maxhenkel.tools.FluidSelector;
 import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
 
 public class Config {
 
@@ -46,11 +41,11 @@ public class Config {
 	public static int fluidExtractorDrainSpeed=25;
 	
 	public static int fuelStationTransferRate=5;
-	public static List<Fluid> validFuelStationFluids=new ArrayList<Fluid>();
+	public static List<FluidSelector> validFuelStationFluids=new ArrayList<FluidSelector>();
 	
 	public static int generatorEnergyStorage=30000;
 	public static int generatorFluidStorage=3000;
-	public static Map<Fluid, Integer> generationFactors=new HashMap<Fluid, Integer>();
+	public static Map<FluidSelector, Integer> generationFactors=new HashMap<FluidSelector, Integer>();
 	
 	public static int splitTankFluidStorage=3000;
 	public static int splitTankGeneratingTime=800;
@@ -67,9 +62,7 @@ public class Config {
 	public static boolean thirdPersonEnter;
 	public static boolean carGroundSpeed;
 	public static float carStepHeight;
-	public static Fluid carFuel;
-	
-	public static boolean checkUpdates;
+	public static List<FluidSelector> validCarFuels=new ArrayList<FluidSelector>();
 	
 	public static void init(Configuration config){
 		Config.config=config;
@@ -103,37 +96,15 @@ public class Config {
 		
 		//Fuel Station
 		fuelStationTransferRate=config.getInt("fuel_station_transfer_rate", "machines.fuel_station", 5, 1, Short.MAX_VALUE, "");
-		String[] fluids=config.getStringList("fuel_station_valid_fluids", "machines.fuel_station", new String[]{FluidRegistry.getFluidName(ModFluids.BIO_DIESEL)}, "");
-		List<Fluid> fluidList=new ArrayList<Fluid>();
-		for(String f:fluids){
-			Fluid fluid=FluidRegistry.getFluid(f);
-			if(fluid!=null){
-				fluidList.add(fluid);
-			}
-		}
-		validFuelStationFluids=fluidList;
+		validFuelStationFluids=ConfigTools.getFluidList(config, "fuel_station_valid_fluids", "machines.fuel_station", "", new FluidSelector[]{new FluidSelector(ModFluids.BIO_DIESEL)});
 		
 		//Generator
 		generatorEnergyStorage=config.getInt("generator_energy_storage", "machines.generator", 30000, 1000, Short.MAX_VALUE, "");
 		generatorFluidStorage=config.getInt("generator_fluid_storage", "machines.generator", 3000, 1000, Short.MAX_VALUE, "");
 		
-		Map<String, String> def=new HashMap<String, String>();
-		def.put(FluidRegistry.getFluidName(ModFluids.BIO_DIESEL), "500");
-		
-		Map<String, String> map=getMap(config, "generator_fluid_generation_factors", "machines.generator", "", def);
-		Map<Fluid, Integer> gens=new HashMap<Fluid, Integer>();
-		for(Entry<String, String> entry:map.entrySet()){
-			Fluid f=FluidRegistry.getFluid(entry.getKey());
-			if(f!=null){
-				try{
-					int i=Integer.parseInt(entry.getValue());
-					gens.put(f, i);
-				}catch(NumberFormatException e){
-					e.printStackTrace();
-				}
-			}
-		}
-		generationFactors=gens;
+		Map<FluidSelector, Integer> def=new HashMap<FluidSelector, Integer>();
+		def.put(new FluidSelector(ModFluids.BIO_DIESEL), 500);
+		generationFactors=ConfigTools.getFluidMap(config, "generator_fluid_generation_factors", "machines.generator", "The amount of energy produced by the fluid for the generator", def);
 		
 		//Split Tank
 		splitTankFluidStorage=config.getInt("split_tank_fluid_storage", "machines.split_tank", 3000, 1000, Short.MAX_VALUE, "");
@@ -153,56 +124,12 @@ public class Config {
 		
 		thirdPersonEnter=config.getBoolean("third_person_when_enter_car", "car", true, "");
 		
-		carGroundSpeed=config.getBoolean("car_ground_speed", "car", false, "");
+		carGroundSpeed=config.getBoolean("car_ground_speed", "car", false, "Whether the cars drive slower on non asphalt blocks");
 		
 		carStepHeight=config.getFloat("car_step_height", "car", 0.6F, 0.1F, 128F, "The height a car can drive up");
-		
-		String carFuelStr=config.getString("car_fuel", "car", "bio_diesel", "The fuel all cars drive with");
-		
-		Fluid f=FluidRegistry.getFluid(carFuelStr);
-		if(f==null){
-			f=ModFluids.BIO_DIESEL;
-		}
-		
-		carFuel=f;
-		
-		checkUpdates=config.getBoolean("check_updates", "general", true, "Check for updates");
-		
+
+		validCarFuels=ConfigTools.getFluidList(config, "valid_car_fuels", "car", "The fluids all cars drive with", new FluidSelector[]{new FluidSelector(ModFluids.BIO_DIESEL)});
 		config.save();
-	}
-	
-	public static Map<String, String> getMap(Configuration config, String name, String category, String comment, Map<String, String> def){
-		try{
-			String str=config.getString(name, category, getJson(def).toString(), comment);
-			JsonParser parser=new JsonParser();
-			
-			JsonObject obj=parser.parse(str).getAsJsonObject();
-			
-			return getMap(obj);
-		}catch(Exception e){
-			e.printStackTrace();
-			return def;
-		}
-	}
-	
-	public static JsonObject getJson(Map<String, String> map){
-		JsonObject obj=new JsonObject();
-		for(Entry<String, String> entry:map.entrySet()){
-			if(entry.getKey()!=null&&entry.getValue()!=null){
-				obj.addProperty(entry.getKey(), entry.getValue());
-			}
-		}
-		return obj;
-	}
-	
-	public static Map<String, String> getMap(JsonObject obj){
-		Map<String, String> map=new HashMap<String, String>();
-		
-		for(Entry<String, JsonElement> entry:obj.entrySet()){
-			map.put(entry.getKey(), entry.getValue().getAsString());
-		}
-		
-		return map;
 	}
 	
 }

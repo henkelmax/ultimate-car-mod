@@ -276,7 +276,7 @@ public class TileEntityFuelStation extends TileEntityBase implements ITickable, 
 			
 			@Override
 			public boolean canFillFluidType(FluidStack fluidStack) {
-				return FluidUtils.isFuelForFuelStation(fluidStack.getFluid());
+				return FluidUtils.containsFluid(Config.validFuelStationFluids, fluidStack.getFluid());
 			}
 			
 			@Override
@@ -298,7 +298,7 @@ public class TileEntityFuelStation extends TileEntityBase implements ITickable, 
 
 	@Override
 	public int fill(FluidStack resource, boolean doFill) {
-		if(!FluidUtils.isFuelForFuelStation(resource.getFluid())){
+		if(!FluidUtils.containsFluid(Config.validFuelStationFluids, resource.getFluid())){
 			return 0;
 		}
 		
