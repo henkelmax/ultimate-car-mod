@@ -6,6 +6,7 @@ public class ContainerSplitTank extends ContainerBase{
 
 	public ContainerSplitTank(IInventory tileInv, IInventory playerInv) {
 		super(tileInv, playerInv);
+		addInvSlots();
 	}
 	
 }

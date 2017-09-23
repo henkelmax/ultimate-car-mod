@@ -79,13 +79,13 @@ public class BlockFuelStationTop extends Block {
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
 		IBlockState stateDown = source.getBlockState(pos.down());
 		if (stateDown == null || stateDown.getBlock() == null || !stateDown.getBlock().equals(ModBlocks.FUEL_STATION)) {
-			return NULL_AABB;
+			return BlockFuelStation.AABB_NORTH_SOUTH.offset(0, -1, 0);
 		}
 
 		EnumFacing facing = stateDown.getValue(BlockOrientableHorizontal.FACING);
 
 		if (facing == null) {
-			return NULL_AABB;
+			return BlockFuelStation.AABB_NORTH_SOUTH.offset(0, -1, 0);
 		}
 
 		if (facing.equals(EnumFacing.NORTH) || facing.equals(EnumFacing.SOUTH)) {
@@ -97,7 +97,18 @@ public class BlockFuelStationTop extends Block {
 
 	@Override
 	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, World worldIn, BlockPos pos) {
-		return NULL_AABB;
+		IBlockState stateDown = worldIn.getBlockState(pos.down());
+		if(stateDown==null || stateDown.getBlock() == null || !stateDown.getBlock().equals(ModBlocks.FUEL_STATION)){
+			return BlockFuelStation.AABB_NORTH_SOUTH.offset(0, -1, 0);
+		}
+		
+		EnumFacing facing = stateDown.getValue(BlockOrientableHorizontal.FACING);
+
+		if (facing.equals(EnumFacing.NORTH) || facing.equals(EnumFacing.SOUTH)) {
+			return BlockFuelStation.AABB_NORTH_SOUTH.offset(0, -1, 0);
+		} else {
+			return BlockFuelStation.AABB_EAST_WEST.offset(0, -1, 0);
+		}
 	}
 
 	@Override

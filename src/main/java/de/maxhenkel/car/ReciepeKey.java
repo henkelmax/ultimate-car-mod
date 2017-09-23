@@ -3,6 +3,7 @@ package de.maxhenkel.car;
 import java.util.UUID;
 import de.maxhenkel.car.items.ItemKey;
 import de.maxhenkel.car.items.ModItems;
+import de.maxhenkel.tools.ItemTools;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;

@@ -3,13 +3,12 @@ package de.maxhenkel.car.blocks.tileentity;
 import java.util.List;
 
 import cofh.api.energy.IEnergyReceiver;
-import de.maxhenkel.car.ItemTools;
+import de.maxhenkel.tools.ItemTools;
 import de.maxhenkel.car.blocks.BlockGui;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.inventory.InventoryBasic;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -74,7 +73,7 @@ public abstract class TileEntityEnergyFluidProducer extends TileEntityBase imple
 					inventory.setInventorySlotContents(1, getOutputItem());
 				} else if (output.stackSize < output.getMaxStackSize()) {
 					if (ItemStack.areItemsEqual(output, getOutputItem())) {
-						output.stackSize++;
+						ItemTools.incrItemStack(output, null);
 						inventory.setInventorySlotContents(1, output);
 					}
 				}
@@ -85,12 +84,12 @@ public abstract class TileEntityEnergyFluidProducer extends TileEntityBase imple
 			}
 		} else if (storedEnergy >= energyUsage) {
 			if (!ItemTools.isStackEmpty(input)) {
-				if (contains(getInputItems(), input.getItem())) {
+				if (ItemTools.contains(getInputItems(), input)) {
 					if (ItemTools.isStackEmpty(output)||output.stackSize < output.getMaxStackSize()) {
 						if (currentMillibuckets + millibucketsPerUse <= maxMillibuckets) {
-							input.stackSize--;
+							ItemTools.decrItemStack(input, null);
 							if(input.stackSize<=0){
-								inventory.setInventorySlotContents(0, null);
+								ItemTools.removeStackFromSlot(inventory, 0);
 							}
 							timeToGenerate = generatingTime;
 						}
@@ -125,17 +124,8 @@ public abstract class TileEntityEnergyFluidProducer extends TileEntityBase imple
 
 	public abstract ItemStack getOutputItem();
 
-	public abstract List<Item> getInputItems();
+	public abstract List<ItemStack> getInputItems();
 	
-	public boolean contains(List<Item> list, Item item){
-		for(Item i:list){
-			if(i.equals(item)){
-				return true;
-			}
-		}
-		return false;
-	}
-
 	public float getEnergyPercent() {
 		return ((float) storedEnergy) / ((float) maxStorage);
 	}

@@ -2,8 +2,7 @@ package de.maxhenkel.car.integration.jei;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import de.maxhenkel.car.FileReader;
+import de.maxhenkel.tools.FileReader;
 import de.maxhenkel.car.blocks.BlockPaint;
 import de.maxhenkel.car.blocks.ModBlocks;
 import de.maxhenkel.car.items.ModItems;

@@ -3,7 +3,7 @@ package de.maxhenkel.car.blocks.tileentity;
 import java.util.List;
 
 import de.maxhenkel.car.Config;
-import de.maxhenkel.car.FluidUtils;
+import de.maxhenkel.tools.FluidUtils;
 import de.maxhenkel.car.blocks.BlockFuelStation;
 import de.maxhenkel.car.blocks.ModBlocks;
 import de.maxhenkel.car.entity.car.base.EntityCarFuelBase;

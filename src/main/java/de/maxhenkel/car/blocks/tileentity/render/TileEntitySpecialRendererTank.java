@@ -21,7 +21,6 @@ public class TileEntitySpecialRendererTank extends TileEntitySpecialRenderer<Til
 		
 		GlStateManager.pushMatrix();
 		GlStateManager.translate(x, y, z);
-		GlStateManager.disableBlend();
 		
 		float amount = te.getFillPercent();
 		FluidStack stack = te.getFluid();
@@ -37,6 +36,7 @@ public class TileEntitySpecialRendererTank extends TileEntitySpecialRenderer<Til
 		GlStateManager.pushMatrix();
 		GlStateManager.scale(0.98F, 0.98F, 0.98F);
 		GlStateManager.translate(0.01F, 0.01F, 0.01F);
+		GlStateManager.enableBlend();
 		
 		TextureAtlasSprite texture = Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(fluid.getStill().toString());
 		

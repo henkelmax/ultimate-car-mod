@@ -2,7 +2,7 @@ package de.maxhenkel.car.blocks.tileentity;
 
 import java.util.List;
 import javax.annotation.Nullable;
-import de.maxhenkel.car.ItemTools;
+import de.maxhenkel.tools.ItemTools;
 import de.maxhenkel.car.blocks.BlockCarWorkshopOutter;
 import de.maxhenkel.car.blocks.ModBlocks;
 import de.maxhenkel.car.entity.car.base.EntityCarBase;
@@ -323,7 +323,7 @@ public class TileEntityCarWorkshop extends TileEntityBase implements ICarCraftin
 	@Override
 	public ItemStack getStackInRowAndColumn(int row, int column) {
 		return row >= 0 && row < 5 && column >= 0 && column <= 3 ? this.getStackInSlot(row + column * 5)
-				: null;
+				: ItemTools.EMPTY;
 	}
 
 	public EntityCarBase getCurrentCraftingCar() {
@@ -375,7 +375,7 @@ public class TileEntityCarWorkshop extends TileEntityBase implements ICarCraftin
 		for (int i = 0; i < repairInventory.getSizeInventory(); i++) {
 			ItemStack stack=repairInventory.getStackInSlot(i);
 			if(!ItemTools.isStackEmpty(stack)){
-				stack.damageItem(10, player);
+				ItemTools.damageStack(stack, 10, player);
 			}
 		}
 	}

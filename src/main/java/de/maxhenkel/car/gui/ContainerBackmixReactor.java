@@ -7,6 +7,7 @@ public class ContainerBackmixReactor extends ContainerBase{
 	
 	public ContainerBackmixReactor(TileEntityBackmixReactor tileInv, IInventory playerInv) {
 		super(tileInv, playerInv);
+		addInvSlots();
 	}
 
 }

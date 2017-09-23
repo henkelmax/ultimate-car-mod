@@ -6,7 +6,7 @@ import java.io.IOException;
 import com.mojang.realmsclient.gui.ChatFormatting;
 
 import de.maxhenkel.car.Main;
-import de.maxhenkel.car.MathTools;
+import de.maxhenkel.tools.MathTools;
 import de.maxhenkel.car.blocks.tileentity.TileEntityFuelStation;
 import de.maxhenkel.car.entity.car.base.EntityCarFuelBase;
 import net.minecraft.client.gui.GuiButton;

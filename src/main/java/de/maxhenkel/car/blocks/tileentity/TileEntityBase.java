@@ -1,6 +1,6 @@
 package de.maxhenkel.car.blocks.tileentity;
 
-import de.maxhenkel.car.MathTools;
+import de.maxhenkel.tools.MathTools;
 import de.maxhenkel.car.net.MessageSyncTileEntity;
 import de.maxhenkel.car.proxy.CommonProxy;
 import net.minecraft.nbt.NBTTagCompound;

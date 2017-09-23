@@ -84,8 +84,6 @@ tile.fluid_extractor.name=Fluid Extractor
 tile.fluid_pipe.name=Fluid Pipe
 tile.crank.name=Crank
 tile.dynamo.name=Dynamo
-tile.sign_post.name=Sign Post
-tile.sign.name=Sign
 
 itemGroup.car=Car
 

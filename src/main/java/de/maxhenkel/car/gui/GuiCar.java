@@ -1,7 +1,7 @@
 package de.maxhenkel.car.gui;
 
 import de.maxhenkel.car.Main;
-import de.maxhenkel.car.MathTools;
+import de.maxhenkel.tools.MathTools;
 import de.maxhenkel.car.entity.car.base.EntityCarInventoryBase;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;

@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.maxhenkel.car.Main;
-import de.maxhenkel.car.MathTools;
+import de.maxhenkel.tools.MathTools;
 import de.maxhenkel.car.blocks.tileentity.TileEntityCarWorkshop;
 import de.maxhenkel.car.entity.car.base.EntityCarBase;
 import de.maxhenkel.car.entity.car.base.EntityCarDamageBase;

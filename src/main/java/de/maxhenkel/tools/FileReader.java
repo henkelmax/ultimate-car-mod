@@ -1,10 +1,12 @@
-package de.maxhenkel.car;
+package de.maxhenkel.tools;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import org.apache.commons.io.IOUtils;
+
+import de.maxhenkel.car.Main;
 
 public class FileReader {
 

@@ -32,7 +32,7 @@ public class SlotFuel extends Slot{
 		
 		boolean success=ModItems.CANISTER.fuelFluidHandler(stack, car);
 		
-		if(success){
+		if(!success){
 			ModSounds.playSound(SoundEvents.BLOCK_BREWING_STAND_BREW, car.worldObj, car.getPosition(), null, SoundCategory.NEUTRAL);
 		}
 		

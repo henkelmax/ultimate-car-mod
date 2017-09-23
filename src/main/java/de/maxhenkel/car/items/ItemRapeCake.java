@@ -1,6 +1,6 @@
 package de.maxhenkel.car.items;
 
-import de.maxhenkel.car.ItemTools;
+import de.maxhenkel.tools.ItemTools;
 import de.maxhenkel.car.ModCreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.passive.EntityAnimal;

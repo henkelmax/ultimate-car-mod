@@ -1,4 +1,4 @@
-package de.maxhenkel.car;
+package de.maxhenkel.tools;
 
 import de.maxhenkel.car.entity.car.base.EntityCarBase;
 import net.minecraft.client.Minecraft;

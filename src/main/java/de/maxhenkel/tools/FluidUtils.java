@@ -1,7 +1,8 @@
-package de.maxhenkel.car;
+package de.maxhenkel.tools;
 
 import javax.annotation.Nullable;
 
+import de.maxhenkel.car.Config;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;

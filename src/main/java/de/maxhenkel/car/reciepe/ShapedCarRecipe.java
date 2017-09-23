@@ -1,6 +1,6 @@
 package de.maxhenkel.car.reciepe;
 
-import de.maxhenkel.car.ItemTools;
+import de.maxhenkel.tools.ItemTools;
 import net.minecraft.item.ItemStack;
 
 public class ShapedCarRecipe implements ICarRecipe{

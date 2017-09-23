@@ -1,6 +1,6 @@
 package de.maxhenkel.car.integration.jei;
 
-import de.maxhenkel.car.ItemTools;
+import de.maxhenkel.tools.ItemTools;
 import de.maxhenkel.car.Main;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.IDrawable;

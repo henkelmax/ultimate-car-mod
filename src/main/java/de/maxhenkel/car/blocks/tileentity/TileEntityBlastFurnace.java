@@ -39,10 +39,14 @@ public class TileEntityBlastFurnace extends TileEntityEnergyFluidProducer{
 	}
 
 	@Override
-	public List<Item> getInputItems() {
-		List<Item> items=new ArrayList<Item>();
-		items.add(Item.getItemFromBlock(Blocks.LOG));
-		items.add(Item.getItemFromBlock(Blocks.LOG2));
+	public List<ItemStack> getInputItems() {
+		List<ItemStack> items=new ArrayList<ItemStack>();
+		items.add(new ItemStack(Item.getItemFromBlock(Blocks.LOG), 1, 0));
+		items.add(new ItemStack(Item.getItemFromBlock(Blocks.LOG), 1, 1));
+		items.add(new ItemStack(Item.getItemFromBlock(Blocks.LOG), 1, 2));
+		items.add(new ItemStack(Item.getItemFromBlock(Blocks.LOG), 1, 3));
+		items.add(new ItemStack(Item.getItemFromBlock(Blocks.LOG2), 1, 0));
+		items.add(new ItemStack(Item.getItemFromBlock(Blocks.LOG2), 1, 1));
 		return items;
 	}
 

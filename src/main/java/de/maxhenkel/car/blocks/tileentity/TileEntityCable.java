@@ -6,7 +6,7 @@ import java.util.Map.Entry;
 import javax.annotation.Nullable;
 import cofh.api.energy.IEnergyProvider;
 import cofh.api.energy.IEnergyReceiver;
-import de.maxhenkel.car.BlockPosList;
+import de.maxhenkel.tools.BlockPosList;
 import de.maxhenkel.car.Config;
 import de.maxhenkel.car.blocks.ModBlocks;
 import net.minecraft.block.state.IBlockState;

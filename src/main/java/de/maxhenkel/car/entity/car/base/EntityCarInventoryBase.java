@@ -1,6 +1,6 @@
 package de.maxhenkel.car.entity.car.base;
 
-import de.maxhenkel.car.ItemTools;
+import de.maxhenkel.tools.ItemTools;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.gui.GuiHandler;
 import net.minecraft.entity.player.EntityPlayer;

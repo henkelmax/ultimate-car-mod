@@ -3,7 +3,7 @@ package de.maxhenkel.car.entity.car.base;
 import java.util.UUID;
 
 import de.maxhenkel.car.Config;
-import de.maxhenkel.car.ItemTools;
+import de.maxhenkel.tools.ItemTools;
 import de.maxhenkel.car.items.ItemKey;
 import de.maxhenkel.car.items.ModItems;
 import de.maxhenkel.car.sounds.ModSounds;

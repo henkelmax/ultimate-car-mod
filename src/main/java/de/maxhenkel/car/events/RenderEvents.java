@@ -1,6 +1,6 @@
 package de.maxhenkel.car.events;
 
-import de.maxhenkel.car.MathTools;
+import de.maxhenkel.tools.MathTools;
 import de.maxhenkel.car.entity.car.base.EntityCarFuelBase;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;

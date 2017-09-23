@@ -3,7 +3,7 @@ package de.maxhenkel.car.integration.jei;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import de.maxhenkel.car.MathTools;
+import de.maxhenkel.tools.MathTools;
 import de.maxhenkel.car.entity.car.base.EntityCarBase;
 import de.maxhenkel.car.reciepe.ICarRecipe;
 import mezz.jei.api.ingredients.IIngredients;

@@ -1,7 +1,7 @@
 package de.maxhenkel.car.gui;
 
 import javax.annotation.Nullable;
-
+import de.maxhenkel.tools.ItemTools;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IContainerListener;
@@ -17,25 +17,25 @@ public abstract class ContainerBase extends Container {
 	public ContainerBase(IInventory tileInventory, IInventory playerInventory) {
 		this.tileInventory = tileInventory;
 		this.playerInventory = playerInventory;
+	}
+	
+	protected void addInvSlots(){
+		if(playerInventory!=null){
+			for (int i = 0; i < 3; i++) {
+				for (int j = 0; j < 9; j++) {
+					this.addSlotToContainer(
+							new Slot(playerInventory, j + i * 9 + 9, 8 + j * 18, 84 + i * 18 + getInvOffset()));
+				}
+			}
 
-		if (playerInventory == null || hasCustomInvPos()) {
-			return;
-		}
-
-		for (int i = 0; i < 3; i++) {
-			for (int j = 0; j < 9; j++) {
-				this.addSlotToContainer(new Slot(playerInventory, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
+			for (int k = 0; k < 9; k++) {
+				this.addSlotToContainer(new Slot(playerInventory, k, 8 + k * 18, 142 + getInvOffset()));
 			}
 		}
-
-		for (int k = 0; k < 9; k++) {
-			this.addSlotToContainer(new Slot(playerInventory, k, 8 + k * 18, 142));
-		}
-
 	}
 
-	public boolean hasCustomInvPos() {
-		return false;
+	public int getInvOffset() {
+		return 0;
 	}
 
 	@Override
@@ -52,10 +52,10 @@ public abstract class ContainerBase extends Container {
 	public ItemStack transferStackInSlot(EntityPlayer player, int slotIndex) {
 
 		if (!supportsShiftClick(player, slotIndex)) {
-			return null;
+			return ItemTools.EMPTY;
 		}
 
-		ItemStack stack = null;
+		ItemStack stack = ItemTools.EMPTY;
 		Slot slot = inventorySlots.get(slotIndex);
 
 		if (slot != null && slot.getHasStack()) {
@@ -63,19 +63,19 @@ public abstract class ContainerBase extends Container {
 			stack = stackInSlot.copy();
 
 			if (!performMerge(player, slotIndex, stackInSlot)) {
-				return null;
+				return ItemTools.EMPTY;
 			}
 
 			slot.onSlotChange(stackInSlot, stack);
 
 			if (stackInSlot.stackSize <= 0) {
-				slot.putStack(null);
+				slot.putStack(ItemTools.EMPTY);
 			} else {
 				slot.putStack(stackInSlot);
 			}
 
 			if (stackInSlot.stackSize == stack.stackSize) {
-				return null;
+				return ItemTools.EMPTY;
 			}
 			slot.onPickupFromSlot(player, stackInSlot);
 		}
@@ -108,6 +108,9 @@ public abstract class ContainerBase extends Container {
 	}
 
 	protected int getSizeInventory() {
+		if(tileInventory==null){
+			return 0;
+		}
 		return tileInventory.getSizeInventory();
 	}
 

@@ -6,6 +6,8 @@ public class ContainerGenerator extends ContainerBase{
 
 	public ContainerGenerator(IInventory tileInv, IInventory playerInv) {
 		super(tileInv, playerInv);
+		
+		addInvSlots();
 	}
 
 }

@@ -2,13 +2,11 @@ package de.maxhenkel.car.blocks.tileentity;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import de.maxhenkel.car.Config;
 import de.maxhenkel.car.blocks.BlockGui;
 import de.maxhenkel.car.blocks.ModBlocks;
 import de.maxhenkel.car.fluids.ModFluids;
 import de.maxhenkel.car.items.ModItems;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentTranslation;
@@ -33,9 +31,9 @@ public class TileEntityOilMill extends TileEntityEnergyFluidProducer {
 	}
 
 	@Override
-	public List<Item> getInputItems() {
-		List<Item> items=new ArrayList<Item>();
-		items.add(ModItems.CANOLA);
+	public List<ItemStack> getInputItems() {
+		List<ItemStack> items=new ArrayList<ItemStack>();
+		items.add(new ItemStack(ModItems.CANOLA));
 		return items;
 	}
 
