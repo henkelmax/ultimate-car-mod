@@ -15,6 +15,11 @@ public class ItemStackSelector implements Selector<ItemStack>{
 		this.meta=meta;
 	}
 	
+	public ItemStackSelector(Item item) {
+		this.item=item;
+		this.meta=-1;
+	}
+	
 	@Nullable
 	public static ItemStackSelector fromString(String str){
 		String[] split = str.split(":");

@@ -92,9 +92,8 @@ public class ConfigTools {
 	public static Map<FluidSelector, Integer> getFluidMap(Configuration config, String name, String category,
 			String comment, Map<FluidSelector, Integer> defaultValues) {
 
-		Map<FluidSelector, Integer> def = new HashMap<FluidSelector, Integer>();
 		Map<String, String> defStr = new HashMap<String, String>();
-		for (Entry<FluidSelector, Integer> entry:def.entrySet()) {
+		for (Entry<FluidSelector, Integer> entry:defaultValues.entrySet()) {
 			defStr.put(entry.getKey().toString(), entry.getValue().toString());
 		}
 

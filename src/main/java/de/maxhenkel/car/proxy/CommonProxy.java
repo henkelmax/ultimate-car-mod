@@ -1,5 +1,6 @@
 package de.maxhenkel.car.proxy;
 
+import java.io.File;
 import de.maxhenkel.car.Config;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.ModCreativeTabs;
@@ -41,7 +42,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.ForgeModContainer;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.UniversalBucket;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -85,10 +85,10 @@ public class CommonProxy {
 		
 		Reciepes.registerReciepes();
 		
-		Configuration c = null;
 		try {
-			c = new Configuration(event.getSuggestedConfigurationFile());
-			Config.init(c);
+			File configFolder=new File(event.getModConfigurationDirectory(), Main.MODID);
+			configFolder.mkdirs();
+			Config.init(configFolder);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

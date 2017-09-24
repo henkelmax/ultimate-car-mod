@@ -26,7 +26,7 @@ public class ConfigEvents {
 		EntityPlayerMP player=(EntityPlayerMP) e;
 		
 		if(player.mcServer.isSinglePlayer()){
-			Config.init(Config.config);
+			return;
 		}
 		
 		CommonProxy.simpleNetworkWrapper.sendTo(new MessageSyncConfig(Config.carGroundSpeed, Config.carStepHeight), player);

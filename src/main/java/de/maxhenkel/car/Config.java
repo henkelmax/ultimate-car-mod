@@ -1,16 +1,20 @@
 package de.maxhenkel.car;
 
+import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import de.maxhenkel.car.fluids.ModFluids;
+import de.maxhenkel.car.registries.GeneratorRecipe;
 import de.maxhenkel.tools.ConfigTools;
 import de.maxhenkel.tools.FluidSelector;
+import de.maxhenkel.tools.json.JSONArray;
+import de.maxhenkel.tools.json.JSONObject;
+import de.maxhenkel.tools.json.JsonConfig;
 import net.minecraftforge.common.config.Configuration;
 
 public class Config {
 
+	public static File configFolder;
 	public static Configuration config;
 	
 	public static int backmixReactorEnergyStorage=10000;
@@ -45,7 +49,7 @@ public class Config {
 	
 	public static int generatorEnergyStorage=30000;
 	public static int generatorFluidStorage=3000;
-	public static Map<FluidSelector, Integer> generationFactors=new HashMap<FluidSelector, Integer>();
+	//public static Map<FluidSelector, Integer> generationFactors=new HashMap<FluidSelector, Integer>();
 	
 	public static int splitTankFluidStorage=3000;
 	public static int splitTankGeneratingTime=800;
@@ -63,10 +67,39 @@ public class Config {
 	public static boolean carGroundSpeed;
 	public static float carStepHeight;
 	public static List<FluidSelector> validCarFuels=new ArrayList<FluidSelector>();
-	
-	public static void init(Configuration config){
-		Config.config=config;
+
+	public static void init(File configFolder){
+		Config.configFolder=configFolder;
+		Config.config=new Configuration(new File(configFolder, "main.cfg"));
 		
+		initMain();
+		initGenerator();
+	}
+	
+	private static void initGenerator(){
+		JsonConfig cfg=new JsonConfig(new File(configFolder, "generator.json"));
+		JSONArray arr=new JSONArray();
+		arr.put(new JSONObject().put("fluid", new FluidSelector(ModFluids.BIO_DIESEL).toString()).put("energy", 500));
+		JSONArray fluids=cfg.getJsonArray("generator_fluids", arr);
+		
+		for(int i=0; i<fluids.length(); i++){
+			JSONObject obj=fluids.getJSONObject(i);
+			if(obj==null){
+				continue;
+			}
+			
+			FluidSelector sel=FluidSelector.fromString(obj.getString("fluid"));
+			int amount=obj.getInt("energy");
+			if(sel==null||amount<=0){
+				continue;
+			}
+			
+			GeneratorRecipe.REGISTRY.register(new GeneratorRecipe(sel, amount).setRegistryName(sel.toString()));
+		}
+		
+	}
+	
+	private static void initMain(){
 		backmixReactorEnergyStorage=config.getInt("backmix_reactor_energy_storage", "machines.backmix_reactor", 10000, 100, Short.MAX_VALUE, "");
 		backmixReactorEnergyUsage=config.getInt("backmix_reactor_energy_usage", "machines.backmix_reactor", 10, 1, Short.MAX_VALUE, "");
 		backmixReactorFluidStorage=config.getInt("backmix_reactor_fluid_storage", "machines.backmix_reactor", 3000, 1000, Short.MAX_VALUE, "");
@@ -101,10 +134,6 @@ public class Config {
 		//Generator
 		generatorEnergyStorage=config.getInt("generator_energy_storage", "machines.generator", 30000, 1000, Short.MAX_VALUE, "");
 		generatorFluidStorage=config.getInt("generator_fluid_storage", "machines.generator", 3000, 1000, Short.MAX_VALUE, "");
-		
-		Map<FluidSelector, Integer> def=new HashMap<FluidSelector, Integer>();
-		def.put(new FluidSelector(ModFluids.BIO_DIESEL), 500);
-		generationFactors=ConfigTools.getFluidMap(config, "generator_fluid_generation_factors", "machines.generator", "The amount of energy produced by the fluid for the generator", def);
 		
 		//Split Tank
 		splitTankFluidStorage=config.getInt("split_tank_fluid_storage", "machines.split_tank", 3000, 1000, Short.MAX_VALUE, "");

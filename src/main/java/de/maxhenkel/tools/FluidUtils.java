@@ -1,11 +1,7 @@
 package de.maxhenkel.tools;
 
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-
 import javax.annotation.Nullable;
-import de.maxhenkel.car.Config;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
@@ -20,20 +16,6 @@ public class FluidUtils {
 		}
 		
 		return false;
-	}
-	
-	public static boolean isFluidGeneratable(Fluid fluid) {
-		return getInt(Config.generationFactors, fluid)>0;
-	}
-	
-	public static int getInt(Map<FluidSelector, Integer> map, Fluid fluid){
-		for(Entry<FluidSelector, Integer> entry:map.entrySet()){
-			if(entry.getKey().isValid(fluid)){
-				return entry.getValue();
-			}
-		}
-		
-		return 0;
 	}
 
 	@Nullable

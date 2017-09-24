@@ -3,10 +3,10 @@ package de.maxhenkel.car.blocks.tileentity;
 import cofh.api.energy.IEnergyProvider;
 import cofh.api.energy.IEnergyReceiver;
 import de.maxhenkel.car.Config;
-import de.maxhenkel.tools.FluidUtils;
 import de.maxhenkel.car.blocks.BlockGui;
 import de.maxhenkel.car.blocks.ModBlocks;
 import de.maxhenkel.car.energy.EnergyUtil;
+import de.maxhenkel.car.registries.GeneratorRecipe;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -58,9 +58,9 @@ public class TileEntityGenerator extends TileEntityBase
 		}
 
 		if (currentFluid != null && currentMillibuckets > 0
-				&& (storedEnergy + FluidUtils.getInt(Config.generationFactors, currentFluid)) <= maxStorage) {
+				&& (storedEnergy + getCurrentGenerationFactor()) <= maxStorage) {
 			currentMillibuckets--;
-			storedEnergy += FluidUtils.getInt(Config.generationFactors, currentFluid);
+			storedEnergy += getCurrentGenerationFactor();
 
 			if (currentMillibuckets <= 0) {
 				currentMillibuckets = 0;
@@ -80,6 +80,24 @@ public class TileEntityGenerator extends TileEntityBase
 		handlePushEnergy();
 		markDirty();
 	}
+	
+	public int getCurrentGenerationFactor(Fluid f){
+		for(GeneratorRecipe recipe:GeneratorRecipe.REGISTRY){
+			if(recipe.getInput().isValid(f)){
+				return recipe.getEnergy();
+			}
+		}
+		
+		return 0;
+	}
+	
+	public int getCurrentGenerationFactor(){
+		return getCurrentGenerationFactor(currentFluid);
+	}
+	
+	public boolean isValidFuel(Fluid f){
+		return getCurrentGenerationFactor(f)>0;
+	}
 
 	private void handlePushEnergy() {
 		for (EnumFacing side : EnumFacing.values()) {
@@ -96,7 +114,7 @@ public class TileEntityGenerator extends TileEntityBase
 	}
 
 	public boolean isEnabled() {
-		int fuelGen = FluidUtils.getInt(Config.generationFactors, currentFluid);
+		int fuelGen = getCurrentGenerationFactor();
 		if (currentMillibuckets > 0 && storedEnergy + fuelGen < maxStorage) {
 			return true;
 		}
@@ -217,7 +235,7 @@ public class TileEntityGenerator extends TileEntityBase
 
 			@Override
 			public boolean canFillFluidType(FluidStack fluidStack) {
-				if (FluidUtils.isFluidGeneratable(fluidStack.getFluid())
+				if (isValidFuel(fluidStack.getFluid())
 						&& (currentFluid == null || currentFluid.equals(fluidStack.getFluid()))) {
 					return true;
 				}
@@ -244,7 +262,7 @@ public class TileEntityGenerator extends TileEntityBase
 	@Override
 	public int fill(FluidStack resource, boolean doFill) {
 
-		if ((currentFluid == null && FluidUtils.isFluidGeneratable(resource.getFluid()))
+		if ((currentFluid == null && isValidFuel(resource.getFluid()))
 				|| resource.getFluid().equals(currentFluid)) {
 			int amount = Math.min(maxMillibuckets - currentMillibuckets, resource.amount);
 			if (doFill) {
