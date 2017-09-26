@@ -37,7 +37,7 @@ public class RenderEvents {
 
 		if (player.equals(car.getDriver())) {
 			evt.setCanceled(true);
-			renderFuelBar(((float)car.getFuel()) / ((float)car.getMaxFuel()));
+			renderFuelBar(((float)car.getFuelAmount()) / ((float)car.getMaxFuel()));
 			renderSpeed(car.getKilometerPerHour());
 		}
 

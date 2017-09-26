@@ -1,11 +1,9 @@
 package de.maxhenkel.car.entity.car;
 
-import de.maxhenkel.car.Config;
 import de.maxhenkel.car.entity.car.base.EntityCarLockBase;
 import de.maxhenkel.car.reciepe.CarBuilderSport;
 import de.maxhenkel.car.reciepe.ICarbuilder;
 import de.maxhenkel.car.sounds.ModSounds;
-import de.maxhenkel.tools.FluidUtils;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
@@ -15,7 +13,6 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
-import net.minecraftforge.fluids.Fluid;
 
 public class EntityCarSport extends EntityCarLockBase{
 
@@ -48,11 +45,6 @@ public class EntityCarSport extends EntityCarLockBase{
 		return new TextComponentTranslation("entity.car_sport.name");
 	}
 	
-	@Override
-	public boolean isValidFuel(Fluid fluid) {
-		return FluidUtils.containsFluid(Config.validCarFuels, fluid);
-	}
-
 	@Override
 	public ICarbuilder getBuilder() {
 		return new CarBuilderSport(getType());

@@ -1,10 +1,8 @@
 package de.maxhenkel.car.entity.car;
 
-import de.maxhenkel.car.Config;
 import de.maxhenkel.car.entity.car.base.EntityCarLockBase;
 import de.maxhenkel.car.reciepe.CarBuilderTransporter;
 import de.maxhenkel.car.reciepe.ICarbuilder;
-import de.maxhenkel.tools.FluidUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.item.EnumDyeColor;
@@ -15,7 +13,6 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
-import net.minecraftforge.fluids.Fluid;
 
 public class EntityCarTransporter extends EntityCarLockBase{
 	
@@ -54,11 +51,6 @@ public class EntityCarTransporter extends EntityCarLockBase{
 	@Override
 	public ITextComponent getCarName() {
 		return new TextComponentTranslation("entity.car_transporter.name");
-	}
-	
-	@Override
-	public boolean isValidFuel(Fluid fluid) {
-		return FluidUtils.containsFluid(Config.validCarFuels, fluid);
 	}
 
 	@Override

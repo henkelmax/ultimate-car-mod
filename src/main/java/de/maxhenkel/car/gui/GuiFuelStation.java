@@ -94,24 +94,31 @@ public class GuiFuelStation extends GuiContainer {
 	}
 
 	private void drawCarFuel(EntityCarFuelBase car) {
-		String fuelText;
 		if (car == null) {
-			fuelText = new TextComponentTranslation("fuelstation.fuel", INFO_COLOR + "-", INFO_COLOR + "-")
-					.getFormattedText();
+			String empty = new TextComponentTranslation("fuelstation.fuel_empty").getFormattedText();
+			fontRendererObj.drawString(empty, (width / 2) - 10, guiTop + 50, FONT_COLOR);
+			return;
 		} else {
-			fuelText = new TextComponentTranslation("fuelstation.fuel",
-					INFO_COLOR + String.valueOf(MathTools.round(car.getFuel(), 2)),
+			String fuelText = new TextComponentTranslation("fuelstation.car_fuel_amount",
+					INFO_COLOR + String.valueOf(MathTools.round(car.getFuelAmount(), 2)),
 					INFO_COLOR + String.valueOf(MathTools.round(car.getMaxFuel(), 2))).getFormattedText();
+			fontRendererObj.drawString(fuelText, (width / 2) - 10, guiTop + 50, FONT_COLOR);
 		}
 
-		fontRendererObj.drawString(fuelText, (width / 2) - 10, guiTop + 50, FONT_COLOR);
+		if(car.getFluid()==null){
+			//TODO 
+			return;
+		}else {
+			String typeText = new TextComponentTranslation("fuelstation.car_fuel_type", INFO_COLOR +car.getFluid().getLocalizedName(new FluidStack(car.getFluid(), 1))).getFormattedText();
+			fontRendererObj.drawString(typeText, (width / 2) - 10, guiTop + 60, FONT_COLOR);
+		}
 	}
 
 	private void drawRefueled() {
 		String refueledText = new TextComponentTranslation("fuelstation.refueled",
 				INFO_COLOR + String.valueOf(MathTools.round(fuelStation.getField(0), 2))).getFormattedText();
 
-		fontRendererObj.drawString(refueledText, (width / 2) - 10, guiTop + 60, FONT_COLOR);
+		fontRendererObj.drawString(refueledText, (width / 2) - 10, guiTop + 80, FONT_COLOR);
 	}
 
 	private void drawBuffer() {
@@ -119,25 +126,28 @@ public class GuiFuelStation extends GuiContainer {
 
 		if (stack == null) {
 
-			String bufferText = new TextComponentTranslation("fuelstation.fuel_buffer_empty").getFormattedText();
+			String bufferText = new TextComponentTranslation("fuelstation.fuel_empty").getFormattedText();
 
-			fontRendererObj.drawString(bufferText, (width / 2) - 10, guiTop + 70, FONT_COLOR);
+			fontRendererObj.drawString(bufferText, (width / 2) - 10, guiTop + 90, FONT_COLOR);
 
 			return;
 		}
 
 		int amount = fuelStation.getField(1);
-		String fluidName = stack.getLocalizedName();
+		
+		String amountText = new TextComponentTranslation("fuelstation.fuel_buffer_amount",
+				INFO_COLOR + String.valueOf(amount), INFO_COLOR + String.valueOf(fuelStation.maxStorageAmount)).getFormattedText();
 
-		String bufferText = new TextComponentTranslation("fuelstation.fuel_buffer_fuel", INFO_COLOR + fluidName)
+		fontRendererObj.drawString(amountText, (width / 2) - 10, guiTop + 90, FONT_COLOR);
+		
+		String fluidName = stack.getLocalizedName();
+		
+		String bufferText = new TextComponentTranslation("fuelstation.fuel_buffer_type", INFO_COLOR + fluidName)
 				.getFormattedText();
 
-		fontRendererObj.drawString(bufferText, (width / 2) - 10, guiTop + 70, FONT_COLOR);
+		fontRendererObj.drawString(bufferText, (width / 2) - 10, guiTop + 100, FONT_COLOR);
 
-		String amountText = new TextComponentTranslation("fuelstation.fuel_buffer_amount",
-				INFO_COLOR + String.valueOf(amount)).getFormattedText();
-
-		fontRendererObj.drawString(amountText, (width / 2) - 10, guiTop + 80, FONT_COLOR);
+		
 	}
 
 	@Override

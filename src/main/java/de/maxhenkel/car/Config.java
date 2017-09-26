@@ -1,13 +1,10 @@
 package de.maxhenkel.car;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 import de.maxhenkel.car.fluids.ModFluids;
 import de.maxhenkel.car.registries.CarFluid;
 import de.maxhenkel.car.registries.FuelStationFluid;
 import de.maxhenkel.car.registries.GeneratorRecipe;
-import de.maxhenkel.tools.ConfigTools;
 import de.maxhenkel.tools.FluidSelector;
 import de.maxhenkel.tools.json.JSONArray;
 import de.maxhenkel.tools.json.JSONObject;
@@ -66,7 +63,6 @@ public class Config {
 	public static boolean thirdPersonEnter;
 	public static boolean carGroundSpeed;
 	public static float carStepHeight;
-	public static List<FluidSelector> validCarFuels=new ArrayList<FluidSelector>();
 
 	public static void init(File configFolder){
 		Config.configFolder=configFolder;
@@ -141,7 +137,7 @@ public class Config {
 					continue;
 				}
 				
-				CarFluid.REGISTRY.register(new CarFluid(carID, sel, efficiency).setRegistryName(carID));
+				CarFluid.REGISTRY.register(new CarFluid(carID, sel, efficiency).setRegistryName(carID +"_" +sel.getFluid().getName()));
 			}
 		}
 		
@@ -226,7 +222,6 @@ public class Config {
 		
 		carStepHeight=config.getFloat("car_step_height", "car", 0.6F, 0.1F, 128F, "The height a car can drive up");
 
-		validCarFuels=ConfigTools.getFluidList(config, "valid_car_fuels", "car", "The fluids all cars drive with", new FluidSelector[]{new FluidSelector(ModFluids.BIO_DIESEL)});
 		config.save();
 	}
 	

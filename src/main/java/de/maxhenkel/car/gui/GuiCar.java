@@ -43,7 +43,7 @@ public class GuiCar extends GuiContainer{
 	}
 	
 	public double getFuelPercent(){
-		float fuelPerc=((float)car.getFuel())/((float)car.getMaxFuel())*100F;
+		float fuelPerc=((float)car.getFuelAmount())/((float)car.getMaxFuel())*100F;
 		return MathTools.round(fuelPerc, 2);
 	}
 	

@@ -12,6 +12,7 @@ import com.google.gson.JsonParser;
 
 import net.minecraftforge.common.config.Configuration;
 
+@Deprecated
 public class ConfigTools {
 
 	public static List<ItemStackSelector> getStackList(Configuration config, String name, String category,

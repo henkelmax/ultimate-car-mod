@@ -1,6 +1,8 @@
 package de.maxhenkel.car.entity.car.base;
 
+import javax.annotation.Nullable;
 import de.maxhenkel.car.fluids.ModFluids;
+import de.maxhenkel.car.registries.CarFluid;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
@@ -8,14 +10,17 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
 
 public abstract class EntityCarFuelBase extends EntityCarDamageBase implements IFluidHandler{
 
-	private static final DataParameter<Integer> FUEL = EntityDataManager.<Integer>createKey(EntityCarFuelBase.class,
+	private static final DataParameter<Integer> FUEL_AMOUNT = EntityDataManager.<Integer>createKey(EntityCarFuelBase.class,
 			DataSerializers.VARINT);
+	private static final DataParameter<String> FUEL_TYPE = EntityDataManager.<String>createKey(EntityCarFuelBase.class,
+			DataSerializers.STRING);
 	
 	protected int millibucketsPerFuelTick = 1;
 	protected int millibucketsPerIdleFuelTick = 1;
@@ -36,7 +41,7 @@ public abstract class EntityCarFuelBase extends EntityCarDamageBase implements I
 	}
 	
 	protected void fuelTick(){
-		float fuel=getFuel();
+		float fuel=getFuelAmount();
 		
 		if (fuel > 0 && isAccelerating()) {
 			if(ticksExisted%fuelTick==0){
@@ -58,19 +63,19 @@ public abstract class EntityCarFuelBase extends EntityCarDamageBase implements I
 	}
 	
 	private void removeFuel(int amount){
-		int fuel=getFuel();
+		int fuel=getFuelAmount();
 		int newFuel = fuel - amount;
 		if (newFuel <= 0) {
-			setFuel(0);
+			setFuelAmount(0);
 		} else {
-			setFuel(newFuel);
+			setFuelAmount(newFuel);
 		}
 	}
 
 	@Override
 	public boolean canPlayerDriveCar(EntityPlayer player) {
 
-		if (getFuel() <= 0) {
+		if (getFuelAmount() <= 0) {
 			return false;
 		}
 
@@ -79,7 +84,7 @@ public abstract class EntityCarFuelBase extends EntityCarDamageBase implements I
 	
 	@Override
 	public boolean canStartCarEngine(EntityPlayer player) {
-		if(getFuel()<=0){
+		if(getFuelAmount()<=0){
 			return false;
 		}
 		
@@ -87,7 +92,7 @@ public abstract class EntityCarFuelBase extends EntityCarDamageBase implements I
 	}
 	
 	public boolean canEngineStayOn(){
-		if(getFuel()<=0){
+		if(getFuelAmount()<=0){
 			return false;
 		}
 		
@@ -97,34 +102,68 @@ public abstract class EntityCarFuelBase extends EntityCarDamageBase implements I
 	@Override
 	protected void entityInit() {
 		super.entityInit();
-		this.dataManager.register(FUEL, Integer.valueOf(0));
+		this.dataManager.register(FUEL_AMOUNT, Integer.valueOf(0));
+		this.dataManager.register(FUEL_TYPE, new String());
 	}
 
-	public void setFuel(int fuel) {
-		this.dataManager.set(FUEL, Integer.valueOf(fuel));
-		//System.out.println("Set: " +fuel +"  remote: " +world.isRemote);
+	public void setFuelAmount(int fuel) {
+		this.dataManager.set(FUEL_AMOUNT, Integer.valueOf(fuel));
+	}
+	
+	public void setFuelType(String fluid) {
+		this.dataManager.set(FUEL_TYPE, fluid);
+	}
+	
+	public void setFuelType(Fluid fluid) {
+		this.dataManager.set(FUEL_TYPE, fluid.getName());
 	}
 
-	public int getFuel() {
-		return this.dataManager.get(FUEL);
+	public String getFuelType() {
+		return this.dataManager.get(FUEL_TYPE);
+	}
+	
+	@Nullable
+	public Fluid getFluid(){
+		return FluidRegistry.getFluid(getFuelType());
+	}
+	
+	public int getFuelAmount() {
+		return this.dataManager.get(FUEL_AMOUNT);
 	}
 
 	public int getMaxFuel() {
 		return maxFuel;
 	}
 	
-	public abstract boolean isValidFuel(Fluid fluid);
+	public boolean isValidFuel(Fluid fluid){
+		return getEfficiency(fluid)>0D;
+	}
+	
+	public double getEfficiency(Fluid fluid){
+		for(CarFluid cf:CarFluid.REGISTRY){
+			if(cf.getInput().isValid(fluid)){
+				return cf.getEfficiency();
+			}
+		}
+		return 0D;
+	}
 	
 	@Override
 	protected void writeEntityToNBT(NBTTagCompound compound) {
 		super.writeEntityToNBT(compound);
-		compound.setInteger("fuel", getFuel());
+		compound.setInteger("fuel", getFuelAmount());
+		compound.setString("fuel_type", getFuelType());
 	}
 	
 	@Override
 	protected void readEntityFromNBT(NBTTagCompound compound) {
 		super.readEntityFromNBT(compound);
-		setFuel(compound.getInteger("fuel"));
+		setFuelAmount(compound.getInteger("fuel"));
+		if(compound.hasKey("fuel_type")){
+			setFuelType(compound.getString("fuel_type"));
+		}else{
+			setFuelType(ModFluids.BIO_DIESEL.getName());
+		}
 	}
 	
 	@Override
@@ -133,7 +172,12 @@ public abstract class EntityCarFuelBase extends EntityCarDamageBase implements I
 			
 			@Override
 			public FluidStack getContents() {
-				return new FluidStack(ModFluids.BIO_DIESEL, getFuel());
+				Fluid f=getFluid();
+				if(f==null){
+					return new FluidStack(ModFluids.BIO_DIESEL, getFuelAmount());
+				}else{
+					return new FluidStack(f, getFuelAmount());
+				}
 			}
 			
 			@Override
@@ -170,14 +214,19 @@ public abstract class EntityCarFuelBase extends EntityCarDamageBase implements I
 			return 0;
 		}
 		
-		int amount=Math.min(resource.amount, maxFuel-getFuel());
+		if(getFluid()!=null&&getFuelAmount()>0&&!resource.getFluid().equals(getFluid())){
+			return 0;
+		}
+		
+		int amount=Math.min(resource.amount, maxFuel-getFuelAmount());
 		
 		if(doFill){
-			int i=getFuel()+amount;
+			int i=getFuelAmount()+amount;
 			if(i>maxFuel){
 				i=maxFuel;
 			}
-			setFuel(i);
+			setFuelAmount(i);
+			setFuelType(resource.getFluid());
 		}
 		
 		return amount;

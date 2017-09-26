@@ -19,7 +19,7 @@ public class CarBuilderTransporter implements ICarbuilder{
 	@Override
 	public EntityCarBase build(World world) {
 		EntityCarTransporter car=new EntityCarTransporter(world, hasContainer, color);
-		car.setFuel(100);
+		car.setFuelAmount(100);
 		car.setInventorySlotContents(0, ItemKey.getKeyForCar(car.getUniqueID()));
 		car.setInventorySlotContents(1, ItemKey.getKeyForCar(car.getUniqueID()));
 		return car;
