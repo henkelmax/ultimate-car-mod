@@ -188,19 +188,8 @@ entity.car.car_transporter.name=Transporter
 entity.car_sport.name=Sportscar
 entity.car.car_sport.name=Sportscar
 
-entity.car_wood_oak.name=Oak Wood Car
-entity.car_wood_birch.name=Birch Wood Car
-entity.car_wood_spruce.name=Spruce Wood Car
-entity.car_wood_jungle.name=Jungle Wood Car
-entity.car_wood_acacia.name=Acacia Wood Car
-entity.car_wood_dark_oak.name=Dark Oak Wood Car
-
-entity.car.car_wood_oak.name=Oak Wood Car
-entity.car.car_wood_birch.name=Birch Wood Car
-entity.car.car_wood_spruce.name=Spruce Wood Car
-entity.car.car_wood_jungle.name=Jungle Wood Car
-entity.car.car_wood_acacia.name=Acacia Wood Car
-entity.car.car_wood_dark_oak.name=Dark Oak Wood Car
+entity.car_wood.name=Wood Car
+entity.car.car_wood.name=Wood Car
 
 
 

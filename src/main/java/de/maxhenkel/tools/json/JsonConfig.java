@@ -91,6 +91,22 @@ public class JsonConfig {
 
 		return o;
 	}
+	
+	public JSONObject getJsonObject(String key, JSONObject defValue) {
+		JSONObject o = null;
+
+		try {
+			o = jsonObject.getJSONObject(key);
+		} catch (JSONException e) {
+		}
+
+		if (o == null) {
+			put(key, defValue);
+			return defValue;
+		}
+
+		return o;
+	}
 
 	public int getInt(String key, int defValue) {
 		try {

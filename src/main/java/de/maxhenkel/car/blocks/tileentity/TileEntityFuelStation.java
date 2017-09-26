@@ -1,14 +1,13 @@
 package de.maxhenkel.car.blocks.tileentity;
 
 import java.util.List;
-
 import de.maxhenkel.car.Config;
-import de.maxhenkel.tools.FluidUtils;
 import de.maxhenkel.car.blocks.BlockFuelStation;
 import de.maxhenkel.car.blocks.ModBlocks;
 import de.maxhenkel.car.entity.car.base.EntityCarFuelBase;
 import de.maxhenkel.car.net.MessageStartFuel;
 import de.maxhenkel.car.proxy.CommonProxy;
+import de.maxhenkel.car.registries.FuelStationFluid;
 import de.maxhenkel.car.sounds.ModSounds;
 import de.maxhenkel.car.sounds.SoundLoopTileentity;
 import de.maxhenkel.car.sounds.SoundLoopTileentity.ISoundLoopable;
@@ -96,6 +95,16 @@ public class TileEntityFuelStation extends TileEntityBase implements ITickable, 
 			}
 			wasFueling=false;
 		}
+	}
+	
+	public boolean isValidFluid(Fluid f){
+		for(FuelStationFluid recipe:FuelStationFluid.REGISTRY){
+			if(recipe.getInput().isValid(f)){
+				return true;
+			}
+		}
+		
+		return false;
 	}
 	
 	@Override
@@ -276,7 +285,7 @@ public class TileEntityFuelStation extends TileEntityBase implements ITickable, 
 			
 			@Override
 			public boolean canFillFluidType(FluidStack fluidStack) {
-				return FluidUtils.containsFluid(Config.validFuelStationFluids, fluidStack.getFluid());
+				return isValidFluid(fluidStack.getFluid());
 			}
 			
 			@Override
@@ -298,7 +307,7 @@ public class TileEntityFuelStation extends TileEntityBase implements ITickable, 
 
 	@Override
 	public int fill(FluidStack resource, boolean doFill) {
-		if(!FluidUtils.containsFluid(Config.validFuelStationFluids, resource.getFluid())){
+		if(!isValidFluid(resource.getFluid())){
 			return 0;
 		}
 		

@@ -7,6 +7,7 @@ import net.minecraftforge.fml.common.registry.IForgeRegistry;
 import net.minecraftforge.fml.common.registry.IForgeRegistryEntry;
 import net.minecraftforge.fml.common.registry.RegistryBuilder;
 
+@Deprecated
 public class OilMillRecipe extends IForgeRegistryEntry.Impl<OilMillRecipe>{
 
 	public static final IForgeRegistry<OilMillRecipe> REGISTRY=new RegistryBuilder<OilMillRecipe>().create();

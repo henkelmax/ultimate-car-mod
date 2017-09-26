@@ -37,7 +37,7 @@ public class EntityCarWood extends EntityCarLockBase{
 
 	@Override
 	public ITextComponent getCarName() {
-		return new TextComponentTranslation("entity.car_wood_" +getType().getName() +".name");
+		return new TextComponentTranslation("entity.car_wood.name");
 	}
 	
 	@Override
@@ -74,6 +74,11 @@ public class EntityCarWood extends EntityCarLockBase{
 	@Override
 	public ICarbuilder getBuilder() {
 		return new CarBuilderWoodCar(getType());
+	}
+
+	@Override
+	public String getID() {
+		return "car_wood";
 	}
 
 	

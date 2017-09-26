@@ -132,5 +132,10 @@ public class EntityCarTransporter extends EntityCarLockBase{
 	public ICarbuilder getBuilder() {
 		return new CarBuilderTransporter(getHasContainer(), getType());
 	}
+
+	@Override
+	public String getID() {
+		return "car_transporter";
+	}
 	
 }

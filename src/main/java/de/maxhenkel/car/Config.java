@@ -4,6 +4,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import de.maxhenkel.car.fluids.ModFluids;
+import de.maxhenkel.car.registries.CarFluid;
+import de.maxhenkel.car.registries.FuelStationFluid;
 import de.maxhenkel.car.registries.GeneratorRecipe;
 import de.maxhenkel.tools.ConfigTools;
 import de.maxhenkel.tools.FluidSelector;
@@ -45,11 +47,9 @@ public class Config {
 	public static int fluidExtractorDrainSpeed=25;
 	
 	public static int fuelStationTransferRate=5;
-	public static List<FluidSelector> validFuelStationFluids=new ArrayList<FluidSelector>();
 	
 	public static int generatorEnergyStorage=30000;
 	public static int generatorFluidStorage=3000;
-	//public static Map<FluidSelector, Integer> generationFactors=new HashMap<FluidSelector, Integer>();
 	
 	public static int splitTankFluidStorage=3000;
 	public static int splitTankGeneratingTime=800;
@@ -74,6 +74,9 @@ public class Config {
 		
 		initMain();
 		initGenerator();
+		initFuelStation();
+		initCar();
+		
 	}
 	
 	private static void initGenerator(){
@@ -95,6 +98,73 @@ public class Config {
 			}
 			
 			GeneratorRecipe.REGISTRY.register(new GeneratorRecipe(sel, amount).setRegistryName(sel.toString()));
+		}
+		
+	}
+	
+	private static void initCar(){
+		JsonConfig cfg=new JsonConfig(new File(configFolder, "car.json"));
+		JSONArray arr=new JSONArray();
+		
+		arr.put(new JSONObject().put("id", "car_wood").put("fluids", new JSONArray().put(new JSONObject().put("fluid", new FluidSelector(ModFluids.BIO_DIESEL).toString()).put("efficiency", 1.0))));
+		arr.put(new JSONObject().put("id", "car_big_wood").put("fluids", new JSONArray().put(new JSONObject().put("fluid", new FluidSelector(ModFluids.BIO_DIESEL).toString()).put("efficiency", 1.0))));
+		arr.put(new JSONObject().put("id", "car_transporter").put("fluids", new JSONArray().put(new JSONObject().put("fluid", new FluidSelector(ModFluids.BIO_DIESEL).toString()).put("efficiency", 1.0))));
+		arr.put(new JSONObject().put("id", "car_sport").put("fluids", new JSONArray().put(new JSONObject().put("fluid", new FluidSelector(ModFluids.BIO_DIESEL).toString()).put("efficiency", 1.0))));
+		
+		JSONArray cars=cfg.getJsonArray("car_fluids", arr);
+		
+		for(int i=0; i<cars.length(); i++){
+			JSONObject car=cars.getJSONObject(i);
+			if(car==null){
+				continue;
+			}
+			
+			String carID=car.getString("id");
+			
+			if(carID==null){
+				continue;
+			}
+			
+			JSONArray fluids=car.getJSONArray("fluids");
+			
+			if(fluids==null){
+				continue;
+			}
+			for(int j=0; j<fluids.length(); j++){
+				JSONObject jo=fluids.getJSONObject(j);
+				if(jo==null){
+					continue;
+				}
+				FluidSelector sel=FluidSelector.fromString(jo.getString("fluid"));
+				double efficiency=jo.getDouble("efficiency");
+				if(sel==null||efficiency<=0.0){
+					continue;
+				}
+				
+				CarFluid.REGISTRY.register(new CarFluid(carID, sel, efficiency).setRegistryName(carID));
+			}
+		}
+		
+	}
+	
+	private static void initFuelStation(){
+		JsonConfig cfg=new JsonConfig(new File(configFolder, "fuel_station.json"));
+		JSONArray arr=new JSONArray();
+		arr.put(ModFluids.BIO_DIESEL.getName());
+		JSONArray fluids=cfg.getJsonArray("valid_fluids", arr);
+		
+		for(int i=0; i<fluids.length(); i++){
+			String str=fluids.getString(i);
+			if(str==null){
+				continue;
+			}
+			
+			FluidSelector sel=FluidSelector.fromString(str);
+			if(sel==null){
+				continue;
+			}
+			
+			FuelStationFluid.REGISTRY.register(new FuelStationFluid(sel).setRegistryName(sel.toString()));
 		}
 		
 	}
@@ -129,7 +199,6 @@ public class Config {
 		
 		//Fuel Station
 		fuelStationTransferRate=config.getInt("fuel_station_transfer_rate", "machines.fuel_station", 5, 1, Short.MAX_VALUE, "");
-		validFuelStationFluids=ConfigTools.getFluidList(config, "fuel_station_valid_fluids", "machines.fuel_station", "", new FluidSelector[]{new FluidSelector(ModFluids.BIO_DIESEL)});
 		
 		//Generator
 		generatorEnergyStorage=config.getInt("generator_energy_storage", "machines.generator", 30000, 1000, Short.MAX_VALUE, "");

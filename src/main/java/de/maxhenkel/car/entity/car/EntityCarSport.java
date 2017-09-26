@@ -113,5 +113,10 @@ public class EntityCarSport extends EntityCarLockBase{
 	public int getStartSoundTime() {
 		return 1000;
 	}
+
+	@Override
+	public String getID() {
+		return "car_sport";
+	}
 	
 }

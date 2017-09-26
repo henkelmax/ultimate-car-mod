@@ -96,4 +96,9 @@ public class EntityCarBigWood extends EntityCarLockBase{
 	public ICarbuilder getBuilder() {
 		return new CarBuilderWoodCarBig(getType());
 	}
+
+	@Override
+	public String getID() {
+		return "car_big_wood";
+	}
 }

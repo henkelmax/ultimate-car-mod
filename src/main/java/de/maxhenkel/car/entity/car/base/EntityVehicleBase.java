@@ -249,5 +249,7 @@ public abstract class EntityVehicleBase extends Entity{
 	public boolean doesEnterThirdPerson(){
 		return true;
 	}
+	
+	public abstract String getID();
 
 }
