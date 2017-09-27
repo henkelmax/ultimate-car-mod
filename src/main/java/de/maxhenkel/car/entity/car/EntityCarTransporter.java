@@ -29,7 +29,6 @@ public class EntityCarTransporter extends EntityCarLockBase{
 	public EntityCarTransporter(World worldIn, boolean hasContainer, EnumDyeColor color) {
 		super(worldIn);
 		setSize(2.0F, 1.51F);
-		fuelTick=30;
 		maxFuel=2000;
 		maxSpeed=0.4F;
 		setHasContainer(hasContainer);

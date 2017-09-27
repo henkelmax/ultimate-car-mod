@@ -26,7 +26,6 @@ public class EntityCarBigWood extends EntityCarLockBase{
 		super(worldIn);
 		setType(type);
 		setSize(1.5F, 1.6F);
-		fuelTick=20;
 		maxFuel=1500;
 		maxSpeed=0.48F;
 	}

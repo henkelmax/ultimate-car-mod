@@ -102,10 +102,10 @@ public class Config {
 		JsonConfig cfg=new JsonConfig(new File(configFolder, "car.json"));
 		JSONArray arr=new JSONArray();
 		
-		arr.put(new JSONObject().put("id", "car_wood").put("fluids", new JSONArray().put(new JSONObject().put("fluid", new FluidSelector(ModFluids.BIO_DIESEL).toString()).put("efficiency", 1.0))));
-		arr.put(new JSONObject().put("id", "car_big_wood").put("fluids", new JSONArray().put(new JSONObject().put("fluid", new FluidSelector(ModFluids.BIO_DIESEL).toString()).put("efficiency", 1.0))));
-		arr.put(new JSONObject().put("id", "car_transporter").put("fluids", new JSONArray().put(new JSONObject().put("fluid", new FluidSelector(ModFluids.BIO_DIESEL).toString()).put("efficiency", 1.0))));
-		arr.put(new JSONObject().put("id", "car_sport").put("fluids", new JSONArray().put(new JSONObject().put("fluid", new FluidSelector(ModFluids.BIO_DIESEL).toString()).put("efficiency", 1.0))));
+		arr.put(new JSONObject().put("id", "car_wood").put("fluids", new JSONArray().put(new JSONObject().put("fluid", new FluidSelector(ModFluids.BIO_DIESEL).toString()).put("efficiency", 0.3))));
+		arr.put(new JSONObject().put("id", "car_big_wood").put("fluids", new JSONArray().put(new JSONObject().put("fluid", new FluidSelector(ModFluids.BIO_DIESEL).toString()).put("efficiency", 0.2))));
+		arr.put(new JSONObject().put("id", "car_transporter").put("fluids", new JSONArray().put(new JSONObject().put("fluid", new FluidSelector(ModFluids.BIO_DIESEL).toString()).put("efficiency", 0.3))));
+		arr.put(new JSONObject().put("id", "car_sport").put("fluids", new JSONArray().put(new JSONObject().put("fluid", new FluidSelector(ModFluids.BIO_DIESEL).toString()).put("efficiency", 0.12))));
 		
 		JSONArray cars=cfg.getJsonArray("car_fluids", arr);
 		

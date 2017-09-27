@@ -22,10 +22,6 @@ public abstract class EntityCarFuelBase extends EntityCarDamageBase implements I
 	private static final DataParameter<String> FUEL_TYPE = EntityDataManager.<String>createKey(EntityCarFuelBase.class,
 			DataSerializers.STRING);
 	
-	protected int millibucketsPerFuelTick = 1;
-	protected int millibucketsPerIdleFuelTick = 1;
-	protected int fuelTick=30;
-	protected int fuelIdleTick=250;
 	protected int maxFuel=1000;
 
 	public EntityCarFuelBase(World worldIn) {
@@ -40,26 +36,35 @@ public abstract class EntityCarFuelBase extends EntityCarDamageBase implements I
 		fuelTick();
 	}
 	
+	protected int calculateTickFuel(){
+		double efficiency=getEfficiency(getFluid());
+		int ticks=(int)(efficiency*100D);
+		if(ticks<=0){
+			ticks=1;
+		}
+		return ticks;
+	}
+	
 	protected void fuelTick(){
 		float fuel=getFuelAmount();
-		
+		int tickFuel=calculateTickFuel();
 		if (fuel > 0 && isAccelerating()) {
-			if(ticksExisted%fuelTick==0){
+			if(ticksExisted%tickFuel==0){
 				acceleratingFuelTick();
 			}
 		}else if(fuel > 0 && isStarted()){
-			if(ticksExisted%fuelIdleTick==0){
+			if(ticksExisted%(tickFuel*100)==0){
 				idleFuelTick();
 			}
 		}
 	}
 	
 	protected void idleFuelTick(){
-		removeFuel(millibucketsPerIdleFuelTick);
+		removeFuel(1);
 	}
 	
 	protected void acceleratingFuelTick(){
-		removeFuel(millibucketsPerFuelTick);
+		removeFuel(1);
 	}
 	
 	private void removeFuel(int amount){
@@ -140,6 +145,9 @@ public abstract class EntityCarFuelBase extends EntityCarDamageBase implements I
 	}
 	
 	public double getEfficiency(Fluid fluid){
+		if(fluid==null){
+			return 1D;
+		}
 		for(CarFluid cf:CarFluid.REGISTRY){
 			if(cf.getInput().isValid(fluid)){
 				return cf.getEfficiency();
