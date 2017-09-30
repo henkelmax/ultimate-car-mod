@@ -20,4 +20,10 @@ public class TileEntityBase extends TileEntity{
 		}
 	}
 	
+	public void synchronize(int ticks){
+		if(worldObj.getTotalWorldTime()%ticks==0){
+			synchronize();
+		}
+	}
+	
 }

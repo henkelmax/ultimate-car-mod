@@ -51,11 +51,6 @@ public class TileEntityFuelStation extends TileEntityBase implements ITickable, 
 
 	@Override
 	public void update() {
-
-		/*if(world.isRemote){
-			return;
-		}*/
-		
 		EntityCarFuelBase car=getCarInFront();
 		
 		if(car==null){
@@ -80,10 +75,8 @@ public class TileEntityFuelStation extends TileEntityBase implements ITickable, 
 		
 		if(result!=null){
 			fuelCounter+=result.amount;
-			if(worldObj.getTotalWorldTime()%100==0){
-				synchronize();
-			}
-			//synchronize();
+			synchronize(100);
+
 			markDirty();
 			if(!wasFueling){
 				synchronize();
@@ -316,7 +309,7 @@ public class TileEntityFuelStation extends TileEntityBase implements ITickable, 
 
 			if (doFill) {
 				storage = new FluidStack(resource.getFluid(), amount);
-				//synchronize();
+				synchronize();
 				markDirty();
 			}
 
@@ -326,7 +319,6 @@ public class TileEntityFuelStation extends TileEntityBase implements ITickable, 
 
 			if (doFill) {
 				storage.amount += amount;
-				//synchronize();
 				markDirty();
 			}
 
@@ -351,9 +343,9 @@ public class TileEntityFuelStation extends TileEntityBase implements ITickable, 
 				storage.amount -= amount;
 				if (storage.amount <= 0) {
 					storage = null;
+					synchronize();
 				}
 				
-				//synchronize();
 				markDirty();
 			}
 
@@ -377,9 +369,9 @@ public class TileEntityFuelStation extends TileEntityBase implements ITickable, 
 			storage.amount -= amount;
 			if (storage.amount <= 0) {
 				storage = null;
+				synchronize();
 			}
 			
-			//synchronize();
 			markDirty();
 		}
 
