@@ -63,16 +63,43 @@ public class Config {
 	public static boolean thirdPersonEnter;
 	public static boolean carGroundSpeed;
 	public static float carStepHeight;
+	
+	public static boolean tarRecipe=true;
+	public static boolean painterRecipe=true;
+	public static boolean tankRecipe=true;
+	public static boolean carPartsRecipe=true;
+	public static boolean crashBarrierRecipe=true;
+	public static boolean backmixReactorRecipe=true;
+	public static boolean blastFurnaceRecipe=true;
+	public static boolean oilMillRecipe=true;
+	public static boolean cableRecipe=true;
+	public static boolean dynamoRecipe=true;
+	public static boolean fluidExtractorRecipe=true;
+	public static boolean fluidPipeRecipe=true;
+	public static boolean fuelStationRecipe=true;
+	public static boolean generatorRecipe=true;
+	public static boolean splitTankRecipe=true;
+	public static boolean repairKitRecipe=true;
+	public static boolean canisterRecipe=true;
+	public static boolean carWorkshopRecipe=true;
+	public static boolean keyRecipe=true;
+	
+	public static boolean canolaSeedDrop=true;
 
 	public static void init(File configFolder){
 		Config.configFolder=configFolder;
 		Config.config=new Configuration(new File(configFolder, "main.cfg"));
 		
 		initMain();
+	}
+	
+	public static void postInit(){
+		if(configFolder==null){
+			return;
+		}
 		initGenerator();
 		initFuelStation();
 		initCar();
-		
 	}
 	
 	private static void initGenerator(){
@@ -188,6 +215,7 @@ public class Config {
 		
 		cableTransferRate=config.getInt("cable_transfer_rate", "machines.cable", 256, 64, Short.MAX_VALUE, "");
 		
+		dynamoRecipe=config.getBoolean("dynamo_recipe", "machines.dynamo", true, "");
 		dynamoEnergyStorage=config.getInt("dynamo_energy_storage", "machines.dynamo", 1000, 100, Short.MAX_VALUE, "");
 		dynamoEnergyGeneration=config.getInt("dynamo_energy_generation", "machines.dynamo", 25, 1, Short.MAX_VALUE, "");
 		
@@ -222,6 +250,29 @@ public class Config {
 		
 		carStepHeight=config.getFloat("car_step_height", "car", 0.6F, 0.1F, 128F, "The height a car can drive up");
 
+		//Recipes
+		tarRecipe=config.getBoolean("tar_recipe", "recipes", true, "");
+		painterRecipe=config.getBoolean("painter_recipe", "recipes", true, "");
+		tankRecipe=config.getBoolean("painter_recipe", "recipes", true, "");
+		carPartsRecipe=config.getBoolean("car_parts_recipe", "recipes", true, "");
+		crashBarrierRecipe=config.getBoolean("crash_barrier_recipe", "recipes", true, "");
+		backmixReactorRecipe=config.getBoolean("backmix_reactor_recipe", "recipes", true, "");
+		blastFurnaceRecipe=config.getBoolean("blast_furnace_recipe", "recipes", true, "");
+		oilMillRecipe=config.getBoolean("oil_mill_recipe", "recipes", true, "");
+		cableRecipe=config.getBoolean("cable_recipe", "recipes", true, "");
+		dynamoRecipe=config.getBoolean("dynamo_recipe", "recipes", true, "");
+		fluidExtractorRecipe=config.getBoolean("fluid_extractor_recipe", "recipes", true, "");
+		fluidPipeRecipe=config.getBoolean("fluid_pipe_recipe", "recipes", true, "");
+		fuelStationRecipe=config.getBoolean("fuel_station_recipe", "recipes", true, "");
+		generatorRecipe=config.getBoolean("generator_recipe", "recipes", true, "");
+		splitTankRecipe=config.getBoolean("split_tank_recipe", "recipes", true, "");
+		repairKitRecipe=config.getBoolean("repair_kit_recipe", "recipes", true, "");
+		canisterRecipe=config.getBoolean("canister_recipe", "recipes", true, "");
+		carWorkshopRecipe=config.getBoolean("car_workshop_recipe", "recipes", true, "");
+		keyRecipe=config.getBoolean("key_clone_recipe", "recipes", true, "");
+		
+		canolaSeedDrop=config.getBoolean("canola_seed_drop", "drops", true, "");
+		
 		config.save();
 	}
 	

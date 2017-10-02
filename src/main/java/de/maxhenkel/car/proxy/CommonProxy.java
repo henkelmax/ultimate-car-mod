@@ -124,11 +124,13 @@ public class CommonProxy {
 		
 		MinecraftForge.EVENT_BUS.register(new ConfigEvents());
 		
-		MinecraftForge.addGrassSeed(new ItemStack(ModItems.CANOLA_SEEDS), 8);
+		if(Config.canolaSeedDrop){
+			MinecraftForge.addGrassSeed(new ItemStack(ModItems.CANOLA_SEEDS), 8);
+		}
 	}
 
 	public void postinit(FMLPostInitializationEvent event) {
-
+		Config.postInit();
 	}
 	
 	public void registerFluids(){
