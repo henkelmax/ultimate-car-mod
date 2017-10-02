@@ -21,7 +21,7 @@ public class ContainerFluidExtractor extends ContainerBase{
 	
 	@Override
 	public int getInvOffset() {
-		return 27;
+		return -27;
 	}
 
 }
