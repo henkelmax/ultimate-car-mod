@@ -38,8 +38,10 @@ import de.maxhenkel.car.net.MessageSyncConfig;
 import de.maxhenkel.car.net.MessageSyncTileEntity;
 import de.maxhenkel.car.sounds.ModSounds;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.ForgeModContainer;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.UniversalBucket;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -130,6 +132,7 @@ public class CommonProxy {
 	}
 	
 	public void registerFluids(){
+		
 		FluidRegistry.registerFluid(ModFluids.CANOLA_OIL);
 		FluidRegistry.addBucketForFluid(ModFluids.CANOLA_OIL);
 	
@@ -144,6 +147,22 @@ public class CommonProxy {
 		
 		FluidRegistry.registerFluid(ModFluids.BIO_DIESEL);
 		FluidRegistry.addBucketForFluid(ModFluids.BIO_DIESEL);
+		
+		ItemStack canolaOil=UniversalBucket.getFilledBucket(ForgeModContainer.getInstance().universalBucket, ModFluids.CANOLA_OIL);
+		ModItems.CANOLA_OIL_BUCKET=canolaOil;
+		
+		ItemStack methanol=UniversalBucket.getFilledBucket(ForgeModContainer.getInstance().universalBucket, ModFluids.METHANOL);
+		ModItems.METHANOL_BUCKET=methanol;
+		
+		ItemStack mix=UniversalBucket.getFilledBucket(ForgeModContainer.getInstance().universalBucket, ModFluids.CANOLA_METHANOL_MIX);
+		ModItems.CANOLA_METHANOL_MIX_BUCKET=mix;
+		
+		ItemStack glycerin=UniversalBucket.getFilledBucket(ForgeModContainer.getInstance().universalBucket, ModFluids.GLYCERIN);
+		ModItems.GLYCERIN_BUCKET=glycerin;
+		
+		ItemStack bioDiesel=UniversalBucket.getFilledBucket(ForgeModContainer.getInstance().universalBucket, ModFluids.BIO_DIESEL);
+		ModItems.BIO_DIESEL_BUCKET=bioDiesel;
+
 	}
 
 }
