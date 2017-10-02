@@ -3,7 +3,6 @@ package de.maxhenkel.car.proxy;
 import java.io.File;
 import de.maxhenkel.car.Config;
 import de.maxhenkel.car.Main;
-import de.maxhenkel.car.ModCreativeTabs;
 import de.maxhenkel.car.Reciepes;
 import de.maxhenkel.car.blocks.ModBlocks;
 import de.maxhenkel.car.blocks.tileentity.TileEntityBackmixReactor;
@@ -38,12 +37,9 @@ import de.maxhenkel.car.net.MessageStartFuel;
 import de.maxhenkel.car.net.MessageSyncConfig;
 import de.maxhenkel.car.net.MessageSyncTileEntity;
 import de.maxhenkel.car.sounds.ModSounds;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.ForgeModContainer;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.UniversalBucket;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -148,27 +144,6 @@ public class CommonProxy {
 		
 		FluidRegistry.registerFluid(ModFluids.BIO_DIESEL);
 		FluidRegistry.addBucketForFluid(ModFluids.BIO_DIESEL);
-		
-		Item canolaOil=UniversalBucket.getFilledBucket(ForgeModContainer.getInstance().universalBucket, ModFluids.CANOLA_OIL).getItem();
-		canolaOil.setCreativeTab(ModCreativeTabs.TAB_CAR);
-		ModItems.CANOLA_OIL_BUCKET=canolaOil;
-		
-		Item methanol=UniversalBucket.getFilledBucket(ForgeModContainer.getInstance().universalBucket, ModFluids.METHANOL).getItem();
-		methanol.setCreativeTab(ModCreativeTabs.TAB_CAR);
-		ModItems.METHANOL_BUCKET=methanol;
-		
-		Item mix=UniversalBucket.getFilledBucket(ForgeModContainer.getInstance().universalBucket, ModFluids.CANOLA_METHANOL_MIX).getItem();
-		mix.setCreativeTab(ModCreativeTabs.TAB_CAR);
-		ModItems.CANOLA_METHANOL_MIX_BUCKET=mix;
-		
-		Item glycerin=UniversalBucket.getFilledBucket(ForgeModContainer.getInstance().universalBucket, ModFluids.GLYCERIN).getItem();
-		glycerin.setCreativeTab(ModCreativeTabs.TAB_CAR);
-		ModItems.GLYCERIN_BUCKET=glycerin;
-		
-		Item bioDiesel=UniversalBucket.getFilledBucket(ForgeModContainer.getInstance().universalBucket, ModFluids.BIO_DIESEL).getItem();
-		bioDiesel.setCreativeTab(ModCreativeTabs.TAB_CAR);
-		ModItems.BIO_DIESEL_BUCKET=bioDiesel;
-		
 	}
 
 }

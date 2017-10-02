@@ -38,12 +38,6 @@ public class ModItems {
 	public static final ItemCraftingComponent CONTAINER = new ItemCraftingComponent("container");
 	public static final ItemKey KEY = new ItemKey();
 	
-	public static Item CANOLA_OIL_BUCKET;
-	public static Item METHANOL_BUCKET;
-	public static Item CANOLA_METHANOL_MIX_BUCKET;
-	public static Item GLYCERIN_BUCKET;
-	public static Item BIO_DIESEL_BUCKET;
-	
 	public static void registerItems(){
 		registerItem(PAINTER);
 		registerItem(PAINTER_YELLOW);
