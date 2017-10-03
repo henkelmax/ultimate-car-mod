@@ -40,7 +40,7 @@ public class BlockCarWorkshopOutter extends Block {
 		if(tePos==null){
 			return false;
 		}
-		return ModBlocks.CAR_WORKSHOP.onBlockActivated(worldIn, pos, state, playerIn, hand, facing, hitX, hitY, hitZ);
+		return ModBlocks.CAR_WORKSHOP.onBlockActivated(worldIn, tePos, worldIn.getBlockState(tePos), playerIn, hand, facing, hitX, hitY, hitZ);
 	}
 	
 	@Override

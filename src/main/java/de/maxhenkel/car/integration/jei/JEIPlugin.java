@@ -54,11 +54,11 @@ public class JEIPlugin implements IModPlugin {
 		registry.addIngredientInfo(new ItemStack(ModItems.PAINTER), ItemStack.class, "description.painter_white");
 
 		// Line Painter Yellow
-		registry.handleRecipes(BlockPaint.class, new PainterRecipeWrapperFactory(), JEIPlugin.CATEGORY_PAINTER_YELLOW);
+		registry.handleRecipes(BlockPaint.class, new PainterRecipeWrapperFactoryYellow(), JEIPlugin.CATEGORY_PAINTER_YELLOW);
 
-		List<PainterRecipeWrapper> paintsYellow = new ArrayList<PainterRecipeWrapper>();
+		List<PainterRecipeWrapperYellow> paintsYellow = new ArrayList<PainterRecipeWrapperYellow>();
 		for (BlockPaint paint : ModBlocks.YELLOW_PAINTS) {
-			paintsYellow.add(new PainterRecipeWrapper(paint));
+			paintsYellow.add(new PainterRecipeWrapperYellow(paint));
 		}
 		registry.addRecipes(paintsYellow, JEIPlugin.CATEGORY_PAINTER_YELLOW);
 		registry.addRecipeCatalyst(new ItemStack(ModItems.PAINTER_YELLOW), JEIPlugin.CATEGORY_PAINTER_YELLOW);

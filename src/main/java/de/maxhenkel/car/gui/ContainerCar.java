@@ -12,8 +12,6 @@ public class ContainerCar extends ContainerBase {
 		super(car, playerInv);
 		this.car=car;
 		
-		addSlotToContainer(new SlotFuel(car, 0, 116, 40));
-		
 		int numRows = car.getSizeInventory() / 9;
 		
 		for (int j = 0; j < numRows; j++) {
@@ -21,6 +19,8 @@ public class ContainerCar extends ContainerBase {
 				this.addSlotToContainer(new Slot(car, k + j * 9, 8 + k * 18, 72 + j * 18));
 			}
 		}
+		
+		addSlotToContainer(new SlotFuel(car, 0, 116, 40));
 		
 		addInvSlots();
 	}

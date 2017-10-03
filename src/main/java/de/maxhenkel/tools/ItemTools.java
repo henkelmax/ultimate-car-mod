@@ -11,7 +11,7 @@ import net.minecraft.nbt.NBTTagList;
 
 public class ItemTools {
 
-	public static final ItemStack EMPTY=null;
+	public static final ItemStack EMPTY=ItemStack.EMPTY;
 	
 	public static boolean isStackEmpty(ItemStack stack) {
 		if (stack == null) {
@@ -38,16 +38,19 @@ public class ItemTools {
 			return true;
 		}
 
-		return ItemStack.areItemsEqual(stack1, stack2);
+		return areItemsEqual(stack1, stack2);
 	}
 	
 	public static boolean areItemsEqual(ItemStack stack1, ItemStack stack2) {
+		if(stack1==null||stack2==null){
+			return false;
+		}
 		return ItemStack.areItemsEqual(stack1, stack2);
 	}
 	
 	public static boolean contains(List<ItemStack> list, ItemStack item){
 		for(ItemStack i:list){
-			if(ItemTools.areItemsEqual(item, i)){
+			if(areItemsEqual(item, i)){
 				return true;
 			}
 		}
@@ -104,7 +107,7 @@ public class ItemTools {
 		NBTTagList nbttaglist = new NBTTagList();
 
 		for (int i = 0; i < inv.getSizeInventory(); i++) {
-			if (isStackEmpty(inv.getStackInSlot(i))) {
+			if (!isStackEmpty(inv.getStackInSlot(i))) {
 				NBTTagCompound nbttagcompound = new NBTTagCompound();
 				nbttagcompound.setInteger("Slot", i);
 				inv.getStackInSlot(i).writeToNBT(nbttagcompound);
