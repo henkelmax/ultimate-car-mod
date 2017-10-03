@@ -3,7 +3,6 @@ package de.maxhenkel.car.integration.jei;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
 import de.maxhenkel.car.blocks.BlockPaint;
 import de.maxhenkel.car.blocks.ModBlocks;
 import de.maxhenkel.car.items.ModItems;
@@ -11,7 +10,6 @@ import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidStack;
 
 public class PainterRecipeWrapperYellow implements IRecipeWrapper{
 
@@ -53,7 +51,7 @@ public class PainterRecipeWrapperYellow implements IRecipeWrapper{
 		return paint;
 	}
 
-	@Override
+	/*@Override
 	public List<ItemStack> getInputs() {
 		List<ItemStack> list=new ArrayList<ItemStack>();
 		list.add(new ItemStack(ModItems.PAINTER_YELLOW));
@@ -83,7 +81,7 @@ public class PainterRecipeWrapperYellow implements IRecipeWrapper{
 	@Override
 	public void drawAnimations(Minecraft minecraft, int recipeWidth, int recipeHeight) {
 		
-	}
+	}*/
 	
 	
 

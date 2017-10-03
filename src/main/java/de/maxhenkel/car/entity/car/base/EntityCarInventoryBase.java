@@ -25,7 +25,7 @@ public abstract class EntityCarInventoryBase extends EntityCarFuelBase implement
 	}
 	
 	@Override
-	public boolean processInitialInteract(EntityPlayer player, ItemStack stack, EnumHand hand) {
+	public boolean processInitialInteract(EntityPlayer player, EnumHand hand) {
 		if(canPlayerAccessInventoryExternal(player) && player.isSneaking()){
 			if(externalInventory.getSizeInventory()<=0){
 				player.displayGUIChest(this);
@@ -35,7 +35,7 @@ public abstract class EntityCarInventoryBase extends EntityCarFuelBase implement
 			
 			return true;
 		}
-		return super.processInitialInteract(player, stack, hand);
+		return super.processInitialInteract(player, hand);
 	}
 	
 	public boolean canPlayerAccessInventoryExternal(EntityPlayer player){
@@ -44,16 +44,16 @@ public abstract class EntityCarInventoryBase extends EntityCarFuelBase implement
 	
 	@Override
 	public void destroyCar(EntityPlayer player, boolean dropParts) {
-		InventoryHelper.dropInventoryItems(worldObj, this, this);
-		InventoryHelper.dropInventoryItems(worldObj, this, externalInventory);
+		InventoryHelper.dropInventoryItems(world, this, this);
+		InventoryHelper.dropInventoryItems(world, this, externalInventory);
 		super.destroyCar(player, dropParts);
 	}
 	
 	@Override
 	public void openCarGUi(EntityPlayer player) {
 		super.openCarGUi(player);
-		if(!worldObj.isRemote){
-			player.openGui(Main.instance(), GuiHandler.GUI_CAR, worldObj, player.getPosition().getX(), player.getPosition().getY(), player.getPosition().getZ());
+		if(!world.isRemote){
+			player.openGui(Main.instance(), GuiHandler.GUI_CAR, world, player.getPosition().getX(), player.getPosition().getY(), player.getPosition().getZ());
         }
 	}
 	
@@ -109,8 +109,13 @@ public abstract class EntityCarInventoryBase extends EntityCarFuelBase implement
 	}
 
 	@Override
-	public boolean isUseableByPlayer(EntityPlayer player) {
-		return internalInventory.isUseableByPlayer(player);
+	public boolean isUsableByPlayer(EntityPlayer player) {
+		return internalInventory.isUsableByPlayer(player);
+	}
+	
+	@Override
+	public boolean isEmpty() {
+		return internalInventory.isEmpty();
 	}
 
 	@Override

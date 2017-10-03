@@ -34,16 +34,16 @@ public class BlockFuelStation extends BlockOrientableHorizontal {
 		useNeighborBrightness = true;
 
 	}
-
+	
 	@Override
 	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn,
-			EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
+		EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 		if (!playerIn.isSneaking()) {
 			playerIn.openGui(Main.instance(), GuiHandler.GUI_FUELSTATION, worldIn, pos.getX(), pos.getY(), pos.getZ());
 		}
 		return true;
 	}
-
+	
 	@Override
 	public TileEntity createNewTileEntity(World worldIn, int meta) {
 		return new TileEntityFuelStation();
@@ -102,13 +102,13 @@ public class BlockFuelStation extends BlockOrientableHorizontal {
 	}
 
 	@Override
-	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, World worldIn, BlockPos pos) {
+	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos) {
 		return new AxisAlignedBB(0, 0, 0, 1, 2, 1);
 	}
-
+	
 	@Override
 	public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox,
-			List<AxisAlignedBB> collidingBoxes, Entity entityIn) {
+			List<AxisAlignedBB> collidingBoxes, Entity entityIn, boolean p_185477_7_) {
 		addCollisionBoxToList(pos, entityBox, collidingBoxes, getBoundingBox(state, worldIn, pos));
 		addCollisionBoxToList(pos, entityBox, collidingBoxes, AABB_SLAB);
 	}

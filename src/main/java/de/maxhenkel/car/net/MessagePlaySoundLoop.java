@@ -33,9 +33,9 @@ public class MessagePlaySoundLoop implements IMessage, IMessageHandler<MessagePl
 	@Override
 	public IMessage onMessage(MessagePlaySoundLoop message, MessageContext ctx) {
 		if(ctx.side.equals(Side.CLIENT)){
-			EntityPlayer player=Minecraft.getMinecraft().thePlayer;
+			EntityPlayer player=Minecraft.getMinecraft().player;
 			
-			TileEntity te=player.worldObj.getTileEntity(new BlockPos(message.posX, message.posY, message.posZ));
+			TileEntity te=player.world.getTileEntity(new BlockPos(message.posX, message.posY, message.posZ));
 			
 			if(te instanceof ISoundLoopable){
 				ISoundLoopable loop=(ISoundLoopable) te;

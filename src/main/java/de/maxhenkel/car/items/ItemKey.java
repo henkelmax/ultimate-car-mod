@@ -25,37 +25,36 @@ public class ItemKey extends Item {
 	}
 
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn,
-			EnumHand hand) {
-		
-		UUID carUUID=getCar(itemStackIn);
+	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
+		ItemStack stack=playerIn.getHeldItem(handIn);
+		UUID carUUID=getCar(stack);
 		
 		if(carUUID==null){
 			if(worldIn.isRemote){
-				playerIn.addChatMessage(new TextComponentTranslation("message.key_no_car"));
+				playerIn.sendMessage(new TextComponentTranslation("message.key_no_car"));
 			}
-			return new ActionResult<ItemStack>(EnumActionResult.PASS, itemStackIn);
+			return new ActionResult<ItemStack>(EnumActionResult.PASS, stack);
 		}else if(worldIn.isRemote){
-			return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemStackIn);
+			return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, stack);
 		}
 		
 		List<EntityCarLockBase> cars=worldIn.getEntitiesWithinAABB(EntityCarLockBase.class, playerIn.getEntityBoundingBox().expand(25, 25, 25), new PredicateUUID(carUUID));
 		
 		if(cars.isEmpty()){
-			playerIn.addChatMessage(new TextComponentTranslation("message.car_out_of_range"));
-			return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemStackIn);
+			playerIn.sendMessage(new TextComponentTranslation("message.car_out_of_range"));
+			return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, stack);
 		}
 		
 		EntityCarLockBase car=cars.get(0);
 		
 		if(car==null){
-			playerIn.addChatMessage(new TextComponentTranslation("message.car_out_of_range"));
-			return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemStackIn);
+			playerIn.sendMessage(new TextComponentTranslation("message.car_out_of_range"));
+			return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, stack);
 		}
 		
 		car.setLocked(!car.isLocked(), true);
 		
-		return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemStackIn);
+		return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, stack);
 	}
 	
 	public static void setCar(ItemStack stack, UUID carUUID){

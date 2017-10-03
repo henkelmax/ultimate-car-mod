@@ -34,14 +34,13 @@ public class BlockCarWorkshopOutter extends Block {
 	
 	@Override
 	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn,
-			EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
+			EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 		BlockPos tePos=findCenter(worldIn, pos);
 		
 		if(tePos==null){
 			return false;
 		}
-		
-		return ModBlocks.CAR_WORKSHOP.onBlockActivated(worldIn, tePos, worldIn.getBlockState(tePos), playerIn, hand, heldItem, side, hitX, hitY, hitZ);
+		return ModBlocks.CAR_WORKSHOP.onBlockActivated(worldIn, pos, state, playerIn, hand, facing, hitX, hitY, hitZ);
 	}
 	
 	@Override
@@ -128,10 +127,10 @@ public class BlockCarWorkshopOutter extends Block {
 	public EnumBlockRenderType getRenderType(IBlockState state) {
 		return EnumBlockRenderType.MODEL;
 	}
-
+	
 	@Override
-	public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ,
-			int meta, EntityLivingBase placer) {
+	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY,
+			float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
 		return this.getDefaultState().withProperty(POSITION, 0);
 	}
 

@@ -10,7 +10,6 @@ import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidStack;
 
 public class PainterRecipeWrapper implements IRecipeWrapper{
 
@@ -51,7 +50,7 @@ public class PainterRecipeWrapper implements IRecipeWrapper{
 	public BlockPaint getPaint() {
 		return paint;
 	}
-
+/*
 	@Override
 	public List<ItemStack> getInputs() {
 		List<ItemStack> list=new ArrayList<ItemStack>();
@@ -82,7 +81,7 @@ public class PainterRecipeWrapper implements IRecipeWrapper{
 	@Override
 	public void drawAnimations(Minecraft minecraft, int recipeWidth, int recipeHeight) {
 		
-	}
+	}*/
 	
 	
 

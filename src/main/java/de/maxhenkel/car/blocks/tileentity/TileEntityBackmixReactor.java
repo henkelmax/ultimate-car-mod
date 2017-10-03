@@ -62,7 +62,7 @@ public class TileEntityBackmixReactor extends TileEntityBase
 
 	@Override
 	public void update() {
-		if (worldObj.isRemote) {
+		if (world.isRemote) {
 			return;
 		}
 
@@ -109,9 +109,9 @@ public class TileEntityBackmixReactor extends TileEntityBase
 	}
 
 	public void setBlockEnabled(boolean enabled) {
-		IBlockState state = worldObj.getBlockState(getPos());
+		IBlockState state = world.getBlockState(getPos());
 		if (state.getBlock().equals(ModBlocks.BACKMIX_REACTOR)) {
-			ModBlocks.BACKMIX_REACTOR.setPowered(worldObj, pos, state, enabled);
+			ModBlocks.BACKMIX_REACTOR.setPowered(world, pos, state, enabled);
 		}
 	}
 
@@ -390,7 +390,7 @@ public class TileEntityBackmixReactor extends TileEntityBase
 	}
 
 	@Override
-	public boolean isUseableByPlayer(EntityPlayer player) {
+	public boolean isUsableByPlayer(EntityPlayer player) {
 		return true;
 	}
 
@@ -412,6 +412,11 @@ public class TileEntityBackmixReactor extends TileEntityBase
 	@Override
 	public void clear() {
 
+	}
+
+	@Override
+	public boolean isEmpty() {
+		return true;
 	}
 
 }

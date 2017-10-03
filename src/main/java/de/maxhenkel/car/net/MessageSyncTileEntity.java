@@ -35,13 +35,13 @@ public class MessageSyncTileEntity implements IMessage, IMessageHandler<MessageS
 	@Override
 	public IMessage onMessage(MessageSyncTileEntity message, MessageContext ctx) {
 		if(ctx.side.equals(Side.CLIENT)){
-			EntityPlayer player=Minecraft.getMinecraft().thePlayer;
+			EntityPlayer player=Minecraft.getMinecraft().player;
 			
-			if(player==null||player.worldObj==null||message==null){
+			if(player==null||player.world==null||message==null){
 				return null;
 			}
 			
-			TileEntity te=player.worldObj.getTileEntity(new BlockPos(message.posX, message.posY, message.posZ));
+			TileEntity te=player.world.getTileEntity(new BlockPos(message.posX, message.posY, message.posZ));
 			
 			if(te!=null){
 				te.readFromNBT(message.tag);

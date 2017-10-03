@@ -23,7 +23,7 @@ public class SlotPainter extends Slot{
 	@Override
 	public boolean canTakeStack(EntityPlayer player) {
 		setPainterID(index);
-		if(player.worldObj.isRemote){
+		if(player.world.isRemote){
 			Minecraft.getMinecraft().displayGuiScreen(null);
 		}
 		return false;

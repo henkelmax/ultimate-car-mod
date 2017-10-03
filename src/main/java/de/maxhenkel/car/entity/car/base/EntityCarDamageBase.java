@@ -32,7 +32,7 @@ public abstract class EntityCarDamageBase extends EntityCarBase {
 	}
 
 	public void particles() {
-		if (!worldObj.isRemote) {
+		if (!world.isRemote) {
 			return;
 		}
 
@@ -60,7 +60,7 @@ public abstract class EntityCarDamageBase extends EntityCarBase {
 		}
 		
 		for (int i = 0; i < amount; i++) {
-			this.worldObj.spawnParticle(EnumParticleTypes.SMOKE_LARGE,
+			this.world.spawnParticle(EnumParticleTypes.SMOKE_LARGE,
 					posX + (rand.nextDouble() - 0.5D) * (double) width,
 					posY + rand.nextDouble() * (double) height,
 					posZ + (rand.nextDouble() - 0.5D) * (double) width, 0.0D, 0.0D, 0.0D, new int[0]);
@@ -92,7 +92,7 @@ public abstract class EntityCarDamageBase extends EntityCarBase {
 			return false;
 		}
 
-		if (worldObj.isRemote || isDead) {
+		if (world.isRemote || isDead) {
 			return false;
 		}
 

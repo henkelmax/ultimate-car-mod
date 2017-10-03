@@ -34,9 +34,10 @@ public class BlockCarWorkshop extends BlockContainer {
 
 		this.setDefaultState(blockState.getBaseState().withProperty(VALID, false));
 	}
+	
 	@Override
 	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn,
-			EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
+			EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 		TileEntityCarWorkshop workshop=getOwnTileEntity(worldIn, pos);
 		
 		if(workshop==null){
@@ -114,8 +115,8 @@ public class BlockCarWorkshop extends BlockContainer {
 	}
 
 	@Override
-	public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ,
-			int meta, EntityLivingBase placer) {
+	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY,
+			float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
 		return this.getDefaultState().withProperty(VALID, false);
 	}
 

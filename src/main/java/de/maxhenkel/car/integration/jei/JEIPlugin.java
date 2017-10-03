@@ -2,7 +2,6 @@ package de.maxhenkel.car.integration.jei;
 
 import java.util.ArrayList;
 import java.util.List;
-import de.maxhenkel.tools.FileReader;
 import de.maxhenkel.car.blocks.BlockPaint;
 import de.maxhenkel.car.blocks.ModBlocks;
 import de.maxhenkel.car.items.ModItems;
@@ -13,6 +12,7 @@ import mezz.jei.api.IModPlugin;
 import mezz.jei.api.IModRegistry;
 import mezz.jei.api.ISubtypeRegistry;
 import mezz.jei.api.ingredients.IModIngredientRegistration;
+import mezz.jei.api.recipe.IRecipeCategoryRegistration;
 import net.minecraft.item.ItemStack;
 
 @mezz.jei.api.JEIPlugin
@@ -30,65 +30,61 @@ public class JEIPlugin implements IModPlugin {
 	@Override
 	public void register(IModRegistry registry) {
 		// Car Workshop
-		registry.addRecipeCategories(new CarRecipeCategory(registry.getJeiHelpers().getGuiHelper()));
-		registry.addRecipeHandlers(new CarRecipeHandler());
+		registry.handleRecipes(ICarRecipe.class, new CarRecipeWrapperFactory(), JEIPlugin.CATEGORY_CAR_WORKSHOP);
 
 		List<CarRecipeWrapper> recipes = new ArrayList<CarRecipeWrapper>();
 		for (ICarRecipe recipe : CarCraftingManager.getInstance().getRecipeList()) {
 			recipes.add(new CarRecipeWrapper(recipe));
 		}
-		registry.addRecipes(recipes);
-		registry.addRecipeCategoryCraftingItem(new ItemStack(ModBlocks.CAR_WORKSHOP), CATEGORY_CAR_WORKSHOP);
-
-		registry.addDescription(new ItemStack(ModBlocks.CAR_WORKSHOP), FileReader.read("car_workshop"));
-		registry.addDescription(new ItemStack(ModBlocks.CAR_WORKSHOP_OUTTER), FileReader.read("car_workshop_outter"));
+		registry.addRecipes(recipes, JEIPlugin.CATEGORY_CAR_WORKSHOP);
+		registry.addRecipeCatalyst(new ItemStack(ModBlocks.CAR_WORKSHOP), JEIPlugin.CATEGORY_CAR_WORKSHOP);
+		registry.addIngredientInfo(new ItemStack(ModBlocks.CAR_WORKSHOP), ItemStack.class, "description.car_workshop");
+		registry.addIngredientInfo(new ItemStack(ModBlocks.CAR_WORKSHOP_OUTTER), ItemStack.class, "description.car_workshop_outter");
 
 		// Line Painter
-		registry.addRecipeCategories(new PainterRecipeCategory(registry.getJeiHelpers().getGuiHelper()));
-		registry.addRecipeHandlers(new PainterReciepeHandler());
+		registry.handleRecipes(BlockPaint.class, new PainterRecipeWrapperFactory(), JEIPlugin.CATEGORY_PAINTER);
 
 		List<PainterRecipeWrapper> paints = new ArrayList<PainterRecipeWrapper>();
 		for (BlockPaint paint : ModBlocks.PAINTS) {
 			paints.add(new PainterRecipeWrapper(paint));
 		}
-		registry.addRecipes(paints);
-		registry.addRecipeCategoryCraftingItem(new ItemStack(ModItems.PAINTER), CATEGORY_PAINTER);
+		registry.addRecipes(paints, JEIPlugin.CATEGORY_PAINTER);
+		registry.addRecipeCatalyst(new ItemStack(ModItems.PAINTER), JEIPlugin.CATEGORY_PAINTER);
 
-		registry.addDescription(new ItemStack(ModItems.PAINTER), FileReader.read("painter"));
+		registry.addIngredientInfo(new ItemStack(ModItems.PAINTER), ItemStack.class, "description.painter_white");
 
 		// Line Painter Yellow
-		registry.addRecipeCategories(new PainterRecipeCategoryYellow(registry.getJeiHelpers().getGuiHelper()));
-		registry.addRecipeHandlers(new PainterReciepeHandlerYellow());
+		registry.handleRecipes(BlockPaint.class, new PainterRecipeWrapperFactory(), JEIPlugin.CATEGORY_PAINTER_YELLOW);
 
-		List<PainterRecipeWrapperYellow> yellowPaints = new ArrayList<PainterRecipeWrapperYellow>();
+		List<PainterRecipeWrapper> paintsYellow = new ArrayList<PainterRecipeWrapper>();
 		for (BlockPaint paint : ModBlocks.YELLOW_PAINTS) {
-			yellowPaints.add(new PainterRecipeWrapperYellow(paint));
+			paintsYellow.add(new PainterRecipeWrapper(paint));
 		}
-		registry.addRecipes(yellowPaints);
-		registry.addRecipeCategoryCraftingItem(new ItemStack(ModItems.PAINTER_YELLOW), CATEGORY_PAINTER_YELLOW);
+		registry.addRecipes(paintsYellow, JEIPlugin.CATEGORY_PAINTER_YELLOW);
+		registry.addRecipeCatalyst(new ItemStack(ModItems.PAINTER_YELLOW), JEIPlugin.CATEGORY_PAINTER_YELLOW);
 
-		registry.addDescription(new ItemStack(ModItems.PAINTER_YELLOW), FileReader.read("painter_yellow"));
+		registry.addIngredientInfo(new ItemStack(ModItems.PAINTER_YELLOW), ItemStack.class, "description.painter_yellow");
 
 		// Canister
-		registry.addDescription(new ItemStack(ModItems.CANISTER), FileReader.read("canister"));
+		registry.addIngredientInfo(new ItemStack(ModItems.CANISTER), ItemStack.class, "description.canister");
 
 		// Repair Kit
-		registry.addDescription(new ItemStack(ModItems.REPAIR_KIT), FileReader.read("repair_kit"));
+		registry.addIngredientInfo(new ItemStack(ModItems.REPAIR_KIT), ItemStack.class, "description.repair_kit");
 		
 		// Crank
-		registry.addDescription(new ItemStack(ModBlocks.CRANK), FileReader.read("crank"));
+		registry.addIngredientInfo(new ItemStack(ModBlocks.CRANK), ItemStack.class, "description.crank");
 		
 		//Dynamo
-		registry.addDescription(new ItemStack(ModBlocks.DYNAMO), FileReader.read("dynamo"));
+		registry.addIngredientInfo(new ItemStack(ModBlocks.DYNAMO), ItemStack.class, "description.dynamo");
 		
 		//Fuel Station
-		registry.addDescription(new ItemStack(ModBlocks.FUEL_STATION), FileReader.read("fuel_station"));
+		registry.addIngredientInfo(new ItemStack(ModBlocks.FUEL_STATION), ItemStack.class, "description.fuel_station");
 		
 		//Tank
-		registry.addDescription(new ItemStack(ModBlocks.TANK), FileReader.read("tank"));
+		registry.addIngredientInfo(new ItemStack(ModBlocks.TANK), ItemStack.class, "description.tank");
 		
 		//Fluid extractor
-		registry.addDescription(new ItemStack(ModBlocks.FLUID_EXTRACTOR), FileReader.read("fluid_extractor"));
+		registry.addIngredientInfo(new ItemStack(ModBlocks.FLUID_EXTRACTOR), ItemStack.class, "description.fluid_extractor");
 	}
 
 	@Override
@@ -99,6 +95,12 @@ public class JEIPlugin implements IModPlugin {
 	@Override
 	public void registerItemSubtypes(ISubtypeRegistry reg) {
 
+	}
+
+	@Override
+	public void registerCategories(IRecipeCategoryRegistration registry) {
+		registry.addRecipeCategories(new CarRecipeCategory(registry.getJeiHelpers().getGuiHelper()));
+		registry.addRecipeCategories(new PainterRecipeCategory(registry.getJeiHelpers().getGuiHelper()));
 	}
 
 }

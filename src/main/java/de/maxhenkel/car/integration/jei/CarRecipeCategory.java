@@ -51,5 +51,10 @@ public class CarRecipeCategory extends BlankRecipeCategory<CarRecipeWrapper>{
 		}
 	}
 
+	@Override
+	public String getModName() {
+		return Main.MODID;
+	}
+
 	
 }

@@ -21,7 +21,7 @@ public class RenderEvents {
 
 		Minecraft mc = Minecraft.getMinecraft();
 
-		EntityPlayer player = mc.thePlayer;
+		EntityPlayer player = mc.player;
 
 		Entity e = player.getRidingEntity();
 

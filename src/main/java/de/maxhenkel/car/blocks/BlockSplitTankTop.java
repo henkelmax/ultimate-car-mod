@@ -27,8 +27,8 @@ public class BlockSplitTankTop extends Block {
 	
 	@Override
 	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn,
-			EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
-		return ModBlocks.SPLIT_TANK.onBlockActivated(worldIn, pos.down(), worldIn.getBlockState(pos.down()), playerIn, hand, heldItem, side, hitX, hitY, hitZ);
+			EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+		return ModBlocks.SPLIT_TANK.onBlockActivated(worldIn, pos, state, playerIn, hand, facing, hitX, hitY, hitZ);
 	}
 
 	@Override
@@ -82,7 +82,7 @@ public class BlockSplitTankTop extends Block {
 	}
 	
 	@Override
-	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, World worldIn, BlockPos pos) {
+	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos) {
 		return NULL_AABB;
 	}
 

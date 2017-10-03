@@ -194,5 +194,15 @@ entity.car.car_sport.name=Sportscar
 entity.car_wood.name=Wood Car
 entity.car.car_wood.name=Wood Car
 
-
+description.canister=Sneak and right click a Fuel Station to fill the Canister with Fuel. Place it in the fuel slot of your car to restore some fuel. It should only be used to be able to get to the next Fuel Station
+description.car_workshop_outter=The Car Workshop Part is used to build the Car Workshop. For more information look into the Car Workshop Block
+description.car_workshop=With the Car Workshop you can spawn and repair Cars. It is built with a Car Workshop in the center surrounded with 8 Car Workshop Parts
+description.crank=The Crank can be used to operate a Dynamo. It must be placed on top of the Dynamo. Right click it to crank.
+description.dynamo=The Dynamo can be used to generate power per hand. A Crank must be placed on top of the Dynamo. Right click it to crank.
+description.fluid_extractor=A Fluid Extractor can be used to extract fluids from fluid containers. It has a filter slot. This slot accepts every fluid container. For example Buckets.
+description.fuel_station=A Fuel Station can be used to fuel Cars and Canisters. It has an internal fluid storage of 16,000 mb. To fuel a Car drive it directly in front of the Fuel Station.To fill a Canister sneak and right click the Fuel Station.
+description.painter_yellow=With the Yellow Painter you can draw lines or arrows on your road. Sneak and right click opens a menu where you can choose between all types
+description.painter_withe=With the White Painter you can draw lines or arrows on your road. Sneak and right click opens a menu where you can choose between all types
+description.repair_kit=With the Repair Kit you can repair your Car when you left click it on your car. NOTE: This only repairs the car when the damage is greater than 90%. It should only be used to be able to get to the next Car Workshop
+description.tank=A Tank can be used to store fluids. It stores 16,000 mb. It can hold every known fluid.
 

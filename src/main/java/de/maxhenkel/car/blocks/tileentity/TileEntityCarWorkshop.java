@@ -41,7 +41,7 @@ public class TileEntityCarWorkshop extends TileEntityBase implements ICarCraftin
 	}
 	
 	public EntityCarBase getCarOnTop() {
-		IBlockState ownState = worldObj.getBlockState(getPos());
+		IBlockState ownState = world.getBlockState(getPos());
 
 		if (!ownState.getBlock().equals(ModBlocks.CAR_WORKSHOP)) {
 			return null;
@@ -52,7 +52,7 @@ public class TileEntityCarWorkshop extends TileEntityBase implements ICarCraftin
 		AxisAlignedBB aabb = new AxisAlignedBB(start.getX(), start.getY(), start.getZ(), start.getX() + 1,
 				start.getY() + 1, start.getZ() + 1);
 
-		List<EntityCarBase> cars = worldObj.getEntitiesWithinAABB(EntityCarBase.class, aabb);
+		List<EntityCarBase> cars = world.getEntitiesWithinAABB(EntityCarBase.class, aabb);
 		if (cars.isEmpty()) {
 			return null;
 		}
@@ -62,12 +62,12 @@ public class TileEntityCarWorkshop extends TileEntityBase implements ICarCraftin
 
 	public void spawnCar(EntityPlayer player) {
 		if (!areBlocksAround()) {
-			player.addChatMessage(new TextComponentTranslation("message.incomplete_structure"));
+			player.sendMessage(new TextComponentTranslation("message.incomplete_structure"));
 			return;
 		}
 
 		if (!isTopFree()) {
-			player.addChatMessage(new TextComponentTranslation("message.blocks_on_top"));
+			player.sendMessage(new TextComponentTranslation("message.blocks_on_top"));
 			return;
 		}
 		
@@ -76,7 +76,7 @@ public class TileEntityCarWorkshop extends TileEntityBase implements ICarCraftin
 		EntityCarBase car = currentCraftingCar;
 
 		if (car == null) {
-			player.addChatMessage(new TextComponentTranslation("message.no_reciepe"));
+			player.sendMessage(new TextComponentTranslation("message.no_reciepe"));
 			return;
 		}
 		BlockPos spawnPos = pos.up();
@@ -84,7 +84,7 @@ public class TileEntityCarWorkshop extends TileEntityBase implements ICarCraftin
 		car.setPosition(spawnPos.getX()+car.width/2, spawnPos.getY(), spawnPos.getZ()+car.width/2);
 		
 		removeCraftItems();
-		worldObj.spawnEntityInWorld(car);
+		world.spawnEntity(car);
 	}
 
 	// Multiblock \/
@@ -105,24 +105,24 @@ public class TileEntityCarWorkshop extends TileEntityBase implements ICarCraftin
 	 * northwest=8
 	 */
 	private void placeStructure() {
-		worldObj.setBlockState(pos.add(0, 0, -1), getState(1));
-		worldObj.setBlockState(pos.add(1, 0, -1), getState(2));
-		worldObj.setBlockState(pos.add(1, 0, 0), getState(3));
-		worldObj.setBlockState(pos.add(1, 0, 1), getState(4));
-		worldObj.setBlockState(pos.add(0, 0, 1), getState(5));
-		worldObj.setBlockState(pos.add(-1, 0, 1), getState(6));
-		worldObj.setBlockState(pos.add(-1, 0, 0), getState(7));
-		worldObj.setBlockState(pos.add(-1, 0, -1), getState(8));
+		world.setBlockState(pos.add(0, 0, -1), getState(1));
+		world.setBlockState(pos.add(1, 0, -1), getState(2));
+		world.setBlockState(pos.add(1, 0, 0), getState(3));
+		world.setBlockState(pos.add(1, 0, 1), getState(4));
+		world.setBlockState(pos.add(0, 0, 1), getState(5));
+		world.setBlockState(pos.add(-1, 0, 1), getState(6));
+		world.setBlockState(pos.add(-1, 0, 0), getState(7));
+		world.setBlockState(pos.add(-1, 0, -1), getState(8));
 
 		setOwnBlockValid(true);
 	}
 
 	private void setOwnBlockValid(boolean valid) {
-		IBlockState state = worldObj.getBlockState(pos);
+		IBlockState state = world.getBlockState(pos);
 		if (!state.getBlock().equals(ModBlocks.CAR_WORKSHOP)) {
 			return;
 		}
-		ModBlocks.CAR_WORKSHOP.setValid(worldObj, pos, state, valid);
+		ModBlocks.CAR_WORKSHOP.setValid(world, pos, state, valid);
 	}
 
 	private IBlockState getState(int meta) {
@@ -173,7 +173,7 @@ public class TileEntityCarWorkshop extends TileEntityBase implements ICarCraftin
 	}
 
 	private boolean checkBlockAir(BlockPos p) {
-		if (worldObj.isAirBlock(p)) {
+		if (world.isAirBlock(p)) {
 			return true;
 		}
 
@@ -181,7 +181,7 @@ public class TileEntityCarWorkshop extends TileEntityBase implements ICarCraftin
 	}
 
 	private boolean checkSideBlock(BlockPos p) {
-		IBlockState state = worldObj.getBlockState(p);
+		IBlockState state = world.getBlockState(p);
 		if (state.getBlock().equals(ModBlocks.CAR_WORKSHOP_OUTTER)) {
 			return true;
 		}
@@ -214,7 +214,7 @@ public class TileEntityCarWorkshop extends TileEntityBase implements ICarCraftin
 			this.currentCraftingCar = null;
 			return;
 		}
-		this.currentCraftingCar = builder.build(worldObj);
+		this.currentCraftingCar = builder.build(world);
 	}
 
 	@Nullable
@@ -226,10 +226,7 @@ public class TileEntityCarWorkshop extends TileEntityBase implements ICarCraftin
 		for (int i = 0; i < craftingMatrix.getSizeInventory(); i++) {
 			ItemStack stack = craftingMatrix.getStackInSlot(i);
 			if (!ItemTools.isStackEmpty(stack)) {
-				stack.stackSize--;
-				if(stack.stackSize<=0){
-					craftingMatrix.setInventorySlotContents(i, null);
-				}
+				craftingMatrix.setInventorySlotContents(i, ItemTools.decrItemStack(stack, null));
 			}
 		}
 	}
@@ -280,8 +277,13 @@ public class TileEntityCarWorkshop extends TileEntityBase implements ICarCraftin
 	}
 
 	@Override
-	public boolean isUseableByPlayer(EntityPlayer player) {
-		return craftingMatrix.isUseableByPlayer(player);
+	public boolean isUsableByPlayer(EntityPlayer player) {
+		return craftingMatrix.isUsableByPlayer(player);
+	}
+	
+	@Override
+	public boolean isEmpty() {
+		return craftingMatrix.isEmpty();
 	}
 
 	@Override
@@ -332,19 +334,19 @@ public class TileEntityCarWorkshop extends TileEntityBase implements ICarCraftin
 
 	public void repairCar(EntityPlayer player) {
 		if (!areBlocksAround()) {
-			player.addChatMessage(new TextComponentTranslation("message.incomplete_structure"));
+			player.sendMessage(new TextComponentTranslation("message.incomplete_structure"));
 			return;
 		}
 		
 		if(!areRepairItemsInside()){
-			player.addChatMessage(new TextComponentTranslation("message.no_repair_items"));
+			player.sendMessage(new TextComponentTranslation("message.no_repair_items"));
 			return;
 		}
 		
 		EntityCarBase carBase=getCarOnTop();
 		
 		if(!(carBase instanceof EntityCarDamageBase)){
-			player.addChatMessage(new TextComponentTranslation("message.no_car"));
+			player.sendMessage(new TextComponentTranslation("message.no_car"));
 			return;
 		}
 		
@@ -358,7 +360,7 @@ public class TileEntityCarWorkshop extends TileEntityBase implements ICarCraftin
 		
 		car.setDamage(car.getDamage()-10F);
 		
-		ModSounds.playSound(SoundEvents.BLOCK_ANVIL_USE, worldObj, pos, null, SoundCategory.BLOCKS);
+		ModSounds.playSound(SoundEvents.BLOCK_ANVIL_USE, world, pos, null, SoundCategory.BLOCKS);
 	}
 	
 	public boolean areRepairItemsInside(){

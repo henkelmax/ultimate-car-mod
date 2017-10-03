@@ -190,7 +190,7 @@ public class TileEntityFuelStation extends TileEntityBase implements ITickable, 
 		}
 		
 		if(isFueling&&!this.isFueling){
-			if(worldObj.isRemote){
+			if(world.isRemote){
 				playSound();
 			}
 		}
@@ -211,7 +211,7 @@ public class TileEntityFuelStation extends TileEntityBase implements ITickable, 
 	}
 
 	public EntityCarFuelBase getCarInFront() {
-		IBlockState ownState = worldObj.getBlockState(getPos());
+		IBlockState ownState = world.getBlockState(getPos());
 
 		if (!ownState.getBlock().equals(ModBlocks.FUEL_STATION)) {
 			return null;
@@ -224,7 +224,7 @@ public class TileEntityFuelStation extends TileEntityBase implements ITickable, 
 		AxisAlignedBB aabb = new AxisAlignedBB(start.getX(), start.getY(), start.getZ(), start.getX() + 1,
 				start.getY() + 1, start.getZ() + 1);
 
-		List<EntityCarFuelBase> cars = worldObj.getEntitiesWithinAABB(EntityCarFuelBase.class, aabb);
+		List<EntityCarFuelBase> cars = world.getEntitiesWithinAABB(EntityCarFuelBase.class, aabb);
 		if (cars.isEmpty()) {
 			return null;
 		}
@@ -245,7 +245,7 @@ public class TileEntityFuelStation extends TileEntityBase implements ITickable, 
 	}
 
 	public IBlockState getBlockState() {
-		IBlockState ownState = worldObj.getBlockState(getPos());
+		IBlockState ownState = world.getBlockState(getPos());
 
 		if (!ownState.getBlock().equals(ModBlocks.FUEL_STATION)) {
 			return null;
@@ -394,7 +394,7 @@ public class TileEntityFuelStation extends TileEntityBase implements ITickable, 
 	}
 	
 	public void sendStartFuelPacket(boolean start){
-		if (worldObj.isRemote) {
+		if (world.isRemote) {
 			CommonProxy.simpleNetworkWrapper.sendToServer(new MessageStartFuel(pos, start));
 		}
 	}
@@ -410,7 +410,7 @@ public class TileEntityFuelStation extends TileEntityBase implements ITickable, 
 	
 	@SideOnly(Side.CLIENT)
 	public void playSound(){
-		ModSounds.playSoundLoop(new SoundLoopTileentity(ModSounds.gas_ststion, SoundCategory.BLOCKS, this), worldObj);
+		ModSounds.playSoundLoop(new SoundLoopTileentity(ModSounds.gas_ststion, SoundCategory.BLOCKS, this), world);
 	}
 
 	@Override
@@ -459,7 +459,12 @@ public class TileEntityFuelStation extends TileEntityBase implements ITickable, 
 	}
 
 	@Override
-	public boolean isUseableByPlayer(EntityPlayer player) {
+	public boolean isUsableByPlayer(EntityPlayer player) {
+		return true;
+	}
+	
+	@Override
+	public boolean isEmpty() {
 		return true;
 	}
 

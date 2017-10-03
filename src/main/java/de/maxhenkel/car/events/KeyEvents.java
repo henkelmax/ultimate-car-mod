@@ -58,7 +58,7 @@ public class KeyEvents {
 
 		//World world = minecraft.theWorld;
 		
-		EntityPlayer player=minecraft.thePlayer;
+		EntityPlayer player=minecraft.player;
 
 		Entity riding=player.getRidingEntity();
 		

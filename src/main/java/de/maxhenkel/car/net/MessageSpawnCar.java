@@ -30,7 +30,7 @@ public class MessageSpawnCar implements IMessage, IMessageHandler<MessageSpawnCa
 		if(ctx.side.equals(Side.SERVER)){
 			EntityPlayer player=ctx.getServerHandler().playerEntity;
 			
-			TileEntity te=player.worldObj.getTileEntity(new BlockPos(message.posX, message.posY, message.posZ));
+			TileEntity te=player.world.getTileEntity(new BlockPos(message.posX, message.posY, message.posZ));
 			
 			if(te instanceof TileEntityCarWorkshop){
 				TileEntityCarWorkshop carWorkshop=(TileEntityCarWorkshop) te;

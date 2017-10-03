@@ -1,12 +1,11 @@
 package de.maxhenkel.car.items;
 
-import java.util.ArrayList;
-import java.util.List;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.ModCreativeTabs;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -103,7 +102,7 @@ public class ModItems {
 	
 	private static void addRenderItem(Item item) {
 		if(item.getHasSubtypes()){
-			List<ItemStack> list=new ArrayList<ItemStack>();
+			NonNullList<ItemStack> list=NonNullList.create();
 			item.getSubItems(item, ModCreativeTabs.TAB_CAR, list);
 			for(int i=0; i<list.size(); i++){
 				ResourceLocation loc=new ResourceLocation(Main.MODID, item.getRegistryName().getResourcePath() +"_" +i);

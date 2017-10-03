@@ -48,5 +48,10 @@ public class PainterRecipeCategoryYellow extends BlankRecipeCategory<PainterReci
 		group.set(1, new ItemStack(wrapper.getPaint()));
 		
 	}
+	
+	@Override
+	public String getModName() {
+		return Main.MODID;
+	}
 
 }

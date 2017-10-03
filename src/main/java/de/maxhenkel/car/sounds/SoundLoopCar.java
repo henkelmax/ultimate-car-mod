@@ -44,7 +44,7 @@ public abstract class SoundLoopCar extends MovingSound {
 		}
 		
 		if(world.isRemote){
-			EntityPlayerSP player=Minecraft.getMinecraft().thePlayer;
+			EntityPlayerSP player=Minecraft.getMinecraft().player;
 			if(player==null||player.isDead){
 				this.donePlaying=true;
 				this.repeat=false;

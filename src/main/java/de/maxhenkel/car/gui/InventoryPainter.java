@@ -73,8 +73,13 @@ public class InventoryPainter implements IInventory{
 	}
 
 	@Override
-	public boolean isUseableByPlayer(EntityPlayer player) {
+	public boolean isUsableByPlayer(EntityPlayer player) {
 		return true;
+	}
+	
+	@Override
+	public boolean isEmpty() {
+		return false;
 	}
 
 	@Override

@@ -27,12 +27,10 @@ public class BlockFuelStationTop extends Block {
 		setSoundType(SoundType.METAL);
 		useNeighborBrightness = true;
 	}
-
 	@Override
 	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn,
-			EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
-		return ModBlocks.FUEL_STATION.onBlockActivated(worldIn, pos.down(), worldIn.getBlockState(pos.down()), playerIn,
-				hand, heldItem, side, hitX, hitY, hitZ);
+			EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+		return ModBlocks.FUEL_STATION.onBlockActivated(worldIn, pos, state, playerIn, hand, facing, hitX, hitY, hitZ);
 	}
 
 	@Override
@@ -94,9 +92,9 @@ public class BlockFuelStationTop extends Block {
 			return BlockFuelStation.AABB_EAST_WEST.offset(0, -1, 0);
 		}
 	}
-
+	
 	@Override
-	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, World worldIn, BlockPos pos) {
+	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos) {
 		IBlockState stateDown = worldIn.getBlockState(pos.down());
 		if(stateDown==null || stateDown.getBlock() == null || !stateDown.getBlock().equals(ModBlocks.FUEL_STATION)){
 			return BlockFuelStation.AABB_NORTH_SOUTH.offset(0, -1, 0);

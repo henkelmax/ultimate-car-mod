@@ -31,7 +31,7 @@ public class MessageCrash implements IMessage, IMessageHandler<MessageCrash, IMe
 		if(ctx.side.equals(Side.SERVER)){
 			EntityPlayer player=ctx.getServerHandler().playerEntity;
 			
-			List<EntityCarBase> list=player.worldObj.getEntities(EntityCarBase.class, new PredicateUUID(message.uuid));
+			List<EntityCarBase> list=player.world.getEntities(EntityCarBase.class, new PredicateUUID(message.uuid));
 			
 			if(list.isEmpty()){
 				return null;

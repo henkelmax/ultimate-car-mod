@@ -46,9 +46,9 @@ public class ItemPainter extends Item{
 		}
 		return super.getStrVsBlock(stack, state);
 	}
+	
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn,
-			EnumHand hand) {
+	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
 		if(playerIn.isSneaking()){
 			int id;
 			if(isYellow){
@@ -58,13 +58,13 @@ public class ItemPainter extends Item{
 			}
 			playerIn.openGui(Main.instance(), id, worldIn, playerIn.getPosition().getX(), playerIn.getPosition().getY(), playerIn.getPosition().getZ());
 		}
-		return super.onItemRightClick(itemStackIn, worldIn, playerIn, hand);
+		return super.onItemRightClick(worldIn, playerIn, handIn);
 	}
 	
 	@Override
-	public EnumActionResult onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos,
-			EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-		if(playerIn.isSneaking()){
+	public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand,
+			EnumFacing facing, float hitX, float hitY, float hitZ) {
+		if(player.isSneaking()){
 			return EnumActionResult.PASS;
 		}
 		
@@ -80,8 +80,8 @@ public class ItemPainter extends Item{
 			return EnumActionResult.FAIL;
 		}
 		
-		int index=SlotPainter.getPainterID(playerIn);
-		ItemStack stack1=SlotPainter.getPainterStack(playerIn);
+		int index=SlotPainter.getPainterID(player);
+		ItemStack stack1=SlotPainter.getPainterStack(player);
 		
 		if(stack1==null){
 			return EnumActionResult.FAIL;
@@ -100,11 +100,11 @@ public class ItemPainter extends Item{
 		}
 		
 		
-		IBlockState state=block.getDefaultState().withProperty(BlockPaint.FACING, playerIn.getHorizontalFacing());
+		IBlockState state=block.getDefaultState().withProperty(BlockPaint.FACING, player.getHorizontalFacing());
 		
 		worldIn.setBlockState(pos.up(), state);
 		
-		stack1.damageItem(1, playerIn);
+		stack1.damageItem(1, player);
 		
 		return EnumActionResult.SUCCESS;
 	}

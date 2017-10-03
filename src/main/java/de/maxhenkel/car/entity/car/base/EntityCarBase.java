@@ -20,6 +20,7 @@ import de.maxhenkel.car.sounds.SoundLoopIdle;
 import de.maxhenkel.car.sounds.SoundLoopStart;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.MoverType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.InventoryHelper;
@@ -88,9 +89,10 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 		this.updateGravity();
 		this.controlCar();
 		this.checkPush();
-		this.moveEntity(this.motionX, this.motionY, this.motionZ);
+		//this.moveEntity(this.motionX, this.motionY, this.motionZ);
+		this.move(MoverType.SELF, this.motionX, this.motionY, this.motionZ);
 
-		if (worldObj.isRemote) {
+		if (world.isRemote) {
 			updateSounds();
 		}
 
@@ -101,7 +103,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 			return;
 		}
 
-		List<EntityPlayer> list = worldObj.getEntitiesWithinAABB(EntityPlayer.class,
+		List<EntityPlayer> list = world.getEntitiesWithinAABB(EntityPlayer.class,
 				getCollisionBoundingBox().expand(0.2, 0, 0.2),
 				EntitySelectors.<EntityPlayer>getTeamCollisionPredicate(this));
 
@@ -110,7 +112,8 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 			if (!player.isPassenger(this) && player.isSneaking()) {
 				double motX = calculateMotionX(0.05F, player.rotationYaw);
 				double motZ = calculateMotionZ(0.05F, player.rotationYaw);
-				moveEntity(motX, 0, motZ);
+				//moveEntity(motX, 0, motZ);
+				move(MoverType.PLAYER, motX, 0, motZ);
 				return;
 			}
 		}
@@ -143,7 +146,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 						continue;
 					}
 					if (shouldDropItemWithChance(stack)) {
-						InventoryHelper.spawnItemStack(worldObj, posX, posY, posZ, stack);
+						InventoryHelper.spawnItemStack(world, posX, posY, posZ, stack);
 					}
 				}
 			}
@@ -196,7 +199,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 		if (Math.abs(speed) > 0.02F) {
 			rotationSpeed = MathHelper.abs(getRotationModifier() / (float)Math.pow(speed, 2));
 			
-			rotationSpeed = MathHelper.clamp_float(rotationSpeed, minRotationSpeed, maxRotationSpeed);
+			rotationSpeed = MathHelper.clamp(rotationSpeed, minRotationSpeed, maxRotationSpeed);
 		}
 
 		deltaRotation = 0;
@@ -223,7 +226,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 		}
 
 		if (isCollidedHorizontally) {
-			if (worldObj.isRemote) {
+			if (world.isRemote) {
 				onCollision(speed);
 			}
 		} else {
@@ -234,7 +237,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 	
 	public float getModifier(){
 		BlockPos pos=getPosition().down();
-		IBlockState state=worldObj.getBlockState(pos);
+		IBlockState state=world.getBlockState(pos);
 		
 		Block b=state.getBlock();
 		
@@ -254,7 +257,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 	public abstract float getRotationModifier();
 
 	public void onCollision(float speed) {
-		if (worldObj.isRemote) {
+		if (world.isRemote) {
 			CommonProxy.simpleNetworkWrapper.sendToServer(new MessageCrash(speed, this));
 		}
 		setSpeed(0.01F);
@@ -303,7 +306,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 			setRight(right);
 			needsUpdate = true;
 		}
-		if (this.worldObj.isRemote && needsUpdate) {
+		if (this.world.isRemote && needsUpdate) {
 			CommonProxy.simpleNetworkWrapper.sendToServer(new MessageControlCar(forward, backward, left, right, player));
 		}
 	}
@@ -311,18 +314,18 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 	public void startCarEngine(EntityPlayer player) {
 		if (isStarted()) {
 			setStarted(false);
-			if (worldObj.isRemote) {
+			if (world.isRemote) {
 				CommonProxy.simpleNetworkWrapper.sendToServer(new MessageStartCar(false, player));
 			}
 		} else if (getDriver() != null && canStartCarEngine(getDriver())) {
 			setStarted(true);
 			checkStartLoop();
-			if (worldObj.isRemote) {
+			if (world.isRemote) {
 				CommonProxy.simpleNetworkWrapper.sendToServer(new MessageStartCar(false, player));
 			}
 		} else {
 			playEngineFailSound();
-			if (worldObj.isRemote) {
+			if (world.isRemote) {
 				CommonProxy.simpleNetworkWrapper.sendToServer(new MessageStartCar(true, player));
 			}
 		}
@@ -356,11 +359,11 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 	}
 
 	@Override
-	public boolean processInitialInteract(EntityPlayer player, ItemStack stack, EnumHand hand) {
+	public boolean processInitialInteract(EntityPlayer player, EnumHand hand) {
 		if (!canPlayerEnterCar(player)) {
 			return false;
 		}
-		return super.processInitialInteract(player, stack, hand);
+		return super.processInitialInteract(player, hand);
 	}
 
 	public float getKilometerPerHour() {
@@ -373,7 +376,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 	}
 
 	public void openCarGUi(EntityPlayer player) {
-		if (worldObj.isRemote) {
+		if (world.isRemote) {
 			CommonProxy.simpleNetworkWrapper.sendToServer(new MessageCarGui(true, player));
 		}
 	}
@@ -471,19 +474,19 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 	}
 
 	public void playStopSound() {
-		ModSounds.playSound(getStopSound(), worldObj, getPosition(), null, SoundCategory.NEUTRAL, Config.carVolume);
+		ModSounds.playSound(getStopSound(), world, getPosition(), null, SoundCategory.NEUTRAL, Config.carVolume);
 	}
 
 	public void playEngineFailSound() {
-		ModSounds.playSound(getFailSound(), worldObj, getPosition(), null, SoundCategory.NEUTRAL, Config.carVolume);
+		ModSounds.playSound(getFailSound(), world, getPosition(), null, SoundCategory.NEUTRAL, Config.carVolume);
 	}
 
 	public void playCrashSound() {
-		ModSounds.playSound(getCrashSound(), worldObj, getPosition(), null, SoundCategory.NEUTRAL, Config.carVolume);
+		ModSounds.playSound(getCrashSound(), world, getPosition(), null, SoundCategory.NEUTRAL, Config.carVolume);
 	}
 	
 	public void playHornSound() {
-		ModSounds.playSound(getHornSound(), worldObj, getPosition(), null, SoundCategory.NEUTRAL, Config.carVolume);
+		ModSounds.playSound(getHornSound(), world, getPosition(), null, SoundCategory.NEUTRAL, Config.carVolume);
 	}
 
 	public SoundEvent getStopSound() {
@@ -524,8 +527,8 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 			return;
 		}
 		if (idleLoop == null || idleLoop.isDonePlaying()) {
-			idleLoop = new SoundLoopIdle(worldObj, this, getIdleSound(), SoundCategory.NEUTRAL);
-			ModSounds.playSoundLoop(idleLoop, worldObj);
+			idleLoop = new SoundLoopIdle(world, this, getIdleSound(), SoundCategory.NEUTRAL);
+			ModSounds.playSoundLoop(idleLoop, world);
 		}
 	}
 
@@ -535,21 +538,21 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 			return;
 		}
 		if (highLoop == null || highLoop.isDonePlaying()) {
-			highLoop = new SoundLoopHigh(worldObj, this, getHighSound(), SoundCategory.NEUTRAL);
-			ModSounds.playSoundLoop(highLoop, worldObj);
+			highLoop = new SoundLoopHigh(world, this, getHighSound(), SoundCategory.NEUTRAL);
+			ModSounds.playSoundLoop(highLoop, world);
 		}
 	}
 
 	@SideOnly(Side.CLIENT)
 	public void checkStartLoop() {
 		if (startLoop == null || startLoop.isDonePlaying()) {
-			startLoop = new SoundLoopStart(worldObj, this, getStartSound(), SoundCategory.NEUTRAL);
-			ModSounds.playSoundLoop(startLoop, worldObj);
+			startLoop = new SoundLoopStart(world, this, getStartSound(), SoundCategory.NEUTRAL);
+			ModSounds.playSoundLoop(startLoop, world);
 		}
 	}
 
 	public void onHornPressed(EntityPlayer player) {
-		if (worldObj.isRemote) {
+		if (world.isRemote) {
 			CommonProxy.simpleNetworkWrapper.sendToServer(new MessageCarHorn(true, player));
 		}else{
 			playHornSound();

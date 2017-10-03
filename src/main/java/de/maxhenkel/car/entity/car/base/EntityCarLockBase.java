@@ -39,7 +39,7 @@ public abstract class EntityCarLockBase extends EntityCarInventoryBase {
 	@Override
 	public void destroyCar(EntityPlayer player, boolean dropParts) {
 		if (isLocked()) {
-			player.addChatMessage(new TextComponentTranslation("message.car_locked"));
+			player.sendMessage(new TextComponentTranslation("message.car_locked"));
 			return;
 		}
 
@@ -76,11 +76,11 @@ public abstract class EntityCarLockBase extends EntityCarInventoryBase {
 	}
 
 	public void playLockSound() {
-		ModSounds.playSound(getLockSound(), worldObj, getPosition(), null, SoundCategory.NEUTRAL, Config.carVolume);
+		ModSounds.playSound(getLockSound(), world, getPosition(), null, SoundCategory.NEUTRAL, Config.carVolume);
 	}
 
 	public void playUnLockSound() {
-		ModSounds.playSound(getUnLockSound(), worldObj, getPosition(), null, SoundCategory.NEUTRAL, Config.carVolume);
+		ModSounds.playSound(getUnLockSound(), world, getPosition(), null, SoundCategory.NEUTRAL, Config.carVolume);
 	}
 
 	public SoundEvent getLockSound() {
@@ -102,9 +102,10 @@ public abstract class EntityCarLockBase extends EntityCarInventoryBase {
 		setLocked(compound.getBoolean("locked"), false);
 		super.readEntityFromNBT(compound);
 	}
-
+	
 	@Override
-	public boolean processInitialInteract(EntityPlayer player, ItemStack stack, EnumHand hand) {
+	public boolean processInitialInteract(EntityPlayer player, EnumHand hand) {
+		ItemStack stack=player.getActiveItemStack();//TODO test
 		if (player.isSneaking() && player.capabilities.isCreativeMode && !ItemTools.isStackEmpty(stack)
 				&& stack.getItem().equals(ModItems.KEY)) {
 			UUID uuid = ItemKey.getCar(stack);
@@ -113,7 +114,7 @@ public abstract class EntityCarLockBase extends EntityCarInventoryBase {
 				return true;
 			}
 		}
-		return super.processInitialInteract(player, stack, hand);
+		return super.processInitialInteract(player, hand);
 	}
 
 }

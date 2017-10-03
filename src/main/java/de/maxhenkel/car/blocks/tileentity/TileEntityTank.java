@@ -23,8 +23,8 @@ public class TileEntityTank extends TileEntityBase implements IFluidHandler, ITi
 
 	@Override
 	public void update() {
-		if (!worldObj.isRemote) {
-			if (worldObj.getTotalWorldTime() % 20 == 0) {
+		if (!world.isRemote) {
+			if (world.getTotalWorldTime() % 20 == 0) {
 				synchronize();
 			}
 		}
@@ -44,7 +44,7 @@ public class TileEntityTank extends TileEntityBase implements IFluidHandler, ITi
 	}
 
 	public void checkSide(EnumFacing side) {
-		TileEntity te = worldObj.getTileEntity(pos.offset(side));
+		TileEntity te = world.getTileEntity(pos.offset(side));
 
 		if (!(te instanceof TileEntityTank)) {
 			return;
@@ -73,7 +73,7 @@ public class TileEntityTank extends TileEntityBase implements IFluidHandler, ITi
 	}
 
 	public void checkDown() {
-		TileEntity te = worldObj.getTileEntity(pos.down());
+		TileEntity te = world.getTileEntity(pos.down());
 
 		if (!(te instanceof TileEntityTank)) {
 			return;

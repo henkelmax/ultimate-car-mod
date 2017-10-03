@@ -15,7 +15,6 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
@@ -54,10 +53,9 @@ public class BlockFluidExtractor extends BlockContainer{
 				.withProperty(WEST, false)
 				);
 	}
-	
 	@Override
 	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn,
-			EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
+			EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 		if(!playerIn.isSneaking()){
 			playerIn.openGui(Main.instance(), GuiHandler.GUI_FLUID_EXTRACTOR, worldIn, pos.getX(), pos.getY(), pos.getZ());
 			return true;
@@ -197,11 +195,11 @@ public class BlockFluidExtractor extends BlockContainer{
 	protected BlockStateContainer createBlockState() {
 		return new BlockStateContainer(this, FACING, UP, DOWN, EAST, WEST, NORTH, SOUTH);
 	}
-	
+
 	@Override
-	public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ,
-			int meta, EntityLivingBase placer) {
-		return getActualState(getDefaultState(), worldIn, pos).withProperty(FACING, facing.getOpposite());
+	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY,
+			float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
+		return getActualState(getDefaultState(), world, pos).withProperty(FACING, facing.getOpposite());
 	}
 
 	@Override

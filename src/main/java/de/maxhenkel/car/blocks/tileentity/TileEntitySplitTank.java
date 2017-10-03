@@ -56,7 +56,7 @@ public class TileEntitySplitTank extends TileEntityBase implements ITickable, IF
 
 	@Override
 	public void update() {
-		if (worldObj.isRemote) {
+		if (world.isRemote) {
 			return;
 		}
 
@@ -88,7 +88,7 @@ public class TileEntitySplitTank extends TileEntityBase implements ITickable, IF
 			}
 		}
 
-		if (worldObj.getTotalWorldTime() % 200 == 0) {
+		if (world.getTotalWorldTime() % 200 == 0) {
 			synchronize();
 		}
 
@@ -379,10 +379,15 @@ public class TileEntitySplitTank extends TileEntityBase implements ITickable, IF
 	}
 
 	@Override
-	public boolean isUseableByPlayer(EntityPlayer player) {
-		return inventory.isUseableByPlayer(player);
+	public boolean isUsableByPlayer(EntityPlayer player) {
+		return inventory.isUsableByPlayer(player);
 	}
 
+	@Override
+	public boolean isEmpty() {
+		return inventory.isEmpty();
+	}
+	
 	@Override
 	public void openInventory(EntityPlayer player) {
 		inventory.openInventory(player);

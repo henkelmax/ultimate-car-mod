@@ -48,4 +48,9 @@ public class PainterRecipeCategory extends BlankRecipeCategory<PainterRecipeWrap
 		
 	}
 
+	@Override
+	public String getModName() {
+		return Main.MODID;
+	}
+
 }

@@ -35,12 +35,12 @@ public class ItemCanister extends Item {
 		setCreativeTab(ModCreativeTabs.TAB_CAR);
 		maxFuel=Config.canisterMaxFuel;
 	}
-
+	
 	@Override
-	public EnumActionResult onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos,
-			EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-		if (!playerIn.isSneaking()) {
-			return super.onItemUse(stack, playerIn, worldIn, pos, hand, facing, hitX, hitY, hitZ);
+	public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand,
+			EnumFacing facing, float hitX, float hitY, float hitZ) {
+		if (!player.isSneaking()) {
+			return super.onItemUse(player, worldIn, pos, hand, facing, hitX, hitY, hitZ);
 		}
 
 		IBlockState state = worldIn.getBlockState(pos);
@@ -54,12 +54,12 @@ public class ItemCanister extends Item {
 		}
 
 		if (te == null) {
-			return super.onItemUse(stack, playerIn, worldIn, pos, hand, facing, hitX, hitY, hitZ);
+			return super.onItemUse(player, worldIn, pos, hand, facing, hitX, hitY, hitZ);
 		}
 
 		if (te instanceof TileEntityFuelStation) {
 			TileEntityFuelStation fuel = (TileEntityFuelStation) te;
-			boolean success=ModItems.CANISTER.fillCanister(playerIn.getHeldItem(hand), fuel);
+			boolean success=ModItems.CANISTER.fillCanister(player.getHeldItem(hand), fuel);
 			if(success){
 				ModSounds.playSound(SoundEvents.BLOCK_BREWING_STAND_BREW, worldIn, pos, null, SoundCategory.BLOCKS);
 			}
@@ -69,13 +69,13 @@ public class ItemCanister extends Item {
 		if(te instanceof IFluidHandler){
 			IFluidHandler handler=(IFluidHandler) te;
 			
-			boolean success=ModItems.CANISTER.fuelFluidHandler(playerIn.getHeldItem(hand), handler);
+			boolean success=ModItems.CANISTER.fuelFluidHandler(player.getHeldItem(hand), handler);
 			if(success){
 				ModSounds.playSound(SoundEvents.BLOCK_BREWING_STAND_BREW, worldIn, pos, null, SoundCategory.BLOCKS);
 			}
 			return EnumActionResult.SUCCESS;
 		}
-		return super.onItemUse(stack, playerIn, worldIn, pos, hand, facing, hitX, hitY, hitZ);
+		return super.onItemUse(player, worldIn, pos, hand, facing, hitX, hitY, hitZ);
 	}
 
 	@Override

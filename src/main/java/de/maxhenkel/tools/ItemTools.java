@@ -1,10 +1,9 @@
 package de.maxhenkel.tools;
 
 import java.util.List;
-
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -19,11 +18,15 @@ public class ItemTools {
 			return true;
 		}
 
-		if (stack.getItem().equals(Blocks.AIR)) {
+		if(stack.equals(ItemStack.EMPTY)){
+			return true;
+		}
+		
+		if (stack.getItem().equals(Items.AIR)) {
 			return true;
 		}
 
-		if (stack.stackSize <= 0) {
+		if (stack.getCount() <= 0) {
 			return true;
 		}
 
@@ -60,21 +63,21 @@ public class ItemTools {
 	 */
 	public static ItemStack itemStackAmount(int amount, ItemStack stack, EntityPlayer player) {
 		if(stack==null){
-			return null;
+			return ItemStack.EMPTY;
 		}
 		
 		if (player!=null&&player.capabilities.isCreativeMode) {
 			return stack;
 		}
 
-		stack.stackSize += amount;
-		if (stack.stackSize <= 0) {
-			stack.stackSize = 0;
-			return null;
+		stack.setCount(stack.getCount()+amount);
+		if (stack.getCount() <= 0) {
+			stack.setCount(0);
+			return ItemStack.EMPTY;
 		}
 		
-		if(stack.stackSize>stack.getMaxStackSize()){
-			stack.stackSize=stack.getMaxStackSize();
+		if(stack.getCount()>stack.getMaxStackSize()){
+			stack.setCount(stack.getMaxStackSize());
 		}
 
 		return stack;
@@ -94,14 +97,14 @@ public class ItemTools {
 	}
 	
 	public static void removeStackFromSlot(IInventory inventory, int index){
-		inventory.setInventorySlotContents(index, null);
+		inventory.setInventorySlotContents(index, ItemStack.EMPTY);
 	}
 
 	public static void saveInventory(NBTTagCompound compound, String name, IInventory inv) {
 		NBTTagList nbttaglist = new NBTTagList();
 
 		for (int i = 0; i < inv.getSizeInventory(); i++) {
-			if (inv.getStackInSlot(i) != null) {
+			if (isStackEmpty(inv.getStackInSlot(i))) {
 				NBTTagCompound nbttagcompound = new NBTTagCompound();
 				nbttagcompound.setInteger("Slot", i);
 				inv.getStackInSlot(i).writeToNBT(nbttagcompound);
@@ -128,7 +131,7 @@ public class ItemTools {
 			int j = nbttagcompound.getInteger("Slot");
 
 			if (j >= 0 && j < inv.getSizeInventory()) {
-				inv.setInventorySlotContents(j, ItemStack.loadItemStackFromNBT(nbttagcompound));
+				inv.setInventorySlotContents(j, new ItemStack(nbttagcompound));
 			}
 		}
 	}

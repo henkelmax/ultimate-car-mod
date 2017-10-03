@@ -11,7 +11,6 @@ import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidStack;
 
 public class CarRecipeWrapper implements IRecipeWrapper{
 
@@ -21,7 +20,7 @@ public class CarRecipeWrapper implements IRecipeWrapper{
 	
 	public CarRecipeWrapper(ICarRecipe recipe) {
 		this.recipe=recipe;
-		this.car=recipe.getCraftingResult().build(Minecraft.getMinecraft().theWorld);
+		this.car=recipe.getCraftingResult().build(Minecraft.getMinecraft().world);
 	}
 	
 	@Override
@@ -55,7 +54,7 @@ public class CarRecipeWrapper implements IRecipeWrapper{
 		return recipe;
 	}
 
-	@Override
+	/*@Override
 	public List<ItemStack> getInputs() {
 		return Arrays.asList(recipe.getInputs());
 	}
@@ -78,6 +77,6 @@ public class CarRecipeWrapper implements IRecipeWrapper{
 	@Override
 	public void drawAnimations(Minecraft minecraft, int recipeWidth, int recipeHeight) {
 		
-	}
+	}*/
 
 }

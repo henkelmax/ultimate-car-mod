@@ -30,7 +30,7 @@ public class TileEntityCable extends TileEntityBase implements ITickable, IEnerg
 	@Override
 	public void update() {
 		
-		if (worldObj.isRemote) {
+		if (world.isRemote) {
 			return;
 		}
 		
@@ -106,14 +106,14 @@ public class TileEntityCable extends TileEntityBase implements ITickable, IEnerg
 			
 			positions.add(p);
 			
-			IBlockState state=worldObj.getBlockState(p);
+			IBlockState state=world.getBlockState(p);
 			
 			if(state.getBlock().equals(ModBlocks.CABLE)){
 				getConnectedReceivers(receivers, positions, p);
 				continue;
 			}
 			
-			TileEntity te=worldObj.getTileEntity(p);
+			TileEntity te=world.getTileEntity(p);
 			
 			if(!(te instanceof IEnergyReceiver)){
 				continue;
@@ -131,7 +131,7 @@ public class TileEntityCable extends TileEntityBase implements ITickable, IEnerg
 	
 	@Nullable
 	public IEnergyReceiver getEnergyReciever(EnumFacing side){
-		TileEntity te=worldObj.getTileEntity(pos.offset(side));
+		TileEntity te=world.getTileEntity(pos.offset(side));
 		
 		if(te instanceof IEnergyReceiver){
 			return (IEnergyReceiver) te;
@@ -141,7 +141,7 @@ public class TileEntityCable extends TileEntityBase implements ITickable, IEnerg
 	
 	@Nullable
 	public IEnergyProvider getEnergyProvider(EnumFacing side){
-		TileEntity te=worldObj.getTileEntity(pos.offset(side));
+		TileEntity te=world.getTileEntity(pos.offset(side));
 		
 		if(te instanceof IEnergyProvider){
 			return (IEnergyProvider) te;

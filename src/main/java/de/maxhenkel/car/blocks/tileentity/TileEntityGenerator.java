@@ -47,7 +47,7 @@ public class TileEntityGenerator extends TileEntityBase
 	@Override
 	public void update() {
 
-		if (worldObj.isRemote) {
+		if (world.isRemote) {
 			return;
 		}
 
@@ -101,7 +101,7 @@ public class TileEntityGenerator extends TileEntityBase
 
 	private void handlePushEnergy() {
 		for (EnumFacing side : EnumFacing.values()) {
-			TileEntity te = worldObj.getTileEntity(pos.offset(side));
+			TileEntity te = world.getTileEntity(pos.offset(side));
 
 			if (!(te instanceof IEnergyReceiver)) {
 				continue;
@@ -122,10 +122,10 @@ public class TileEntityGenerator extends TileEntityBase
 	}
 
 	public void setBlockEnabled(boolean enabled) {
-		IBlockState state = worldObj.getBlockState(getPos());
+		IBlockState state = world.getBlockState(getPos());
 		if (state.getBlock().equals(ModBlocks.GENERATOR)) {
 			if (state.getValue(BlockGui.POWERED) != enabled) {
-				ModBlocks.GENERATOR.setPowered(worldObj, pos, state, enabled);
+				ModBlocks.GENERATOR.setPowered(world, pos, state, enabled);
 			}
 		}
 	}
@@ -329,8 +329,13 @@ public class TileEntityGenerator extends TileEntityBase
 	}
 
 	@Override
-	public boolean isUseableByPlayer(EntityPlayer player) {
-		return inventory.isUseableByPlayer(player);
+	public boolean isUsableByPlayer(EntityPlayer player) {
+		return inventory.isUsableByPlayer(player);
+	}
+	
+	@Override
+	public boolean isEmpty() {
+		return inventory.isEmpty();
 	}
 
 	@Override

@@ -8,6 +8,7 @@ import net.minecraft.init.Items;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
 
 public class ReciepeKey implements IRecipe{
@@ -68,7 +69,8 @@ public class ReciepeKey implements IRecipe{
 	}
 
 	@Override
-	public ItemStack[] getRemainingItems(InventoryCrafting inv) {
+	public NonNullList<ItemStack> getRemainingItems(InventoryCrafting inv) {
+		NonNullList<ItemStack> list=NonNullList.create();
 		
 		for(int i=0; i<inv.getSizeInventory(); i++){
 			ItemStack stack=inv.getStackInSlot(i);
@@ -83,7 +85,6 @@ public class ReciepeKey implements IRecipe{
 			}
 		}
 		
-		return new ItemStack[0];
+		return list;
 	}
-
 }

@@ -4,7 +4,6 @@ import java.util.List;
 import javax.annotation.Nullable;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -34,7 +33,7 @@ public abstract class EntityVehicleBase extends Entity{
 	@Override
 	public void onUpdate() {
 		
-		if (!worldObj.isRemote) {
+		if (!world.isRemote) {
 			this.prevPosX = this.posX;
 			this.prevPosY = this.posY;
 			this.prevPosZ = this.posZ;
@@ -95,7 +94,7 @@ public abstract class EntityVehicleBase extends Entity{
 	protected void applyYawToEntity(Entity entityToUpdate) {
 		entityToUpdate.setRenderYawOffset(this.rotationYaw);
 		float f = MathHelper.wrapDegrees(entityToUpdate.rotationYaw - this.rotationYaw);
-		float f1 = MathHelper.clamp_float(f, -130.0F, 130.0F);
+		float f1 = MathHelper.clamp(f, -130.0F, 130.0F);
 		entityToUpdate.prevRotationYaw += f1 - f;
 		entityToUpdate.rotationYaw += f1 - f;
 		entityToUpdate.setRotationYawHead(entityToUpdate.rotationYaw);
@@ -234,10 +233,10 @@ public abstract class EntityVehicleBase extends Entity{
 	}
 	
 	@Override
-	public boolean processInitialInteract(EntityPlayer player, ItemStack stack, EnumHand hand) {
+	public boolean processInitialInteract(EntityPlayer player, EnumHand hand) {
 		if (!player.isSneaking()) {
 			if(player.getRidingEntity()!=this){
-				if (!worldObj.isRemote) {
+				if (!world.isRemote) {
 					player.startRiding(this);
 				}
 			}

@@ -39,7 +39,7 @@ public class BlockSplitTank extends BlockContainer{
 
 	@Override
 	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn,
-			EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
+			EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 		if(!playerIn.isSneaking()){
 			playerIn.openGui(Main.instance(), GuiHandler.GUI_SPLITTANK, worldIn, pos.getX(), pos.getY(), pos.getZ());
 			return true;
@@ -47,9 +47,9 @@ public class BlockSplitTank extends BlockContainer{
 		
 		return false;
 	}
-	
+
 	@Override
-	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, World worldIn, BlockPos pos) {
+	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos) {
 		return new AxisAlignedBB(0, 0, 0, 1, 1.5, 1);
 	}
 	

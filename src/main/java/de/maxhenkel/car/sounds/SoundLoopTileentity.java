@@ -39,7 +39,7 @@ public class SoundLoopTileentity extends MovingSound {
 		}
 		
 		if(tileEntity.getWorld().isRemote){
-			EntityPlayerSP player=Minecraft.getMinecraft().thePlayer;
+			EntityPlayerSP player=Minecraft.getMinecraft().player;
 			if(player==null||player.isDead){
 				stop();
 				return;

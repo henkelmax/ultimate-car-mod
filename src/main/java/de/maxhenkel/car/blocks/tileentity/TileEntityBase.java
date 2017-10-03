@@ -11,7 +11,7 @@ public class TileEntityBase extends TileEntity{
 	private NBTTagCompound compoundLast;
 	
 	public void synchronize(){
-		if (!worldObj.isRemote) {
+		if (!world.isRemote) {
 			NBTTagCompound last=writeToNBT(new NBTTagCompound());
 			if(compoundLast==null||!compoundLast.equals(last)){
 				CommonProxy.simpleNetworkWrapper.sendToAllAround(new MessageSyncTileEntity(pos, last), MathTools.getTileEntityTargetPoint(this));
@@ -21,7 +21,7 @@ public class TileEntityBase extends TileEntity{
 	}
 	
 	public void synchronize(int ticks){
-		if(worldObj.getTotalWorldTime()%ticks==0){
+		if(world.getTotalWorldTime()%ticks==0){
 			synchronize();
 		}
 	}

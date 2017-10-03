@@ -25,7 +25,7 @@ public class TileEntityDynamo extends TileEntityBase implements IEnergyProvider,
 	@Override
 	public void update() {
 		for(EnumFacing side:EnumFacing.values()){
-			TileEntity te=worldObj.getTileEntity(pos.offset(side));
+			TileEntity te=world.getTileEntity(pos.offset(side));
 			
 			if(!(te instanceof IEnergyReceiver)){
 				continue;

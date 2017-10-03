@@ -51,7 +51,7 @@ public abstract class TileEntityEnergyFluidProducer extends TileEntityBase imple
 	@Override
 	public void update() {
 		
-		if (worldObj.isRemote) {
+		if (world.isRemote) {
 			return;
 		}
 		
@@ -71,7 +71,7 @@ public abstract class TileEntityEnergyFluidProducer extends TileEntityBase imple
 			if (timeToGenerate == 0) {
 				if (ItemTools.isStackEmpty(output)) {
 					inventory.setInventorySlotContents(1, getOutputItem());
-				} else if (output.stackSize < output.getMaxStackSize()) {
+				} else if (output.getCount() < output.getMaxStackSize()) {
 					if (ItemStack.areItemsEqual(output, getOutputItem())) {
 						ItemTools.incrItemStack(output, null);
 						inventory.setInventorySlotContents(1, output);
@@ -85,10 +85,10 @@ public abstract class TileEntityEnergyFluidProducer extends TileEntityBase imple
 		} else if (storedEnergy >= energyUsage) {
 			if (!ItemTools.isStackEmpty(input)) {
 				if (ItemTools.contains(getInputItems(), input)) {
-					if (ItemTools.isStackEmpty(output)||output.stackSize < output.getMaxStackSize()) {
+					if (ItemTools.isStackEmpty(output)||output.getCount() < output.getMaxStackSize()) {
 						if (currentMillibuckets + millibucketsPerUse <= maxMillibuckets) {
 							ItemTools.decrItemStack(input, null);
-							if(input.stackSize<=0){
+							if(input.getCount()<=0){
 								ItemTools.removeStackFromSlot(inventory, 0);
 							}
 							timeToGenerate = generatingTime;
@@ -104,7 +104,7 @@ public abstract class TileEntityEnergyFluidProducer extends TileEntityBase imple
 		if (storedEnergy >= energyUsage && currentMillibuckets+millibucketsPerUse <= maxMillibuckets) {
 			if (!ItemTools.isStackEmpty(inventory.getStackInSlot(0))||(timeToGenerate>0&&storedEnergy > 0)) {
 				if (ItemTools.isStackEmpty(inventory.getStackInSlot(1))
-						|| inventory.getStackInSlot(1).stackSize < inventory.getStackInSlot(1).getMaxStackSize()) {
+						|| inventory.getStackInSlot(1).getCount() < inventory.getStackInSlot(1).getMaxStackSize()) {
 					return true;
 				}
 			}
@@ -116,9 +116,9 @@ public abstract class TileEntityEnergyFluidProducer extends TileEntityBase imple
 	public abstract BlockGui getOwnBlock();
 
 	public void setBlockEnabled(boolean enabled) {
-		IBlockState state = worldObj.getBlockState(getPos());
+		IBlockState state = world.getBlockState(getPos());
 		if (state.getBlock().equals(getOwnBlock())) {
-			getOwnBlock().setPowered(worldObj, pos, state, enabled);
+			getOwnBlock().setPowered(world, pos, state, enabled);
 		}
 	}
 
@@ -270,8 +270,8 @@ public abstract class TileEntityEnergyFluidProducer extends TileEntityBase imple
 	}
 
 	@Override
-	public boolean isUseableByPlayer(EntityPlayer player) {
-		return inventory.isUseableByPlayer(player);
+	public boolean isUsableByPlayer(EntityPlayer player) {
+		return inventory.isUsableByPlayer(player);
 	}
 
 	@Override
@@ -302,6 +302,11 @@ public abstract class TileEntityEnergyFluidProducer extends TileEntityBase imple
 	@Override
 	public boolean hasCustomName() {
 		return inventory.hasCustomName();
+	}
+	
+	@Override
+	public boolean isEmpty() {
+		return inventory.isEmpty();
 	}
 
 	@Override

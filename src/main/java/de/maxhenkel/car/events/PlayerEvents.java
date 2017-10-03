@@ -59,7 +59,7 @@ public class PlayerEvents {
 	}
 
 	private EntityPlayerSP getPlayer() {
-		return minecraft.thePlayer;
+		return minecraft.player;
 	}
 
 	private Entity getRidingEntity() {

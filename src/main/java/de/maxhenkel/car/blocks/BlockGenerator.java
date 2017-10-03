@@ -33,9 +33,9 @@ public class BlockGenerator extends BlockGui{
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
 		return new AxisAlignedBB(0, 0, 0, 1, 14F/16F, 1);
 	}
-	
+
 	@Override
-	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, World worldIn, BlockPos pos) {
+	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos) {
 		return getBoundingBox(blockState, worldIn, pos);
 	}
 

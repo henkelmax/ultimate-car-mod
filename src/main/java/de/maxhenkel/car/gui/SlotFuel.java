@@ -33,18 +33,18 @@ public class SlotFuel extends Slot{
 		boolean success=ModItems.CANISTER.fuelFluidHandler(stack, car);
 		
 		if(!success){
-			ModSounds.playSound(SoundEvents.BLOCK_BREWING_STAND_BREW, car.worldObj, car.getPosition(), null, SoundCategory.NEUTRAL);
+			ModSounds.playSound(SoundEvents.BLOCK_BREWING_STAND_BREW, car.world, car.getPosition(), null, SoundCategory.NEUTRAL);
 		}
 		
 		EntityPlayer player=car.getDriver();
 		
 		if(player==null){
-			InventoryHelper.spawnItemStack(car.worldObj, car.posX, car.posY, car.posZ, stack);
+			InventoryHelper.spawnItemStack(car.world, car.posX, car.posY, car.posZ, stack);
 			return;
 		}
 		
 		if(!player.inventory.addItemStackToInventory(stack)){
-			InventoryHelper.spawnItemStack(car.worldObj, car.posX, car.posY, car.posZ, stack);
+			InventoryHelper.spawnItemStack(car.world, car.posX, car.posY, car.posZ, stack);
 		}
 	}
 

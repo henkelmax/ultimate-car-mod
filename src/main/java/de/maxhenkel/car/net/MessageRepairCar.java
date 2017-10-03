@@ -39,7 +39,7 @@ public class MessageRepairCar implements IMessage, IMessageHandler<MessageRepair
 				return null;
 			}
 			
-			TileEntity te=player.worldObj.getTileEntity(new BlockPos(message.posX, message.posY, message.posZ));
+			TileEntity te=player.world.getTileEntity(new BlockPos(message.posX, message.posY, message.posZ));
 			
 			if(te instanceof TileEntityCarWorkshop){
 				TileEntityCarWorkshop carWorkshop=(TileEntityCarWorkshop) te;

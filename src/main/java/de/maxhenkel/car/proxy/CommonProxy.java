@@ -38,6 +38,7 @@ import de.maxhenkel.car.net.MessageSyncConfig;
 import de.maxhenkel.car.net.MessageSyncTileEntity;
 import de.maxhenkel.car.sounds.ModSounds;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.ForgeModContainer;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -94,16 +95,16 @@ public class CommonProxy {
 	
 	public void init(FMLInitializationEvent event) {
 		
-		EntityRegistry.registerModEntity(EntityCarWood.class,
+		EntityRegistry.registerModEntity(new ResourceLocation("car_wood"), EntityCarWood.class,
 				"car_wood", 3723, Main.instance(), 64, 1, true);
 		
-		EntityRegistry.registerModEntity(EntityCarBigWood.class,
+		EntityRegistry.registerModEntity(new ResourceLocation("car_big_wood"), EntityCarBigWood.class,
 				"car_big_wood", 3724, Main.instance(), 64, 1, true);
 		
-		EntityRegistry.registerModEntity(EntityCarTransporter.class,
+		EntityRegistry.registerModEntity(new ResourceLocation("car_transporter"), EntityCarTransporter.class,
 				"car_transporter", 3725, Main.instance(), 64, 1, true);
 		
-		EntityRegistry.registerModEntity(EntityCarSport.class,
+		EntityRegistry.registerModEntity(new ResourceLocation("car_sport"), EntityCarSport.class,
 				"car_sport", 3726, Main.instance(), 64, 1, true);
 		
 		NetworkRegistry.INSTANCE.registerGuiHandler(Main.instance(), new GuiHandler());

@@ -21,7 +21,7 @@ public class BlockTarSlopeFlat extends BlockSlope{
 	
 	@Override
 	public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox,
-			List<AxisAlignedBB> collidingBoxes, Entity entityIn) {
+			List<AxisAlignedBB> collidingBoxes, Entity entityIn, boolean p_185477_7_) {
 		EnumFacing facing=state.getValue(FACING);
 		
 		if(isUpper){

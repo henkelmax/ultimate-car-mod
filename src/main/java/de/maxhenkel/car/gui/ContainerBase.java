@@ -68,16 +68,16 @@ public abstract class ContainerBase extends Container {
 
 			slot.onSlotChange(stackInSlot, stack);
 
-			if (stackInSlot.stackSize <= 0) {
+			if (stackInSlot.getCount() <= 0) {
 				slot.putStack(ItemTools.EMPTY);
 			} else {
 				slot.putStack(stackInSlot);
 			}
 
-			if (stackInSlot.stackSize == stack.stackSize) {
+			if (stackInSlot.getCount() == stack.getCount()) {
 				return ItemTools.EMPTY;
 			}
-			slot.onPickupFromSlot(player, stackInSlot);
+			slot.onTake(player, stackInSlot);
 		}
 		return stack;
 	}

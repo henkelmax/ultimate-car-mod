@@ -20,6 +20,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.FluidActionResult;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.IFluidHandler;
@@ -134,7 +135,7 @@ public class BlockTank extends BlockContainer {
 	
 	@Override
 	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn,
-			EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
+			EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 		ItemStack stack = playerIn.getHeldItem(hand);
 
 		if (stack == null) {
@@ -155,7 +156,7 @@ public class BlockTank extends BlockContainer {
 
 		return false;
 	}
-
+	
 	private boolean handleEmpty(FluidStack fluidStack, ItemStack stack, World worldIn, BlockPos pos,
 			EntityPlayer playerIn, EnumHand hand) {
 		TileEntity te = worldIn.getTileEntity(pos);
@@ -168,10 +169,10 @@ public class BlockTank extends BlockContainer {
 
 		IItemHandler inv = new InvWrapper(playerIn.inventory);
 
-		boolean res = FluidUtil.tryEmptyContainerAndStow(stack, handler, inv, Integer.MAX_VALUE, playerIn);
+		FluidActionResult res = FluidUtil.tryEmptyContainerAndStow(stack, handler, inv, Integer.MAX_VALUE, playerIn);
 
-		if (res) {
-			//playerIn.setHeldItem(hand, res.result); //TODO ITEM!!!
+		if (res.isSuccess()) {
+			playerIn.setHeldItem(hand, res.result); //TODO ITEM!!!
 		}
 
 		return true;
@@ -189,11 +190,11 @@ public class BlockTank extends BlockContainer {
 
 		IItemHandler inv = new InvWrapper(playerIn.inventory);
 
-		boolean result = FluidUtil.tryFillContainerAndStow(stack, blockHandler, inv, Integer.MAX_VALUE,
+		FluidActionResult result = FluidUtil.tryFillContainerAndStow(stack, blockHandler, inv, Integer.MAX_VALUE,
 				playerIn);
 
-		if (result) {
-			//playerIn.setHeldItem(hand, result.result); //TODO ITEM!!!
+		if (result.isSuccess()) {
+			playerIn.setHeldItem(hand, result.result); //TODO ITEM!!!
 		}
 
 		return true;
