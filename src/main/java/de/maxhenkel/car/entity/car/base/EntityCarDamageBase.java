@@ -96,10 +96,10 @@ public abstract class EntityCarDamageBase extends EntityCarBase {
 			return false;
 		}
 
-		if (!(source.getEntity() instanceof EntityPlayer)) {
+		if (!(source.getImmediateSource() instanceof EntityPlayer)) {
 			return false;
 		}
-		EntityPlayer player = (EntityPlayer) source.getEntity();
+		EntityPlayer player = (EntityPlayer) source.getImmediateSource();
 
 		if (player == null) {
 			return false;

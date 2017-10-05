@@ -12,6 +12,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 
@@ -38,8 +39,8 @@ public class ItemKey extends Item {
 			return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, stack);
 		}
 		
-		List<EntityCarLockBase> cars=worldIn.getEntitiesWithinAABB(EntityCarLockBase.class, playerIn.getEntityBoundingBox().expand(25, 25, 25), new PredicateUUID(carUUID));
-		
+		List<EntityCarLockBase> cars=worldIn.getEntitiesWithinAABB(EntityCarLockBase.class, new AxisAlignedBB(playerIn.posX-25D, playerIn.posY-25D, playerIn.posZ-25D, playerIn.posX+25D, playerIn.posY+25D, playerIn.posZ+25D), new PredicateUUID(carUUID));
+
 		if(cars.isEmpty()){
 			playerIn.sendMessage(new TextComponentTranslation("message.car_out_of_range"));
 			return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, stack);

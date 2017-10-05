@@ -8,6 +8,7 @@ import org.apache.commons.io.IOUtils;
 
 import de.maxhenkel.car.Main;
 
+@Deprecated
 public class FileReader {
 
 	public static String read(String name){

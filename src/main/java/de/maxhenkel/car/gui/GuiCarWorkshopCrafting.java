@@ -10,14 +10,13 @@ import de.maxhenkel.car.net.MessageSpawnCar;
 import de.maxhenkel.car.proxy.CommonProxy;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextComponentTranslation;
 
-public class GuiCarWorkshopCrafting extends GuiContainer {
+public class GuiCarWorkshopCrafting extends GuiBase {
 
 	private static final ResourceLocation GUI_TEXTURE = new ResourceLocation(Main.MODID,
 			"textures/gui/gui_car_workshop_crafting.png");
@@ -59,8 +58,8 @@ public class GuiCarWorkshopCrafting extends GuiContainer {
 		super.drawGuiContainerForegroundLayer(mouseX, mouseY);
 
 		// Titles
-		this.fontRendererObj.drawString(tile.getDisplayName().getUnformattedText(), 8, 6, fontColor);
-		this.fontRendererObj.drawString(playerInv.getDisplayName().getFormattedText(), 8, ySize - 96 + 2,
+		fontRenderer.drawString(tile.getDisplayName().getUnformattedText(), 8, 6, fontColor);
+		fontRenderer.drawString(playerInv.getDisplayName().getFormattedText(), 8, ySize - 96 + 2,
 				fontColor);
 
 		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);

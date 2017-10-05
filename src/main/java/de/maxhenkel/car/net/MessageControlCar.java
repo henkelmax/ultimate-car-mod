@@ -34,7 +34,7 @@ public class MessageControlCar implements IMessage, IMessageHandler<MessageContr
 	@Override
 	public IMessage onMessage(MessageControlCar message, MessageContext ctx) {
 		if(ctx.side.equals(Side.SERVER)){
-			EntityPlayer player=ctx.getServerHandler().playerEntity;
+			EntityPlayer player=ctx.getServerHandler().player;
 			
 			if(!player.getUniqueID().equals(message.uuid)){
 				return null;

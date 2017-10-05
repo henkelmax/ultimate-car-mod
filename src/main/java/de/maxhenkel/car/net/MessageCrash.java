@@ -29,7 +29,7 @@ public class MessageCrash implements IMessage, IMessageHandler<MessageCrash, IMe
 	@Override
 	public IMessage onMessage(MessageCrash message, MessageContext ctx) {
 		if(ctx.side.equals(Side.SERVER)){
-			EntityPlayer player=ctx.getServerHandler().playerEntity;
+			EntityPlayer player=ctx.getServerHandler().player;
 			
 			List<EntityCarBase> list=player.world.getEntities(EntityCarBase.class, new PredicateUUID(message.uuid));
 			

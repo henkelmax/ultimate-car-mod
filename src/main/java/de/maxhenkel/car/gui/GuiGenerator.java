@@ -2,16 +2,14 @@ package de.maxhenkel.car.gui;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.blocks.tileentity.TileEntityGenerator;
-import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextComponentTranslation;
 
-public class GuiGenerator extends GuiContainer {
+public class GuiGenerator extends GuiBase {
 
 	private static final ResourceLocation GUI_TEXTURE = new ResourceLocation(Main.MODID,
 			"textures/gui/gui_generator.png");
@@ -34,9 +32,9 @@ public class GuiGenerator extends GuiContainer {
 		super.drawGuiContainerForegroundLayer(mouseX, mouseY);
 
 		// Title
-		this.fontRendererObj.drawString(playerInv.getDisplayName().getUnformattedText(), 8, this.ySize - 96 + 2,
+		fontRenderer.drawString(playerInv.getDisplayName().getUnformattedText(), 8, this.ySize - 96 + 2,
 				fontColor);
-		this.fontRendererObj.drawString(tile.getDisplayName().getUnformattedText(), 62, 6, fontColor);
+		fontRenderer.drawString(tile.getDisplayName().getUnformattedText(), 62, 6, fontColor);
 
 		if (mouseX >= guiLeft + 122 && mouseX <= guiLeft + 16 + 122) {
 			if (mouseY >= guiTop + 8 && mouseY <= guiTop + 57 + 8) {

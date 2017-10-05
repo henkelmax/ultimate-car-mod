@@ -6,8 +6,6 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemCarBodyPartWood extends Item {
 
@@ -26,10 +24,9 @@ public class ItemCarBodyPartWood extends Item {
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
-	public void getSubItems(Item itemIn, CreativeTabs tab, NonNullList<ItemStack> subItems) {
+	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
 		for (int i = 0; i < EnumType.values().length; i++) {
-			subItems.add(new ItemStack(itemIn, 1, i));
+			items.add(new ItemStack(this, 1, i));
 		}
 	}
 

@@ -137,7 +137,7 @@ public abstract class EntityVehicleBase extends Entity{
 
 		Vec3d vec3d = (new Vec3d(front, 0.0D, side))
 				.rotateYaw(-this.rotationYaw * 0.017453292F - ((float) Math.PI / 2F));
-		passenger.setPosition(this.posX + vec3d.xCoord, this.posY + getMountedYOffset(), this.posZ + vec3d.zCoord);
+		passenger.setPosition(this.posX + vec3d.x, this.posY + getMountedYOffset(), this.posZ + vec3d.z);
 		passenger.rotationYaw += this.deltaRotation;
 		passenger.setRotationYawHead(passenger.getRotationYawHead() + this.deltaRotation);
 		this.applyYawToEntity(passenger);

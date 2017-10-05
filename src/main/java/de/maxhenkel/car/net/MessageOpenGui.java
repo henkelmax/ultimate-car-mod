@@ -34,7 +34,7 @@ public class MessageOpenGui implements IMessage, IMessageHandler<MessageOpenGui,
 	@Override
 	public IMessage onMessage(MessageOpenGui message, MessageContext ctx) {
 		if(ctx.side.equals(Side.SERVER)){
-			EntityPlayer player=ctx.getServerHandler().playerEntity;
+			EntityPlayer player=ctx.getServerHandler().player;
 			
 			if(!player.getUniqueID().equals(message.uuid)){
 				return null;

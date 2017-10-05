@@ -2,7 +2,6 @@ package de.maxhenkel.car.gui;
 
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.blocks.tileentity.TileEntityFluidExtractor;
-import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -11,7 +10,7 @@ import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
-public class GuiFluidExtractor extends GuiContainer {
+public class GuiFluidExtractor extends GuiBase {
 
 	private static final ResourceLocation GUI_TEXTURE = new ResourceLocation(Main.MODID,
 			"textures/gui/gui_fluid_extractor.png");
@@ -34,9 +33,9 @@ public class GuiFluidExtractor extends GuiContainer {
 		super.drawGuiContainerForegroundLayer(mouseX, mouseY);
 
 		// Title
-		this.fontRendererObj.drawString(playerInv.getDisplayName().getUnformattedText(), 8, this.ySize - 96 + 2,
+		fontRenderer.drawString(playerInv.getDisplayName().getUnformattedText(), 8, this.ySize - 96 + 2,
 				fontColor);
-		this.fontRendererObj.drawString(tile.getDisplayName().getUnformattedText(), 8, 6, fontColor);
+		fontRenderer.drawString(tile.getDisplayName().getUnformattedText(), 8, 6, fontColor);
 		
 		drawFilter();
 	}
@@ -50,7 +49,7 @@ public class GuiFluidExtractor extends GuiContainer {
 			name=f.getLocalizedName(new FluidStack(f, 1));
 		}
 		
-		this.fontRendererObj.drawString(new TextComponentTranslation("filter.fluid", name).getFormattedText(), 46, 28, fontColor);
+		fontRenderer.drawString(new TextComponentTranslation("filter.fluid", name).getFormattedText(), 46, 28, fontColor);
 	}
 
 	@Override

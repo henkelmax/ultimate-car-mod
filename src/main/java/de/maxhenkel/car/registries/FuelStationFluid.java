@@ -3,9 +3,9 @@ package de.maxhenkel.car.registries;
 import de.maxhenkel.tools.FluidSelector;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fml.common.registry.IForgeRegistry;
-import net.minecraftforge.fml.common.registry.IForgeRegistryEntry;
-import net.minecraftforge.fml.common.registry.RegistryBuilder;
+import net.minecraftforge.registries.IForgeRegistry;
+import net.minecraftforge.registries.IForgeRegistryEntry;
+import net.minecraftforge.registries.RegistryBuilder;
 
 public class FuelStationFluid extends IForgeRegistryEntry.Impl<FuelStationFluid>{
 

@@ -10,7 +10,7 @@ import net.minecraft.util.EnumFacing;
 public class TileentitySpecialRendererFuelStation extends TileEntitySpecialRenderer<TileEntityFuelStation>{
 
 	@Override
-	public void renderTileEntityAt(TileEntityFuelStation target, double x, double y, double z, float partialTicks, int destroyStage) {
+	public void render(TileEntityFuelStation target, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
 		String name = target.getRenderText();
 
 		if (name == null || name.isEmpty()) {

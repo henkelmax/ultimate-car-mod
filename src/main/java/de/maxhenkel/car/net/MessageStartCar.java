@@ -29,7 +29,7 @@ public class MessageStartCar implements IMessage, IMessageHandler<MessageStartCa
 	@Override
 	public IMessage onMessage(MessageStartCar message, MessageContext ctx) {
 		if(ctx.side.equals(Side.SERVER)){
-			EntityPlayer player=ctx.getServerHandler().playerEntity;
+			EntityPlayer player=ctx.getServerHandler().player;
 			
 			if(!player.getUniqueID().equals(message.uuid)){
 				return null;

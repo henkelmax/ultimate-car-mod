@@ -7,6 +7,7 @@ import de.maxhenkel.car.blocks.tileentity.TileEntityTank;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -79,7 +80,7 @@ public class BlockTank extends BlockContainer {
 	}
 	
 	@Override
-	public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
+	public void addInformation(ItemStack stack, World player, List<String> tooltip, ITooltipFlag advanced) {
 		if(stack.hasTagCompound()&&stack.getTagCompound().hasKey("fluid")){
 			NBTTagCompound fluidComp=stack.getTagCompound().getCompoundTag("fluid");
 			FluidStack fluidStack=FluidStack.loadFluidStackFromNBT(fluidComp);

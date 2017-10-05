@@ -62,11 +62,6 @@ public class BlockCrashBarrier extends Block {
 	}
 
 	@Override
-	public boolean isFullyOpaque(IBlockState state) {
-		return false;
-	}
-
-	@Override
 	public boolean isFullCube(IBlockState state) {
 		return false;
 	}

@@ -1,13 +1,12 @@
 package de.maxhenkel.car.gui;
 
 import de.maxhenkel.car.Main;
-import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextComponentTranslation;
 
-public class GuiPainter extends GuiContainer{
+public class GuiPainter extends GuiBase{
 
 	private static final ResourceLocation PAINTER_GUI_TEXTURE = new ResourceLocation(Main.MODID, "textures/gui/gui_painter.png");
 	private static final int fontColor=4210752;
@@ -21,7 +20,7 @@ public class GuiPainter extends GuiContainer{
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
 		super.drawGuiContainerForegroundLayer(mouseX, mouseY);
-		this.fontRendererObj.drawString(new TextComponentTranslation("gui.painter").getUnformattedText(), 8, 6, fontColor);
+		fontRenderer.drawString(new TextComponentTranslation("gui.painter").getUnformattedText(), 8, 6, fontColor);
 	}
 
 	@Override

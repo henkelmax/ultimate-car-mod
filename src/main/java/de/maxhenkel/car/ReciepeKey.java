@@ -9,10 +9,13 @@ import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
 public class ReciepeKey implements IRecipe{
 
+	private ResourceLocation resourceLocation;
+	
 	@Override
 	public boolean matches(InventoryCrafting inv, World worldIn) {
 		return getCraftingResult(inv)!=null;
@@ -59,11 +62,6 @@ public class ReciepeKey implements IRecipe{
 	}
 
 	@Override
-	public int getRecipeSize() {
-		return 2;
-	}
-
-	@Override
 	public ItemStack getRecipeOutput() {
 		return new ItemStack(ModItems.KEY);
 	}
@@ -86,5 +84,30 @@ public class ReciepeKey implements IRecipe{
 		}
 		
 		return list;
+	}
+
+	@Override
+	public IRecipe setRegistryName(ResourceLocation name) {
+		this.resourceLocation=name;
+		return this;
+	}
+
+	@Override
+	public ResourceLocation getRegistryName() {
+		return resourceLocation;
+	}
+
+	@Override
+	public Class<IRecipe> getRegistryType() {
+		return IRecipe.class;//TODO ?
+	}
+
+	@Override
+	public boolean canFit(int width, int height) {
+		if(width>1&&height>1) {
+			return true;
+		}
+		
+		return false;
 	}
 }

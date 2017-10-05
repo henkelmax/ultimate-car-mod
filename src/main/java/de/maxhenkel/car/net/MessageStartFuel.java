@@ -30,7 +30,7 @@ public class MessageStartFuel implements IMessage, IMessageHandler<MessageStartF
 	@Override
 	public IMessage onMessage(MessageStartFuel message, MessageContext ctx) {
 		if(ctx.side.equals(Side.SERVER)){
-			EntityPlayer player=ctx.getServerHandler().playerEntity;
+			EntityPlayer player=ctx.getServerHandler().player;
 			
 			TileEntity te=player.world.getTileEntity(new BlockPos(message.posX, message.posY, message.posZ));
 			

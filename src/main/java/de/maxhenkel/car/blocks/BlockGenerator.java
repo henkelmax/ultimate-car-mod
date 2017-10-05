@@ -50,11 +50,6 @@ public class BlockGenerator extends BlockGui{
 	}
 	
 	@Override
-	public boolean isFullyOpaque(IBlockState state) {
-		return false;
-	}
-	
-	@Override
 	public boolean isFullCube(IBlockState state) {
 		return false;
 	}

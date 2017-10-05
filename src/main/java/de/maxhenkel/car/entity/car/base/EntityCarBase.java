@@ -225,7 +225,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 			prevRotationYaw = rotationYaw;
 		}
 
-		if (isCollidedHorizontally) {
+		if (collidedHorizontally) {//TODO !!!
 			if (world.isRemote) {
 				onCollision(speed);
 			}
@@ -382,7 +382,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 	}
 
 	public boolean isAccelerating() {
-		boolean b = (isForward() || isBackward()) && !isCollidedHorizontally;
+		boolean b = (isForward() || isBackward()) && !collidedHorizontally;
 		return b && isStarted();
 	}
 

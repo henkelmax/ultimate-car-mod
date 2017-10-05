@@ -1,15 +1,5 @@
 package de.maxhenkel.car.items;
 
-import de.maxhenkel.car.Main;
-import de.maxhenkel.car.ModCreativeTabs;
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-
 public class ModItems {
 
 	public static final ItemPainter PAINTER = new ItemPainter(false);
@@ -36,84 +26,4 @@ public class ModItems {
 	public static final ItemCraftingComponent AXLE = new ItemCraftingComponent("axle");
 	public static final ItemCraftingComponent CONTAINER = new ItemCraftingComponent("container");
 	public static final ItemKey KEY = new ItemKey();
-	
-	public static ItemStack CANOLA_OIL_BUCKET;
-	public static ItemStack METHANOL_BUCKET;
-	public static ItemStack CANOLA_METHANOL_MIX_BUCKET;
-	public static ItemStack GLYCERIN_BUCKET;
-	public static ItemStack BIO_DIESEL_BUCKET;
-
-	
-	public static void registerItems(){
-		registerItem(PAINTER);
-		registerItem(PAINTER_YELLOW);
-		registerItem(CANOLA_SEEDS);
-		registerItem(CANOLA);
-		registerItem(RAPECAKE);
-		
-		registerItem(IRON_STICK);
-		registerItem(ENGINE_PISTON);
-		registerItem(ENGINE_3_CYLINDER);
-		registerItem(ENGINE_6_CYLINDER);
-		registerItem(CAR_SEAT);
-		registerItem(WINDSHIELD);
-		registerItem(WHEEL);
-		registerItem(AXLE);
-		registerItem(CONTAINER);
-		registerItem(CAR_BODY_PART_WOOD);
-		registerItem(CAR_TANK);
-		registerItem(CONTROL_UNIT);
-		registerItem(CANISTER);
-		registerItem(REPAIR_KIT);
-		registerItem(WRENCH);
-		registerItem(SCREW_DRIVER);
-		registerItem(HAMMER);
-		registerItem(CABLE_INSULATOR);
-		registerItem(KEY);
-	}
-
-	public static void registerItemsClient() {
-		addRenderItem(PAINTER);
-		addRenderItem(PAINTER_YELLOW);
-		addRenderItem(CANOLA_SEEDS);
-		addRenderItem(CANOLA);
-		addRenderItem(RAPECAKE);
-		
-		addRenderItem(IRON_STICK);
-		addRenderItem(ENGINE_PISTON);
-		addRenderItem(ENGINE_3_CYLINDER);
-		addRenderItem(ENGINE_6_CYLINDER);
-		addRenderItem(CAR_SEAT);
-		addRenderItem(WINDSHIELD);
-		addRenderItem(WHEEL);
-		addRenderItem(AXLE);
-		addRenderItem(CONTAINER);
-		addRenderItem(CAR_BODY_PART_WOOD);
-		addRenderItem(CAR_TANK);
-		addRenderItem(CONTROL_UNIT);
-		addRenderItem(CANISTER);
-		addRenderItem(REPAIR_KIT);
-		addRenderItem(WRENCH);
-		addRenderItem(SCREW_DRIVER);
-		addRenderItem(HAMMER);
-		addRenderItem(CABLE_INSULATOR);
-		addRenderItem(KEY);
-	}
-	
-	private static void addRenderItem(Item item) {
-		if(item.getHasSubtypes()){
-			NonNullList<ItemStack> list=NonNullList.create();
-			item.getSubItems(item, ModCreativeTabs.TAB_CAR, list);
-			for(int i=0; i<list.size(); i++){
-				ResourceLocation loc=new ResourceLocation(Main.MODID, item.getRegistryName().getResourcePath() +"_" +i);
-				ModelLoader.setCustomModelResourceLocation(item, i, new ModelResourceLocation(loc, "inventory"));
-			}
-		}else{
-			ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(item.getRegistryName(), "inventory"));
-		}
-	}
-	
-	private static void registerItem(Item i) {
-		GameRegistry.register(i);
-	}
 }

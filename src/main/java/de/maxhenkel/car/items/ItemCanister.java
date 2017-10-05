@@ -8,6 +8,7 @@ import de.maxhenkel.car.blocks.ModBlocks;
 import de.maxhenkel.car.blocks.tileentity.TileEntityFuelStation;
 import de.maxhenkel.car.sounds.ModSounds;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
@@ -79,7 +80,7 @@ public class ItemCanister extends Item {
 	}
 
 	@Override
-	public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced) {
+	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
 		if (stack.hasTagCompound()) {
 			NBTTagCompound comp = stack.getTagCompound();
 
@@ -89,20 +90,20 @@ public class ItemCanister extends Item {
 				FluidStack fluidStack = FluidStack.loadFluidStackFromNBT(fuel);
 				if (fluidStack == null) {
 					addInfo("-", 0, tooltip);
-					super.addInformation(stack, playerIn, tooltip, advanced);
+					super.addInformation(stack, worldIn, tooltip, flagIn);
 					return;
 				}
 
 				addInfo(fluidStack.getLocalizedName(), fluidStack.amount, tooltip);
-				super.addInformation(stack, playerIn, tooltip, advanced);
+				super.addInformation(stack, worldIn, tooltip, flagIn);
 				return;
 			}
 			addInfo("-", 0, tooltip);
-			super.addInformation(stack, playerIn, tooltip, advanced);
+			super.addInformation(stack, worldIn, tooltip, flagIn);
 			return;
 		}
 		addInfo("-", 0, tooltip);
-		super.addInformation(stack, playerIn, tooltip, advanced);
+		super.addInformation(stack, worldIn, tooltip, flagIn);
 	}
 	
 	private void addInfo(String fluid, int amount, List<String> tooltip){

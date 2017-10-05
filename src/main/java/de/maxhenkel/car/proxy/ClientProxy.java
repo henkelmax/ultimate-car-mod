@@ -1,7 +1,5 @@
 package de.maxhenkel.car.proxy;
 
-import de.maxhenkel.car.Main;
-import de.maxhenkel.car.blocks.ModBlocks;
 import de.maxhenkel.car.blocks.tileentity.TileEntityFuelStation;
 import de.maxhenkel.car.blocks.tileentity.TileEntitySplitTank;
 import de.maxhenkel.car.blocks.tileentity.TileEntityTank;
@@ -19,14 +17,7 @@ import de.maxhenkel.car.entity.model.wood.RenderFactoryWoodCar;
 import de.maxhenkel.car.events.KeyEvents;
 import de.maxhenkel.car.events.PlayerEvents;
 import de.maxhenkel.car.events.RenderEvents;
-import de.maxhenkel.car.items.ModItems;
-import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.client.renderer.block.statemap.StateMapperBase;
-import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fluids.IFluidBlock;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -43,15 +34,6 @@ public class ClientProxy extends CommonProxy {
 		RenderingRegistry.registerEntityRenderingHandler(EntityCarTransporter.class, new RenderFactoryTransporter());
 		RenderingRegistry.registerEntityRenderingHandler(EntityCarSport.class, new RenderFactorySport());
 
-		registerFluidModel(ModBlocks.METHANOL);
-		registerFluidModel(ModBlocks.CANOLA_OIL);
-		registerFluidModel(ModBlocks.CANOLA_METHANOL_MIX);
-		registerFluidModel(ModBlocks.GLYCERIN);
-		registerFluidModel(ModBlocks.BIO_DIESEL);
-		
-		ModBlocks.registerBlocksClient();
-
-		ModItems.registerItemsClient();
 	}
 
 	public void init(FMLInitializationEvent event) {
@@ -73,16 +55,6 @@ public class ClientProxy extends CommonProxy {
 		super.postinit(event);
 	}
 
-	private void registerFluidModel(IFluidBlock fluidBlock) {
-
-		final ModelResourceLocation modelResourceLocation = new ModelResourceLocation(Main.MODID + ":" +fluidBlock.getFluid().getName(), fluidBlock.getFluid().getName());
-
-		ModelLoader.setCustomStateMapper((Block) fluidBlock, new StateMapperBase() {
-			@Override
-			protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
-				return modelResourceLocation;
-			}
-		});
-	}
+	
 
 }

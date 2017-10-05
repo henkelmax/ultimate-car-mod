@@ -9,7 +9,7 @@ import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 public class TileEntitySpecialRendererSplitTank extends TileEntitySpecialRenderer<TileEntitySplitTank> {
 
 	@Override
-	public void renderTileEntityAt(TileEntitySplitTank te, double x, double y, double z, float f, int i) {
+	public void render(TileEntitySplitTank te, double x, double y, double z, float f, int i, float alpha) {
 		bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 		
 		GlStateManager.pushMatrix();

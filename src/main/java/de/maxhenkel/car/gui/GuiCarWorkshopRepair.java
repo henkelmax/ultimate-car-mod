@@ -3,7 +3,6 @@ package de.maxhenkel.car.gui;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
 import de.maxhenkel.car.Main;
 import de.maxhenkel.tools.MathTools;
 import de.maxhenkel.car.blocks.tileentity.TileEntityCarWorkshop;
@@ -14,13 +13,12 @@ import de.maxhenkel.car.net.MessageRepairCar;
 import de.maxhenkel.car.proxy.CommonProxy;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextComponentTranslation;
 
-public class GuiCarWorkshopRepair extends GuiContainer {
+public class GuiCarWorkshopRepair extends GuiBase {
 
 	private static final ResourceLocation GUI_TEXTURE = new ResourceLocation(Main.MODID,
 			"textures/gui/gui_car_workshop_repair.png");
@@ -61,8 +59,8 @@ public class GuiCarWorkshopRepair extends GuiContainer {
 		super.drawGuiContainerForegroundLayer(mouseX, mouseY);
 
 		// Titles
-		this.fontRendererObj.drawString(tile.getDisplayName().getUnformattedText(), 8, 6, fontColor);
-		this.fontRendererObj.drawString(player.inventory.getDisplayName().getFormattedText(), 8, ySize - 96 + 2,
+		fontRenderer.drawString(tile.getDisplayName().getUnformattedText(), 8, 6, fontColor);
+		fontRenderer.drawString(player.inventory.getDisplayName().getFormattedText(), 8, ySize - 96 + 2,
 				fontColor);
 		
 		EntityCarBase carTop = tile.getCarOnTop();

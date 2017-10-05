@@ -3,9 +3,9 @@ package de.maxhenkel.car.blocks.tileentity.render;
 import org.lwjgl.opengl.GL11;
 import de.maxhenkel.car.blocks.tileentity.TileEntityTank;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
@@ -16,7 +16,7 @@ import net.minecraftforge.fluids.FluidStack;
 public class TileEntitySpecialRendererTank extends TileEntitySpecialRenderer<TileEntityTank> {
 
 	@Override
-	public void renderTileEntityAt(TileEntityTank te, double x, double y, double z, float f, int i) {
+	public void render(TileEntityTank te, double x, double y, double z, float f, int i, float alpha) {
 		bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 		
 		GlStateManager.pushMatrix();
@@ -48,7 +48,7 @@ public class TileEntitySpecialRendererTank extends TileEntitySpecialRenderer<Til
 		final double vHeight = vMax - vMin;
 
 		Tessellator tessellator = Tessellator.getInstance();
-		VertexBuffer buffer = tessellator.getBuffer();
+		BufferBuilder buffer = tessellator.getBuffer();
 
 		buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
 

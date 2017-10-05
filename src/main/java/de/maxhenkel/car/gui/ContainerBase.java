@@ -128,7 +128,7 @@ public abstract class ContainerBase extends Container {
 
 			for (int field = 0; field < fieldCount; field++) {
 				if (field < fields.length && fields[field] != tileInventory.getField(field)) {
-					icontainerlistener.sendProgressBarUpdate(this, field, tileInventory.getField(field));
+					icontainerlistener.sendWindowProperty(this, field, tileInventory.getField(field));
 				}
 			}
 		}
@@ -144,7 +144,7 @@ public abstract class ContainerBase extends Container {
 	public void addListener(IContainerListener listener) {
 		super.addListener(listener);
 		for (int field = 0; field < fields.length; field++) {
-			listener.sendProgressBarUpdate(this, field, fields[field]);
+			listener.sendWindowProperty(this, field, fields[field]);
 		}
 	}
 

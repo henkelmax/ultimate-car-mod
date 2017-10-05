@@ -33,7 +33,7 @@ public class MessageRepairCar implements IMessage, IMessageHandler<MessageRepair
 	@Override
 	public IMessage onMessage(MessageRepairCar message, MessageContext ctx) {
 		if(ctx.side.equals(Side.SERVER)){
-			EntityPlayer player=ctx.getServerHandler().playerEntity;
+			EntityPlayer player=ctx.getServerHandler().player;
 			
 			if(!player.getUniqueID().equals(message.uuid)){
 				return null;

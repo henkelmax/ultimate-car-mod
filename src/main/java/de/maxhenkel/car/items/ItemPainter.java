@@ -38,13 +38,13 @@ public class ItemPainter extends Item{
 		setCreativeTab(ModCreativeTabs.TAB_CAR);
 		
 	}
-	
+
 	@Override
-	public float getStrVsBlock(ItemStack stack, IBlockState state) {
+	public float getDestroySpeed(ItemStack stack, IBlockState state) {
 		if(state.getBlock() instanceof BlockPaint){
 			return 50F;
 		}
-		return super.getStrVsBlock(stack, state);
+		return super.getDestroySpeed(stack, state);
 	}
 	
 	@Override

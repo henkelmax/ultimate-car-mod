@@ -2,16 +2,14 @@ package de.maxhenkel.car.gui;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.blocks.tileentity.TileEntitySplitTank;
-import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextComponentTranslation;
 
-public class GuiSplitTank extends GuiContainer {
+public class GuiSplitTank extends GuiBase {
 
 	private static final ResourceLocation GUI_TEXTURE = new ResourceLocation(Main.MODID,
 			"textures/gui/gui_split_tank.png");
@@ -34,7 +32,7 @@ public class GuiSplitTank extends GuiContainer {
 		super.drawGuiContainerForegroundLayer(mouseX, mouseY);
 
 		// Title
-		this.fontRendererObj.drawString(playerInv.getDisplayName().getUnformattedText(), 8, this.ySize - 96 + 2,
+		fontRenderer.drawString(playerInv.getDisplayName().getUnformattedText(), 8, this.ySize - 96 + 2,
 				fontColor);
 		
 		if (mouseX >= guiLeft + 50 && mouseX <= guiLeft + 16 + 50) {

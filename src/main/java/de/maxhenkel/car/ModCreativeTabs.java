@@ -1,11 +1,13 @@
 package de.maxhenkel.car;
 
 import de.maxhenkel.car.blocks.ModBlocks;
-import de.maxhenkel.car.items.ModItems;
+import de.maxhenkel.car.fluids.ModFluids;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidUtil;
 
 public class ModCreativeTabs {
 	
@@ -17,11 +19,12 @@ public class ModCreativeTabs {
 		
 		@Override
 		public void displayAllRelevantItems(NonNullList<ItemStack> list) {
-			list.add(ModItems.BIO_DIESEL_BUCKET);
-			list.add(ModItems.CANOLA_METHANOL_MIX_BUCKET);
-			list.add(ModItems.CANOLA_OIL_BUCKET);
-			list.add(ModItems.GLYCERIN_BUCKET);
-			list.add(ModItems.METHANOL_BUCKET);
+			
+			list.add(FluidUtil.getFilledBucket(new FluidStack(ModFluids.CANOLA_OIL, 1)));
+			list.add(FluidUtil.getFilledBucket(new FluidStack(ModFluids.CANOLA_METHANOL_MIX, 1)));
+			list.add(FluidUtil.getFilledBucket(new FluidStack(ModFluids.BIO_DIESEL, 1)));
+			list.add(FluidUtil.getFilledBucket(new FluidStack(ModFluids.GLYCERIN, 1)));
+			list.add(FluidUtil.getFilledBucket(new FluidStack(ModFluids.METHANOL, 1)));
 			super.displayAllRelevantItems(list);
 		}
 		

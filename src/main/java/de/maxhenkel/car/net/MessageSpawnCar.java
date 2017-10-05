@@ -28,7 +28,7 @@ public class MessageSpawnCar implements IMessage, IMessageHandler<MessageSpawnCa
 	@Override
 	public IMessage onMessage(MessageSpawnCar message, MessageContext ctx) {
 		if(ctx.side.equals(Side.SERVER)){
-			EntityPlayer player=ctx.getServerHandler().playerEntity;
+			EntityPlayer player=ctx.getServerHandler().player;
 			
 			TileEntity te=player.world.getTileEntity(new BlockPos(message.posX, message.posY, message.posZ));
 			

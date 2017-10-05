@@ -45,11 +45,6 @@ public class BlockSlope extends Block implements IDrivable {
 	}
 
 	@Override
-	public boolean isFullyOpaque(IBlockState state) {
-		return false;
-	}
-
-	@Override
 	public boolean isFullCube(IBlockState state) {
 		return false;
 	}

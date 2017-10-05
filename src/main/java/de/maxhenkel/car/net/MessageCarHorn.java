@@ -34,7 +34,7 @@ public class MessageCarHorn implements IMessage, IMessageHandler<MessageCarHorn,
 				return null;
 			}
 			
-			EntityPlayer player=ctx.getServerHandler().playerEntity;
+			EntityPlayer player=ctx.getServerHandler().player;
 			
 			if(!player.getUniqueID().equals(message.uuid)){
 				return null;

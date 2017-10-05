@@ -3,13 +3,12 @@ package de.maxhenkel.car.gui;
 import java.util.ArrayList;
 import java.util.List;
 import de.maxhenkel.car.blocks.tileentity.TileEntityEnergyFluidProducer;
-import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextComponentTranslation;
 
-public abstract class GuiEnergyFluidProducer extends GuiContainer {
+public abstract class GuiEnergyFluidProducer extends GuiBase {
 
 	private static final int fontColor = 4210752;
 
@@ -42,8 +41,8 @@ public abstract class GuiEnergyFluidProducer extends GuiContainer {
 		super.drawGuiContainerForegroundLayer(mouseX, mouseY);
 
 		// Titles
-		this.fontRendererObj.drawString(tile.getDisplayName().getUnformattedText(), 38, 6, fontColor);
-		this.fontRendererObj.drawString(playerInv.getDisplayName().getUnformattedText(), 8, this.ySize - 96 + 2,
+		fontRenderer.drawString(tile.getDisplayName().getUnformattedText(), 38, 6, fontColor);
+		fontRenderer.drawString(playerInv.getDisplayName().getUnformattedText(), 8, this.ySize - 96 + 2,
 				fontColor);
 		
 		if (mouseX >= guiLeft + 11 && mouseX <= guiLeft + 16 + 11) {
