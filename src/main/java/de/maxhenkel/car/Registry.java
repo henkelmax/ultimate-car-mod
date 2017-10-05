@@ -42,20 +42,23 @@ import net.minecraftforge.registries.IForgeRegistry;
 public class Registry {
 
 	public static void addRenderItem(Item item) {
-		if(item.getHasSubtypes()){
-			NonNullList<ItemStack> list=NonNullList.create();
+		if (item.getHasSubtypes()) {
+			NonNullList<ItemStack> list = NonNullList.create();
 			item.getSubItems(ModCreativeTabs.TAB_CAR, list);
-			for(int i=0; i<list.size(); i++){
-				ResourceLocation loc=new ResourceLocation(Main.MODID, item.getRegistryName().getResourcePath() +"_" +i);
+			for (int i = 0; i < list.size(); i++) {
+				ResourceLocation loc = new ResourceLocation(Main.MODID,
+						item.getRegistryName().getResourcePath() + "_" + i);
 				ModelLoader.setCustomModelResourceLocation(item, i, new ModelResourceLocation(loc, "inventory"));
 			}
-		}else{
-			ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(item.getRegistryName(), "inventory"));
+		} else {
+			ModelLoader.setCustomModelResourceLocation(item, 0,
+					new ModelResourceLocation(item.getRegistryName(), "inventory"));
 		}
 	}
 
 	public static void addRenderBlock(Block b) {
-		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(b), 0, new ModelResourceLocation(b.getRegistryName(), "inventory"));
+		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(b), 0,
+				new ModelResourceLocation(b.getRegistryName(), "inventory"));
 	}
 
 	public static void registerItem(IForgeRegistry<Item> registry, Item i) {
@@ -77,9 +80,11 @@ public class Registry {
 	@SubscribeEvent
 	public void registerRecipes(RegistryEvent.Register<IRecipe> event) {
 		Reciepes.registerReciepes();
-		event.getRegistry().register(new ReciepeKey().setRegistryName(new ResourceLocation(Main.MODID, "key")));
+		if (Config.keyRecipe) {
+			event.getRegistry().register(new ReciepeKey().setRegistryName(new ResourceLocation(Main.MODID, "key")));
+		}
 	}
-	
+
 	@SubscribeEvent
 	public static void registerSounds(RegistryEvent.Register<SoundEvent> event) {
 		registerSound(event.getRegistry(), ModSounds.engine_stop);
@@ -99,23 +104,23 @@ public class Registry {
 		registerSound(event.getRegistry(), ModSounds.car_lock);
 		registerSound(event.getRegistry(), ModSounds.car_unlock);
 	}
-	
+
 	public static void registerSound(IForgeRegistry<SoundEvent> registry, SoundEvent sound) {
 		registry.register(sound);
 	}
-	
+
 	@SubscribeEvent
 	public static void registerBlocks(RegistryEvent.Register<Block> event) {
 		registerFluids();
-		
+
 		registerBlock(event.getRegistry(), ModBlocks.TAR);
 		registerBlock(event.getRegistry(), ModBlocks.TAR_SLOPE);
 		registerBlock(event.getRegistry(), ModBlocks.TAR_SLOPE_FLAT_UPPER);
 		registerBlock(event.getRegistry(), ModBlocks.TAR_SLOPE_FLAT_LOWER);
 		registerBlock(event.getRegistry(), ModBlocks.TAR_SLAB);
 		registerBlock(event.getRegistry(), ModBlocks.FUEL_STATION);
-		registerBlock(event.getRegistry(), ModBlocks.FUEL_STATION_TOP);//Only block
-		registerBlock(event.getRegistry(), ModBlocks.CANOLA_CROP);//Only block
+		registerBlock(event.getRegistry(), ModBlocks.FUEL_STATION_TOP);// Only block
+		registerBlock(event.getRegistry(), ModBlocks.CANOLA_CROP);// Only block
 		registerBlock(event.getRegistry(), ModBlocks.CANOLA_OIL);
 		registerBlock(event.getRegistry(), ModBlocks.OIL_MILL);
 		registerBlock(event.getRegistry(), ModBlocks.BLAST_FURNACE);
@@ -126,7 +131,7 @@ public class Registry {
 		registerBlock(event.getRegistry(), ModBlocks.BIO_DIESEL);
 		registerBlock(event.getRegistry(), ModBlocks.GENERATOR);
 		registerBlock(event.getRegistry(), ModBlocks.SPLIT_TANK);
-		registerBlock(event.getRegistry(), ModBlocks.SPLIT_TANK_TOP);//Only block
+		registerBlock(event.getRegistry(), ModBlocks.SPLIT_TANK_TOP);// Only block
 		registerBlock(event.getRegistry(), ModBlocks.TANK);
 		registerBlock(event.getRegistry(), ModBlocks.CRASH_BARRIER);
 		registerBlock(event.getRegistry(), ModBlocks.CAR_WORKSHOP);
@@ -136,15 +141,15 @@ public class Registry {
 		registerBlock(event.getRegistry(), ModBlocks.FLUID_EXTRACTOR);
 		registerBlock(event.getRegistry(), ModBlocks.DYNAMO);
 		registerBlock(event.getRegistry(), ModBlocks.CRANK);
-		
-		for(BlockPaint block:ModBlocks.PAINTS){
+
+		for (BlockPaint block : ModBlocks.PAINTS) {
 			registerBlock(event.getRegistry(), block);
 		}
-		
-		for(BlockPaint block:ModBlocks.YELLOW_PAINTS){
+
+		for (BlockPaint block : ModBlocks.YELLOW_PAINTS) {
 			registerBlock(event.getRegistry(), block);
 		}
-		
+
 		GameRegistry.registerTileEntity(TileEntityFuelStation.class, "TileEntityFuelStation");
 		GameRegistry.registerTileEntity(TileEntityOilMill.class, "TileEntityOilMill");
 		GameRegistry.registerTileEntity(TileEntityBlastFurnace.class, "TileEntityBlastFurnace");
@@ -156,9 +161,8 @@ public class Registry {
 		GameRegistry.registerTileEntity(TileEntityCable.class, "TileEntityCable");
 		GameRegistry.registerTileEntity(TileEntityFluidExtractor.class, "TileEntityFluidExtractor");
 		GameRegistry.registerTileEntity(TileEntityDynamo.class, "TileEntityDynamo");
-		
-		
-		if(Config.canolaSeedDrop){
+
+		if (Config.canolaSeedDrop) {
 			MinecraftForge.addGrassSeed(new ItemStack(ModItems.CANOLA_SEEDS), 8);
 		}
 	}
@@ -190,21 +194,21 @@ public class Registry {
 		registerItemBlock(event.getRegistry(), ModBlocks.FLUID_EXTRACTOR);
 		registerItemBlock(event.getRegistry(), ModBlocks.DYNAMO);
 		registerItemBlock(event.getRegistry(), ModBlocks.CRANK);
-		
-		for(BlockPaint block:ModBlocks.PAINTS){
+
+		for (BlockPaint block : ModBlocks.PAINTS) {
 			registerItemBlock(event.getRegistry(), block);
 		}
-		
-		for(BlockPaint block:ModBlocks.YELLOW_PAINTS){
+
+		for (BlockPaint block : ModBlocks.YELLOW_PAINTS) {
 			registerItemBlock(event.getRegistry(), block);
 		}
-		
+
 		registerItem(event.getRegistry(), ModItems.PAINTER);
 		registerItem(event.getRegistry(), ModItems.PAINTER_YELLOW);
 		registerItem(event.getRegistry(), ModItems.CANOLA_SEEDS);
 		registerItem(event.getRegistry(), ModItems.CANOLA);
 		registerItem(event.getRegistry(), ModItems.RAPECAKE);
-		
+
 		registerItem(event.getRegistry(), ModItems.IRON_STICK);
 		registerItem(event.getRegistry(), ModItems.ENGINE_PISTON);
 		registerItem(event.getRegistry(), ModItems.ENGINE_3_CYLINDER);
@@ -253,7 +257,7 @@ public class Registry {
 		addRenderBlock(ModBlocks.FLUID_PIPE);
 		addRenderBlock(ModBlocks.DYNAMO);
 		addRenderBlock(ModBlocks.CRANK);
-		
+
 		for (BlockPaint block : ModBlocks.PAINTS) {
 			addRenderBlock(block);
 		}
@@ -261,13 +265,13 @@ public class Registry {
 		for (BlockPaint block : ModBlocks.YELLOW_PAINTS) {
 			addRenderBlock(block);
 		}
-		
+
 		addRenderItem(ModItems.PAINTER);
 		addRenderItem(ModItems.PAINTER_YELLOW);
 		addRenderItem(ModItems.CANOLA_SEEDS);
 		addRenderItem(ModItems.CANOLA);
 		addRenderItem(ModItems.RAPECAKE);
-		
+
 		addRenderItem(ModItems.IRON_STICK);
 		addRenderItem(ModItems.ENGINE_PISTON);
 		addRenderItem(ModItems.ENGINE_3_CYLINDER);
@@ -287,18 +291,18 @@ public class Registry {
 		addRenderItem(ModItems.HAMMER);
 		addRenderItem(ModItems.CABLE_INSULATOR);
 		addRenderItem(ModItems.KEY);
-		
-		
+
 		registerFluidModel(ModBlocks.METHANOL);
 		registerFluidModel(ModBlocks.CANOLA_OIL);
 		registerFluidModel(ModBlocks.CANOLA_METHANOL_MIX);
 		registerFluidModel(ModBlocks.GLYCERIN);
 		registerFluidModel(ModBlocks.BIO_DIESEL);
 	}
-	
+
 	private static void registerFluidModel(IFluidBlock fluidBlock) {
 
-		final ModelResourceLocation modelResourceLocation = new ModelResourceLocation(Main.MODID + ":" +fluidBlock.getFluid().getName(), fluidBlock.getFluid().getName());
+		final ModelResourceLocation modelResourceLocation = new ModelResourceLocation(
+				Main.MODID + ":" + fluidBlock.getFluid().getName(), fluidBlock.getFluid().getName());
 
 		ModelLoader.setCustomStateMapper((Block) fluidBlock, new StateMapperBase() {
 			@Override
@@ -307,20 +311,20 @@ public class Registry {
 			}
 		});
 	}
-	
-	public static void registerFluids(){
+
+	public static void registerFluids() {
 		FluidRegistry.registerFluid(ModFluids.CANOLA_OIL);
 		FluidRegistry.addBucketForFluid(ModFluids.CANOLA_OIL);
 
 		FluidRegistry.registerFluid(ModFluids.METHANOL);
 		FluidRegistry.addBucketForFluid(ModFluids.METHANOL);
-		
+
 		FluidRegistry.registerFluid(ModFluids.CANOLA_METHANOL_MIX);
 		FluidRegistry.addBucketForFluid(ModFluids.CANOLA_METHANOL_MIX);
-		
+
 		FluidRegistry.registerFluid(ModFluids.GLYCERIN);
 		FluidRegistry.addBucketForFluid(ModFluids.GLYCERIN);
-		
+
 		FluidRegistry.registerFluid(ModFluids.BIO_DIESEL);
 		FluidRegistry.addBucketForFluid(ModFluids.BIO_DIESEL);
 	}

@@ -263,12 +263,6 @@ public class Reciepes {
 					Character.valueOf('I'), Items.IRON_INGOT,
 					Character.valueOf('C'), ModItems.CONTROL_UNIT});
 		}
-		
-		if(Config.keyRecipe){
-			//Key
-			//GameRegistry.addShapedRecipe(new ResourceLocation(Main.MODID, ""), null, new ReciepeKey());
-		}
-		
 	}
 	
 }
