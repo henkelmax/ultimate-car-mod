@@ -36,11 +36,14 @@ import net.minecraftforge.fluids.IFluidBlock;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.registries.IForgeRegistry;
 
 @Mod.EventBusSubscriber(modid = Main.MODID)
 public class Registry {
 
+	@SideOnly(Side.CLIENT)
 	public static void addRenderItem(Item item) {
 		if (item.getHasSubtypes()) {
 			NonNullList<ItemStack> list = NonNullList.create();
@@ -56,6 +59,7 @@ public class Registry {
 		}
 	}
 
+	@SideOnly(Side.CLIENT)
 	public static void addRenderBlock(Block b) {
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(b), 0,
 				new ModelResourceLocation(b.getRegistryName(), "inventory"));
@@ -85,6 +89,7 @@ public class Registry {
 		}
 	}
 
+	@SideOnly(Side.CLIENT)
 	@SubscribeEvent
 	public static void registerSounds(RegistryEvent.Register<SoundEvent> event) {
 		registerSound(event.getRegistry(), ModSounds.engine_stop);
@@ -105,6 +110,7 @@ public class Registry {
 		registerSound(event.getRegistry(), ModSounds.car_unlock);
 	}
 
+	@SideOnly(Side.CLIENT)
 	public static void registerSound(IForgeRegistry<SoundEvent> registry, SoundEvent sound) {
 		registry.register(sound);
 	}
@@ -230,6 +236,7 @@ public class Registry {
 		registerItem(event.getRegistry(), ModItems.KEY);
 	}
 
+	@SideOnly(Side.CLIENT)
 	@SubscribeEvent
 	public static void registerModels(ModelRegistryEvent event) {
 		addRenderBlock(ModBlocks.TAR);
@@ -299,6 +306,7 @@ public class Registry {
 		registerFluidModel(ModBlocks.BIO_DIESEL);
 	}
 
+	@SideOnly(Side.CLIENT)
 	private static void registerFluidModel(IFluidBlock fluidBlock) {
 
 		final ModelResourceLocation modelResourceLocation = new ModelResourceLocation(
