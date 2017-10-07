@@ -39,7 +39,8 @@ public class JEIPlugin implements IModPlugin {
 		registry.addRecipes(recipes, JEIPlugin.CATEGORY_CAR_WORKSHOP);
 		registry.addRecipeCatalyst(new ItemStack(ModBlocks.CAR_WORKSHOP), JEIPlugin.CATEGORY_CAR_WORKSHOP);
 		registry.addIngredientInfo(new ItemStack(ModBlocks.CAR_WORKSHOP), ItemStack.class, "description.car_workshop");
-		registry.addIngredientInfo(new ItemStack(ModBlocks.CAR_WORKSHOP_OUTTER), ItemStack.class, "description.car_workshop_outter");
+		registry.addIngredientInfo(new ItemStack(ModBlocks.CAR_WORKSHOP_OUTTER), ItemStack.class,
+				"description.car_workshop_outter");
 
 		// Line Painter
 		registry.handleRecipes(BlockPaint.class, new PainterRecipeWrapperFactory(), JEIPlugin.CATEGORY_PAINTER);
@@ -56,35 +57,37 @@ public class JEIPlugin implements IModPlugin {
 		// Line Painter Yellow
 		registry.handleRecipes(BlockPaint.class, new PainterRecipeWrapperFactoryYellow(), JEIPlugin.CATEGORY_PAINTER_YELLOW);
 
-		List<PainterRecipeWrapperYellow> paintsYellow = new ArrayList<PainterRecipeWrapperYellow>();
+		List<PainterRecipeWrapperYellow> paintsY = new ArrayList<PainterRecipeWrapperYellow>();
 		for (BlockPaint paint : ModBlocks.YELLOW_PAINTS) {
-			paintsYellow.add(new PainterRecipeWrapperYellow(paint));
+			paintsY.add(new PainterRecipeWrapperYellow(paint));
 		}
-		registry.addRecipes(paintsYellow, JEIPlugin.CATEGORY_PAINTER_YELLOW);
+		registry.addRecipes(paintsY, JEIPlugin.CATEGORY_PAINTER_YELLOW);
 		registry.addRecipeCatalyst(new ItemStack(ModItems.PAINTER_YELLOW), JEIPlugin.CATEGORY_PAINTER_YELLOW);
 
 		registry.addIngredientInfo(new ItemStack(ModItems.PAINTER_YELLOW), ItemStack.class, "description.painter_yellow");
-
+		
+		
 		// Canister
 		registry.addIngredientInfo(new ItemStack(ModItems.CANISTER), ItemStack.class, "description.canister");
 
 		// Repair Kit
 		registry.addIngredientInfo(new ItemStack(ModItems.REPAIR_KIT), ItemStack.class, "description.repair_kit");
-		
+
 		// Crank
 		registry.addIngredientInfo(new ItemStack(ModBlocks.CRANK), ItemStack.class, "description.crank");
-		
-		//Dynamo
+
+		// Dynamo
 		registry.addIngredientInfo(new ItemStack(ModBlocks.DYNAMO), ItemStack.class, "description.dynamo");
-		
-		//Fuel Station
+
+		// Fuel Station
 		registry.addIngredientInfo(new ItemStack(ModBlocks.FUEL_STATION), ItemStack.class, "description.fuel_station");
-		
-		//Tank
+
+		// Tank
 		registry.addIngredientInfo(new ItemStack(ModBlocks.TANK), ItemStack.class, "description.tank");
-		
-		//Fluid extractor
-		registry.addIngredientInfo(new ItemStack(ModBlocks.FLUID_EXTRACTOR), ItemStack.class, "description.fluid_extractor");
+
+		// Fluid extractor
+		registry.addIngredientInfo(new ItemStack(ModBlocks.FLUID_EXTRACTOR), ItemStack.class,
+				"description.fluid_extractor");
 	}
 
 	@Override
@@ -101,6 +104,7 @@ public class JEIPlugin implements IModPlugin {
 	public void registerCategories(IRecipeCategoryRegistration registry) {
 		registry.addRecipeCategories(new CarRecipeCategory(registry.getJeiHelpers().getGuiHelper()));
 		registry.addRecipeCategories(new PainterRecipeCategory(registry.getJeiHelpers().getGuiHelper()));
+		registry.addRecipeCategories(new PainterRecipeCategoryYellow(registry.getJeiHelpers().getGuiHelper()));
 	}
 
 }

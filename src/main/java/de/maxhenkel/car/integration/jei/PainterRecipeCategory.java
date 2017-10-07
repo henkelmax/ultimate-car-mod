@@ -7,12 +7,12 @@ import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.gui.IGuiItemStackGroup;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.ingredients.IIngredients;
-import mezz.jei.api.recipe.BlankRecipeCategory;
+import mezz.jei.api.recipe.IRecipeCategory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextComponentTranslation;
 
-public class PainterRecipeCategory extends BlankRecipeCategory<PainterRecipeWrapper>{
+public class PainterRecipeCategory implements IRecipeCategory<PainterRecipeWrapper>{
 
 	private IGuiHelper helper;
 
@@ -28,7 +28,7 @@ public class PainterRecipeCategory extends BlankRecipeCategory<PainterRecipeWrap
 
 	@Override
 	public String getTitle() {
-		return new TextComponentTranslation("item.painter_yellow.name").getFormattedText();
+		return new TextComponentTranslation("item.painter.name").getFormattedText();
 	}
 
 	@Override

@@ -14,7 +14,7 @@ public class ItemCarBodyPartWood extends Item {
 		setRegistryName("car_body_part_wood");
 		setCreativeTab(ModCreativeTabs.TAB_CAR);
 		setHasSubtypes(true);
-		setMaxDamage(0);
+		//setMaxDamage(0);
 	}
 
 	@Override
