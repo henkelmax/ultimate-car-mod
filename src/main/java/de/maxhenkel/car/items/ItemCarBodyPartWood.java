@@ -14,7 +14,6 @@ public class ItemCarBodyPartWood extends Item {
 		setRegistryName("car_body_part_wood");
 		setCreativeTab(ModCreativeTabs.TAB_CAR);
 		setHasSubtypes(true);
-		//setMaxDamage(0);
 	}
 
 	@Override
@@ -25,6 +24,9 @@ public class ItemCarBodyPartWood extends Item {
 
 	@Override
 	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
+		if(!tab.equals(ModCreativeTabs.TAB_CAR)) {
+			return;
+		}
 		for (int i = 0; i < EnumType.values().length; i++) {
 			items.add(new ItemStack(this, 1, i));
 		}
