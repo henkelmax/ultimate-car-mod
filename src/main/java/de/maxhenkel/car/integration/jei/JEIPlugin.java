@@ -101,6 +101,7 @@ public class JEIPlugin implements IModPlugin {
 	public void registerCategories(IRecipeCategoryRegistration registry) {
 		registry.addRecipeCategories(new CarRecipeCategory(registry.getJeiHelpers().getGuiHelper()));
 		registry.addRecipeCategories(new PainterRecipeCategory(registry.getJeiHelpers().getGuiHelper()));
+		registry.addRecipeCategories(new PainterRecipeCategoryYellow(registry.getJeiHelpers().getGuiHelper()));
 	}
 
 }
