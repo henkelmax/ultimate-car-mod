@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,7 +25,7 @@ public class JsonConfig {
 
 		try {
 			FileInputStream inputStream = new FileInputStream(file);
-			this.jsonObject = new JSONObject(IOUtils.toString(inputStream));
+			this.jsonObject = new JSONObject(IOUtils.toString(inputStream, Charset.defaultCharset()));
 			inputStream.close();
 		} catch (FileNotFoundException e) {
 			this.jsonObject = new JSONObject();
@@ -199,7 +200,7 @@ public class JsonConfig {
 			f.getParentFile().mkdirs();
 		}
 
-		IOUtils.write(jsonObject.toString(1), new FileOutputStream(f));
+		IOUtils.write(jsonObject.toString(1).getBytes(), new FileOutputStream(f));
 	}
 	
 	@Override
