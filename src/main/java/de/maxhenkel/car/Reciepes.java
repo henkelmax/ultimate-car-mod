@@ -24,31 +24,31 @@ public class Reciepes {
 					Character.valueOf('X'), ModBlocks.TAR});
 			
 			//Tar Slope
-			GameRegistry.addShapedRecipe(new ResourceLocation(Main.MODID, "tar_slope"), null, new ItemStack(ModBlocks.TAR_SLOPE, 6), new Object[] { "TXX", "TTX", "TTT",
+			GameRegistry.addShapedRecipe(new ResourceLocation(Main.MODID, "tar_slope"), null, new ItemStack(ModBlocks.TAR_SLOPE, 6), new Object[] { "T  ", "TT ", "TTT",
 					Character.valueOf('T'), ModBlocks.TAR});
 			
 			//Lower Tar Slope
-			GameRegistry.addShapedRecipe(new ResourceLocation(Main.MODID, "tar_slope_flat_lower"), null, new ItemStack(ModBlocks.TAR_SLOPE_FLAT_LOWER, 4), new Object[] { "TXX", "TTT",
+			GameRegistry.addShapedRecipe(new ResourceLocation(Main.MODID, "tar_slope_flat_lower"), null, new ItemStack(ModBlocks.TAR_SLOPE_FLAT_LOWER, 4), new Object[] { "T  ", "TTT",
 					Character.valueOf('T'), ModBlocks.TAR});
 			
 			//Upper Tar Slope
-			GameRegistry.addShapedRecipe(new ResourceLocation(Main.MODID, "tar_slope_flat_upper"), null, new ItemStack(ModBlocks.TAR_SLOPE_FLAT_UPPER, 4), new Object[] { "TX", "TT", "TT",
+			GameRegistry.addShapedRecipe(new ResourceLocation(Main.MODID, "tar_slope_flat_upper"), null, new ItemStack(ModBlocks.TAR_SLOPE_FLAT_UPPER, 4), new Object[] { "T ", "TT", "TT",
 					Character.valueOf('T'), ModBlocks.TAR});
 		}
 		
 		if(Config.painterRecipe){
 			//Painter White
-			GameRegistry.addShapedRecipe(new ResourceLocation(Main.MODID, "painter_white"), null, new ItemStack(ModItems.PAINTER, 1), new Object[] { "XBX", "XSB", "SXX",
+			GameRegistry.addShapedRecipe(new ResourceLocation(Main.MODID, "painter_white"), null, new ItemStack(ModItems.PAINTER, 1), new Object[] { " B ", " SB", "S  ",
 					Character.valueOf('S'), Items.STICK, Character.valueOf('B'), new ItemStack(Items.DYE, 1, 15) });
 			
 			//Painter Yellow
-			GameRegistry.addShapedRecipe(new ResourceLocation(Main.MODID, "painter_yellow"), null, new ItemStack(ModItems.PAINTER_YELLOW, 1), new Object[] { "XBX", "XSB", "SXX",
+			GameRegistry.addShapedRecipe(new ResourceLocation(Main.MODID, "painter_yellow"), null, new ItemStack(ModItems.PAINTER_YELLOW, 1), new Object[] { " B ", " SB", "S  ",
 					Character.valueOf('S'), Items.STICK, Character.valueOf('B'), new ItemStack(Items.DYE, 1, 11) });
 		}
 		
 		if(Config.tankRecipe){
 			//Tank
-			GameRegistry.addShapedRecipe(new ResourceLocation(Main.MODID, "tank"), null, new ItemStack(ModBlocks.TANK, 1), new Object[] { "IGI", "GXG", "IGI",
+			GameRegistry.addShapedRecipe(new ResourceLocation(Main.MODID, "tank"), null, new ItemStack(ModBlocks.TANK, 1), new Object[] { "IGI", "G G", "IGI",
 					Character.valueOf('G'), Blocks.GLASS, Character.valueOf('I'), Items.IRON_INGOT });
 		}
 		
@@ -62,7 +62,7 @@ public class Reciepes {
 					Character.valueOf('P'), Blocks.GLASS_PANE});
 			
 			//Car Seat
-			GameRegistry.addShapedRecipe(new ResourceLocation(Main.MODID, "car_seat"), null, new ItemStack(ModItems.CAR_SEAT, 1), new Object[] { "XWP", "WWP", "PPP",
+			GameRegistry.addShapedRecipe(new ResourceLocation(Main.MODID, "car_seat"), null, new ItemStack(ModItems.CAR_SEAT, 1), new Object[] { " WP", "WWP", "PPP",
 					Character.valueOf('P'), Blocks.PLANKS, Character.valueOf('W'), Blocks.WOOL });
 			
 			//Car Engine
@@ -75,7 +75,7 @@ public class Reciepes {
 					Character.valueOf('E'), ModItems.ENGINE_3_CYLINDER });
 			
 			//Wheel
-			GameRegistry.addShapedRecipe(new ResourceLocation(Main.MODID, "wheel"), null, new ItemStack(ModItems.WHEEL, 1), new Object[] { "XWX", "WIW", "XWX",
+			GameRegistry.addShapedRecipe(new ResourceLocation(Main.MODID, "wheel"), null, new ItemStack(ModItems.WHEEL, 1), new Object[] { " W ", "WIW", " W ",
 					Character.valueOf('W'), new ItemStack(Blocks.WOOL, 1, 15),
 					Character.valueOf('I'), Items.IRON_INGOT});
 			
@@ -85,7 +85,7 @@ public class Reciepes {
 					Character.valueOf('S'), ModItems.IRON_STICK});
 			
 			//Container
-			GameRegistry.addShapedRecipe(new ResourceLocation(Main.MODID, "container"), null, new ItemStack(ModItems.CONTAINER, 1), new Object[] { "ICI", "CXC", "ICI",
+			GameRegistry.addShapedRecipe(new ResourceLocation(Main.MODID, "container"), null, new ItemStack(ModItems.CONTAINER, 1), new Object[] { "ICI", "C C", "ICI",
 					Character.valueOf('I'), Items.IRON_INGOT,
 					Character.valueOf('C'), Blocks.CHEST});
 			
@@ -101,31 +101,31 @@ public class Reciepes {
 			OreDictionary.registerOre("stickIron", ModItems.IRON_STICK);
 			
 			//Engine Piston
-			GameRegistry.addShapedRecipe(new ResourceLocation(Main.MODID, "engine_piston"), null, new ItemStack(ModItems.ENGINE_PISTON, 1), new Object[] { "XXI", "XSX", "SXX",
+			GameRegistry.addShapedRecipe(new ResourceLocation(Main.MODID, "engine_piston"), null, new ItemStack(ModItems.ENGINE_PISTON, 1), new Object[] { "  I", " S ", "S  ",
 					Character.valueOf('I'), Items.IRON_INGOT, Character.valueOf('S'), ModItems.IRON_STICK});
 			
 			//Body Part
-			GameRegistry.addShapedRecipe(new ResourceLocation(Main.MODID, "car_body_part_wood"), null, new ItemStack(ModItems.CAR_BODY_PART_WOOD, 1, 0), new Object[] { "LPL", "LPL",
+			GameRegistry.addShapedRecipe(new ResourceLocation(Main.MODID, "car_body_part_wood_0"), null, new ItemStack(ModItems.CAR_BODY_PART_WOOD, 1, 0), new Object[] { "LPL", "LPL",
 					Character.valueOf('L'), new ItemStack(Blocks.LOG, 1, 0), 
 					Character.valueOf('P'), new ItemStack(Blocks.PLANKS, 1, 0)});
 			
-			GameRegistry.addShapedRecipe(new ResourceLocation(Main.MODID, "car_body_part_wood"), null, new ItemStack(ModItems.CAR_BODY_PART_WOOD, 1, 1), new Object[] { "LPL", "LPL",
+			GameRegistry.addShapedRecipe(new ResourceLocation(Main.MODID, "car_body_part_wood_1"), null, new ItemStack(ModItems.CAR_BODY_PART_WOOD, 1, 1), new Object[] { "LPL", "LPL",
 					Character.valueOf('L'), new ItemStack(Blocks.LOG, 1, 1), 
 					Character.valueOf('P'), new ItemStack(Blocks.PLANKS, 1, 1)});
 			
-			GameRegistry.addShapedRecipe(new ResourceLocation(Main.MODID, "car_body_part_wood"), null, new ItemStack(ModItems.CAR_BODY_PART_WOOD, 1, 2), new Object[] { "LPL", "LPL",
+			GameRegistry.addShapedRecipe(new ResourceLocation(Main.MODID, "car_body_part_wood_2"), null, new ItemStack(ModItems.CAR_BODY_PART_WOOD, 1, 2), new Object[] { "LPL", "LPL",
 					Character.valueOf('L'), new ItemStack(Blocks.LOG, 1, 2), 
 					Character.valueOf('P'), new ItemStack(Blocks.PLANKS, 1, 2)});
 			
-			GameRegistry.addShapedRecipe(new ResourceLocation(Main.MODID, "car_body_part_wood"), null, new ItemStack(ModItems.CAR_BODY_PART_WOOD, 1, 3), new Object[] { "LPL", "LPL",
+			GameRegistry.addShapedRecipe(new ResourceLocation(Main.MODID, "car_body_part_wood_3"), null, new ItemStack(ModItems.CAR_BODY_PART_WOOD, 1, 3), new Object[] { "LPL", "LPL",
 					Character.valueOf('L'), new ItemStack(Blocks.LOG, 1, 3), 
 					Character.valueOf('P'), new ItemStack(Blocks.PLANKS, 1, 3)});
 			
-			GameRegistry.addShapedRecipe(new ResourceLocation(Main.MODID, "car_body_part_wood"), null, new ItemStack(ModItems.CAR_BODY_PART_WOOD, 1, 4), new Object[] { "LPL", "LPL",
+			GameRegistry.addShapedRecipe(new ResourceLocation(Main.MODID, "car_body_part_wood_4"), null, new ItemStack(ModItems.CAR_BODY_PART_WOOD, 1, 4), new Object[] { "LPL", "LPL",
 					Character.valueOf('L'), new ItemStack(Blocks.LOG2, 1, 0), 
 					Character.valueOf('P'), new ItemStack(Blocks.PLANKS, 1, 4)});
 			
-			GameRegistry.addShapedRecipe(new ResourceLocation(Main.MODID, "car_body_part_wood"), null, new ItemStack(ModItems.CAR_BODY_PART_WOOD, 1, 5), new Object[] { "LPL", "LPL",
+			GameRegistry.addShapedRecipe(new ResourceLocation(Main.MODID, "car_body_part_wood_5"), null, new ItemStack(ModItems.CAR_BODY_PART_WOOD, 1, 5), new Object[] { "LPL", "LPL",
 					Character.valueOf('L'), new ItemStack(Blocks.LOG2, 1, 1), 
 					Character.valueOf('P'), new ItemStack(Blocks.PLANKS, 1, 5)});
 			
@@ -133,7 +133,7 @@ public class Reciepes {
 		
 		if(Config.crashBarrierRecipe){
 			//Crash Barrier
-			GameRegistry.addShapedRecipe(new ResourceLocation(Main.MODID, "crash_barrier"), null, new ItemStack(ModBlocks.CRASH_BARRIER, 32), new Object[] { "III", "III", "IXI",
+			GameRegistry.addShapedRecipe(new ResourceLocation(Main.MODID, "crash_barrier"), null, new ItemStack(ModBlocks.CRASH_BARRIER, 32), new Object[] { "III", "III", "I I",
 					Character.valueOf('I'), Items.IRON_INGOT});
 		}
 		
@@ -188,16 +188,16 @@ public class Reciepes {
 		
 		if(Config.carWorkshopRecipe){
 			//Car Workshop part
-			GameRegistry.addShapedRecipe(new ResourceLocation(Main.MODID, "car_workshop_outter"), null, new ItemStack(ModBlocks.CAR_WORKSHOP_OUTTER, 1), new Object[] { "III", "XIX", "III",
+			GameRegistry.addShapedRecipe(new ResourceLocation(Main.MODID, "car_workshop_outter"), null, new ItemStack(ModBlocks.CAR_WORKSHOP_OUTTER, 1), new Object[] { "III", " I ", "III",
 					Character.valueOf('I'), Items.IRON_INGOT});
 			
 			//Car Workshop
-			GameRegistry.addShapedRecipe(new ResourceLocation(Main.MODID, "car_workshop"), null, new ItemStack(ModBlocks.CAR_WORKSHOP, 1), new Object[] { "III", "XPX", "III",
+			GameRegistry.addShapedRecipe(new ResourceLocation(Main.MODID, "car_workshop"), null, new ItemStack(ModBlocks.CAR_WORKSHOP, 1), new Object[] { "III", " P ", "III",
 					Character.valueOf('I'), Items.IRON_INGOT,
 					Character.valueOf('P'), Blocks.PISTON});
 			
 			//Wrench
-			GameRegistry.addShapedRecipe(new ResourceLocation(Main.MODID, "wrench"), null, new ItemStack(ModItems.WRENCH, 1), new Object[] { "XIX", "XSI", "SXX",
+			GameRegistry.addShapedRecipe(new ResourceLocation(Main.MODID, "wrench"), null, new ItemStack(ModItems.WRENCH, 1), new Object[] { " I ", " SI", "S  ",
 					Character.valueOf('I'), Items.IRON_INGOT,
 					Character.valueOf('S'), ModItems.IRON_STICK});
 			OreDictionary.registerOre("wrench", ModItems.WRENCH);
@@ -208,14 +208,14 @@ public class Reciepes {
 					Character.valueOf('S'), ModItems.IRON_STICK});
 			
 			//Hammer
-			GameRegistry.addShapedRecipe(new ResourceLocation(Main.MODID, "hammer"), null, new ItemStack(ModItems.HAMMER, 1), new Object[] { "III", "XSX", "XSX",
+			GameRegistry.addShapedRecipe(new ResourceLocation(Main.MODID, "hammer"), null, new ItemStack(ModItems.HAMMER, 1), new Object[] { "III", " S ", " S ",
 					Character.valueOf('I'), Items.IRON_INGOT,
 					Character.valueOf('S'), ModItems.IRON_STICK});
 		}
 		
 		if(Config.canisterRecipe){
 			//Canister
-			GameRegistry.addShapedRecipe(new ResourceLocation(Main.MODID, "canister"), null, new ItemStack(ModItems.CANISTER, 1), new Object[] { "IIX", "ITI", "III",
+			GameRegistry.addShapedRecipe(new ResourceLocation(Main.MODID, "canister"), null, new ItemStack(ModItems.CANISTER, 1), new Object[] { "II ", "ITI", "III",
 					Character.valueOf('I'), Items.IRON_INGOT,
 					Character.valueOf('T'), ModBlocks.TANK});
 		}
@@ -242,24 +242,24 @@ public class Reciepes {
 		
 		if(Config.fluidExtractorRecipe){
 			//Fluid extractor
-			GameRegistry.addShapedRecipe(new ResourceLocation(Main.MODID, "fluid_extractor"), null, new ItemStack(ModBlocks.FLUID_EXTRACTOR, 4), new Object[] { "IXX", "IPP", "IXX",
+			GameRegistry.addShapedRecipe(new ResourceLocation(Main.MODID, "fluid_extractor"), null, new ItemStack(ModBlocks.FLUID_EXTRACTOR, 4), new Object[] { "I  ", "IPP", "I  ",
 					Character.valueOf('I'), Items.IRON_INGOT,
 					Character.valueOf('P'), ModBlocks.FLUID_PIPE});
 		}
 		
 		if(Config.fluidPipeRecipe){
 			//Fluid_pipe
-			GameRegistry.addShapedRecipe(new ResourceLocation(Main.MODID, "fluid_pipe"), null, new ItemStack(ModBlocks.FLUID_PIPE, 16), new Object[] { "III", "XXX", "III",
+			GameRegistry.addShapedRecipe(new ResourceLocation(Main.MODID, "fluid_pipe"), null, new ItemStack(ModBlocks.FLUID_PIPE, 16), new Object[] { "III", "   ", "III",
 					Character.valueOf('I'), Items.IRON_INGOT});
 		}
 		
 		if(Config.dynamoRecipe){
 			//Crank
-			GameRegistry.addShapedRecipe(new ResourceLocation(Main.MODID, "crank"), null, new ItemStack(ModBlocks.CRANK, 1), new Object[] { "SS", "XS",
+			GameRegistry.addShapedRecipe(new ResourceLocation(Main.MODID, "crank"), null, new ItemStack(ModBlocks.CRANK, 1), new Object[] { "SS", " S",
 					Character.valueOf('S'), Items.STICK});
 			
 			//Dynamo
-			GameRegistry.addShapedRecipe(new ResourceLocation(Main.MODID, "dynamo"), null, new ItemStack(ModBlocks.DYNAMO, 1), new Object[] { "ICI", "IXI", "III",
+			GameRegistry.addShapedRecipe(new ResourceLocation(Main.MODID, "dynamo"), null, new ItemStack(ModBlocks.DYNAMO, 1), new Object[] { "ICI", "I I", "III",
 					Character.valueOf('I'), Items.IRON_INGOT,
 					Character.valueOf('C'), ModItems.CONTROL_UNIT});
 		}
