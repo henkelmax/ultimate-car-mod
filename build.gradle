@@ -11,7 +11,7 @@ apply plugin: 'net.minecraftforge.gradle.forge'
 //Only edit below this line, the above code adds and enables the nessasary things for Forge to be setup.
 
 
-version = "1.2.0"
+version = "1.2.1"
 group= "de.maxhenkel.car" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "car"
 
@@ -59,6 +59,9 @@ dependencies {
 	deobfCompile "mezz.jei:jei_${mc_version}:${jei_version}:api"
 	// at runtime, use the full JEI jar
 	runtime "mezz.jei:jei_${mc_version}:${jei_version}"
+	
+	//Redstone flux
+	deobfCompile "cofh:RedstoneFlux:1.12-2.0.1.2:universal"
 
 }
 
@@ -83,8 +86,12 @@ processResources
 }
 
 repositories {
-  maven {
-    // location of the maven that hosts JEI files
-    url = "http://dvs1.progwml6.com/files/maven"
-  }
+	maven {
+    	// location of the maven that hosts JEI files
+		url = "http://dvs1.progwml6.com/files/maven"
+	}
+   maven {
+        name = "CoFH Maven"
+        url = "http://maven.covers1624.net"
+    }
 }

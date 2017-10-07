@@ -1,8 +1,7 @@
 package de.maxhenkel.car.blocks.tileentity;
 
 import java.util.List;
-
-import cofh.api.energy.IEnergyReceiver;
+import cofh.redstoneflux.api.IEnergyReceiver;
 import de.maxhenkel.tools.ItemTools;
 import de.maxhenkel.car.blocks.BlockGui;
 import net.minecraft.block.state.IBlockState;

@@ -1,6 +1,6 @@
 package de.maxhenkel.car.blocks.tileentity;
 
-import cofh.api.energy.IEnergyReceiver;
+import cofh.redstoneflux.api.IEnergyReceiver;
 import de.maxhenkel.car.Config;
 import de.maxhenkel.car.blocks.ModBlocks;
 import de.maxhenkel.car.fluids.ModFluids;

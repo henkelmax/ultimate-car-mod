@@ -1,6 +1,6 @@
 package de.maxhenkel.car.blocks;
 
-import cofh.api.energy.IEnergyConnection;
+import cofh.redstoneflux.api.IEnergyConnection;
 import de.maxhenkel.car.ModCreativeTabs;
 import de.maxhenkel.car.blocks.tileentity.TileEntityCable;
 import net.minecraft.block.BlockContainer;

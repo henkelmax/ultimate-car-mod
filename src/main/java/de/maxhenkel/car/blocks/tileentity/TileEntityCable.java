@@ -4,8 +4,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import javax.annotation.Nullable;
-import cofh.api.energy.IEnergyProvider;
-import cofh.api.energy.IEnergyReceiver;
+
+import cofh.redstoneflux.api.IEnergyProvider;
+import cofh.redstoneflux.api.IEnergyReceiver;
 import de.maxhenkel.tools.BlockPosList;
 import de.maxhenkel.car.Config;
 import de.maxhenkel.car.blocks.ModBlocks;
