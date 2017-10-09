@@ -3,13 +3,17 @@ package de.maxhenkel.car.entity.car.base;
 import de.maxhenkel.tools.ItemTools;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.gui.GuiHandler;
+import de.maxhenkel.car.items.ItemCanister;
+import de.maxhenkel.car.sounds.ModSounds;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.world.World;
 
 public abstract class EntityCarInventoryBase extends EntityCarFuelBase implements IInventory{
@@ -27,6 +31,20 @@ public abstract class EntityCarInventoryBase extends EntityCarFuelBase implement
 	@Override
 	public boolean processInitialInteract(EntityPlayer player, EnumHand hand) {
 		if(canPlayerAccessInventoryExternal(player) && player.isSneaking()){
+			//Canister
+			ItemStack stack=player.getHeldItem(hand);
+			
+			if(!ItemTools.isStackEmpty(stack)||(stack.getItem() instanceof ItemCanister)) {
+				boolean success=ItemCanister.fillCanister(stack, this);
+				
+				if(success) {
+					ModSounds.playSound(SoundEvents.BLOCK_BREWING_STAND_BREW, world, getPosition(), null, SoundCategory.BLOCKS);
+				}
+				return true;
+			}
+
+			//Inv
+			
 			if(externalInventory.getSizeInventory()<=0){
 				player.displayGUIChest(this);
 			}else{

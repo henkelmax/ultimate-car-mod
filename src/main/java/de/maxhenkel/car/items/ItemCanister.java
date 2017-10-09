@@ -27,7 +27,7 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 
 public class ItemCanister extends Item {
 
-	public final int maxFuel;
+	private static int maxFuel;
 
 	public ItemCanister() {
 		setMaxStackSize(1);
@@ -60,7 +60,7 @@ public class ItemCanister extends Item {
 
 		if (te instanceof TileEntityFuelStation) {
 			TileEntityFuelStation fuel = (TileEntityFuelStation) te;
-			boolean success=ModItems.CANISTER.fillCanister(player.getHeldItem(hand), fuel);
+			boolean success=fillCanister(player.getHeldItem(hand), fuel);
 			if(success){
 				ModSounds.playSound(SoundEvents.BLOCK_BREWING_STAND_BREW, worldIn, pos, null, SoundCategory.BLOCKS);
 			}
@@ -70,7 +70,7 @@ public class ItemCanister extends Item {
 		if(te instanceof IFluidHandler){
 			IFluidHandler handler=(IFluidHandler) te;
 			
-			boolean success=ModItems.CANISTER.fuelFluidHandler(player.getHeldItem(hand), handler);
+			boolean success=fuelFluidHandler(player.getHeldItem(hand), handler);
 			if(success){
 				ModSounds.playSound(SoundEvents.BLOCK_BREWING_STAND_BREW, worldIn, pos, null, SoundCategory.BLOCKS);
 			}
@@ -112,7 +112,7 @@ public class ItemCanister extends Item {
 		tooltip.add(new TextComponentTranslation("canister.amount", amount).getFormattedText());
 	}
 
-	public boolean fillCanister(ItemStack canister, TileEntityFuelStation tile) {
+	public static boolean fillCanister(ItemStack canister, IFluidHandler handler) {
 
 		if (!canister.hasTagCompound()) {
 			canister.setTagCompound(new NBTTagCompound());
@@ -136,8 +136,15 @@ public class ItemCanister extends Item {
 			return false;
 		}
 		
-		FluidStack result = tile.drain(maxAmount, true);
-
+		if(fluid!=null) {
+			FluidStack resultSim = handler.drain(maxAmount, false);
+			if(resultSim==null||!resultSim.getFluid().equals(fluid.getFluid())) {
+				return false;
+			}
+		}
+		
+		FluidStack result = handler.drain(maxAmount, true);
+		
 		if (result == null) {
 			return false;
 		}
@@ -154,41 +161,7 @@ public class ItemCanister extends Item {
 		return true;
 	}
 
-	/*public boolean fuelCar(ItemStack canister, EntityCarFuelBase car) {
-		if (!canister.hasTagCompound()) {
-			return false;
-		}
-
-		NBTTagCompound comp = canister.getTagCompound();
-
-		if (!comp.hasKey("fuel")) {
-			return false;
-		}
-
-		NBTTagCompound fluid = comp.getCompoundTag("fuel");
-
-		FluidStack stack = FluidStack.loadFluidStackFromNBT(fluid);
-
-		if (stack == null) {
-			return false;
-		}
-
-		int fueledAmount = car.fill(stack, true);
-
-		stack.amount -= fueledAmount;
-
-		if (stack.amount <= 0) {
-			comp.setTag("fuel", new NBTTagCompound());
-			return true;
-		}
-
-		NBTTagCompound f = new NBTTagCompound();
-		stack.writeToNBT(f);
-		comp.setTag("fuel", f);
-		return true;
-	}*/
-	
-	public boolean fuelFluidHandler(ItemStack canister, IFluidHandler handler) {
+	public static boolean fuelFluidHandler(ItemStack canister, IFluidHandler handler) {
 		if (!canister.hasTagCompound()) {
 			return false;
 		}

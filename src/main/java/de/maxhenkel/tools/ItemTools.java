@@ -35,7 +35,6 @@ public class ItemTools {
 	}
 
 	public static boolean matchesOredict(ItemStack stack, String name) {
-		System.out.println(OreDictionary.getOres(name).get(0).getMetadata());
 		return contains(OreDictionary.getOres(name), stack);
 	}
 

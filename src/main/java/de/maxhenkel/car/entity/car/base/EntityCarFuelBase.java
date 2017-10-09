@@ -208,12 +208,16 @@ public abstract class EntityCarFuelBase extends EntityCarDamageBase implements I
 			
 			@Override
 			public boolean canDrainFluidType(FluidStack fluidStack) {
-				return false;
+				Fluid f=getFluid();
+				if(f==null) {
+					return false;
+				}
+				return fluidStack.getFluid().equals(f);
 			}
 			
 			@Override
 			public boolean canDrain() {
-				return false;
+				return true;
 			}
 		}};
 	}
@@ -245,12 +249,42 @@ public abstract class EntityCarFuelBase extends EntityCarDamageBase implements I
 
 	@Override
 	public FluidStack drain(FluidStack resource, boolean doDrain) {
-		return null;
+		if(resource==null) {
+			return null;
+		}
+		
+		if(!resource.getFluid().equals(getFluid())) {
+			return null;
+		}
+		
+		return drain(resource.amount, doDrain);
 	}
 
 	@Override
 	public FluidStack drain(int maxDrain, boolean doDrain) {
-		return null;
+		Fluid fluid=getFluid();
+		int totalAmount=getFuelAmount();
+		
+		if (fluid == null) {
+			return null;
+		}
+		
+		int amount = Math.min(maxDrain, totalAmount);
+		
+		
+		if (doDrain) {
+			int newAmount=totalAmount - amount;
+
+			
+			if (newAmount <= 0) {
+				setFuelType((Fluid)null);
+				setFuelAmount(0);
+			}else {
+				setFuelAmount(newAmount);
+			}
+		}
+
+		return new FluidStack(fluid, amount);
 	}
 
 }

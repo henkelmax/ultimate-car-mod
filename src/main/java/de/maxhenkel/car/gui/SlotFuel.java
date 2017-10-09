@@ -1,6 +1,7 @@
 package de.maxhenkel.car.gui;
 
 import de.maxhenkel.car.entity.car.base.EntityCarFuelBase;
+import de.maxhenkel.car.items.ItemCanister;
 import de.maxhenkel.car.items.ModItems;
 import de.maxhenkel.car.sounds.ModSounds;
 import net.minecraft.entity.player.EntityPlayer;
@@ -30,7 +31,7 @@ public class SlotFuel extends Slot{
 			return;
 		}
 		
-		boolean success=ModItems.CANISTER.fuelFluidHandler(stack, car);
+		boolean success=ItemCanister.fuelFluidHandler(stack, car);
 		
 		if(success){
 			ModSounds.playSound(SoundEvents.BLOCK_BREWING_STAND_BREW, car.world, car.getPosition(), null, SoundCategory.NEUTRAL);
