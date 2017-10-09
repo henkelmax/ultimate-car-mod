@@ -28,14 +28,18 @@ public class MessageSpawnCar implements IMessage, IMessageHandler<MessageSpawnCa
 	@Override
 	public IMessage onMessage(MessageSpawnCar message, MessageContext ctx) {
 		if(ctx.side.equals(Side.SERVER)){
-			EntityPlayer player=ctx.getServerHandler().playerEntity;
+			final EntityPlayer player=ctx.getServerHandler().playerEntity;
 			
 			TileEntity te=player.worldObj.getTileEntity(new BlockPos(message.posX, message.posY, message.posZ));
 			
 			if(te instanceof TileEntityCarWorkshop){
-				TileEntityCarWorkshop carWorkshop=(TileEntityCarWorkshop) te;
-				
-				carWorkshop.spawnCar(player);
+				final TileEntityCarWorkshop carWorkshop=(TileEntityCarWorkshop) te;
+				//Scheduled task for spawning
+				player.getServer().addScheduledTask(new Runnable() {
+					public void run() {
+						carWorkshop.spawnCar(player);
+					}
+				});
 			}
 			
 		}
