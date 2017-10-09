@@ -3,6 +3,7 @@ package de.maxhenkel.car;
 import java.io.File;
 import de.maxhenkel.car.fluids.ModFluids;
 import de.maxhenkel.car.registries.CarFluid;
+import de.maxhenkel.car.registries.CarProperties;
 import de.maxhenkel.car.registries.FuelStationFluid;
 import de.maxhenkel.car.registries.GeneratorRecipe;
 import de.maxhenkel.tools.FluidSelector;
@@ -129,12 +130,32 @@ public class Config {
 		JsonConfig cfg=new JsonConfig(new File(configFolder, "car.json"));
 		JSONArray arr=new JSONArray();
 		
-		arr.put(new JSONObject().put("id", "car_wood").put("fluids", new JSONArray().put(new JSONObject().put("fluid", new FluidSelector(ModFluids.BIO_DIESEL).toString()).put("efficiency", 0.3))));
-		arr.put(new JSONObject().put("id", "car_big_wood").put("fluids", new JSONArray().put(new JSONObject().put("fluid", new FluidSelector(ModFluids.BIO_DIESEL).toString()).put("efficiency", 0.2))));
-		arr.put(new JSONObject().put("id", "car_transporter").put("fluids", new JSONArray().put(new JSONObject().put("fluid", new FluidSelector(ModFluids.BIO_DIESEL).toString()).put("efficiency", 0.3))));
-		arr.put(new JSONObject().put("id", "car_sport").put("fluids", new JSONArray().put(new JSONObject().put("fluid", new FluidSelector(ModFluids.BIO_DIESEL).toString()).put("efficiency", 0.12))));
+		arr.put(new JSONObject().put("id", "car_wood")
+				.put("fluids", new JSONArray().put(new JSONObject().put("fluid", new FluidSelector(ModFluids.BIO_DIESEL).toString()).put("efficiency", 0.3)))
+				.put("speed", 0.5)
+				.put("reverseSpeed", 0.2)
+				.put("acceleration", 0.032)
+				);
+		arr.put(new JSONObject().put("id", "car_big_wood")
+				.put("fluids", new JSONArray().put(new JSONObject().put("fluid", new FluidSelector(ModFluids.BIO_DIESEL).toString()).put("efficiency", 0.2)))
+				.put("speed", 0.48)
+				.put("reverseSpeed", 0.2)
+				.put("acceleration", 0.032)
+				);
+		arr.put(new JSONObject().put("id", "car_transporter")
+				.put("fluids", new JSONArray().put(new JSONObject().put("fluid", new FluidSelector(ModFluids.BIO_DIESEL).toString()).put("efficiency", 0.3)))
+				.put("speed", 0.4)
+				.put("reverseSpeed", 0.2)
+				.put("acceleration", 0.032)
+				);
+		arr.put(new JSONObject().put("id", "car_sport")
+				.put("fluids", new JSONArray().put(new JSONObject().put("fluid", new FluidSelector(ModFluids.BIO_DIESEL).toString()).put("efficiency", 0.12)))
+				.put("speed", 0.65)
+				.put("reverseSpeed", 0.2)
+				.put("acceleration", 0.04)
+				);
 		
-		JSONArray cars=cfg.getJsonArray("car_fluids", arr);
+		JSONArray cars=cfg.getJsonArray("cars", arr);
 		
 		for(int i=0; i<cars.length(); i++){
 			JSONObject car=cars.getJSONObject(i);
@@ -149,25 +170,47 @@ public class Config {
 			}
 			
 			JSONArray fluids=car.getJSONArray("fluids");
+			handleFluids(fluids, carID);
 			
-			if(fluids==null){
-				continue;
-			}
-			for(int j=0; j<fluids.length(); j++){
-				JSONObject jo=fluids.getJSONObject(j);
-				if(jo==null){
-					continue;
-				}
-				FluidSelector sel=FluidSelector.fromString(jo.getString("fluid"));
-				double efficiency=jo.getDouble("efficiency");
-				if(sel==null||efficiency<=0.0){
-					continue;
-				}
-				
-				CarFluid.REGISTRY.register(new CarFluid(carID, sel, efficiency).setRegistryName(carID +"_" +sel.getFluid().getName()));
-			}
+			handleProperties(car, carID);
 		}
 		
+	}
+	
+	private static void handleFluids(JSONArray fluids, String carID) {
+		if(fluids==null){
+			return;
+		}
+		for(int j=0; j<fluids.length(); j++){
+			JSONObject jo=fluids.getJSONObject(j);
+			if(jo==null){
+				continue;
+			}
+			FluidSelector sel=FluidSelector.fromString(jo.getString("fluid"));
+			double efficiency=jo.getDouble("efficiency");
+			if(sel==null||efficiency<=0.0){
+				continue;
+			}
+			
+			CarFluid.REGISTRY.register(new CarFluid(carID, sel, efficiency).setRegistryName(carID +"_" +sel.getFluid().getName()));
+		}
+	}
+	
+	private static void handleProperties(JSONObject car, String carID) {
+		float speed=(float) car.getDouble("speed");
+		float reverseSpeed=(float) car.getDouble("reverseSpeed");
+		float acceleration=(float) car.getDouble("acceleration");
+		
+		speed=Math.max(speed, 0.001F);
+		speed=Math.min(speed, 10F);
+		
+		reverseSpeed=Math.max(reverseSpeed, 0.001F);
+		reverseSpeed=Math.min(reverseSpeed, 10F);
+		
+		acceleration=Math.max(acceleration, 0.0001F);
+		acceleration=Math.min(acceleration, 10F);
+		
+		CarProperties.REGISTRY.register(new CarProperties(carID, speed, acceleration, reverseSpeed).setRegistryName(carID));
 	}
 	
 	private static void initFuelStation(){

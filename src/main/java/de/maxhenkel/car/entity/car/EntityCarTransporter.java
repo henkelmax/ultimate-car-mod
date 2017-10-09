@@ -30,7 +30,7 @@ public class EntityCarTransporter extends EntityCarLockBase{
 		super(worldIn);
 		setSize(2.0F, 1.51F);
 		maxFuel=2000;
-		maxSpeed=0.4F;
+		//maxSpeed=0.4F;
 		setHasContainer(hasContainer);
 		setType(color);
 		

@@ -27,7 +27,7 @@ public class EntityCarBigWood extends EntityCarLockBase{
 		setType(type);
 		setSize(1.5F, 1.6F);
 		maxFuel=1500;
-		maxSpeed=0.48F;
+		//maxSpeed=0.48F;
 	}
 	
 	@Override

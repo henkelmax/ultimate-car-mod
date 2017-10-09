@@ -149,6 +149,8 @@ tooltip.damage=Damage %s%%
 tooltip.methanol=Stored Methanol: %s mb
 tooltip.fluid=Fluid: %s
 tooltip.amount=Amount: %smb
+tooltip.repair_kit_1=Repairs your car when it has more than 90%% damage
+tooltip.repair_kit_2=Can be applied by left-clicking
 
 fluid.canola_oil=Canola Oil
 fluid.methanol=Methanol

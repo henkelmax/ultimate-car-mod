@@ -28,7 +28,7 @@ public class EntityCarSport extends EntityCarLockBase{
 		setType(type);
 		setSize(1.4F, 1.2F);
 		maxFuel=1500;
-		maxSpeed=0.65F;
+		//maxSpeed=0.65F;
 		acceleration=0.04F;
 		minRotationSpeed=1.1F;
 	}

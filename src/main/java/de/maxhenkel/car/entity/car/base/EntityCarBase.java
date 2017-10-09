@@ -14,6 +14,7 @@ import de.maxhenkel.car.proxy.CommonProxy;
 import de.maxhenkel.car.reciepe.CarCraftingManager;
 import de.maxhenkel.car.reciepe.ICarRecipe;
 import de.maxhenkel.car.reciepe.ICarbuilder;
+import de.maxhenkel.car.registries.CarProperties;
 import de.maxhenkel.car.sounds.ModSounds;
 import de.maxhenkel.car.sounds.SoundLoopHigh;
 import de.maxhenkel.car.sounds.SoundLoopIdle;
@@ -42,7 +43,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public abstract class EntityCarBase extends EntityVehicleBase {
 
-	protected float maxSpeed = 0.5F;
+	private float maxSpeed = 0.5F;
 	protected float maxReverseSpeed = 0.2F;
 	protected float acceleration = 0.032F;
 	protected float maxRotationSpeed = 5F;
@@ -76,6 +77,12 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 		super(worldIn);
 		this.setSize(1.3F, 1.6F);
 		this.stepHeight=Config.carStepHeight;
+		
+		for(CarProperties props:CarProperties.REGISTRY) {
+			if(props.getCarID().equals(getID())) {
+				this.maxSpeed=props.getSpeed();
+			}
+		}
 	}
 
 	@Override
