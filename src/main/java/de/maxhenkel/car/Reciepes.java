@@ -265,6 +265,8 @@ public class Reciepes {
 					Character.valueOf('I'), new ItemStack(Items.IRON_INGOT),
 					Character.valueOf('C'), new ItemStack(ModItems.CONTROL_UNIT)});
 		}
+		
+		OreDictionary.registerOre("cropCanola", new ItemStack(ModItems.CANOLA));
 	}
 	
 }

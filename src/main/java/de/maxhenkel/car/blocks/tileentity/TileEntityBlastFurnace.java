@@ -1,14 +1,11 @@
 package de.maxhenkel.car.blocks.tileentity;
 
-import java.util.ArrayList;
-import java.util.List;
 import de.maxhenkel.car.Config;
 import de.maxhenkel.car.blocks.BlockGui;
 import de.maxhenkel.car.blocks.ModBlocks;
 import de.maxhenkel.car.fluids.ModFluids;
-import net.minecraft.init.Blocks;
+import de.maxhenkel.tools.ItemTools;
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentTranslation;
@@ -37,7 +34,7 @@ public class TileEntityBlastFurnace extends TileEntityEnergyFluidProducer{
 		return new ItemStack(Items.COAL, 1, 1);
 	}
 
-	@Override
+	/*@Override
 	public List<ItemStack> getInputItems() {
 		List<ItemStack> items=new ArrayList<ItemStack>();
 		items.add(new ItemStack(Item.getItemFromBlock(Blocks.LOG), 1, 0));
@@ -47,6 +44,10 @@ public class TileEntityBlastFurnace extends TileEntityEnergyFluidProducer{
 		items.add(new ItemStack(Item.getItemFromBlock(Blocks.LOG2), 1, 0));
 		items.add(new ItemStack(Item.getItemFromBlock(Blocks.LOG2), 1, 1));
 		return items;
+	}*/
+	@Override
+	public boolean isValidItem(ItemStack stack) {
+		return ItemTools.matchesOredict(stack, "logWood");
 	}
 
 	@Override

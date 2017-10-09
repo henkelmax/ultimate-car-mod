@@ -33,7 +33,6 @@ public class ModSounds {
 	public static SoundEvent registerSound(String soundName) {
 		SoundEvent event=new SoundEvent(new ResourceLocation(Main.MODID, soundName));
 		event.setRegistryName(new ResourceLocation(Main.MODID, soundName));
-		
 		return event;
 	}
 

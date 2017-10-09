@@ -1,6 +1,5 @@
 package de.maxhenkel.car.blocks.tileentity;
 
-import java.util.List;
 import cofh.redstoneflux.api.IEnergyReceiver;
 import de.maxhenkel.tools.ItemTools;
 import de.maxhenkel.car.blocks.BlockGui;
@@ -83,7 +82,7 @@ public abstract class TileEntityEnergyFluidProducer extends TileEntityBase imple
 			}
 		} else if (storedEnergy >= energyUsage) {
 			if (!ItemTools.isStackEmpty(input)) {
-				if (ItemTools.contains(getInputItems(), input)) {
+				if (isValidItem(input)) {
 					if (ItemTools.isStackEmpty(output)||output.getCount() < output.getMaxStackSize()) {
 						if (currentMillibuckets + millibucketsPerUse <= maxMillibuckets) {
 							ItemTools.decrItemStack(input, null);
@@ -123,7 +122,7 @@ public abstract class TileEntityEnergyFluidProducer extends TileEntityBase imple
 
 	public abstract ItemStack getOutputItem();
 
-	public abstract List<ItemStack> getInputItems();
+	public abstract boolean isValidItem(ItemStack stack);
 	
 	public float getEnergyPercent() {
 		return ((float) storedEnergy) / ((float) maxStorage);

@@ -89,7 +89,6 @@ public class Registry {
 		}
 	}
 
-	@SideOnly(Side.CLIENT)
 	@SubscribeEvent
 	public static void registerSounds(RegistryEvent.Register<SoundEvent> event) {
 		registerSound(event.getRegistry(), ModSounds.engine_stop);
@@ -110,7 +109,6 @@ public class Registry {
 		registerSound(event.getRegistry(), ModSounds.car_unlock);
 	}
 
-	@SideOnly(Side.CLIENT)
 	public static void registerSound(IForgeRegistry<SoundEvent> registry, SoundEvent sound) {
 		registry.register(sound);
 	}
