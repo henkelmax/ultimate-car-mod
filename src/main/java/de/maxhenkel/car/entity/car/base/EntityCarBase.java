@@ -24,6 +24,7 @@ import de.maxhenkel.car.sounds.SoundLoopStart;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.MoverType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -40,6 +41,7 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -604,7 +606,25 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 			CommonProxy.simpleNetworkWrapper.sendToServer(new MessageCarHorn(true, player));
 		}else{
 			playHornSound();
+			if(Config.hornFlee) {
+				double radius=15;
+				List<EntityLiving> list=world.getEntitiesWithinAABB(EntityLiving.class, new AxisAlignedBB(posX-radius, posY-radius, posZ-radius, posX+radius, posY+radius, posZ+radius));
+				for(EntityLiving ent:list) {
+					fleeEntity(ent);
+				}
+			}
 		}
+	}
+	
+	public void fleeEntity(EntityLiving entity) {
+		double fleeDistance=10;
+		Vec3d vecCar=new Vec3d(posX, posY, posZ);
+		Vec3d vecEntity=new Vec3d(entity.posX, entity.posY, entity.posZ);
+		Vec3d fleeDir=vecEntity.subtract(vecCar);
+		fleeDir=fleeDir.normalize();
+		Vec3d fleePos=new Vec3d(vecEntity.x+fleeDir.x*fleeDistance, vecEntity.y+fleeDir.y*fleeDistance, vecEntity.z+fleeDir.z*fleeDistance);
+		
+		entity.getNavigator().tryMoveToXYZ(fleePos.x, fleePos.y, fleePos.z, 2.5);
 	}
 
 }

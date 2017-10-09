@@ -71,6 +71,7 @@ public class Config {
 	public static float carStepHeight;
 	public static boolean collideWithEntities=true;
 	public static boolean damageEntities=false;
+	public static boolean hornFlee=true;
 	
 	public static boolean tarRecipe=true;
 	public static boolean painterRecipe=true;
@@ -327,6 +328,8 @@ public class Config {
 		collideWithEntities=config.getBoolean("collide_with_entities", "car", true, "Whether the cars should collide with other entities");
 		
 		damageEntities=config.getBoolean("damage_entities", "car", false, "Whether the cars should damage other entities on collision");
+		
+		hornFlee=config.getBoolean("horn_flee", "car", true, "Whether animals flee from the car when the horn is activted");
 
 		//Recipes
 		tarRecipe=config.getBoolean("tar_recipe", "recipes", true, "");
