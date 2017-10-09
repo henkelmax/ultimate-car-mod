@@ -2,6 +2,7 @@ package de.maxhenkel.car.entity.car.base;
 
 import java.util.List;
 import javax.annotation.Nullable;
+import de.maxhenkel.car.Config;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumFacing;
@@ -156,6 +157,9 @@ public abstract class EntityVehicleBase extends Entity{
 	@Nullable
 	@Override
 	public AxisAlignedBB getCollisionBox(Entity entityIn) {
+		if(!Config.collideWithEntities) {
+			return null;
+		}
 		return entityIn.canBePushed() ? entityIn.getEntityBoundingBox() : null;
 	}
 

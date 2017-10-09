@@ -2,6 +2,7 @@ package de.maxhenkel.car.entity.car.base;
 
 import java.util.List;
 import de.maxhenkel.car.Config;
+import de.maxhenkel.car.DamageSourceCar;
 import de.maxhenkel.car.IDrivable;
 import de.maxhenkel.tools.ItemTools;
 import de.maxhenkel.tools.MathTools;
@@ -36,6 +37,7 @@ import net.minecraft.util.EntitySelectors;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
@@ -100,13 +102,27 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 		this.updateGravity();
 		this.controlCar();
 		this.checkPush();
-		//this.moveEntity(this.motionX, this.motionY, this.motionZ);
 		this.move(MoverType.SELF, this.motionX, this.motionY, this.motionZ);
 
 		if (world.isRemote) {
 			updateSounds();
 		}
 
+	}
+	
+	@Override
+	public AxisAlignedBB getCollisionBox(Entity entityIn) {
+		if(Config.damageEntities) {
+			if(entityIn.getEntityBoundingBox().intersects(getCollisionBoundingBox())) {
+				float speed=getSpeed();
+				if(speed>0.35F) {
+					float damage=speed*10;
+					entityIn.attackEntityFrom(DamageSourceCar.DAMAGE_CAR, damage);
+				}
+				
+			}
+		}
+		return super.getCollisionBox(entityIn);
 	}
 	
 	private void handleTeleport() {
@@ -257,7 +273,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 			prevRotationYaw = rotationYaw;
 		}
 
-		if (collidedHorizontally) {//TODO !!!
+		if (collidedHorizontally) {
 			if (world.isRemote) {
 				onCollision(speed);
 			}
