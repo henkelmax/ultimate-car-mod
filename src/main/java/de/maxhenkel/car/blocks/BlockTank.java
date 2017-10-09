@@ -158,7 +158,7 @@ public class BlockTank extends BlockContainer {
 		return false;
 	}
 	
-	private boolean handleEmpty(FluidStack fluidStack, ItemStack stack, World worldIn, BlockPos pos,
+	public static boolean handleEmpty(FluidStack fluidStack, ItemStack stack, World worldIn, BlockPos pos,
 			EntityPlayer playerIn, EnumHand hand) {
 		TileEntity te = worldIn.getTileEntity(pos);
 
@@ -173,13 +173,14 @@ public class BlockTank extends BlockContainer {
 		FluidActionResult res = FluidUtil.tryEmptyContainerAndStow(stack, handler, inv, Integer.MAX_VALUE, playerIn);
 
 		if (res.isSuccess()) {
-			playerIn.setHeldItem(hand, res.result); //TODO ITEM!!!
+			playerIn.setHeldItem(hand, res.result);
+			return true;
 		}
 
-		return true;
+		return false;
 	}
 
-	private boolean handleFill(IFluidHandler handler, ItemStack stack, World worldIn, BlockPos pos,
+	public static boolean handleFill(IFluidHandler handler, ItemStack stack, World worldIn, BlockPos pos,
 			EntityPlayer playerIn, EnumHand hand) {
 		TileEntity te = worldIn.getTileEntity(pos);
 
@@ -195,10 +196,11 @@ public class BlockTank extends BlockContainer {
 				playerIn);
 
 		if (result.isSuccess()) {
-			playerIn.setHeldItem(hand, result.result); //TODO ITEM!!!
+			playerIn.setHeldItem(hand, result.result);
+			return true;
 		}
 
-		return true;
+		return false;
 	}
 
 	@Override

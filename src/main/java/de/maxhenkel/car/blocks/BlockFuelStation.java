@@ -20,6 +20,9 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidUtil;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 
 public class BlockFuelStation extends BlockOrientableHorizontal {
 
@@ -34,16 +37,39 @@ public class BlockFuelStation extends BlockOrientableHorizontal {
 		useNeighborBrightness = true;
 
 	}
-	
+
 	@Override
 	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn,
-		EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+			EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+		ItemStack stack = playerIn.getHeldItem(hand);
+
+		if (stack != null) {
+			FluidStack fluidStack = FluidUtil.getFluidContained(stack);
+
+			if (fluidStack != null) {
+				boolean success = BlockTank.handleEmpty(fluidStack, stack, worldIn, pos, playerIn, hand);
+				if (success) {
+					return true;
+				}
+			}
+			IFluidHandler handler = FluidUtil.getFluidHandler(stack);
+			
+			if (handler != null) {
+				boolean success1 = BlockTank.handleFill(handler, stack, worldIn, pos, playerIn, hand);
+				if (success1) {
+					return true;
+				}
+			}
+
+		}
+
 		if (!playerIn.isSneaking()) {
 			playerIn.openGui(Main.instance(), GuiHandler.GUI_FUELSTATION, worldIn, pos.getX(), pos.getY(), pos.getZ());
+			return true;
 		}
-		return true;
+		return false;
 	}
-	
+
 	@Override
 	public TileEntity createNewTileEntity(World worldIn, int meta) {
 		return new TileEntityFuelStation();
@@ -100,7 +126,7 @@ public class BlockFuelStation extends BlockOrientableHorizontal {
 	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos) {
 		return new AxisAlignedBB(0, 0, 0, 1, 2, 1);
 	}
-	
+
 	@Override
 	public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox,
 			List<AxisAlignedBB> collidingBoxes, Entity entityIn, boolean p_185477_7_) {
