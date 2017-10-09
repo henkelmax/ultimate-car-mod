@@ -1,6 +1,10 @@
 package de.maxhenkel.car;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.nio.charset.Charset;
+import org.apache.commons.io.IOUtils;
 import de.maxhenkel.car.fluids.ModFluids;
 import de.maxhenkel.car.registries.CarFluid;
 import de.maxhenkel.car.registries.CarProperties;
@@ -8,6 +12,7 @@ import de.maxhenkel.car.registries.FuelStationFluid;
 import de.maxhenkel.car.registries.GeneratorRecipe;
 import de.maxhenkel.tools.FluidSelector;
 import de.maxhenkel.tools.json.JSONArray;
+import de.maxhenkel.tools.json.JSONException;
 import de.maxhenkel.tools.json.JSONObject;
 import de.maxhenkel.tools.json.JsonConfig;
 import net.minecraftforge.common.config.Configuration;
@@ -86,6 +91,9 @@ public class Config {
 	public static boolean keyRecipe=true;
 	
 	public static boolean canolaSeedDrop=true;
+	
+	public static boolean teleportDimension=false;
+	public static int teleportDimID=0;
 
 	public static void init(File configFolder){
 		Config.configFolder=configFolder;
@@ -101,6 +109,27 @@ public class Config {
 		initGenerator();
 		initFuelStation();
 		initCar();
+		try {
+			initDimension();
+		} catch (Exception e) {
+			
+		}
+	}
+	
+	private static void initDimension() throws JSONException, IOException{
+		File dimension=new File(configFolder, "teleport.json");
+		if(!dimension.exists()) {
+			return;
+		}
+		
+		FileInputStream inputStream = new FileInputStream(dimension);
+		JSONObject jsonObject = new JSONObject(IOUtils.toString(inputStream, Charset.defaultCharset()));
+		
+		if(jsonObject.has("dimID")) {
+			int dimid=jsonObject.getInt("dimID");
+			teleportDimension=true;
+			teleportDimID=dimid;
+		}
 	}
 	
 	private static void initGenerator(){

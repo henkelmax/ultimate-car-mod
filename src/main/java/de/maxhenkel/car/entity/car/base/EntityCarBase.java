@@ -5,6 +5,7 @@ import de.maxhenkel.car.Config;
 import de.maxhenkel.car.IDrivable;
 import de.maxhenkel.tools.ItemTools;
 import de.maxhenkel.tools.MathTools;
+import de.maxhenkel.tools.Teleport;
 import de.maxhenkel.car.net.MessageCarGui;
 import de.maxhenkel.car.net.MessageCarHorn;
 import de.maxhenkel.car.net.MessageControlCar;
@@ -21,6 +22,7 @@ import de.maxhenkel.car.sounds.SoundLoopIdle;
 import de.maxhenkel.car.sounds.SoundLoopStart;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.MoverType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -88,6 +90,8 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 	@Override
 	public void onUpdate() {
 		super.onUpdate();
+		
+		handleTeleport();
 
 		if (isStarted() && !canEngineStayOn()) {
 			setStarted(false);
@@ -104,6 +108,27 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 		}
 
 	}
+	
+	private void handleTeleport() {
+		if(!Config.teleportDimension) {
+			return;
+		}
+		
+		if(getSpeed()>=maxSpeed) {
+			int dimid=world.provider.getDimension();
+			if(dimid==Config.teleportDimID) {
+				return;
+			}
+			
+			for(Entity e:getPassengers()) {
+				e.dismountRidingEntity();
+				Teleport.teleportToDimension(e, Config.teleportDimID);
+				
+			}
+			Teleport.teleportToDimension(this, Config.teleportDimID);
+		}
+	}
+	
 
 	public void checkPush() {
 		if(getCollisionBoundingBox()==null){
