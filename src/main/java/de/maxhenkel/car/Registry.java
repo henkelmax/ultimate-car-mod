@@ -3,6 +3,7 @@ package de.maxhenkel.car;
 import de.maxhenkel.car.blocks.BlockPaint;
 import de.maxhenkel.car.blocks.ModBlocks;
 import de.maxhenkel.car.blocks.tileentity.TileEntityBackmixReactor;
+import de.maxhenkel.car.blocks.tileentity.TileEntityBase;
 import de.maxhenkel.car.blocks.tileentity.TileEntityBlastFurnace;
 import de.maxhenkel.car.blocks.tileentity.TileEntityCable;
 import de.maxhenkel.car.blocks.tileentity.TileEntityCarWorkshop;
@@ -24,15 +25,21 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.IFluidBlock;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -333,6 +340,32 @@ public class Registry {
 
 		FluidRegistry.registerFluid(ModFluids.BIO_DIESEL);
 		FluidRegistry.addBucketForFluid(ModFluids.BIO_DIESEL);
+	}
+	
+	@SubscribeEvent
+	public static void capabilityAttach(AttachCapabilitiesEvent<TileEntity> event) {
+		if(event.getObject() instanceof TileEntityBase && event.getObject() instanceof IFluidHandler) {
+			IFluidHandler handler=(IFluidHandler) event.getObject();
+			event.addCapability(new ResourceLocation(Main.MODID, "fluid_handler"), new ICapabilityProvider() {
+				
+				@Override
+				public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+					if(capability.equals(Capabilities.FLUID_HANDLER_CAPABILITY)) {
+						return true;
+					}
+					return false;
+				}
+				
+				@SuppressWarnings("unchecked")
+				@Override
+				public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+					if(capability.equals(Capabilities.FLUID_HANDLER_CAPABILITY)) {
+						return (T) handler;
+					}
+					return null;
+				}
+			});
+		}
 	}
 
 }
