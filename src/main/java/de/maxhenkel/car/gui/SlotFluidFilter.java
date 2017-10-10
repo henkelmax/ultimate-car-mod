@@ -27,7 +27,7 @@ public class SlotFluidFilter extends Slot{
 	@Override
 	public boolean canTakeStack(EntityPlayer playerIn) {
 		tile.setFilter(null);
-		inventory.setInventorySlotContents(index, null);
+		ItemTools.removeStackFromSlot(inventory, index);
 		onSlotChanged();
 		return false;
 	}
