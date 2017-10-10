@@ -72,6 +72,7 @@ public class Config {
 	public static boolean collideWithEntities=true;
 	public static boolean damageEntities=false;
 	public static boolean hornFlee=true;
+	public static boolean dynamicLights=true;
 	
 	public static boolean tarRecipe=true;
 	public static boolean painterRecipe=true;
@@ -316,20 +317,15 @@ public class Config {
 		//Canister
 		canisterMaxFuel=config.getInt("canister_max_fuel", "items.canister", 100, 1, 1000, "");
 		
-		//Car volume
+		//Car
 		carVolume=config.getFloat("car_volume", "car", 0.1F, 0F, 1F, "");
-		
 		thirdPersonEnter=config.getBoolean("third_person_when_enter_car", "car", true, "");
-		
 		carGroundSpeed=config.getBoolean("car_ground_speed", "car", false, "Whether the cars drive slower on non asphalt blocks");
-		
 		carStepHeight=config.getFloat("car_step_height", "car", 0.6F, 0.1F, 128F, "The height a car can drive up");
-		
 		collideWithEntities=config.getBoolean("collide_with_entities", "car", true, "Whether the cars should collide with other entities");
-		
 		damageEntities=config.getBoolean("damage_entities", "car", false, "Whether the cars should damage other entities on collision");
-		
 		hornFlee=config.getBoolean("horn_flee", "car", true, "Whether animals flee from the car when the horn is activted");
+		dynamicLights=config.getBoolean("dynamic_lights", "car", true, "Whether cars should emit light when the DynamicLights mod is installed");
 
 		//Recipes
 		tarRecipe=config.getBoolean("tar_recipe", "recipes", true, "");
