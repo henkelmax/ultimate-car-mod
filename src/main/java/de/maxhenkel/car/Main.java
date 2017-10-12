@@ -16,7 +16,7 @@ public class Main{
     public static final String VERSION = "1.2.5";
     public static final String MC_VERSION = "[1.12.2]";
 	public static final String UPDATE_JSON = "http://maxhenkel.de/update/car.json";
-	public static final String DEPENDENCIES = "required-after:redstoneflux;after:dynamiclights";
+	public static final String DEPENDENCIES = "required-after:redstoneflux;after:dynamiclights;after:crafttweaker;";
 
 	@Instance
     private static Main instance;

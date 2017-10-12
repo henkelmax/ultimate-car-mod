@@ -59,15 +59,9 @@ dependencies {
 	
 	//Dynamic Lights
 	compile files("libs/DynamicLights-1.12.1.jar")
-	
-	//ModTweaker
-	//compile files("libs/modtweaker-4.0.2.jar")
-	
+
 	//Craft Tweaker
 	compile files("libs/CraftTweaker2-Dev-Full-1.12-4.0.1.jar")
-	
-	//MTLIB
-	compile files("libs/MTLib-3.0.0.jar")
 }
 
 processResources
