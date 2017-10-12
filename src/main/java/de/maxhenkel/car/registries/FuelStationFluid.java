@@ -1,15 +1,11 @@
 package de.maxhenkel.car.registries;
 
 import de.maxhenkel.tools.FluidSelector;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.registries.IForgeRegistry;
-import net.minecraftforge.registries.IForgeRegistryEntry;
-import net.minecraftforge.registries.RegistryBuilder;
 
-public class FuelStationFluid extends IForgeRegistryEntry.Impl<FuelStationFluid>{
+public class FuelStationFluid{
 
-	public static final IForgeRegistry<FuelStationFluid> REGISTRY=new RegistryBuilder<FuelStationFluid>().setName(new ResourceLocation("fuelstation")).setType(FuelStationFluid.class).setIDRange(0, 8096).create();
+	public static final StringRegistry<FuelStationFluid> REGISTRY=new StringRegistry<FuelStationFluid>();
 	
 	private FluidSelector input;
 	

@@ -1,15 +1,11 @@
 package de.maxhenkel.car.registries;
 
 import de.maxhenkel.tools.FluidSelector;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.registries.IForgeRegistry;
-import net.minecraftforge.registries.IForgeRegistryEntry;
-import net.minecraftforge.registries.RegistryBuilder;
 
-public class CarFluid extends IForgeRegistryEntry.Impl<CarFluid>{
+public class CarFluid{
 
-	public static final IForgeRegistry<CarFluid> REGISTRY=new RegistryBuilder<CarFluid>().setName(new ResourceLocation("car")).setType(CarFluid.class).setIDRange(0, 8096).create();
+	public static final StringRegistry<CarFluid> REGISTRY=new StringRegistry<CarFluid>();
 	
 	private FluidSelector input;
 	private String carID;

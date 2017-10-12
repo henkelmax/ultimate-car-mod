@@ -4,7 +4,6 @@ import java.util.List;
 import de.maxhenkel.car.Config;
 import de.maxhenkel.car.DamageSourceCar;
 import de.maxhenkel.car.IDrivable;
-import de.maxhenkel.tools.ItemTools;
 import de.maxhenkel.tools.MathTools;
 import de.maxhenkel.tools.Teleport;
 import de.maxhenkel.car.net.MessageCarGui;
@@ -13,8 +12,6 @@ import de.maxhenkel.car.net.MessageControlCar;
 import de.maxhenkel.car.net.MessageCrash;
 import de.maxhenkel.car.net.MessageStartCar;
 import de.maxhenkel.car.proxy.CommonProxy;
-import de.maxhenkel.car.reciepe.CarCraftingManager;
-import de.maxhenkel.car.reciepe.ICarRecipe;
 import de.maxhenkel.car.reciepe.ICarbuilder;
 import de.maxhenkel.car.registries.CarProperties;
 import de.maxhenkel.car.sounds.ModSounds;
@@ -28,7 +25,6 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.MoverType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
@@ -187,7 +183,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 	}
 
 	public void destroyCar(EntityPlayer player, boolean dropParts) {
-		if (dropParts) {
+		/*if (dropParts) {
 			ICarbuilder builder=getBuilder();
 			ICarRecipe reciepe = CarCraftingManager.getInstance().getReciepeByName(builder.getName());
 			if (reciepe != null) {
@@ -200,7 +196,8 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 					}
 				}
 			}
-		}
+		}*/
+		//TODO drop items?
 		setDead();
 	}
 

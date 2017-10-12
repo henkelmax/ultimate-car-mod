@@ -25,14 +25,4 @@ public class CarBuilderTransporter implements ICarbuilder{
 		return car;
 	}
 
-	@Override
-	public String getName() {
-		String name="car_transporter_" +color.getName();
-		
-		if(hasContainer){
-			name=name+"_container";
-		}
-		return name;
-	}
-
 }

@@ -1,18 +1,14 @@
 package de.maxhenkel.car.registries;
 
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.registries.IForgeRegistry;
-import net.minecraftforge.registries.IForgeRegistryEntry;
-import net.minecraftforge.registries.RegistryBuilder;
+public class CarProperties{
 
-public class CarProperties extends IForgeRegistryEntry.Impl<CarProperties>{
-
-	public static final IForgeRegistry<CarProperties> REGISTRY=new RegistryBuilder<CarProperties>().setName(new ResourceLocation("car_properties")).setType(CarProperties.class).setIDRange(0, 8096).create();
+	public static final StringRegistry<CarProperties> REGISTRY=new StringRegistry<CarProperties>();
 	
 	private float speed;
 	private float reverseSpeed;
 	private float acceleration;
 	private String carID;
+	
 	
 	public CarProperties(String carID, float speed, float acceleration, float reverseSpeed) {
 		this.carID=carID;

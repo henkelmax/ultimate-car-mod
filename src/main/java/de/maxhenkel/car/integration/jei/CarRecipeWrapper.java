@@ -20,7 +20,7 @@ public class CarRecipeWrapper implements IRecipeWrapper{
 	
 	public CarRecipeWrapper(ICarRecipe recipe) {
 		this.recipe=recipe;
-		this.car=recipe.getCraftingResult().build(Minecraft.getMinecraft().world);
+		this.car=recipe.getCraftingResult().getBuilder().build(Minecraft.getMinecraft().world);
 	}
 	
 	@Override

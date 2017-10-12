@@ -1,14 +1,15 @@
 package de.maxhenkel.car.reciepe;
 
+import de.maxhenkel.car.registries.ICar;
 import de.maxhenkel.tools.ItemTools;
 import net.minecraft.item.ItemStack;
 
 public class ShapedCarRecipe implements ICarRecipe{
 
 	private ItemStack[] pattern;
-	private ICarbuilder result;
+	private ICar result;
 	
-	public ShapedCarRecipe(ItemStack[] pattern, ICarbuilder result) {
+	public ShapedCarRecipe(ItemStack[] pattern, ICar result) {
 		this.pattern=pattern;
 		this.result=result;
 	}
@@ -40,13 +41,8 @@ public class ShapedCarRecipe implements ICarRecipe{
 	}
 
 	@Override
-	public ICarbuilder getCraftingResult() {
+	public ICar getCraftingResult() {
 		return result;
-	}
-
-	@Override
-	public String getName() {
-		return result.getName();
 	}
 
 }

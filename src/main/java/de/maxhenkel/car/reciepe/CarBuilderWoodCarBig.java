@@ -22,10 +22,5 @@ public class CarBuilderWoodCarBig implements ICarbuilder{
 		car.setInventorySlotContents(1, ItemKey.getKeyForCar(car.getUniqueID()));
 		return car;
 	}
-
-	@Override
-	public String getName() {
-		return "car_big_wood_" +type.getName();
-	}
 	
 }

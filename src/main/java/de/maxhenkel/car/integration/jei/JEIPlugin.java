@@ -5,8 +5,8 @@ import java.util.List;
 import de.maxhenkel.car.blocks.BlockPaint;
 import de.maxhenkel.car.blocks.ModBlocks;
 import de.maxhenkel.car.items.ModItems;
-import de.maxhenkel.car.reciepe.CarCraftingManager;
 import de.maxhenkel.car.reciepe.ICarRecipe;
+import de.maxhenkel.car.registries.CarCraftingRegistry;
 import mezz.jei.api.IJeiRuntime;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.IModRegistry;
@@ -33,7 +33,7 @@ public class JEIPlugin implements IModPlugin {
 		registry.handleRecipes(ICarRecipe.class, new CarRecipeWrapperFactory(), JEIPlugin.CATEGORY_CAR_WORKSHOP);
 
 		List<CarRecipeWrapper> recipes = new ArrayList<CarRecipeWrapper>();
-		for (ICarRecipe recipe : CarCraftingManager.getInstance().getRecipeList()) {
+		for (ICarRecipe recipe : CarCraftingRegistry.REGISTRY) {
 			recipes.add(new CarRecipeWrapper(recipe));
 		}
 		registry.addRecipes(recipes, JEIPlugin.CATEGORY_CAR_WORKSHOP);

@@ -1,15 +1,14 @@
 package de.maxhenkel.car.reciepe;
 
+import de.maxhenkel.car.registries.ICar;
 import net.minecraft.item.ItemStack;
 
-public interface ICarRecipe {
+public interface ICarRecipe{
 
-	public String getName();
-	
 	public ItemStack[] getInputs();
 	
 	public boolean matches(ICarCraftingInventory inv);
 	
-	public ICarbuilder getCraftingResult();
+	public ICar getCraftingResult();
 	
 }

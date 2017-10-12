@@ -23,10 +23,4 @@ public class CarBuilderSport implements ICarbuilder{
 		return car;
 	}
 
-	@Override
-	public String getName() {
-		String name="car_sport_" +color.getName();
-		return name;
-	}
-
 }

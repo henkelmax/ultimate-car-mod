@@ -154,7 +154,7 @@ public class Config {
 				continue;
 			}
 			
-			GeneratorRecipe.REGISTRY.register(new GeneratorRecipe(sel, amount).setRegistryName(sel.toString()));
+			GeneratorRecipe.REGISTRY.register(sel.toString(), new GeneratorRecipe(sel, amount));
 		}
 		
 	}
@@ -225,7 +225,7 @@ public class Config {
 				continue;
 			}
 			
-			CarFluid.REGISTRY.register(new CarFluid(carID, sel, efficiency).setRegistryName(carID +"_" +sel.getFluid().getName()));
+			CarFluid.REGISTRY.register(carID +"_" +sel.getFluid().getName(), new CarFluid(carID, sel, efficiency));
 		}
 	}
 	
@@ -243,7 +243,7 @@ public class Config {
 		acceleration=Math.max(acceleration, 0.0001F);
 		acceleration=Math.min(acceleration, 10F);
 		
-		CarProperties.REGISTRY.register(new CarProperties(carID, speed, acceleration, reverseSpeed).setRegistryName(carID));
+		CarProperties.REGISTRY.register(carID, new CarProperties(carID, speed, acceleration, reverseSpeed));
 	}
 	
 	private static void initFuelStation(){
@@ -263,7 +263,7 @@ public class Config {
 				continue;
 			}
 			
-			FuelStationFluid.REGISTRY.register(new FuelStationFluid(sel).setRegistryName(sel.toString()));
+			FuelStationFluid.REGISTRY.register(sel.toString(), new FuelStationFluid(sel));
 		}
 		
 	}

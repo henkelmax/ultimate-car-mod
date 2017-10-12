@@ -23,9 +23,4 @@ public class CarBuilderWoodCar implements ICarbuilder{
 		return car;
 	}
 
-	@Override
-	public String getName() {
-		return "car_wood_" +type.getName();
-	}
-
 }

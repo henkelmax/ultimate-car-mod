@@ -1,15 +1,11 @@
 package de.maxhenkel.car.registries;
 
 import de.maxhenkel.tools.FluidSelector;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.registries.IForgeRegistry;
-import net.minecraftforge.registries.IForgeRegistryEntry;
-import net.minecraftforge.registries.RegistryBuilder;
 
-public class GeneratorRecipe extends IForgeRegistryEntry.Impl<GeneratorRecipe>{
+public class GeneratorRecipe{
 
-	public static final IForgeRegistry<GeneratorRecipe> REGISTRY=new RegistryBuilder<GeneratorRecipe>().setName(new ResourceLocation("generator")).setType(GeneratorRecipe.class).setIDRange(0, 8096).create();
+	public static final StringRegistry<GeneratorRecipe> REGISTRY=new StringRegistry<GeneratorRecipe>();
 	
 	private FluidSelector input;
 	private int energy;

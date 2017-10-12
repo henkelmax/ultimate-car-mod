@@ -7,9 +7,9 @@ import de.maxhenkel.car.blocks.BlockCarWorkshopOutter;
 import de.maxhenkel.car.blocks.ModBlocks;
 import de.maxhenkel.car.entity.car.base.EntityCarBase;
 import de.maxhenkel.car.entity.car.base.EntityCarDamageBase;
-import de.maxhenkel.car.reciepe.CarCraftingManager;
 import de.maxhenkel.car.reciepe.ICarCraftingInventory;
 import de.maxhenkel.car.reciepe.ICarbuilder;
+import de.maxhenkel.car.registries.CarCraftingRegistry;
 import de.maxhenkel.car.sounds.ModSounds;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -219,7 +219,7 @@ public class TileEntityCarWorkshop extends TileEntityBase implements ICarCraftin
 
 	@Nullable
 	public ICarbuilder getCurrentRecipe() {
-		return CarCraftingManager.getInstance().findMatchingRecipe(this);
+		return CarCraftingRegistry.findMatchingRecipe(this);
 	}
 
 	public void removeCraftItems() {
