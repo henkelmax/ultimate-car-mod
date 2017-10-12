@@ -31,6 +31,10 @@ public class StringRegistry<T> implements Iterable<T>{
 		return map.values();
 	}
 
+	public Collection<String> getNames(){
+		return map.keySet();
+	}
+	
 	@Override
 	public Iterator<T> iterator() {
 		return map.values().iterator();
