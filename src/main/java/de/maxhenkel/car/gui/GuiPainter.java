@@ -14,7 +14,7 @@ public class GuiPainter extends GuiBase{
 	public GuiPainter(EntityPlayer player, boolean isYellow) {
 		super(new ContainerPainter(player, isYellow));
 		xSize=176;
-		ySize=78;
+		ySize=96;
 	}
 	
 	@Override

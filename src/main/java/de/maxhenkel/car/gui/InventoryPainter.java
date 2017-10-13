@@ -1,5 +1,6 @@
 package de.maxhenkel.car.gui;
 
+import de.maxhenkel.car.blocks.BlockPaint;
 import de.maxhenkel.car.blocks.ModBlocks;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -32,7 +33,7 @@ public class InventoryPainter implements IInventory{
 
 	@Override
 	public int getSizeInventory() {
-		return 18;
+		return BlockPaint.EnumPaintType.values().length;
 	}
 
 	@Override

@@ -1,5 +1,6 @@
 package de.maxhenkel.car.gui;
 
+import de.maxhenkel.car.blocks.BlockPaint;
 import net.minecraft.entity.player.EntityPlayer;
 
 public class ContainerPainter extends ContainerBase{
@@ -10,9 +11,12 @@ public class ContainerPainter extends ContainerBase{
 		super(new InventoryPainter(isYellow), null);
 		this.player=player;
 		
-		for (int j = 0; j < 3; j++) {
+		for (int j = 0; j < 4; j++) {
 			for (int k = 0; k < 9; k++) {
-				this.addSlotToContainer(new SlotPainter(player, tileInventory, k + j * 9, 8 + k * 18, 18 + j * 18));
+				int index=k + j * 9;
+				if(index<BlockPaint.EnumPaintType.values().length) {
+					this.addSlotToContainer(new SlotPainter(player, tileInventory, index, 8 + k * 18, 18 + j * 18));
+				}
 			}
 		}
 	}

@@ -1,0 +1,8 @@
+{
+    "variants": {
+        "facing=north": { "model": "car:line_double_middle" },
+        "facing=south": { "model": "car:line_double_middle", "y": 180 },
+        "facing=west":  { "model": "car:line_double_middle", "y": 270 },
+        "facing=east":  { "model": "car:line_double_middle", "y": 90 }
+    }
+}
