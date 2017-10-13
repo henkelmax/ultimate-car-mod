@@ -116,11 +116,18 @@ public abstract class EntityCarFuelBase extends EntityCarDamageBase implements I
 	}
 	
 	public void setFuelType(String fluid) {
+		if(fluid==null) {
+			fluid="";
+		}
 		this.dataManager.set(FUEL_TYPE, fluid);
 	}
 	
 	public void setFuelType(Fluid fluid) {
-		this.dataManager.set(FUEL_TYPE, fluid.getName());
+		String fluidName=fluid.getName();
+		if(fluidName==null) {
+			fluidName="";
+		}
+		this.dataManager.set(FUEL_TYPE, fluidName);
 	}
 
 	public String getFuelType() {
@@ -129,7 +136,11 @@ public abstract class EntityCarFuelBase extends EntityCarDamageBase implements I
 	
 	@Nullable
 	public Fluid getFluid(){
-		return FluidRegistry.getFluid(getFuelType());
+		String fuelType=getFuelType();
+		if(fuelType==null||fuelType.isEmpty()) {
+			return null;
+		}
+		return FluidRegistry.getFluid(fuelType);
 	}
 	
 	public int getFuelAmount() {
@@ -141,6 +152,9 @@ public abstract class EntityCarFuelBase extends EntityCarDamageBase implements I
 	}
 	
 	public boolean isValidFuel(Fluid fluid){
+		if(fluid==null) {
+			return false;
+		}
 		return getEfficiency(fluid)>0D;
 	}
 	
@@ -150,7 +164,7 @@ public abstract class EntityCarFuelBase extends EntityCarDamageBase implements I
 		}
 		for(CarFluid cf:CarFluid.REGISTRY){
 			if(!cf.getCarID().equals(getID())) {
-				continue;//TODO other versions
+				continue;
 			}
 			if(cf.getInput().isValid(fluid)){
 				return cf.getEfficiency();
@@ -224,8 +238,8 @@ public abstract class EntityCarFuelBase extends EntityCarDamageBase implements I
 
 	@Override
 	public int fill(FluidStack resource, boolean doFill) {
-
-		if(!isValidFuel(resource.getFluid())){
+		
+		if(resource==null||!isValidFuel(resource.getFluid())){
 			return 0;
 		}
 		
@@ -253,7 +267,7 @@ public abstract class EntityCarFuelBase extends EntityCarDamageBase implements I
 			return null;
 		}
 		
-		if(!resource.getFluid().equals(getFluid())) {
+		if(resource.getFluid()==null||!resource.getFluid().equals(getFluid())) {
 			return null;
 		}
 		
@@ -277,7 +291,7 @@ public abstract class EntityCarFuelBase extends EntityCarDamageBase implements I
 
 			
 			if (newAmount <= 0) {
-				setFuelType((Fluid)null);
+				setFuelType((String)null);
 				setFuelAmount(0);
 			}else {
 				setFuelAmount(newAmount);

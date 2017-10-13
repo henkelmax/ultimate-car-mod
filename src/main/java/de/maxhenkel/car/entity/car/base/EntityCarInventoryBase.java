@@ -34,7 +34,7 @@ public abstract class EntityCarInventoryBase extends EntityCarFuelBase implement
 			//Canister
 			ItemStack stack=player.getHeldItem(hand);
 			
-			if(!ItemTools.isStackEmpty(stack)||(stack.getItem() instanceof ItemCanister)) {
+			if(!ItemTools.isStackEmpty(stack)&&(stack.getItem() instanceof ItemCanister)) {
 				boolean success=ItemCanister.fillCanister(stack, this);
 				
 				if(success) {
