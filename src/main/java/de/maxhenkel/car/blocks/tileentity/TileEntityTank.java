@@ -42,6 +42,11 @@ public class TileEntityTank extends TileEntityBase implements IFluidHandler, ITi
 			checkSide(facing);
 		}
 	}
+	
+	@Deprecated
+	public boolean isConnectedTo(EnumFacing facing) {
+		return true;
+	}
 
 	public void checkSide(EnumFacing side) {
 		TileEntity te = world.getTileEntity(pos.offset(side));
