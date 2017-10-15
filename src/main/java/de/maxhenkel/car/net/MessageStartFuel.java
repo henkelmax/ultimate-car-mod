@@ -36,10 +36,13 @@ public class MessageStartFuel implements IMessage, IMessageHandler<MessageStartF
 			
 			if(te instanceof TileEntityFuelStation){
 				TileEntityFuelStation tank=(TileEntityFuelStation) te;
-				
-				tank.setFueling(message.start);
-				
-				tank.synchronize();
+				//Scheduled task for fueling
+				player.getServer().addScheduledTask(new Runnable() {
+					public void run() {
+						tank.setFueling(message.start);
+						tank.synchronize();
+					}
+				});
 			}
 			
 		}
