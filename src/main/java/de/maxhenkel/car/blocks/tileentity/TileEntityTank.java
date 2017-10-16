@@ -335,7 +335,7 @@ public class TileEntityTank extends TileEntityBase implements IFluidHandler, ITi
 		TileEntity te=world.getTileEntity(pos.offset(facing));
 		if(te instanceof TileEntityTank) {
 			TileEntityTank tank=(TileEntityTank) te;
-			if(tank.fluid==null||fluid==null) {
+			if(tank.fluid==null||fluid==null||tank.fluid.amount==0||fluid.amount==0) {
 				return false;
 			}
 			

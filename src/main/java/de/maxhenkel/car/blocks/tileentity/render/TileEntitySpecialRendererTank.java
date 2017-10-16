@@ -181,10 +181,15 @@ public class TileEntitySpecialRendererTank extends TileEntitySpecialRenderer<Til
 		switch (line) {
 		case UP:
 			// Top
-			buffer.pos(0, 0, 0).tex(1, 1).endVertex();
+			buffer.pos(0, 0, 0).tex(1, 1).endVertex();//1432
 			buffer.pos(0, 1, 0).tex(1, 0).endVertex();
 			buffer.pos(1, 1, 0).tex(0, 0).endVertex();
 			buffer.pos(1, 0, 0).tex(0, 1).endVertex();
+			
+			buffer.pos(0, 0, 0).tex(1, 1).endVertex();
+			buffer.pos(1, 0, 0).tex(0, 1).endVertex();
+			buffer.pos(1, 1, 0).tex(0, 0).endVertex();
+			buffer.pos(0, 1, 0).tex(1, 0).endVertex();
 			break;
 		case DOWN:
 			// Bottom
@@ -192,6 +197,11 @@ public class TileEntitySpecialRendererTank extends TileEntitySpecialRenderer<Til
 			buffer.pos(0, 1, 0).tex(0, 1).endVertex();
 			buffer.pos(1, 1, 0).tex(1, 1).endVertex();
 			buffer.pos(1, 0, 0).tex(1, 0).endVertex();
+			
+			buffer.pos(0, 0, 0).tex(0, 0).endVertex();
+			buffer.pos(1, 0, 0).tex(1, 0).endVertex();
+			buffer.pos(1, 1, 0).tex(1, 1).endVertex();
+			buffer.pos(0, 1, 0).tex(0, 1).endVertex();
 			break;
 		case RIGHT:
 			// Right
@@ -199,6 +209,11 @@ public class TileEntitySpecialRendererTank extends TileEntitySpecialRenderer<Til
 			buffer.pos(0, 1, 0).tex(0, 0).endVertex();
 			buffer.pos(1, 1, 0).tex(0, 1).endVertex();
 			buffer.pos(1, 0, 0).tex(1, 1).endVertex();
+			
+			buffer.pos(0, 0, 0).tex(1, 0).endVertex();
+			buffer.pos(1, 0, 0).tex(1, 1).endVertex();
+			buffer.pos(1, 1, 0).tex(0, 1).endVertex();
+			buffer.pos(0, 1, 0).tex(0, 0).endVertex();
 			break;
 		case LEFT:
 			// Left
@@ -206,6 +221,11 @@ public class TileEntitySpecialRendererTank extends TileEntitySpecialRenderer<Til
 			buffer.pos(0, 1, 0).tex(1, 1).endVertex();
 			buffer.pos(1, 1, 0).tex(1, 0).endVertex();
 			buffer.pos(1, 0, 0).tex(0, 0).endVertex();
+			
+			buffer.pos(0, 0, 0).tex(0, 1).endVertex();
+			buffer.pos(1, 0, 0).tex(0, 0).endVertex();
+			buffer.pos(1, 1, 0).tex(1, 0).endVertex();
+			buffer.pos(0, 1, 0).tex(1, 1).endVertex();
 			break;
 		default:
 			break;
