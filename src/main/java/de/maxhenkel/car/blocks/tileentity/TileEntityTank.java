@@ -43,11 +43,6 @@ public class TileEntityTank extends TileEntityBase implements IFluidHandler, ITi
 		}
 	}
 	
-	@Deprecated
-	public boolean isConnectedTo(EnumFacing facing) {
-		return true;
-	}
-
 	public void checkSide(EnumFacing side) {
 		TileEntity te = world.getTileEntity(pos.offset(side));
 
@@ -263,5 +258,92 @@ public class TileEntityTank extends TileEntityBase implements IFluidHandler, ITi
 	public void setFluid(FluidStack fluid) {
 		this.fluid = fluid;
 	}
+	
+	/* **********************RENDERING************************ */
+	
+	/*private boolean[] sides;
+	
+	private boolean[] getSides() {
+		if(sides==null) {
+			sides=new boolean[EnumFacing.values().length];
+			recalculateSides();
+		}
+		return sides;
+	}
+	
+	private void setSide(int i, boolean b) {
+		if(sides==null) {
+			sides=new boolean[EnumFacing.values().length];
+			recalculateSides();
+		}
+		sides[i]=b;
+	}
+	
+	public void markRecalculate() {
+		sides=null;
+	}
+	
+	private void recalculateSides() {
+		for(EnumFacing facing:EnumFacing.values()) {
+			setSide(facing.getIndex(), isConnectedToCalc(facing));
+		}
+	}
+	
+	private boolean isConnectedToCalc(EnumFacing facing) {
+		TileEntity te=world.getTileEntity(pos.offset(facing));
+		if(te instanceof TileEntityTank) {
+			TileEntityTank tank=(TileEntityTank) te;
+			if(tank.fluid==null&&fluid==null) {
+				return true;
+			}
+			
+			if(tank.fluid==null||fluid==null) {
+				return true;//Check TODO
+			}
+			
+			if(tank.fluid.getFluid().equals(fluid.getFluid())) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public boolean isConnectedTo(EnumFacing facing) {
+		return getSides()[facing.getIndex()];
+	}*/
 
+	public boolean isConnectedTo(EnumFacing facing) {
+		TileEntity te=world.getTileEntity(pos.offset(facing));
+		if(te instanceof TileEntityTank) {
+			TileEntityTank tank=(TileEntityTank) te;
+			if(tank.fluid==null&&fluid==null) {
+				return true;
+			}
+			
+			if(tank.fluid==null||fluid==null) {
+				return true;//Check TODO
+			}
+			
+			if(tank.fluid.getFluid().equals(fluid.getFluid())) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public boolean isConnectedToFluid(EnumFacing facing) {
+		TileEntity te=world.getTileEntity(pos.offset(facing));
+		if(te instanceof TileEntityTank) {
+			TileEntityTank tank=(TileEntityTank) te;
+			if(tank.fluid==null||fluid==null) {
+				return false;
+			}
+			
+			if(tank.fluid.getFluid().equals(fluid.getFluid())) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
 }

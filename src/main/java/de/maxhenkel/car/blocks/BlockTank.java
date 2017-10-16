@@ -146,13 +146,15 @@ public class BlockTank extends BlockContainer {
 		FluidStack fluidStack = FluidUtil.getFluidContained(stack);
 
 		if (fluidStack != null) {
-			return handleEmpty(fluidStack, stack, worldIn, pos, playerIn, hand);
+			handleEmpty(fluidStack, stack, worldIn, pos, playerIn, hand);
+			return true;
 		}
 
 		IFluidHandler handler = FluidUtil.getFluidHandler(stack);
 
 		if (handler != null) {
-			return handleFill(handler, stack, worldIn, pos, playerIn, hand);
+			handleFill(handler, stack, worldIn, pos, playerIn, hand);
+			return true;
 		}
 
 		return false;
@@ -240,7 +242,7 @@ public class BlockTank extends BlockContainer {
 
 	@Override
 	public EnumBlockRenderType getRenderType(IBlockState state) {
-		return EnumBlockRenderType.MODEL;
+		return EnumBlockRenderType.INVISIBLE;
 	}
 
 }
