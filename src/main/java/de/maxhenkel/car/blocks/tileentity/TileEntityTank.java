@@ -11,6 +11,8 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class TileEntityTank extends TileEntityBase implements IFluidHandler, ITickable {
 
@@ -27,6 +29,8 @@ public class TileEntityTank extends TileEntityBase implements IFluidHandler, ITi
 			if (world.getTotalWorldTime() % 20 == 0) {
 				synchronize();
 			}
+		}else {
+			updateClientSide();
 		}
 		
 		if (fluid == null) {
@@ -261,77 +265,22 @@ public class TileEntityTank extends TileEntityBase implements IFluidHandler, ITi
 	
 	/* **********************RENDERING************************ */
 	
-	/*private boolean[] sides;
+	@SideOnly(Side.CLIENT)
+	private boolean[] sides=new boolean[EnumFacing.values().length];
 	
-	private boolean[] getSides() {
-		if(sides==null) {
-			sides=new boolean[EnumFacing.values().length];
-			recalculateSides();
-		}
-		return sides;
-	}
-	
-	private void setSide(int i, boolean b) {
-		if(sides==null) {
-			sides=new boolean[EnumFacing.values().length];
-			recalculateSides();
-		}
-		sides[i]=b;
-	}
-	
-	public void markRecalculate() {
-		sides=null;
-	}
-	
+	@SideOnly(Side.CLIENT)
+	private boolean[] sidesFluid=new boolean[EnumFacing.values().length];
+
+	@SideOnly(Side.CLIENT)
 	private void recalculateSides() {
 		for(EnumFacing facing:EnumFacing.values()) {
-			setSide(facing.getIndex(), isConnectedToCalc(facing));
+			sides[facing.getIndex()]=isTankConnectedCalc(facing);
+			sidesFluid[facing.getIndex()]=isFluidConnectedCalc(facing);
 		}
 	}
 	
-	private boolean isConnectedToCalc(EnumFacing facing) {
-		TileEntity te=world.getTileEntity(pos.offset(facing));
-		if(te instanceof TileEntityTank) {
-			TileEntityTank tank=(TileEntityTank) te;
-			if(tank.fluid==null&&fluid==null) {
-				return true;
-			}
-			
-			if(tank.fluid==null||fluid==null) {
-				return true;//Check TODO
-			}
-			
-			if(tank.fluid.getFluid().equals(fluid.getFluid())) {
-				return true;
-			}
-		}
-		return false;
-	}
-	
-	public boolean isConnectedTo(EnumFacing facing) {
-		return getSides()[facing.getIndex()];
-	}*/
-
-	public boolean isConnectedTo(EnumFacing facing) {
-		TileEntity te=world.getTileEntity(pos.offset(facing));
-		if(te instanceof TileEntityTank) {
-			TileEntityTank tank=(TileEntityTank) te;
-			if(tank.fluid==null&&fluid==null) {
-				return true;
-			}
-			
-			if(tank.fluid==null||fluid==null) {
-				return true;//Check TODO
-			}
-			
-			if(tank.fluid.getFluid().equals(fluid.getFluid())) {
-				return true;
-			}
-		}
-		return false;
-	}
-	
-	public boolean isConnectedToFluid(EnumFacing facing) {
+	@SideOnly(Side.CLIENT)
+	private boolean isFluidConnectedCalc(EnumFacing facing) {
 		TileEntity te=world.getTileEntity(pos.offset(facing));
 		if(te instanceof TileEntityTank) {
 			TileEntityTank tank=(TileEntityTank) te;
@@ -344,6 +293,42 @@ public class TileEntityTank extends TileEntityBase implements IFluidHandler, ITi
 			}
 		}
 		return false;
+	}
+
+	
+	@SideOnly(Side.CLIENT)
+	private boolean isTankConnectedCalc(EnumFacing facing) {
+		TileEntity te=world.getTileEntity(pos.offset(facing));
+		if(te instanceof TileEntityTank) {
+			TileEntityTank tank=(TileEntityTank) te;
+			if(tank.fluid==null&&fluid==null) {
+				return true;
+			}
+			
+			if(tank.fluid==null||fluid==null) {
+				return true;//Check TODO
+			}
+			
+			if(tank.fluid.getFluid().equals(fluid.getFluid())) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	@SideOnly(Side.CLIENT)
+	private void updateClientSide() {
+		recalculateSides();
+	}
+	
+	@SideOnly(Side.CLIENT)
+	public boolean isTankConnectedTo(EnumFacing facing) {
+		return sides[facing.getIndex()];
+	}
+	
+	@SideOnly(Side.CLIENT)
+	public boolean isFluidConnected(EnumFacing facing) {
+		return sidesFluid[facing.getIndex()];
 	}
 	
 }

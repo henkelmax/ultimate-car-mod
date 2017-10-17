@@ -23,40 +23,39 @@ public class TileEntitySpecialRendererTank extends TileEntitySpecialRenderer<Til
 
 	@Override
 	public void render(TileEntityTank te, double x, double y, double z, float f, int i, float alpha) {
-		bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
-
 		GlStateManager.pushMatrix();
 		GlStateManager.translate(x, y, z);
 
-		float amount = te.getFillPercent();
+		double amount = te.getFillPercent();
 		FluidStack stack = te.getFluid();
 		if (amount > 0 && stack != null) {
-			renderFluid(te, stack.getFluid(), amount, 0.0F);
+			bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
+			renderFluid(te, stack.getFluid(), amount, 0.0D);
 		}
 
 		bindTexture(LOCATION_TANK);
-		renderLine(te);
+		renderLines(te);
+		
 		GlStateManager.popMatrix();
 	}
 
-	public static void renderFluid(TileEntityTank tank, Fluid fluid, float amount, float yStart) {
+	public static void renderFluid(TileEntityTank tank, Fluid fluid, double amount, double yStart) {
 		GlStateManager.pushMatrix();
 		GlStateManager.disableLighting();
-		GlStateManager.color(1, 1, 1, 1);
+		GlStateManager.color(1F, 1F, 1F, 1F);
 		// GlStateManager.scale(0.98F, 0.98F, 0.98F);
 		// GlStateManager.translate(0.01F, 0.01F, 0.01F);
 		GlStateManager.enableBlend();
 		GlStateManager.enableAlpha();
 
-		TextureAtlasSprite texture = Minecraft.getMinecraft().getTextureMapBlocks()
-				.getAtlasSprite(fluid.getStill().toString());
+		TextureAtlasSprite texture = Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(fluid.getStill().toString());
 
-		final double uMin = texture.getMinU();
-		final double uMax = texture.getMaxU();
-		final double vMin = texture.getMinV();
-		final double vMax = texture.getMaxV();
+		double uMin = texture.getMinU();
+		double uMax = texture.getMaxU();
+		double vMin = texture.getMinV();
+		double vMax = texture.getMaxV();
 
-		final double vHeight = vMax - vMin;
+		double vHeight = vMax - vMin;
 
 		Tessellator tessellator = Tessellator.getInstance();
 		BufferBuilder buffer = tessellator.getBuffer();
@@ -65,52 +64,52 @@ public class TileEntitySpecialRendererTank extends TileEntitySpecialRenderer<Til
 
 		float s = 0.0F;
 
-		if (!tank.isConnectedToFluid(EnumFacing.NORTH)) {
+		if (!tank.isFluidConnected(EnumFacing.NORTH)) {
 			// North
-			buffer.pos(1 - s, yStart, 0 + s).tex(uMax, vMin).endVertex();
-			buffer.pos(0 + s, yStart, 0 + s).tex(uMin, vMin).endVertex();
-			buffer.pos(0 + s, yStart + amount - s * 2, 0 + s).tex(uMin, vMin + vHeight * amount).endVertex();
-			buffer.pos(1 - s, yStart + amount - s * 2, 0 + s).tex(uMax, vMin + vHeight * amount).endVertex();
+			buffer.pos(1D - s, yStart, 0D + s).tex(uMax, vMin).endVertex();
+			buffer.pos(0D + s, yStart, 0D + s).tex(uMin, vMin).endVertex();
+			buffer.pos(0D + s, yStart + amount - s * 2D, 0D + s).tex(uMin, vMin + vHeight * amount).endVertex();
+			buffer.pos(1D - s, yStart + amount - s * 2D, 0D + s).tex(uMax, vMin + vHeight * amount).endVertex();
 		}
 
-		if (!tank.isConnectedToFluid(EnumFacing.SOUTH)) {
+		if (!tank.isFluidConnected(EnumFacing.SOUTH)) {
 			// South
-			buffer.pos(1 - s, yStart, 1 - s).tex(uMin, vMin).endVertex();
-			buffer.pos(1 - s, yStart + amount - s * 2, 1 - s).tex(uMin, vMin + vHeight * amount).endVertex();
-			buffer.pos(0 + s, yStart + amount - s * 2, 1 - s).tex(uMax, vMin + vHeight * amount).endVertex();
-			buffer.pos(0 + s, yStart, 1 - s).tex(uMax, vMin).endVertex();
+			buffer.pos(1D - s, yStart, 1D - s).tex(uMin, vMin).endVertex();
+			buffer.pos(1D - s, yStart + amount - s * 2D, 1D - s).tex(uMin, vMin + vHeight * amount).endVertex();
+			buffer.pos(0D + s, yStart + amount - s * 2D, 1D - s).tex(uMax, vMin + vHeight * amount).endVertex();
+			buffer.pos(0D + s, yStart, 1D - s).tex(uMax, vMin).endVertex();
 		}
 
-		if (!tank.isConnectedToFluid(EnumFacing.EAST)) {
+		if (!tank.isFluidConnected(EnumFacing.EAST)) {
 			// East
-			buffer.pos(1 - s, yStart, 0 + s).tex(uMin, vMin).endVertex();
-			buffer.pos(1 - s, yStart + amount - s * 2, 0 + s).tex(uMin, vMin + vHeight * amount).endVertex();
-			buffer.pos(1 - s, yStart + amount - s * 2, 1 - s).tex(uMax, vMin + vHeight * amount).endVertex();
-			buffer.pos(1 - s, yStart, 1 - s).tex(uMax, vMin).endVertex();
+			buffer.pos(1D - s, yStart, 0D + s).tex(uMin, vMin).endVertex();
+			buffer.pos(1D - s, yStart + amount - s * 2D, 0D + s).tex(uMin, vMin + vHeight * amount).endVertex();
+			buffer.pos(1D - s, yStart + amount - s * 2D, 1D - s).tex(uMax, vMin + vHeight * amount).endVertex();
+			buffer.pos(1D - s, yStart, 1D - s).tex(uMax, vMin).endVertex();
 		}
 
-		if (!tank.isConnectedToFluid(EnumFacing.WEST)) {
+		if (!tank.isFluidConnected(EnumFacing.WEST)) {
 			// West
-			buffer.pos(0 + s, yStart, 1 - s).tex(uMin, vMin).endVertex();
-			buffer.pos(0 + s, yStart + amount - s * 2, 1 - s).tex(uMin, vMin + vHeight * amount).endVertex();
-			buffer.pos(0 + s, yStart + amount - s * 2, 0 + s).tex(uMax, vMin + vHeight * amount).endVertex();
-			buffer.pos(0 + s, yStart, 0 + s).tex(uMax, vMin).endVertex();
+			buffer.pos(0D + s, yStart, 1D - s).tex(uMin, vMin).endVertex();
+			buffer.pos(0D + s, yStart + amount - s * 2D, 1D - s).tex(uMin, vMin + vHeight * amount).endVertex();
+			buffer.pos(0D + s, yStart + amount - s * 2D, 0D + s).tex(uMax, vMin + vHeight * amount).endVertex();
+			buffer.pos(0D + s, yStart, 0D + s).tex(uMax, vMin).endVertex();
 		}
 
-		if (!tank.isConnectedToFluid(EnumFacing.DOWN)) {
+		if (!tank.isFluidConnected(EnumFacing.DOWN)) {
 			// Down
-			buffer.pos(1 - s, yStart, 0 + s).tex(uMax, vMin).endVertex();
-			buffer.pos(1 - s, yStart, 1 - s).tex(uMin, vMin).endVertex();
-			buffer.pos(0 + s, yStart, 1 - s).tex(uMin, vMax).endVertex();
-			buffer.pos(0 + s, yStart, 0 + s).tex(uMax, vMax).endVertex();
+			buffer.pos(1D - s, yStart, 0D + s).tex(uMax, vMin).endVertex();
+			buffer.pos(1D - s, yStart, 1D - s).tex(uMin, vMin).endVertex();
+			buffer.pos(0D + s, yStart, 1D - s).tex(uMin, vMax).endVertex();
+			buffer.pos(0D + s, yStart, 0D + s).tex(uMax, vMax).endVertex();
 		}
 
-		if (!tank.isConnectedToFluid(EnumFacing.UP)) {
+		if (!tank.isFluidConnected(EnumFacing.UP)) {
 			// Up
-			buffer.pos(0 + s, yStart + amount - s * 2, 0 + s).tex(uMax, vMax).endVertex();
-			buffer.pos(0 + s, yStart + amount - s * 2, 1 - s).tex(uMin, vMax).endVertex();
-			buffer.pos(1 - s, yStart + amount - s * 2, 1 - s).tex(uMin, vMin).endVertex();
-			buffer.pos(1 - s, yStart + amount - s * 2, 0 + s).tex(uMax, vMin).endVertex();
+			buffer.pos(0D + s, yStart + amount - s * 2D, 0D + s).tex(uMax, vMax).endVertex();
+			buffer.pos(0D + s, yStart + amount - s * 2D, 1D - s).tex(uMin, vMax).endVertex();
+			buffer.pos(1D - s, yStart + amount - s * 2D, 1D - s).tex(uMin, vMin).endVertex();
+			buffer.pos(1D - s, yStart + amount - s * 2D, 0D + s).tex(uMax, vMin).endVertex();
 		}
 
 		tessellator.draw();
@@ -118,21 +117,24 @@ public class TileEntitySpecialRendererTank extends TileEntitySpecialRenderer<Til
 		GlStateManager.popMatrix();
 	}
 
-	public static void renderLine(TileEntityTank te) {
+	public static void renderLines(TileEntityTank te) {
 		for (EnumFacing facing : EnumFacing.values()) {
-			if (!te.isConnectedTo(facing)) {
+			if (!te.isTankConnectedTo(facing)) {
 				for (EnumDirection direction : EnumDirection.values()) {
-					if (!te.isConnectedTo(direction.to(facing))) {
-						draw(facing, direction);
+					if (!te.isTankConnectedTo(direction.to(facing))) {
+						drawLine(facing, direction);
 					}
 				}
 			}
 		}
 	}
 
-	public static void draw(EnumFacing side, EnumDirection line) {
+	public static void drawLine(EnumFacing side, EnumDirection line) {
 		GlStateManager.pushMatrix();
 		GlStateManager.disableLighting();
+		GlStateManager.color(1F, 1F, 1F, 1F);
+		GlStateManager.enableBlend();
+		GlStateManager.enableAlpha();
 		
 		Tessellator tessellator = Tessellator.getInstance();
 		BufferBuilder buffer = tessellator.getBuffer();
@@ -140,8 +142,8 @@ public class TileEntitySpecialRendererTank extends TileEntitySpecialRenderer<Til
 		buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
 		rotate(side);
 		// Resize a little bit
-		GlStateManager.scale(1.01F, 1.01F, 1.01F);
-		GlStateManager.translate(-0.005F, -0.005F, -0.005F);
+		GlStateManager.scale(1.01D, 1.01D, 1.01D);
+		GlStateManager.translate(-0.005D, -0.005D, -0.005D);
 		drawSide(line, side, buffer);
 		tessellator.draw();
 		
@@ -149,83 +151,83 @@ public class TileEntitySpecialRendererTank extends TileEntitySpecialRenderer<Til
 	}
 
 	public static void rotate(EnumFacing facing) {
-		GlStateManager.translate(0.5F, 0.5F, 0.5F);
+		GlStateManager.translate(0.5D, 0.5D, 0.5D);
 
 		switch (facing) {
 		case NORTH:
-			GlStateManager.rotate(0, 0, 1, 0);
+			GlStateManager.rotate(0F, 0F, 1F, 0F);
 			break;
 		case SOUTH:
-			GlStateManager.rotate(180, 0, 1, 0);
+			GlStateManager.rotate(180F, 0F, 1F, 0F);
 			break;
 		case EAST:
-			GlStateManager.rotate(270, 0, 1, 0);
+			GlStateManager.rotate(270F, 0F, 1F, 0F);
 			break;
 		case WEST:
-			GlStateManager.rotate(90, 0, 1, 0);
+			GlStateManager.rotate(90F, 0F, 1F, 0F);
 			break;
 		case UP:
-			GlStateManager.rotate(180, 0, 1, 0);
-			GlStateManager.rotate(90, 1, 0, 0);
+			GlStateManager.rotate(180F, 0F, 1F, 0F);
+			GlStateManager.rotate(90F, 1F, 0F, 0F);
 			break;
 		case DOWN:
-			GlStateManager.rotate(180, 0, 1, 0);
-			GlStateManager.rotate(270, 1, 0, 0);
+			GlStateManager.rotate(180F, 0F, 1F, 0F);
+			GlStateManager.rotate(270F, 1F, 0F, 0F);
 			break;
 		}
 
-		GlStateManager.translate(-0.5F, -0.5F, -0.5F);
+		GlStateManager.translate(-0.5D, -0.5D, -0.5D);
 	}
 
 	public static void drawSide(EnumDirection line, EnumFacing side, BufferBuilder buffer) {
 		switch (line) {
 		case UP:
 			// Top
-			buffer.pos(0, 0, 0).tex(1, 1).endVertex();//1432
-			buffer.pos(0, 1, 0).tex(1, 0).endVertex();
-			buffer.pos(1, 1, 0).tex(0, 0).endVertex();
-			buffer.pos(1, 0, 0).tex(0, 1).endVertex();
-			
-			buffer.pos(0, 0, 0).tex(1, 1).endVertex();
-			buffer.pos(1, 0, 0).tex(0, 1).endVertex();
-			buffer.pos(1, 1, 0).tex(0, 0).endVertex();
-			buffer.pos(0, 1, 0).tex(1, 0).endVertex();
+			buffer.pos(0D, 0D, 0D).tex(1D, 1D).endVertex();
+			buffer.pos(0D, 1D, 0D).tex(1D, 0D).endVertex();
+			buffer.pos(1D, 1D, 0D).tex(0D, 0D).endVertex();
+			buffer.pos(1D, 0D, 0D).tex(0D, 1D).endVertex();
+			//1432
+			buffer.pos(0D, 0D, 0D).tex(1D, 1D).endVertex();
+			buffer.pos(1D, 0D, 0D).tex(0D, 1D).endVertex();
+			buffer.pos(1D, 1D, 0D).tex(0D, 0D).endVertex();
+			buffer.pos(0D, 1D, 0D).tex(1D, 0D).endVertex();
 			break;
 		case DOWN:
 			// Bottom
-			buffer.pos(0, 0, 0).tex(0, 0).endVertex();
-			buffer.pos(0, 1, 0).tex(0, 1).endVertex();
-			buffer.pos(1, 1, 0).tex(1, 1).endVertex();
-			buffer.pos(1, 0, 0).tex(1, 0).endVertex();
+			buffer.pos(0D, 0D, 0D).tex(0D, 0D).endVertex();
+			buffer.pos(0D, 1D, 0D).tex(0D, 1D).endVertex();
+			buffer.pos(1D, 1D, 0D).tex(1D, 1D).endVertex();
+			buffer.pos(1D, 0D, 0D).tex(1D, 0D).endVertex();
 			
-			buffer.pos(0, 0, 0).tex(0, 0).endVertex();
-			buffer.pos(1, 0, 0).tex(1, 0).endVertex();
-			buffer.pos(1, 1, 0).tex(1, 1).endVertex();
-			buffer.pos(0, 1, 0).tex(0, 1).endVertex();
+			buffer.pos(0D, 0D, 0D).tex(0D, 0D).endVertex();
+			buffer.pos(1D, 0D, 0D).tex(1D, 0D).endVertex();
+			buffer.pos(1D, 1D, 0D).tex(1D, 1D).endVertex();
+			buffer.pos(0D, 1D, 0D).tex(0D, 1D).endVertex();
 			break;
 		case RIGHT:
 			// Right
-			buffer.pos(0, 0, 0).tex(1, 0).endVertex();
-			buffer.pos(0, 1, 0).tex(0, 0).endVertex();
-			buffer.pos(1, 1, 0).tex(0, 1).endVertex();
-			buffer.pos(1, 0, 0).tex(1, 1).endVertex();
+			buffer.pos(0D, 0D, 0D).tex(1D, 0D).endVertex();
+			buffer.pos(0D, 1D, 0D).tex(0D, 0D).endVertex();
+			buffer.pos(1D, 1D, 0D).tex(0D, 1D).endVertex();
+			buffer.pos(1D, 0D, 0D).tex(1D, 1D).endVertex();
 			
-			buffer.pos(0, 0, 0).tex(1, 0).endVertex();
-			buffer.pos(1, 0, 0).tex(1, 1).endVertex();
-			buffer.pos(1, 1, 0).tex(0, 1).endVertex();
-			buffer.pos(0, 1, 0).tex(0, 0).endVertex();
+			buffer.pos(0D, 0D, 0D).tex(1D, 0D).endVertex();
+			buffer.pos(1D, 0D, 0D).tex(1D, 1D).endVertex();
+			buffer.pos(1D, 1D, 0D).tex(0D, 1D).endVertex();
+			buffer.pos(0D, 1D, 0D).tex(0D, 0D).endVertex();
 			break;
 		case LEFT:
 			// Left
-			buffer.pos(0, 0, 0).tex(0, 1).endVertex();
-			buffer.pos(0, 1, 0).tex(1, 1).endVertex();
-			buffer.pos(1, 1, 0).tex(1, 0).endVertex();
-			buffer.pos(1, 0, 0).tex(0, 0).endVertex();
+			buffer.pos(0D, 0D, 0D).tex(0D, 1D).endVertex();
+			buffer.pos(0D, 1D, 0D).tex(1D, 1D).endVertex();
+			buffer.pos(1D, 1D, 0D).tex(1D, 0D).endVertex();
+			buffer.pos(1D, 0D, 0D).tex(0D, 0D).endVertex();
 			
-			buffer.pos(0, 0, 0).tex(0, 1).endVertex();
-			buffer.pos(1, 0, 0).tex(0, 0).endVertex();
-			buffer.pos(1, 1, 0).tex(1, 0).endVertex();
-			buffer.pos(0, 1, 0).tex(1, 1).endVertex();
+			buffer.pos(0D, 0D, 0D).tex(0D, 1D).endVertex();
+			buffer.pos(1D, 0D, 0D).tex(0D, 0D).endVertex();
+			buffer.pos(1D, 1D, 0D).tex(1D, 0D).endVertex();
+			buffer.pos(0D, 1D, 0D).tex(1D, 1D).endVertex();
 			break;
 		default:
 			break;
