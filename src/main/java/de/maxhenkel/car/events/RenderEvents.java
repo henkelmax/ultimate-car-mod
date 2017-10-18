@@ -53,7 +53,7 @@ public class RenderEvents {
 		int k = scaledresolution.getScaledHeight() - 32 + 3;
 		mc.ingameGUI.drawTexturedModalRect(x, k, 0, 64, 182, 5);
 
-		int j = (int) (percent * 183.0F);
+		int j = (int) (percent * 182.0F);
 
 		if (j > 0) {
 			mc.ingameGUI.drawTexturedModalRect(x, k, 0, 69, j, 5);
