@@ -301,9 +301,9 @@ public class TileEntitySpecialRendererTank extends TileEntitySpecialRenderer<Til
 				case DOWN:
 					return EnumFacing.NORTH;
 				case LEFT:
-					return EnumFacing.EAST;
-				case RIGHT:
 					return EnumFacing.WEST;
+				case RIGHT:
+					return EnumFacing.EAST;
 				}
 			}
 			return EnumFacing.UP;
