@@ -266,6 +266,16 @@ public class Reciepes {
 					Character.valueOf('C'), new ItemStack(ModItems.CONTROL_UNIT)});
 		}
 		
+		if(Config.signRecipe){
+			//Sign
+			GameRegistry.addShapedRecipe(new ResourceLocation(Main.MODID, "sign"), null, new ItemStack(ModBlocks.SIGN, 3), new Object[] { "III", "III", " S ",
+					Character.valueOf('I'), new ItemStack(Items.IRON_INGOT), Character.valueOf('S'), new ItemStack(ModItems.IRON_STICK)});
+			
+			//Signpost
+			GameRegistry.addShapedRecipe(new ResourceLocation(Main.MODID, "sign_post"), null, new ItemStack(ModBlocks.SIGN_POST, 1), new Object[] { "I", "I",
+					Character.valueOf('I'), new ItemStack(ModItems.IRON_STICK)});
+		}
+		
 		OreDictionary.registerOre("cropCanola", new ItemStack(ModItems.CANOLA));
 	}
 	

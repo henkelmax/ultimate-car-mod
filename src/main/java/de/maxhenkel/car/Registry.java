@@ -12,6 +12,7 @@ import de.maxhenkel.car.blocks.tileentity.TileEntityFluidExtractor;
 import de.maxhenkel.car.blocks.tileentity.TileEntityFuelStation;
 import de.maxhenkel.car.blocks.tileentity.TileEntityGenerator;
 import de.maxhenkel.car.blocks.tileentity.TileEntityOilMill;
+import de.maxhenkel.car.blocks.tileentity.TileEntitySign;
 import de.maxhenkel.car.blocks.tileentity.TileEntitySplitTank;
 import de.maxhenkel.car.blocks.tileentity.TileEntityTank;
 import de.maxhenkel.car.entity.car.EntityCarBigWood;
@@ -133,6 +134,7 @@ public class Registry {
 		registerSound(event.getRegistry(), ModSounds.car_horn);
 		registerSound(event.getRegistry(), ModSounds.car_lock);
 		registerSound(event.getRegistry(), ModSounds.car_unlock);
+		registerSound(event.getRegistry(), ModSounds.ratchet);
 	}
 
 	public static void registerSound(IForgeRegistry<SoundEvent> registry, SoundEvent sound) {
@@ -171,6 +173,8 @@ public class Registry {
 		registerBlock(event.getRegistry(), ModBlocks.FLUID_EXTRACTOR);
 		registerBlock(event.getRegistry(), ModBlocks.DYNAMO);
 		registerBlock(event.getRegistry(), ModBlocks.CRANK);
+		registerBlock(event.getRegistry(), ModBlocks.SIGN);
+		registerBlock(event.getRegistry(), ModBlocks.SIGN_POST);
 
 		for (BlockPaint block : ModBlocks.PAINTS) {
 			registerBlock(event.getRegistry(), block);
@@ -191,6 +195,7 @@ public class Registry {
 		GameRegistry.registerTileEntity(TileEntityCable.class, "TileEntityCable");
 		GameRegistry.registerTileEntity(TileEntityFluidExtractor.class, "TileEntityFluidExtractor");
 		GameRegistry.registerTileEntity(TileEntityDynamo.class, "TileEntityDynamo");
+		GameRegistry.registerTileEntity(TileEntitySign.class, "TileEntitySignCar");
 
 		if (Config.canolaSeedDrop) {
 			MinecraftForge.addGrassSeed(new ItemStack(ModItems.CANOLA_SEEDS), 8);
@@ -224,6 +229,8 @@ public class Registry {
 		registerItemBlock(event.getRegistry(), ModBlocks.FLUID_EXTRACTOR);
 		registerItemBlock(event.getRegistry(), ModBlocks.DYNAMO);
 		registerItemBlock(event.getRegistry(), ModBlocks.CRANK);
+		registerItemBlock(event.getRegistry(), ModBlocks.SIGN);
+		registerItemBlock(event.getRegistry(), ModBlocks.SIGN_POST);
 
 		for (BlockPaint block : ModBlocks.PAINTS) {
 			registerItemBlock(event.getRegistry(), block);
@@ -288,6 +295,8 @@ public class Registry {
 		addRenderBlock(ModBlocks.FLUID_PIPE);
 		addRenderBlock(ModBlocks.DYNAMO);
 		addRenderBlock(ModBlocks.CRANK);
+		addRenderBlock(ModBlocks.SIGN);
+		addRenderBlock(ModBlocks.SIGN_POST);
 
 		for (BlockPaint block : ModBlocks.PAINTS) {
 			addRenderBlock(block);

@@ -3,6 +3,9 @@ gui.fuel=%s %% Fuel
 gui.damage=%s %% Damage
 gui.painter=Painter
 gui.fuelstation=Fuel Station
+gui.sign=Edit Sign Text
+gui.sign.front=Front
+gui.sign.back=Back
 
 tile.tar.name=Asphalt
 tile.tar_slope.name=Asphalt Slope
@@ -30,6 +33,7 @@ tile.fluid_extractor.name=Fluid Extractor
 tile.fluid_pipe.name=Fluid Pipe
 tile.crank.name=Crank
 tile.dynamo.name=Dynamo
+tile.sign_post.name=Sign Post
 
 tile.arrow_front_left_right_long.name=Long Arrow Left Right
 tile.arrow_long.name=Long Arrow
@@ -142,6 +146,8 @@ button.stop=Stop
 button.spawn_car=Spawn Car
 button.repair_car=Repair Car
 button.back=Back
+button.submit=Submit
+button.cancel=Cancel
 
 fuelstation.carinfo=Car: %s
 fuelstation.car_fuel_amount=Fuel: %s/%s mb

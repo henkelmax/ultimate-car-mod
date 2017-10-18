@@ -1,0 +1,6 @@
+{
+    "variants": {
+        "normal": { "model": "car:sign_post" },
+        "inventory": { "model": "car:sign_post" }
+    }
+}

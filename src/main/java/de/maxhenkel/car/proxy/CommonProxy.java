@@ -13,6 +13,7 @@ import de.maxhenkel.car.net.MessageCarGui;
 import de.maxhenkel.car.net.MessageCarHorn;
 import de.maxhenkel.car.net.MessageControlCar;
 import de.maxhenkel.car.net.MessageCrash;
+import de.maxhenkel.car.net.MessageEditSign;
 import de.maxhenkel.car.net.MessageOpenGui;
 import de.maxhenkel.car.net.MessagePlaySoundLoop;
 import de.maxhenkel.car.net.MessageRepairCar;
@@ -54,6 +55,7 @@ public class CommonProxy {
 		CommonProxy.simpleNetworkWrapper.registerMessage(MessageRepairCar.class, MessageRepairCar.class, 9, Side.SERVER);
 		CommonProxy.simpleNetworkWrapper.registerMessage(MessageCarHorn.class, MessageCarHorn.class, 10, Side.SERVER);
 		CommonProxy.simpleNetworkWrapper.registerMessage(MessageSyncConfig.class, MessageSyncConfig.class, 11, Side.CLIENT);
+		CommonProxy.simpleNetworkWrapper.registerMessage(MessageEditSign.class, MessageEditSign.class, 12, Side.SERVER);
 
 		try {
 			File configFolder=new File(event.getModConfigurationDirectory(), Main.MODID);

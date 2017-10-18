@@ -93,6 +93,7 @@ public class Config {
 	public static boolean canisterRecipe=true;
 	public static boolean carWorkshopRecipe=true;
 	public static boolean keyRecipe=true;
+	public static boolean signRecipe=true;
 	
 	public static boolean canolaSeedDrop=true;
 	
@@ -347,6 +348,7 @@ public class Config {
 		canisterRecipe=config.getBoolean("canister_recipe", "recipes", true, "");
 		carWorkshopRecipe=config.getBoolean("car_workshop_recipe", "recipes", true, "");
 		keyRecipe=config.getBoolean("key_clone_recipe", "recipes", true, "");
+		signRecipe=config.getBoolean("sign_recipe", "recipes", true, "");
 		
 		canolaSeedDrop=config.getBoolean("canola_seed_drop", "drops", true, "");
 		

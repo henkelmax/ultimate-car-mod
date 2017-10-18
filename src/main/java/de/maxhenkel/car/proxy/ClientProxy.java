@@ -2,8 +2,10 @@ package de.maxhenkel.car.proxy;
 
 import de.maxhenkel.car.Config;
 import de.maxhenkel.car.blocks.tileentity.TileEntityFuelStation;
+import de.maxhenkel.car.blocks.tileentity.TileEntitySign;
 import de.maxhenkel.car.blocks.tileentity.TileEntitySplitTank;
 import de.maxhenkel.car.blocks.tileentity.TileEntityTank;
+import de.maxhenkel.car.blocks.tileentity.render.TileEntitySpecialRendererSign;
 import de.maxhenkel.car.blocks.tileentity.render.TileEntitySpecialRendererSplitTank;
 import de.maxhenkel.car.blocks.tileentity.render.TileEntitySpecialRendererTank;
 import de.maxhenkel.car.blocks.tileentity.render.TileentitySpecialRendererFuelStation;
@@ -54,6 +56,8 @@ public class ClientProxy extends CommonProxy {
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySplitTank.class,
 				new TileEntitySpecialRendererSplitTank());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTank.class, new TileEntitySpecialRendererTank());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySign.class,
+				new TileEntitySpecialRendererSign());
 
 	}
 

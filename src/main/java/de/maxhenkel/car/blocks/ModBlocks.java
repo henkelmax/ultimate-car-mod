@@ -37,6 +37,8 @@ public class ModBlocks {
 	public static final BlockFluidPipe FLUID_PIPE=new BlockFluidPipe();
 	public static final BlockDynamo DYNAMO=new BlockDynamo();
 	public static final BlockCrank CRANK=new BlockCrank();
+	public static final BlockSign SIGN=new BlockSign();
+	public static final BlockSignPost SIGN_POST=new BlockSignPost();
 	
 	public static final BlockPaint[] PAINTS;
 	public static final BlockPaint[] YELLOW_PAINTS;

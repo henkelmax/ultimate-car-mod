@@ -7,6 +7,7 @@ import de.maxhenkel.car.blocks.tileentity.TileEntityFluidExtractor;
 import de.maxhenkel.car.blocks.tileentity.TileEntityFuelStation;
 import de.maxhenkel.car.blocks.tileentity.TileEntityGenerator;
 import de.maxhenkel.car.blocks.tileentity.TileEntityOilMill;
+import de.maxhenkel.car.blocks.tileentity.TileEntitySign;
 import de.maxhenkel.car.blocks.tileentity.TileEntitySplitTank;
 import de.maxhenkel.car.entity.car.base.EntityCarInventoryBase;
 import net.minecraft.entity.Entity;
@@ -30,6 +31,7 @@ public class GuiHandler implements IGuiHandler{
 	public static final int GUI_CAR_WORKSHOP_CRAFTING=9;
 	public static final int GUI_CAR_WORKSHOP_REPAIR=10;
 	public static final int GUI_FLUID_EXTRACTOR=11;
+	public static final int GUI_SIGN=12;
 	
 	@Override
 	public Object getServerGuiElement(int id, EntityPlayer player, World world, int x, int y, int z) {
@@ -87,6 +89,11 @@ public class GuiHandler implements IGuiHandler{
 			TileEntity te=world.getTileEntity(new BlockPos(x, y, z));
 			if(te!=null&&te instanceof TileEntityFluidExtractor){
 				return new ContainerFluidExtractor((TileEntityFluidExtractor) te, player);
+			}
+		}else if(id==GUI_SIGN){
+			TileEntity te=world.getTileEntity(new BlockPos(x, y, z));
+			if(te!=null&&te instanceof TileEntitySign){
+				return new ContainerSign((TileEntitySign) te);
 			}
 		}
 		
@@ -151,6 +158,11 @@ public class GuiHandler implements IGuiHandler{
 			TileEntity te=world.getTileEntity(new BlockPos(x, y, z));
 			if(te!=null&&te instanceof TileEntityFluidExtractor){
 				return new GuiFluidExtractor((TileEntityFluidExtractor) te, player);
+			}
+		}else if(id==GUI_SIGN){
+			TileEntity te=world.getTileEntity(new BlockPos(x, y, z));
+			if(te!=null&&te instanceof TileEntitySign){
+				return new GuiSign((TileEntitySign) te);
 			}
 		}
 		
