@@ -14,5 +14,6 @@
     "sport_engine_fail": {"category": "master","sounds": [{"name": "car:sport_engine_fail","stream": false}]},
     "car_horn": {"category": "master","sounds": [{"name": "car:car_horn","stream": false}]},
     "car_lock": {"category": "master","sounds": [{"name": "car:car_lock","stream": false}]},
-    "car_unlock": {"category": "master","sounds": [{"name": "car:car_unlock","stream": false}]}
+    "car_unlock": {"category": "master","sounds": [{"name": "car:car_unlock","stream": false}]},
+    "ratchet": {"category": "master","sounds": [{"name": "car:ratchet_1","stream": false},{"name": "car:ratchet_2","stream": false},{"name": "car:ratchet_3","stream": false}]}
 }

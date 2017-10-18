@@ -29,6 +29,7 @@ public class ModSounds {
 	public static SoundEvent car_horn = registerSound("car_horn");
 	public static SoundEvent car_lock = registerSound("car_lock");
 	public static SoundEvent car_unlock = registerSound("car_unlock");
+	public static SoundEvent ratchet = registerSound("ratchet");
 	
 	public static SoundEvent registerSound(String soundName) {
 		SoundEvent event=new SoundEvent(new ResourceLocation(Main.MODID, soundName));

@@ -13,7 +13,6 @@ import de.maxhenkel.car.registries.CarCraftingRegistry;
 import de.maxhenkel.car.sounds.ModSounds;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -360,7 +359,7 @@ public class TileEntityCarWorkshop extends TileEntityBase implements ICarCraftin
 		
 		car.setDamage(car.getDamage()-10F);
 		
-		ModSounds.playSound(SoundEvents.BLOCK_ANVIL_USE, world, pos, null, SoundCategory.BLOCKS);
+		ModSounds.playSound(ModSounds.ratchet, world, pos, null, SoundCategory.BLOCKS);
 	}
 	
 	public boolean areRepairItemsInside(){
