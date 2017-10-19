@@ -54,7 +54,7 @@ public class MessageEditSign implements IMessage, IMessageHandler<MessageEditSig
 		this.posX = buf.readInt();
 		this.posY = buf.readInt();
 		this.posZ = buf.readInt();
-		this.text=new String[4];
+		this.text=new String[8];
 		for(int i=0; i<text.length; i++) {
 			this.text[i]=ByteBufUtils.readUTF8String(buf);
 		}

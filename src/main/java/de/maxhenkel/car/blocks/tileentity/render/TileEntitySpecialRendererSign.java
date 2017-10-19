@@ -21,27 +21,34 @@ public class TileEntitySpecialRendererSign extends TileEntitySpecialRenderer<Til
 		//----------Front-----------
 		GlStateManager.pushMatrix();
 		
-		GlStateManager.translate(0, 0.32, -0.51/16.0);
+		GlStateManager.translate(0, 0.27, -0.51/16.0);
 		
 		drawText(te.getText(0));
-		
-		GlStateManager.translate(0, 0.25, 0);
-		
+		GlStateManager.translate(0, 0.116, 0);
 		drawText(te.getText(1));
+		GlStateManager.translate(0, 0.116, 0);
+		drawText(te.getText(2));
+		GlStateManager.translate(0, 0.116, 0);
+		drawText(te.getText(3));
+		
 		GlStateManager.popMatrix();
 		
 		//----------Back-----------
 		GlStateManager.pushMatrix();
 		GlStateManager.rotate(180.0F, 0.0F, 1.0F, 0.0F);
 		
-		GlStateManager.translate(0, 0.3, -0.51/16.0);
+		GlStateManager.translate(0, 0.27, -0.51/16.0);
 		
-		drawText(te.getText(2));
+		drawText(te.getText(4));
+		GlStateManager.translate(0, 0.116, 0);
+		drawText(te.getText(5));
+		GlStateManager.translate(0, 0.116, 0);
+		drawText(te.getText(6));
+		GlStateManager.translate(0, 0.116, 0);
+		drawText(te.getText(7));
 		
-		GlStateManager.translate(0, 0.3, 0);
-		
-		drawText(te.getText(3));
 		GlStateManager.popMatrix();
+		//---------
 		
 		GlStateManager.depthMask(true);
 		
@@ -52,8 +59,7 @@ public class TileEntitySpecialRendererSign extends TileEntitySpecialRenderer<Til
 		GlStateManager.pushMatrix();
 		
 		int textWidth = getFontRenderer().getStringWidth(txt);
-		float textScale = 0.8F / textWidth;
-		textScale = Math.min(textScale, 0.02F);
+		double textScale = 0.013;
 
 		GlStateManager.translate(-(textScale * textWidth) / 2.0, 0, 0);
 

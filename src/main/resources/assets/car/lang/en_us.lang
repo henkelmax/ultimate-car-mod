@@ -3,7 +3,7 @@ gui.fuel=%s %% Fuel
 gui.damage=%s %% Damage
 gui.painter=Painter
 gui.fuelstation=Fuel Station
-gui.sign=Edit Sign Text
+gui.sign=Edit Sign Text (%s)
 gui.sign.front=Front
 gui.sign.back=Back
 
@@ -148,6 +148,8 @@ button.repair_car=Repair Car
 button.back=Back
 button.submit=Submit
 button.cancel=Cancel
+button.front=Front
+button.back=Back
 
 fuelstation.carinfo=Car: %s
 fuelstation.car_fuel_amount=Fuel: %s/%s mb

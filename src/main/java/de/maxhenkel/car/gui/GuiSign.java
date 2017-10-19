@@ -23,19 +23,25 @@ public class GuiSign extends GuiBase {
 	protected int guiLeft;
 	protected int guiTop;
 
+	protected GuiButton buttonSwitch;
 	protected GuiButton buttonSubmit;
 	protected GuiButton buttonCancel;
 
-	protected GuiTextField textFront;
-	protected GuiTextField textFrontSmall;
-	protected GuiTextField textBack;
-	protected GuiTextField textBackSmall;
+	protected GuiTextField text1;
+	protected GuiTextField text2;
+	protected GuiTextField text3;
+	protected GuiTextField text4;
+	
+	protected String[] text;
+	
+	protected boolean front=true;
 
 	public GuiSign(TileEntitySign sign) {
 		super(new ContainerSign(sign));
 		this.sign = sign;
 		this.xSize = 176;
 		this.ySize = 142;
+		this.text=sign.getText();
 	}
 
 	@Override
@@ -50,11 +56,13 @@ public class GuiSign extends GuiBase {
 				new TextComponentTranslation("button.submit").getFormattedText()));
 		this.buttonCancel = addButton(new GuiButton(1, guiLeft + xSize - 50 - 15, guiTop + ySize - 25, 50, 20,
 				new TextComponentTranslation("button.cancel").getFormattedText()));
+		this.buttonSwitch = addButton(new GuiButton(2, guiLeft + 5, guiTop + 49 +10, 46, 20,
+				new TextComponentTranslation("button.back").getFormattedText()));
 
-		textFront = initTextField(0, 0);
-		textFrontSmall = initTextField(1, 20);
-		textBack = initTextField(2, 40);
-		textBackSmall = initTextField(3, 60);
+		text1 = initTextField(0, 0);
+		text2 = initTextField(1, 20);
+		text3 = initTextField(2, 40);
+		text4 = initTextField(3, 60);
 	}
 
 	private GuiTextField initTextField(int id, int height) {
@@ -62,8 +70,8 @@ public class GuiSign extends GuiBase {
 		field.setTextColor(-1);
 		field.setDisabledTextColour(-1);
 		field.setEnableBackgroundDrawing(true);
-		field.setMaxStringLength(35);
-		field.setText(sign.getText(id));
+		field.setMaxStringLength(12);
+		field.setText(text[id]);
 		return field;
 	}
 
@@ -71,10 +79,15 @@ public class GuiSign extends GuiBase {
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
 		super.drawGuiContainerForegroundLayer(mouseX, mouseY);
 
-		fontRenderer.drawString(new TextComponentTranslation("gui.sign").getUnformattedText(), 54, 10, fontColor);
+		String s;
 		
-		fontRenderer.drawString(new TextComponentTranslation("gui.sign.front").getUnformattedText(), 8, 47-(fontRenderer.FONT_HEIGHT/2), fontColor);
-		fontRenderer.drawString(new TextComponentTranslation("gui.sign.back").getUnformattedText(), 8, 87-(fontRenderer.FONT_HEIGHT/2), fontColor);
+		if(front) {
+			s=new TextComponentTranslation("gui.sign.front").getFormattedText();
+		}else {
+			s=new TextComponentTranslation("gui.sign.back").getFormattedText();
+		}
+		
+		fontRenderer.drawString(new TextComponentTranslation("gui.sign", s).getFormattedText(), 54, 10, fontColor);
 	}
 
 	@Override
@@ -101,9 +114,40 @@ public class GuiSign extends GuiBase {
 		if (button.equals(buttonCancel)) {
 			Minecraft.getMinecraft().displayGuiScreen(null);
 		} else if (button.equals(buttonSubmit)) {
-			CommonProxy.simpleNetworkWrapper.sendToServer(new MessageEditSign(sign.getPos(), new String[] {
-					textFront.getText(), textFrontSmall.getText(), textBack.getText(), textBackSmall.getText() }));
+			save();
+			CommonProxy.simpleNetworkWrapper.sendToServer(new MessageEditSign(sign.getPos(), text));
 			Minecraft.getMinecraft().displayGuiScreen(null);
+		}else if (button.equals(buttonSwitch)) {
+			save();
+			front=!front;
+			
+			if(front) {
+				text1.setText(text[0]);
+				text2.setText(text[1]);
+				text3.setText(text[2]);
+				text4.setText(text[3]);
+				buttonSwitch.displayString=new TextComponentTranslation("button.back").getFormattedText();
+			}else {
+				text1.setText(text[4]);
+				text2.setText(text[5]);
+				text3.setText(text[6]);
+				text4.setText(text[7]);
+				buttonSwitch.displayString=new TextComponentTranslation("button.front").getFormattedText();
+			}
+		}
+	}
+	
+	private void save() {
+		if(front) {
+			text[0]=text1.getText();
+			text[1]=text2.getText();
+			text[2]=text3.getText();
+			text[3]=text4.getText();
+		}else {
+			text[4]=text1.getText();
+			text[5]=text2.getText();
+			text[6]=text3.getText();
+			text[7]=text4.getText();
 		}
 	}
 
@@ -112,21 +156,21 @@ public class GuiSign extends GuiBase {
 		super.drawScreen(mouseX, mouseY, partialTicks);
 		GlStateManager.disableLighting();
 		GlStateManager.disableBlend();
-		textFront.drawTextBox();
-		textFrontSmall.drawTextBox();
-		textBack.drawTextBox();
-		textBackSmall.drawTextBox();
+		text1.drawTextBox();
+		text2.drawTextBox();
+		text3.drawTextBox();
+		text4.drawTextBox();
 	}
 
 	@Override
 	protected void keyTyped(char typedChar, int keyCode) throws IOException {
-		if (textFront.textboxKeyTyped(typedChar, keyCode)) {
+		if (text1.textboxKeyTyped(typedChar, keyCode)) {
 
-		} else if (textFrontSmall.textboxKeyTyped(typedChar, keyCode)) {
+		} else if (text2.textboxKeyTyped(typedChar, keyCode)) {
 
-		} else if (textBack.textboxKeyTyped(typedChar, keyCode)) {
+		} else if (text3.textboxKeyTyped(typedChar, keyCode)) {
 
-		} else if (textBackSmall.textboxKeyTyped(typedChar, keyCode)) {
+		} else if (text4.textboxKeyTyped(typedChar, keyCode)) {
 
 		} else {
 			super.keyTyped(typedChar, keyCode);
@@ -136,10 +180,10 @@ public class GuiSign extends GuiBase {
 	@Override
 	protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
 		super.mouseClicked(mouseX, mouseY, mouseButton);
-		this.textFront.mouseClicked(mouseX, mouseY, mouseButton);
-		this.textFrontSmall.mouseClicked(mouseX, mouseY, mouseButton);
-		this.textBack.mouseClicked(mouseX, mouseY, mouseButton);
-		this.textBackSmall.mouseClicked(mouseX, mouseY, mouseButton);
+		this.text1.mouseClicked(mouseX, mouseY, mouseButton);
+		this.text2.mouseClicked(mouseX, mouseY, mouseButton);
+		this.text3.mouseClicked(mouseX, mouseY, mouseButton);
+		this.text4.mouseClicked(mouseX, mouseY, mouseButton);
 	}
 
 	@Override

@@ -4,7 +4,7 @@ import net.minecraft.nbt.NBTTagCompound;
 
 public class TileEntitySign extends TileEntityBase{
 
-	private String[] text=new String[4];
+	private String[] text=new String[8];
 	
 	public TileEntitySign() {
 		for(int i=0; i<text.length; i++) {
@@ -14,40 +14,42 @@ public class TileEntitySign extends TileEntityBase{
 	
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
-		compound.setString("textFront", text[0]);
-		compound.setString("textFrontSmall", text[1]);
-		compound.setString("textBack", text[2]);
-		compound.setString("textBackSmall", text[3]);
+		for(int i=0; i<text.length; i++) {
+			compound.setString("text" +i, text[i]);
+		}
 		return super.writeToNBT(compound);
 	}
 	
 	@Override
 	public void readFromNBT(NBTTagCompound compound) {
 		super.readFromNBT(compound);
-		
-		this.text[0]=compound.getString("textFront");
-		this.text[1]=compound.getString("textFrontSmall");
-		this.text[2]=compound.getString("textBack");
-		this.text[3]=compound.getString("textBackSmall");
+		for(int i=0; i<text.length; i++) {
+			this.text[i]=compound.getString("text" +i);
+		}
 	}
 
 	public String getText(int i) {
-		if(i<0||i>3) {
+		if(i<0||i>=text.length) {
 			return "";
 		}
 		return text[i];
 	}
+	
+	public String[] getText() {
+		return text.clone();
+	}
 
 	public void setText(int i, String s) {
-		if(i<0||i>3||s==null) {
+		if(i<0||i>=text.length||s==null) {
 			return;
 		}
 		text[i]=s;
 		markDirty();
+		synchronize();
 	}
 	
 	public void setText(String[] s) {
-		if(s==null||s.length!=4) {
+		if(s==null||s.length!=text.length) {
 			return;
 		}
 		text=s;
