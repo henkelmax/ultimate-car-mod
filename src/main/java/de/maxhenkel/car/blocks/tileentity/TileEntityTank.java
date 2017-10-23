@@ -265,10 +265,10 @@ public class TileEntityTank extends TileEntityBase implements IFluidHandler, ITi
 	
 	/* **********************RENDERING************************ */
 	
-	@SideOnly(Side.CLIENT)
+	//@SideOnly(Side.CLIENT)
 	private boolean[] sides=new boolean[EnumFacing.values().length];
 	
-	@SideOnly(Side.CLIENT)
+	//@SideOnly(Side.CLIENT)
 	private boolean[] sidesFluid=new boolean[EnumFacing.values().length];
 
 	@SideOnly(Side.CLIENT)
