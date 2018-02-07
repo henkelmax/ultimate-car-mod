@@ -158,10 +158,11 @@ public class TileEntityCarWorkshop extends TileEntityBase implements ICarCraftin
 	}
 
 	public boolean isTopFree() {
-		for (int x = pos.getX() - 1; x <= pos.getX() + 1; x++) {
-			for (int y = pos.getY() + 1; y <= pos.getX() + 2; y++) {
-				for (int z = pos.getZ() - 1; z <= pos.getZ() + 1; z++) {
-					if (!checkBlockAir(new BlockPos(x, y, z))) {
+		BlockPos pos=getPos();
+		for (int x = - 1; x <= 1; x++) {
+			for (int y = 1; y <= 2; y++) {
+				for (int z =  - 1; z <= 1; z++) {
+					if (!checkBlockAir(pos.add(x, y, z))) {
 						return false;
 					}
 				}
@@ -172,11 +173,7 @@ public class TileEntityCarWorkshop extends TileEntityBase implements ICarCraftin
 	}
 
 	private boolean checkBlockAir(BlockPos p) {
-		if (world.isAirBlock(p)) {
-			return true;
-		}
-
-		return false;
+		return world.isAirBlock(p);
 	}
 
 	private boolean checkSideBlock(BlockPos p) {

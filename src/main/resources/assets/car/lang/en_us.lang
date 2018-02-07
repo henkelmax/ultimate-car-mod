@@ -201,10 +201,10 @@ canister.amount=Amount: %s mb
 filter.fluid=Fluid Filter: %s
 
 message.incomplete_structure=Structure Incomplete
-messgae.blocks_on_top=No space. Please remove blocks above
-messgae.no_reciepe=No valid reciepe
-messgae.no_repair_items=No Repair Items
-messgae.no_car=No Car
+message.blocks_on_top=No space. Please remove blocks above
+message.no_reciepe=No valid reciepe
+message.no_repair_items=No Repair Items
+message.no_car=No Car
 message.car_locked=This Car is locked!
 message.car_out_of_range=Key out of range
 message.key_no_car=This key does not belong to a Car
