@@ -53,7 +53,7 @@ public class GuiCar extends GuiBase{
 	}
 	
 	public String getFuelString(){
-		return new TextComponentTranslation("gui.fuel", String.valueOf(getFuelPercent())).getFormattedText();
+		return new TextComponentTranslation("gui.fuel", String.valueOf(car.getFuelAmount())).getFormattedText();
 	}
 	
 	public String getDamageString(){
