@@ -1,5 +1,9 @@
 package de.maxhenkel.car.events;
 
+import de.maxhenkel.car.entity.car.base.EntityCarBatteryBase;
+import de.maxhenkel.car.net.MessageStartCar;
+import de.maxhenkel.car.net.MessageStarting;
+import de.maxhenkel.car.proxy.CommonProxy;
 import org.lwjgl.input.Keyboard;
 import de.maxhenkel.car.entity.car.base.EntityCarBase;
 import net.minecraft.client.Minecraft;
@@ -20,8 +24,8 @@ public class KeyEvents {
 	private KeyBinding keyCarGui;
 	private KeyBinding keyStart;
 	private KeyBinding keyHorn;
-	
-	private boolean wasStartPressed;
+
+    private boolean wasStartPressed;
 	private boolean wasGuiPressed;
 	private boolean wasHornPressed;
 
@@ -48,57 +52,63 @@ public class KeyEvents {
 		ClientRegistry.registerKeyBinding(keyHorn);
 	}
 
-	@SubscribeEvent
-	public void onKeyInput(InputEvent.KeyInputEvent event) {
-		if (event.isCanceled()) {
-			return;
-		}
+    @SubscribeEvent
+    public void onKeyInput(InputEvent.KeyInputEvent event) {
+        if (event.isCanceled()) {
+            return;
+        }
 
-		Minecraft minecraft = Minecraft.getMinecraft();
+        Minecraft minecraft = Minecraft.getMinecraft();
 
-		//World world = minecraft.theWorld;
-		
-		EntityPlayer player=minecraft.player;
+        //World world = minecraft.theWorld;
 
-		Entity riding=player.getRidingEntity();
-		
-		if(!(riding instanceof EntityCarBase)){
-			return;
-		}
-		
-		EntityCarBase car=(EntityCarBase) riding;
-		
-		if(player.equals(car.getDriver())){
-			car.updateControls(keyForward.isKeyDown(), keyBack.isKeyDown(), keyLeft.isKeyDown(), keyRight.isKeyDown(), player);
-			
-			if(keyStart.isKeyDown()){
-				if(!wasStartPressed){
-					car.startCarEngine(player);
-					wasStartPressed=true;
-				}
-			}else{
-				wasStartPressed=false;
-			}
-			
-			if(keyHorn.isKeyDown()){
-				if(!wasHornPressed){
-					car.onHornPressed(player);
-					wasHornPressed=true;
-				}
-			}else{
-				wasHornPressed=false;
-			}
-		}
-		
-		if(keyCarGui.isKeyDown()){
-			if(!wasGuiPressed){
-				car.openCarGUi(player);
-				wasGuiPressed=true;
-			}
-		}else{
-			wasGuiPressed=false;
-		}
-		
-	}
+        EntityPlayer player=minecraft.player;
+
+        Entity riding=player.getRidingEntity();
+
+        if(!(riding instanceof EntityCarBatteryBase)){
+            return;
+        }
+
+        EntityCarBatteryBase car=(EntityCarBatteryBase) riding;
+
+        if(player.equals(car.getDriver())){
+            car.updateControls(keyForward.isKeyDown(), keyBack.isKeyDown(), keyLeft.isKeyDown(), keyRight.isKeyDown(), player);
+
+            if(keyStart.isKeyDown()){
+                if(!wasStartPressed){
+                    //CommonProxy.simpleNetworkWrapper.sendToServer(new MessageStarting(true, false, player));
+                    car.setStarting(true, false);
+                    wasStartPressed=true;
+                }
+            }else{
+                if(wasStartPressed){
+                    //CommonProxy.simpleNetworkWrapper.sendToServer(new MessageStarting(false, true, player));
+
+                    car.setStarting(false, true);
+                }
+                wasStartPressed=false;
+            }
+
+            if(keyHorn.isKeyDown()){
+                if(!wasHornPressed){
+                    car.onHornPressed(player);
+                    wasHornPressed=true;
+                }
+            }else{
+                wasHornPressed=false;
+            }
+        }
+
+        if(keyCarGui.isKeyDown()){
+            if(!wasGuiPressed){
+                car.openCarGUi(player);
+                wasGuiPressed=true;
+            }
+        }else{
+            wasGuiPressed=false;
+        }
+
+    }
 
 }

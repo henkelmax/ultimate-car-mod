@@ -9,7 +9,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.world.World;
 
-public abstract class EntityCarDamageBase extends EntityCarBase {
+public abstract class EntityCarDamageBase extends EntityCarBatteryBase {
 
 	private static final DataParameter<Float> DAMAGE = EntityDataManager.<Float>createKey(EntityCarDamageBase.class,
 			DataSerializers.FLOAT);
@@ -130,23 +130,20 @@ public abstract class EntityCarDamageBase extends EntityCarBase {
 
 	@Override
 	public boolean canStartCarEngine(EntityPlayer player) {
+		boolean b=true;
 		if (getDamage() >= 100) {
 			return false;
 		} else if (getDamage() >= 95) {
-			boolean b = rand.nextInt(5) == 0;
-			return b;
+			b = rand.nextInt(5) == 0;
 		} else if (getDamage() >= 90) {
-			boolean b = rand.nextBoolean();
-			return b;
+			b = rand.nextBoolean();
 		} else if (getDamage() >= 80) {
-			boolean b = rand.nextInt(5) != 0;
-			return b;
+			b = rand.nextInt(5) != 0;
 		} else if (getDamage() >= 50) {
-			boolean b = rand.nextInt(15)!=0;
-			return b;
+			b = rand.nextInt(15)!=0;
 		}
 
-		return super.canStartCarEngine(player);
+		return super.canStartCarEngine(player)&&b;
 	}
 
 	public boolean canEngineStayOn() {

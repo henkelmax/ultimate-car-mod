@@ -13,18 +13,30 @@ import net.minecraftforge.fml.relauncher.Side;
 
 public class MessageStartCar implements IMessage, IMessageHandler<MessageStartCar, IMessage>{
 
-	private boolean failed;
+	private boolean start;
+	private boolean playStopSound, playFailSound;
 	private UUID uuid;
 	
 	public MessageStartCar() {
-		this.failed=false;
+		this.start=true;
+		this.playStopSound=false;
+		this.playFailSound=false;
 		this.uuid=new UUID(0, 0);
 	}
 	
-	public MessageStartCar(boolean failed, EntityPlayer player) {
-		this.failed=failed;
+	public MessageStartCar(boolean start, boolean playStopSound, boolean playFailSound, EntityPlayer player) {
+		this.start=start;
+		this.playStopSound=playStopSound;
+        this.playFailSound=playFailSound;
 		this.uuid=player.getUniqueID();
 	}
+
+    public MessageStartCar(boolean start, EntityPlayer player) {
+        this.start=start;
+        this.playStopSound=false;
+        this.playFailSound=false;
+        this.uuid=player.getUniqueID();
+    }
 
 	@Override
 	public IMessage onMessage(MessageStartCar message, MessageContext ctx) {
@@ -43,7 +55,7 @@ public class MessageStartCar implements IMessage, IMessageHandler<MessageStartCa
 			
 			EntityCarBase car=(EntityCarBase) riding;
 			if(player.equals(car.getDriver())){
-				car.startCarEngineServerSide(message.failed);
+				car.startCarEngineServerSide(message.start, message.playStopSound, message.playFailSound);
 			}
 			
 		}
@@ -52,8 +64,10 @@ public class MessageStartCar implements IMessage, IMessageHandler<MessageStartCa
 
 	@Override
 	public void fromBytes(ByteBuf buf) {
-		this.failed=buf.readBoolean();
-		
+		this.start=buf.readBoolean();
+        this.playStopSound=buf.readBoolean();
+        this.playFailSound=buf.readBoolean();
+
 		long l1=buf.readLong();
 		long l2=buf.readLong();
 		this.uuid=new UUID(l1, l2);
@@ -61,8 +75,10 @@ public class MessageStartCar implements IMessage, IMessageHandler<MessageStartCa
 
 	@Override
 	public void toBytes(ByteBuf buf) {
-		buf.writeBoolean(failed);
-		
+		buf.writeBoolean(start);
+        buf.writeBoolean(playStopSound);
+        buf.writeBoolean(playFailSound);
+
 		buf.writeLong(uuid.getMostSignificantBits());
 		buf.writeLong(uuid.getLeastSignificantBits());
 	}

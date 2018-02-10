@@ -78,12 +78,12 @@ public class EntityCarSport extends EntityCarLockBase{
 	public SoundEvent getStopSound() {
 		return ModSounds.sport_engine_stop;
 	}
-	
+
 	@Override
 	public SoundEvent getFailSound() {
 		return ModSounds.sport_engine_fail;
 	}
-	
+
 	@Override
 	public SoundEvent getStartSound() {
 		return ModSounds.sport_engine_start;
@@ -97,11 +97,6 @@ public class EntityCarSport extends EntityCarLockBase{
 	@Override
 	public SoundEvent getHighSound() {
 		return ModSounds.sport_engine_high;
-	}
-	
-	@Override
-	public int getStartSoundTime() {
-		return 1000;
 	}
 
 	@Override

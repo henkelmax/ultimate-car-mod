@@ -38,11 +38,15 @@ public class ModSounds {
 	}
 
 	public static void playSound(SoundEvent evt, World world, BlockPos pos, EntityPlayer entity, SoundCategory category, float volume) {
+		playSound(evt, world, pos, entity, category, volume, 1.0F);
+	}
+
+	public static void playSound(SoundEvent evt, World world, BlockPos pos, EntityPlayer entity, SoundCategory category, float volume, float pitch) {
 		if (entity != null) {
-			world.playSound(entity, pos, evt, category, volume, 1.0F);
+			world.playSound(entity, pos, evt, category, volume, pitch);
 		} else {
 			if (!world.isRemote) {
-				world.playSound(entity, pos, evt, category, volume, 1.0F);
+				world.playSound(entity, pos, evt, category, volume, pitch);
 			}
 		}
 	}

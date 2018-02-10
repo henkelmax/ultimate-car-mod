@@ -4,6 +4,7 @@ import java.util.List;
 import de.maxhenkel.car.Config;
 import de.maxhenkel.car.DamageSourceCar;
 import de.maxhenkel.car.IDrivable;
+import de.maxhenkel.car.events.KeyEvents;
 import de.maxhenkel.tools.MathTools;
 import de.maxhenkel.tools.Teleport;
 import de.maxhenkel.car.net.MessageCarGui;
@@ -68,7 +69,6 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 			DataSerializers.FLOAT);
 	private static final DataParameter<Boolean> STARTED = EntityDataManager.<Boolean>createKey(EntityCarBase.class,
 			DataSerializers.BOOLEAN);
-
 	private static final DataParameter<Boolean> FORWARD = EntityDataManager.<Boolean>createKey(EntityCarBase.class,
 			DataSerializers.BOOLEAN);
 	private static final DataParameter<Boolean> BACKWARD = EntityDataManager.<Boolean>createKey(EntityCarBase.class,
@@ -177,7 +177,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 	}
 
 	public void updateSounds() {
-		if (getSpeed() == 0 && isStarted()) {
+        if (getSpeed() == 0 && isStarted()) {
 			checkIdleLoop();
 		}
 		if (getSpeed() != 0 && isStarted()) {
@@ -366,33 +366,19 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 	}
 
 	public void startCarEngine(EntityPlayer player) {
-		if (isStarted()) {
-			setStarted(false);
-			if (world.isRemote) {
-				CommonProxy.simpleNetworkWrapper.sendToServer(new MessageStartCar(false, player));
-			}
-		} else if (getDriver() != null && canStartCarEngine(getDriver())) {
+	    if(player==null){
+	        return;
+        }
+		if (getDriver() != null && canStartCarEngine(getDriver())) {
 			setStarted(true);
-			checkStartLoop();
-			if (world.isRemote) {
-				CommonProxy.simpleNetworkWrapper.sendToServer(new MessageStartCar(false, player));
-			}
-		} else {
-			playEngineFailSound();
 			if (world.isRemote) {
 				CommonProxy.simpleNetworkWrapper.sendToServer(new MessageStartCar(true, player));
 			}
 		}
 	}
 
-	public void startCarEngineServerSide(boolean failed) {
-		if (failed) {
-			playEngineFailSound();
-		} else if (isStarted()) {
-			setStarted(false);
-		} else {
-			setStarted(true);
-		}
+	public void startCarEngineServerSide(boolean start, boolean playStopSound, boolean playFailSound) {
+	    setStarted(start, playStopSound, playFailSound);
 	}
 
 	public boolean canStartCarEngine(EntityPlayer player) {
@@ -463,19 +449,21 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 	}
 
 	public void setStarted(boolean started) {
-		setStarted(started, true);
+		setStarted(started, true, false);
 	}
 	
-	public void setStarted(boolean started, boolean playsound) {
-		if (!started&&playsound) {
+	public void setStarted(boolean started, boolean playStopSound, boolean playFailSound) {
+		if (!started&&playStopSound) {
 			playStopSound();
-		}
+		}else if(!started&&playFailSound){
+		    playFailSound();
+        }
 		this.dataManager.set(STARTED, Boolean.valueOf(started));
 	}
 
-	public boolean isStarted() {
-		return this.dataManager.get(STARTED);
-	}
+    public boolean isStarted() {
+        return this.dataManager.get(STARTED);
+    }
 
 	public void setForward(boolean forward) {
 		this.dataManager.set(FORWARD, Boolean.valueOf(forward));
@@ -519,7 +507,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 
 	@Override
 	protected void readEntityFromNBT(NBTTagCompound compound) {
-		setStarted(compound.getBoolean("started"), false);
+		setStarted(compound.getBoolean("started"), false, false);
 	}
 
 	@Override
@@ -531,9 +519,9 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 		ModSounds.playSound(getStopSound(), world, getPosition(), null, SoundCategory.NEUTRAL, Config.carVolume);
 	}
 
-	public void playEngineFailSound() {
-		ModSounds.playSound(getFailSound(), world, getPosition(), null, SoundCategory.NEUTRAL, Config.carVolume);
-	}
+    public void playFailSound() {
+        ModSounds.playSound(getFailSound(), world, getPosition(), null, SoundCategory.NEUTRAL, Config.carVolume);
+    }
 
 	public void playCrashSound() {
 		ModSounds.playSound(getCrashSound(), world, getPosition(), null, SoundCategory.NEUTRAL, Config.carVolume);
@@ -547,9 +535,9 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 		return ModSounds.engine_stop;
 	}
 
-	public SoundEvent getFailSound() {
-		return ModSounds.engine_fail;
-	}
+    public SoundEvent getFailSound() {
+        return ModSounds.engine_fail;
+    }
 
 	public SoundEvent getCrashSound() {
 		return ModSounds.car_crash;
@@ -569,10 +557,6 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 	
 	public SoundEvent getHornSound() {
 		return ModSounds.car_horn;
-	}
-	
-	public int getStartSoundTime(){
-		return 1600;
 	}
 
 	@SideOnly(Side.CLIENT)
