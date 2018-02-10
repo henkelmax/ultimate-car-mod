@@ -34,7 +34,12 @@ public class BlockTarSlab extends Block implements IDrivable {
 		return 1.0F;
 	}
 
-	@Override
+    @Override
+    public boolean canPlaceTorchOnTop(IBlockState state, IBlockAccess world, BlockPos pos) {
+        return false;
+    }
+
+    @Override
 	public boolean isOpaqueCube(IBlockState state) {
 		return false;
 	}
@@ -48,4 +53,9 @@ public class BlockTarSlab extends Block implements IDrivable {
 	public boolean doesSideBlockRendering(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing face) {
 		return false;
 	}
+
+    @Override
+    public boolean isSideSolid(IBlockState base_state, IBlockAccess world, BlockPos pos, EnumFacing side) {
+        return false;
+    }
 }
