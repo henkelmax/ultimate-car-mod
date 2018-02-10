@@ -4,21 +4,18 @@ import java.util.List;
 import de.maxhenkel.car.Config;
 import de.maxhenkel.car.DamageSourceCar;
 import de.maxhenkel.car.IDrivable;
-import de.maxhenkel.car.events.KeyEvents;
 import de.maxhenkel.tools.MathTools;
 import de.maxhenkel.tools.Teleport;
 import de.maxhenkel.car.net.MessageCarGui;
 import de.maxhenkel.car.net.MessageCarHorn;
 import de.maxhenkel.car.net.MessageControlCar;
 import de.maxhenkel.car.net.MessageCrash;
-import de.maxhenkel.car.net.MessageStartCar;
 import de.maxhenkel.car.proxy.CommonProxy;
 import de.maxhenkel.car.reciepe.ICarbuilder;
 import de.maxhenkel.car.registries.CarProperties;
 import de.maxhenkel.car.sounds.ModSounds;
 import de.maxhenkel.car.sounds.SoundLoopHigh;
 import de.maxhenkel.car.sounds.SoundLoopIdle;
-import de.maxhenkel.car.sounds.SoundLoopStart;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -62,8 +59,6 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 	private SoundLoopIdle idleLoop;
 	@SideOnly(Side.CLIENT)
 	private SoundLoopHigh highLoop;
-	@SideOnly(Side.CLIENT)
-	private SoundLoopStart startLoop;
 
 	private static final DataParameter<Float> SPEED = EntityDataManager.<Float>createKey(EntityCarBase.class,
 			DataSerializers.FLOAT);
@@ -365,15 +360,13 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 		}
 	}
 
-	public void startCarEngine(EntityPlayer player) {
-	    if(player==null){
-	        return;
-        }
-		if (getDriver() != null && canStartCarEngine(getDriver())) {
+	public void startCarEngine() {
+	    EntityPlayer player=getDriver();
+		if (player != null && canStartCarEngine(player)) {
 			setStarted(true);
-			if (world.isRemote) {
+			/*if (world.isRemote) {
 				CommonProxy.simpleNetworkWrapper.sendToServer(new MessageStartCar(true, player));
-			}
+			}*/
 		}
 	}
 
@@ -561,9 +554,6 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 
 	@SideOnly(Side.CLIENT)
 	public void checkIdleLoop() {
-		if (startLoop != null && !startLoop.isDonePlaying()) {
-			return;
-		}
 		if (idleLoop == null || idleLoop.isDonePlaying()) {
 			idleLoop = new SoundLoopIdle(world, this, getIdleSound(), SoundCategory.NEUTRAL);
 			ModSounds.playSoundLoop(idleLoop, world);
@@ -572,20 +562,9 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 
 	@SideOnly(Side.CLIENT)
 	public void checkHighLoop() {
-		if (startLoop != null && !startLoop.isDonePlaying()) {
-			return;
-		}
 		if (highLoop == null || highLoop.isDonePlaying()) {
 			highLoop = new SoundLoopHigh(world, this, getHighSound(), SoundCategory.NEUTRAL);
 			ModSounds.playSoundLoop(highLoop, world);
-		}
-	}
-
-	@SideOnly(Side.CLIENT)
-	public void checkStartLoop() {
-		if (startLoop == null || startLoop.isDonePlaying()) {
-			startLoop = new SoundLoopStart(world, this, getStartSound(), SoundCategory.NEUTRAL);
-			ModSounds.playSoundLoop(startLoop, world);
 		}
 	}
 

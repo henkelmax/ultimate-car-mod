@@ -38,7 +38,7 @@ public class CommonProxy {
         CommonProxy.simpleNetworkWrapper = NetworkRegistry.INSTANCE.newSimpleChannel(Main.MODID);
         CommonProxy.simpleNetworkWrapper.registerMessage(MessageControlCar.class, MessageControlCar.class, 0, Side.SERVER);
         CommonProxy.simpleNetworkWrapper.registerMessage(MessageCarGui.class, MessageCarGui.class, 1, Side.SERVER);
-        CommonProxy.simpleNetworkWrapper.registerMessage(MessageStartCar.class, MessageStartCar.class, 2, Side.SERVER);
+        CommonProxy.simpleNetworkWrapper.registerMessage(MessageStarting.class, MessageStarting.class, 2, Side.SERVER);
         CommonProxy.simpleNetworkWrapper.registerMessage(MessageCrash.class, MessageCrash.class, 3, Side.SERVER);
         CommonProxy.simpleNetworkWrapper.registerMessage(MessageStartFuel.class, MessageStartFuel.class, 4, Side.SERVER);
         CommonProxy.simpleNetworkWrapper.registerMessage(MessagePlaySoundLoop.class, MessagePlaySoundLoop.class, 5, Side.CLIENT);
@@ -49,7 +49,7 @@ public class CommonProxy {
         CommonProxy.simpleNetworkWrapper.registerMessage(MessageCarHorn.class, MessageCarHorn.class, 10, Side.SERVER);
         CommonProxy.simpleNetworkWrapper.registerMessage(MessageSyncConfig.class, MessageSyncConfig.class, 11, Side.CLIENT);
         CommonProxy.simpleNetworkWrapper.registerMessage(MessageEditSign.class, MessageEditSign.class, 12, Side.SERVER);
-        CommonProxy.simpleNetworkWrapper.registerMessage(MessageStarting.class, MessageStarting.class, 13, Side.SERVER);
+
 
         try {
             File configFolder = new File(event.getModConfigurationDirectory(), Main.MODID);

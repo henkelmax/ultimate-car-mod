@@ -1,11 +1,9 @@
 package de.maxhenkel.car.events;
 
 import de.maxhenkel.car.entity.car.base.EntityCarBatteryBase;
-import de.maxhenkel.car.net.MessageStartCar;
 import de.maxhenkel.car.net.MessageStarting;
 import de.maxhenkel.car.proxy.CommonProxy;
 import org.lwjgl.input.Keyboard;
-import de.maxhenkel.car.entity.car.base.EntityCarBase;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.Entity;
@@ -77,15 +75,15 @@ public class KeyEvents {
 
             if(keyStart.isKeyDown()){
                 if(!wasStartPressed){
-                    //CommonProxy.simpleNetworkWrapper.sendToServer(new MessageStarting(true, false, player));
-                    car.setStarting(true, false);
+                    CommonProxy.simpleNetworkWrapper.sendToServer(new MessageStarting(true, false, player));
+                    //car.setStarting(true, false);
                     wasStartPressed=true;
                 }
             }else{
                 if(wasStartPressed){
-                    //CommonProxy.simpleNetworkWrapper.sendToServer(new MessageStarting(false, true, player));
+                    CommonProxy.simpleNetworkWrapper.sendToServer(new MessageStarting(false, true, player));
 
-                    car.setStarting(false, true);
+                   // car.setStarting(false, true);
                 }
                 wasStartPressed=false;
             }

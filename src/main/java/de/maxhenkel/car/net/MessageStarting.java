@@ -46,7 +46,7 @@ public class MessageStarting implements IMessage, IMessageHandler<MessageStartin
 
 			EntityCarBatteryBase car=(EntityCarBatteryBase) riding;
 			if(player.equals(car.getDriver())){
-				car.setStarting(start, playSound);
+				car.setStarting(message.start, message.playSound);
 			}
 			
 		}

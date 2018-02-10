@@ -1,17 +1,16 @@
 package de.maxhenkel.car.entity.car.base;
 
 import de.maxhenkel.car.Config;
-import de.maxhenkel.car.net.MessageStartCar;
-import de.maxhenkel.car.net.MessageStarting;
-import de.maxhenkel.car.proxy.CommonProxy;
 import de.maxhenkel.car.sounds.ModSounds;
-import net.minecraft.entity.player.EntityPlayer;
+import de.maxhenkel.car.sounds.SoundLoopStart;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public abstract class EntityCarBatteryBase extends EntityCarBase {
 
@@ -22,7 +21,11 @@ public abstract class EntityCarBatteryBase extends EntityCarBase {
     private static final DataParameter<Boolean> STARTING = EntityDataManager.<Boolean>createKey(EntityCarBatteryBase.class,
             DataSerializers.BOOLEAN);
 
-    private boolean carStopping;
+    @SideOnly(Side.CLIENT)
+    private SoundLoopStart startLoop;
+
+    boolean carStarted;
+    boolean carStopped;
 
     public EntityCarBatteryBase(World worldIn) {
         super(worldIn);
@@ -33,14 +36,15 @@ public abstract class EntityCarBatteryBase extends EntityCarBase {
         super.onUpdate();
 
         if (isStarting()) {
-            setBatteryLevel(getBatteryLevel() - 2);
+            setBatteryLevel(getBatteryLevel() - 4);
             System.out.println(getBatteryLevel());
             setStartingTime(getStartingTime() + 1);
         } else {
             setStartingTime(0);
         }
         if (getStartingTime() > 50) {//TODO random time or battery
-            startCarEngine(getDriver());
+            startCarEngine();
+            carStarted = true;
             setStartingTime(0);
         }
 
@@ -48,10 +52,6 @@ public abstract class EntityCarBatteryBase extends EntityCarBase {
 
     @Override
     public void setStarted(boolean started) {
-        EntityPlayer driver = getDriver();
-        if (driver != null) {
-            //CommonProxy.simpleNetworkWrapper.sendToServer(new MessageStarting(false, false, driver));
-        }
         setStarting(false, false);
         super.setStarted(started);
     }
@@ -82,41 +82,39 @@ public abstract class EntityCarBatteryBase extends EntityCarBase {
     public void setStarting(boolean starting, boolean playFailSound) {
         if (starting) {
             if (isStarted()) {
-                setStarted(false);
-                carStopping = true;
-                if (world.isRemote) {
-                    EntityPlayer dr = getDriver();
-                    if (dr != null) {
-                        CommonProxy.simpleNetworkWrapper.sendToServer(new MessageStartCar(false, true, false, dr));
-                    }
-                }
+                setStarted(false, true, false);
+                carStopped = true;
                 return;
             }
         } else {
-            if (carStopping) {
+            if (carStarted || carStopped) {
                 //TO prevent car from making stop start sound after releasing the starter key
-                carStopping = false;
+                carStarted = false;
+                carStopped = false;
                 return;
             }
-            if (world.isRemote) {
-                EntityPlayer dr = getDriver();
-                if (!isStarted() && dr != null) {
-                    CommonProxy.simpleNetworkWrapper.sendToServer(new MessageStartCar(false, false, playFailSound, dr));
-                }
-            }
+            setStarted(false, false, playFailSound);
         }
         this.dataManager.set(STARTING, Boolean.valueOf(starting));
     }
 
     public float getBatterySoundPitchLevel() {
-        float batteryLevel = getBatteryPercentage();
 
-        return batteryLevel;/*
+        int batteryLevel = getBatteryLevel();
 
-        if(batteryLevel<0.5){//TODO change to smaller value
-            return 2F*batteryLevel - 0.1F*((float) getStartingTime());
+        int startLevel = getMaxBatteryLevel() / 2;//TODO change to smaller value
+
+        if (batteryLevel > startLevel) {
+            return 1F;
         }
-        return 1F;*/
+
+        int levelUnder = startLevel - batteryLevel;
+
+        float perc = (float) levelUnder / (float) startLevel;
+
+        float pitch = 1 - (perc / 2);
+        System.out.println(pitch);
+        return pitch;
     }
 
     public float getBatteryPercentage() {
@@ -153,7 +151,6 @@ public abstract class EntityCarBatteryBase extends EntityCarBase {
     @Override
     protected void readEntityFromNBT(NBTTagCompound compound) {
         super.readEntityFromNBT(compound);
-        System.out.println("Read: " + compound.getInteger("battery"));
         setBatteryLevel(compound.getInteger("battery"));
     }
 
@@ -161,12 +158,18 @@ public abstract class EntityCarBatteryBase extends EntityCarBase {
     protected void writeEntityToNBT(NBTTagCompound compound) {
         super.writeEntityToNBT(compound);
         compound.setInteger("battery", getBatteryLevel());
-        System.out.println("Write: " + compound.getInteger("battery"));
+    }
+
+    @SideOnly(Side.CLIENT)
+    public void checkStartLoop() {
+        if (startLoop == null || startLoop.isDonePlaying()) {
+            startLoop = new SoundLoopStart(world, this, getStartSound(), SoundCategory.NEUTRAL);
+            ModSounds.playSoundLoop(startLoop, world);
+        }
     }
 
     @Override
     public void playFailSound() {
-        System.out.println("fail: " + getBatterySoundPitchLevel());
         ModSounds.playSound(getFailSound(), world, getPosition(), null, SoundCategory.NEUTRAL, Config.carVolume, getBatterySoundPitchLevel());
     }
 }
