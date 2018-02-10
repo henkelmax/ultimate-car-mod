@@ -9,6 +9,7 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.Biome;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -30,24 +31,74 @@ public abstract class EntityCarBatteryBase extends EntityCarBase {
     public EntityCarBatteryBase(World worldIn) {
         super(worldIn);
     }
-
+    // /summon car:car_wood ~ ~ ~ {"fuel": 1000, "battery":10000}
     @Override
     public void onUpdate() {
         super.onUpdate();
 
         if (isStarting()) {
-            setBatteryLevel(getBatteryLevel() - 4);
+            setBatteryLevel(getBatteryLevel() - getBatteryUsage());
             System.out.println(getBatteryLevel());
             setStartingTime(getStartingTime() + 1);
         } else {
             setStartingTime(0);
         }
-        if (getStartingTime() > 50) {//TODO random time or battery
+        if (getStartingTime() > getTimeToStart()) {
             startCarEngine();
             carStarted = true;
             setStartingTime(0);
         }
 
+        if(isStarted()){
+            float speedPerc=getSpeed()/getMaxSpeed();
+
+            int chargingRate= (int) (speedPerc*10F);
+            if(chargingRate<5){
+                chargingRate=1;
+            }
+
+            if(ticksExisted%20==0){
+                System.out.println("Battery: " +getBatteryLevel() +" chargingRate: " +chargingRate +" temp: " +getTemperature() +" baseUsage: " +getBatteryUsage());
+                setBatteryLevel(getBatteryLevel()+chargingRate);
+            }
+        }
+    }
+
+    public int getTimeToStart(){
+        int baseTime=rand.nextInt(10)+10;
+
+        float temp=getTemperature();
+
+        if(temp<0F){
+            baseTime+=30;
+        }else if(temp<-0.3F){
+            baseTime+=40;
+        }
+
+        float batteryPerc=getBatteryPercentage();
+
+        if(batteryPerc<0.5){
+            baseTime+=25;
+        }else if(batteryPerc<0.75){
+            baseTime+=15;
+        }
+
+        return baseTime;
+    }
+
+    public float getTemperature(){
+        return world.getBiome(getPosition()).getTemperature(getPosition())-0.3F;
+    }
+
+    public int getBatteryUsage(){
+        float temp=getTemperature();
+        int baseUsage=4;
+        if(temp<-0.3F){
+            baseUsage+=2;
+        }else if(temp<0F){
+            baseUsage+=1;
+        }
+        return baseUsage;
     }
 
     @Override
@@ -102,7 +153,7 @@ public abstract class EntityCarBatteryBase extends EntityCarBase {
 
         int batteryLevel = getBatteryLevel();
 
-        int startLevel = getMaxBatteryLevel() / 2;//TODO change to smaller value
+        int startLevel = getMaxBatteryLevel() / 3;//TODO change maybe
 
         if (batteryLevel > startLevel) {
             return 1F;
@@ -113,14 +164,11 @@ public abstract class EntityCarBatteryBase extends EntityCarBase {
         float perc = (float) levelUnder / (float) startLevel;
 
         float pitch = 1 - (perc / 2);
-        System.out.println(pitch);
         return pitch;
     }
 
     public float getBatteryPercentage() {
-        float max = getMaxBatteryLevel();
-        float curr = getBatteryLevel();
-        return curr / max;
+        return ((float)getBatteryLevel()) / ((float)getMaxBatteryLevel());
     }
 
     public void setBatteryLevel(int level) {
