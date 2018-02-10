@@ -53,19 +53,31 @@ public abstract class EntityVehicleBase extends Entity{
 		if(passenger instanceof EntityPlayer){
 			EntityPlayer player=(EntityPlayer) passenger;
 			EnumFacing facing=getHorizontalFacing();
-			
-			double offsetX=0;
-			double offsetZ=0;
-			
-			AxisAlignedBB playerbb=player.getEntityBoundingBox();
-			double playerHitboxWidth=(playerbb.maxX-playerbb.minX)/2;
-			double carHitboxWidth=width/2;
-			
-			double offset=playerHitboxWidth+carHitboxWidth+0.2;
-			
-			offsetX+=facing.getFrontOffsetX()*offset;
-			offsetZ+=facing.getFrontOffsetZ()*offset;
-			
+
+            double offsetX=0;
+            double offsetZ=0;
+
+			for(int i=0; i<4; i++){
+                AxisAlignedBB playerbb=player.getEntityBoundingBox();
+                double playerHitboxWidth=(playerbb.maxX-playerbb.minX)/2;
+                double carHitboxWidth=width/2;
+
+                double offset=playerHitboxWidth+carHitboxWidth+0.2;
+
+                offsetX+=facing.getFrontOffsetX()*offset;
+                offsetZ+=facing.getFrontOffsetZ()*offset;
+
+                AxisAlignedBB aabb=player.getEntityBoundingBox().offset(offsetX, 0, offsetZ);
+
+                if(!world.checkBlockCollision(aabb)){
+                    break;
+                }
+
+                offsetX=0;
+                offsetZ=0;
+			    facing=facing.rotateY();
+            }
+
 			player.setPositionAndUpdate(posX+offsetX, posY, posZ+offsetZ);
 		}
 	}

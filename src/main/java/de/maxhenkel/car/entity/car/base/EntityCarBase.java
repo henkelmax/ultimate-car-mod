@@ -153,7 +153,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 		}
 
 		List<EntityPlayer> list = world.getEntitiesWithinAABB(EntityPlayer.class,
-				getCollisionBoundingBox().expand(0.2, 0, 0.2),
+				getCollisionBoundingBox().expand(0.2, 0, 0.2).expand(-0.2, 0, -0.2),
 				EntitySelectors.<EntityPlayer>getTeamCollisionPredicate(this));
 
 		for (int j = 0; j < list.size(); j++) {
