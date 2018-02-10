@@ -55,6 +55,9 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 	private float wheelRotation;
 
 	@SideOnly(Side.CLIENT)
+	private boolean collidedLastTick;
+
+	@SideOnly(Side.CLIENT)
 	private SoundLoopIdle idleLoop;
 	@SideOnly(Side.CLIENT)
 	private SoundLoopHigh highLoop;
@@ -273,12 +276,16 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 		}
 
 		if (collidedHorizontally) {
-			if (world.isRemote) {
+			if (world.isRemote&&!collidedLastTick) {
 				onCollision(speed);
+				collidedLastTick=true;
 			}
 		} else {
 			this.motionX = calculateMotionX(getSpeed(), rotationYaw);
 			this.motionZ = calculateMotionZ(getSpeed(), rotationYaw);
+            if (world.isRemote){
+                collidedLastTick=false;
+            }
 		}
 	}
 	
