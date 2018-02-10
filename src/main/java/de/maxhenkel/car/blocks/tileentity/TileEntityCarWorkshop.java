@@ -79,8 +79,7 @@ public class TileEntityCarWorkshop extends TileEntityBase implements ICarCraftin
 			return;
 		}
 		BlockPos spawnPos = pos.up();
-		
-		car.setPosition(spawnPos.getX()+car.width/2, spawnPos.getY(), spawnPos.getZ()+car.width/2);
+		car.setPosition(spawnPos.getX()+0.5, spawnPos.getY(), spawnPos.getZ()+0.5);
 		
 		removeCraftItems();
 		world.spawnEntity(car);
