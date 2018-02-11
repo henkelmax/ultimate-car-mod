@@ -9,7 +9,6 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.Biome;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -156,14 +155,14 @@ public abstract class EntityCarBatteryBase extends EntityCarBase {
         int startLevel = getMaxBatteryLevel() / 3;//TODO change maybe
 
         if (batteryLevel > startLevel) {
-            return 1F;
+            return 1F-0.002F*((float)getStartingTime());
         }
 
         int levelUnder = startLevel - batteryLevel;
 
         float perc = (float) levelUnder / (float) startLevel;
 
-        float pitch = 1 - (perc / 2);
+        float pitch = 1F - (perc / 2.3F); //2 = max 0.5 pitch
         return pitch;
     }
 
