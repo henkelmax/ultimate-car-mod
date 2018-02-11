@@ -52,11 +52,11 @@ public abstract class EntityCarBatteryBase extends EntityCarBase {
         }
         if (getStartingTime() > getTimeToStart()) {
             startCarEngine();
-            setStartingTime(0);
-            carStarted = true;
         }
 
         if (isStarted()) {
+            setStartingTime(0);
+            carStarted = true;
             float speedPerc = getSpeed() / getMaxSpeed();
 
             int chargingRate = (int) (speedPerc * 10F);
@@ -173,15 +173,18 @@ public abstract class EntityCarBatteryBase extends EntityCarBase {
 
         int startLevel = getMaxBatteryLevel() / 3;//TODO change maybe
 
+        float basePitch=1F - 0.002F * ((float) getStartingTime());
+
         if (batteryLevel > startLevel) {
-            return 1F - 0.002F * ((float) getStartingTime());
+            return basePitch;
         }
 
         int levelUnder = startLevel - batteryLevel;
 
         float perc = (float) levelUnder / (float) startLevel;
 
-        float pitch = 1F - (perc / 2.3F); //2 = max 0.5 pitch
+        float pitch = basePitch - (perc / 2.3F); //2 = max 0.5 pitch
+        System.out.println(pitch);
         return pitch;
     }
 

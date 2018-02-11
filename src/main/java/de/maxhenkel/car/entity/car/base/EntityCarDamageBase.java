@@ -133,7 +133,7 @@ public abstract class EntityCarDamageBase extends EntityCarBatteryBase {
 		boolean b=true;
 		if (getDamage() >= 100) {
 			return false;
-		} else if (getDamage() >= 95) {
+		}/* else if (getDamage() >= 95) {
 			b = rand.nextInt(5) == 0;
 		} else if (getDamage() >= 90) {
 			b = rand.nextBoolean();
@@ -141,9 +141,26 @@ public abstract class EntityCarDamageBase extends EntityCarBatteryBase {
 			b = rand.nextInt(5) != 0;
 		} else if (getDamage() >= 50) {
 			b = rand.nextInt(15)!=0;
-		}
+		}*/
 
 		return super.canStartCarEngine(player)&&b;
+	}
+
+	@Override
+	public int getTimeToStart() {
+		int value= super.getTimeToStart();
+
+		if (getDamage() >= 95) {
+			value+=rand.nextInt(25)+25;
+		} else if (getDamage() >= 90) {
+			value+=rand.nextInt(15)+15;
+		} else if (getDamage() >= 80) {
+			value+=rand.nextInt(15)+10;
+		} else if (getDamage() >= 50) {
+			value+=rand.nextInt(10)+5;
+		}
+
+		return value;
 	}
 
 	public boolean canEngineStayOn() {
