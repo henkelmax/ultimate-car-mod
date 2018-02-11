@@ -18,6 +18,7 @@ public class CarBuilderSport implements ICarbuilder{
 	public EntityCarBase build(World world) {
 		EntityCarSport car=new EntityCarSport(world, color);
 		car.setFuelAmount(100);
+		car.setBatteryLevel(car.getMaxBatteryLevel());
 		car.setInventorySlotContents(0, ItemKey.getKeyForCar(car.getUniqueID()));
 		car.setInventorySlotContents(1, ItemKey.getKeyForCar(car.getUniqueID()));
 		return car;

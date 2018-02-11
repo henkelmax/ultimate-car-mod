@@ -20,6 +20,7 @@ public class CarBuilderTransporter implements ICarbuilder{
 	public EntityCarBase build(World world) {
 		EntityCarTransporter car=new EntityCarTransporter(world, hasContainer, color);
 		car.setFuelAmount(100);
+		car.setBatteryLevel(car.getMaxBatteryLevel());
 		car.setInventorySlotContents(0, ItemKey.getKeyForCar(car.getUniqueID()));
 		car.setInventorySlotContents(1, ItemKey.getKeyForCar(car.getUniqueID()));
 		return car;

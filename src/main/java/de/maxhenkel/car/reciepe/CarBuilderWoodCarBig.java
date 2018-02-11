@@ -18,6 +18,7 @@ public class CarBuilderWoodCarBig implements ICarbuilder{
 	public EntityCarBase build(World world) {
 		EntityCarBigWood car=new EntityCarBigWood(world, type);
 		car.setFuelAmount(100);
+		car.setBatteryLevel(car.getMaxBatteryLevel());
 		car.setInventorySlotContents(0, ItemKey.getKeyForCar(car.getUniqueID()));
 		car.setInventorySlotContents(1, ItemKey.getKeyForCar(car.getUniqueID()));
 		return car;
