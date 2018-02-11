@@ -25,10 +25,12 @@ public abstract class EntityCarBatteryBase extends EntityCarBase {
     private SoundLoopStart startLoop;
 
     boolean carStopped;
+    boolean carStarted;
 
     public EntityCarBatteryBase(World worldIn) {
         super(worldIn);
     }
+
     // /summon car:car_wood ~ ~ ~ {"fuel": 1000, "battery":10000}
     @Override
     public void onUpdate() {
@@ -38,62 +40,66 @@ public abstract class EntityCarBatteryBase extends EntityCarBase {
             setBatteryLevel(getBatteryLevel() - getBatteryUsage());
             System.out.println(getBatteryLevel());
             setStartingTime(getStartingTime() + 1);
+            if (getBatteryLevel() <= 0) {
+                setStarting(false, true);//??
+            }
         } else {
             setStartingTime(0);
         }
         if (getStartingTime() > getTimeToStart()) {
             startCarEngine();
             setStartingTime(0);
+            carStarted = true;
         }
 
-        if(isStarted()){
-            float speedPerc=getSpeed()/getMaxSpeed();
+        if (isStarted()) {
+            float speedPerc = getSpeed() / getMaxSpeed();
 
-            int chargingRate= (int) (speedPerc*10F);
-            if(chargingRate<5){
-                chargingRate=1;
+            int chargingRate = (int) (speedPerc * 10F);
+            if (chargingRate < 5) {
+                chargingRate = 1;
             }
 
-            if(ticksExisted%20==0){
-                System.out.println("Battery: " +getBatteryLevel() +" chargingRate: " +chargingRate +" temp: " +getTemperature() +" baseUsage: " +getBatteryUsage() +" carStopped: " +carStopped);
-                setBatteryLevel(getBatteryLevel()+chargingRate);
+            if (ticksExisted % 20 == 0) {
+                System.out.println("Battery: " + getBatteryLevel() + " chargingRate: " + chargingRate + " temp: " + getTemperature() + " baseUsage: " + getBatteryUsage() + " carStopped: " + carStopped);
+                setBatteryLevel(getBatteryLevel() + chargingRate);
             }
         }
     }
 
-    public int getTimeToStart(){
-        int baseTime=rand.nextInt(10)+10;
+    public int getTimeToStart() {
+        int baseTime = rand.nextInt(20) + 10;
 
-        float temp=getTemperature();
+        float temp = getTemperature();
 
-        if(temp<0F){
-            baseTime+=30;
-        }else if(temp<-0.3F){
-            baseTime+=40;
+        if (temp < 0F) {
+            baseTime += 30;
+        } else if (temp < -0.3F) {
+            baseTime += 40;
         }
 
-        float batteryPerc=getBatteryPercentage();
+        float batteryPerc = getBatteryPercentage();
 
-        if(batteryPerc<0.5){
-            baseTime+=25;
-        }else if(batteryPerc<0.75){
-            baseTime+=15;
+        if (batteryPerc < 0.5) {
+            baseTime += 25;
+        } else if (batteryPerc < 0.75) {
+            baseTime += 15;
         }
 
         return baseTime;
     }
 
-    public float getTemperature(){
-        return world.getBiome(getPosition()).getTemperature(getPosition())-0.3F;
+    public float getTemperature() {
+        return world.getBiome(getPosition()).getTemperature(getPosition()) - 0.3F;
     }
 
-    public int getBatteryUsage(){
-        float temp=getTemperature();
-        int baseUsage=4;
-        if(temp<-0.3F){
-            baseUsage+=2;
-        }else if(temp<0F){
-            baseUsage+=1;
+    public int getBatteryUsage() {
+        float temp = getTemperature();
+        int baseUsage = 4;
+        if (temp < -0.3F) {
+            baseUsage += 2;
+        } else if (temp < 0F) {
+            baseUsage += 1;
         }
         return baseUsage;
     }
@@ -129,16 +135,25 @@ public abstract class EntityCarBatteryBase extends EntityCarBase {
      */
     public void setStarting(boolean starting, boolean playFailSound) {
         if (starting) {
+            if (getBatteryUsage() <= 0) {
+                return;//TODO nostart
+            }
             if (isStarted()) {
                 setStarted(false, true, false);
                 carStopped = true;
                 return;
             }
         } else {
-            if (/*carStarted || */carStopped) {
+            if (carStarted || carStopped) {
                 //TO prevent car from making stop start sound after releasing the starter key
                 carStopped = false;
+                carStarted = false;
                 return;
+            }
+            if (playFailSound) {
+                if (getBatteryLevel() > 0) {
+                    playFailSound();//TODO nost
+                }
             }
         }
         this.dataManager.set(STARTING, Boolean.valueOf(starting));
@@ -151,7 +166,7 @@ public abstract class EntityCarBatteryBase extends EntityCarBase {
         int startLevel = getMaxBatteryLevel() / 3;//TODO change maybe
 
         if (batteryLevel > startLevel) {
-            return 1F-0.002F*((float)getStartingTime());
+            return 1F - 0.002F * ((float) getStartingTime());
         }
 
         int levelUnder = startLevel - batteryLevel;
@@ -163,7 +178,7 @@ public abstract class EntityCarBatteryBase extends EntityCarBase {
     }
 
     public float getBatteryPercentage() {
-        return ((float)getBatteryLevel()) / ((float)getMaxBatteryLevel());
+        return ((float) getBatteryLevel()) / ((float) getMaxBatteryLevel());
     }
 
     public void setBatteryLevel(int level) {
