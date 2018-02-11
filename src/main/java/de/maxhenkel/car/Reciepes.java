@@ -17,8 +17,10 @@ public class Reciepes {
 			GameRegistry.addShapedRecipe(new ResourceLocation(Main.MODID, "tar_wool"), null, new ItemStack(ModBlocks.TAR, 8), new Object[] { "XXX", "XWX", "XXX",
 					Character.valueOf('X'), new ItemStack(Blocks.COBBLESTONE), Character.valueOf('W'), new ItemStack(Blocks.WOOL, 1, 15) });
 			GameRegistry.addShapedRecipe(new ResourceLocation(Main.MODID, "tar_coal"), null, new ItemStack(ModBlocks.TAR, 8), new Object[] { "XXX", "XWX", "XXX",
-					Character.valueOf('X'), new ItemStack(Blocks.COBBLESTONE), Character.valueOf('W'), new ItemStack(Items.COAL) });
-			
+					Character.valueOf('X'), new ItemStack(Blocks.COBBLESTONE), Character.valueOf('W'), new ItemStack(Items.COAL, 1, 0) });
+			GameRegistry.addShapedRecipe(new ResourceLocation(Main.MODID, "tar_charcoal"), null, new ItemStack(ModBlocks.TAR, 8), new Object[] { "XXX", "XWX", "XXX",
+					Character.valueOf('X'), new ItemStack(Blocks.COBBLESTONE), Character.valueOf('W'), new ItemStack(Items.COAL, 1, 1) });
+
 			//Tar Slab
 			GameRegistry.addShapedRecipe(new ResourceLocation(Main.MODID, "tar_slab"), null, new ItemStack(ModBlocks.TAR_SLAB, 6), new Object[] { "XXX",
 					Character.valueOf('X'), new ItemStack(ModBlocks.TAR)});
