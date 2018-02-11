@@ -228,6 +228,14 @@ public class Reciepes {
 					Character.valueOf('S'), new ItemStack(ModItems.SCREW_DRIVER, 1, 0),
 					Character.valueOf('H'), new ItemStack(ModItems.HAMMER, 1, 0)});
 		}
+
+		if(Config.batteryRecipe){
+			//battery
+            //TODO spawn without durability
+			GameRegistry.addShapedRecipe(new ResourceLocation(Main.MODID, "battery"), null, new ItemStack(ModItems.BATTERY, 1), new Object[] { "S S", "III", "III",
+					Character.valueOf('I'), new ItemStack(Items.IRON_INGOT),
+					Character.valueOf('S'), new ItemStack(ModItems.IRON_STICK)});
+		}
 		
 		if(Config.cableRecipe){
 			

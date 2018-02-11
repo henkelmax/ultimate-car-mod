@@ -91,6 +91,7 @@ public class Config {
 	public static boolean generatorRecipe=true;
 	public static boolean splitTankRecipe=true;
 	public static boolean repairKitRecipe=true;
+    public static boolean batteryRecipe=true;
 	public static boolean canisterRecipe=true;
 	public static boolean carWorkshopRecipe=true;
 	public static boolean keyRecipe=true;
@@ -347,6 +348,7 @@ public class Config {
 		generatorRecipe=config.getBoolean("generator_recipe", "recipes", true, "");
 		splitTankRecipe=config.getBoolean("split_tank_recipe", "recipes", true, "");
 		repairKitRecipe=config.getBoolean("repair_kit_recipe", "recipes", true, "");
+        batteryRecipe=config.getBoolean("battery_recipe", "recipes", true, "");
 		canisterRecipe=config.getBoolean("canister_recipe", "recipes", true, "");
 		carWorkshopRecipe=config.getBoolean("car_workshop_recipe", "recipes", true, "");
 		keyRecipe=config.getBoolean("key_clone_recipe", "recipes", true, "");

@@ -29,4 +29,8 @@ public class ItemBattery extends Item {
 		super.addInformation(stack, worldIn, tooltip, flagIn);
 	}
 
+    @Override
+    public boolean isEnchantable(ItemStack stack) {
+        return false;
+    }
 }
