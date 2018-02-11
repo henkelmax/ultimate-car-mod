@@ -36,9 +36,13 @@ public abstract class EntityCarBatteryBase extends EntityCarBase {
     public void onUpdate() {
         super.onUpdate();
 
+        if(world.isRemote){
+            return;
+        }
+
         if (isStarting()) {
             setBatteryLevel(getBatteryLevel() - getBatteryUsage());
-            System.out.println(getBatteryLevel());
+            //System.out.println(getBatteryLevel());
             setStartingTime(getStartingTime() + 1);
             if (getBatteryLevel() <= 0) {
                 setStarting(false, true);//??
@@ -61,7 +65,7 @@ public abstract class EntityCarBatteryBase extends EntityCarBase {
             }
 
             if (ticksExisted % 20 == 0) {
-                System.out.println("Battery: " + getBatteryLevel() + " chargingRate: " + chargingRate + " temp: " + getTemperature() + " baseUsage: " + getBatteryUsage() + " carStopped: " + carStopped);
+                //System.out.println("Battery: " + getBatteryLevel() + " chargingRate: " + chargingRate + " temp: " + getTemperature() + " baseUsage: " + getBatteryUsage() + " carStopped: " + carStopped+ " carStarted: " + carStarted);
                 setBatteryLevel(getBatteryLevel() + chargingRate);
             }
         }
