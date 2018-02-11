@@ -94,6 +94,10 @@ public abstract class EntityCarBatteryBase extends EntityCarBase {
     }
 
     public int getBatteryUsage() {
+        if(!Config.useBattery){
+            return 0;
+        }
+
         float temp = getTemperature();
         int baseUsage = 4;
         if (temp < -0.3F) {
@@ -135,7 +139,7 @@ public abstract class EntityCarBatteryBase extends EntityCarBase {
      */
     public void setStarting(boolean starting, boolean playFailSound) {
         if (starting) {
-            if (getBatteryUsage() <= 0) {
+            if (getBatteryLevel() <= 0) {
                 return;//TODO nostart
             }
             if (isStarted()) {

@@ -72,6 +72,7 @@ public class Config {
 	public static boolean collideWithEntities=true;
 	public static boolean damageEntities=false;
 	public static boolean hornFlee=true;
+	public static boolean useBattery=true;
 	public static boolean dynamicLights=true;
 	
 	public static boolean tarRecipe=true;
@@ -326,7 +327,8 @@ public class Config {
 		collideWithEntities=config.getBoolean("collide_with_entities", "car", true, "Whether the cars should collide with other entities");
 		damageEntities=config.getBoolean("damage_entities", "car", false, "Whether the cars should damage other entities on collision");
 		hornFlee=config.getBoolean("horn_flee", "car", true, "Whether animals flee from the car when the horn is activted");
-		dynamicLights=config.getBoolean("dynamic_lights", "car", true, "Whether cars should emit light when the DynamicLights mod is installed");
+        useBattery=config.getBoolean("use_battery", "car", true, "True if starting the car should use battery");
+        dynamicLights=config.getBoolean("dynamic_lights", "car", true, "Whether cars should emit light when the DynamicLights mod is installed");
 
 		//Recipes
 		tarRecipe=config.getBoolean("tar_recipe", "recipes", true, "");
