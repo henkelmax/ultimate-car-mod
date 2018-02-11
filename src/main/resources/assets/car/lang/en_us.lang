@@ -142,6 +142,7 @@ item.hammer.name=Hammer
 item.screw_driver.name=Screw Driver
 item.cable_insulator.name=Cable Insulator
 item.key.name=Key
+item.battery.name=Battery
 
 button.start=Start
 button.stop=Stop
@@ -181,6 +182,7 @@ tooltip.fluid=Fluid: %s
 tooltip.amount=Amount: %smb
 tooltip.repair_kit_1=Repairs your car when it has more than 90%% damage
 tooltip.repair_kit_2=Can be applied by left-clicking
+tooltip.battery=Energy stored: %s
 
 fluid.canola_oil=Canola Oil
 fluid.methanol=Methanol

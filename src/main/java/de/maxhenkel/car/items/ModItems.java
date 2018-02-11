@@ -26,4 +26,5 @@ public class ModItems {
 	public static final ItemCraftingComponent AXLE = new ItemCraftingComponent("axle");
 	public static final ItemCraftingComponent CONTAINER = new ItemCraftingComponent("container");
 	public static final ItemKey KEY = new ItemKey();
+	public static final ItemBattery BATTERY = new ItemBattery();
 }

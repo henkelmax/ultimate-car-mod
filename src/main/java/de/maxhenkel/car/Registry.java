@@ -265,6 +265,7 @@ public class Registry {
 		registerItem(event.getRegistry(), ModItems.HAMMER);
 		registerItem(event.getRegistry(), ModItems.CABLE_INSULATOR);
 		registerItem(event.getRegistry(), ModItems.KEY);
+        registerItem(event.getRegistry(), ModItems.BATTERY);
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -331,6 +332,7 @@ public class Registry {
 		addRenderItem(ModItems.HAMMER);
 		addRenderItem(ModItems.CABLE_INSULATOR);
 		addRenderItem(ModItems.KEY);
+		addRenderItem(ModItems.BATTERY);
 
 		registerFluidModel(ModBlocks.METHANOL);
 		registerFluidModel(ModBlocks.CANOLA_OIL);
