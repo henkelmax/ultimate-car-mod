@@ -36,7 +36,8 @@ public class GuiCar extends GuiBase{
 	   
 		fontRenderer.drawString(getFuelString(), 7, 9, fontColor);
 		fontRenderer.drawString(getDamageString(), 7, 35, fontColor);
-	    
+        fontRenderer.drawString(getBatteryString(), 95, 9, fontColor);
+
 	    //drawCenteredString(fontRendererObj, new TextComponentTranslation("car.fuel_slot").getFormattedText(), 123, 28, fontColor);
 	    
 	}
@@ -45,6 +46,11 @@ public class GuiCar extends GuiBase{
 		float fuelPerc=((float)car.getFuelAmount())/((float)car.getMaxFuel())*100F;
 		return MathTools.round(fuelPerc, 2);
 	}
+
+    public double getBatteryPercent(){
+        float fuelPerc=car.getBatteryPercentage()*100F;
+        return MathTools.round(fuelPerc, 2);
+    }
 	
 	public double getDamagePercent(){
 		float dmg=car.getDamage();
@@ -60,6 +66,10 @@ public class GuiCar extends GuiBase{
 		return new TextComponentTranslation("gui.damage", String.valueOf(getDamagePercent())).getFormattedText();
 	}
 
+    public String getBatteryString(){
+        return new TextComponentTranslation("gui.battery", String.valueOf(getBatteryPercent())).getFormattedText();
+    }
+
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
 		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
@@ -68,7 +78,8 @@ public class GuiCar extends GuiBase{
         int j = this.guiTop;
         this.drawTexturedModalRect(i, j, 0, 0, this.xSize, this.ySize);
         drawFuel(getFuelPercent());
-        drawDamage(100-getDamagePercent());
+        drawDamage(100F-getDamagePercent());
+        drawBattery(car.getBatteryPercentage());
 	}
 	
 	public void drawFuel(double percent){
@@ -84,6 +95,13 @@ public class GuiCar extends GuiBase{
 		int i = this.guiLeft;
         int j = this.guiTop;
 		this.drawTexturedModalRect(i+8, j+46, 176, 10, scaled, 10);
+	}
+
+	public void drawBattery(double percent){
+		int scaled=(int) (72*percent);
+		int i = this.guiLeft;
+		int j = this.guiTop;
+		this.drawTexturedModalRect(i+96, j+20, 176, 20, scaled, 10);
 	}
 
 }

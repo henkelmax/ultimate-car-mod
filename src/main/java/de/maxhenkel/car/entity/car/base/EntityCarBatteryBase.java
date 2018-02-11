@@ -24,7 +24,6 @@ public abstract class EntityCarBatteryBase extends EntityCarBase {
     @SideOnly(Side.CLIENT)
     private SoundLoopStart startLoop;
 
-    boolean carStarted;
     boolean carStopped;
 
     public EntityCarBatteryBase(World worldIn) {
@@ -44,7 +43,6 @@ public abstract class EntityCarBatteryBase extends EntityCarBase {
         }
         if (getStartingTime() > getTimeToStart()) {
             startCarEngine();
-            carStarted = true;
             setStartingTime(0);
         }
 
@@ -57,7 +55,7 @@ public abstract class EntityCarBatteryBase extends EntityCarBase {
             }
 
             if(ticksExisted%20==0){
-                System.out.println("Battery: " +getBatteryLevel() +" chargingRate: " +chargingRate +" temp: " +getTemperature() +" baseUsage: " +getBatteryUsage());
+                System.out.println("Battery: " +getBatteryLevel() +" chargingRate: " +chargingRate +" temp: " +getTemperature() +" baseUsage: " +getBatteryUsage() +" carStopped: " +carStopped);
                 setBatteryLevel(getBatteryLevel()+chargingRate);
             }
         }
@@ -137,13 +135,11 @@ public abstract class EntityCarBatteryBase extends EntityCarBase {
                 return;
             }
         } else {
-            if (carStarted || carStopped) {
+            if (/*carStarted || */carStopped) {
                 //TO prevent car from making stop start sound after releasing the starter key
-                carStarted = false;
                 carStopped = false;
                 return;
             }
-            setStarted(false, false, playFailSound);
         }
         this.dataManager.set(STARTING, Boolean.valueOf(starting));
     }

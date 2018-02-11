@@ -2,6 +2,7 @@ category.car=Car
 
 gui.fuel=%s %% Fuel
 gui.damage=%s %% Damage
+gui.battery=%s %% Battery
 gui.painter=Painter
 gui.fuelstation=Fuel Station
 gui.sign=Edit Sign Text (%s)
