@@ -1,13 +1,18 @@
 package de.maxhenkel.car.entity.car.base;
 
 import de.maxhenkel.car.Config;
+import de.maxhenkel.car.blocks.ModBlocks;
 import de.maxhenkel.car.sounds.ModSounds;
 import de.maxhenkel.car.sounds.SoundLoopStart;
+import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -24,8 +29,12 @@ public abstract class EntityCarBatteryBase extends EntityCarBase {
     @SideOnly(Side.CLIENT)
     private SoundLoopStart startLoop;
 
-    boolean carStopped;
-    boolean carStarted;
+    //Server side
+    private boolean carStopped;
+    private boolean carStarted;
+
+    //Client side
+    private int timeSinceStarted;
 
     public EntityCarBatteryBase(World worldIn) {
         super(worldIn);
@@ -36,8 +45,16 @@ public abstract class EntityCarBatteryBase extends EntityCarBase {
     public void onUpdate() {
         super.onUpdate();
 
-        if(world.isRemote){
-            return;
+        if (world.isRemote) {
+            if (isStarted()) {
+                timeSinceStarted++;
+                if (ticksExisted % 2 == 0) {//How often particles will spawn
+                    spawnParticles(getSpeed() > 0.1F);
+                }
+            } else {
+                timeSinceStarted = 0;
+            }
+            return; //Important because car not going off bug
         }
 
         if (isStarting()) {
@@ -71,6 +88,62 @@ public abstract class EntityCarBatteryBase extends EntityCarBase {
         }
     }
 
+    public void spawnParticles(boolean driving) {
+        if (!world.isRemote) {
+            return;
+        }
+        Vec3d lookVec = getLookVec().normalize();
+        double offX = lookVec.x * -width / 2;
+        double offY = lookVec.y;
+        double offZ = lookVec.z * -width / 2;
+
+        if (timeSinceStarted > 0 && timeSinceStarted < 20) {
+            double speedX = lookVec.x * -0.1D;
+            double speedZ = lookVec.z * -0.1D;
+            if (this instanceof EntityCarDamageBase) {
+                float damage = ((EntityCarDamageBase) this).getDamage();
+                int count = 1;
+                double r = 0.1;
+                System.out.println(damage);
+                if (damage > 0.9F) {
+                    count = 6;
+                    r = 0.7;
+                } else if (damage > 0.75F) {
+                    count = 3;
+                    r = 0.7;
+                } else if (damage > 0.5F) {
+                    count = 2;
+                    r = 0.3;
+                }
+                for (int i = 0; i <= count; i++) {
+                    spawnParticle(EnumParticleTypes.SMOKE_LARGE, offX, offY, offZ, speedX, speedZ, r);
+                }
+            } else {
+                spawnParticle(EnumParticleTypes.SMOKE_LARGE, offX, offY, offZ, speedX, speedZ);
+            }
+        } else if (driving) {
+            double speedX = lookVec.x * -0.2D;
+            double speedZ = lookVec.z * -0.2D;
+            spawnParticle(EnumParticleTypes.SMOKE_NORMAL, offX, offY, offZ, speedX, speedZ);
+        } else {
+            double speedX = lookVec.x * -0.05D;
+            double speedZ = lookVec.z * -0.05D;
+            spawnParticle(EnumParticleTypes.SMOKE_NORMAL, offX, offY, offZ, speedX, speedZ);
+        }
+
+    }
+
+    private void spawnParticle(EnumParticleTypes particleTypes, double offX, double offY, double offZ, double speedX, double speedZ, double random) {
+        world.spawnParticle(particleTypes,
+                posX + offX + (rand.nextDouble() * random),
+                posY + (rand.nextDouble() * random) + height / 8F,
+                posZ + offZ + (rand.nextDouble() * random), speedX, 0.0D, speedZ);
+    }
+
+    private void spawnParticle(EnumParticleTypes particleTypes, double offX, double offY, double offZ, double speedX, double speedZ) {
+        spawnParticle(particleTypes, offX, offY, offZ, speedX, speedZ, 0.1D);
+    }
+
     public int getTimeToStart() {
         int baseTime = rand.nextInt(20) + 10;
 
@@ -98,7 +171,7 @@ public abstract class EntityCarBatteryBase extends EntityCarBase {
     }
 
     public int getBatteryUsage() {
-        if(!Config.useBattery){
+        if (!Config.useBattery) {
             return 0;
         }
 
@@ -173,7 +246,7 @@ public abstract class EntityCarBatteryBase extends EntityCarBase {
 
         int startLevel = getMaxBatteryLevel() / 3;//TODO change maybe
 
-        float basePitch=1F - 0.002F * ((float) getStartingTime());
+        float basePitch = 1F - 0.002F * ((float) getStartingTime());
 
         if (batteryLevel > startLevel) {
             return basePitch;
@@ -184,7 +257,7 @@ public abstract class EntityCarBatteryBase extends EntityCarBase {
         float perc = (float) levelUnder / (float) startLevel;
 
         float pitch = basePitch - (perc / 2.3F); //2 = max 0.5 pitch
-        System.out.println(pitch);
+        //System.out.println(pitch);
         return pitch;
     }
 
