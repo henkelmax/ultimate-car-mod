@@ -20,14 +20,11 @@ import net.minecraft.world.World;
 
 public class ItemRepairKit extends Item {
 
-	private final float repairAmount;
-
 	public ItemRepairKit() {
 		setMaxStackSize(1);
 		setUnlocalizedName("repair_kit");
 		setRegistryName("repair_kit");
 		setCreativeTab(ModCreativeTabs.TAB_CAR);
-		repairAmount = Config.repairKitRepairAmount;
 	}
 	
 	@Override
@@ -35,30 +32,6 @@ public class ItemRepairKit extends Item {
 		tooltip.add(new TextComponentTranslation("tooltip.repair_kit_1").getUnformattedText());
 		tooltip.add(new TextComponentTranslation("tooltip.repair_kit_2").getUnformattedText());
 		super.addInformation(stack, worldIn, tooltip, flagIn);
-	}
-
-	@Override
-	public boolean onLeftClickEntity(ItemStack stack, EntityPlayer player, Entity entity) {
-
-		if (entity instanceof EntityCarDamageBase) {
-			EntityCarDamageBase car = (EntityCarDamageBase) entity;
-			if (car.getDamage() >= 90) {
-
-				player.setHeldItem(EnumHand.MAIN_HAND, ItemTools.decrItemStack(stack, player));
-
-				float damage = car.getDamage() - repairAmount;
-				if (damage >= 0) {
-					car.setDamage(damage);
-				}
-				ModSounds.playSound(SoundEvents.ITEM_ARMOR_EQUIP_CHAIN, player.world, entity.getPosition(), null,
-						SoundCategory.NEUTRAL);
-				return false;
-			} else {
-				return false;
-			}
-		}
-
-		return super.onLeftClickEntity(stack, player, entity);
 	}
 
 }

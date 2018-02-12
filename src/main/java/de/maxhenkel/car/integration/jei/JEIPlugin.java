@@ -88,6 +88,9 @@ public class JEIPlugin implements IModPlugin {
 		// Fluid extractor
 		registry.addIngredientInfo(new ItemStack(ModBlocks.FLUID_EXTRACTOR), ItemStack.class,
 				"description.fluid_extractor");
+
+		// Battery
+		registry.addIngredientInfo(new ItemStack(ModItems.BATTERY), ItemStack.class, "description.battery");
 	}
 
 	@Override

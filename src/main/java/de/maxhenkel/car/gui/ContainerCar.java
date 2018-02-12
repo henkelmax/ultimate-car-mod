@@ -22,7 +22,9 @@ public class ContainerCar extends ContainerBase {
 		
 		addSlotToContainer(new SlotFuel(car, 0, 98, 40));
 
-		addSlotToContainer(new SlotBattery(car, 0, 134, 40));
+		addSlotToContainer(new SlotBattery(car, 0, 116, 40));
+
+		addSlotToContainer(new SlotRepairKit(car, 0, 134, 40));
 
 		addInvSlots();
 	}

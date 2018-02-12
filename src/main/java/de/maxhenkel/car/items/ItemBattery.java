@@ -24,6 +24,7 @@ public class ItemBattery extends Item {
 
 		int damage=getMaxDamage(stack)-getDamage(stack);
 
+		tooltip.add(new TextComponentTranslation("tooltip.battery_energy", damage).getFormattedText());
 		tooltip.add(new TextComponentTranslation("tooltip.battery", damage).getFormattedText());
 
 		super.addInformation(stack, worldIn, tooltip, flagIn);
