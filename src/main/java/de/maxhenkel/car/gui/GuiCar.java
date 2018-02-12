@@ -47,9 +47,8 @@ public class GuiCar extends GuiBase{
 		return MathTools.round(fuelPerc, 2);
 	}
 
-    public double getBatteryPercent(){
-        float fuelPerc=car.getBatteryPercentage()*100F;
-        return MathTools.round(fuelPerc, 2);
+    public int getBatteryPercent(){
+        return (int)(car.getBatteryPercentage()*100F);
     }
 	
 	public double getDamagePercent(){
@@ -59,15 +58,15 @@ public class GuiCar extends GuiBase{
 	}
 	
 	public String getFuelString(){
-		return new TextComponentTranslation("gui.fuel", String.valueOf(getFuelPercent())).getFormattedText();
+		return new TextComponentTranslation("gui.car_fuel", String.valueOf(getFuelPercent())).getFormattedText();
 	}
 	
 	public String getDamageString(){
-		return new TextComponentTranslation("gui.damage", String.valueOf(getDamagePercent())).getFormattedText();
+		return new TextComponentTranslation("gui.car_damage", String.valueOf(getDamagePercent())).getFormattedText();
 	}
 
     public String getBatteryString(){
-        return new TextComponentTranslation("gui.battery", String.valueOf(getBatteryPercent())).getFormattedText();
+        return new TextComponentTranslation("gui.car_battery", String.valueOf(getBatteryPercent())).getFormattedText();
     }
 
 	@Override
