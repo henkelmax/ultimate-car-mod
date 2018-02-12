@@ -185,6 +185,7 @@ tooltip.repair_kit_1=Repairs your car when it has more than 90%% damage
 tooltip.repair_kit_2=Can be applied int the car GUI
 tooltip.battery_energy=Energy stored: %s
 tooltip.battery=Restores the energy of your car battery in the car GUI
+tooltip.container=Sneak + right-click to add to a transporter
 
 fluid.canola_oil=Canola Oil
 fluid.methanol=Methanol
@@ -242,6 +243,6 @@ description.painter_white=With the White Painter you can draw lines or arrows on
 description.repair_kit=With the Repair Kit you can repair your Car int the car GUI. NOTE: This only repairs the car when the damage is greater than 90%. It should only be used to be able to get to the next Car Workshop
 description.tank=A Tank can be used to store fluids. It stores 16,000 mb. It can hold every known fluid.
 description.battery=With the Battery you can refill your car's energy in the car GUI. A full Battery restores 500 energy. You can recharge it by sneak + right clicking a generator
-
+description.container=Sneak + right-click to add a container to a transporter
 
 death.attack.hit_car=%s was run over by a car

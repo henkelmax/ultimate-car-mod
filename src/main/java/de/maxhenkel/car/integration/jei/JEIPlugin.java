@@ -91,6 +91,9 @@ public class JEIPlugin implements IModPlugin {
 
 		// Battery
 		registry.addIngredientInfo(new ItemStack(ModItems.BATTERY), ItemStack.class, "description.battery");
+
+        // Container
+        registry.addIngredientInfo(new ItemStack(ModItems.CONTAINER), ItemStack.class, "description.container");
 	}
 
 	@Override

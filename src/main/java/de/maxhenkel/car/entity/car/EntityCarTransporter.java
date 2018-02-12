@@ -1,15 +1,21 @@
 package de.maxhenkel.car.entity.car;
 
 import de.maxhenkel.car.entity.car.base.EntityCarLockBase;
+import de.maxhenkel.car.items.ModItems;
 import de.maxhenkel.car.reciepe.CarBuilderTransporter;
 import de.maxhenkel.car.reciepe.ICarbuilder;
+import de.maxhenkel.tools.ItemTools;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.item.EnumDyeColor;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
@@ -82,7 +88,7 @@ public class EntityCarTransporter extends EntityCarLockBase{
 		this.dataManager.register(TYPE, EnumDyeColor.WHITE.getMetadata());
 	}
 
-	public void setHasContainer(boolean has) {
+	private void setHasContainer(boolean has) {
 		this.dataManager.set(HAS_CONTAINER, has);
 	}
 
@@ -97,8 +103,37 @@ public class EntityCarTransporter extends EntityCarLockBase{
 	public EnumDyeColor getType() {
 		return EnumDyeColor.byMetadata(this.dataManager.get(TYPE));
 	}
-	
-	@Override
+
+	public void addContainer(){
+	    if(getHasContainer()){
+	        return;
+        }
+
+        IInventory inv=externalInventory;
+        externalInventory=new InventoryBasic(getCarName().getFormattedText(), false, 54);
+        for(int i=0; i<inv.getSizeInventory(); i++){
+            externalInventory.setInventorySlotContents(i, inv.getStackInSlot(i));
+            inv.setInventorySlotContents(i, ItemTools.EMPTY);
+        }
+	    setHasContainer(true);
+    }
+
+    @Override
+    public boolean processInitialInteract(EntityPlayer player, EnumHand hand) {
+	    if(player.isSneaking()){
+            ItemStack stack=player.getHeldItem(hand);
+            if(stack.getItem().equals(ModItems.CONTAINER)){
+                ItemTools.decrItemStack(stack, player);
+                player.setHeldItem(hand, stack);
+                addContainer();
+                return true;
+            }
+        }
+
+        return super.processInitialInteract(player, hand);
+    }
+
+    @Override
 	protected void writeEntityToNBT(NBTTagCompound compound) {
 		compound.setBoolean("has_container", getHasContainer());
 		compound.setInteger("type", getType().getMetadata());
