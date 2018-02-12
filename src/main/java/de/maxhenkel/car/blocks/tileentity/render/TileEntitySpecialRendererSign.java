@@ -59,7 +59,7 @@ public class TileEntitySpecialRendererSign extends TileEntitySpecialRenderer<Til
 		GlStateManager.pushMatrix();
 		
 		int textWidth = getFontRenderer().getStringWidth(txt);
-		double textScale = 0.013;
+		double textScale = 0.008;
 
 		GlStateManager.translate(-(textScale * textWidth) / 2.0, 0, 0);
 

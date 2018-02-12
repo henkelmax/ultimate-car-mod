@@ -70,7 +70,7 @@ public class GuiSign extends GuiBase {
 		field.setTextColor(-1);
 		field.setDisabledTextColour(-1);
 		field.setEnableBackgroundDrawing(true);
-		field.setMaxStringLength(12);
+		field.setMaxStringLength(20);
 		field.setText(text[id]);
 		return field;
 	}
