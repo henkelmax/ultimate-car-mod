@@ -364,14 +364,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 	    EntityPlayer player=getDriver();
 		if (player != null && canStartCarEngine(player)) {
 			setStarted(true);
-			/*if (world.isRemote) {
-				CommonProxy.simpleNetworkWrapper.sendToServer(new MessageStartCar(true, player));
-			}*/
 		}
-	}
-
-	public void startCarEngineServerSide(boolean start, boolean playStopSound, boolean playFailSound) {
-	    setStarted(start, playStopSound, playFailSound);
 	}
 
 	public boolean canStartCarEngine(EntityPlayer player) {
@@ -450,6 +443,12 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 			playStopSound();
 		}else if(!started&&playFailSound){
 		    playFailSound();
+        }
+        if(started){
+		    setForward(false);
+		    setBackward(false);
+		    setLeft(false);
+		    setRight(false);
         }
 		this.dataManager.set(STARTED, Boolean.valueOf(started));
 	}
