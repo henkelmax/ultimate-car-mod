@@ -240,7 +240,7 @@ description.painter_yellow=With the Yellow Painter you can draw lines or arrows 
 description.painter_white=With the White Painter you can draw lines or arrows on your road. Sneak and right click opens a menu where you can choose between all types
 description.repair_kit=With the Repair Kit you can repair your Car int the car GUI. NOTE: This only repairs the car when the damage is greater than 90%. It should only be used to be able to get to the next Car Workshop
 description.tank=A Tank can be used to store fluids. It stores 16,000 mb. It can hold every known fluid.
-description.battery=With the Battery you can fill your Car energy int the car GUI. A full Battery restores 500 energy.
+description.battery=With the Battery you can refill your car's energy in the car GUI. A full Battery restores 500 energy. You can recharge it by sneak + right clicking a generator
 
 
 death.attack.hit_car=%s was run over by a car
