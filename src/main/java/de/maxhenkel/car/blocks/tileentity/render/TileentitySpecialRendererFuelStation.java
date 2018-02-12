@@ -1,5 +1,6 @@
 package de.maxhenkel.car.blocks.tileentity.render;
 
+import net.minecraft.client.renderer.GlStateManager;
 import org.lwjgl.opengl.GL11;
 
 import de.maxhenkel.car.blocks.tileentity.TileEntityFuelStation;
@@ -17,13 +18,17 @@ public class TileentitySpecialRendererFuelStation extends TileEntitySpecialRende
 			return;
 		}
 
-		GL11.glPushMatrix();
-		GL11.glTranslated(x + 0.5, y + 1, z + 0.5);
-		GL11.glRotatef(180.0F, 1.0F, 0.0F, 0.0F);
+		GlStateManager.pushMatrix();
+		//GL11.glPushMatrix();
+        GlStateManager.translate(x + 0.5, y + 1, z + 0.5);
+		//GL11.glTranslated(x + 0.5, y + 1, z + 0.5);
+        GlStateManager.rotate(180.0F, 1.0F, 0.0F, 0.0F);
+		//GL11.glRotatef(180.0F, 1.0F, 0.0F, 0.0F);
 
 		EnumFacing dir=target.getDirection();
-		
-		GL11.glRotatef(-getDirection(dir), 0.0F, 1.0F, 0.0F);
+
+        GlStateManager.rotate(-getDirection(dir), 0.0F, 1.0F, 0.0F);
+		//GL11.glRotatef(-getDirection(dir), 0.0F, 1.0F, 0.0F);
 
 		FontRenderer renderer = getFontRenderer();
 
@@ -34,16 +39,21 @@ public class TileentitySpecialRendererFuelStation extends TileEntitySpecialRende
 
 			float posX=-(textScale * textWidth) / 2.0F;
 			
-			GL11.glTranslatef(posX, -0.815F, -0.188F);
+			//GL11.glTranslatef(posX, -0.815F, -0.188F);
+            GlStateManager.translate(posX, -0.815F, -0.188F);
 
-			GL11.glScalef(textScale, textScale, textScale);
+			//GL11.glScalef(textScale, textScale, textScale);
+            GlStateManager.scale(textScale, textScale, textScale);
 
-			GL11.glDepthMask(false);
+			//GL11.glDepthMask(false);
+            GlStateManager.depthMask(false);
 			renderer.drawString(name, 0, 0, 0);
-			GL11.glDepthMask(true);
+			//GL11.glDepthMask(true);
+            GlStateManager.depthMask(true);
 		}
 
-		GL11.glPopMatrix();
+        GlStateManager.popMatrix();
+		//GL11.glPopMatrix();
 	}
 	
 	private int getDirection(EnumFacing facing) {

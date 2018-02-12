@@ -42,9 +42,8 @@ public class TileEntitySpecialRendererTank extends TileEntitySpecialRenderer<Til
 	public static void renderFluid(TileEntityTank tank, Fluid fluid, double amount, double yStart) {
 		GlStateManager.pushMatrix();
 		GlStateManager.disableLighting();
-		GlStateManager.color(1F, 1F, 1F, 1F);
-		// GlStateManager.scale(0.98F, 0.98F, 0.98F);
-		// GlStateManager.translate(0.01F, 0.01F, 0.01F);
+		//GlStateManager.color(1F, 1F, 1F, 1F);
+
 		GlStateManager.enableBlend();
 		GlStateManager.enableAlpha();
 
@@ -132,7 +131,7 @@ public class TileEntitySpecialRendererTank extends TileEntitySpecialRenderer<Til
 	public static void drawLine(EnumFacing side, EnumDirection line) {
 		GlStateManager.pushMatrix();
 		GlStateManager.disableLighting();
-		GlStateManager.color(1F, 1F, 1F, 1F);
+		//GlStateManager.color(1F, 1F, 1F, 1F);
 		GlStateManager.enableBlend();
 		GlStateManager.enableAlpha();
 		
@@ -234,7 +233,7 @@ public class TileEntitySpecialRendererTank extends TileEntitySpecialRenderer<Til
 		}
 	}
 
-	public static enum EnumDirection {
+	public enum EnumDirection {
 		UP, DOWN, LEFT, RIGHT;
 
 		public EnumFacing to(EnumFacing facing) {

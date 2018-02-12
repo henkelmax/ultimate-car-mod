@@ -22,7 +22,6 @@ public class TileEntitySpecialRendererSplitTank extends TileEntitySpecialRendere
 		
 		GlStateManager.pushMatrix();
 		GlStateManager.translate(x, y, z);
-		GlStateManager.disableBlend();
 		
 		float bioDiesel = te.getBioDieselPerc() / 2F;
 		float glycerin = te.getGlycerinPerc() / 2F;
@@ -40,12 +39,13 @@ public class TileEntitySpecialRendererSplitTank extends TileEntitySpecialRendere
 	}
 	
 	public static void renderFluid(Fluid fluid, float amount, float yStart) {
-		GlStateManager.disableLighting();
-		GlStateManager.color(1, 1, 1, 1);
 		GlStateManager.pushMatrix();
+        //GlStateManager.color(1, 1, 1, 1);
+        GlStateManager.disableLighting();
 		GlStateManager.scale(0.98F, 0.98F, 0.98F);
 		GlStateManager.translate(0.01F, 0.01F, 0.01F);
 		GlStateManager.enableBlend();
+        GlStateManager.enableAlpha();
 		
 		TextureAtlasSprite texture = Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(fluid.getStill().toString());
 		
@@ -100,8 +100,9 @@ public class TileEntitySpecialRendererSplitTank extends TileEntitySpecialRendere
 		buffer.pos(1 - s, yStart + amount - s * 2, 0 + s).tex(uMax, vMin).endVertex();
 
 		tessellator.draw();
+
+		//GlStateManager.enableLighting();
 		GlStateManager.popMatrix();
-		GlStateManager.enableLighting();
 	}
 
 	
