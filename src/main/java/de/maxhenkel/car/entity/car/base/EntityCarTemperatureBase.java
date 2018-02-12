@@ -55,7 +55,7 @@ public abstract class EntityCarTemperatureBase extends EntityCarBase {
         float biomeTemp = getBiomeTemperatureCelsius();
 
         if (!isStarted()) {
-            return Math.max(biomeTemp, 12F);//minimum temp 12°
+            return biomeTemp;
         }
         float optimalTemp = getOptimalTemperature();
 
@@ -64,7 +64,7 @@ public abstract class EntityCarTemperatureBase extends EntityCarBase {
         }else if(biomeTemp<=0F){
             optimalTemp=80F;
         }
-        return Math.max(Math.max(biomeTemp, optimalTemp), 12F);//minimum temp 12°
+        return Math.max(biomeTemp, optimalTemp);
     }
 
     public float getBiomeTemperatureCelsius() {
@@ -76,11 +76,6 @@ public abstract class EntityCarTemperatureBase extends EntityCarBase {
     }
 
     public void setTemperature(float temperature) {
-        if (temperature < 0F) {
-            temperature = 0F;
-        } else if (temperature > 100F) {
-            temperature = 100F;
-        }
         this.dataManager.set(TEMPERATURE, Float.valueOf(temperature));
     }
 

@@ -151,9 +151,9 @@ public abstract class EntityCarDamageBase extends EntityCarBatteryBase {
 		int value= super.getTimeToStart();
 
 		if (getDamage() >= 95) {
-			value+=rand.nextInt(25)+25;
+			value+=rand.nextInt(25)+50;
 		} else if (getDamage() >= 90) {
-			value+=rand.nextInt(15)+15;
+			value+=rand.nextInt(15)+30;
 		} else if (getDamage() >= 80) {
 			value+=rand.nextInt(15)+10;
 		} else if (getDamage() >= 50) {

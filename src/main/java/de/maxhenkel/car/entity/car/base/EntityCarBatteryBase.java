@@ -67,7 +67,10 @@ public abstract class EntityCarBatteryBase extends EntityCarTemperatureBase {
         } else {
             setStartingTime(0);
         }
-        if (getStartingTime() > getTimeToStart()) {
+
+        int time = getStartingTime();
+
+        if (time > 0 /*prevent always calling gettimetostart*/ && time > getTimeToStart()) {
             startCarEngine();
         }
 
@@ -150,13 +153,14 @@ public abstract class EntityCarBatteryBase extends EntityCarTemperatureBase {
         int baseTime = rand.nextInt(20) + 10;
 
         float temp = getTemperature();
-
-        if (temp < 60F) {
-            baseTime += 20;
+        if (temp < 0F) {
+            baseTime += 30;
+        } else if (temp < 20F) {
+            baseTime += 25;
         } else if (temp < 40F) {
-            baseTime += 40;
-        }else if (temp < 20F) {
-            baseTime += 60;
+            baseTime += 20;
+        } else if (temp < 60F) {
+            baseTime += 15;
         }
 
         float batteryPerc = getBatteryPercentage();
@@ -176,10 +180,10 @@ public abstract class EntityCarBatteryBase extends EntityCarTemperatureBase {
         }
 
         float temp = getBiomeTemperatureCelsius();
-        int baseUsage = 3;
-        if (temp < -9F) {
+        int baseUsage = 2;
+        if (temp < 0F) {
             baseUsage += 2;
-        } else if (temp < 0F) {
+        } else if (temp < 15F) {
             baseUsage += 1;
         }
         return baseUsage;

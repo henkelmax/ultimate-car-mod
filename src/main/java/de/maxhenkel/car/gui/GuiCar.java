@@ -52,8 +52,19 @@ public class GuiCar extends GuiBase{
         return (int)(car.getBatteryPercentage()*100F);
     }
 
-    public float getTemperaturePercent(){
+    public float getTemperatureCelsius(){
         return MathTools.round(car.getTemperature(), 2);
+    }
+
+    public float getTemperaturePercent(){
+        float temp=car.getTemperature();
+        if(temp>100F){
+            temp=100F;
+        }
+        if(temp<0F){
+            temp=0F;
+        }
+        return temp/100F;
     }
 	
 	public float getDamagePercent(){
@@ -75,7 +86,7 @@ public class GuiCar extends GuiBase{
     }
 
     public String getTempString(){
-        return new TextComponentTranslation("gui.car_temperature", String.valueOf(getTemperaturePercent())).getFormattedText();
+        return new TextComponentTranslation("gui.car_temperature", String.valueOf(getTemperatureCelsius())).getFormattedText();
     }
 
 	@Override
@@ -88,7 +99,7 @@ public class GuiCar extends GuiBase{
         drawFuel(getFuelPercent());
         drawDamage(100F-getDamagePercent());
         drawBattery(car.getBatteryPercentage());
-        drawTemp(car.getTemperature()/100F);
+        drawTemp(getTemperaturePercent());
 	}
 	
 	public void drawFuel(float percent){
