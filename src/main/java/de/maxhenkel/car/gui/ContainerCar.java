@@ -16,22 +16,22 @@ public class ContainerCar extends ContainerBase {
 		
 		for (int j = 0; j < numRows; j++) {
 			for (int k = 0; k < 9; k++) {
-				this.addSlotToContainer(new Slot(car, k + j * 9, 8 + k * 18, 72 + j * 18));
+				this.addSlotToContainer(new Slot(car, k + j * 9, 8 + k * 18, 98 + j * 18));
 			}
 		}
 		
-		addSlotToContainer(new SlotFuel(car, 0, 98, 40));
+		addSlotToContainer(new SlotFuel(car, 0, 98, 66));
 
-		addSlotToContainer(new SlotBattery(car, 0, 116, 40));
+		addSlotToContainer(new SlotBattery(car, 0, 116, 66));
 
-		addSlotToContainer(new SlotRepairKit(car, 0, 134, 40));
+		addSlotToContainer(new SlotRepairKit(car, 0, 134, 66));
 
 		addInvSlots();
 	}
 	
 	@Override
 	public int getInvOffset() {
-		return 56;
+		return 82;
 	}
 
 }

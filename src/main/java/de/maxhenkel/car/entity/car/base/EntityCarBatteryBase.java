@@ -17,7 +17,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public abstract class EntityCarBatteryBase extends EntityCarBase {
+public abstract class EntityCarBatteryBase extends EntityCarTemperatureBase {
 
     private static final DataParameter<Integer> BATTERY_LEVEL = EntityDataManager.<Integer>createKey(EntityCarBatteryBase.class,
             DataSerializers.VARINT);
@@ -76,10 +76,12 @@ public abstract class EntityCarBatteryBase extends EntityCarBase {
             carStarted = true;
             float speedPerc = getSpeed() / getMaxSpeed();
 
-            int chargingRate = (int) (speedPerc * 10F);
+            int chargingRate = (int) (speedPerc * 7F);
             if (chargingRate < 5) {
                 chargingRate = 1;
             }
+
+            int tempRate = (int) (speedPerc * 10F);
 
             if (ticksExisted % 20 == 0) {
                 //System.out.println("Battery: " + getBatteryLevel() + " chargingRate: " + chargingRate + " temp: " + getTemperature() + " baseUsage: " + getBatteryUsage() + " carStopped: " + carStopped+ " carStarted: " + carStarted);
@@ -104,7 +106,7 @@ public abstract class EntityCarBatteryBase extends EntityCarBase {
                 float damage = ((EntityCarDamageBase) this).getDamage();
                 int count = 1;
                 double r = 0.1;
-                System.out.println(damage);
+
                 if (damage > 0.9F) {
                     count = 6;
                     r = 0.7;
@@ -149,10 +151,12 @@ public abstract class EntityCarBatteryBase extends EntityCarBase {
 
         float temp = getTemperature();
 
-        if (temp < 0F) {
-            baseTime += 30;
-        } else if (temp < -0.3F) {
+        if (temp < 60F) {
+            baseTime += 20;
+        } else if (temp < 40F) {
             baseTime += 40;
+        }else if (temp < 20F) {
+            baseTime += 60;
         }
 
         float batteryPerc = getBatteryPercentage();
@@ -166,18 +170,14 @@ public abstract class EntityCarBatteryBase extends EntityCarBase {
         return baseTime;
     }
 
-    public float getTemperature() {
-        return world.getBiome(getPosition()).getTemperature(getPosition()) - 0.3F;
-    }
-
     public int getBatteryUsage() {
         if (!Config.useBattery) {
             return 0;
         }
 
-        float temp = getTemperature();
-        int baseUsage = 4;
-        if (temp < -0.3F) {
+        float temp = getBiomeTemperatureCelsius();
+        int baseUsage = 3;
+        if (temp < -9F) {
             baseUsage += 2;
         } else if (temp < 0F) {
             baseUsage += 1;

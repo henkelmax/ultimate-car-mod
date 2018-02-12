@@ -3,6 +3,7 @@ category.car=Car
 gui.car_fuel=%s %% Fuel
 gui.car_damage=%s %% Damage
 gui.car_battery=%s %% Battery
+gui.car_temperature=%s °C
 gui.painter=Painter
 gui.fuelstation=Fuel Station
 gui.sign=Edit Sign Text (%s)

@@ -2,6 +2,8 @@ package de.maxhenkel.car.blocks.tileentity;
 
 import java.util.List;
 import javax.annotation.Nullable;
+
+import de.maxhenkel.car.entity.car.base.EntityCarTemperatureBase;
 import de.maxhenkel.tools.ItemTools;
 import de.maxhenkel.car.blocks.BlockCarWorkshopOutter;
 import de.maxhenkel.car.blocks.ModBlocks;
@@ -83,6 +85,9 @@ public class TileEntityCarWorkshop extends TileEntityBase implements ICarCraftin
 		
 		removeCraftItems();
 		world.spawnEntity(car);
+		if(car instanceof EntityCarTemperatureBase){
+			((EntityCarTemperatureBase) car).initTemperature();
+		}
 	}
 
 	// Multiblock \/

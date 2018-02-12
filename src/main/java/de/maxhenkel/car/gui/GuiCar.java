@@ -23,7 +23,7 @@ public class GuiCar extends GuiBase{
 		this.car=car;
 		
 		xSize=176;
-		ySize=222;
+		ySize=248;
 	}
 	
 	@Override
@@ -31,18 +31,19 @@ public class GuiCar extends GuiBase{
 		super.drawGuiContainerForegroundLayer(mouseX, mouseY);
 		 
 		//Titles
-		fontRenderer.drawString(car.getCarName().getUnformattedText(), 7, 61, fontColor);
+		fontRenderer.drawString(car.getCarName().getUnformattedText(), 7, 87, fontColor);
 		fontRenderer.drawString(playerInv.getDisplayName().getUnformattedText(), 8, this.ySize - 96 + 2, fontColor);
 	   
 		fontRenderer.drawString(getFuelString(), 7, 9, fontColor);
 		fontRenderer.drawString(getDamageString(), 7, 35, fontColor);
         fontRenderer.drawString(getBatteryString(), 95, 9, fontColor);
+        fontRenderer.drawString(getTempString(), 95, 35, fontColor);
 
 	    //drawCenteredString(fontRendererObj, new TextComponentTranslation("car.fuel_slot").getFormattedText(), 123, 28, fontColor);
 	    
 	}
 	
-	public double getFuelPercent(){
+	public float getFuelPercent(){
 		float fuelPerc=((float)car.getFuelAmount())/((float)car.getMaxFuel())*100F;
 		return MathTools.round(fuelPerc, 2);
 	}
@@ -50,8 +51,12 @@ public class GuiCar extends GuiBase{
     public int getBatteryPercent(){
         return (int)(car.getBatteryPercentage()*100F);
     }
+
+    public float getTemperaturePercent(){
+        return MathTools.round(car.getTemperature(), 2);
+    }
 	
-	public double getDamagePercent(){
+	public float getDamagePercent(){
 		float dmg=car.getDamage();
 		dmg=Math.min(dmg, 100);
 		return MathTools.round(dmg, 2);
@@ -69,6 +74,10 @@ public class GuiCar extends GuiBase{
         return new TextComponentTranslation("gui.car_battery", String.valueOf(getBatteryPercent())).getFormattedText();
     }
 
+    public String getTempString(){
+        return new TextComponentTranslation("gui.car_temperature", String.valueOf(getTemperaturePercent())).getFormattedText();
+    }
+
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
 		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
@@ -79,25 +88,33 @@ public class GuiCar extends GuiBase{
         drawFuel(getFuelPercent());
         drawDamage(100F-getDamagePercent());
         drawBattery(car.getBatteryPercentage());
+        drawTemp(car.getTemperature()/100F);
 	}
 	
-	public void drawFuel(double percent){
+	public void drawFuel(float percent){
 		//72x10
-		int scaled=(int) (72*percent/100F);
+		int scaled=(int) (72F*percent/100D);
 		int i = this.guiLeft;
         int j = this.guiTop;
 		this.drawTexturedModalRect(i+8, j+20, 176, 0, scaled, 10);
 	}
 	
-	public void drawDamage(double percent){
-		int scaled=(int) (72*percent/100);
+	public void drawDamage(float percent){
+		int scaled=(int) (72F*percent/100D);
 		int i = this.guiLeft;
         int j = this.guiTop;
 		this.drawTexturedModalRect(i+8, j+46, 176, 10, scaled, 10);
 	}
 
-	public void drawBattery(double percent){
-		int scaled=(int) (72*percent);
+	public void drawTemp(float percent){
+		int scaled=(int) (72F*percent);
+		int i = this.guiLeft;
+		int j = this.guiTop;
+		this.drawTexturedModalRect(i+96, j+46, 176, 30, scaled, 10);
+	}
+
+	public void drawBattery(float percent){
+		int scaled=(int) (72F*percent);
 		int i = this.guiLeft;
 		int j = this.guiTop;
 		this.drawTexturedModalRect(i+96, j+20, 176, 20, scaled, 10);
