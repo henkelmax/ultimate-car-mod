@@ -20,6 +20,8 @@ import de.maxhenkel.car.sounds.SoundLoopIdle;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.audio.ISound;
+import net.minecraft.client.audio.ISoundEventAccessor;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.MoverType;
@@ -183,7 +185,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 
         	if(!startedLast){
 				checkStartLoop();
-			}else if(startLoop==null||!Minecraft.getMinecraft().getSoundHandler().isSoundPlaying(startLoop)){
+			}else if(!isSoundPlaying(startLoop)){
         	    if(startLoop!=null){
         	        startLoop.setDonePlaying();
                     startLoop=null;
@@ -198,6 +200,14 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 
 		startedLast=isStarted();
 	}
+
+    @SideOnly(Side.CLIENT)
+    public boolean isSoundPlaying(ISound sound){
+        if(sound==null){
+            return false;
+        }
+        return Minecraft.getMinecraft().getSoundHandler().isSoundPlaying(sound);
+    }
 
 	public void destroyCar(EntityPlayer player, boolean dropParts) {
 		/*if (dropParts) {
@@ -576,7 +586,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 
 	@SideOnly(Side.CLIENT)
 	public void checkIdleLoop() {
-		if (idleLoop == null || idleLoop.isDonePlaying()) {
+		if (!isSoundPlaying(idleLoop)) {
 			idleLoop = new SoundLoopIdle(world, this, getIdleSound(), SoundCategory.NEUTRAL);
 			ModSounds.playSoundLoop(idleLoop, world);
 		}
@@ -584,7 +594,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 
 	@SideOnly(Side.CLIENT)
 	public void checkHighLoop() {
-		if (highLoop == null || highLoop.isDonePlaying()) {
+		if (!isSoundPlaying(highLoop)) {
 			highLoop = new SoundLoopHigh(world, this, getHighSound(), SoundCategory.NEUTRAL);
 			ModSounds.playSoundLoop(highLoop, world);
 		}
@@ -592,7 +602,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 
     @SideOnly(Side.CLIENT)
     public void checkStartLoop() {
-        if (startLoop == null || startLoop.isDonePlaying()) {
+        if (!isSoundPlaying(startLoop)) {
             startLoop = new SoundLoopStart(world, this, getStartSound(), SoundCategory.NEUTRAL);
             ModSounds.playSoundLoop(startLoop, world);
         }
