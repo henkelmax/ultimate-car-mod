@@ -170,7 +170,9 @@ public abstract class EntityVehicleBase extends Entity{
 	@Override
 	public AxisAlignedBB getCollisionBox(Entity entityIn) {
 		if(!Config.collideWithEntities) {
-			return null;
+			if(!(entityIn instanceof EntityVehicleBase)){
+				return null;
+			}
 		}
 		return entityIn.canBePushed() ? entityIn.getEntityBoundingBox() : null;
 	}
