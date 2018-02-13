@@ -630,6 +630,15 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 		if (world.isRemote) {
 			CommonProxy.simpleNetworkWrapper.sendToServer(new MessageCarHorn(true, player));
 		}else{
+		    if(this instanceof EntityCarBatteryBase){
+                EntityCarBatteryBase car= (EntityCarBatteryBase) this;
+                if(car.getBatteryLevel()<10){
+                    return;
+                }
+                if(Config.useBattery){
+                    car.setBatteryLevel(car.getBatteryLevel()-10);
+                }
+            }
 			playHornSound();
 			if(Config.hornFlee) {
 				double radius=15;
