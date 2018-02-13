@@ -14,8 +14,6 @@ import net.minecraft.world.World;
 
 public abstract class BlockCrop extends BlockCrops{
 
-	public final PropertyInteger AGE = PropertyInteger.create("age", 0, getMaxAge());
-	
 	public static final AxisAlignedBB[] CROPS_AABB = new AxisAlignedBB[] {
 			new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.125D, 1.0D),
 			new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.25D, 1.0D),
