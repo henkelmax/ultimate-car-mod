@@ -1,6 +1,7 @@
 package de.maxhenkel.car.blocks.tileentity;
 
 import java.util.List;
+import java.util.UUID;
 
 import de.maxhenkel.car.Config;
 import de.maxhenkel.car.blocks.BlockFuelStation;
@@ -15,6 +16,7 @@ import de.maxhenkel.car.sounds.SoundLoopTileentity.ISoundLoopable;
 import de.maxhenkel.tools.ItemTools;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.item.ItemStack;
@@ -53,11 +55,14 @@ public class TileEntityFuelStation extends TileEntityBase implements ITickable, 
 
     private int freeAmountLeft;
 
+    private UUID owner;
+
     public TileEntityFuelStation() {
         this.transferRate = Config.fuelStationTransferRate;
         this.fuelCounter = 0;
         this.inventory = new InventoryBasic(new TextComponentTranslation("gui.fuelstation").getFormattedText(), false, 27);
         this.trading = new InventoryBasic(new TextComponentTranslation("gui.fuelstation").getFormattedText(), false, 2);
+        this.owner=new UUID(0L, 0L);
     }
 
     @Override
@@ -219,6 +224,34 @@ public class TileEntityFuelStation extends TileEntityBase implements ITickable, 
         return 3;
     }
 
+    public void setOwner(UUID owner){
+        this.owner=owner;
+        markDirty();
+    }
+
+    public void setOwner(EntityPlayer player){
+        this.owner=new UUID(player.getUniqueID().getMostSignificantBits(), player.getUniqueID().getLeastSignificantBits());
+        markDirty();
+    }
+
+    /**
+     * OPs are also owners
+     */
+    public boolean isOwner(EntityPlayer player){
+        if(player instanceof EntityPlayerMP){
+            EntityPlayerMP p = (EntityPlayerMP) player;
+
+            boolean isOp = p.canUseCommand(p.mcServer.getOpPermissionLevel(), "op");
+            if(isOp){
+                return true;
+            }
+        }
+        return player.getUniqueID().equals(owner);
+    }
+
+    public boolean hasTrade(){
+        return !ItemTools.isStackEmpty(trading.getStackInSlot(0));
+    }
 
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound compound) {
@@ -236,6 +269,8 @@ public class TileEntityFuelStation extends TileEntityBase implements ITickable, 
 
         compound.setInteger("trade_amount", tradeAmount);
         compound.setInteger("free_amount", freeAmountLeft);
+
+        compound.setUniqueId("owner", owner);
 
         return super.writeToNBT(compound);
     }
@@ -255,6 +290,8 @@ public class TileEntityFuelStation extends TileEntityBase implements ITickable, 
 
         tradeAmount = compound.getInteger("trade_amount");
         freeAmountLeft = compound.getInteger("free_amount");
+
+        owner=compound.getUniqueId("owner");
 
         super.readFromNBT(compound);
     }

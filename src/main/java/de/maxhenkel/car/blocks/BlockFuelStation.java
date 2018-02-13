@@ -44,37 +44,45 @@ public class BlockFuelStation extends BlockOrientableHorizontal {
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn,
                                     EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+        TileEntity te = worldIn.getTileEntity(pos);
+
+        if (te == null || !(te instanceof TileEntityFuelStation)) {
+            return false;
+        }
+
+        TileEntityFuelStation station= (TileEntityFuelStation) te;
+
         ItemStack stack = playerIn.getHeldItem(hand);
 
-        if (stack != null) {
-            FluidStack fluidStack = FluidUtil.getFluidContained(stack);
+        if(station.isOwner(playerIn)||!station.hasTrade()){
+            if (stack != null) {
+                FluidStack fluidStack = FluidUtil.getFluidContained(stack);
 
-            if (fluidStack != null) {
-                boolean success = BlockTank.handleEmpty(fluidStack, stack, worldIn, pos, playerIn, hand);
-                if (success) {
-                    return true;
+                if (fluidStack != null) {
+                    boolean success = BlockTank.handleEmpty(fluidStack, stack, worldIn, pos, playerIn, hand);
+                    if (success) {
+                        return true;
+                    }
+                }
+                IFluidHandler handler = FluidUtil.getFluidHandler(stack);
+
+                if (handler != null) {
+                    boolean success1 = BlockTank.handleFill(handler, stack, worldIn, pos, playerIn, hand);
+                    if (success1) {
+                        return true;
+                    }
                 }
             }
-            IFluidHandler handler = FluidUtil.getFluidHandler(stack);
-
-            if (handler != null) {
-                boolean success1 = BlockTank.handleFill(handler, stack, worldIn, pos, playerIn, hand);
-                if (success1) {
-                    return true;
-                }
-            }
-
         }
 
         if (!playerIn.isSneaking()) {
             playerIn.openGui(Main.instance(), GuiHandler.GUI_FUELSTATION, worldIn, pos.getX(), pos.getY(), pos.getZ());
             return true;
-        } else {
-            //TODO check admin
+        } else if(station.isOwner(playerIn)){
             playerIn.openGui(Main.instance(), GuiHandler.GUI_FUELSTATION_ADMIN, worldIn, pos.getX(), pos.getY(), pos.getZ());
             return true;
         }
-        //return false;
+        return false;
     }
 
     @Override
@@ -157,6 +165,15 @@ public class BlockFuelStation extends BlockOrientableHorizontal {
 
         if (worldIn.isAirBlock(pos.up())) {
             worldIn.setBlockState(pos.up(), ModBlocks.FUEL_STATION_TOP.getDefaultState());
+        }
+
+        TileEntity te = worldIn.getTileEntity(pos);
+
+        if (te != null && te instanceof TileEntityFuelStation && placer instanceof EntityPlayer) {
+            TileEntityFuelStation station= (TileEntityFuelStation) te;
+            station.setOwner((EntityPlayer) placer);
+        }else{
+            System.out.println("-----------------------------");
         }
 
         super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
