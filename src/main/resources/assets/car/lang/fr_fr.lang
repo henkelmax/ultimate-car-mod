@@ -1,0 +1,239 @@
+
+gui.fuel=%s %% Carburant
+gui.damage=%s %% Dégâts
+gui.painter=Rouleau
+gui.fuelstation=Pompe à essence
+gui.sign=Texte (%s) :
+gui.sign.front=Devant
+gui.sign.back=Derrière
+
+tile.tar.name=Asphalte
+tile.tar_slope.name=Pente en asphalte
+tile.tar_slope_flat_upper.name=Haut de pente en asphalte (Plat)
+tile.tar_slope_flat_lower.name=Bas de pente en asphalte (Plat)
+tile.tar_slab.name=Dalle en asphalte
+tile.canola.name=Colza
+tile.fuelstation.name=Pompe à essence
+tile.oilmill.name=Moulin à huile
+tile.blastfurnace.name=Haut fourneau
+tile.methanol.name=Méthanol
+tile.canola_oil.name=Huile de colza
+tile.backmix_reactor.name=Réacteur à remélange
+tile.generator.name=Générateur
+tile.split_tank.name=Séparateur
+tile.tank.name=Réservoir
+tile.crash_barrier.name=Glissière de sécurité
+tile.car_workshop.name=Atelier auto
+tile.car_workshop_outter.name=Extension de l'atelier auto
+tile.canola_methanol_mix.name=Mélange colza-méthanol
+tile.glycerin.name=Glycérine
+tile.bio_diesel.name=Biodiesel
+tile.cable.name=Câble électrique
+tile.fluid_extractor.name=Extracteur de fluides
+tile.fluid_pipe.name=Tuyau à fluides
+tile.crank.name=Manivelle
+tile.dynamo.name=Dynamo
+tile.sign_post.name=Poteau de pancarte
+
+tile.arrow_front_left_right_long.name=Grande flèche : à gauche, à droite et tout droit
+tile.arrow_long.name=Grande flèche : tout droit
+tile.arrow_front_left_long.name=Grande flèche : à gauche et tout droit
+tile.arrow_front_right_long.name=Grande flèche : à droite et tout droit
+tile.arrow_front_left_right.name=Flèche : à gauche, à droite et tout droit
+tile.arrow.name=Flèche : tout droit
+tile.arrow_front_left.name=Flèche : à gauche et tout droit
+tile.arrow_front_left_right_long_yellow.name=Grande flèche jaune : à gauche, à droite et tout droit
+tile.arrow_long_yellow.name=Grande flèche jaune : tout droit
+tile.arrow_front_left_long_yellow.name=Grande flèche jaune : à gauche et tout droit
+tile.arrow_front_right_long_yellow.name=Grande flèche jaune : à droite et tout droit
+tile.arrow_front_left_right_yellow.name=Grande flèche jaune : à gauche, à droite et tout droit
+tile.arrow_yellow.name=Flèche jaune : tout droit
+tile.arrow_front_left_yellow.name=Flèche jaune : à gauche et tout droit
+tile.arrow_front_right_yellow.name=Flèche jaune : à droite et tout droit
+tile.arrow_zebras.name=Passage piéton
+tile.arrow_right.name=Grande flèche : à droite
+tile.arrow_right_dia.name=Flèche : à droite en diagonale
+tile.arrow_p.name=Parking
+tile.arrow_no_parking.name=Stationnement interdit
+tile.arrow_left.name=Grande flèche : à gauche
+tile.arrow_left_dia.name=Grande flèche : à gauche en diagonale
+tile.arrow_cross.name=Croix
+tile.arrow_zebras_yellow.name=Passage piéton jaune
+tile.arrow_right_yellow.name=Grande flèche jaune : à droite
+tile.arrow_right_dia_yellow.name=Grande flèche jaune : à droite en diagonale
+tile.arrow_p_yellow.name=Parking jaune
+tile.arrow_no_parking_yellow.name=Stationnement interdit jaune
+tile.arrow_left_yellow.name=Grande flèche jaune : à gauche
+tile.arrow_left_dia_yellow.name=Grande flèche jaune : à gauche en diagonale
+tile.arrow_cross_yellow.name=Croix jaune
+tile.arrow_front_right.name=Flèche : à droite et tout droit
+tile.arrow_left_right_long.name=Grande flèche : à gauche et à droite
+tile.arrow_left_short.name=Flèche : à gauche
+tile.arrow_right_short.name=Flèche : à droite
+tile.arrow_left_right.name=Flèche : à gauche et à droite
+tile.arrow_left_dia_short.name=Flèche : à gauche en diagonale
+tile.arrow_right_dia_short.name=Flèche : à droite en diagonale
+tile.arrow_front_right_yellow.name=Flèche jaune : à droite et tout droit
+tile.arrow_left_right_long_yellow.name=Grande flèche jaune : à droite et à gauche
+tile.arrow_left_short_yellow.name=Flèche jaune : à gauche
+tile.arrow_right_short_yellow.name=Flèche jaune : à droite
+tile.arrow_left_right_yellow.name=Flèche jaune : à gauche et à droite
+tile.arrow_left_dia_short_yellow.name=Flèche jaune : à gauche en diagonale
+tile.arrow_right_dia_short_yellow.name=Flèche jaune : à droite en diagonale
+tile.line_side_start.name=Ligne latérale : début
+tile.line_side_start_yellow.name=Ligne latérale jaune : début
+tile.line_middle.name=Ligne pointillée centrale
+tile.line_long.name=Ligne continue centrale
+tile.line_end.name=Ligne centrale : fin
+tile.line_side_middle.name=Ligne latérale pointillée
+tile.line_side_long.name=Ligne latérale continue
+tile.line_side_end.name=Ligne latérale : fin
+tile.line_side_long_left.name=Grand crochet latéral
+tile.line_side_long_left_front.name=Grand crochet latéral : intersection
+tile.line_middle_edge.name=Crochet central
+tile.line_corner.name=Petit crochet latéral
+tile.line_middle_yellow.name=Ligne pointillée centrale jaune
+tile.line_long_yellow.name=Ligne continue centrale jaune
+tile.line_end_yellow.name=Ligne centrale jaune : fin
+tile.line_side_middle_yellow.name=Ligne latérale pointillée jaune
+tile.line_side_long_yellow.name=Ligne latérale continue jaune
+tile.line_side_end_yellow.name=Ligne latérale jaune : fin
+tile.line_side_long_left_yellow.name=Grand crochet latéral jaune
+tile.line_side_long_left_front_yellow.name=Grand crochet latéral jaune : intersection
+tile.line_middle_edge_yellow.name=Crochet central jaune
+tile.line_corner_yellow.name=Petit crochet latéral jaune
+tile.line_double.name=Double ligne continue centrale
+tile.line_double_yellow.name=Double ligne continue centrale jaune
+tile.line_double_middle.name=Double ligne pointillée centrale
+tile.line_double_middle_yellow.name=Double ligne pointillée centrale jaune
+tile.line_double_end.name=Double ligne centrale : fin
+tile.line_double_end_yellow.name=Double ligne centrale jaune : fin
+
+itemGroup.car=Voiture
+
+item.painter.name=Rouleau
+item.painter_yellow.name=Rouleau jaune
+item.canola_seeds.name=Graines de colza
+item.canola.name=Colza
+item.rapecake.name=Tourteau
+item.engine_piston.name=Piston de moteur
+item.windshield.name=Pare-brise
+item.wheel.name=Roue
+item.axle.name=Essieu
+item.container.name=Container
+item.car_seat.name=Siège de voiture
+item.car_body_part_wood.oak.name=Pièce de carosserie en chêne
+item.car_body_part_wood.spruce.name=Pièce de carosserie en sapin
+item.car_body_part_wood.birch.name=Pièce de carosserie en bouleau
+item.car_body_part_wood.jungle.name=Pièce de carosserie en acajou
+item.car_body_part_wood.acacia.name=Pièce de carosserie en acacia
+item.car_body_part_wood.big_oak.name=Pièce de carosserie en chêne noir
+item.iron_stick.name=Barre de fer
+item.engine_3_cylinder.name=Moteur 3 cylindres
+item.engine_6_cylinder.name=Moteur 6 cylindres
+item.car_tank.name=Réservoir de voiture
+item.control_unit.name=Circuit de contrôle
+item.canister.name=Jerrican
+item.repair_kit.name=Kit de réparation
+item.wrench.name=Clé
+item.hammer.name=Marteau
+item.screw_driver.name=Tournevis
+item.cable_insulator.name=Isolant électrique
+item.key.name=Clé de contact
+
+button.start=Pomper
+button.stop=Arrêter
+button.spawn_car=Fabriquer
+button.repair_car=Réparer
+button.back=Préc.
+button.submit=Valider
+button.cancel=Annuler
+button.front=Suivant
+button.back=Préc.
+
+fuelstation.carinfo=Voiture : %s
+fuelstation.car_fuel_amount=Carbu. : %s/%s mB
+fuelstation.car_fuel_type=Type : %s
+fuelstation.refueled=Pompé : %s mB
+fuelstation.fuel_buffer_type=Type : %s
+fuelstation.fuel_buffer_amount=Carbu. : %s/%s mB
+
+fuelstation.no_car=Gratuit
+fuelstation.ready=En service
+fuelstation.fuel_amount=%s mB
+fuelstation.fuel_empty=Pas de carburant
+fuelstation.nocar=Pas de voiture
+
+
+tooltip.energy=Energie : %s RF
+tooltip.oil=Huile : %s mB
+tooltip.fuel=Carburant : %s mB
+tooltip.methanol=Méthanol : %s mB
+tooltip.glycerin=Glycérine : %s mB
+tooltip.bio_diesel=Biodiesel : %s mB
+tooltip.mix=Mélange colza-méthanol : %s mB
+tooltip.progress=Progression %s %%
+tooltip.damage=Dégâts %s %%
+tooltip.methanol=Méthanol : %s mB
+tooltip.fluid=Fluide : %s
+tooltip.amount=Quantité : %s mB
+tooltip.repair_kit_1=Répare votre voiture si elle a plus de 90 %% de dégâts
+tooltip.repair_kit_2=Clic gauche pour l'utiliser
+
+fluid.canola_oil=Huile de colza
+fluid.methanol=Méthanol
+fluid.canola_methanol_mix=Mélange colza-méthanol
+fluid.glycerin=Glycérine
+fluid.bio_diesel=Biodiesel
+
+key.car_back=En arrière
+key.car_forward=En avant
+key.car_left=A gauche
+key.car_right=A droite
+key.car_gui=Ouvrir l'interface de la voiture
+key.car_start=Démarrer le moteur
+
+car.fuel_slot=Carburant
+
+canister.fluid=Fluide : %s
+canister.amount=Quantité : %s mB
+
+filter.fluid=Filtre : %s
+
+message.incomplete_structure=Structure incomplète
+message.blocks_on_top=Pas assez d'espace. Merci de retirer les blocs au dessus
+message.no_reciepe=Recette non valide
+message.no_repair_items=Pas d'objet à réparer
+message.no_car=Pas de voiture
+message.car_locked=Cette voiture est verrouillée !
+message.car_out_of_range=Clé de contact hors de portée
+message.key_no_car=Cette clé de contact n'appartient à aucune voiture
+
+entity.car_wood.name=Voiture
+entity.car.car_wood.name=Voiture
+
+entity.car_big_wood.name=Voiture 2 places
+entity.car.car_big_wood.name=Voiture 2 places
+
+entity.car_transporter.name=Camionette
+entity.car.car_transporter.name=Camionette
+
+entity.car_sport.name=Cabriolet
+entity.car.car_sport.name=Cabriolet
+
+entity.car_wood.name=Voiture
+entity.car.car_wood.name=Voiture
+
+description.canister=S'accroupir et cliquer droit sur une pompe à essence pour remplir le jerrican de carburant. Placez-le dans la case correspondante de votre voiture pour remettre un peu de carburant. Il ne devrait être utilisé que pour rejoindre la prochaine pompe à essence.
+description.car_workshop_outter=L'extension de l'atelier auto est utilisée pour la construction de l'atelier. Pour plus d'information, consultez la description du bloc Atelier auto.
+description.car_workshop=Avec l'atelier auto, vous pouvez fabriquer et réparer des voitures. Pour le construire, placez au centre un bloc Atelier auto et entourez-le de 8 blocs Extension de l'atelier auto.
+description.crank=La manivelle est utilisée pour faire fonctionner la dynamo. Elle doit être placée sur le dessus de la dynamo. Cliquez droit pour l'actionner.
+description.dynamo=La dynamo permet de générer du courant manuellement. Une manivelle doit être placée sur le dessus. Cliquez droit pour l'actionner.
+description.fluid_extractor=L'extracteur de fluides permet de pomper des fluides à partir d'un récipient. Il possède une case pour filtrer ce qui va passer. Vous pouvez remplir cette case avec récipient, par exemple un seau.
+description.fuel_station=La pompe à essence permet de faire le plein des voitures ou de remplir des jerricans. Elle peut contenir jusqu'à 16 000 mB. Faites le plein de la voiture en la plaçant devant la pompe à essence. S'accroupir et cliquer droit permet de remplir un jerrican.
+description.painter_yellow=Le rouleau jaune permet de peindre des lignes et des flèches sur la route. S'accroupir et cliquer droit ouvre le menu qui permet de sélectionner le motif à peindre.
+description.painter_white=Le rouleau blanc permet de peindre des lignes et des flèches sur la route. S'accroupir et cliquer droit ouvre le menu qui permet de sélectionner le motif à peindre.
+description.repair_kit=Le kit de réparation permet de réparer les dégâts de la voiture en faisant un clic gauche sur celle-ci. NOTE: Il permet de réparer uniquement si les dégât sont supérieurs à 90 %. Il ne devrait être utilisé que pour vous permettre d'atteindre l'atelier auto le plus proche.
+description.tank=Le réservoir permet de conserver les liquides. Il peut contenir 16 000 mB. On peut le remplir de n'importe quel type de liquide connu.
+
+death.attack.hit_car=%s a été renversé(e) par une voiture
