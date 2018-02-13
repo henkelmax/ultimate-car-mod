@@ -119,11 +119,13 @@ public class Registry {
 	@SubscribeEvent
 	public static void registerSounds(RegistryEvent.Register<SoundEvent> event) {
 		registerSound(event.getRegistry(), ModSounds.engine_stop);
+		registerSound(event.getRegistry(), ModSounds.engine_starting);
 		registerSound(event.getRegistry(), ModSounds.engine_start);
 		registerSound(event.getRegistry(), ModSounds.engine_idle);
 		registerSound(event.getRegistry(), ModSounds.engine_high);
 		registerSound(event.getRegistry(), ModSounds.engine_fail);
 		registerSound(event.getRegistry(), ModSounds.sport_engine_stop);
+		registerSound(event.getRegistry(), ModSounds.sport_engine_starting);
 		registerSound(event.getRegistry(), ModSounds.sport_engine_start);
 		registerSound(event.getRegistry(), ModSounds.sport_engine_idle);
 		registerSound(event.getRegistry(), ModSounds.sport_engine_high);

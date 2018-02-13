@@ -64,6 +64,10 @@ public abstract class SoundLoopCar extends MovingSound {
 	public void onFinishPlaying(){
 		
 	}
+
+	public void setDonePlaying(){
+		donePlaying=true;
+	}
 	
 	public abstract boolean shouldStopSound();
 }

@@ -88,6 +88,11 @@ public class EntityCarSport extends EntityCarLockBase{
 	public SoundEvent getStartSound() {
 		return ModSounds.sport_engine_start;
 	}
+
+	@Override
+	public SoundEvent getStartingSound() {
+		return ModSounds.sport_engine_starting;
+	}
 	
 	@Override
 	public SoundEvent getIdleSound() {

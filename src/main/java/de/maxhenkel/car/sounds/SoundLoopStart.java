@@ -10,24 +10,11 @@ public class SoundLoopStart extends SoundLoopCar {
 
 	public SoundLoopStart(World world, EntityCarBase car, SoundEvent event, SoundCategory category) {
 		super(world, car, event, category);
-		this.repeat=true;
+		this.repeat=false;
 	}
-
-    @Override
-    public void update() {
-	    //pitch-=0.01;
-        if(car instanceof EntityCarBatteryBase){
-            pitch=((EntityCarBatteryBase) car).getBatterySoundPitchLevel();
-        }
-        super.update();
-    }
 
     @Override
 	public boolean shouldStopSound() {
-        if(!(car instanceof EntityCarBatteryBase)){
-            return true;
-        }
-		return !((EntityCarBatteryBase)car).isStarting();
+		return !car.isStarted();
 	}
-
 }

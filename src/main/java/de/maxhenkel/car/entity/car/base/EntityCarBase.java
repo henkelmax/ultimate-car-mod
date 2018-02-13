@@ -4,6 +4,7 @@ import java.util.List;
 import de.maxhenkel.car.Config;
 import de.maxhenkel.car.DamageSourceCar;
 import de.maxhenkel.car.IDrivable;
+import de.maxhenkel.car.sounds.SoundLoopStart;
 import de.maxhenkel.tools.MathTools;
 import de.maxhenkel.tools.Teleport;
 import de.maxhenkel.car.net.MessageCarGui;
@@ -18,6 +19,9 @@ import de.maxhenkel.car.sounds.SoundLoopHigh;
 import de.maxhenkel.car.sounds.SoundLoopIdle;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.audio.SoundHandler;
+import net.minecraft.client.audio.SoundManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.MoverType;
@@ -52,6 +56,8 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 	@SideOnly(Side.CLIENT)
 	private boolean collidedLastTick;
 
+    @SideOnly(Side.CLIENT)
+    private SoundLoopStart startLoop;
 	@SideOnly(Side.CLIENT)
 	private SoundLoopIdle idleLoop;
 	@SideOnly(Side.CLIENT)
@@ -170,13 +176,28 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 		return true;
 	}
 
+	@SideOnly(Side.CLIENT)
+	private boolean startedLast;
+
 	public void updateSounds() {
         if (getSpeed() == 0 && isStarted()) {
-			checkIdleLoop();
+
+        	if(!startedLast){
+				checkStartLoop();
+			}else if(startLoop==null||!Minecraft.getMinecraft().getSoundHandler().isSoundPlaying(startLoop)){
+        	    if(startLoop!=null){
+        	        startLoop.setDonePlaying();
+                    startLoop=null;
+                }
+
+                checkIdleLoop();
+            }
 		}
 		if (getSpeed() != 0 && isStarted()) {
 			checkHighLoop();
 		}
+
+		startedLast=isStarted();
 	}
 
 	public void destroyCar(EntityPlayer player, boolean dropParts) {
@@ -538,6 +559,10 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 		return ModSounds.engine_start;
 	}
 
+    public SoundEvent getStartingSound() {
+        return ModSounds.engine_starting;
+    }
+
 	public SoundEvent getIdleSound() {
 		return ModSounds.engine_idle;
 	}
@@ -565,6 +590,14 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 			ModSounds.playSoundLoop(highLoop, world);
 		}
 	}
+
+    @SideOnly(Side.CLIENT)
+    public void checkStartLoop() {
+        if (startLoop == null || startLoop.isDonePlaying()) {
+            startLoop = new SoundLoopStart(world, this, getStartSound(), SoundCategory.NEUTRAL);
+            ModSounds.playSoundLoop(startLoop, world);
+        }
+    }
 
 	public void onHornPressed(EntityPlayer player) {
 		if (world.isRemote) {

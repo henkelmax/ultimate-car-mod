@@ -1,15 +1,12 @@
 package de.maxhenkel.car.entity.car.base;
 
 import de.maxhenkel.car.Config;
-import de.maxhenkel.car.blocks.ModBlocks;
 import de.maxhenkel.car.sounds.ModSounds;
-import de.maxhenkel.car.sounds.SoundLoopStart;
-import net.minecraft.block.Block;
+import de.maxhenkel.car.sounds.SoundLoopStarting;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.Vec3d;
@@ -27,7 +24,7 @@ public abstract class EntityCarBatteryBase extends EntityCarTemperatureBase {
             DataSerializers.BOOLEAN);
 
     @SideOnly(Side.CLIENT)
-    private SoundLoopStart startLoop;
+    private SoundLoopStarting startingLoop;
 
     //Server side
     private boolean carStopped;
@@ -289,7 +286,7 @@ public abstract class EntityCarBatteryBase extends EntityCarTemperatureBase {
     @Override
     public void updateSounds() {
         if (!isStarted() && isStarting()) {
-            checkStartLoop();
+            checkStartingLoop();
         }
         super.updateSounds();
     }
@@ -307,10 +304,10 @@ public abstract class EntityCarBatteryBase extends EntityCarTemperatureBase {
     }
 
     @SideOnly(Side.CLIENT)
-    public void checkStartLoop() {
-        if (startLoop == null || startLoop.isDonePlaying()) {
-            startLoop = new SoundLoopStart(world, this, getStartSound(), SoundCategory.NEUTRAL);
-            ModSounds.playSoundLoop(startLoop, world);
+    public void checkStartingLoop() {
+        if (startingLoop == null || startingLoop.isDonePlaying()) {
+            startingLoop = new SoundLoopStarting(world, this, getStartingSound(), SoundCategory.NEUTRAL);
+            ModSounds.playSoundLoop(startingLoop, world);
         }
     }
 

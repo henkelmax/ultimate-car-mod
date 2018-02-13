@@ -1,6 +1,7 @@
 {
     "engine_idle": {"category": "master","sounds": [{"name": "car:engine_idle","stream": false}]},
     "engine_start": {"category": "master","sounds": [{"name": "car:engine_start","stream": false}]},
+    "engine_starting": {"category": "master","sounds": [{"name": "car:engine_starting","stream": false}]},
     "engine_stop": {"category": "master","sounds": [{"name": "car:engine_stop","stream": false}]},
     "engine_high": {"category": "master","sounds": [{"name": "car:engine_high","stream": false}]},
     "engine_fail": {"category": "master","sounds": [{"name": "car:engine_fail","stream": false}]},
@@ -9,6 +10,7 @@
     "generator": {"category": "master","sounds": [{"name": "car:generator","stream": false}]},
     "sport_engine_idle": {"category": "master","sounds": [{"name": "car:sport_engine_idle","stream": false}]},
     "sport_engine_start": {"category": "master","sounds": [{"name": "car:sport_engine_start","stream": false}]},
+    "sport_engine_starting": {"category": "master","sounds": [{"name": "car:sport_engine_starting","stream": false}]},
     "sport_engine_stop": {"category": "master","sounds": [{"name": "car:sport_engine_stop","stream": false}]},
     "sport_engine_high": {"category": "master","sounds": [{"name": "car:sport_engine_high","stream": false}]},
     "sport_engine_fail": {"category": "master","sounds": [{"name": "car:sport_engine_fail","stream": false}]},
