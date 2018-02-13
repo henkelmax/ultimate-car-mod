@@ -111,6 +111,24 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 
 	}
 
+	public void centerCar(){
+        EnumFacing facing=getHorizontalFacing();
+        switch (facing){
+            case SOUTH:
+                rotationYaw=0F;
+                break;
+            case NORTH:
+                rotationYaw=180F;
+                break;
+            case EAST:
+                rotationYaw=-90F;
+                break;
+            case WEST:
+                rotationYaw=90F;
+                break;
+        }
+    }
+
 	@Override
 	public AxisAlignedBB getCollisionBox(Entity entityIn) {
 		if(Config.damageEntities) {

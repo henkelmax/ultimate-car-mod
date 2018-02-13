@@ -3,6 +3,7 @@ package de.maxhenkel.car.events;
 import de.maxhenkel.car.entity.car.base.EntityCarBatteryBase;
 import de.maxhenkel.car.net.MessageStarting;
 import de.maxhenkel.car.proxy.CommonProxy;
+import net.minecraft.util.text.TextComponentTranslation;
 import org.lwjgl.input.Keyboard;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
@@ -22,10 +23,12 @@ public class KeyEvents {
 	private KeyBinding keyCarGui;
 	private KeyBinding keyStart;
 	private KeyBinding keyHorn;
+    private KeyBinding keyCenter;
 
     private boolean wasStartPressed;
 	private boolean wasGuiPressed;
 	private boolean wasHornPressed;
+    private boolean wasCenterPressed;
 
 	public KeyEvents() {
 		this.keyForward = new KeyBinding("key.car_forward", Keyboard.KEY_W, "category.car");
@@ -48,6 +51,9 @@ public class KeyEvents {
 		
 		this.keyHorn = new KeyBinding("key.car_horn", Keyboard.KEY_H, "category.car");
 		ClientRegistry.registerKeyBinding(keyHorn);
+
+        this.keyCenter = new KeyBinding("key.center_car", Keyboard.KEY_SPACE, "category.car");
+        ClientRegistry.registerKeyBinding(keyCenter);
 	}
 
     @SubscribeEvent
@@ -95,6 +101,16 @@ public class KeyEvents {
                 }
             }else{
                 wasHornPressed=false;
+            }
+
+            if(keyCenter.isKeyDown()){
+                if(!wasCenterPressed){
+                    car.centerCar();
+                    player.sendStatusMessage(new TextComponentTranslation("message.center_car"), true);
+                    wasCenterPressed=true;
+                }
+            }else{
+                wasCenterPressed=false;
             }
         }
 
