@@ -12,7 +12,6 @@ public class SoundLoopStart extends SoundLoopCar {
 		super(world, car, event, category);
 		this.repeat=false;
 	}
-
     @Override
 	public boolean shouldStopSound() {
 		return !car.isStarted();
