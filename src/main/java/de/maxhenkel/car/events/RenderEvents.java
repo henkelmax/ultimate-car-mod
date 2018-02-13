@@ -87,7 +87,7 @@ public class RenderEvents {
             return;
         }
         NBTTagCompound compound=stack.getTagCompound();
-        if(!compound.hasKey("trading_item")&&compound.getBoolean("trading_item")){
+        if(!compound.hasKey("trading_item")&&!compound.getBoolean("trading_item")){
             return;
         }
         event.setCanceled(true);
