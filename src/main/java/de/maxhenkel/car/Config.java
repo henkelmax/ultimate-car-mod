@@ -70,7 +70,7 @@ public class Config {
 	public static boolean carGroundSpeed;
 	public static float carStepHeight;
 	public static boolean collideWithEntities=false;
-	public static boolean damageEntities=false;
+	public static boolean damageEntities=true;
 	public static boolean hornFlee=true;
 	public static boolean useBattery=true;
 	public static boolean dynamicLights=true;
@@ -326,7 +326,7 @@ public class Config {
 		carGroundSpeed=config.getBoolean("car_ground_speed", "car", false, "Whether the cars drive slower on non asphalt blocks");
 		carStepHeight=config.getFloat("car_step_height", "car", 0.6F, 0.1F, 128F, "The height a car can drive up");
 		collideWithEntities=config.getBoolean("collide_with_entities", "car", false, "Whether the cars should collide with other entities (except cars)");
-		damageEntities=config.getBoolean("damage_entities", "car", false, "Whether the cars should damage other entities on collision");
+		damageEntities=config.getBoolean("damage_entities", "car", true, "Whether the cars should damage other entities on collision");
 		hornFlee=config.getBoolean("horn_flee", "car", true, "Whether animals flee from the car when the horn is activted");
         useBattery=config.getBoolean("use_battery", "car", true, "True if starting the car should use battery");
         dynamicLights=config.getBoolean("dynamic_lights", "car", true, "Whether cars should emit light when the DynamicLights mod is installed");
