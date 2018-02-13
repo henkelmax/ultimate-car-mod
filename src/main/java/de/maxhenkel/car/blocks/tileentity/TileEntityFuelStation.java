@@ -1,6 +1,7 @@
 package de.maxhenkel.car.blocks.tileentity;
 
 import java.util.List;
+
 import de.maxhenkel.car.Config;
 import de.maxhenkel.car.blocks.BlockFuelStation;
 import de.maxhenkel.car.blocks.ModBlocks;
@@ -11,9 +12,11 @@ import de.maxhenkel.car.registries.FuelStationFluid;
 import de.maxhenkel.car.sounds.ModSounds;
 import de.maxhenkel.car.sounds.SoundLoopTileentity;
 import de.maxhenkel.car.sounds.SoundLoopTileentity.ISoundLoopable;
+import de.maxhenkel.tools.ItemTools;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -32,460 +35,556 @@ import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class TileEntityFuelStation extends TileEntityBase implements ITickable, IFluidHandler, ISoundLoopable, IInventory{
+public class TileEntityFuelStation extends TileEntityBase implements ITickable, IFluidHandler, ISoundLoopable, IInventory {
 
-	private FluidStack storage;
-	
-	public int maxStorageAmount=16000;
-	
-	private final int transferRate;
-	
-	private int fuelCounter;
-	private boolean isFueling;
-	private boolean wasFueling;
+    private FluidStack storage;
 
-	public TileEntityFuelStation() {
-		this.transferRate=Config.fuelStationTransferRate;
-		this.fuelCounter = 0;
-	}
+    public int maxStorageAmount = 16000;
 
-	@Override
-	public void update() {
-		EntityCarFuelBase car=getCarInFront();
-		
-		if(car==null){
-			if(fuelCounter>0||isFueling){
-				fuelCounter=0;
-				isFueling=false;
-				synchronize();
-				markDirty();
-			}
-			return;
-		}
-		
-		if(!isFueling){
-			return;
-		}
-		
-		if(storage==null){
-			return;
-		}
-		
-		FluidStack result=FluidUtil.tryFluidTransfer(car, this, transferRate, true);
-		
-		if(result!=null){
-			fuelCounter+=result.amount;
-			synchronize(100);
+    private final int transferRate;
 
-			markDirty();
-			if(!wasFueling){
-				synchronize();
-			}
-			wasFueling=true;
-		}else{
-			if(wasFueling){
-				synchronize();
-			}
-			wasFueling=false;
-		}
-	}
-	
-	public boolean isValidFluid(Fluid f){
-		for(FuelStationFluid recipe:FuelStationFluid.REGISTRY){
-			if(recipe.getInput().isValid(f)){
-				return true;
-			}
-		}
-		
-		return false;
-	}
-	
-	@Override
-	public int getField(int id) {
-		switch(id){
-		case 0:
-			return fuelCounter;
-		case 1:
-			if(storage!=null){
-				return storage.amount;
-			}
-			return 0;
-		}
-		return 0;
-	}
+    private int fuelCounter;
+    private boolean isFueling;
+    private boolean wasFueling;
 
-	@Override
-	public void setField(int id, int value) {
-		switch(id){
-		case 0:
-			this.fuelCounter=value;
-			break;
-		case 1:
-			if(storage!=null){
-				this.storage.amount=value;
-			}
-			break;
-		}
-	}
+    private InventoryBasic inventory;
+    private InventoryBasic trading;
+    private int tradeAmount;
 
-	@Override
-	public int getFieldCount() {
-		return 2;
-	}
+    private int freeAmountLeft;
 
-	
-	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
-		compound.setInteger("counter", fuelCounter);
-		
-		if(storage!=null){
-			NBTTagCompound comp=new NBTTagCompound();
-			storage.writeToNBT(comp);
-			compound.setTag("fluid", comp);
-		}
-		
-		return super.writeToNBT(compound);
-	}
-	
-	@Override
-	public void readFromNBT(NBTTagCompound compound) {
-		
-		fuelCounter=compound.getInteger("counter");
-		
-		if(compound.hasKey("fluid")){
-			NBTTagCompound comp=compound.getCompoundTag("fluid");
-			storage=FluidStack.loadFluidStackFromNBT(comp);
-		}
-		
-		super.readFromNBT(compound);
-	}
+    public TileEntityFuelStation() {
+        this.transferRate = Config.fuelStationTransferRate;
+        this.fuelCounter = 0;
+        this.inventory = new InventoryBasic(new TextComponentTranslation("gui.fuelstation").getFormattedText(), false, 27);
+        this.trading = new InventoryBasic(new TextComponentTranslation("gui.fuelstation").getFormattedText(), false, 2);
+    }
 
-	public boolean isFueling() {
-		return isFueling;
-	}
-	
-	public int getFuelCounter(){
-		return this.fuelCounter;
-	}
-	
-	public void setStorage(FluidStack storage) {
-		this.storage = storage;
-		markDirty();
-		synchronize();
-	}
-	
-	public FluidStack getStorage() {
-		return storage;
-	}
+    @Override
+    public void update() {
+        EntityCarFuelBase car = getCarInFront();
 
-	public void setFuelCounter(int fuelCounter) {
-		this.fuelCounter = fuelCounter;
-		markDirty();
-		synchronize();
-	}
+        if (car == null) {
+            if (fuelCounter > 0 || isFueling) {
+                fuelCounter = 0;
+                isFueling = false;
+                synchronize();
+                markDirty();
+            }
+            return;
+        }
 
-	public void setFueling(boolean isFueling) {
-		if(getCarInFront()==null){
-			return;
-		}
-		
-		if(isFueling&&!this.isFueling){
-			if(world.isRemote){
-				playSound();
-			}
-		}
-		this.isFueling = isFueling;
-		synchronize();
-	}
+        if (!isFueling) {
+            return;
+        }
 
-	public String getRenderText() {
-		EntityCarFuelBase car = getCarInFront();
-		if (car == null) {
-			return new TextComponentTranslation("fuelstation.no_car").getFormattedText();
-		} else if (fuelCounter <= 0) {
-			return new TextComponentTranslation("fuelstation.ready").getFormattedText();
-		} else {
-			return new TextComponentTranslation("fuelstation.fuel_amount", fuelCounter)
-					.getFormattedText();
-		}
-	}
+        if (storage == null) {
+            return;
+        }
 
-	public EntityCarFuelBase getCarInFront() {
-		IBlockState ownState = world.getBlockState(getPos());
+        FluidStack s = FluidUtil.tryFluidTransfer(car, this, transferRate, false);
+        int amountCarCanTake = 0;
+        if (s != null) {
+            amountCarCanTake = s.amount;
+        }
 
-		if (!ownState.getBlock().equals(ModBlocks.FUEL_STATION)) {
-			return null;
-		}
+        if (amountCarCanTake <= 0) {
+            return;
+        }
 
-		EnumFacing facing = ownState.getValue(BlockFuelStation.FACING);
+        if (freeAmountLeft <= 0) {
+            if (removeTradeItem()) {
+                freeAmountLeft = tradeAmount;
+                markDirty();
+            } else {
+                isFueling=false;
+                synchronize();
+                return;
+            }
+        }
 
-		BlockPos start = getPos().offset(facing);
+        FluidStack result = FluidUtil.tryFluidTransfer(car, this, Math.min(transferRate, freeAmountLeft), true);
 
-		AxisAlignedBB aabb = new AxisAlignedBB(start.getX(), start.getY(), start.getZ(), start.getX() + 1,
-				start.getY() + 1, start.getZ() + 1);
+        if (result != null) {
+            fuelCounter += result.amount;
+            freeAmountLeft -= result.amount;
+            synchronize(100);
 
-		List<EntityCarFuelBase> cars = world.getEntitiesWithinAABB(EntityCarFuelBase.class, aabb);
-		if (cars.isEmpty()) {
-			return null;
-		}
+            markDirty();
+            if (!wasFueling) {
+                synchronize();
+            }
+            wasFueling = true;
+        } else {
+            if (wasFueling) {
+                synchronize();
+            }
+            wasFueling = false;
+        }
+    }
 
-		return cars.get(0);
-	}
-	
-	public boolean canCarBeFueled(){
-		EntityCarFuelBase car=getCarInFront();
-		if(car==null){
-			return false;
-		}
-		FluidStack result=FluidUtil.tryFluidTransfer(car, this, transferRate, false);
-		if(result==null||result.amount<=0){
-			return false;
-		}
-		return true;
-	}
+    /**
+     * @return true if the item was successfully removed
+     */
+    public boolean removeTradeItem() {
+        ItemStack tradeTemplate = trading.getStackInSlot(0);
+        ItemStack tradingStack = trading.getStackInSlot(1);
 
-	public IBlockState getBlockState() {
-		IBlockState ownState = world.getBlockState(getPos());
+        if (ItemTools.isStackEmpty(tradeTemplate)) {
+            return true;
+        }
 
-		if (!ownState.getBlock().equals(ModBlocks.FUEL_STATION)) {
-			return null;
-		}
-		return ownState;
-	}
+        if (ItemTools.isStackEmpty(tradingStack)) {
+            return false;
+        }
 
-	public EnumFacing getDirection() {
-		IBlockState state = getBlockState();
-		if (state == null) {
-			return EnumFacing.NORTH;
-		}
+        if (!tradeTemplate.getItem().equals(tradingStack.getItem())) {
+            return false;
+        }
 
-		return state.getValue(BlockFuelStation.FACING);
-	}
+        if (tradeTemplate.getItemDamage() != tradingStack.getItemDamage()) {
+            return false;
+        }
 
-	@Override
-	public IFluidTankProperties[] getTankProperties() {
-		return new IFluidTankProperties[]{new IFluidTankProperties() {
-			
-			@Override
-			public FluidStack getContents() {
-				return storage;
-			}
-			
-			@Override
-			public int getCapacity() {
-				return maxStorageAmount;
-			}
-			
-			@Override
-			public boolean canFillFluidType(FluidStack fluidStack) {
-				return isValidFluid(fluidStack.getFluid());
-			}
-			
-			@Override
-			public boolean canFill() {
-				return true;
-			}
-			
-			@Override
-			public boolean canDrainFluidType(FluidStack fluidStack) {
-				return true;
-			}
-			
-			@Override
-			public boolean canDrain() {
-				return true;
-			}
-		}};
-	}
+        if (tradingStack.getCount() < tradeTemplate.getCount()) {
+            return false;
+        }
 
-	@Override
-	public int fill(FluidStack resource, boolean doFill) {
-		if(!isValidFluid(resource.getFluid())){
-			return 0;
-		}
-		
-		if (storage == null) {
-			int amount = Math.min(resource.amount, maxStorageAmount);
+        ItemStack addStack=tradingStack.copy();
+        addStack.setCount(tradeTemplate.getCount());
+        ItemStack add=inventory.addItem(addStack);
+        if(add.getCount()>0){
+            return false;
+        }
+        tradingStack.setCount(tradingStack.getCount() - tradeTemplate.getCount());
+        trading.setInventorySlotContents(1, tradingStack);
 
-			if (doFill) {
-				storage = new FluidStack(resource.getFluid(), amount);
-				synchronize();
-				markDirty();
-			}
+        return true;
+    }
 
-			return amount;
-		} else if (resource.getFluid().equals(storage.getFluid())) {
-			int amount = Math.min(resource.amount, maxStorageAmount - storage.amount);
+    public IInventory getInventory() {
+        return inventory;
+    }
 
-			if (doFill) {
-				storage.amount += amount;
-				markDirty();
-			}
+    public IInventory getTradingInventory() {
+        return trading;
+    }
 
-			return amount;
-		}
-		return 0;
-	}
+    public boolean isValidFluid(Fluid f) {
+        for (FuelStationFluid recipe : FuelStationFluid.REGISTRY) {
+            if (recipe.getInput().isValid(f)) {
+                return true;
+            }
+        }
 
-	@Override
-	public FluidStack drain(FluidStack resource, boolean doDrain) {
+        return false;
+    }
 
-		if (storage == null) {
-			return null;
-		}
+    @Override
+    public int getField(int id) {
+        switch (id) {
+            case 0:
+                return fuelCounter;
+            case 1:
+                if (storage != null) {
+                    return storage.amount;
+                }
+                return 0;
+            case 2:
+                return tradeAmount;
+        }
+        return 0;
+    }
 
-		if (storage.getFluid().equals(resource.getFluid())) {
-			int amount = Math.min(resource.amount, storage.amount);
+    @Override
+    public void setField(int id, int value) {
+        switch (id) {
+            case 0:
+                this.fuelCounter = value;
+                break;
+            case 1:
+                if (storage != null) {
+                    this.storage.amount = value;
+                }
+                break;
+            case 2:
+                this.tradeAmount = value;
+                markDirty();
+                break;
+        }
+    }
 
-			Fluid f = storage.getFluid();
+    @Override
+    public int getFieldCount() {
+        return 3;
+    }
 
-			if (doDrain) {
-				storage.amount -= amount;
-				if (storage.amount <= 0) {
-					storage = null;
-					synchronize();
-				}
-				
-				markDirty();
-			}
 
-			return new FluidStack(f, amount);
-		}
+    @Override
+    public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+        compound.setInteger("counter", fuelCounter);
 
-		return null;
-	}
+        if (storage != null) {
+            NBTTagCompound comp = new NBTTagCompound();
+            storage.writeToNBT(comp);
+            compound.setTag("fluid", comp);
+        }
 
-	@Override
-	public FluidStack drain(int maxDrain, boolean doDrain) {
-		if (storage == null) {
-			return null;
-		}
+        ItemTools.saveInventory(compound, "inventory", inventory);
 
-		int amount = Math.min(maxDrain, storage.amount);
+        ItemTools.saveInventory(compound, "trading", trading);
 
-		Fluid f = storage.getFluid();
+        compound.setInteger("trade_amount", tradeAmount);
+        compound.setInteger("free_amount", freeAmountLeft);
 
-		if (doDrain) {
-			storage.amount -= amount;
-			if (storage.amount <= 0) {
-				storage = null;
-				synchronize();
-			}
-			
-			markDirty();
-		}
+        return super.writeToNBT(compound);
+    }
 
-		return new FluidStack(f, amount);
-	}
-	
-	@Override
-	public SPacketUpdateTileEntity getUpdatePacket() {
-		return new SPacketUpdateTileEntity(this.pos, 1, getUpdateTag());
-	}
+    @Override
+    public void readFromNBT(NBTTagCompound compound) {
 
-	@Override
-	public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
-		this.readFromNBT(pkt.getNbtCompound());
-	}
+        fuelCounter = compound.getInteger("counter");
 
-	@Override
-	public NBTTagCompound getUpdateTag() {
-		return this.writeToNBT(new NBTTagCompound());
-	}
-	
-	public void sendStartFuelPacket(boolean start){
-		if (world.isRemote) {
-			CommonProxy.simpleNetworkWrapper.sendToServer(new MessageStartFuel(pos, start));
-		}
-	}
+        if (compound.hasKey("fluid")) {
+            NBTTagCompound comp = compound.getCompoundTag("fluid");
+            storage = FluidStack.loadFluidStackFromNBT(comp);
+        }
 
-	@Override
-	public boolean shouldSoundBePlayed() {
-		if(!isFueling){
-			return false;
-		}
-		
-		return canCarBeFueled();
-	}
-	
-	@SideOnly(Side.CLIENT)
-	public void playSound(){
-		ModSounds.playSoundLoop(new SoundLoopTileentity(ModSounds.gas_ststion, SoundCategory.BLOCKS, this), world);
-	}
+        ItemTools.readInventory(compound, "inventory", inventory);
+        ItemTools.readInventory(compound, "trading", trading);
 
-	@Override
-	public void play() {
-		
-	}
+        tradeAmount = compound.getInteger("trade_amount");
+        freeAmountLeft = compound.getInteger("free_amount");
 
-	@Override
-	public String getName() {
-		return "";
-	}
+        super.readFromNBT(compound);
+    }
 
-	@Override
-	public boolean hasCustomName() {
-		return false;
-	}
+    public boolean isFueling() {
+        return isFueling;
+    }
 
-	@Override
-	public int getSizeInventory() {
-		return 0;
-	}
+    public int getFuelCounter() {
+        return this.fuelCounter;
+    }
 
-	@Override
-	public ItemStack getStackInSlot(int index) {
-		return null;
-	}
+    public void setStorage(FluidStack storage) {
+        this.storage = storage;
+        markDirty();
+        synchronize();
+    }
 
-	@Override
-	public ItemStack decrStackSize(int index, int count) {
-		return null;
-	}
+    public FluidStack getStorage() {
+        return storage;
+    }
 
-	@Override
-	public ItemStack removeStackFromSlot(int index) {
-		return null;
-	}
+    public void setFuelCounter(int fuelCounter) {
+        this.fuelCounter = fuelCounter;
+        markDirty();
+        synchronize();
+    }
 
-	@Override
-	public void setInventorySlotContents(int index, ItemStack stack) {
-		
-	}
+    public void setFueling(boolean isFueling) {
+        if (getCarInFront() == null) {
+            return;
+        }
 
-	@Override
-	public int getInventoryStackLimit() {
-		return 0;
-	}
+        if (isFueling && !this.isFueling) {
+            if (world.isRemote) {
+                playSound();
+            }
+        }
+        this.isFueling = isFueling;
+        synchronize();
+    }
 
-	@Override
-	public boolean isUsableByPlayer(EntityPlayer player) {
-		return true;
-	}
-	
-	@Override
-	public boolean isEmpty() {
-		return true;
-	}
+    public String getRenderText() {
+        EntityCarFuelBase car = getCarInFront();
+        if (car == null) {
+            return new TextComponentTranslation("fuelstation.no_car").getFormattedText();
+        } else if (fuelCounter <= 0) {
+            return new TextComponentTranslation("fuelstation.ready").getFormattedText();
+        } else {
+            return new TextComponentTranslation("fuelstation.fuel_amount", fuelCounter)
+                    .getFormattedText();
+        }
+    }
 
-	@Override
-	public void openInventory(EntityPlayer player) {
-		
-	}
+    public EntityCarFuelBase getCarInFront() {
+        IBlockState ownState = world.getBlockState(getPos());
 
-	@Override
-	public void closeInventory(EntityPlayer player) {
-		
-	}
+        if (!ownState.getBlock().equals(ModBlocks.FUEL_STATION)) {
+            return null;
+        }
 
-	@Override
-	public boolean isItemValidForSlot(int index, ItemStack stack) {
-		return false;
-	}
+        EnumFacing facing = ownState.getValue(BlockFuelStation.FACING);
 
-	@Override
-	public void clear() {
-		
-	}
+        BlockPos start = getPos().offset(facing);
+
+        AxisAlignedBB aabb = new AxisAlignedBB(start.getX(), start.getY(), start.getZ(), start.getX() + 1,
+                start.getY() + 1, start.getZ() + 1);
+
+        List<EntityCarFuelBase> cars = world.getEntitiesWithinAABB(EntityCarFuelBase.class, aabb);
+        if (cars.isEmpty()) {
+            return null;
+        }
+
+        return cars.get(0);
+    }
+
+    public boolean canCarBeFueled() {
+        EntityCarFuelBase car = getCarInFront();
+        if (car == null) {
+            return false;
+        }
+        FluidStack result = FluidUtil.tryFluidTransfer(car, this, transferRate, false);
+        if (result == null || result.amount <= 0) {
+            return false;
+        }
+        return true;
+    }
+
+    public IBlockState getBlockState() {
+        IBlockState ownState = world.getBlockState(getPos());
+
+        if (!ownState.getBlock().equals(ModBlocks.FUEL_STATION)) {
+            return null;
+        }
+        return ownState;
+    }
+
+    public EnumFacing getDirection() {
+        IBlockState state = getBlockState();
+        if (state == null) {
+            return EnumFacing.NORTH;
+        }
+
+        return state.getValue(BlockFuelStation.FACING);
+    }
+
+    @Override
+    public IFluidTankProperties[] getTankProperties() {
+        return new IFluidTankProperties[]{new IFluidTankProperties() {
+
+            @Override
+            public FluidStack getContents() {
+                return storage;
+            }
+
+            @Override
+            public int getCapacity() {
+                return maxStorageAmount;
+            }
+
+            @Override
+            public boolean canFillFluidType(FluidStack fluidStack) {
+                return isValidFluid(fluidStack.getFluid());
+            }
+
+            @Override
+            public boolean canFill() {
+                return true;
+            }
+
+            @Override
+            public boolean canDrainFluidType(FluidStack fluidStack) {
+                return true;
+            }
+
+            @Override
+            public boolean canDrain() {
+                return true;
+            }
+        }};
+    }
+
+    @Override
+    public int fill(FluidStack resource, boolean doFill) {
+        if (!isValidFluid(resource.getFluid())) {
+            return 0;
+        }
+
+        if (storage == null) {
+            int amount = Math.min(resource.amount, maxStorageAmount);
+
+            if (doFill) {
+                storage = new FluidStack(resource.getFluid(), amount);
+                synchronize();
+                markDirty();
+            }
+
+            return amount;
+        } else if (resource.getFluid().equals(storage.getFluid())) {
+            int amount = Math.min(resource.amount, maxStorageAmount - storage.amount);
+
+            if (doFill) {
+                storage.amount += amount;
+                markDirty();
+            }
+
+            return amount;
+        }
+        return 0;
+    }
+
+    @Override
+    public FluidStack drain(FluidStack resource, boolean doDrain) {
+
+        if (storage == null) {
+            return null;
+        }
+
+        if (storage.getFluid().equals(resource.getFluid())) {
+            int amount = Math.min(resource.amount, storage.amount);
+
+            Fluid f = storage.getFluid();
+
+            if (doDrain) {
+                storage.amount -= amount;
+                if (storage.amount <= 0) {
+                    storage = null;
+                    synchronize();
+                }
+
+                markDirty();
+            }
+
+            return new FluidStack(f, amount);
+        }
+
+        return null;
+    }
+
+    @Override
+    public FluidStack drain(int maxDrain, boolean doDrain) {
+        if (storage == null) {
+            return null;
+        }
+
+        int amount = Math.min(maxDrain, storage.amount);
+
+        Fluid f = storage.getFluid();
+
+        if (doDrain) {
+            storage.amount -= amount;
+            if (storage.amount <= 0) {
+                storage = null;
+                synchronize();
+            }
+
+            markDirty();
+        }
+
+        return new FluidStack(f, amount);
+    }
+
+    @Override
+    public SPacketUpdateTileEntity getUpdatePacket() {
+        return new SPacketUpdateTileEntity(this.pos, 1, getUpdateTag());
+    }
+
+    @Override
+    public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
+        this.readFromNBT(pkt.getNbtCompound());
+    }
+
+    @Override
+    public NBTTagCompound getUpdateTag() {
+        return this.writeToNBT(new NBTTagCompound());
+    }
+
+    public void sendStartFuelPacket(boolean start) {
+        if (world.isRemote) {
+            CommonProxy.simpleNetworkWrapper.sendToServer(new MessageStartFuel(pos, start));
+        }
+    }
+
+    @Override
+    public boolean shouldSoundBePlayed() {
+        if (!isFueling) {
+            return false;
+        }
+
+        return canCarBeFueled();
+    }
+
+    @SideOnly(Side.CLIENT)
+    public void playSound() {
+        ModSounds.playSoundLoop(new SoundLoopTileentity(ModSounds.gas_ststion, SoundCategory.BLOCKS, this), world);
+    }
+
+    @Override
+    public void play() {
+
+    }
+
+    @Override
+    public String getName() {
+        return "";
+    }
+
+    @Override
+    public boolean hasCustomName() {
+        return false;
+    }
+
+    @Override
+    public int getSizeInventory() {
+        return 0;
+    }
+
+    @Override
+    public ItemStack getStackInSlot(int index) {
+        return null;
+    }
+
+    @Override
+    public ItemStack decrStackSize(int index, int count) {
+        return null;
+    }
+
+    @Override
+    public ItemStack removeStackFromSlot(int index) {
+        return null;
+    }
+
+    @Override
+    public void setInventorySlotContents(int index, ItemStack stack) {
+
+    }
+
+    @Override
+    public int getInventoryStackLimit() {
+        return 0;
+    }
+
+    @Override
+    public boolean isUsableByPlayer(EntityPlayer player) {
+        return true;
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return true;
+    }
+
+    @Override
+    public void openInventory(EntityPlayer player) {
+
+    }
+
+    @Override
+    public void closeInventory(EntityPlayer player) {
+
+    }
+
+    @Override
+    public boolean isItemValidForSlot(int index, ItemStack stack) {
+        return false;
+    }
+
+    @Override
+    public void clear() {
+
+    }
 
 }

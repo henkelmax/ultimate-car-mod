@@ -49,6 +49,7 @@ public class CommonProxy {
         CommonProxy.simpleNetworkWrapper.registerMessage(MessageCarHorn.class, MessageCarHorn.class, 10, Side.SERVER);
         CommonProxy.simpleNetworkWrapper.registerMessage(MessageSyncConfig.class, MessageSyncConfig.class, 11, Side.CLIENT);
         CommonProxy.simpleNetworkWrapper.registerMessage(MessageEditSign.class, MessageEditSign.class, 12, Side.SERVER);
+        CommonProxy.simpleNetworkWrapper.registerMessage(MessageFuelStationAdminAmount.class, MessageFuelStationAdminAmount.class, 13, Side.SERVER);
 
 
         try {

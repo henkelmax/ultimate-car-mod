@@ -119,6 +119,7 @@ public class BlockFuelStationTop extends Block {
 		super.breakBlock(worldIn, pos, state);
 		IBlockState stateDown = worldIn.getBlockState(pos.down());
 		if (stateDown != null && stateDown.getBlock() != null && stateDown.getBlock().equals(ModBlocks.FUEL_STATION)) {
+			BlockFuelStation.dropItems(worldIn, pos.down());
 			worldIn.setBlockToAir(pos.down());
 		}
 	}

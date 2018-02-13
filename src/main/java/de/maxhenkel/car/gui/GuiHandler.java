@@ -32,6 +32,7 @@ public class GuiHandler implements IGuiHandler{
 	public static final int GUI_CAR_WORKSHOP_REPAIR=10;
 	public static final int GUI_FLUID_EXTRACTOR=11;
 	public static final int GUI_SIGN=12;
+	public static final int GUI_FUELSTATION_ADMIN=13;
 	
 	@Override
 	public Object getServerGuiElement(int id, EntityPlayer player, World world, int x, int y, int z) {
@@ -48,9 +49,14 @@ public class GuiHandler implements IGuiHandler{
 		}else if(id==GUI_FUELSTATION){
 			TileEntity te=world.getTileEntity(new BlockPos(x, y, z));
 			if(te!=null&&te instanceof TileEntityFuelStation){
-				return new ContainerFuelStation((TileEntityFuelStation) te);
+				return new ContainerFuelStation((TileEntityFuelStation) te, player.inventory);
 			}
-		}else if(id==GUI_OIL_MILL){
+		}else if(id==GUI_FUELSTATION_ADMIN){
+            TileEntity te=world.getTileEntity(new BlockPos(x, y, z));
+            if(te!=null&&te instanceof TileEntityFuelStation){
+                return new ContainerFuelStationAdmin((TileEntityFuelStation) te, player.inventory);
+            }
+        }else if(id==GUI_OIL_MILL){
 			TileEntity te=world.getTileEntity(new BlockPos(x, y, z));
 			if(te!=null&&te instanceof TileEntityOilMill){
 				return new ContainerOilMill((TileEntityOilMill) te, player.inventory);
@@ -117,9 +123,14 @@ public class GuiHandler implements IGuiHandler{
 		}else if(id==GUI_FUELSTATION){
 			TileEntity te=world.getTileEntity(new BlockPos(x, y, z));
 			if(te!=null&&te instanceof TileEntityFuelStation){
-				return new GuiFuelStation((TileEntityFuelStation) te);
+				return new GuiFuelStation((TileEntityFuelStation) te, player.inventory);
 			}
-		}else if(id==GUI_OIL_MILL){
+		}else if(id==GUI_FUELSTATION_ADMIN){
+            TileEntity te=world.getTileEntity(new BlockPos(x, y, z));
+            if(te!=null&&te instanceof TileEntityFuelStation){
+                return new GuiFuelStationAdmin((TileEntityFuelStation) te, player.inventory);
+            }
+        }else if(id==GUI_OIL_MILL){
 			TileEntity te=world.getTileEntity(new BlockPos(x, y, z));
 			if(te!=null&&te instanceof TileEntityOilMill){
 				return new GuiOilMill(new ContainerOilMill((TileEntityOilMill) te, player.inventory));

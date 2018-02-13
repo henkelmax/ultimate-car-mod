@@ -7,8 +7,12 @@ import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
+import net.minecraftforge.client.event.RenderTooltipEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class RenderEvents {
@@ -73,6 +77,20 @@ public class RenderEvents {
 		mc.ingameGUI.getFontRenderer().drawString(s, i1, j1 - 1, 0);
 		mc.ingameGUI.getFontRenderer().drawString(s, i1, j1, 8453920);
 
+	}
+
+    @SubscribeEvent
+	public void renderToolTip(RenderTooltipEvent.Pre event){
+        ItemStack stack=event.getStack();
+
+        if(!stack.hasTagCompound()){
+            return;
+        }
+        NBTTagCompound compound=stack.getTagCompound();
+        if(!compound.hasKey("trading_item")&&compound.getBoolean("trading_item")){
+            return;
+        }
+        event.setCanceled(true);
 	}
 
 }

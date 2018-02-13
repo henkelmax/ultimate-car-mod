@@ -186,6 +186,7 @@ tooltip.repair_kit_2=Can be applied in the car GUI
 tooltip.battery_energy=Energy stored: %s
 tooltip.battery=Restores the energy of your car battery in the car GUI
 tooltip.container=Sneak + right-click to add to a transporter
+tooltip.trade=%s %s for %s mb
 
 fluid.canola_oil=Canola Oil
 fluid.methanol=Methanol
