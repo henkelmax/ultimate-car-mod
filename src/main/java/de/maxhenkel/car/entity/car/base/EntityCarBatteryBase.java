@@ -55,7 +55,10 @@ public abstract class EntityCarBatteryBase extends EntityCarTemperatureBase {
         }
 
         if (isStarting()) {
-            setBatteryLevel(getBatteryLevel() - getBatteryUsage());
+            if (ticksExisted % 2 == 0) {
+                setBatteryLevel(getBatteryLevel() - getBatteryUsage());
+            }
+
             //System.out.println(getBatteryLevel());
             setStartingTime(getStartingTime() + 1);
             if (getBatteryLevel() <= 0) {
@@ -152,9 +155,9 @@ public abstract class EntityCarBatteryBase extends EntityCarTemperatureBase {
         float temp = getTemperature();
         if (temp < 0F) {
             baseTime += 30;
-        } else if (temp < 20F) {
+        } else if (temp < 10F) {
             baseTime += 25;
-        } else if (temp < 40F) {
+        } else if (temp < 30F) {
             baseTime += 20;
         } else if (temp < 60F) {
             baseTime += 15;
