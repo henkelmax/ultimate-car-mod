@@ -78,7 +78,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 		super(worldIn);
 		this.setSize(1.3F, 1.6F);
 		this.stepHeight=Config.carStepHeight;
-		
+
 		for(CarProperties props:CarProperties.REGISTRY) {
 			if(props.getCarID().equals(getID())) {
 				this.maxSpeed=props.getSpeed();
@@ -91,7 +91,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 	@Override
 	public void onUpdate() {
 		super.onUpdate();
-		
+
 		handleTeleport();
 
 		if (isStarted() && !canEngineStayOn()) {
@@ -108,7 +108,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 		}
 
 	}
-	
+
 	@Override
 	public AxisAlignedBB getCollisionBox(Entity entityIn) {
 		if(Config.damageEntities) {
@@ -118,32 +118,32 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 					float damage=speed*10;
 					entityIn.attackEntityFrom(DamageSourceCar.DAMAGE_CAR, damage);
 				}
-				
+
 			}
 		}
 		return super.getCollisionBox(entityIn);
 	}
-	
+
 	private void handleTeleport() {
 		if(!Config.teleportDimension) {
 			return;
 		}
-		
+
 		if(getSpeed()>=maxSpeed) {
 			int dimid=world.provider.getDimension();
 			if(dimid==Config.teleportDimID) {
 				return;
 			}
-			
+
 			for(Entity e:getPassengers()) {
 				e.dismountRidingEntity();
 				Teleport.teleportToDimension(e, Config.teleportDimID);
-				
+
 			}
 			Teleport.teleportToDimension(this, Config.teleportDimID);
 		}
 	}
-	
+
 
 	public void checkPush() {
 		if(getCollisionBoundingBox()==null){
@@ -177,6 +177,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 	@SideOnly(Side.CLIENT)
 	private boolean startedLast;
 
+    @SideOnly(Side.CLIENT)
 	public void updateSounds() {
         if (getSpeed() == 0 && isStarted()) {
 
@@ -233,14 +234,14 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 		}
 
 		float modifier=1;
-		
+
 		if(Config.carGroundSpeed){
 			modifier=getModifier();
 		}
-		
+
 		float maxSp=maxSpeed*modifier;
 		float maxBackSp=maxReverseSpeed*modifier;
-		
+
 		float speed = MathTools.subtractToZero(getSpeed(), rollResistance);
 
 		if (isForward()) {
@@ -248,7 +249,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 				speed = Math.min(speed + acceleration, maxSp);
 			}
 		}
-		
+
 		if (isBackward()) {
 			if(speed>=-maxBackSp){
 				speed = Math.max(speed - acceleration, -maxBackSp);
@@ -256,12 +257,12 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 		}
 
 		setSpeed(speed);
-		
-		
+
+
 		float rotationSpeed = 0;
 		if (Math.abs(speed) > 0.02F) {
 			rotationSpeed = MathHelper.abs(getRotationModifier() / (float)Math.pow(speed, 2));
-			
+
 			rotationSpeed = MathHelper.clamp(rotationSpeed, minRotationSpeed, maxRotationSpeed);
 		}
 
@@ -270,7 +271,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 		if(speed<0){
 			rotationSpeed=-rotationSpeed;
 		}
-		
+
 		if (isLeft()) {
 			deltaRotation -= rotationSpeed;
 		}
@@ -301,26 +302,26 @@ public abstract class EntityCarBase extends EntityVehicleBase {
             }
 		}
 	}
-	
+
 	public float getModifier(){
 		BlockPos pos=getPosition().down();
 		IBlockState state=world.getBlockState(pos);
-		
+
 		Block b=state.getBlock();
-		
+
 		if(b.equals(Blocks.AIR)){
 			return 1;
 		}
-		
+
 		if(!(b instanceof IDrivable)){
 			return 0.5F;
 		}
-		
+
 		IDrivable drivable=(IDrivable) b;
-		
+
 		return drivable.getSpeedModifier();
 	}
-	
+
 	public abstract float getRotationModifier();
 
 	public void onCollision(float speed) {
@@ -455,7 +456,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 	public void setStarted(boolean started) {
 		setStarted(started, true, false);
 	}
-	
+
 	public void setStarted(boolean started, boolean playStopSound, boolean playFailSound) {
 		if (!started&&playStopSound) {
 			playStopSound();
@@ -536,7 +537,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 	public void playCrashSound() {
 		ModSounds.playSound(getCrashSound(), world, getPosition(), null, SoundCategory.NEUTRAL, Config.carVolume);
 	}
-	
+
 	public void playHornSound() {
 		ModSounds.playSound(getHornSound(), world, getPosition(), null, SoundCategory.NEUTRAL, Config.carVolume);
 	}
@@ -568,7 +569,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 	public SoundEvent getHighSound() {
 		return ModSounds.engine_high;
 	}
-	
+
 	public SoundEvent getHornSound() {
 		return ModSounds.car_horn;
 	}
@@ -611,7 +612,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 			}
 		}
 	}
-	
+
 	public void fleeEntity(EntityLiving entity) {
 		double fleeDistance=10;
 		Vec3d vecCar=new Vec3d(posX, posY, posZ);
@@ -619,7 +620,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 		Vec3d fleeDir=vecEntity.subtract(vecCar);
 		fleeDir=fleeDir.normalize();
 		Vec3d fleePos=new Vec3d(vecEntity.x+fleeDir.x*fleeDistance, vecEntity.y+fleeDir.y*fleeDistance, vecEntity.z+fleeDir.z*fleeDistance);
-		
+
 		entity.getNavigator().tryMoveToXYZ(fleePos.x, fleePos.y, fleePos.z, 2.5);
 	}
 
