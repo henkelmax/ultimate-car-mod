@@ -199,6 +199,7 @@ key.car_left=Left
 key.car_right=Right
 key.car_gui=Open Car GUI
 key.car_start=Start Car Engine
+key.car_horn=Horn
 
 car.fuel_slot=Fuel
 
