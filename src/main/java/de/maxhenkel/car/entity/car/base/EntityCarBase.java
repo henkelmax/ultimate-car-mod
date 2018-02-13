@@ -78,6 +78,8 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 		for(CarProperties props:CarProperties.REGISTRY) {
 			if(props.getCarID().equals(getID())) {
 				this.maxSpeed=props.getSpeed();
+				this.acceleration=props.getAcceleration();
+				this.maxReverseSpeed=props.getReverseSpeed();
 			}
 		}
 	}
