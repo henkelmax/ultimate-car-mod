@@ -102,7 +102,8 @@ public abstract class EntityCarBatteryBase extends EntityCarTemperatureBase {
         double offY = lookVec.y;
         double offZ = lookVec.z * -width / 2;
 
-        if (timeSinceStarted > 0 && timeSinceStarted < 20) {
+        //Engine started smoke should only come 1 second after start and only if the engine is colder than 50°C
+        if (timeSinceStarted > 0 && timeSinceStarted < 20 && getTemperature() < 50F) {
             double speedX = lookVec.x * -0.1D;
             double speedZ = lookVec.z * -0.1D;
             if (this instanceof EntityCarDamageBase) {
