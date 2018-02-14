@@ -108,9 +108,6 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 	}
 
 	public void centerCar(){
-		if(world.isRemote){
-			CommonProxy.simpleNetworkWrapper.sendToServer(new MessageCenterCar(getDriver()));
-		}
         EnumFacing facing=getHorizontalFacing();
         switch (facing){
             case SOUTH:
