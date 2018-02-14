@@ -30,15 +30,8 @@ public class GuiFuelStationAdmin extends GuiBase {
     private TileEntityFuelStation fuelStation;
     private IInventory inventoryPlayer;
 
-    protected int xSize = 176;
-    protected int ySize = 197;
-
     private static final int TITLE_COLOR = Color.WHITE.getRGB();
     private static final int FONT_COLOR = Color.DARK_GRAY.getRGB();
-    private static final ChatFormatting INFO_COLOR = ChatFormatting.WHITE;
-
-    protected int guiLeft;
-    protected int guiTop;
 
     protected GuiTextField textField;
 
@@ -46,14 +39,17 @@ public class GuiFuelStationAdmin extends GuiBase {
         super(new ContainerFuelStationAdmin(fuelStation, inventoryPlayer));
         this.fuelStation = fuelStation;
         this.inventoryPlayer = inventoryPlayer;
+
+        xSize = 176;
+        ySize = 197;
     }
 
     @Override
     public void initGui() {
         super.initGui();
 
-        this.guiLeft = (this.width - this.xSize) / 2;
-        this.guiTop = (this.height - this.ySize) / 2;
+        //this.guiLeft = (this.width - this.xSize) / 2;
+        //this.guiTop = (this.height - this.ySize) / 2;
 
         textField = new GuiTextField(0, fontRenderer, guiLeft + 54, guiTop + 22, 100, 16);
         textField.setTextColor(-1);

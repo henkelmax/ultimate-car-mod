@@ -25,15 +25,9 @@ public class GuiFuelStation extends GuiBase {
 	private TileEntityFuelStation fuelStation;
     private IInventory inventoryPlayer;
 
-	protected int xSize = 176;
-	protected int ySize = 217;
-
 	private static final int TITLE_COLOR = Color.WHITE.getRGB();
 	private static final int FONT_COLOR = Color.DARK_GRAY.getRGB();
 	private static final ChatFormatting INFO_COLOR = ChatFormatting.WHITE;
-
-	protected int guiLeft;
-	protected int guiTop;
 
 	protected GuiButton buttonStart;
 	protected GuiButton buttonStop;
@@ -42,14 +36,17 @@ public class GuiFuelStation extends GuiBase {
 		super(new ContainerFuelStation(fuelStation, inventoryPlayer));
 		this.fuelStation = fuelStation;
         this.inventoryPlayer=inventoryPlayer;
+
+		xSize = 176;
+		ySize = 217;
 	}
 
 	@Override
 	public void initGui() {
 		super.initGui();
 
-		this.guiLeft = (this.width - this.xSize) / 2;
-		this.guiTop = (this.height - this.ySize) / 2;
+		//this.guiLeft = (this.width - this.xSize) / 2;
+		//this.guiTop = (this.height - this.ySize) / 2;
 
 		this.buttonStart = addButton(new GuiButton(0, (width / 2) - 20, guiTop+100, 40, 20,
 				new TextComponentTranslation("button.start").getFormattedText()));
