@@ -4,6 +4,14 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import de.maxhenkel.car.blocks.ModBlocks;
+import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
+import net.minecraft.util.ResourceLocation;
 import org.apache.commons.io.IOUtils;
 import de.maxhenkel.car.fluids.ModFluids;
 import de.maxhenkel.car.registries.CarFluid;
@@ -66,8 +74,10 @@ public class Config {
 	
 	public static float carVolume=0.1F;
 	
-	public static boolean thirdPersonEnter;
-	public static boolean carGroundSpeed;
+	public static boolean thirdPersonEnter=true;
+	public static boolean carGroundSpeed=false;
+	public static Block[] carDriveBlocks=new Block[0];
+    private static String[] carDriveBlocksStr=new String[0];
 	public static float carStepHeight;
 	public static boolean collideWithEntities=false;
 	public static boolean damageEntities=true;
@@ -119,9 +129,9 @@ public class Config {
 		initCar();
 		try {
 			initDimension();
-		} catch (Exception e) {
-			
-		}
+		} catch (Exception e) {}
+
+		postInitMain();
 	}
 	
 	private static void initDimension() throws JSONException, IOException{
@@ -324,7 +334,6 @@ public class Config {
 		//Car
 		carVolume=config.getFloat("car_volume", "car", 0.1F, 0F, 1F, "");
 		thirdPersonEnter=config.getBoolean("third_person_when_enter_car", "car", true, "");
-		carGroundSpeed=config.getBoolean("car_ground_speed", "car", false, "Whether the cars drive slower on non asphalt blocks");
 		carStepHeight=config.getFloat("car_step_height", "car", 0.6F, 0.1F, 128F, "The height a car can drive up");
 		collideWithEntities=config.getBoolean("collide_with_entities", "car", false, "Whether the cars should collide with other entities (except cars)");
 		damageEntities=config.getBoolean("damage_entities", "car", true, "Whether the cars should damage other entities on collision");
@@ -332,6 +341,21 @@ public class Config {
         useBattery=config.getBoolean("use_battery", "car", true, "True if starting the car should use battery");
         dynamicLights=config.getBoolean("dynamic_lights", "car", true, "Whether cars should emit light when the DynamicLights mod is installed");
         tempInFarenheit=config.getBoolean("temp_farenheit", "car", false, "True if the car temperature should be displayed in farenheit");
+
+        carGroundSpeed=config.getBoolean("road_blocks_enabled", "car", false, "Whether the cars drive slower on non road blocks");
+        String[] def=new String[]{
+                "car:tar",
+                "car:tar_slab",
+                "car:tar_slope_flat_upper",
+                "car:tar_slope_flat_lower",
+                "car:tar_slope"
+        };
+        String[] blocks=config.getStringList("road_blocks", "car", def, "A list of blocks the car can drive faster on (only if 'road_blocks_enabled' is set to true)");
+
+        if(blocks==null){
+            blocks=def;
+        }
+        carDriveBlocksStr=blocks;
 
         //Recipes
 		tarRecipe=config.getBoolean("tar_recipe", "recipes", true, "");
@@ -360,5 +384,44 @@ public class Config {
 		
 		config.save();
 	}
+
+	public static void postInitMain(){
+        List<Block> blockList=new ArrayList<>();
+        for(String s:carDriveBlocksStr){
+            Block b=getBlock(s);
+            if(b!=null){
+                blockList.add(b);
+            }
+        }
+
+        carDriveBlocks=blockList.toArray(new Block[0]);
+    }
+
+    public static Block getBlock(String name) {
+        try {
+            String[] split = name.split(":");
+            if (split.length == 2) {
+                Block b = Block.REGISTRY.getObject(new ResourceLocation(split[0], split[1]));
+                if (b.equals(Blocks.AIR)) {
+                    return null;
+                } else {
+                    return b;
+                }
+            } else {
+                return null;
+            }
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public static boolean isDrivable(Block block){
+	    for(Block b:carDriveBlocks){
+	        if(b.equals(block)){
+	            return true;
+            }
+        }
+        return false;
+    }
 	
 }
