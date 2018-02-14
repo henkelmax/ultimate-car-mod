@@ -22,6 +22,7 @@ public class BlockTarSlab extends Block implements IDrivable {
 		setResistance(20.0F);
 		setSoundType(SoundType.STONE);
 		setCreativeTab(ModCreativeTabs.TAB_CAR);
+		useNeighborBrightness=true;
 	}
 
 	@Override
