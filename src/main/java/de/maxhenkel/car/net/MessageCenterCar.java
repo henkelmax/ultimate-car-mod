@@ -12,6 +12,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.UUID;
 
@@ -54,18 +55,7 @@ public class MessageCenterCar implements IMessage, IMessageHandler<MessageCenter
             CommonProxy.simpleNetworkWrapper.sendToAllAround(new MessageCenterCar(message.uuid), new NetworkRegistry.TargetPoint(car.dimension, car.posX, car.posY, car.posZ, 128));
 			
 		}else{
-            EntityPlayer player= Minecraft.getMinecraft().player;
-            EntityPlayer ridingPlayer=player.world.getPlayerEntityByUUID(message.uuid);
-            Entity riding=ridingPlayer.getRidingEntity();
-
-            if(!(riding instanceof EntityCarBase)){
-                return null;
-            }
-
-            EntityCarBase car=(EntityCarBase) riding;
-            if(ridingPlayer.equals(car.getDriver())){
-                car.centerCar();
-            }
+            centerClient(message);
 		}
 		return null;
 	}
@@ -81,6 +71,22 @@ public class MessageCenterCar implements IMessage, IMessageHandler<MessageCenter
 	public void toBytes(ByteBuf buf) {
 		buf.writeLong(uuid.getMostSignificantBits());
 		buf.writeLong(uuid.getLeastSignificantBits());
+	}
+
+	@SideOnly(Side.CLIENT)
+	public void centerClient(MessageCenterCar message){
+		EntityPlayer player= Minecraft.getMinecraft().player;
+		EntityPlayer ridingPlayer=player.world.getPlayerEntityByUUID(message.uuid);
+		Entity riding=ridingPlayer.getRidingEntity();
+
+		if(!(riding instanceof EntityCarBase)){
+			return;
+		}
+
+		EntityCarBase car=(EntityCarBase) riding;
+		if(ridingPlayer.equals(car.getDriver())){
+			car.centerCar();
+		}
 	}
 
 }
