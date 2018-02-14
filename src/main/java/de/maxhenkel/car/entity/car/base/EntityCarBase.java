@@ -4,13 +4,10 @@ import java.util.List;
 import de.maxhenkel.car.Config;
 import de.maxhenkel.car.DamageSourceCar;
 import de.maxhenkel.car.IDrivable;
+import de.maxhenkel.car.net.*;
 import de.maxhenkel.car.sounds.SoundLoopStart;
 import de.maxhenkel.tools.MathTools;
 import de.maxhenkel.tools.Teleport;
-import de.maxhenkel.car.net.MessageCarGui;
-import de.maxhenkel.car.net.MessageCarHorn;
-import de.maxhenkel.car.net.MessageControlCar;
-import de.maxhenkel.car.net.MessageCrash;
 import de.maxhenkel.car.proxy.CommonProxy;
 import de.maxhenkel.car.reciepe.ICarbuilder;
 import de.maxhenkel.car.registries.CarProperties;
@@ -112,6 +109,9 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 	}
 
 	public void centerCar(){
+		if(world.isRemote){
+			CommonProxy.simpleNetworkWrapper.sendToServer(new MessageCenterCar(getDriver()));
+		}
         EnumFacing facing=getHorizontalFacing();
         switch (facing){
             case SOUTH:
