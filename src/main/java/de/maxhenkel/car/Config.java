@@ -74,6 +74,7 @@ public class Config {
 	public static boolean hornFlee=true;
 	public static boolean useBattery=true;
 	public static boolean dynamicLights=true;
+	public static boolean tempInFarenheit=false;
 	
 	public static boolean tarRecipe=true;
 	public static boolean painterRecipe=true;
@@ -330,8 +331,9 @@ public class Config {
 		hornFlee=config.getBoolean("horn_flee", "car", true, "Whether animals flee from the car when the horn is activted");
         useBattery=config.getBoolean("use_battery", "car", true, "True if starting the car should use battery");
         dynamicLights=config.getBoolean("dynamic_lights", "car", true, "Whether cars should emit light when the DynamicLights mod is installed");
+        tempInFarenheit=config.getBoolean("temp_farenheit", "car", false, "True if the car temperature should be displayed in farenheit");
 
-		//Recipes
+        //Recipes
 		tarRecipe=config.getBoolean("tar_recipe", "recipes", true, "");
 		painterRecipe=config.getBoolean("painter_recipe", "recipes", true, "");
 		tankRecipe=config.getBoolean("painter_recipe", "recipes", true, "");
