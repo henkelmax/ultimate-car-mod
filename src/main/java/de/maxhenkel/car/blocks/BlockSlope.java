@@ -1,5 +1,6 @@
 package de.maxhenkel.car.blocks;
 
+import de.maxhenkel.car.IDrivable;
 import de.maxhenkel.car.ModCreativeTabs;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
@@ -17,7 +18,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public class BlockSlope extends Block{
+public class BlockSlope extends Block implements IDrivable {
 
 	public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
 
@@ -32,6 +33,11 @@ public class BlockSlope extends Block{
 		useNeighborBrightness=true;
 
 		setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
+	}
+
+	@Override
+	public float getSpeedModifier() {
+		return 1.0F;
 	}
 
 	@Override

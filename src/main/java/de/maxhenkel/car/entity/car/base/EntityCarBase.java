@@ -3,6 +3,7 @@ package de.maxhenkel.car.entity.car.base;
 import java.util.List;
 import de.maxhenkel.car.Config;
 import de.maxhenkel.car.DamageSourceCar;
+import de.maxhenkel.car.IDrivable;
 import de.maxhenkel.car.net.*;
 import de.maxhenkel.car.sounds.SoundLoopStart;
 import de.maxhenkel.tools.MathTools;
@@ -108,6 +109,9 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 	}
 
 	public void centerCar(){
+		if(world.isRemote){
+			CommonProxy.simpleNetworkWrapper.sendToServer(new MessageCenterCar(getDriver()));
+		}
         EnumFacing facing=getHorizontalFacing();
         switch (facing){
             case SOUTH:
@@ -257,7 +261,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 			setRight(false);
 		}
 
-		float modifier=1F;
+		float modifier=1;
 
 		if(Config.carGroundSpeed){
 			modifier=getModifier();
@@ -337,11 +341,13 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 			return 1;
 		}
 
-		if(Config.isDrivable(b)){
-		    return 1F;
-        }else{
-		    return 0.5F;
-        }
+		if(!(b instanceof IDrivable)){
+			return 0.5F;
+		}
+
+		IDrivable drivable=(IDrivable) b;
+
+		return drivable.getSpeedModifier();
 	}
 
 	public abstract float getRotationModifier();

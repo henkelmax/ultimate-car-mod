@@ -1,5 +1,6 @@
 package de.maxhenkel.car.blocks;
 
+import de.maxhenkel.car.IDrivable;
 import de.maxhenkel.car.ModCreativeTabs;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
@@ -11,7 +12,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 
-public class BlockTarSlab extends Block{
+public class BlockTarSlab extends Block implements IDrivable {
 
 	public BlockTarSlab() {
 		super(Material.ROCK, MapColor.OBSIDIAN);
@@ -27,6 +28,11 @@ public class BlockTarSlab extends Block{
 	@Override
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
 		return new AxisAlignedBB(0, 0, 0, 1, 0.5F, 1);
+	}
+	
+	@Override
+	public float getSpeedModifier() {
+		return 1.0F;
 	}
 
     @Override
