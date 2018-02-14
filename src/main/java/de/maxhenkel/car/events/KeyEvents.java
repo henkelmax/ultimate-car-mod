@@ -106,8 +106,8 @@ public class KeyEvents {
 
             if(keyCenter.isKeyDown()){
                 if(!wasCenterPressed){
-                    //car.centerCar();
-                    CommonProxy.simpleNetworkWrapper.sendToServer(new MessageCenterCar(player));
+                    car.centerCar();
+                    //CommonProxy.simpleNetworkWrapper.sendToServer(new MessageCenterCar(player));
                     player.sendStatusMessage(new TextComponentTranslation("message.center_car"), true);
                     wasCenterPressed=true;
                 }

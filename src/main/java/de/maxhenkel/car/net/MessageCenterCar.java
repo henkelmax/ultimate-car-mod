@@ -51,11 +51,6 @@ public class MessageCenterCar implements IMessage, IMessageHandler<MessageCenter
 			if(player.equals(car.getDriver())){
 				car.centerCar();
 			}
-
-            CommonProxy.simpleNetworkWrapper.sendToAllAround(new MessageCenterCar(message.uuid), new NetworkRegistry.TargetPoint(car.dimension, car.posX, car.posY, car.posZ, 128));
-			
-		}else{
-            centerClient(message);
 		}
 		return null;
 	}
@@ -71,22 +66,6 @@ public class MessageCenterCar implements IMessage, IMessageHandler<MessageCenter
 	public void toBytes(ByteBuf buf) {
 		buf.writeLong(uuid.getMostSignificantBits());
 		buf.writeLong(uuid.getLeastSignificantBits());
-	}
-
-	@SideOnly(Side.CLIENT)
-	public void centerClient(MessageCenterCar message){
-		EntityPlayer player= Minecraft.getMinecraft().player;
-		EntityPlayer ridingPlayer=player.world.getPlayerEntityByUUID(message.uuid);
-		Entity riding=ridingPlayer.getRidingEntity();
-
-		if(!(riding instanceof EntityCarBase)){
-			return;
-		}
-
-		EntityCarBase car=(EntityCarBase) riding;
-		if(ridingPlayer.equals(car.getDriver())){
-			car.centerCar();
-		}
 	}
 
 }
