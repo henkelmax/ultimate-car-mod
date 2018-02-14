@@ -1,6 +1,7 @@
 package de.maxhenkel.car.events;
 
 import de.maxhenkel.car.entity.car.base.EntityCarBatteryBase;
+import de.maxhenkel.car.net.MessageCenterCar;
 import de.maxhenkel.car.net.MessageStarting;
 import de.maxhenkel.car.proxy.CommonProxy;
 import net.minecraft.util.text.TextComponentTranslation;
@@ -105,7 +106,8 @@ public class KeyEvents {
 
             if(keyCenter.isKeyDown()){
                 if(!wasCenterPressed){
-                    car.centerCar();
+                    //car.centerCar();
+                    CommonProxy.simpleNetworkWrapper.sendToServer(new MessageCenterCar(player));
                     player.sendStatusMessage(new TextComponentTranslation("message.center_car"), true);
                     wasCenterPressed=true;
                 }
