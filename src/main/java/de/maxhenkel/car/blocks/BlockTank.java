@@ -30,219 +30,219 @@ import net.minecraftforge.items.wrapper.InvWrapper;
 
 public class BlockTank extends BlockContainer {
 
-	protected BlockTank() {
-		super(Material.GLASS);
-		setUnlocalizedName("tank");
-		setRegistryName("tank");
-		setCreativeTab(ModCreativeTabs.TAB_CAR);
-		setHardness(0.5F);
-	}
-	
-	@Override
-	public void onBlockHarvested(World worldIn, BlockPos pos, IBlockState state, EntityPlayer player) {
-		super.onBlockHarvested(worldIn, pos, state, player);
-		
-		if(player.capabilities.isCreativeMode){
-			return;
-		}
-		
-		ItemStack stack = new ItemStack(this);
+    protected BlockTank() {
+        super(Material.GLASS);
+        setUnlocalizedName("tank");
+        setRegistryName("tank");
+        setCreativeTab(ModCreativeTabs.TAB_CAR);
+        setHardness(0.5F);
+    }
 
-		TileEntity te = worldIn.getTileEntity(pos);
+    @Override
+    public void onBlockHarvested(World worldIn, BlockPos pos, IBlockState state, EntityPlayer player) {
+        super.onBlockHarvested(worldIn, pos, state, player);
 
-		if (!(te instanceof TileEntityTank)) {
-			spawnAsEntity(worldIn, pos, stack);
-			super.breakBlock(worldIn, pos, state);
-			return;
-		}
+        if (player.capabilities.isCreativeMode) {
+            return;
+        }
 
-		TileEntityTank tank = (TileEntityTank) te;
+        ItemStack stack = new ItemStack(this);
 
-		FluidStack fluid = tank.getFluid();
+        TileEntity te = worldIn.getTileEntity(pos);
 
-		if (fluid == null) {
-			spawnAsEntity(worldIn, pos, stack);
-			super.breakBlock(worldIn, pos, state);
-			return;
-		}
+        if (!(te instanceof TileEntityTank)) {
+            spawnAsEntity(worldIn, pos, stack);
+            super.breakBlock(worldIn, pos, state);
+            return;
+        }
 
-		NBTTagCompound compound = new NBTTagCompound();
+        TileEntityTank tank = (TileEntityTank) te;
 
-		NBTTagCompound comp = new NBTTagCompound();
+        FluidStack fluid = tank.getFluid();
 
-		fluid.writeToNBT(comp);
+        if (fluid == null) {
+            spawnAsEntity(worldIn, pos, stack);
+            super.breakBlock(worldIn, pos, state);
+            return;
+        }
 
-		compound.setTag("fluid", comp);
+        NBTTagCompound compound = new NBTTagCompound();
 
-		stack.setTagCompound(compound);
+        NBTTagCompound comp = new NBTTagCompound();
 
-		spawnAsEntity(worldIn, pos, stack);
-	}
-	
-	@Override
-	public void addInformation(ItemStack stack, World player, List<String> tooltip, ITooltipFlag advanced) {
-		if(stack.hasTagCompound()&&stack.getTagCompound().hasKey("fluid")){
-			NBTTagCompound fluidComp=stack.getTagCompound().getCompoundTag("fluid");
-			FluidStack fluidStack=FluidStack.loadFluidStackFromNBT(fluidComp);
-			
-			if(fluidStack!=null){
-				tooltip.add(new TextComponentTranslation("tooltip.fluid", fluidStack.getLocalizedName()).getFormattedText());
-				tooltip.add(new TextComponentTranslation("tooltip.amount", fluidStack.amount).getFormattedText());
-			}
-		}
-		super.addInformation(stack, player, tooltip, advanced);
-	}
+        fluid.writeToNBT(comp);
 
-	@Override
-	public void dropBlockAsItemWithChance(World worldIn, BlockPos pos, IBlockState state, float chance, int fortune) {
-		
-	}
+        compound.setTag("fluid", comp);
 
-	@Override
-	public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer,
-			ItemStack stack) {
-		super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
+        stack.setTagCompound(compound);
 
-		if (!stack.hasTagCompound()) {
-			return;
-		}
+        spawnAsEntity(worldIn, pos, stack);
+    }
 
-		NBTTagCompound comp = stack.getTagCompound();
+    @Override
+    public void addInformation(ItemStack stack, World player, List<String> tooltip, ITooltipFlag advanced) {
+        if (stack.hasTagCompound() && stack.getTagCompound().hasKey("fluid")) {
+            NBTTagCompound fluidComp = stack.getTagCompound().getCompoundTag("fluid");
+            FluidStack fluidStack = FluidStack.loadFluidStackFromNBT(fluidComp);
 
-		if (!comp.hasKey("fluid")) {
-			return;
-		}
+            if (fluidStack != null) {
+                tooltip.add(new TextComponentTranslation("tooltip.fluid", fluidStack.getLocalizedName()).getFormattedText());
+                tooltip.add(new TextComponentTranslation("tooltip.amount", fluidStack.amount).getFormattedText());
+            }
+        }
+        super.addInformation(stack, player, tooltip, advanced);
+    }
 
-		NBTTagCompound fluidTag = comp.getCompoundTag("fluid");
+    @Override
+    public void dropBlockAsItemWithChance(World worldIn, BlockPos pos, IBlockState state, float chance, int fortune) {
 
-		TileEntity te = worldIn.getTileEntity(pos);
+    }
 
-		if (!(te instanceof TileEntityTank)) {
-			return;
-		}
+    @Override
+    public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer,
+                                ItemStack stack) {
+        super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
 
-		TileEntityTank tank = (TileEntityTank) te;
+        if (!stack.hasTagCompound()) {
+            return;
+        }
 
-		FluidStack fluidStack = FluidStack.loadFluidStackFromNBT(fluidTag);
+        NBTTagCompound comp = stack.getTagCompound();
 
-		tank.setFluid(fluidStack);
-		tank.synchronize();
-	}
+        if (!comp.hasKey("fluid")) {
+            return;
+        }
 
-	@Override
-	public TileEntity createNewTileEntity(World worldIn, int meta) {
-		return new TileEntityTank();
-	}
-	
-	@Override
-	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn,
-			EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-		ItemStack stack = playerIn.getHeldItem(hand);
+        NBTTagCompound fluidTag = comp.getCompoundTag("fluid");
 
-		if (stack == null) {
-			return false;
-		}
+        TileEntity te = worldIn.getTileEntity(pos);
 
-		FluidStack fluidStack = FluidUtil.getFluidContained(stack);
+        if (!(te instanceof TileEntityTank)) {
+            return;
+        }
 
-		if (fluidStack != null) {
-			handleEmpty(fluidStack, stack, worldIn, pos, playerIn, hand);
-			return true;
-		}
+        TileEntityTank tank = (TileEntityTank) te;
 
-		IFluidHandler handler = FluidUtil.getFluidHandler(stack);
+        FluidStack fluidStack = FluidStack.loadFluidStackFromNBT(fluidTag);
 
-		if (handler != null) {
-			handleFill(handler, stack, worldIn, pos, playerIn, hand);
-			return true;
-		}
+        tank.setFluid(fluidStack);
+        tank.synchronize();
+    }
 
-		return false;
-	}
-	
-	public static boolean handleEmpty(FluidStack fluidStack, ItemStack stack, World worldIn, BlockPos pos,
-			EntityPlayer playerIn, EnumHand hand) {
-		TileEntity te = worldIn.getTileEntity(pos);
+    @Override
+    public TileEntity createNewTileEntity(World worldIn, int meta) {
+        return new TileEntityTank();
+    }
 
-		if (!(te instanceof IFluidHandler)) {
-			return false;
-		}
+    @Override
+    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn,
+                                    EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+        ItemStack stack = playerIn.getHeldItem(hand);
 
-		IFluidHandler handler = (IFluidHandler) te;
+        if (stack == null) {
+            return false;
+        }
 
-		IItemHandler inv = new InvWrapper(playerIn.inventory);
+        FluidStack fluidStack = FluidUtil.getFluidContained(stack);
 
-		FluidActionResult res = FluidUtil.tryEmptyContainerAndStow(stack, handler, inv, Integer.MAX_VALUE, playerIn);
+        if (fluidStack != null) {
+            handleEmpty(stack, worldIn, pos, playerIn, hand);
+            return true;
+        }
 
-		if (res.isSuccess()) {
-			playerIn.setHeldItem(hand, res.result);
-			return true;
-		}
+        IFluidHandler handler = FluidUtil.getFluidHandler(stack);
 
-		return false;
-	}
+        if (handler != null) {
+            handleFill(stack, worldIn, pos, playerIn, hand);
+            return true;
+        }
 
-	public static boolean handleFill(IFluidHandler handler, ItemStack stack, World worldIn, BlockPos pos,
-			EntityPlayer playerIn, EnumHand hand) {
-		TileEntity te = worldIn.getTileEntity(pos);
+        return false;
+    }
 
-		if (!(te instanceof IFluidHandler)) {
-			return false;
-		}
+    public static boolean handleEmpty(ItemStack stack, World worldIn, BlockPos pos,
+                                      EntityPlayer playerIn, EnumHand hand) {
+        TileEntity te = worldIn.getTileEntity(pos);
 
-		IFluidHandler blockHandler = (IFluidHandler) te;
+        if (!(te instanceof IFluidHandler)) {
+            return false;
+        }
 
-		IItemHandler inv = new InvWrapper(playerIn.inventory);
+        IFluidHandler handler = (IFluidHandler) te;
 
-		FluidActionResult result = FluidUtil.tryFillContainerAndStow(stack, blockHandler, inv, Integer.MAX_VALUE,
-				playerIn);
+        IItemHandler inv = new InvWrapper(playerIn.inventory);
 
-		if (result.isSuccess()) {
-			playerIn.setHeldItem(hand, result.result);
-			return true;
-		}
+        FluidActionResult res = FluidUtil.tryEmptyContainerAndStow(stack, handler, inv, Integer.MAX_VALUE, playerIn, true);
 
-		return false;
-	}
+        if (res.isSuccess()) {
+            playerIn.setHeldItem(hand, res.result);
+            return true;
+        }
 
-	@Override
-	public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos) {
-		return false;
-	}
+        return false;
+    }
 
-	@Override
-	public boolean isBlockNormalCube(IBlockState state) {
-		return false;
-	}
+    public static boolean handleFill(ItemStack stack, World worldIn, BlockPos pos,
+                                     EntityPlayer playerIn, EnumHand hand) {
+        TileEntity te = worldIn.getTileEntity(pos);
 
-	@Override
-	public boolean isOpaqueCube(IBlockState state) {
-		return false;
-	}
+        if (!(te instanceof IFluidHandler)) {
+            return false;
+        }
 
-	@Override
-	public boolean isFullCube(IBlockState state) {
-		return false;
-	}
+        IFluidHandler blockHandler = (IFluidHandler) te;
 
-	@Override
-	public boolean isNormalCube(IBlockState state) {
-		return false;
-	}
+        IItemHandler inv = new InvWrapper(playerIn.inventory);
 
-	@Override
-	public boolean doesSideBlockRendering(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing face) {
-		return false;
-	}
+        FluidActionResult result = FluidUtil.tryFillContainerAndStow(stack, blockHandler, inv, Integer.MAX_VALUE,
+                playerIn, true);
 
-	@Override
-	public BlockRenderLayer getBlockLayer() {
-		return BlockRenderLayer.CUTOUT;
-	}
+        if (result.isSuccess()) {
+            playerIn.setHeldItem(hand, result.result);
+            return true;
+        }
 
-	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state) {
-		return EnumBlockRenderType.INVISIBLE;
-	}
+        return false;
+    }
+
+    @Override
+    public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos) {
+        return false;
+    }
+
+    @Override
+    public boolean isBlockNormalCube(IBlockState state) {
+        return false;
+    }
+
+    @Override
+    public boolean isOpaqueCube(IBlockState state) {
+        return false;
+    }
+
+    @Override
+    public boolean isFullCube(IBlockState state) {
+        return false;
+    }
+
+    @Override
+    public boolean isNormalCube(IBlockState state) {
+        return false;
+    }
+
+    @Override
+    public boolean doesSideBlockRendering(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing face) {
+        return false;
+    }
+
+    @Override
+    public BlockRenderLayer getBlockLayer() {
+        return BlockRenderLayer.CUTOUT;
+    }
+
+    @Override
+    public EnumBlockRenderType getRenderType(IBlockState state) {
+        return EnumBlockRenderType.INVISIBLE;
+    }
 
 }

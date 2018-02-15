@@ -39,7 +39,7 @@ public class BlockGenerator extends BlockGui{
 			FluidStack fluidStack = FluidUtil.getFluidContained(stack);
 
 			if (fluidStack != null) {
-				boolean success = BlockTank.handleEmpty(fluidStack, stack, worldIn, pos, playerIn, hand);
+				boolean success = BlockTank.handleEmpty(stack, worldIn, pos, playerIn, hand);
 				if (success) {
 					return true;
 				}
@@ -47,7 +47,7 @@ public class BlockGenerator extends BlockGui{
 			IFluidHandler handler = FluidUtil.getFluidHandler(stack);
 
 			if (handler != null) {
-				boolean success1 = BlockTank.handleFill(handler, stack, worldIn, pos, playerIn, hand);
+				boolean success1 = BlockTank.handleFill(stack, worldIn, pos, playerIn, hand);
 				if (success1) {
 					return true;
 				}
