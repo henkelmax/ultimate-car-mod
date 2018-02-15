@@ -98,7 +98,10 @@ public class TileEntityFuelStation extends TileEntityBase implements ITickable, 
         }
 
         if (freeAmountLeft <= 0) {
-            if (removeTradeItem()) {
+            if(tradeAmount<=0){
+                freeAmountLeft=transferRate;
+                markDirty();
+            }else if (removeTradeItem()) {
                 freeAmountLeft = tradeAmount;
                 markDirty();
             } else {
