@@ -5,12 +5,8 @@ import de.maxhenkel.car.entity.car.base.EntityCarBase;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
-import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
-import net.minecraftforge.fml.relauncher.Side;
 
-public class MessageControlCar implements IMessage, IMessageHandler<MessageControlCar, IMessage>{
+public class MessageControlCar extends MessageToServer<MessageControlCar>{
 
 	private boolean forward, backward, left, right;
 	private UUID uuid;
@@ -32,25 +28,21 @@ public class MessageControlCar implements IMessage, IMessageHandler<MessageContr
 	}
 
 	@Override
-	public IMessage onMessage(MessageControlCar message, MessageContext ctx) {
-		if(ctx.side.equals(Side.SERVER)){
-			EntityPlayer player=ctx.getServerHandler().player;
-			
-			if(!player.getUniqueID().equals(message.uuid)){
-				return null;
-			}
-			
-			Entity e=player.getRidingEntity();
-				
-			if(!(e instanceof EntityCarBase)){
-				return null;
-			}
-			
-			EntityCarBase car=(EntityCarBase) e;
-			
-			car.updateControls(message.forward, message.backward, message.left, message.right, player);
+	public void execute(EntityPlayer player, MessageControlCar message) {
+		if(!player.getUniqueID().equals(message.uuid)){
+			System.out.println("---------UUID was not the same-----------");
+			return;
 		}
-		return null;
+
+		Entity e=player.getRidingEntity();
+
+		if(!(e instanceof EntityCarBase)){
+			return;
+		}
+
+		EntityCarBase car=(EntityCarBase) e;
+
+		car.updateControls(message.forward, message.backward, message.left, message.right, player);
 	}
 
 	@Override
@@ -73,21 +65,4 @@ public class MessageControlCar implements IMessage, IMessageHandler<MessageContr
 		buf.writeLong(uuid.getMostSignificantBits());
 		buf.writeLong(uuid.getLeastSignificantBits());
 	}
-
-	public boolean isForward() {
-		return forward;
-	}
-
-	public boolean isBackward() {
-		return backward;
-	}
-
-	public boolean isLeft() {
-		return left;
-	}
-
-	public boolean isRight() {
-		return right;
-	}
-
 }

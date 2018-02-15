@@ -5,60 +5,43 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
-import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
-import net.minecraftforge.fml.relauncher.Side;
 
-public class MessageSpawnCar implements IMessage, IMessageHandler<MessageSpawnCar, IMessage> {
+public class MessageSpawnCar extends MessageToServer<MessageSpawnCar> {
 
-	private int posX;
-	private int posY;
-	private int posZ;
+    private int posX;
+    private int posY;
+    private int posZ;
 
-	public MessageSpawnCar() {
-	}
+    public MessageSpawnCar() {
+    }
 
-	public MessageSpawnCar(BlockPos pos) {
-		this.posX = pos.getX();
-		this.posY = pos.getY();
-		this.posZ = pos.getZ();
-	}
+    public MessageSpawnCar(BlockPos pos) {
+        this.posX = pos.getX();
+        this.posY = pos.getY();
+        this.posZ = pos.getZ();
+    }
 
-	@Override
-	public IMessage onMessage(MessageSpawnCar message, MessageContext ctx) {
-		if (ctx.side.equals(Side.SERVER)) {
-			final EntityPlayer player = ctx.getServerHandler().player;
+    @Override
+    public void execute(EntityPlayer player, MessageSpawnCar message) {
+        TileEntity te = player.world.getTileEntity(new BlockPos(message.posX, message.posY, message.posZ));
 
-			TileEntity te = player.world.getTileEntity(new BlockPos(message.posX, message.posY, message.posZ));
+        if (te instanceof TileEntityCarWorkshop) {
+            ((TileEntityCarWorkshop) te).spawnCar(player);
+        }
+    }
 
-			if (te instanceof TileEntityCarWorkshop) {
-				final TileEntityCarWorkshop carWorkshop = (TileEntityCarWorkshop) te;
-				//Scheduled task for spawning
-				player.getServer().addScheduledTask(new Runnable() {
-					public void run() {
-						carWorkshop.spawnCar(player);
-					}
-				});
+    @Override
+    public void fromBytes(ByteBuf buf) {
+        this.posX = buf.readInt();
+        this.posY = buf.readInt();
+        this.posZ = buf.readInt();
+    }
 
-			}
-
-		}
-		return null;
-	}
-
-	@Override
-	public void fromBytes(ByteBuf buf) {
-		this.posX = buf.readInt();
-		this.posY = buf.readInt();
-		this.posZ = buf.readInt();
-	}
-
-	@Override
-	public void toBytes(ByteBuf buf) {
-		buf.writeInt(posX);
-		buf.writeInt(posY);
-		buf.writeInt(posZ);
-	}
+    @Override
+    public void toBytes(ByteBuf buf) {
+        buf.writeInt(posX);
+        buf.writeInt(posY);
+        buf.writeInt(posZ);
+    }
 
 }

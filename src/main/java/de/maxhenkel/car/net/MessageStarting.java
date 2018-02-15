@@ -1,18 +1,12 @@
 package de.maxhenkel.car.net;
 
-import de.maxhenkel.car.entity.car.base.EntityCarBase;
 import de.maxhenkel.car.entity.car.base.EntityCarBatteryBase;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
-import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
-import net.minecraftforge.fml.relauncher.Side;
-
 import java.util.UUID;
 
-public class MessageStarting implements IMessage, IMessageHandler<MessageStarting, IMessage>{
+public class MessageStarting extends MessageToServer<MessageStarting>{
 
 	private boolean start;
 	private boolean playSound;
@@ -30,27 +24,22 @@ public class MessageStarting implements IMessage, IMessageHandler<MessageStartin
 	}
 
 	@Override
-	public IMessage onMessage(MessageStarting message, MessageContext ctx) {
-		if(ctx.side.equals(Side.SERVER)){
-			EntityPlayer player=ctx.getServerHandler().player;
-			
-			if(!player.getUniqueID().equals(message.uuid)){
-				return null;
-			}
-			
-			Entity riding=player.getRidingEntity();
-			
-			if(!(riding instanceof EntityCarBatteryBase)){
-				return null;
-			}
-
-			EntityCarBatteryBase car=(EntityCarBatteryBase) riding;
-			if(player.equals(car.getDriver())){
-				car.setStarting(message.start, message.playSound);
-			}
-			
+	public void execute(EntityPlayer player, MessageStarting message) {
+		if(!player.getUniqueID().equals(message.uuid)){
+			System.out.println("---------UUID was not the same-----------");
+			return;
 		}
-		return null;
+
+		Entity riding=player.getRidingEntity();
+
+		if(!(riding instanceof EntityCarBatteryBase)){
+			return;
+		}
+
+		EntityCarBatteryBase car=(EntityCarBatteryBase) riding;
+		if(player.equals(car.getDriver())){
+			car.setStarting(message.start, message.playSound);
+		}
 	}
 
 	@Override

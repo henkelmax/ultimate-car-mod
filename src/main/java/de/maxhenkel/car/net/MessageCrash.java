@@ -1,17 +1,12 @@
 package de.maxhenkel.car.net;
 
-import java.util.List;
 import java.util.UUID;
-import de.maxhenkel.car.PredicateUUID;
 import de.maxhenkel.car.entity.car.base.EntityCarBase;
 import io.netty.buffer.ByteBuf;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
-import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
-import net.minecraftforge.fml.relauncher.Side;
 
-public class MessageCrash implements IMessage, IMessageHandler<MessageCrash, IMessage>{
+public class MessageCrash extends MessageToServer<MessageCrash>{
 
 	private float speed;
 	private UUID uuid;
@@ -27,26 +22,20 @@ public class MessageCrash implements IMessage, IMessageHandler<MessageCrash, IMe
 	}
 
 	@Override
-	public IMessage onMessage(MessageCrash message, MessageContext ctx) {
-		if(ctx.side.equals(Side.SERVER)){
-			EntityPlayer player=ctx.getServerHandler().player;
-			
-			List<EntityCarBase> list=player.world.getEntities(EntityCarBase.class, new PredicateUUID(message.uuid));
-			
-			if(list.isEmpty()){
-				return null;
-			}
-			
-			EntityCarBase car=list.get(0);	
+	public void execute(EntityPlayer player, MessageCrash message) {
+		Entity riding=player.getRidingEntity();
 
-			if(!car.getUniqueID().equals(message.uuid)){
-				return null;
-			}
-			
-			car.onCollision(message.speed);
-			
+		if(!(riding instanceof EntityCarBase)){
+			return;
 		}
-		return null;
+
+		EntityCarBase car=(EntityCarBase) riding;
+
+		if(!car.getUniqueID().equals(message.uuid)){
+			return;
+		}
+
+		car.onCollision(message.speed);
 	}
 
 	@Override

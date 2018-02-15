@@ -1,17 +1,12 @@
 package de.maxhenkel.car.net;
 
 import java.util.UUID;
-
 import de.maxhenkel.car.entity.car.base.EntityCarBase;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
-import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
-import net.minecraftforge.fml.relauncher.Side;
 
-public class MessageCarHorn implements IMessage, IMessageHandler<MessageCarHorn, IMessage>{
+public class MessageCarHorn extends MessageToServer<MessageCarHorn>{
 
 	private boolean pressed;
 	private UUID uuid;
@@ -27,32 +22,26 @@ public class MessageCarHorn implements IMessage, IMessageHandler<MessageCarHorn,
 	}
 
 	@Override
-	public IMessage onMessage(MessageCarHorn message, MessageContext ctx) {
-		if(ctx.side.equals(Side.SERVER)){
-			
-			if(!message.pressed){
-				return null;
-			}
-			
-			EntityPlayer player=ctx.getServerHandler().player;
-			
-			if(!player.getUniqueID().equals(message.uuid)){
-				return null;
-			}
-			
-			Entity riding=player.getRidingEntity();
-			
-			if(!(riding instanceof EntityCarBase)){
-				return null;
-			}
-			
-			EntityCarBase car=(EntityCarBase) riding;
-			if(player.equals(car.getDriver())){
-				car.onHornPressed(player);
-			}
-			
+	public void execute(EntityPlayer player, MessageCarHorn message) {
+		if(!message.pressed){
+			return;
 		}
-		return null;
+
+		if(!player.getUniqueID().equals(message.uuid)){
+			System.out.println("---------UUID was not the same-----------");
+			return;
+		}
+
+		Entity riding=player.getRidingEntity();
+
+		if(!(riding instanceof EntityCarBase)){
+			return;
+		}
+
+		EntityCarBase car=(EntityCarBase) riding;
+		if(player.equals(car.getDriver())){
+			car.onHornPressed(player);
+		}
 	}
 
 	@Override
