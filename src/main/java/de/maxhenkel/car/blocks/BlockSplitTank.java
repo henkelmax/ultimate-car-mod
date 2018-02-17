@@ -117,6 +117,12 @@ public class BlockSplitTank extends BlockContainer{
 	public BlockRenderLayer getBlockLayer() {
 		return BlockRenderLayer.TRANSLUCENT;
 	}
+
+	@Override
+	public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) {
+
+		return layer==BlockRenderLayer.CUTOUT||layer==BlockRenderLayer.TRANSLUCENT;
+	}
 	
 	@Override
 	public boolean doesSideBlockRendering(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing face) {

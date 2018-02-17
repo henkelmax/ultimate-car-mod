@@ -65,8 +65,26 @@ public class TileEntityFuelStation extends TileEntityBase implements ITickable, 
         this.owner=new UUID(0L, 0L);
     }
 
+    private void fixTop(){
+        IBlockState top=world.getBlockState(pos.up());
+        IBlockState bottom=world.getBlockState(pos);
+        EnumFacing facing=bottom.getValue(ModBlocks.FUEL_STATION.FACING);
+        if(top.getBlock().equals(ModBlocks.FUEL_STATION_TOP)){
+            if(!top.getValue(ModBlocks.FUEL_STATION_TOP.FACING).equals(facing)){
+                world.setBlockState(pos.up(), ModBlocks.FUEL_STATION_TOP.getDefaultState().withProperty(ModBlocks.FUEL_STATION_TOP.FACING, facing));
+            }
+        }else if(world.isAirBlock(pos.up())){
+            world.setBlockState(pos.up(), ModBlocks.FUEL_STATION_TOP.getDefaultState().withProperty(ModBlocks.FUEL_STATION_TOP.FACING, facing));
+        }
+
+    }
+
     @Override
     public void update() {
+        if(world.getTotalWorldTime()%100==0){
+            fixTop();
+        }
+
         EntityCarFuelBase car = getCarInFront();
 
         if (car == null) {

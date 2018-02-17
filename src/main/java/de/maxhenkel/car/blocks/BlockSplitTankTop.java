@@ -34,13 +34,14 @@ public class BlockSplitTankTop extends Block {
     }
 
     @Override
-    public boolean isTranslucent(IBlockState state) {
-        return true;
+    public BlockRenderLayer getBlockLayer() {
+        return BlockRenderLayer.TRANSLUCENT;
     }
 
     @Override
-    public BlockRenderLayer getBlockLayer() {
-        return BlockRenderLayer.TRANSLUCENT;
+    public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) {
+
+        return layer==BlockRenderLayer.CUTOUT||layer==BlockRenderLayer.TRANSLUCENT;
     }
 
     @Override

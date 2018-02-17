@@ -1,5 +1,8 @@
 {
     "variants": {
-        "normal": { "model": "car:fuelstation_top" }
+        "facing=north": { "model": "car:fuelstation_top", "y": 180 },
+        "facing=south": { "model": "car:fuelstation_top" },
+        "facing=west":  { "model": "car:fuelstation_top", "y": 90 },
+        "facing=east":  { "model": "car:fuelstation_top", "y": 270 }
     }
 }

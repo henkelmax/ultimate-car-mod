@@ -164,7 +164,7 @@ public class BlockFuelStation extends BlockOrientableHorizontal {
                                 ItemStack stack) {
 
         if (worldIn.isAirBlock(pos.up())) {
-            worldIn.setBlockState(pos.up(), ModBlocks.FUEL_STATION_TOP.getDefaultState());
+            worldIn.setBlockState(pos.up(), ModBlocks.FUEL_STATION_TOP.getDefaultState().withProperty(ModBlocks.FUEL_STATION_TOP.FACING, state.getValue(FACING)));
         }
 
         TileEntity te = worldIn.getTileEntity(pos);
@@ -172,8 +172,6 @@ public class BlockFuelStation extends BlockOrientableHorizontal {
         if (te != null && te instanceof TileEntityFuelStation && placer instanceof EntityPlayer) {
             TileEntityFuelStation station= (TileEntityFuelStation) te;
             station.setOwner((EntityPlayer) placer);
-        }else{
-            System.out.println("-----------------------------");
         }
 
         super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
