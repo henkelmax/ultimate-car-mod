@@ -7,6 +7,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -32,6 +33,16 @@ public class BlockFuelStationTop extends Block {
 			EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 		return ModBlocks.FUEL_STATION.onBlockActivated(worldIn, pos.down(), worldIn.getBlockState(pos.down()), playerIn, hand, facing, hitX, hitY, hitZ);
 	}
+
+	@Override
+	public boolean isTranslucent(IBlockState state) {
+		return true;
+	}
+
+    @Override
+    public BlockRenderLayer getBlockLayer() {
+        return BlockRenderLayer.TRANSLUCENT;
+    }
 
 	@Override
 	public boolean isBlockNormalCube(IBlockState state) {
