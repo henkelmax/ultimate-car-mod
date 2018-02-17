@@ -2,7 +2,7 @@
     "parent": "car:block/block_big",
     "textures": {
         "0": "blocks/iron_block",
-        "1": "blocks/glass_white",
+        "1": "car:blocks/split_tank_glass",
         "2": "car:blocks/oilmill_side",
         "particle": "car:blocks/oilmill_side"
     },
