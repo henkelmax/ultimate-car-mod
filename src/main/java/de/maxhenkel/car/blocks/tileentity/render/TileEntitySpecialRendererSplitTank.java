@@ -101,7 +101,10 @@ public class TileEntitySpecialRendererSplitTank extends TileEntitySpecialRendere
 
 		tessellator.draw();
 
-		//GlStateManager.enableLighting();
+		GlStateManager.enableLighting();
+		GlStateManager.disableBlend();
+		GlStateManager.disableAlpha();
+
 		GlStateManager.popMatrix();
 	}
 

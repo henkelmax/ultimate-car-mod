@@ -113,6 +113,10 @@ public class TileEntitySpecialRendererTank extends TileEntitySpecialRenderer<Til
 
 		tessellator.draw();
 
+		GlStateManager.enableLighting();
+		GlStateManager.disableBlend();
+		GlStateManager.disableAlpha();
+
 		GlStateManager.popMatrix();
 	}
 
@@ -145,7 +149,11 @@ public class TileEntitySpecialRendererTank extends TileEntitySpecialRenderer<Til
 		GlStateManager.translate(-0.005D, -0.005D, -0.005D);
 		drawSide(line, side, buffer);
 		tessellator.draw();
-		
+
+        GlStateManager.enableLighting();
+        GlStateManager.disableBlend();
+        GlStateManager.disableAlpha();
+
 		GlStateManager.popMatrix();
 	}
 

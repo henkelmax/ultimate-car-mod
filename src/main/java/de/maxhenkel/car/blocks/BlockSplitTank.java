@@ -115,7 +115,7 @@ public class BlockSplitTank extends BlockContainer{
 	
 	@Override
 	public BlockRenderLayer getBlockLayer() {
-		return BlockRenderLayer.CUTOUT;
+		return BlockRenderLayer.TRANSLUCENT;
 	}
 	
 	@Override
