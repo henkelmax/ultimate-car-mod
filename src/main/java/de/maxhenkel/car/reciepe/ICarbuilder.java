@@ -5,6 +5,6 @@ import net.minecraft.world.World;
 
 public interface ICarbuilder {
 
-	public EntityCarBase build(World world);
+	EntityCarBase build(World world);
 	
 }

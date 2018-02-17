@@ -10,6 +10,7 @@ gui.fuelstation=Fuel Station
 gui.sign=Edit Sign Text (%s)
 gui.sign.front=Front
 gui.sign.back=Back
+gui.number_plate=Edit Number Plate
 
 tile.tar.name=Asphalt
 tile.tar_slope.name=Asphalt Slope
@@ -145,6 +146,7 @@ item.screw_driver.name=Screw Driver
 item.cable_insulator.name=Cable Insulator
 item.key.name=Key
 item.battery.name=Battery
+item.number_plate.name=Number Plate
 
 button.start=Start
 button.stop=Stop
@@ -188,6 +190,7 @@ tooltip.battery_energy=Energy stored: %s
 tooltip.battery=Restores the energy of your car battery in the car GUI
 tooltip.container=Sneak + right-click to add to a transporter
 tooltip.trade=%s %s for %s mb
+tooltip.number_plate_text=Text: %s
 
 fluid.canola_oil=Canola Oil
 fluid.methanol=Methanol

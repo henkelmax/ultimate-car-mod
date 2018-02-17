@@ -285,6 +285,12 @@ public class Reciepes {
 			GameRegistry.addShapedRecipe(new ResourceLocation(Main.MODID, "sign_post"), null, new ItemStack(ModBlocks.SIGN_POST, 1), new Object[] { "I", "I",
 					Character.valueOf('I'), new ItemStack(ModItems.IRON_STICK)});
 		}
+
+		if(Config.numberPlateRecipe){
+			//Number Plate
+			GameRegistry.addShapedRecipe(new ResourceLocation(Main.MODID, "number_plate"), null, new ItemStack(ModItems.NUMBER_PLATE, 4), new Object[] { "III", "ISI", "III",
+					Character.valueOf('S'), new ItemStack(ModItems.IRON_STICK), Character.valueOf('I'), new ItemStack(Items.IRON_INGOT) });
+		}
 		
 		OreDictionary.registerOre("cropCanola", new ItemStack(ModItems.CANOLA));
 	}

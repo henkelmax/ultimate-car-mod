@@ -1,6 +1,7 @@
 package de.maxhenkel.car.entity.car;
 
 import de.maxhenkel.car.entity.car.base.EntityCarLockBase;
+import de.maxhenkel.car.entity.car.base.EntityCarNumberPlateBase;
 import de.maxhenkel.car.items.ModItems;
 import de.maxhenkel.car.reciepe.CarBuilderTransporter;
 import de.maxhenkel.car.reciepe.ICarbuilder;
@@ -20,7 +21,7 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 
-public class EntityCarTransporter extends EntityCarLockBase{
+public class EntityCarTransporter extends EntityCarNumberPlateBase {
 	
 	private static final DataParameter<Boolean> HAS_CONTAINER = EntityDataManager.<Boolean>createKey(EntityCarTransporter.class,
 			DataSerializers.BOOLEAN);
@@ -120,7 +121,7 @@ public class EntityCarTransporter extends EntityCarLockBase{
 
     @Override
     public boolean processInitialInteract(EntityPlayer player, EnumHand hand) {
-	    if(player.isSneaking()){
+	    if(player.isSneaking()&&!isLocked()){
             ItemStack stack=player.getHeldItem(hand);
             if(stack.getItem().equals(ModItems.CONTAINER)){
                 ItemTools.decrItemStack(stack, player);

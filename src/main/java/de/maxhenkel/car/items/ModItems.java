@@ -27,4 +27,5 @@ public class ModItems {
 	public static final ItemCraftingComponent CONTAINER = new ItemCraftingComponent("container");
 	public static final ItemKey KEY = new ItemKey();
 	public static final ItemBattery BATTERY = new ItemBattery();
+	public static final ItemNumberPlate NUMBER_PLATE = new ItemNumberPlate();
 }

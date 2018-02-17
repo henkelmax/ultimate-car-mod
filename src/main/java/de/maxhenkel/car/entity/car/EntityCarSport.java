@@ -1,6 +1,7 @@
 package de.maxhenkel.car.entity.car;
 
 import de.maxhenkel.car.entity.car.base.EntityCarLockBase;
+import de.maxhenkel.car.entity.car.base.EntityCarNumberPlateBase;
 import de.maxhenkel.car.reciepe.CarBuilderSport;
 import de.maxhenkel.car.reciepe.ICarbuilder;
 import de.maxhenkel.car.sounds.ModSounds;
@@ -14,7 +15,7 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 
-public class EntityCarSport extends EntityCarLockBase{
+public class EntityCarSport extends EntityCarNumberPlateBase {
 
 	private static final DataParameter<Integer> TYPE = EntityDataManager.<Integer>createKey(EntityCarSport.class,
 			DataSerializers.VARINT);

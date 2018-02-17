@@ -107,13 +107,14 @@ public class Config {
 	public static boolean carWorkshopRecipe=true;
 	public static boolean keyRecipe=true;
 	public static boolean signRecipe=true;
-	
+	public static boolean numberPlateRecipe;
+
 	public static boolean canolaSeedDrop=true;
 	
 	public static boolean teleportDimension=false;
 	public static int teleportDimID=0;
 
-	public static void init(File configFolder){
+    public static void init(File configFolder){
 		Config.configFolder=configFolder;
 		Config.config=new Configuration(new File(configFolder, "main.cfg"));
 		
@@ -379,6 +380,7 @@ public class Config {
 		carWorkshopRecipe=config.getBoolean("car_workshop_recipe", "recipes", true, "");
 		keyRecipe=config.getBoolean("key_clone_recipe", "recipes", true, "");
 		signRecipe=config.getBoolean("sign_recipe", "recipes", true, "");
+		numberPlateRecipe=config.getBoolean("number_plate_recipe", "recipes", true, "");
 		
 		canolaSeedDrop=config.getBoolean("canola_seed_drop", "drops", true, "");
 		

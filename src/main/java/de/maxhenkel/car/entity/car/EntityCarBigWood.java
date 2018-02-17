@@ -1,6 +1,7 @@
 package de.maxhenkel.car.entity.car;
 
 import de.maxhenkel.car.entity.car.base.EntityCarLockBase;
+import de.maxhenkel.car.entity.car.base.EntityCarNumberPlateBase;
 import de.maxhenkel.car.reciepe.CarBuilderWoodCarBig;
 import de.maxhenkel.car.reciepe.ICarbuilder;
 import net.minecraft.block.BlockPlanks.EnumType;
@@ -13,7 +14,7 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 
-public class EntityCarBigWood extends EntityCarLockBase{
+public class EntityCarBigWood extends EntityCarNumberPlateBase{
 
 	private static final DataParameter<Integer> TYPE = EntityDataManager.<Integer>createKey(EntityCarBigWood.class,
 			DataSerializers.VARINT);

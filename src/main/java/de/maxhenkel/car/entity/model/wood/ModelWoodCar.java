@@ -3,6 +3,7 @@ package de.maxhenkel.car.entity.model.wood;
 import de.maxhenkel.car.entity.car.base.EntityCarBase;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
 
 public class ModelWoodCar extends ModelBase {
@@ -341,7 +342,10 @@ public class ModelWoodCar extends ModelBase {
 
 	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
 		super.render(entity, f, f1, f2, f3, f4, f5);
-		
+
+		GlStateManager.pushMatrix();
+		GlStateManager.scale(-1.0F, -1.0F, 1.0F);
+
 		EntityCarBase car=(EntityCarBase) entity;
 		
 		setWheelRotation(car.updateWheelRotation(f5));
@@ -390,6 +394,8 @@ public class ModelWoodCar extends ModelBase {
 		wheel4e.render(f5);
 		wheel4f.render(f5);
 		wheel4g.render(f5);
+
+		GlStateManager.popMatrix();
 	}
 
 	private void setRotation(ModelRenderer model, float x, float y, float z) {

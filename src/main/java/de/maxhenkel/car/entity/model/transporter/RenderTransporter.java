@@ -33,11 +33,10 @@ public class RenderTransporter extends RenderCarBase<EntityCarTransporter> {
 	public float getHeightOffset() {
 		return 1.35F;
 	}
-	
+
 	@Override
-	public void setupRotation(EntityCarTransporter entity, float f1, float f2) {
-		super.setupRotation(entity, f1, f2);
-		GlStateManager.rotate(180.0F, 1.0F, 0.0F, 0.0F);
+	public void translateNumberPlate() {
+		GlStateManager.translate(0F, -0.45F, -1.08F);
 	}
 	
 	@Override

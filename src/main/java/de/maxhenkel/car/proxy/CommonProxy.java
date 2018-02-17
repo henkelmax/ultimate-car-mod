@@ -52,6 +52,7 @@ public class CommonProxy {
         CommonProxy.simpleNetworkWrapper.registerMessage(MessageFuelStationAdminAmount.class, MessageFuelStationAdminAmount.class, 13, Side.SERVER);
         CommonProxy.simpleNetworkWrapper.registerMessage(MessageCenterCar.class, MessageCenterCar.class, 14, Side.SERVER);
         CommonProxy.simpleNetworkWrapper.registerMessage(MessageCenterCar.class, MessageCenterCar.class, 15, Side.CLIENT);
+        CommonProxy.simpleNetworkWrapper.registerMessage(MessageEditNumberPlate.class, MessageEditNumberPlate.class, 16, Side.SERVER);
 
         try {
             File configFolder = new File(event.getModConfigurationDirectory(), Main.MODID);

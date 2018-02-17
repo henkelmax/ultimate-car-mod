@@ -4,6 +4,7 @@ import de.maxhenkel.car.Main;
 import de.maxhenkel.car.entity.car.EntityCarSport;
 import de.maxhenkel.car.entity.model.RenderCarBase;
 import net.minecraft.client.model.ModelBase;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.util.ResourceLocation;
 
@@ -25,6 +26,11 @@ public class RenderSport extends RenderCarBase<EntityCarSport> {
 	@Override
 	public float getHeightOffset() {
 		return 0.035F;
+	}
+
+	@Override
+	public void translateNumberPlate() {
+        GlStateManager.translate(0F, -0.45F, -0.88F);
 	}
 	
 	@Override

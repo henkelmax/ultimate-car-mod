@@ -10,9 +10,12 @@ import de.maxhenkel.car.blocks.tileentity.TileEntityOilMill;
 import de.maxhenkel.car.blocks.tileentity.TileEntitySign;
 import de.maxhenkel.car.blocks.tileentity.TileEntitySplitTank;
 import de.maxhenkel.car.entity.car.base.EntityCarInventoryBase;
+import de.maxhenkel.car.items.ModItems;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.IGuiHandler;
@@ -33,6 +36,7 @@ public class GuiHandler implements IGuiHandler{
 	public static final int GUI_FLUID_EXTRACTOR=11;
 	public static final int GUI_SIGN=12;
 	public static final int GUI_FUELSTATION_ADMIN=13;
+	public static final int GUI_NUMBER_PLATE=14;
 	
 	@Override
 	public Object getServerGuiElement(int id, EntityPlayer player, World world, int x, int y, int z) {
@@ -101,7 +105,9 @@ public class GuiHandler implements IGuiHandler{
 			if(te!=null&&te instanceof TileEntitySign){
 				return new ContainerSign((TileEntitySign) te);
 			}
-		}
+		}else if(id==GUI_NUMBER_PLATE){
+		    return new ContainerNumberPlate();
+        }
 		
 		return null;
 	}
@@ -175,7 +181,17 @@ public class GuiHandler implements IGuiHandler{
 			if(te!=null&&te instanceof TileEntitySign){
 				return new GuiSign((TileEntitySign) te);
 			}
-		}
+		}else if(id==GUI_NUMBER_PLATE){
+            ItemStack stack=player.getHeldItem(EnumHand.MAIN_HAND);
+            if(stack.getItem().equals(ModItems.NUMBER_PLATE)){
+                return new GuiNumberPlate(player, stack);
+            }else{
+                stack=player.getHeldItem(EnumHand.OFF_HAND);
+                if(stack.getItem().equals(ModItems.NUMBER_PLATE)){
+                    return new GuiNumberPlate(player, stack);
+                }
+            }
+        }
 		
 		return null;
 	}
