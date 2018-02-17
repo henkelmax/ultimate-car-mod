@@ -1,5 +1,6 @@
 package de.maxhenkel.car.blocks.tileentity.render;
 
+import net.minecraft.client.renderer.RenderHelper;
 import org.lwjgl.opengl.GL11;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.blocks.tileentity.TileEntityTank;
@@ -26,6 +27,11 @@ public class TileEntitySpecialRendererTank extends TileEntitySpecialRenderer<Til
 		GlStateManager.pushMatrix();
 		GlStateManager.translate(x, y, z);
 
+        GlStateManager.disableLighting();
+        GlStateManager.enableBlend();
+        GlStateManager.enableAlpha();
+        GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+
 		double amount = te.getFillPercent();
 		FluidStack stack = te.getFluid();
 		if (amount > 0 && stack != null) {
@@ -35,17 +41,16 @@ public class TileEntitySpecialRendererTank extends TileEntitySpecialRenderer<Til
 
 		bindTexture(LOCATION_TANK);
 		renderLines(te);
-		
+
+        GlStateManager.enableLighting();
+        GlStateManager.disableBlend();
+        GlStateManager.disableAlpha();
+
 		GlStateManager.popMatrix();
 	}
 
 	public static void renderFluid(TileEntityTank tank, Fluid fluid, double amount, double yStart) {
 		GlStateManager.pushMatrix();
-		GlStateManager.disableLighting();
-		//GlStateManager.color(1F, 1F, 1F, 1F);
-
-		GlStateManager.enableBlend();
-		GlStateManager.enableAlpha();
 
 		TextureAtlasSprite texture = Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(fluid.getStill().toString());
 
@@ -113,10 +118,6 @@ public class TileEntitySpecialRendererTank extends TileEntitySpecialRenderer<Til
 
 		tessellator.draw();
 
-		GlStateManager.enableLighting();
-		GlStateManager.disableBlend();
-		GlStateManager.disableAlpha();
-
 		GlStateManager.popMatrix();
 	}
 
@@ -134,11 +135,7 @@ public class TileEntitySpecialRendererTank extends TileEntitySpecialRenderer<Til
 
 	public static void drawLine(EnumFacing side, EnumDirection line) {
 		GlStateManager.pushMatrix();
-		GlStateManager.disableLighting();
-		//GlStateManager.color(1F, 1F, 1F, 1F);
-		GlStateManager.enableBlend();
-		GlStateManager.enableAlpha();
-		
+
 		Tessellator tessellator = Tessellator.getInstance();
 		BufferBuilder buffer = tessellator.getBuffer();
 
@@ -149,10 +146,6 @@ public class TileEntitySpecialRendererTank extends TileEntitySpecialRenderer<Til
 		GlStateManager.translate(-0.005D, -0.005D, -0.005D);
 		drawSide(line, side, buffer);
 		tessellator.draw();
-
-        GlStateManager.enableLighting();
-        GlStateManager.disableBlend();
-        GlStateManager.disableAlpha();
 
 		GlStateManager.popMatrix();
 	}

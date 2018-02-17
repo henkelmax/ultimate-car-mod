@@ -1,5 +1,7 @@
 package de.maxhenkel.car.blocks.tileentity.render;
 
+import net.minecraft.client.renderer.RenderHelper;
+import net.minecraftforge.client.MinecraftForgeClient;
 import org.lwjgl.opengl.GL11;
 
 import de.maxhenkel.car.blocks.tileentity.TileEntitySplitTank;
@@ -40,12 +42,12 @@ public class TileEntitySpecialRendererSplitTank extends TileEntitySpecialRendere
 	
 	public static void renderFluid(Fluid fluid, float amount, float yStart) {
 		GlStateManager.pushMatrix();
-        //GlStateManager.color(1, 1, 1, 1);
         GlStateManager.disableLighting();
 		GlStateManager.scale(0.98F, 0.98F, 0.98F);
 		GlStateManager.translate(0.01F, 0.01F, 0.01F);
 		GlStateManager.enableBlend();
         GlStateManager.enableAlpha();
+        GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		
 		TextureAtlasSprite texture = Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(fluid.getStill().toString());
 		
