@@ -24,7 +24,6 @@ import java.util.UUID;
 public class ItemNumberPlate extends Item {
 
 	public ItemNumberPlate() {
-		setMaxStackSize(1);
 		setUnlocalizedName("number_plate");
 		setRegistryName("number_plate");
 		setCreativeTab(ModCreativeTabs.TAB_CAR);
