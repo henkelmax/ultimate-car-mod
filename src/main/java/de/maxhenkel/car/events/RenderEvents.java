@@ -99,11 +99,19 @@ public class RenderEvents {
 	public static float SCALE_FACTOR=0.7F;
 
 	@SubscribeEvent
-	public void renderPlayer(RenderPlayerEvent.Pre event){
+	public void renderPlayerPre(RenderPlayerEvent.Pre event){
 		if(event.getEntityPlayer().getRidingEntity() instanceof EntityCarBase){
+		    GlStateManager.pushMatrix();
             GlStateManager.scale(SCALE_FACTOR, SCALE_FACTOR, SCALE_FACTOR);
             GlStateManager.translate(0F, (event.getEntityPlayer().height-(event.getEntityPlayer().height*SCALE_FACTOR))/1.5F, 0F);
         }
+	}
+
+	@SubscribeEvent
+	public void renderPlayerPost(RenderPlayerEvent.Post event){
+		if(event.getEntityPlayer().getRidingEntity() instanceof EntityCarBase){
+            GlStateManager.popMatrix();
+		}
 	}
 
 }
