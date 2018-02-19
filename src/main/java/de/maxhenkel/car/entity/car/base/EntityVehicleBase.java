@@ -3,6 +3,7 @@ package de.maxhenkel.car.entity.car.base;
 import java.util.List;
 import javax.annotation.Nullable;
 import de.maxhenkel.car.Config;
+import de.maxhenkel.car.events.RenderEvents;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumFacing;
@@ -121,12 +122,16 @@ public abstract class EntityVehicleBase extends Entity{
 	public void applyOrientationToEntity(Entity entityToUpdate) {
 		this.applyYawToEntity(entityToUpdate);
 	}
-	
+
+    public float getHeightOffsetForPassenger(int i, Entity passenger){
+        return -((passenger.height* RenderEvents.SCALE_FACTOR)*0.3F);
+    }
+
 	public float getFrontOffsetForPassenger(int i, Entity passenger){
 		return 0.0F;
 	}
 	
-	public float getsideOffsetForPassenger(int i, Entity passenger){
+	public float getSideOffsetForPassenger(int i, Entity passenger){
 		return 0.0F;
 	}
 	
@@ -138,6 +143,7 @@ public abstract class EntityVehicleBase extends Entity{
 
 		double front = 0.0F;
 		double side = 0.0F;
+        double height = 0.0F;
 
 		List<Entity> passengers = getPassengers();
 
@@ -145,17 +151,23 @@ public abstract class EntityVehicleBase extends Entity{
 			int i = passengers.indexOf(passenger);
 
 			front=getFrontOffsetForPassenger(i, passenger);
-			side=getsideOffsetForPassenger(i, passenger);
+			side= getSideOffsetForPassenger(i, passenger);
+			height=getHeightOffsetForPassenger(i, passenger);
 		}
 
-		Vec3d vec3d = (new Vec3d(front, 0.0D, side))
+		Vec3d vec3d = (new Vec3d(front, height, side))
 				.rotateYaw(-this.rotationYaw * 0.017453292F - ((float) Math.PI / 2F));
-		passenger.setPosition(this.posX + vec3d.x, this.posY + getMountedYOffset(), this.posZ + vec3d.z);
+		passenger.setPosition(this.posX + vec3d.x, this.posY + vec3d.y, this.posZ + vec3d.z);
 		passenger.rotationYaw += this.deltaRotation;
 		passenger.setRotationYawHead(passenger.getRotationYawHead() + this.deltaRotation);
 		this.applyYawToEntity(passenger);
 	}
-	
+
+	@Override
+	public double getMountedYOffset() {
+        return 0D;
+	}
+
 	@Override
 	public Entity getControllingPassenger() {
 		return getDriver();

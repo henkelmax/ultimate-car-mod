@@ -5,6 +5,7 @@ import de.maxhenkel.car.entity.car.base.EntityCarNumberPlateBase;
 import de.maxhenkel.car.reciepe.CarBuilderSport;
 import de.maxhenkel.car.reciepe.ICarbuilder;
 import de.maxhenkel.car.sounds.ModSounds;
+import net.minecraft.entity.Entity;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
@@ -29,8 +30,6 @@ public class EntityCarSport extends EntityCarNumberPlateBase {
 		setType(type);
 		setSize(1.4F, 1.2F);
 		maxFuel=1500;
-		//maxSpeed=0.65F;
-		//acceleration=0.04F;
 		minRotationSpeed=1.1F;
 	}
 	
@@ -43,7 +42,12 @@ public class EntityCarSport extends EntityCarNumberPlateBase {
 	public ITextComponent getCarName() {
 		return new TextComponentTranslation("entity.car_sport.name");
 	}
-	
+
+	@Override
+	public float getHeightOffsetForPassenger(int i, Entity passenger) {
+		return super.getHeightOffsetForPassenger(i, passenger)+0.1F;
+	}
+
 	@Override
 	public ICarbuilder getBuilder() {
 		return new CarBuilderSport(getType());

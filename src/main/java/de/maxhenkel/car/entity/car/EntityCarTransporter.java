@@ -65,7 +65,7 @@ public class EntityCarTransporter extends EntityCarNumberPlateBase {
 	}
 	
 	@Override
-	public float getsideOffsetForPassenger(int i, Entity passenger) {
+	public float getSideOffsetForPassenger(int i, Entity passenger) {
 		if(i<=0){
 			return -0.38F;
 		}
@@ -75,11 +75,6 @@ public class EntityCarTransporter extends EntityCarNumberPlateBase {
 	@Override
 	public int getPassengerSize() {
 		return 2;
-	}
-	
-	@Override
-	public double getMountedYOffset() {
-		return -0.5D;
 	}
 	
 	@Override

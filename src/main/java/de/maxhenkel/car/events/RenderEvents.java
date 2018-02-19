@@ -1,10 +1,12 @@
 package de.maxhenkel.car.events;
 
+import de.maxhenkel.car.entity.car.base.EntityCarBase;
 import de.maxhenkel.tools.MathTools;
 import de.maxhenkel.car.entity.car.base.EntityCarFuelBase;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -12,6 +14,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
+import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.client.event.RenderTooltipEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
@@ -91,6 +94,16 @@ public class RenderEvents {
             return;
         }
         event.setCanceled(true);
+	}
+
+	public static float SCALE_FACTOR=0.7F;
+
+	@SubscribeEvent
+	public void renderPlayer(RenderPlayerEvent.Pre event){
+		if(event.getEntityPlayer().getRidingEntity() instanceof EntityCarBase){
+            GlStateManager.scale(SCALE_FACTOR, SCALE_FACTOR, SCALE_FACTOR);
+            GlStateManager.translate(0F, (event.getEntityPlayer().height-(event.getEntityPlayer().height*SCALE_FACTOR))/1.5F, 0F);
+        }
 	}
 
 }
