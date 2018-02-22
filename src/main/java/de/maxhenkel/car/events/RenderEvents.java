@@ -1,6 +1,7 @@
 package de.maxhenkel.car.events;
 
 import de.maxhenkel.car.entity.car.base.EntityCarBase;
+import de.maxhenkel.car.entity.car.base.EntityVehicleBase;
 import de.maxhenkel.tools.MathTools;
 import de.maxhenkel.car.entity.car.base.EntityCarFuelBase;
 import net.minecraft.client.Minecraft;
@@ -96,14 +97,14 @@ public class RenderEvents {
         event.setCanceled(true);
 	}
 
-	public static float SCALE_FACTOR=0.7F;
+
 
 	@SubscribeEvent
 	public void renderPlayerPre(RenderPlayerEvent.Pre event){
 		if(event.getEntityPlayer().getRidingEntity() instanceof EntityCarBase){
 		    GlStateManager.pushMatrix();
-            GlStateManager.scale(SCALE_FACTOR, SCALE_FACTOR, SCALE_FACTOR);
-            GlStateManager.translate(0F, (event.getEntityPlayer().height-(event.getEntityPlayer().height*SCALE_FACTOR))/1.5F, 0F);
+            GlStateManager.scale(EntityVehicleBase.SCALE_FACTOR, EntityVehicleBase.SCALE_FACTOR, EntityVehicleBase.SCALE_FACTOR);
+            GlStateManager.translate(0F, (event.getEntityPlayer().height-(event.getEntityPlayer().height*EntityVehicleBase.SCALE_FACTOR))/1.5F, 0F);
         }
 	}
 

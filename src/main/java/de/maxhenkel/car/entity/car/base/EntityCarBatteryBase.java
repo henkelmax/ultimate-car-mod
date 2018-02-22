@@ -222,7 +222,7 @@ public abstract class EntityCarBatteryBase extends EntityCarTemperatureBase {
     public void setStarting(boolean starting, boolean playFailSound) {
         if (starting) {
             if (getBatteryLevel() <= 0) {
-                return;//TODO nostart
+                return;
             }
             if (isStarted()) {
                 setStarted(false, true, false);
@@ -238,7 +238,7 @@ public abstract class EntityCarBatteryBase extends EntityCarTemperatureBase {
             }
             if (playFailSound) {
                 if (getBatteryLevel() > 0) {
-                    playFailSound();//TODO nost
+                    playFailSound();
                 }
             }
         }
@@ -249,7 +249,7 @@ public abstract class EntityCarBatteryBase extends EntityCarTemperatureBase {
 
         int batteryLevel = getBatteryLevel();
 
-        int startLevel = getMaxBatteryLevel() / 3;//TODO change maybe
+        int startLevel = getMaxBatteryLevel() / 3;
 
         float basePitch = 1F - 0.002F * ((float) getStartingTime());
 
