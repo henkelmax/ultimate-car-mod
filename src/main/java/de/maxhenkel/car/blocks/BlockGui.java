@@ -75,7 +75,11 @@ public abstract class BlockGui extends BlockContainer{
 
 	@Override
 	public IBlockState getStateFromMeta(int meta) {
-		return getDefaultState().withProperty(FACING, EnumFacing.getFront(meta&7)).withProperty(POWERED, isPowered(meta));
+		EnumFacing facing=EnumFacing.getFront(meta&7);//TODO change in new version to plane
+		if(facing.equals(EnumFacing.UP)||facing.equals(EnumFacing.DOWN)){
+			facing=EnumFacing.NORTH;
+		}
+		return getDefaultState().withProperty(FACING, facing).withProperty(POWERED, isPowered(meta));
 	}
 
 	@Override
