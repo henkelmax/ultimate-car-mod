@@ -7,6 +7,7 @@ import de.maxhenkel.car.blocks.BlockPaint;
 import de.maxhenkel.car.blocks.ModBlocks;
 import de.maxhenkel.car.items.ModItems;
 import mezz.jei.api.ingredients.IIngredients;
+import mezz.jei.api.ingredients.VanillaTypes;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
@@ -34,7 +35,7 @@ public class PainterRecipeWrapper implements IRecipeWrapper{
 			list.add(new ItemStack(b));
 		}
 		
-		ingredients.setOutputs(ItemStack.class, list);
+		ingredients.setOutputs(VanillaTypes.ITEM, list);
 	}
 
 	@Override
@@ -50,39 +51,6 @@ public class PainterRecipeWrapper implements IRecipeWrapper{
 	public BlockPaint getPaint() {
 		return paint;
 	}
-/*
-	@Override
-	public List<ItemStack> getInputs() {
-		List<ItemStack> list=new ArrayList<ItemStack>();
-		list.add(new ItemStack(ModItems.PAINTER));
-		return list;
-	}
 
-	@Override
-	public List<ItemStack> getOutputs() {
-		List<ItemStack> list=new ArrayList<ItemStack>();
-		
-		for(BlockPaint b:ModBlocks.PAINTS){
-			list.add(new ItemStack(b));
-		}
-		return list;
-	}
-
-	@Override
-	public List<FluidStack> getFluidInputs() {
-		return Collections.emptyList();
-	}
-
-	@Override
-	public List<FluidStack> getFluidOutputs() {
-		return Collections.emptyList();
-	}
-
-	@Override
-	public void drawAnimations(Minecraft minecraft, int recipeWidth, int recipeHeight) {
-		
-	}*/
-	
-	
 
 }

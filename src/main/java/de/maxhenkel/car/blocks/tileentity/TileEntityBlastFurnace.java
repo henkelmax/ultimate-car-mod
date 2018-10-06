@@ -34,17 +34,6 @@ public class TileEntityBlastFurnace extends TileEntityEnergyFluidProducer{
 		return new ItemStack(Items.COAL, 1, 1);
 	}
 
-	/*@Override
-	public List<ItemStack> getInputItems() {
-		List<ItemStack> items=new ArrayList<ItemStack>();
-		items.add(new ItemStack(Item.getItemFromBlock(Blocks.LOG), 1, 0));
-		items.add(new ItemStack(Item.getItemFromBlock(Blocks.LOG), 1, 1));
-		items.add(new ItemStack(Item.getItemFromBlock(Blocks.LOG), 1, 2));
-		items.add(new ItemStack(Item.getItemFromBlock(Blocks.LOG), 1, 3));
-		items.add(new ItemStack(Item.getItemFromBlock(Blocks.LOG2), 1, 0));
-		items.add(new ItemStack(Item.getItemFromBlock(Blocks.LOG2), 1, 1));
-		return items;
-	}*/
 	@Override
 	public boolean isValidItem(ItemStack stack) {
 		return ItemTools.matchesOredict(stack, "logWood");

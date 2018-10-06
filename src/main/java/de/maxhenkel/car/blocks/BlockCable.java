@@ -1,6 +1,5 @@
 package de.maxhenkel.car.blocks;
 
-import cofh.redstoneflux.api.IEnergyConnection;
 import de.maxhenkel.car.ModCreativeTabs;
 import de.maxhenkel.car.blocks.tileentity.TileEntityCable;
 import net.minecraft.block.BlockContainer;
@@ -18,198 +17,170 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.energy.CapabilityEnergy;
 
 public class BlockCable extends BlockContainer {
 
-	public static final IProperty<Boolean> DOWN = PropertyBool.create("down");
-	public static final IProperty<Boolean> UP = PropertyBool.create("up");
-	public static final IProperty<Boolean> NORTH = PropertyBool.create("north");
-	public static final IProperty<Boolean> SOUTH = PropertyBool.create("south");
-	public static final IProperty<Boolean> WEST = PropertyBool.create("west");
-	public static final IProperty<Boolean> EAST = PropertyBool.create("east");
+    public static final IProperty<Boolean> DOWN = PropertyBool.create("down");
+    public static final IProperty<Boolean> UP = PropertyBool.create("up");
+    public static final IProperty<Boolean> NORTH = PropertyBool.create("north");
+    public static final IProperty<Boolean> SOUTH = PropertyBool.create("south");
+    public static final IProperty<Boolean> WEST = PropertyBool.create("west");
+    public static final IProperty<Boolean> EAST = PropertyBool.create("east");
 
-	protected BlockCable() {
-		super(new Material(MapColor.AIR));
-		setRegistryName("cable");
-		setUnlocalizedName("cable");
-		setCreativeTab(ModCreativeTabs.TAB_CAR);
-		setHardness(0.25F);
-		useNeighborBrightness=true;
-		setSoundType(SoundType.CLOTH);
-		
-		setDefaultState(blockState.getBaseState()
-				.withProperty(UP, false)
-				.withProperty(DOWN, false)
-				.withProperty(NORTH, false)
-				.withProperty(SOUTH, false)
-				.withProperty(EAST, false)
-				.withProperty(WEST, false)
-				);
-	}
-	
-	@Override
-	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-		
-		float x1=0.40625F;
-		float y1=0.40625F;
-		float z1=0.40625F;
-		float x2=0.59375F;
-		float y2=0.59375F;
-		float z2=0.59375F;
-		
-		
-		if (isConnectedTo(source, pos, EnumFacing.UP)) {
-			y2=1.0F;
-		}
+    protected BlockCable() {
+        super(new Material(MapColor.AIR));
+        setRegistryName("cable");
+        setUnlocalizedName("cable");
+        setCreativeTab(ModCreativeTabs.TAB_CAR);
+        setHardness(0.25F);
+        useNeighborBrightness = true;
+        setSoundType(SoundType.CLOTH);
 
-		if (isConnectedTo(source, pos, EnumFacing.DOWN)) {
-			y1=0.0F;
-		}
+        setDefaultState(blockState.getBaseState()
+                .withProperty(UP, false)
+                .withProperty(DOWN, false)
+                .withProperty(NORTH, false)
+                .withProperty(SOUTH, false)
+                .withProperty(EAST, false)
+                .withProperty(WEST, false)
+        );
+    }
 
-		if (isConnectedTo(source, pos, EnumFacing.SOUTH)) {
-			z2=1.0F;
-		}
+    @Override
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
 
-		if (isConnectedTo(source, pos, EnumFacing.NORTH)) {
-			z1=0.0F;
-		}
+        float x1 = 0.40625F;
+        float y1 = 0.40625F;
+        float z1 = 0.40625F;
+        float x2 = 0.59375F;
+        float y2 = 0.59375F;
+        float z2 = 0.59375F;
 
-		if (isConnectedTo(source, pos, EnumFacing.EAST)) {
-			x2=1.0F;
-		}
 
-		if (isConnectedTo(source, pos, EnumFacing.WEST)) {
-			x1=0.0F;
-		}
-		
-		return new AxisAlignedBB(x1, y1, z1, x2, y2, z2);
-	}
-	
-	/*private boolean isConnectedTo(IBlockAccess world, BlockPos pos, EnumFacing facing) {
-		TileEntity te=world.getTileEntity(pos);
-		
-		if(!(te instanceof TileEntityCable)){
-			return false;
-		}
-		
-		TileEntityCable cable=(TileEntityCable) te;
-		
-		return cable.isSideConnected(facing);
-	}*/
-	
-	public static boolean isConnectedTo(IBlockAccess world, BlockPos pos, EnumFacing facing) {
-		IBlockState state=world.getBlockState(pos.offset(facing));
-		
-		if(state.getBlock().equals(ModBlocks.CABLE)){
-			return true;
-		}
-		
-		TileEntity te=world.getTileEntity(pos.offset(facing));
-		
-		if(!(te instanceof IEnergyConnection)){
-			return false;
-		}
-		
-		IEnergyConnection conn=(IEnergyConnection) te;
+        if (isConnectedTo(source, pos, EnumFacing.UP)) {
+            y2 = 1.0F;
+        }
 
-		return conn.canConnectEnergy(facing.getOpposite());
-	}
+        if (isConnectedTo(source, pos, EnumFacing.DOWN)) {
+            y1 = 0.0F;
+        }
 
-	@Override
-	public TileEntity createNewTileEntity(World worldIn, int meta) {
-		return new TileEntityCable();
-	}
+        if (isConnectedTo(source, pos, EnumFacing.SOUTH)) {
+            z2 = 1.0F;
+        }
 
-	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state) {
-		return EnumBlockRenderType.MODEL;
-	}
+        if (isConnectedTo(source, pos, EnumFacing.NORTH)) {
+            z1 = 0.0F;
+        }
 
-	@Override
-	public boolean doesSideBlockRendering(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing face) {
-		return false;
-	}
+        if (isConnectedTo(source, pos, EnumFacing.EAST)) {
+            x2 = 1.0F;
+        }
 
-	@Override
-	public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos) {
-		return false;
-	}
+        if (isConnectedTo(source, pos, EnumFacing.WEST)) {
+            x1 = 0.0F;
+        }
 
-	@Override
-	public boolean isOpaqueCube(IBlockState state) {
-		return false;
-	}
-	
-	@Override
-	public boolean isBlockNormalCube(IBlockState state) {
-		return false;
-	}
-	
-	@Override
-	public boolean isFullCube(IBlockState state) {
-		return false;
-	}
-	
-	@Override
-	public boolean isNormalCube(IBlockState state) {
-		return false;
-	}
-	
-	@Override
-	public int getMetaFromState(IBlockState state) {
-		return 0;
-	}
+        return new AxisAlignedBB(x1, y1, z1, x2, y2, z2);
+    }
 
-	@Override
-	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, UP, DOWN, EAST, WEST, NORTH, SOUTH);
-	}
 
-	@Override
-	public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos) {
-		/*TileEntity te = world.getTileEntity(pos);
-		
-		if(!(te instanceof TileEntityCable)){
-			return getDefaultState();
-		}
-		
-		TileEntityCable cable=(TileEntityCable) te;
-		
-		return state
-				.withProperty(UP, cable.isSideConnected(EnumFacing.UP))
-				.withProperty(DOWN, cable.isSideConnected(EnumFacing.DOWN))
-				.withProperty(NORTH, cable.isSideConnected(EnumFacing.NORTH))
-				.withProperty(SOUTH, cable.isSideConnected(EnumFacing.SOUTH))
-				.withProperty(EAST, cable.isSideConnected(EnumFacing.EAST))
-				.withProperty(WEST, cable.isSideConnected(EnumFacing.WEST));
-		*/
-		IBlockState actualState= getDefaultState();
-		
-		if (isConnectedTo(world, pos, EnumFacing.UP)) {
-			actualState=actualState.withProperty(UP, true);
-		}
+    public static boolean isConnectedTo(IBlockAccess world, BlockPos pos, EnumFacing facing) {
+        IBlockState state = world.getBlockState(pos.offset(facing));
 
-		if (isConnectedTo(world, pos, EnumFacing.DOWN)) {
-			actualState=actualState.withProperty(DOWN, true);
-		}
+        if (state.getBlock().equals(ModBlocks.CABLE)) {
+            return true;
+        }
 
-		if (isConnectedTo(world, pos, EnumFacing.SOUTH)) {
-			actualState=actualState.withProperty(SOUTH, true);
-		}
+        TileEntity te = world.getTileEntity(pos.offset(facing));
 
-		if (isConnectedTo(world, pos, EnumFacing.NORTH)) {
-			actualState=actualState.withProperty(NORTH, true);
-		}
+        if (te == null || !te.hasCapability(CapabilityEnergy.ENERGY, facing.getOpposite())) {
+            return false;
+        }
+        // te.getCapability(CapabilityEnergy.ENERGY, side.getOpposite());
+        return true;
+    }
 
-		if (isConnectedTo(world, pos, EnumFacing.EAST)) {
-			actualState=actualState.withProperty(EAST, true);
-		}
+    @Override
+    public TileEntity createNewTileEntity(World worldIn, int meta) {
+        return new TileEntityCable();
+    }
 
-		if (isConnectedTo(world, pos, EnumFacing.WEST)) {
-			actualState=actualState.withProperty(WEST, true);
-		}
-		
-		return actualState;
-	}
+    @Override
+    public EnumBlockRenderType getRenderType(IBlockState state) {
+        return EnumBlockRenderType.MODEL;
+    }
+
+    @Override
+    public boolean doesSideBlockRendering(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing face) {
+        return false;
+    }
+
+    @Override
+    public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos) {
+        return false;
+    }
+
+    @Override
+    public boolean isOpaqueCube(IBlockState state) {
+        return false;
+    }
+
+    @Override
+    public boolean isBlockNormalCube(IBlockState state) {
+        return false;
+    }
+
+    @Override
+    public boolean isFullCube(IBlockState state) {
+        return false;
+    }
+
+    @Override
+    public boolean isNormalCube(IBlockState state) {
+        return false;
+    }
+
+    @Override
+    public int getMetaFromState(IBlockState state) {
+        return 0;
+    }
+
+    @Override
+    protected BlockStateContainer createBlockState() {
+        return new BlockStateContainer(this, UP, DOWN, EAST, WEST, NORTH, SOUTH);
+    }
+
+    @Override
+    public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos) {
+        IBlockState actualState = getDefaultState();
+
+        if (isConnectedTo(world, pos, EnumFacing.UP)) {
+            actualState = actualState.withProperty(UP, true);
+        }
+
+        if (isConnectedTo(world, pos, EnumFacing.DOWN)) {
+            actualState = actualState.withProperty(DOWN, true);
+        }
+
+        if (isConnectedTo(world, pos, EnumFacing.SOUTH)) {
+            actualState = actualState.withProperty(SOUTH, true);
+        }
+
+        if (isConnectedTo(world, pos, EnumFacing.NORTH)) {
+            actualState = actualState.withProperty(NORTH, true);
+        }
+
+        if (isConnectedTo(world, pos, EnumFacing.EAST)) {
+            actualState = actualState.withProperty(EAST, true);
+        }
+
+        if (isConnectedTo(world, pos, EnumFacing.WEST)) {
+            actualState = actualState.withProperty(WEST, true);
+        }
+
+        return actualState;
+    }
 
 }

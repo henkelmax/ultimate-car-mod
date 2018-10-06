@@ -22,5 +22,9 @@ public class BlockPosList {
 			positions.add(pos);
 		}
 	}
-	
+
+	@Override
+	public String toString() {
+		return positions.toString();
+	}
 }

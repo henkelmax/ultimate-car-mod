@@ -1,6 +1,5 @@
 package de.maxhenkel.car.blocks.tileentity;
 
-import cofh.redstoneflux.api.IEnergyReceiver;
 import de.maxhenkel.tools.ItemTools;
 import de.maxhenkel.car.blocks.BlockGui;
 import net.minecraft.block.state.IBlockState;
@@ -14,12 +13,13 @@ import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
 
-public abstract class TileEntityEnergyFluidProducer extends TileEntityBase implements IEnergyReceiver, ISidedInventory, ITickable, IFluidHandler{
+public abstract class TileEntityEnergyFluidProducer extends TileEntityBase implements IEnergyStorage, ISidedInventory, ITickable, IFluidHandler{
 
 	protected InventoryBasic inventory;
 
@@ -205,33 +205,6 @@ public abstract class TileEntityEnergyFluidProducer extends TileEntityBase imple
 	@Override
 	public NBTTagCompound getUpdateTag() {
 		return this.writeToNBT(new NBTTagCompound());
-	}
-
-	@Override
-	public boolean canConnectEnergy(EnumFacing from) {
-		return true;
-	}
-
-	@Override
-	public int receiveEnergy(EnumFacing from, int maxReceive, boolean simulate) {
-		int energyNeeded = maxStorage - storedEnergy;
-
-		if (!simulate) {
-			storedEnergy += Math.min(energyNeeded, maxReceive);
-			markDirty();
-		}
-
-		return Math.min(energyNeeded, maxReceive);
-	}
-
-	@Override
-	public int getEnergyStored(EnumFacing from) {
-		return storedEnergy;
-	}
-
-	@Override
-	public int getMaxEnergyStored(EnumFacing from) {
-		return maxStorage;
 	}
 
 	@Override
@@ -431,5 +404,41 @@ public abstract class TileEntityEnergyFluidProducer extends TileEntityBase imple
 		
 		return new FluidStack(getProducingFluid(), amount);
 	}
-	
+
+    @Override
+    public int receiveEnergy(int maxReceive, boolean simulate) {
+        int energyNeeded = maxStorage - storedEnergy;
+
+        if (!simulate) {
+            storedEnergy += Math.min(energyNeeded, maxReceive);
+            markDirty();
+        }
+
+        return Math.min(energyNeeded, maxReceive);
+    }
+
+    @Override
+    public int extractEnergy(int maxExtract, boolean simulate) {
+        return 0;
+    }
+
+    @Override
+    public int getEnergyStored() {
+        return storedEnergy;
+    }
+
+    @Override
+    public int getMaxEnergyStored() {
+        return maxStorage;
+    }
+
+    @Override
+    public boolean canExtract() {
+        return false;
+    }
+
+    @Override
+    public boolean canReceive() {
+        return true;
+    }
 }

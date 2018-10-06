@@ -7,6 +7,7 @@ import de.maxhenkel.tools.MathTools;
 import de.maxhenkel.car.entity.car.base.EntityCarBase;
 import de.maxhenkel.car.reciepe.ICarRecipe;
 import mezz.jei.api.ingredients.IIngredients;
+import mezz.jei.api.ingredients.VanillaTypes;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
@@ -37,7 +38,7 @@ public class CarRecipeWrapper implements IRecipeWrapper{
 
 	@Override
 	public void getIngredients(IIngredients ingredients) {
-		ingredients.setInputs(ItemStack.class, Arrays.asList(recipe.getInputs()));
+		ingredients.setInputs(VanillaTypes.ITEM, Arrays.asList(recipe.getInputs()));
 	}
 
 	@Override
@@ -53,30 +54,5 @@ public class CarRecipeWrapper implements IRecipeWrapper{
 	public ICarRecipe getRecipe() {
 		return recipe;
 	}
-
-	/*@Override
-	public List<ItemStack> getInputs() {
-		return Arrays.asList(recipe.getInputs());
-	}
-
-	@Override
-	public List<ItemStack> getOutputs() {
-		return Collections.emptyList();
-	}
-
-	@Override
-	public List<FluidStack> getFluidInputs() {
-		return Collections.emptyList();
-	}
-
-	@Override
-	public List<FluidStack> getFluidOutputs() {
-		return Collections.emptyList();
-	}
-
-	@Override
-	public void drawAnimations(Minecraft minecraft, int recipeWidth, int recipeHeight) {
-		
-	}*/
 
 }

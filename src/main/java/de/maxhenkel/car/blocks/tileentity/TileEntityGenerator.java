@@ -1,7 +1,5 @@
 package de.maxhenkel.car.blocks.tileentity;
 
-import cofh.redstoneflux.api.IEnergyProvider;
-import cofh.redstoneflux.api.IEnergyReceiver;
 import de.maxhenkel.car.Config;
 import de.maxhenkel.car.blocks.BlockGui;
 import de.maxhenkel.car.blocks.ModBlocks;
@@ -13,18 +11,18 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
 
 public class TileEntityGenerator extends TileEntityBase
-		implements ITickable, IFluidHandler, IEnergyProvider, IInventory {
+		implements ITickable, IFluidHandler, IEnergyStorage, IInventory {
 
 	public final int maxStorage;
 	public int storedEnergy;
@@ -101,15 +99,12 @@ public class TileEntityGenerator extends TileEntityBase
 
 	private void handlePushEnergy() {
 		for (EnumFacing side : EnumFacing.values()) {
-			TileEntity te = world.getTileEntity(pos.offset(side));
+			IEnergyStorage storage= EnergyUtil.getEnergyStorage(world, pos, side);
+			if(storage==null){
+			    continue;
+            }
 
-			if (!(te instanceof IEnergyReceiver)) {
-				continue;
-			}
-
-			IEnergyReceiver rec = (IEnergyReceiver) te;
-
-			EnergyUtil.pushEnergy(this, rec, storedEnergy, side.getOpposite(), side);
+			EnergyUtil.pushEnergy(this, storage, storedEnergy, side.getOpposite(), side);
 		}
 	}
 
@@ -187,33 +182,6 @@ public class TileEntityGenerator extends TileEntityBase
 	@Override
 	public int getFieldCount() {
 		return 2;
-	}
-
-	@Override
-	public boolean canConnectEnergy(EnumFacing from) {
-		return true;
-	}
-
-	@Override
-	public int extractEnergy(EnumFacing from, int maxExtract, boolean simulate) {
-		int i = Math.min(maxExtract, storedEnergy);
-
-		if (!simulate) {
-			storedEnergy -= i;
-			markDirty();
-		}
-
-		return i;
-	}
-
-	@Override
-	public int getEnergyStored(EnumFacing from) {
-		return storedEnergy;
-	}
-
-	@Override
-	public int getMaxEnergyStored(EnumFacing from) {
-		return maxStorage;
 	}
 
 	@Override
@@ -356,5 +324,42 @@ public class TileEntityGenerator extends TileEntityBase
 	@Override
 	public void clear() {
 		inventory.clear();
+	}
+
+	@Override
+	public int receiveEnergy(int maxReceive, boolean simulate) {
+		return 0;
+	}
+
+	@Override
+	public int extractEnergy(int maxExtract, boolean simulate) {
+        int i = Math.min(maxExtract, storedEnergy);
+
+        if (!simulate) {
+            storedEnergy -= i;
+            markDirty();
+        }
+
+        return i;
+	}
+
+	@Override
+	public int getEnergyStored() {
+		return storedEnergy;
+	}
+
+	@Override
+	public int getMaxEnergyStored() {
+		return maxStorage;
+	}
+
+	@Override
+	public boolean canExtract() {
+		return true;
+	}
+
+	@Override
+	public boolean canReceive() {
+		return false;
 	}
 }

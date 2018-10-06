@@ -1,9 +1,9 @@
 package de.maxhenkel.car.items;
 
-import cofh.redstoneflux.api.IEnergyProvider;
 import de.maxhenkel.car.ModCreativeTabs;
 import de.maxhenkel.car.blocks.ModBlocks;
 import de.maxhenkel.car.blocks.tileentity.TileEntityGenerator;
+import de.maxhenkel.car.energy.EnergyUtil;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -15,6 +15,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
+import net.minecraftforge.energy.IEnergyStorage;
 
 import java.util.List;
 
@@ -47,14 +48,13 @@ public class ItemBattery extends Item {
     @Override
     public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 	    if(worldIn.getBlockState(pos).getBlock().equals(ModBlocks.GENERATOR)){
-            TileEntity te=worldIn.getTileEntity(pos);
-            if(te instanceof IEnergyProvider){
-                IEnergyProvider provider= (IEnergyProvider) te;
+            IEnergyStorage storage= EnergyUtil.getEnergyStorage(worldIn, pos, facing);
+            if(storage!=null){
                 ItemStack stack=player.getHeldItem(hand);
 
                 int energyToFill=stack.getItemDamage();
 
-                int amount=provider.extractEnergy(facing, energyToFill, false);
+                int amount=storage.extractEnergy(energyToFill, false);
 
                 stack.setItemDamage(energyToFill-amount);
                 player.setHeldItem(hand, stack);

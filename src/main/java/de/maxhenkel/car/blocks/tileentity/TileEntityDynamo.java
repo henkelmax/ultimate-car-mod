@@ -1,15 +1,13 @@
 package de.maxhenkel.car.blocks.tileentity;
 
-import cofh.redstoneflux.api.IEnergyProvider;
-import cofh.redstoneflux.api.IEnergyReceiver;
 import de.maxhenkel.car.Config;
 import de.maxhenkel.car.energy.EnergyUtil;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
+import net.minecraftforge.energy.IEnergyStorage;
 
-public class TileEntityDynamo extends TileEntityBase implements IEnergyProvider, ITickable{
+public class TileEntityDynamo extends TileEntityBase implements IEnergyStorage, ITickable{
 
 	private int storedEnergy;
 	public final int maxStorage;
@@ -25,15 +23,13 @@ public class TileEntityDynamo extends TileEntityBase implements IEnergyProvider,
 	@Override
 	public void update() {
 		for(EnumFacing side:EnumFacing.values()){
-			TileEntity te=world.getTileEntity(pos.offset(side));
-			
-			if(!(te instanceof IEnergyReceiver)){
+			IEnergyStorage storage=EnergyUtil.getEnergyStorage(world, pos, side);
+
+			if(storage==null){
 				continue;
 			}
-
-			IEnergyReceiver rec=(IEnergyReceiver) te;
 			
-			EnergyUtil.pushEnergy(this, rec, storedEnergy, side.getOpposite(), side);
+			EnergyUtil.pushEnergy(this, storage, storedEnergy, side.getOpposite(), side);
 		}
 	}
 	
@@ -56,32 +52,41 @@ public class TileEntityDynamo extends TileEntityBase implements IEnergyProvider,
 		storedEnergy=compound.getInteger("stored_energy");
 		super.readFromNBT(compound);
 	}
-	
-	@Override
-	public boolean canConnectEnergy(EnumFacing from) {
-		return true;
-	}
 
-	@Override
-	public int extractEnergy(EnumFacing from, int maxExtract, boolean simulate) {
-		int i=Math.min(maxExtract, storedEnergy);
-		
-		if(!simulate){
-			storedEnergy-=i;
-			markDirty();
-		}
-		
-		return i;
-	}
+    @Override
+    public int receiveEnergy(int maxReceive, boolean simulate) {
+        return 0;
+    }
 
-	@Override
-	public int getEnergyStored(EnumFacing from) {
-		return storedEnergy;
-	}
+    @Override
+    public int extractEnergy(int maxExtract, boolean simulate) {
+        int i=Math.min(maxExtract, storedEnergy);
 
-	@Override
-	public int getMaxEnergyStored(EnumFacing from) {
-		return maxStorage;
-	}
-	
+        if(!simulate){
+            storedEnergy-=i;
+            markDirty();
+        }
+
+        return i;
+    }
+
+    @Override
+    public int getEnergyStored() {
+        return storedEnergy;
+    }
+
+    @Override
+    public int getMaxEnergyStored() {
+        return maxStorage;
+    }
+
+    @Override
+    public boolean canExtract() {
+        return true;
+    }
+
+    @Override
+    public boolean canReceive() {
+        return false;
+    }
 }

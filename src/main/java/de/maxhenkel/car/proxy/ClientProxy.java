@@ -17,14 +17,12 @@ import de.maxhenkel.car.entity.model.bigwood.RenderFactoryBigWoodCar;
 import de.maxhenkel.car.entity.model.sport.RenderFactorySport;
 import de.maxhenkel.car.entity.model.transporter.RenderFactoryTransporter;
 import de.maxhenkel.car.entity.model.wood.RenderFactoryWoodCar;
-import de.maxhenkel.car.events.DynamicLightEvents;
 import de.maxhenkel.car.events.KeyEvents;
 import de.maxhenkel.car.events.PlayerEvents;
 import de.maxhenkel.car.events.RenderEvents;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
-import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -46,10 +44,6 @@ public class ClientProxy extends CommonProxy {
 		MinecraftForge.EVENT_BUS.register(new KeyEvents());
 		MinecraftForge.EVENT_BUS.register(new RenderEvents());
 		MinecraftForge.EVENT_BUS.register(new PlayerEvents());
-
-		if (Config.dynamicLights && Loader.isModLoaded("dynamiclights")) {
-			MinecraftForge.EVENT_BUS.register(new DynamicLightEvents());
-		}
 
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityFuelStation.class,
 				new TileentitySpecialRendererFuelStation());

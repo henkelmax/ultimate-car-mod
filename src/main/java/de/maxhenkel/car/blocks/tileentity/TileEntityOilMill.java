@@ -33,12 +33,6 @@ public class TileEntityOilMill extends TileEntityEnergyFluidProducer {
 	public boolean isValidItem(ItemStack stack) {
 		return ItemTools.matchesOredict(stack, "cropCanola");
 	}
-	/*@Override
-	public List<ItemStack> getInputItems() {
-		List<ItemStack> items=new ArrayList<ItemStack>();
-		items.add(new ItemStack(ModItems.CANOLA));
-		return items;
-	}*/
 
 	@Override
 	public ITextComponent getDisplayName() {
