@@ -8,33 +8,28 @@ buildscript {
     }
 }
 apply plugin: 'net.minecraftforge.gradle.forge'
-//Only edit below this line, the above code adds and enables the nessasary things for Forge to be setup.
 
 
-version = "1.2.12"
-group= "de.maxhenkel.car" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+version = "1.12.2-1.2.12"
+group= "de.maxhenkel.car"
 archivesBaseName = "car"
 
-sourceCompatibility = targetCompatibility = "1.8" // Need this here so eclipse task generates correctly.
+sourceCompatibility = targetCompatibility = "1.8"
 compileJava {
     sourceCompatibility = targetCompatibility = "1.8"
 }
 
 minecraft {
-    version = "1.12.2-14.23.5.2768"
+    version = "${forge_version}"
     runDir = "run"
-
-    mappings = "snapshot_20171003"
+    mappings = "${forge_mappings}"
 }
 
 dependencies {
     // compile against the JEI API but do not include it at runtime
-    deobfProvided "mezz.jei:jei_${mc_version}:${jei_version}:api"
+    deobfProvided "mezz.jei:jei_${project.minecraft.version}:${jei_version}:api"
     // at runtime, use the full JEI jar
-    runtime "mezz.jei:jei_${mc_version}:${jei_version}"
-	
-	//Redstone flux
-	//deobfCompile "cofh:RedstoneFlux:1.12-2.1.0.6:universal"
+    runtime "mezz.jei:jei_${project.minecraft.version}:${jei_version}"
 
 	//Craft Tweaker
 	compile files("libs/CraftTweaker2-Dev-Full-1.12-4.0.1.jar")
@@ -74,8 +69,4 @@ repositories {
         name = "ModMaven"
         url = "modmaven.k-4u.nl"
     }
-    /*maven {
-        name = "CoFH Maven"
-        url = "http://maven.covers1624.net"
-    }*/
 }
