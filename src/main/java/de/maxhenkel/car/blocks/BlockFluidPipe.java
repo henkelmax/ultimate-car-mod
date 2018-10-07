@@ -1,6 +1,7 @@
 package de.maxhenkel.car.blocks;
 
 import de.maxhenkel.car.ModCreativeTabs;
+import de.maxhenkel.tools.FluidUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MapColor;
@@ -89,16 +90,8 @@ public class BlockFluidPipe extends Block{
 		if(state.getBlock().equals(ModBlocks.FLUID_PIPE)||state.getBlock().equals(ModBlocks.FLUID_EXTRACTOR)){
 			return true;
 		}
-		
-		TileEntity te=world.getTileEntity(pos.offset(facing));
-		
-		if(!(te instanceof IFluidHandler)){
-			return false;
-		}
-		
-		//IFluidHandler handler=(IFluidHandler) te;
 
-		return true;
+		return FluidUtils.isFluidHandler(world, pos, facing);
 	}
 
 	@Override

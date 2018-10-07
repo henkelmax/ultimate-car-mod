@@ -2,13 +2,11 @@ package de.maxhenkel.car.items;
 
 import de.maxhenkel.car.ModCreativeTabs;
 import de.maxhenkel.car.blocks.ModBlocks;
-import de.maxhenkel.car.blocks.tileentity.TileEntityGenerator;
-import de.maxhenkel.car.energy.EnergyUtil;
+import de.maxhenkel.tools.EnergyUtil;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;

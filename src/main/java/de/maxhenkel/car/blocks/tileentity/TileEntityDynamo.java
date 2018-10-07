@@ -1,7 +1,7 @@
 package de.maxhenkel.car.blocks.tileentity;
 
 import de.maxhenkel.car.Config;
-import de.maxhenkel.car.energy.EnergyUtil;
+import de.maxhenkel.tools.EnergyUtil;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;

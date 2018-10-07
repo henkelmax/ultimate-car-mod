@@ -58,6 +58,7 @@ import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.IFluidBlock;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -399,11 +400,11 @@ public class Registry {
         }
         if (event.getObject() instanceof IFluidHandler) {
             IFluidHandler handler = (IFluidHandler) event.getObject();
-            event.addCapability(new ResourceLocation(Main.MODID, "fluid_handler"), new ICapabilityProvider() {
+            event.addCapability(new ResourceLocation(Main.MODID, "fluid"), new ICapabilityProvider() {
 
                 @Override
                 public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
-                    if (capability.equals(Capabilities.FLUID_HANDLER_CAPABILITY)) {
+                    if (capability.equals(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)) {
                         return true;
                     }
                     return false;
@@ -412,7 +413,7 @@ public class Registry {
                 @SuppressWarnings("unchecked")
                 @Override
                 public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
-                    if (capability.equals(Capabilities.FLUID_HANDLER_CAPABILITY)) {
+                    if (capability.equals(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)) {
                         return (T) handler;
                     }
                     return null;

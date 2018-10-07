@@ -3,7 +3,7 @@ package de.maxhenkel.car.blocks.tileentity;
 import de.maxhenkel.car.Config;
 import de.maxhenkel.car.blocks.BlockGui;
 import de.maxhenkel.car.blocks.ModBlocks;
-import de.maxhenkel.car.energy.EnergyUtil;
+import de.maxhenkel.tools.EnergyUtil;
 import de.maxhenkel.car.registries.GeneratorRecipe;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
