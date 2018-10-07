@@ -6,8 +6,8 @@ stages:
 build:
   stage: build
   script:
-    - gradlew setupDecompWorkspace
-    - gradlew build
+    - ./gradlew setupDecompWorkspace
+    - ./gradlew build
     - rm build/libs/*-sources.jar
     - BUILD_FILE=$(find build/libs/*.jar -printf "%f")
     - BUILD_FILE_PATH=build/libs/${BUILD_FILE}
