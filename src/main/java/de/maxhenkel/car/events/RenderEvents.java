@@ -21,98 +21,97 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class RenderEvents {
 
-	@SubscribeEvent
-	public void onRender(RenderGameOverlayEvent evt) {
-		if (!evt.getType().equals(ElementType.EXPERIENCE)) {
-			return;
-		}
-
-		Minecraft mc = Minecraft.getMinecraft();
-
-		EntityPlayer player = mc.player;
-
-		Entity e = player.getRidingEntity();
-
-		if (e == null) {
-			return;
-		}
-
-		if (!(e instanceof EntityCarFuelBase)) {
-			return;
-		}
-
-		EntityCarFuelBase car = (EntityCarFuelBase) e;
-
-		if (player.equals(car.getDriver())) {
-			evt.setCanceled(true);
-			renderFuelBar(((float)car.getFuelAmount()) / ((float)car.getMaxFuel()));
-			renderSpeed(car.getKilometerPerHour());
-		}
-
-	}
-
-	public void renderFuelBar(float percent) {
-		Minecraft mc = Minecraft.getMinecraft();
-		ScaledResolution scaledresolution = new ScaledResolution(mc);
-		int x = scaledresolution.getScaledWidth() / 2 - 91;
-
-		mc.getTextureManager().bindTexture(Gui.ICONS);
-
-		int k = scaledresolution.getScaledHeight() - 32 + 3;
-		mc.ingameGUI.drawTexturedModalRect(x, k, 0, 64, 182, 5);
-
-		int j = (int) (percent * 182.0F);
-
-		if (j > 0) {
-			mc.ingameGUI.drawTexturedModalRect(x, k, 0, 69, j, 5);
-		}
-	}
-
-	public void renderSpeed(float speed) {
-		Minecraft mc = Minecraft.getMinecraft();
-		ScaledResolution scaledresolution = new ScaledResolution(mc);
-
-		String s = String.valueOf(MathTools.round(Math.abs(speed), 2));
-		int i1 = (scaledresolution.getScaledWidth() - mc.ingameGUI.getFontRenderer().getStringWidth(s)) / 2;
-		int j1 = scaledresolution.getScaledHeight() - 31 - 4;
-		mc.ingameGUI.getFontRenderer().drawString(s, i1 + 1, j1, 0);
-		mc.ingameGUI.getFontRenderer().drawString(s, i1 - 1, j1, 0);
-		mc.ingameGUI.getFontRenderer().drawString(s, i1, j1 + 1, 0);
-		mc.ingameGUI.getFontRenderer().drawString(s, i1, j1 - 1, 0);
-		mc.ingameGUI.getFontRenderer().drawString(s, i1, j1, 8453920);
-
-	}
-
     @SubscribeEvent
-	public void renderToolTip(RenderTooltipEvent.Pre event){
-        ItemStack stack=event.getStack();
-
-        if(!stack.hasTagCompound()){
+    public void onRender(RenderGameOverlayEvent evt) {
+        if (!evt.getType().equals(ElementType.EXPERIENCE)) {
             return;
         }
-        NBTTagCompound compound=stack.getTagCompound();
-        if(!compound.hasKey("trading_item")&&!compound.getBoolean("trading_item")){
+
+        Minecraft mc = Minecraft.getMinecraft();
+
+        EntityPlayer player = mc.player;
+
+        Entity e = player.getRidingEntity();
+
+        if (e == null) {
+            return;
+        }
+
+        if (!(e instanceof EntityCarFuelBase)) {
+            return;
+        }
+
+        EntityCarFuelBase car = (EntityCarFuelBase) e;
+
+        if (player.equals(car.getDriver())) {
+            evt.setCanceled(true);
+            renderFuelBar(((float) car.getFuelAmount()) / ((float) car.getMaxFuel()));
+            renderSpeed(car.getKilometerPerHour());
+        }
+
+    }
+
+    public void renderFuelBar(float percent) {
+        Minecraft mc = Minecraft.getMinecraft();
+        ScaledResolution scaledresolution = new ScaledResolution(mc);
+        int x = scaledresolution.getScaledWidth() / 2 - 91;
+
+        mc.getTextureManager().bindTexture(Gui.ICONS);
+
+        int k = scaledresolution.getScaledHeight() - 32 + 3;
+        mc.ingameGUI.drawTexturedModalRect(x, k, 0, 64, 182, 5);
+
+        int j = (int) (percent * 182.0F);
+
+        if (j > 0) {
+            mc.ingameGUI.drawTexturedModalRect(x, k, 0, 69, j, 5);
+        }
+    }
+
+    public void renderSpeed(float speed) {
+        Minecraft mc = Minecraft.getMinecraft();
+        ScaledResolution scaledresolution = new ScaledResolution(mc);
+
+        String s = String.valueOf(MathTools.round(Math.abs(speed), 2));
+        int i1 = (scaledresolution.getScaledWidth() - mc.ingameGUI.getFontRenderer().getStringWidth(s)) / 2;
+        int j1 = scaledresolution.getScaledHeight() - 31 - 4;
+        mc.ingameGUI.getFontRenderer().drawString(s, i1 + 1, j1, 0);
+        mc.ingameGUI.getFontRenderer().drawString(s, i1 - 1, j1, 0);
+        mc.ingameGUI.getFontRenderer().drawString(s, i1, j1 + 1, 0);
+        mc.ingameGUI.getFontRenderer().drawString(s, i1, j1 - 1, 0);
+        mc.ingameGUI.getFontRenderer().drawString(s, i1, j1, 8453920);
+
+    }
+
+    @SubscribeEvent
+    public void renderToolTip(RenderTooltipEvent.Pre event) {
+        ItemStack stack = event.getStack();
+
+        if (!stack.hasTagCompound()) {
+            return;
+        }
+        NBTTagCompound compound = stack.getTagCompound();
+        if (!compound.hasKey("trading_item") && !compound.getBoolean("trading_item")) {
             return;
         }
         event.setCanceled(true);
-	}
+    }
 
 
-
-	@SubscribeEvent
-	public void renderPlayerPre(RenderPlayerEvent.Pre event){
-		if(event.getEntityPlayer().getRidingEntity() instanceof EntityCarBase){
-		    GlStateManager.pushMatrix();
+    @SubscribeEvent
+    public void renderPlayerPre(RenderPlayerEvent.Pre event) {
+        if (event.getEntityPlayer().equals(Minecraft.getMinecraft().player) && event.getEntityPlayer().getRidingEntity() instanceof EntityCarBase) {
+            GlStateManager.pushMatrix();
             GlStateManager.scale(EntityVehicleBase.SCALE_FACTOR, EntityVehicleBase.SCALE_FACTOR, EntityVehicleBase.SCALE_FACTOR);
-            GlStateManager.translate(0F, (event.getEntityPlayer().height-(event.getEntityPlayer().height*EntityVehicleBase.SCALE_FACTOR))/1.5F, 0F);
+            GlStateManager.translate(0F, (event.getEntityPlayer().height - (event.getEntityPlayer().height * EntityVehicleBase.SCALE_FACTOR)) / 1.5F, 0F);
         }
-	}
+    }
 
-	@SubscribeEvent
-	public void renderPlayerPost(RenderPlayerEvent.Post event){
-		if(event.getEntityPlayer().getRidingEntity() instanceof EntityCarBase){
+    @SubscribeEvent
+    public void renderPlayerPost(RenderPlayerEvent.Post event) {
+        if (event.getEntityPlayer().equals(Minecraft.getMinecraft().player) && event.getEntityPlayer().getRidingEntity() instanceof EntityCarBase) {
             GlStateManager.popMatrix();
-		}
-	}
+        }
+    }
 
 }
