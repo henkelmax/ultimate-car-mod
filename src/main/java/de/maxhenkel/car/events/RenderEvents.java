@@ -100,16 +100,18 @@ public class RenderEvents {
 
     @SubscribeEvent
     public void renderPlayerPre(RenderPlayerEvent.Pre event) {
-        if (event.getEntityPlayer().equals(Minecraft.getMinecraft().player) && event.getEntityPlayer().getRidingEntity() instanceof EntityCarBase) {
+        if (event.getEntityPlayer().getRidingEntity() instanceof EntityCarBase) {
             GlStateManager.pushMatrix();
+            GlStateManager.translate(event.getX(), event.getY(), event.getZ());
             GlStateManager.scale(EntityVehicleBase.SCALE_FACTOR, EntityVehicleBase.SCALE_FACTOR, EntityVehicleBase.SCALE_FACTOR);
             GlStateManager.translate(0F, (event.getEntityPlayer().height - (event.getEntityPlayer().height * EntityVehicleBase.SCALE_FACTOR)) / 1.5F, 0F);
+            GlStateManager.translate(-event.getX(), -event.getY(), -event.getZ());
         }
     }
 
     @SubscribeEvent
     public void renderPlayerPost(RenderPlayerEvent.Post event) {
-        if (event.getEntityPlayer().equals(Minecraft.getMinecraft().player) && event.getEntityPlayer().getRidingEntity() instanceof EntityCarBase) {
+        if (event.getEntityPlayer().getRidingEntity() instanceof EntityCarBase) {
             GlStateManager.popMatrix();
         }
     }
