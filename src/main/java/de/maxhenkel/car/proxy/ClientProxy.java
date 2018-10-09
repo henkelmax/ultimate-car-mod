@@ -1,6 +1,6 @@
 package de.maxhenkel.car.proxy;
 
-import de.maxhenkel.car.Config;
+import de.maxhenkel.car.Main;
 import de.maxhenkel.car.blocks.tileentity.TileEntityFuelStation;
 import de.maxhenkel.car.blocks.tileentity.TileEntitySign;
 import de.maxhenkel.car.blocks.tileentity.TileEntitySplitTank;
@@ -20,6 +20,7 @@ import de.maxhenkel.car.entity.model.wood.RenderFactoryWoodCar;
 import de.maxhenkel.car.events.KeyEvents;
 import de.maxhenkel.car.events.PlayerEvents;
 import de.maxhenkel.car.events.RenderEvents;
+import net.minecraftforge.client.model.obj.OBJLoader;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
@@ -32,6 +33,8 @@ public class ClientProxy extends CommonProxy {
 	public void preinit(FMLPreInitializationEvent event) {
 		super.preinit(event);
 
+		OBJLoader.INSTANCE.addDomain(Main.MODID);
+        //OBJLoader.INSTANCE.loadModel()
 		RenderingRegistry.registerEntityRenderingHandler(EntityCarWood.class, new RenderFactoryWoodCar());
 		RenderingRegistry.registerEntityRenderingHandler(EntityCarBigWood.class, new RenderFactoryBigWoodCar());
 		RenderingRegistry.registerEntityRenderingHandler(EntityCarTransporter.class, new RenderFactoryTransporter());
