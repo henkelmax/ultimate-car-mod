@@ -1,6 +1,5 @@
 package de.maxhenkel.car.events;
 
-import de.maxhenkel.car.Main;
 import de.maxhenkel.car.entity.car.base.EntityCarBase;
 import de.maxhenkel.car.entity.car.base.EntityVehicleBase;
 import de.maxhenkel.tools.MathTools;
@@ -13,35 +12,20 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.client.event.RenderTooltipEvent;
-import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class RenderEvents {
 
-<<<<<<< src/main/java/de/maxhenkel/car/events/RenderEvents.java
     @SubscribeEvent
     public void onRender(RenderGameOverlayEvent evt) {
         if (!evt.getType().equals(ElementType.EXPERIENCE)) {
             return;
         }
-=======
-	@SubscribeEvent
-	public void stitchEventPre(TextureStitchEvent.Pre event) {
-		event.getMap().registerSprite(new ResourceLocation(Main.MODID, "textures/entity/watch.png"));
-	}
-
-	@SubscribeEvent
-	public void onRender(RenderGameOverlayEvent evt) {
-		if (!evt.getType().equals(ElementType.EXPERIENCE)) {
-			return;
-		}
->>>>>>> src/main/java/de/maxhenkel/car/events/RenderEvents.java
 
         Minecraft mc = Minecraft.getMinecraft();
 
