@@ -7,15 +7,12 @@ cache:
   paths:
   - ./.gradle/
   - ./.gradle_user_home/
-  - ./.gradle_home/
 
 build:
   stage: build
   script:
     - mkdir -p .gradle
-    - mkdir -p .gradle_home
     - mkdir -p .gradle_user_home
-    - export GRADLE_HOME=./.gradle_home/
     - ./gradlew setupCiWorkspace --gradle-user-home ./.gradle_user_home/
     - ./gradlew build --gradle-user-home ./.gradle_user_home/
     - rm build/libs/*-sources.jar
