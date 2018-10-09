@@ -26,7 +26,7 @@ public class RenderEvents {
 
 	@SubscribeEvent
 	public void stitchEventPre(TextureStitchEvent.Pre event) {
-		event.getMap().registerSprite(new ResourceLocation(Main.MODID, "textures/entity/watch.png"));
+		event.getMap().registerSprite(new ResourceLocation(Main.MODID, "textures/entity/wheel.png"));
 	}
 
 	@SubscribeEvent
