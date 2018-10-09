@@ -2,9 +2,7 @@ package de.maxhenkel.car.entity.car.base;
 
 import java.util.List;
 import javax.annotation.Nullable;
-
 import de.maxhenkel.car.Config;
-import de.maxhenkel.car.events.RenderEvents;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumFacing;
@@ -48,7 +46,6 @@ public abstract class EntityVehicleBase extends Entity {
 
         super.onUpdate();
         this.tickLerp();
-
     }
 
     @Override
@@ -99,9 +96,7 @@ public abstract class EntityVehicleBase extends Entity {
         return null;
     }
 
-    public int getPassengerSize() {
-        return 1;
-    }
+    public abstract int getPassengerSize();
 
     @Override
     protected boolean canFitPassenger(Entity passenger) {
@@ -167,9 +162,7 @@ public abstract class EntityVehicleBase extends Entity {
     }
 
     @Override
-    public double getMountedYOffset() {
-        return 0D;
-    }
+    public abstract double getMountedYOffset();
 
     @Override
     public Entity getControllingPassenger() {
@@ -246,10 +239,6 @@ public abstract class EntityVehicleBase extends Entity {
         this.clientYaw = (double) yaw;
         this.clientPitch = (double) pitch;
         this.steps = 10;
-
-        //posY=y;
-        //this.setPosition(x, y, z);
-        //this.setRotation(yaw, pitch);
     }
 
     public static final double calculateMotionX(float speed, float rotationYaw) {
@@ -278,10 +267,6 @@ public abstract class EntityVehicleBase extends Entity {
         return false;
     }
 
-    public boolean doesEnterThirdPerson() {
-        return true;
-    }
-
-    public abstract String getID();
+    public abstract boolean doesEnterThirdPerson();
 
 }

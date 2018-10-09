@@ -41,13 +41,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public abstract class EntityCarBase extends EntityVehicleBase {
 
-    private float maxSpeed = 0.5F;
-    protected float maxReverseSpeed = 0.2F;
-    protected float acceleration = 0.032F;
-    protected float maxRotationSpeed = 5F;
-    protected float rollResistance = 0.02F;
-    protected float minRotationSpeed = 2.0F;
-
     private float wheelRotation;
 
     @SideOnly(Side.CLIENT)
@@ -76,16 +69,22 @@ public abstract class EntityCarBase extends EntityVehicleBase {
     public EntityCarBase(World worldIn) {
         super(worldIn);
         this.setSize(1.3F, 1.6F);
-        this.stepHeight = Config.carStepHeight;
-
-        for (CarProperties props : CarProperties.REGISTRY) {
-            if (props.getCarID().equals(getID())) {
-                this.maxSpeed = props.getSpeed();
-                this.acceleration = props.getAcceleration();
-                this.maxReverseSpeed = props.getReverseSpeed();
-            }
-        }
+        this.stepHeight = 0.5F;
     }
+
+    public abstract float getMaxSpeed();
+
+    public abstract float getMaxReverseSpeed();
+
+    public abstract float getAcceleration();
+
+    public abstract float getMaxRotationSpeed();
+
+    public abstract float getMinRotationSpeed();
+
+    public abstract float getRollResistance();
+
+    public abstract float getRotationModifier();
 
     @Override
     public void onUpdate() {
@@ -149,7 +148,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
             return;
         }
 
-        if (getSpeed() >= maxSpeed) {
+        if (getSpeed() >= getMaxSpeed()) {
             int dimid = world.provider.getDimension();
             if (dimid == Config.teleportDimID) {
                 return;
@@ -228,29 +227,9 @@ public abstract class EntityCarBase extends EntityVehicleBase {
     }
 
     public void destroyCar(EntityPlayer player, boolean dropParts) {
-		/*if (dropParts) {
-			ICarbuilder builder=getBuilder();
-			ICarRecipe reciepe = CarCraftingManager.getInstance().getReciepeByName(builder.getName());
-			if (reciepe != null) {
-				for (ItemStack stack : reciepe.getInputs()) {
-					if(ItemTools.isStackEmpty(stack)){
-						continue;
-					}
-					if (shouldDropItemWithChance(stack)) {
-						InventoryHelper.spawnItemStack(world, posX, posY, posZ, stack);
-					}
-				}
-			}
-		}*/
         //TODO drop items?
         setDead();
     }
-
-    public boolean shouldDropItemWithChance(ItemStack stack) {
-        return rand.nextInt(10) != 0;
-    }
-
-    public abstract ICarbuilder getBuilder();
 
     private void controlCar() {
 
@@ -267,20 +246,20 @@ public abstract class EntityCarBase extends EntityVehicleBase {
             modifier = getModifier();
         }
 
-        float maxSp = maxSpeed * modifier;
-        float maxBackSp = maxReverseSpeed * modifier;
+        float maxSp = getMaxSpeed() * modifier;
+        float maxBackSp = getMaxReverseSpeed() * modifier;
 
-        float speed = MathTools.subtractToZero(getSpeed(), rollResistance);
+        float speed = MathTools.subtractToZero(getSpeed(), getRollResistance());
 
         if (isForward()) {
             if (speed <= maxSp) {
-                speed = Math.min(speed + acceleration, maxSp);
+                speed = Math.min(speed + getAcceleration(), maxSp);
             }
         }
 
         if (isBackward()) {
             if (speed >= -maxBackSp) {
-                speed = Math.max(speed - acceleration, -maxBackSp);
+                speed = Math.max(speed - getAcceleration(), -maxBackSp);
             }
         }
 
@@ -291,7 +270,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
         if (Math.abs(speed) > 0.02F) {
             rotationSpeed = MathHelper.abs(getRotationModifier() / (float) Math.pow(speed, 2));
 
-            rotationSpeed = MathHelper.clamp(rotationSpeed, minRotationSpeed, maxRotationSpeed);
+            rotationSpeed = MathHelper.clamp(rotationSpeed, getMinRotationSpeed(), getMaxRotationSpeed());
         }
 
         deltaRotation = 0;
@@ -347,8 +326,6 @@ public abstract class EntityCarBase extends EntityVehicleBase {
             return 0.5F;
         }
     }
-
-    public abstract float getRotationModifier();
 
     public void onCollision(float speed) {
         if (world.isRemote) {
@@ -421,9 +398,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
     }
 
     @Override
-    public double getMountedYOffset() {
-        return -0.4D;
-    }
+    public abstract double getMountedYOffset();
 
     public boolean canPlayerEnterCar(EntityPlayer player) {
         return true;
@@ -459,10 +434,6 @@ public abstract class EntityCarBase extends EntityVehicleBase {
     public boolean isAccelerating() {
         boolean b = (isForward() || isBackward()) && !collidedHorizontally;
         return b && isStarted();
-    }
-
-    public float getMaxSpeed() {
-        return maxSpeed;
     }
 
     @Override
@@ -572,37 +543,21 @@ public abstract class EntityCarBase extends EntityVehicleBase {
         ModSounds.playSound(getHornSound(), world, getPosition(), null, SoundCategory.NEUTRAL, Config.carVolume);
     }
 
-    public SoundEvent getStopSound() {
-        return ModSounds.engine_stop;
-    }
+    public abstract SoundEvent getStopSound();
 
-    public SoundEvent getFailSound() {
-        return ModSounds.engine_fail;
-    }
+    public abstract SoundEvent getFailSound();
 
-    public SoundEvent getCrashSound() {
-        return ModSounds.car_crash;
-    }
+    public abstract SoundEvent getCrashSound();
 
-    public SoundEvent getStartSound() {
-        return ModSounds.engine_start;
-    }
+    public abstract SoundEvent getStartSound();
 
-    public SoundEvent getStartingSound() {
-        return ModSounds.engine_starting;
-    }
+    public abstract SoundEvent getStartingSound();
 
-    public SoundEvent getIdleSound() {
-        return ModSounds.engine_idle;
-    }
+    public abstract SoundEvent getIdleSound();
 
-    public SoundEvent getHighSound() {
-        return ModSounds.engine_high;
-    }
+    public abstract SoundEvent getHighSound();
 
-    public SoundEvent getHornSound() {
-        return ModSounds.car_horn;
-    }
+    public abstract SoundEvent getHornSound();
 
     @SideOnly(Side.CLIENT)
     public void checkIdleLoop() {

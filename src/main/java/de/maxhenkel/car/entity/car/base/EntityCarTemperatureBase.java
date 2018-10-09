@@ -79,9 +79,7 @@ public abstract class EntityCarTemperatureBase extends EntityCarBase {
         this.dataManager.set(TEMPERATURE, Float.valueOf(temperature));
     }
 
-    public float getOptimalTemperature(){
-        return 90F;
-    }
+    public abstract float getOptimalTemperature();
 
     @Override
     protected void entityInit() {

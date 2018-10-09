@@ -21,13 +21,13 @@ public abstract class EntityCarFuelBase extends EntityCarDamageBase implements I
 			DataSerializers.VARINT);
 	private static final DataParameter<String> FUEL_TYPE = EntityDataManager.<String>createKey(EntityCarFuelBase.class,
 			DataSerializers.STRING);
-	
-	protected int maxFuel=1000;
 
 	public EntityCarFuelBase(World worldIn) {
 		super(worldIn);
 		
 	}
+
+	public abstract int getMaxFuel();
 
 	@Override
 	public void onEntityUpdate() {
@@ -146,10 +146,6 @@ public abstract class EntityCarFuelBase extends EntityCarDamageBase implements I
 	public int getFuelAmount() {
 		return this.dataManager.get(FUEL_AMOUNT);
 	}
-
-	public int getMaxFuel() {
-		return maxFuel;
-	}
 	
 	public boolean isValidFuel(Fluid fluid){
 		if(fluid==null) {
@@ -158,7 +154,7 @@ public abstract class EntityCarFuelBase extends EntityCarDamageBase implements I
 		return getEfficiency(fluid)>0D;
 	}
 	
-	public double getEfficiency(Fluid fluid){
+	public abstract double getEfficiency(@Nullable Fluid fluid);/*{
 		if(fluid==null){
 			return 1D;
 		}
@@ -171,7 +167,7 @@ public abstract class EntityCarFuelBase extends EntityCarDamageBase implements I
 			}
 		}
 		return 0D;
-	}
+	}*/
 	
 	@Override
 	protected void writeEntityToNBT(NBTTagCompound compound) {
@@ -207,7 +203,7 @@ public abstract class EntityCarFuelBase extends EntityCarDamageBase implements I
 			
 			@Override
 			public int getCapacity() {
-				return maxFuel;
+				return getMaxFuel();
 			}
 			
 			@Override
@@ -247,12 +243,12 @@ public abstract class EntityCarFuelBase extends EntityCarDamageBase implements I
 			return 0;
 		}
 		
-		int amount=Math.min(resource.amount, maxFuel-getFuelAmount());
+		int amount=Math.min(resource.amount, getMaxFuel()-getFuelAmount());
 		
 		if(doFill){
 			int i=getFuelAmount()+amount;
-			if(i>maxFuel){
-				i=maxFuel;
+			if(i>getMaxFuel()){
+				i=getMaxFuel();
 			}
 			setFuelAmount(i);
 			setFuelType(resource.getFluid());
