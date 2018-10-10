@@ -3,22 +3,24 @@ package de.maxhenkel.car.entity.model.obj;
 import com.mojang.realmsclient.gui.ChatFormatting;
 import de.maxhenkel.car.entity.car.base.EntityCarBase;
 import de.maxhenkel.car.entity.car.base.EntityCarNumberPlateBase;
+import de.maxhenkel.car.entity.car.base.EntityGenericCar;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 
-// https://github.com/2piradians/Minewatch/tree/1.12.1/src/main/java/twopiradians/minewatch/client
-public abstract class OBJModelRenderer<T extends EntityCarBase> extends Render<T> {
+import javax.annotation.Nullable;
 
-    private OBJModelPart[] models;
+// https://github.com/2piradians/Minewatch/tree/1.12.1/src/main/java/twopiradians/minewatch/client
+public abstract class OBJModelRenderer<T extends EntityGenericCar> extends Render<T> {
 
     protected OBJModelRenderer(RenderManager renderManager) {
         super(renderManager);
     }
 
-    public abstract OBJModelPart[] getModels();
+    public abstract OBJModelPart[] getModels(T entity);
 
     @Override
     protected ResourceLocation getEntityTexture(T entity) {
@@ -27,9 +29,7 @@ public abstract class OBJModelRenderer<T extends EntityCarBase> extends Render<T
 
     @Override
     public void doRender(T entity, double x, double y, double z, float entityYaw, float partialTicks) {
-        if (this.models == null) {
-            this.models = getModels();
-        }
+        OBJModelPart[] models= getModels(entity);
 
         GlStateManager.pushMatrix();
         setupTranslation(x, y, z);
@@ -43,11 +43,9 @@ public abstract class OBJModelRenderer<T extends EntityCarBase> extends Render<T
             GlStateManager.enableOutlineMode(this.getTeamColor(entity));
         }
 
-        GlStateManager.translate(0F, getHeightOffset(), 0F);
-
         entity.updateWheelRotation(partialTicks);
         //Render parts
-        for (int i = 0; i < this.models.length; i++) {
+        for (int i = 0; i < models.length; i++) {
             Minecraft.getMinecraft().getTextureManager().bindTexture(models[i].getTexture());
             GlStateManager.pushMatrix();
             if (models[i].hasCulling()) {
@@ -127,6 +125,5 @@ public abstract class OBJModelRenderer<T extends EntityCarBase> extends Render<T
         return false;
     }
 
-    public abstract float getHeightOffset();
 
 }

@@ -26,7 +26,7 @@ public class RenderEvents {
 
 	@SubscribeEvent
 	public void stitchEventPre(TextureStitchEvent.Pre event) {
-		event.getMap().registerSprite(new ResourceLocation(Main.MODID, "textures/entity/watch.png"));
+		//event.getMap().registerSprite(new ResourceLocation(Main.MODID, "textures/entity/watch.png"));
 	}
 
 	@SubscribeEvent
@@ -110,9 +110,10 @@ public class RenderEvents {
 	@SubscribeEvent
 	public void renderPlayerPre(RenderPlayerEvent.Pre event){
 		if(event.getEntityPlayer().getRidingEntity() instanceof EntityCarBase){
+			EntityCarBase car= (EntityCarBase) event.getEntityPlayer().getRidingEntity();
 		    GlStateManager.pushMatrix();
             GlStateManager.scale(EntityVehicleBase.SCALE_FACTOR, EntityVehicleBase.SCALE_FACTOR, EntityVehicleBase.SCALE_FACTOR);
-            GlStateManager.translate(0F, (event.getEntityPlayer().height - (event.getEntityPlayer().height * EntityVehicleBase.SCALE_FACTOR)) / 1.5F, 0F);
+            GlStateManager.translate(0F, (event.getEntityPlayer().height - (event.getEntityPlayer().height * EntityVehicleBase.SCALE_FACTOR)) / 1.5F +car.getPlayerYOffset(), 0F);
             GlStateManager.translate(-event.getX(), -event.getY(), -event.getZ());
         }
     }

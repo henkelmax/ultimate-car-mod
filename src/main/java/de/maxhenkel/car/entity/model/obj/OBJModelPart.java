@@ -3,6 +3,7 @@ package de.maxhenkel.car.entity.model.obj;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
+import net.minecraftforge.client.model.obj.OBJLoader;
 import net.minecraftforge.client.model.obj.OBJModel;
 import org.lwjgl.util.vector.Quaternion;
 
@@ -31,7 +32,13 @@ public class OBJModelPart {
 
     public OBJModel getModel() {
         if (objModel == null) {
-            this.objModel = (OBJModel) ModelLoaderRegistry.getModelOrLogError(model, "Error loading Model");
+            try {
+                this.objModel = (OBJModel) OBJLoader.INSTANCE.loadModel(model);
+            } catch (Exception e) {
+                e.printStackTrace();
+                throw new RuntimeException(e.getMessage());
+            }
+            //this.objModel = (OBJModel) ModelLoaderRegistry.getModelOrLogError(model, "Error loading Model");
         }
         return this.objModel;
     }

@@ -2,12 +2,9 @@ package de.maxhenkel.car.integration.jei;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import de.maxhenkel.car.blocks.BlockPaint;
 import de.maxhenkel.car.blocks.ModBlocks;
 import de.maxhenkel.car.items.ModItems;
-import de.maxhenkel.car.reciepe.ICarRecipe;
-import de.maxhenkel.car.registries.CarCraftingRegistry;
 import mezz.jei.api.IJeiRuntime;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.IModRegistry;
@@ -31,14 +28,14 @@ public class JEIPlugin implements IModPlugin {
 
     @Override
     public void register(IModRegistry registry) {
-        // Car Workshop
+       /* // Car Workshop
         registry.handleRecipes(ICarRecipe.class, new CarRecipeWrapperFactory(), JEIPlugin.CATEGORY_CAR_WORKSHOP);
 
         List<CarRecipeWrapper> recipes = new ArrayList<CarRecipeWrapper>();
         for (ICarRecipe recipe : CarCraftingRegistry.REGISTRY) {
             recipes.add(new CarRecipeWrapper(recipe));
-        }
-        registry.addRecipes(recipes, JEIPlugin.CATEGORY_CAR_WORKSHOP);
+        }*/
+        //registry.addRecipes(recipes, JEIPlugin.CATEGORY_CAR_WORKSHOP);
         registry.addRecipeCatalyst(new ItemStack(ModBlocks.CAR_WORKSHOP), JEIPlugin.CATEGORY_CAR_WORKSHOP);
         registry.addIngredientInfo(new ItemStack(ModBlocks.CAR_WORKSHOP), VanillaTypes.ITEM, "description.car_workshop");
         registry.addIngredientInfo(new ItemStack(ModBlocks.CAR_WORKSHOP_OUTTER), VanillaTypes.ITEM,
@@ -113,7 +110,7 @@ public class JEIPlugin implements IModPlugin {
 
     @Override
     public void registerCategories(IRecipeCategoryRegistration registry) {
-        registry.addRecipeCategories(new CarRecipeCategory(registry.getJeiHelpers().getGuiHelper()));
+        //registry.addRecipeCategories(new CarRecipeCategory(registry.getJeiHelpers().getGuiHelper()));
         registry.addRecipeCategories(new PainterRecipeCategory(registry.getJeiHelpers().getGuiHelper()));
         registry.addRecipeCategories(new PainterRecipeCategoryYellow(registry.getJeiHelpers().getGuiHelper()));
     }

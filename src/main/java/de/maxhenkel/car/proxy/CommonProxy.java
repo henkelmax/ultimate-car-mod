@@ -3,13 +3,9 @@ package de.maxhenkel.car.proxy;
 import java.io.File;
 import java.lang.reflect.Field;
 import java.util.Map;
-
 import de.maxhenkel.car.Config;
 import de.maxhenkel.car.Main;
-import de.maxhenkel.car.entity.car.EntityCarBigWood;
-import de.maxhenkel.car.entity.car.EntityCarSport;
-import de.maxhenkel.car.entity.car.EntityCarTransporter;
-import de.maxhenkel.car.entity.car.EntityCarWood;
+import de.maxhenkel.car.entity.car.base.EntityGenericCar;
 import de.maxhenkel.car.events.ConfigEvents;
 import de.maxhenkel.car.gui.GuiHandler;
 import de.maxhenkel.car.net.*;
@@ -66,17 +62,8 @@ public class CommonProxy {
     public void init(FMLInitializationEvent event) {
         inject();
 
-        EntityRegistry.registerModEntity(new ResourceLocation(Main.MODID, "car_wood"), EntityCarWood.class,
-                "car_wood", 3723, Main.instance(), 64, 1, true);
-
-        EntityRegistry.registerModEntity(new ResourceLocation(Main.MODID, "car_big_wood"), EntityCarBigWood.class,
-                "car_big_wood", 3724, Main.instance(), 64, 1, true);
-
-        EntityRegistry.registerModEntity(new ResourceLocation(Main.MODID, "car_transporter"), EntityCarTransporter.class,
-                "car_transporter", 3725, Main.instance(), 64, 1, true);
-
-        EntityRegistry.registerModEntity(new ResourceLocation(Main.MODID, "car_sport"), EntityCarSport.class,
-                "car_sport", 3726, Main.instance(), 64, 1, true);
+        EntityRegistry.registerModEntity(new ResourceLocation(Main.MODID, "car"), EntityGenericCar.class,
+                "car", 3727, Main.instance(), 64, 1, true);
 
         NetworkRegistry.INSTANCE.registerGuiHandler(Main.instance(), new GuiHandler());
 

@@ -1,20 +1,16 @@
 package de.maxhenkel.car.blocks.tileentity;
 
 import java.util.List;
-import javax.annotation.Nullable;
-
 import de.maxhenkel.car.entity.car.base.EntityCarTemperatureBase;
 import de.maxhenkel.tools.ItemTools;
 import de.maxhenkel.car.blocks.BlockCarWorkshopOutter;
 import de.maxhenkel.car.blocks.ModBlocks;
 import de.maxhenkel.car.entity.car.base.EntityCarBase;
 import de.maxhenkel.car.entity.car.base.EntityCarDamageBase;
-import de.maxhenkel.car.reciepe.ICarCraftingInventory;
-import de.maxhenkel.car.reciepe.ICarbuilder;
-import de.maxhenkel.car.registries.CarCraftingRegistry;
 import de.maxhenkel.car.sounds.ModSounds;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -25,7 +21,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentTranslation;
 
-public class TileEntityCarWorkshop extends TileEntityBase implements ICarCraftingInventory {
+public class TileEntityCarWorkshop extends TileEntityBase implements IInventory {
 
 	private InventoryBasic craftingMatrix;
 	private InventoryBasic repairInventory;
@@ -34,7 +30,7 @@ public class TileEntityCarWorkshop extends TileEntityBase implements ICarCraftin
 	public TileEntityCarWorkshop() {
 		this.craftingMatrix = new InventoryBasic(getDisplayName().getFormattedText(), false, 15);
 		this.repairInventory=new InventoryBasic(getDisplayName().getFormattedText(), false, 3);
-		updateRecipe();
+		//updateRecipe();
 	}
 	
 	public InventoryBasic getRepairInventory() {
@@ -72,7 +68,7 @@ public class TileEntityCarWorkshop extends TileEntityBase implements ICarCraftin
 			return;
 		}
 		
-		updateRecipe();
+		//updateRecipe();
 
 		EntityCarBase car = currentCraftingCar;
 
@@ -208,7 +204,7 @@ public class TileEntityCarWorkshop extends TileEntityBase implements ICarCraftin
 		super.readFromNBT(compound);
 	}
 
-	public void updateRecipe() {
+	/*public void updateRecipe() {
 		ICarbuilder builder = getCurrentRecipe();
 		if (builder == null) {
 			this.currentCraftingCar = null;
@@ -220,7 +216,7 @@ public class TileEntityCarWorkshop extends TileEntityBase implements ICarCraftin
 	@Nullable
 	public ICarbuilder getCurrentRecipe() {
 		return CarCraftingRegistry.findMatchingRecipe(this);
-	}
+	}*/
 
 	public void removeCraftItems() {
 		for (int i = 0; i < craftingMatrix.getSizeInventory(); i++) {
@@ -254,21 +250,21 @@ public class TileEntityCarWorkshop extends TileEntityBase implements ICarCraftin
 	@Override
 	public ItemStack decrStackSize(int index, int count) {
 		ItemStack stack = craftingMatrix.decrStackSize(index, count);
-		updateRecipe();
+		//updateRecipe();
 		return stack;
 	}
 
 	@Override
 	public ItemStack removeStackFromSlot(int index) {
 		ItemStack stack = craftingMatrix.removeStackFromSlot(index);
-		updateRecipe();
+		//updateRecipe();
 		return stack;
 	}
 
 	@Override
 	public void setInventorySlotContents(int index, ItemStack stack) {
 		craftingMatrix.setInventorySlotContents(index, stack);
-		updateRecipe();
+		//updateRecipe();
 	}
 
 	@Override
@@ -319,14 +315,14 @@ public class TileEntityCarWorkshop extends TileEntityBase implements ICarCraftin
 	@Override
 	public void clear() {
 		craftingMatrix.clear();
-		updateRecipe();
+		//updateRecipe();
 	}
 
-	@Override
+	/*@Override
 	public ItemStack getStackInRowAndColumn(int row, int column) {
 		return row >= 0 && row < 5 && column >= 0 && column <= 3 ? this.getStackInSlot(row + column * 5)
 				: ItemTools.EMPTY;
-	}
+	}*/
 
 	public EntityCarBase getCurrentCraftingCar() {
 		return currentCraftingCar;

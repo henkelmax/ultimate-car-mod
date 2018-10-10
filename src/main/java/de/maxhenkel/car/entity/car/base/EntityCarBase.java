@@ -1,7 +1,6 @@
 package de.maxhenkel.car.entity.car.base;
 
 import java.util.List;
-
 import de.maxhenkel.car.Config;
 import de.maxhenkel.car.DamageSourceCar;
 import de.maxhenkel.car.net.*;
@@ -9,8 +8,6 @@ import de.maxhenkel.car.sounds.SoundLoopStart;
 import de.maxhenkel.tools.MathTools;
 import de.maxhenkel.tools.Teleport;
 import de.maxhenkel.car.proxy.CommonProxy;
-import de.maxhenkel.car.reciepe.ICarbuilder;
-import de.maxhenkel.car.registries.CarProperties;
 import de.maxhenkel.car.sounds.ModSounds;
 import de.maxhenkel.car.sounds.SoundLoopHigh;
 import de.maxhenkel.car.sounds.SoundLoopIdle;
@@ -18,13 +15,11 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.ISound;
-import net.minecraft.client.audio.ISoundEventAccessor;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.MoverType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
@@ -397,8 +392,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
         return true;
     }
 
-    @Override
-    public abstract double getMountedYOffset();
+    public abstract double getPlayerYOffset();
 
     public boolean canPlayerEnterCar(EntityPlayer player) {
         return true;

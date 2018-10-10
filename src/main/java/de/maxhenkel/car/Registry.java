@@ -15,29 +15,13 @@ import de.maxhenkel.car.blocks.tileentity.TileEntityOilMill;
 import de.maxhenkel.car.blocks.tileentity.TileEntitySign;
 import de.maxhenkel.car.blocks.tileentity.TileEntitySplitTank;
 import de.maxhenkel.car.blocks.tileentity.TileEntityTank;
-import de.maxhenkel.car.entity.car.EntityCarBigWood;
-import de.maxhenkel.car.entity.car.EntityCarSport;
-import de.maxhenkel.car.entity.car.EntityCarTransporter;
-import de.maxhenkel.car.entity.car.EntityCarWood;
 import de.maxhenkel.car.fluids.ModFluids;
 import de.maxhenkel.car.items.ModItems;
-import de.maxhenkel.car.reciepe.CarBuilderSport;
-import de.maxhenkel.car.reciepe.CarBuilderTransporter;
-import de.maxhenkel.car.reciepe.CarBuilderWoodCar;
-import de.maxhenkel.car.reciepe.CarBuilderWoodCarBig;
-import de.maxhenkel.car.reciepe.ICarRecipe;
-import de.maxhenkel.car.registries.CarCraftingRegistry;
-import de.maxhenkel.car.registries.CarImpl;
-import de.maxhenkel.car.registries.CarRegistry;
-import de.maxhenkel.car.registries.ICar;
 import de.maxhenkel.car.sounds.ModSounds;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockPlanks.EnumType;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.StateMapperBase;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -114,9 +98,6 @@ public class Registry {
         if (Config.keyRecipe) {
             event.getRegistry().register(new ReciepeKey().setRegistryName(new ResourceLocation(Main.MODID, "key")));
         }
-
-        registerCars();
-        registerCarRecipes();
     }
 
     @SubscribeEvent
@@ -395,7 +376,7 @@ public class Registry {
 
     @SubscribeEvent
     public static void capabilityAttach(AttachCapabilitiesEvent<TileEntity> event) {
-        if(!(event.getObject() instanceof TileEntityBase)){
+        if (!(event.getObject() instanceof TileEntityBase)) {
             return;
         }
         if (event.getObject() instanceof IFluidHandler) {
@@ -420,7 +401,7 @@ public class Registry {
                 }
             });
         }
-        if(event.getObject() instanceof IEnergyStorage){
+        if (event.getObject() instanceof IEnergyStorage) {
             IEnergyStorage handler = (IEnergyStorage) event.getObject();
             event.addCapability(new ResourceLocation(Main.MODID, "energy"), new ICapabilityProvider() {
 
@@ -442,92 +423,7 @@ public class Registry {
                 }
             });
         }
-    }
 
-    public static void registerCars() {
-        for (EnumType type : EnumType.values()) {
-
-            CarRegistry.REGISTRY.register("car_wood_" + type.getName(), new CarImpl(EntityCarWood.class, new CarBuilderWoodCar(type)));
-            CarRegistry.REGISTRY.register("car_big_wood_" + type.getName(), new CarImpl(EntityCarBigWood.class, new CarBuilderWoodCarBig(type)));
-        }
-
-        for (EnumDyeColor color : EnumDyeColor.values()) {
-            CarRegistry.REGISTRY.register("car_sport_" + color.getName(), new CarImpl(EntityCarSport.class, new CarBuilderSport(color)));
-            CarRegistry.REGISTRY.register("car_transporter_" + color.getName(), new CarImpl(EntityCarTransporter.class, new CarBuilderTransporter(false, color)));
-            CarRegistry.REGISTRY.register("car_transporter_" + color.getName() + "_container",
-                    new CarImpl(EntityCarTransporter.class, new CarBuilderTransporter(true, color)));
-        }
-
-    }
-
-    public static void registerCarRecipes() {
-
-        for (EnumType type : EnumType.values()) {
-            ICar carWood = CarRegistry.REGISTRY.getEntry("car_wood_" + type.getName());
-            if (carWood != null) {
-                ICarRecipe recipe = CarCraftingRegistry.getRecipe(carWood, "XWSUC", "EPPPP", "TXFXT",
-                        Character.valueOf('W'), new ItemStack(ModItems.WINDSHIELD), Character.valueOf('S'),
-                        new ItemStack(ModItems.CAR_SEAT), Character.valueOf('E'),
-                        new ItemStack(ModItems.ENGINE_3_CYLINDER), Character.valueOf('T'), new ItemStack(ModItems.AXLE),
-                        Character.valueOf('U'), new ItemStack(ModItems.CONTROL_UNIT), Character.valueOf('C'),
-                        new ItemStack(Blocks.CHEST), Character.valueOf('F'), new ItemStack(ModItems.CAR_TANK),
-                        Character.valueOf('P'), new ItemStack(ModItems.CAR_BODY_PART_WOOD, 1, type.getMetadata()));
-                CarCraftingRegistry.REGISTRY.register("car_wood_" + type.getName(), recipe);
-            }
-
-            ICar carWoodBig = CarRegistry.REGISTRY.getEntry("car_big_wood_" + type.getName());
-            if (carWoodBig != null) {
-                ICarRecipe recipe = CarCraftingRegistry.getRecipe(carWoodBig, "WSSUC", "EPPPP", "TPFPT",
-                        Character.valueOf('W'), new ItemStack(ModItems.WINDSHIELD), Character.valueOf('S'),
-                        new ItemStack(ModItems.CAR_SEAT), Character.valueOf('E'),
-                        new ItemStack(ModItems.ENGINE_3_CYLINDER), Character.valueOf('T'), new ItemStack(ModItems.AXLE),
-                        Character.valueOf('U'), new ItemStack(ModItems.CONTROL_UNIT), Character.valueOf('C'),
-                        new ItemStack(Blocks.CHEST), Character.valueOf('F'), new ItemStack(ModItems.CAR_TANK),
-                        Character.valueOf('P'), new ItemStack(ModItems.CAR_BODY_PART_WOOD, 1, type.getMetadata()));
-                CarCraftingRegistry.REGISTRY.register("car_big_wood_" + type.getName(), recipe);
-            }
-
-        }
-
-        for (EnumDyeColor color : EnumDyeColor.values()) {
-            ICar carSport = CarRegistry.REGISTRY.getEntry("car_sport_" + color.getName());
-            if (carSport != null) {
-                ICarRecipe recipe = CarCraftingRegistry.getRecipe(carSport, "XWSUC", "EPPPP", "TXFXT",
-                        Character.valueOf('W'), new ItemStack(ModItems.WINDSHIELD), Character.valueOf('S'),
-                        new ItemStack(ModItems.CAR_SEAT), Character.valueOf('E'),
-                        new ItemStack(ModItems.ENGINE_6_CYLINDER), Character.valueOf('T'), new ItemStack(ModItems.AXLE),
-                        Character.valueOf('U'), new ItemStack(ModItems.CONTROL_UNIT), Character.valueOf('C'),
-                        new ItemStack(Blocks.CHEST), Character.valueOf('F'), new ItemStack(ModItems.CAR_TANK),
-                        Character.valueOf('P'), new ItemStack(Blocks.STAINED_HARDENED_CLAY, 1, color.getMetadata()));
-                CarCraftingRegistry.REGISTRY.register("car_sport_" + color.getName(), recipe);
-            }
-
-            ICar carTransporter = CarRegistry.REGISTRY.getEntry("car_transporter_" + color.getName());
-            if (carTransporter != null) {
-                ICarRecipe recipe = CarCraftingRegistry.getRecipe(carTransporter, "WSUCC", "EPPPP", "TXFTT",
-                        Character.valueOf('W'), new ItemStack(ModItems.WINDSHIELD), Character.valueOf('S'),
-                        new ItemStack(ModItems.CAR_SEAT), Character.valueOf('E'),
-                        new ItemStack(ModItems.ENGINE_3_CYLINDER), Character.valueOf('T'), new ItemStack(ModItems.AXLE),
-                        Character.valueOf('U'), new ItemStack(ModItems.CONTROL_UNIT), Character.valueOf('C'),
-                        new ItemStack(Blocks.CHEST), Character.valueOf('F'), new ItemStack(ModItems.CAR_TANK),
-                        Character.valueOf('P'), new ItemStack(Blocks.STAINED_HARDENED_CLAY, 1, color.getMetadata()));
-                CarCraftingRegistry.REGISTRY.register("car_transporter_" + color.getName(), recipe);
-            }
-
-            ICar carTransporterContainer = CarRegistry.REGISTRY
-                    .getEntry("car_transporter_" + color.getName() + "_container");
-            if (carTransporterContainer != null) {
-                ICarRecipe recipe = CarCraftingRegistry.getRecipe(carTransporterContainer, "WSUCO", "EPPPP", "TXFTT",
-                        Character.valueOf('W'), new ItemStack(ModItems.WINDSHIELD), Character.valueOf('S'),
-                        new ItemStack(ModItems.CAR_SEAT), Character.valueOf('E'),
-                        new ItemStack(ModItems.ENGINE_3_CYLINDER), Character.valueOf('T'), new ItemStack(ModItems.AXLE),
-                        Character.valueOf('U'), new ItemStack(ModItems.CONTROL_UNIT), Character.valueOf('C'),
-                        new ItemStack(Blocks.CHEST), Character.valueOf('F'), new ItemStack(ModItems.CAR_TANK),
-                        Character.valueOf('O'), new ItemStack(ModItems.CONTAINER), Character.valueOf('P'),
-                        new ItemStack(Blocks.STAINED_HARDENED_CLAY, 1, color.getMetadata()));
-                CarCraftingRegistry.REGISTRY.register("car_transporter_" + color.getName() + "_container", recipe);
-            }
-        }
 
     }
 

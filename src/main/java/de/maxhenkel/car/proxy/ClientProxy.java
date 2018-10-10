@@ -1,6 +1,5 @@
 package de.maxhenkel.car.proxy;
 
-import de.maxhenkel.car.Config;
 import de.maxhenkel.car.blocks.tileentity.TileEntityFuelStation;
 import de.maxhenkel.car.blocks.tileentity.TileEntitySign;
 import de.maxhenkel.car.blocks.tileentity.TileEntitySplitTank;
@@ -9,14 +8,8 @@ import de.maxhenkel.car.blocks.tileentity.render.TileEntitySpecialRendererSign;
 import de.maxhenkel.car.blocks.tileentity.render.TileEntitySpecialRendererSplitTank;
 import de.maxhenkel.car.blocks.tileentity.render.TileEntitySpecialRendererTank;
 import de.maxhenkel.car.blocks.tileentity.render.TileentitySpecialRendererFuelStation;
-import de.maxhenkel.car.entity.car.EntityCarBigWood;
-import de.maxhenkel.car.entity.car.EntityCarSport;
-import de.maxhenkel.car.entity.car.EntityCarTransporter;
-import de.maxhenkel.car.entity.car.EntityCarWood;
-import de.maxhenkel.car.entity.model.bigwood.RenderFactoryBigWoodCar;
-import de.maxhenkel.car.entity.model.sport.RenderFactorySport;
-import de.maxhenkel.car.entity.model.transporter.RenderFactoryTransporter;
-import de.maxhenkel.car.entity.model.wood.RenderFactoryWoodCar;
+import de.maxhenkel.car.entity.car.base.EntityGenericCar;
+import de.maxhenkel.car.entity.model.obj.RenderFactoryGenericCar;
 import de.maxhenkel.car.events.KeyEvents;
 import de.maxhenkel.car.events.PlayerEvents;
 import de.maxhenkel.car.events.RenderEvents;
@@ -32,10 +25,7 @@ public class ClientProxy extends CommonProxy {
 	public void preinit(FMLPreInitializationEvent event) {
 		super.preinit(event);
 
-		RenderingRegistry.registerEntityRenderingHandler(EntityCarWood.class, new RenderFactoryWoodCar());
-		RenderingRegistry.registerEntityRenderingHandler(EntityCarBigWood.class, new RenderFactoryBigWoodCar());
-		RenderingRegistry.registerEntityRenderingHandler(EntityCarTransporter.class, new RenderFactoryTransporter());
-		RenderingRegistry.registerEntityRenderingHandler(EntityCarSport.class, new RenderFactorySport());
+		RenderingRegistry.registerEntityRenderingHandler(EntityGenericCar.class, new RenderFactoryGenericCar());
 
 	}
 

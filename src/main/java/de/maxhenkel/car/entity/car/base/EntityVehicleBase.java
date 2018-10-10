@@ -162,9 +162,6 @@ public abstract class EntityVehicleBase extends Entity {
     }
 
     @Override
-    public abstract double getMountedYOffset();
-
-    @Override
     public Entity getControllingPassenger() {
         return getDriver();
     }

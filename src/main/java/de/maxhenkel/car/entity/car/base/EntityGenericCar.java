@@ -13,21 +13,6 @@ public class EntityGenericCar extends EntityCarNumberPlateBase{
     public EntityGenericCar(World worldIn) {
         super(worldIn);
 
-        //this.maxSpeed
-        //this.acceleration
-        //this.maxReverseSpeed
-        //this.stepHeight
-        /*
-        maxspeed=0.5
-        protected float maxReverseSpeed = 0.2F;
-    protected float acceleration = 0.032F;
-    protected float maxRotationSpeed = 5F;
-    protected float rollResistance = 0.02F;
-    protected float minRotationSpeed = 2.0F;
-    getMountedYOffset -0.4d
-    getOptimalTemperature() 90
-    protected int maxFuel=1000;
-         */
     }
 
     @Override
@@ -81,8 +66,8 @@ public class EntityGenericCar extends EntityCarNumberPlateBase{
     }
 
     @Override
-    public double getMountedYOffset() {
-        return -0.4D;
+    public double getPlayerYOffset() {
+        return 0.2D;
     }
 
     @Override
