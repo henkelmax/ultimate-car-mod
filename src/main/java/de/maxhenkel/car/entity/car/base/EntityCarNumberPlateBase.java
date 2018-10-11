@@ -64,4 +64,10 @@ public abstract class EntityCarNumberPlateBase extends EntityCarLockBase {
         super.readEntityFromNBT(compound);
         setNumberPlate(compound.getString("number_plate"));
     }
+
+    public abstract float getNumberPlateOffsetX();
+
+    public abstract float getNumberPlateOffsetY();
+
+    public abstract float getNumberPlateOffsetZ();
 }

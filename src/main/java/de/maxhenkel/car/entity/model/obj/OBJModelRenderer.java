@@ -1,17 +1,13 @@
 package de.maxhenkel.car.entity.model.obj;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
-import de.maxhenkel.car.entity.car.base.EntityCarBase;
 import de.maxhenkel.car.entity.car.base.EntityCarNumberPlateBase;
 import de.maxhenkel.car.entity.car.base.EntityGenericCar;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
-
-import javax.annotation.Nullable;
 
 // https://github.com/2piradians/Minewatch/tree/1.12.1/src/main/java/twopiradians/minewatch/client
 public abstract class OBJModelRenderer<T extends EntityGenericCar> extends Render<T> {
@@ -20,7 +16,7 @@ public abstract class OBJModelRenderer<T extends EntityGenericCar> extends Rende
         super(renderManager);
     }
 
-    public abstract OBJModelPart[] getModels(T entity);
+    public abstract OBJModelInstance[] getModels(T entity);
 
     @Override
     protected ResourceLocation getEntityTexture(T entity) {
@@ -29,7 +25,7 @@ public abstract class OBJModelRenderer<T extends EntityGenericCar> extends Rende
 
     @Override
     public void doRender(T entity, double x, double y, double z, float entityYaw, float partialTicks) {
-        OBJModelPart[] models= getModels(entity);
+        OBJModelInstance[] models= getModels(entity);
 
         GlStateManager.pushMatrix();
         setupTranslation(x, y, z);
@@ -46,26 +42,26 @@ public abstract class OBJModelRenderer<T extends EntityGenericCar> extends Rende
         entity.updateWheelRotation(partialTicks);
         //Render parts
         for (int i = 0; i < models.length; i++) {
-            Minecraft.getMinecraft().getTextureManager().bindTexture(models[i].getTexture());
+            Minecraft.getMinecraft().getTextureManager().bindTexture(models[i].getModel().getTexture());
             GlStateManager.pushMatrix();
-            if (models[i].hasCulling()) {
+            if (models[i].getModel().hasCulling()) {
                 GlStateManager.enableCull();
             } else {
                 GlStateManager.disableCull();
             }
 
-            GlStateManager.translate(models[i].getOffset().x, models[i].getOffset().y, models[i].getOffset().z);
+            GlStateManager.translate(models[i].getOptions().getOffset().x, models[i].getOptions().getOffset().y, models[i].getOptions().getOffset().z);
             GlStateManager.rotate(-90F, 1F, 0F, 0F);
 
-            if (models[i].getRotation() != null) {
-                GlStateManager.rotate(models[i].getRotation());
+            if (models[i].getOptions().getRotation() != null) {
+                GlStateManager.rotate(models[i].getOptions().getRotation());
             }
 
-            if (models[i].getSpeedRotationFactor() > 0F) {
-                GlStateManager.rotate(-entity.getWheelRotation(models[i].getSpeedRotationFactor()), 1F, 0F, 0F);
+            if (models[i].getOptions().getSpeedRotationFactor() > 0F) {
+                GlStateManager.rotate(-entity.getWheelRotation(models[i].getOptions().getSpeedRotationFactor()), 1F, 0F, 0F);
             }
 
-            OBJRenderer.renderObj(models[i].getModel());
+            OBJRenderer.renderObj(models[i].getModel().getModel());
             GlStateManager.enableCull();
             GlStateManager.popMatrix();
         }
@@ -78,10 +74,10 @@ public abstract class OBJModelRenderer<T extends EntityGenericCar> extends Rende
         GlStateManager.popMatrix();
 
         if (entity instanceof EntityCarNumberPlateBase) {
-            String text = ((EntityCarNumberPlateBase) entity).getNumberPlate();
+            String text = entity.getNumberPlate();
             if (text != null && !text.isEmpty()) {
                 GlStateManager.enableNormalize();
-                drawNumberPlate(text);
+                drawNumberPlate(entity, text);
                 GlStateManager.disableNormalize();
             }
         }
@@ -91,12 +87,12 @@ public abstract class OBJModelRenderer<T extends EntityGenericCar> extends Rende
         super.doRender(entity, x, y, z, entityYaw, partialTicks);
     }
 
-    private void drawNumberPlate(String txt) {
+    private void drawNumberPlate(EntityGenericCar car, String txt) {
         GlStateManager.pushMatrix();
         GlStateManager.rotate(180.0F, 0.0F, 1.0F, 0.0F);
         GlStateManager.scale(-1.0F, -1.0F, 1.0F);
 
-        translateNumberPlate();
+        translateNumberPlate(car);
 
         int textWidth = Minecraft.getMinecraft().fontRenderer.getStringWidth(txt);
         float textScale = 0.01F;
@@ -110,7 +106,7 @@ public abstract class OBJModelRenderer<T extends EntityGenericCar> extends Rende
         GlStateManager.popMatrix();
     }
 
-    public abstract void translateNumberPlate();
+    public abstract void translateNumberPlate(EntityGenericCar car);
 
     public void setupRotation(T entity, float yaw) {
         GlStateManager.rotate(180.0F - yaw, 0.0F, 1.0F, 0.0F);

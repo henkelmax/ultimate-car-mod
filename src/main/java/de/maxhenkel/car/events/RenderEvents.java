@@ -109,9 +109,11 @@ public class RenderEvents {
 
 	@SubscribeEvent
 	public void renderPlayerPre(RenderPlayerEvent.Pre event){
-		if(event.getEntityPlayer().getRidingEntity() instanceof EntityCarBase){
+	    EntityPlayer player=event.getEntityPlayer();
+		if(player.getRidingEntity() instanceof EntityCarBase){
 			EntityCarBase car= (EntityCarBase) event.getEntityPlayer().getRidingEntity();
 		    GlStateManager.pushMatrix();
+            GlStateManager.translate(event.getX(), event.getY(), event.getZ());
             GlStateManager.scale(EntityVehicleBase.SCALE_FACTOR, EntityVehicleBase.SCALE_FACTOR, EntityVehicleBase.SCALE_FACTOR);
             GlStateManager.translate(0F, (event.getEntityPlayer().height - (event.getEntityPlayer().height * EntityVehicleBase.SCALE_FACTOR)) / 1.5F +car.getPlayerYOffset(), 0F);
             GlStateManager.translate(-event.getX(), -event.getY(), -event.getZ());

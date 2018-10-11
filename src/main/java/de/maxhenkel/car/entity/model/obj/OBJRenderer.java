@@ -23,7 +23,7 @@ import java.util.Set;
 // https://github.com/fredtargaryen/ExRollerCoaster/blob/1.12.2/src/main/java/erc/renderer/ModelRenderer.java
 public class OBJRenderer {
     /**
-     * Assumes a complete OBJModelPart with triangle polygons, so it can use GL_TRIANGLES to render
+     * Assumes a complete OBJModelOptions with triangle polygons, so it can use GL_TRIANGLES to render
      * Necessary transforms and texture binding must be done before calling this.
      *
      * @param model
