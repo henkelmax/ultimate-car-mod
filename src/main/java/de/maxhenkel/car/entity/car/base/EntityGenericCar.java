@@ -1,29 +1,29 @@
 package de.maxhenkel.car.entity.car.base;
 
-import de.maxhenkel.car.Main;
-import de.maxhenkel.car.entity.model.obj.OBJModel;
+import de.maxhenkel.car.DataSerializerStringList;
+import de.maxhenkel.car.entity.car.parts.Part;
+import de.maxhenkel.car.entity.car.parts.PartRegistry;
 import de.maxhenkel.car.entity.model.obj.OBJModelInstance;
-import de.maxhenkel.car.entity.model.obj.OBJModelOptions;
 import de.maxhenkel.car.sounds.ModSounds;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.NBTTagString;
 import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
 import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
-public class EntityGenericCar extends EntityCarNumberPlateBase{
-
-    private static final DataParameter<String> CHASSIS_TYPE = EntityDataManager.<String>createKey(EntityGenericCar.class, DataSerializers.STRING);
+public class EntityGenericCar extends EntityCarNumberPlateBase {
 
     public EntityGenericCar(World worldIn) {
         super(worldIn);
-
     }
 
     @Override
@@ -143,36 +143,104 @@ public class EntityGenericCar extends EntityCarNumberPlateBase{
         return ModSounds.car_horn;
     }
 
-    private OBJModel wheel;
-    private OBJModel chassis;
+    private static final DataParameter<String[]> PARTS = EntityDataManager.<String[]>createKey(EntityGenericCar.class, DataSerializerStringList.STRING_LIST);
 
-    private OBJModelInstance[] parts;
-
-    private void initModel(){
-        this.wheel = new OBJModel(
-                new ResourceLocation(Main.MODID, "models/entity/wheel.obj"),
-                new ResourceLocation(Main.MODID, "textures/entity/wheel.png"));
-        this.chassis = new OBJModel(
-                new ResourceLocation(Main.MODID, "models/entity/woodcar.obj"),
-                new ResourceLocation(Main.MODID, "textures/entity/oak_wood.png"));
-        parts = new OBJModelInstance[]{
-                new OBJModelInstance(wheel,
-                        new OBJModelOptions(new Vec3d(9.5F / 16F, 4F / 16F, 8F / 16F)).setSpeedRotationFactor(80F)),
-                new OBJModelInstance(wheel,
-                        new OBJModelOptions(new Vec3d(9.5F / 16F, 4F / 16F, -8F / 16F)).setSpeedRotationFactor(80F)),
-                new OBJModelInstance(wheel,
-                        new OBJModelOptions(new Vec3d(-9.5F / 16F, 4F / 16F, 8F / 16F)).setSpeedRotationFactor(80F)),
-                new OBJModelInstance(wheel,
-                        new OBJModelOptions(new Vec3d(-9.5F / 16F, 4F / 16F, -8F / 16F)).setSpeedRotationFactor(80F)),
-                new OBJModelInstance(chassis,
-                        new OBJModelOptions(new Vec3d(0, 8.5F / 16F, 0)))
-        };
+    @Override
+    protected void entityInit() {
+        super.entityInit();
+        this.dataManager.register(PARTS, new String[0]);
     }
 
-    public OBJModelInstance[] getModels() {
-        if(parts==null){
-            initModel();
+    public void setPartStrings(String[] parts) {
+        this.dataManager.set(PARTS, parts);
+    }
+
+    public String[] getPartStrings() {
+        return this.dataManager.get(PARTS);
+    }
+
+    private List<Part> parts = new ArrayList<>();
+
+    //  /summon car:car ~ ~ ~ {parts:["oak_chassis", "wheel"]}
+    @Override
+    protected void readEntityFromNBT(NBTTagCompound compound) {
+        super.readEntityFromNBT(compound);
+
+        readPartsFromNBT(compound);
+    }
+
+    private boolean isInitialized;
+
+    @Override
+    public void onEntityUpdate() {
+        super.onEntityUpdate();
+
+        if(!isInitialized){
+            initParts();
+
+            if (world.isRemote) {
+                initModel();
+            }
+            isInitialized=true;
         }
-        return parts;
+
+    }
+
+    @Override
+    protected void writeEntityToNBT(NBTTagCompound compound) {
+        super.writeEntityToNBT(compound);
+
+        writePartsToNBT(compound);
+    }
+
+    public void writePartsToNBT(NBTTagCompound compound) {
+        NBTTagList list = new NBTTagList();
+        for (String s : getPartStrings()) {
+            list.appendTag(new NBTTagString(s));
+        }
+
+        compound.setTag("parts", list);
+    }
+
+    public void readPartsFromNBT(NBTTagCompound compound) {
+        NBTTagList list = compound.getTagList("parts", 8);
+        String[] partData=new String[list.tagCount()];
+        for (int i = 0; i < list.tagCount(); i++) {
+            partData[i]=list.getStringTagAt(i);
+        }
+
+        setPartStrings(partData);
+    }
+
+    @Nullable
+    public List<Part> getModelParts() {
+        return Collections.unmodifiableList(parts);
+    }
+
+    protected void initParts() {
+        for (String s : getPartStrings()) {
+            Part part = PartRegistry.getPart(s);
+            if (part != null) {
+                parts.add(part);
+            } else {
+                System.err.println("Failed to load car part '" + s + "'");
+            }
+        }
+    }
+
+    //---------------CLIENT---------------------------------
+
+    private List<OBJModelInstance> modelInstances = new ArrayList<>();
+
+    protected void initModel() {
+        modelInstances.clear();
+
+        for (Part part : parts) {
+            modelInstances.addAll(part.getInstances(this));
+        }
+    }
+
+    public List<OBJModelInstance> getModels() {
+        return modelInstances;
     }
 }

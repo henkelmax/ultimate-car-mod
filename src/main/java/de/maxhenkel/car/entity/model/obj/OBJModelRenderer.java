@@ -9,6 +9,8 @@ import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.util.ResourceLocation;
 
+import java.util.List;
+
 // https://github.com/2piradians/Minewatch/tree/1.12.1/src/main/java/twopiradians/minewatch/client
 public abstract class OBJModelRenderer<T extends EntityGenericCar> extends Render<T> {
 
@@ -16,7 +18,7 @@ public abstract class OBJModelRenderer<T extends EntityGenericCar> extends Rende
         super(renderManager);
     }
 
-    public abstract OBJModelInstance[] getModels(T entity);
+    public abstract List<OBJModelInstance> getModels(T entity);
 
     @Override
     protected ResourceLocation getEntityTexture(T entity) {
@@ -25,7 +27,7 @@ public abstract class OBJModelRenderer<T extends EntityGenericCar> extends Rende
 
     @Override
     public void doRender(T entity, double x, double y, double z, float entityYaw, float partialTicks) {
-        OBJModelInstance[] models= getModels(entity);
+        List<OBJModelInstance> models= getModels(entity);
 
         GlStateManager.pushMatrix();
         setupTranslation(x, y, z);
@@ -41,27 +43,27 @@ public abstract class OBJModelRenderer<T extends EntityGenericCar> extends Rende
 
         entity.updateWheelRotation(partialTicks);
         //Render parts
-        for (int i = 0; i < models.length; i++) {
-            Minecraft.getMinecraft().getTextureManager().bindTexture(models[i].getModel().getTexture());
+        for (int i = 0; i < models.size(); i++) {
+            Minecraft.getMinecraft().getTextureManager().bindTexture(models.get(i).getModel().getTexture());
             GlStateManager.pushMatrix();
-            if (models[i].getModel().hasCulling()) {
+            if (models.get(i).getModel().hasCulling()) {
                 GlStateManager.enableCull();
             } else {
                 GlStateManager.disableCull();
             }
 
-            GlStateManager.translate(models[i].getOptions().getOffset().x, models[i].getOptions().getOffset().y, models[i].getOptions().getOffset().z);
+            GlStateManager.translate(models.get(i).getOptions().getOffset().x, models.get(i).getOptions().getOffset().y, models.get(i).getOptions().getOffset().z);
             GlStateManager.rotate(-90F, 1F, 0F, 0F);
 
-            if (models[i].getOptions().getRotation() != null) {
-                GlStateManager.rotate(models[i].getOptions().getRotation());
+            if (models.get(i).getOptions().getRotation() != null) {
+                GlStateManager.rotate(models.get(i).getOptions().getRotation());
             }
 
-            if (models[i].getOptions().getSpeedRotationFactor() > 0F) {
-                GlStateManager.rotate(-entity.getWheelRotation(models[i].getOptions().getSpeedRotationFactor()), 1F, 0F, 0F);
+            if (models.get(i).getOptions().getSpeedRotationFactor() > 0F) {
+                GlStateManager.rotate(-entity.getWheelRotation(models.get(i).getOptions().getSpeedRotationFactor()), 1F, 0F, 0F);
             }
 
-            OBJRenderer.renderObj(models[i].getModel().getModel());
+            OBJRenderer.renderObj(models.get(i).getModel().getModel());
             GlStateManager.enableCull();
             GlStateManager.popMatrix();
         }

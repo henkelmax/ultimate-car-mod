@@ -23,6 +23,10 @@ public class OBJModelOptions {
         this(offset, null, 0F);
     }
 
+    public OBJModelOptions() {
+        this(new Vec3d(0D, 0D, 0D), null, 0F);
+    }
+
     public Vec3d getOffset() {
         return offset;
     }

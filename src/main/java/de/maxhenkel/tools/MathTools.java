@@ -6,6 +6,7 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.entity.Entity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 
@@ -46,6 +47,11 @@ public class MathTools {
 	public static TargetPoint getTileEntityTargetPoint(TileEntity te) {
 		return new TargetPoint(te.getWorld().provider.getDimension(), te.getPos().getX(), te.getPos().getY(),
 				te.getPos().getZ(), 64);
+	}
+
+	public static TargetPoint getEntityTargetPoint(Entity e) {
+		return new TargetPoint(e.world.provider.getDimension(), e.posX, e.posY,
+				e.posZ, 64);
 	}
 
 	public static long intToLong(int i1, int i2) {

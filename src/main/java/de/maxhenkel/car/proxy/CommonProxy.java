@@ -4,12 +4,14 @@ import java.io.File;
 import java.lang.reflect.Field;
 import java.util.Map;
 import de.maxhenkel.car.Config;
+import de.maxhenkel.car.DataSerializerStringList;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.entity.car.base.EntityGenericCar;
 import de.maxhenkel.car.events.ConfigEvents;
 import de.maxhenkel.car.gui.GuiHandler;
 import de.maxhenkel.car.net.*;
 import minecrafttransportsimulator.systems.ConfigSystem;
+import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -49,6 +51,8 @@ public class CommonProxy {
         CommonProxy.simpleNetworkWrapper.registerMessage(MessageCenterCar.class, MessageCenterCar.class, 14, Side.SERVER);
         CommonProxy.simpleNetworkWrapper.registerMessage(MessageCenterCar.class, MessageCenterCar.class, 15, Side.CLIENT);
         CommonProxy.simpleNetworkWrapper.registerMessage(MessageEditNumberPlate.class, MessageEditNumberPlate.class, 16, Side.SERVER);
+
+        DataSerializers.registerSerializer(DataSerializerStringList.STRING_LIST);
 
         try {
             File configFolder = new File(event.getModConfigurationDirectory(), Main.MODID);
