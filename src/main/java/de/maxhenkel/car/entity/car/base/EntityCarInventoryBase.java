@@ -24,8 +24,8 @@ public abstract class EntityCarInventoryBase extends EntityCarFuelBase implement
 	public EntityCarInventoryBase(World worldIn) {
 		super(worldIn);
 		
-		this.internalInventory=new InventoryBasic(getCarName().getFormattedText(), false, 27);
-		this.externalInventory=new InventoryBasic(getCarName().getFormattedText(), false, 0);
+		this.internalInventory=new InventoryBasic(getCarName().getUnformattedText(), false, 27);
+		this.externalInventory=new InventoryBasic(getCarName().getUnformattedText(), false, 0);
 	}
 	
 	@Override
@@ -46,7 +46,7 @@ public abstract class EntityCarInventoryBase extends EntityCarFuelBase implement
 			//Inv
 			
 			if(externalInventory.getSizeInventory()<=0){
-				player.displayGUIChest(this);
+				player.displayGUIChest(internalInventory);
 			}else{
 				player.displayGUIChest(externalInventory);
 			}

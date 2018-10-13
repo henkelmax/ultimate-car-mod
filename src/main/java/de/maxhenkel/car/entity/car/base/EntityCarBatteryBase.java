@@ -98,9 +98,9 @@ public abstract class EntityCarBatteryBase extends EntityCarTemperatureBase {
             return;
         }
         Vec3d lookVec = getLookVec().normalize();
-        double offX = lookVec.x * -width / 2;
+        double offX = lookVec.x * -1;
         double offY = lookVec.y;
-        double offZ = lookVec.z * -width / 2;
+        double offZ = lookVec.z * -1;
 
         //Engine started smoke should only come 1 second after start and only if the engine is colder than 50°C
         if (timeSinceStarted > 0 && timeSinceStarted < 20 && getTemperature() < 50F) {

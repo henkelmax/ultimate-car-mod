@@ -224,6 +224,9 @@ message.car_out_of_range=Key out of range
 message.key_no_car=This key does not belong to a Car
 message.center_car=Centered Car rotation
 
+entity.car.name=Car
+entity.car.car.name=Car
+
 entity.car_wood.name=Wood Car
 entity.car.car_wood.name=Wood Car
 

@@ -1,7 +1,9 @@
 package de.maxhenkel.car.blocks.tileentity;
 
+import java.util.ArrayList;
 import java.util.List;
 import de.maxhenkel.car.entity.car.base.EntityCarTemperatureBase;
+import de.maxhenkel.car.entity.car.base.EntityGenericCar;
 import de.maxhenkel.tools.ItemTools;
 import de.maxhenkel.car.blocks.BlockCarWorkshopOutter;
 import de.maxhenkel.car.blocks.ModBlocks;
@@ -10,6 +12,7 @@ import de.maxhenkel.car.entity.car.base.EntityCarDamageBase;
 import de.maxhenkel.car.sounds.ModSounds;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.item.ItemStack;
@@ -25,7 +28,7 @@ public class TileEntityCarWorkshop extends TileEntityBase implements IInventory 
 
 	private InventoryBasic craftingMatrix;
 	private InventoryBasic repairInventory;
-	private EntityCarBase currentCraftingCar;
+	private EntityGenericCar currentCraftingCar;
 
 	public TileEntityCarWorkshop() {
 		this.craftingMatrix = new InventoryBasic(getDisplayName().getFormattedText(), false, 15);
@@ -68,9 +71,9 @@ public class TileEntityCarWorkshop extends TileEntityBase implements IInventory 
 			return;
 		}
 		
-		//updateRecipe();
+		updateRecipe();
 
-		EntityCarBase car = currentCraftingCar;
+		EntityGenericCar car = currentCraftingCar;
 
 		if (car == null) {
 			player.sendMessage(new TextComponentTranslation("message.no_reciepe"));
@@ -80,10 +83,9 @@ public class TileEntityCarWorkshop extends TileEntityBase implements IInventory 
 		car.setPosition(spawnPos.getX()+0.5, spawnPos.getY(), spawnPos.getZ()+0.5);
 		
 		removeCraftItems();
+		car.setFuelAmount(100);
 		world.spawnEntity(car);
-		if(car instanceof EntityCarTemperatureBase){
-			((EntityCarTemperatureBase) car).initTemperature();
-		}
+		car.initTemperature();
 	}
 
 	// Multiblock \/
@@ -204,15 +206,28 @@ public class TileEntityCarWorkshop extends TileEntityBase implements IInventory 
 		super.readFromNBT(compound);
 	}
 
-	/*public void updateRecipe() {
-		ICarbuilder builder = getCurrentRecipe();
-		if (builder == null) {
-			this.currentCraftingCar = null;
-			return;
-		}
-		this.currentCraftingCar = builder.build(world);
-	}
+	public void updateRecipe() {
+		EntityGenericCar car=new EntityGenericCar(world);
 
+		List<String> parts=new ArrayList<>();
+
+		for(int i=0; i<craftingMatrix.getSizeInventory(); i++){
+		    ItemStack stack=craftingMatrix.getStackInSlot(i);
+
+		    if(stack.getItem().equals(Items.STICK)){
+                parts.add("oak_chassis");
+                parts.add("wheel");
+            }
+        }
+
+		car.setPartStrings(parts.toArray(new String[0]));
+		car.tryInitModel();
+
+		//TODO check if valid
+
+		this.currentCraftingCar = car;
+	}
+/*
 	@Nullable
 	public ICarbuilder getCurrentRecipe() {
 		return CarCraftingRegistry.findMatchingRecipe(this);
@@ -250,21 +265,21 @@ public class TileEntityCarWorkshop extends TileEntityBase implements IInventory 
 	@Override
 	public ItemStack decrStackSize(int index, int count) {
 		ItemStack stack = craftingMatrix.decrStackSize(index, count);
-		//updateRecipe();
+		updateRecipe();
 		return stack;
 	}
 
 	@Override
 	public ItemStack removeStackFromSlot(int index) {
 		ItemStack stack = craftingMatrix.removeStackFromSlot(index);
-		//updateRecipe();
+		updateRecipe();
 		return stack;
 	}
 
 	@Override
 	public void setInventorySlotContents(int index, ItemStack stack) {
 		craftingMatrix.setInventorySlotContents(index, stack);
-		//updateRecipe();
+		updateRecipe();
 	}
 
 	@Override
@@ -315,7 +330,7 @@ public class TileEntityCarWorkshop extends TileEntityBase implements IInventory 
 	@Override
 	public void clear() {
 		craftingMatrix.clear();
-		//updateRecipe();
+		updateRecipe();
 	}
 
 	/*@Override
@@ -324,7 +339,7 @@ public class TileEntityCarWorkshop extends TileEntityBase implements IInventory 
 				: ItemTools.EMPTY;
 	}*/
 
-	public EntityCarBase getCurrentCraftingCar() {
+	public EntityGenericCar getCurrentCraftingCar() {
 		return currentCraftingCar;
 	}
 

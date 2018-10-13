@@ -11,8 +11,10 @@ import net.minecraft.nbt.NBTTagString;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
 import javax.annotation.Nullable;
@@ -88,7 +90,7 @@ public class EntityGenericCar extends EntityCarNumberPlateBase {
 
     @Override
     public ITextComponent getCarName() {
-        return new TextComponentString("Test");
+        return new TextComponentTranslation("entity.car.name");
     }
 
     @Override
@@ -175,6 +177,10 @@ public class EntityGenericCar extends EntityCarNumberPlateBase {
     public void onEntityUpdate() {
         super.onEntityUpdate();
 
+        tryInitModel();
+    }
+
+    public void tryInitModel(){
         if(!isInitialized){
             initParts();
 
@@ -183,7 +189,6 @@ public class EntityGenericCar extends EntityCarNumberPlateBase {
             }
             isInitialized=true;
         }
-
     }
 
     @Override

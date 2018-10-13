@@ -2,6 +2,7 @@ package de.maxhenkel.car.gui;
 
 import java.io.IOException;
 import de.maxhenkel.car.Main;
+import de.maxhenkel.car.entity.car.base.EntityGenericCar;
 import de.maxhenkel.tools.MathTools;
 import de.maxhenkel.car.blocks.tileentity.TileEntityCarWorkshop;
 import de.maxhenkel.car.entity.car.base.EntityCarBase;
@@ -72,7 +73,7 @@ public class GuiCarWorkshopCrafting extends GuiBase {
 			//buttonRepair.enabled=false;
 		}
 
-		EntityCarBase car = tile.getCurrentCraftingCar();
+		EntityGenericCar car = tile.getCurrentCraftingCar();
 		if (car != null && carTop == null) {
 			buttonSpawn.enabled = true;
 			drawCar(car);
