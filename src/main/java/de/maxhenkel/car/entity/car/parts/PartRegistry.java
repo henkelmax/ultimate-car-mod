@@ -5,6 +5,7 @@ import de.maxhenkel.car.entity.model.obj.OBJModel;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.Vec3d;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class PartRegistry {
@@ -34,4 +35,39 @@ public class PartRegistry {
         return partRegistry.get(name);
     }
 
+    public static boolean isValid(List<Part> modelParts){
+        if(!checkChassis(modelParts)){
+            return false;
+        }
+
+        if(!checkWheels(modelParts)){
+            return false;
+        }
+
+        return true;
+    }
+
+    private static boolean checkChassis(List<Part> modelParts){
+        return checkAmount(modelParts, 1, part -> part instanceof PartChassis);
+    }
+
+    private static boolean checkWheels(List<Part> modelParts){
+        return checkAmount(modelParts, 4, part -> part instanceof PartWheels);
+    }
+
+    private static boolean checkAmount(List<Part> modelParts, int amount, Checker checker){
+        int i=0;
+        for(Part part:modelParts){
+            if(checker.check(part)){
+                i++;
+            }
+        }
+
+        return amount==i;
+    }
+
+
+    private static interface Checker{
+        boolean check(Part part);
+    }
 }

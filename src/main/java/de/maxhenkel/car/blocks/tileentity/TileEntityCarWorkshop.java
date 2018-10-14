@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import de.maxhenkel.car.entity.car.base.EntityCarTemperatureBase;
 import de.maxhenkel.car.entity.car.base.EntityGenericCar;
+import de.maxhenkel.car.entity.car.parts.PartRegistry;
 import de.maxhenkel.tools.ItemTools;
 import de.maxhenkel.car.blocks.BlockCarWorkshopOutter;
 import de.maxhenkel.car.blocks.ModBlocks;
@@ -221,9 +222,13 @@ public class TileEntityCarWorkshop extends TileEntityBase implements IInventory 
         }
 
 		car.setPartStrings(parts.toArray(new String[0]));
-		car.tryInitModel();
+		car.initParts();
 
-		//TODO check if valid
+		if(!PartRegistry.isValid(car.getModelParts())){
+		    return;
+        }
+
+		car.tryInitModel();
 
 		this.currentCraftingCar = car;
 	}

@@ -222,7 +222,7 @@ public class EntityGenericCar extends EntityCarNumberPlateBase {
         return Collections.unmodifiableList(parts);
     }
 
-    protected void initParts() {
+    public void initParts() {
         for (String s : getPartStrings()) {
             Part part = PartRegistry.getPart(s);
             if (part != null) {
