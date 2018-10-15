@@ -121,17 +121,19 @@ public abstract class EntityVehicleBase extends Entity {
         this.applyYawToEntity(entityToUpdate);
     }
 
-    public float getHeightOffsetForPassenger(int i, Entity passenger) {
+    /*public float getHeightOffsetForPassenger(int i, Entity passenger) {
         return -((passenger.height * SCALE_FACTOR) * 0.3F);
     }
-
+/*
     public float getFrontOffsetForPassenger(int i, Entity passenger) {
         return 0.0F;
     }
 
     public float getSideOffsetForPassenger(int i, Entity passenger) {
         return 0.0F;
-    }
+    }*/
+
+    public abstract Vec3d[] getPlayerOffsets();
 
     @Override
     public void updatePassenger(Entity passenger) {
@@ -148,9 +150,10 @@ public abstract class EntityVehicleBase extends Entity {
         if (passengers.size() > 0) {
             int i = passengers.indexOf(passenger);
 
-            front = getFrontOffsetForPassenger(i, passenger);
-            side = getSideOffsetForPassenger(i, passenger);
-            height = getHeightOffsetForPassenger(i, passenger);
+            Vec3d offset=getPlayerOffsets()[i];
+            front = offset.x;
+            side = offset.z;
+            height = offset.y;
         }
 
         Vec3d vec3d = (new Vec3d(front, height, side))

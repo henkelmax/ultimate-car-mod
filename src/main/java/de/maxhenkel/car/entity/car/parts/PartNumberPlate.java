@@ -1,19 +1,38 @@
 package de.maxhenkel.car.entity.car.parts;
 
+import de.maxhenkel.car.entity.car.base.EntityGenericCar;
 import de.maxhenkel.car.entity.model.obj.OBJModel;
+import de.maxhenkel.car.entity.model.obj.OBJModelInstance;
+import de.maxhenkel.car.entity.model.obj.OBJModelOptions;
 import net.minecraft.util.math.Vec3d;
 import org.lwjgl.util.vector.Quaternion;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PartNumberPlate extends PartModel {
 
-    protected Vec3d numberPlateTextOffset;
+    protected Vec3d textOffset;
 
-    public PartNumberPlate(OBJModel model, Vec3d offset, Quaternion rotation, Vec3d numberPlateTextOffset) {
-        super(model, offset, rotation);
-        this.numberPlateTextOffset = numberPlateTextOffset;
+    public PartNumberPlate(OBJModel model, Quaternion rotation, Vec3d textOffset) {
+        super(model, new Vec3d(0D, 0D, 0D), rotation);
+        this.textOffset=textOffset;
     }
 
-    public Vec3d getNumberPlateTextOffset() {
-        return numberPlateTextOffset;
+    public Vec3d getTextOffset() {
+        return textOffset;
+    }
+
+    @Override
+    public List<OBJModelInstance> getInstances(EntityGenericCar car) {
+        PartChassis chassis = car.getPartByClass(PartChassis.class);
+
+        if (chassis == null) {
+            return super.getInstances(car);
+        }
+
+        List<OBJModelInstance> list = new ArrayList<>();
+        list.add(new OBJModelInstance(model, new OBJModelOptions(chassis.getNumberPlateOffset(), rotation, 0F)));
+        onPartAdd(list);
+        return list;
     }
 }

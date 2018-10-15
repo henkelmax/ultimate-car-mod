@@ -5,6 +5,7 @@ import de.maxhenkel.car.entity.model.obj.OBJModel;
 import de.maxhenkel.tools.MathTools;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.Vec3d;
+
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -16,9 +17,9 @@ public class PartRegistry {
 
     static {
 
-        partRegistry.put("engine_3_cylinder", new PartEngine(0.5F, 0.2F, 0.032F));
+        partRegistry.put("engine_3_cylinder", new PartEngine3Cylinder(0.5F, 0.2F, 0.032F));
 
-        partRegistry.put("engine_6_cylinder", new PartEngine(0.65F, 0.2F, 0.04F));
+        partRegistry.put("engine_6_cylinder", new PartEngine6Cylinder(0.65F, 0.2F, 0.04F));
 
         partRegistry.put("oak_chassis", createWoodChassis(new ResourceLocation(Main.MODID, "textures/entity/oak_wood.png")));
 
@@ -39,6 +40,7 @@ public class PartRegistry {
         partRegistry.put("white_sport_chassis", createSportChassis(new ResourceLocation(Main.MODID, "textures/entity/car_sport_white.png")));
         partRegistry.put("yellow_sport_chassis", createSportChassis(new ResourceLocation(Main.MODID, "textures/entity/car_sport_yellow.png")));
 
+        partRegistry.put("white_transporter_chassis", createTransporterChassis(new ResourceLocation(Main.MODID, "textures/entity/car_transporter_white.png")));
 
         partRegistry.put("wheel", new PartWheels(new OBJModel(
                 new ResourceLocation(Main.MODID, "models/entity/wheel.obj"),
@@ -49,9 +51,8 @@ public class PartRegistry {
         partRegistry.put("oak_number_plate", new PartNumberPlate(new OBJModel(
                 new ResourceLocation(Main.MODID, "models/entity/wood_number_plate.obj"),
                 new ResourceLocation(Main.MODID, "textures/entity/oak_wood.png")),
-                new Vec3d(0D, 7D / 16D, 14.5D / 16D),
                 MathTools.rotate(90F, 0F, 0F, 1F),
-                new Vec3d(0F, -0.45F, -0.94F)
+                new Vec3d(0D, -0.5D/16D, -0.5D/16D-0.001D)
         ));
 
         partRegistry.put("oak_bumper", new PartBumper(new OBJModel(
@@ -63,7 +64,7 @@ public class PartRegistry {
     }
 
     private static Part createWoodChassis(ResourceLocation texture) {
-        return new PartChassis(new OBJModel(
+        return new PartChassisWood(new OBJModel(
                 new ResourceLocation(Main.MODID, "models/entity/wood_chassis.obj"),
                 texture),
                 new Vec3d(0D, 8.5D / 16D, 0D),
@@ -72,7 +73,14 @@ public class PartRegistry {
                         new Vec3d(9.5F / 16F, 4F / 16F, -8F / 16F),
                         new Vec3d(-9.5F / 16F, 4F / 16F, 8F / 16F),
                         new Vec3d(-9.5F / 16F, 4F / 16F, -8F / 16F)
-                }
+                },
+                new Vec3d[]{
+                        new Vec3d(0D, -0.378D, 0D)
+                },
+                new Vec3d(0D, 7D / 16D, 14.5D / 16D),
+                1.3F,
+                1.6F,
+                2.0F
         );
     }
 
@@ -86,7 +94,38 @@ public class PartRegistry {
                         new Vec3d(9.5F / 16F, 4F / 16F, -8F / 16F),
                         new Vec3d(-9.5F / 16F, 4F / 16F, 8F / 16F),
                         new Vec3d(-9.5F / 16F, 4F / 16F, -8F / 16F)
-                }
+                },
+                new Vec3d[]{
+                        new Vec3d(0D, -0.378D, 0D)
+                },
+                new Vec3d(0D, 7D / 16D, 14.5D / 16D),
+                1.4F,
+                1.2F,
+                1.1F
+        );
+    }
+
+    private static Part createTransporterChassis(ResourceLocation texture) {
+        return new PartChassisTransporter(new OBJModel(
+                new ResourceLocation(Main.MODID, "models/entity/transporter_chassis.obj"),
+                texture),
+                new Vec3d(0D, 4D / 16D, 0D),
+                new Vec3d[]{
+                        new Vec3d(14.5F / 16F, 4F / 16F, 12F / 16F),
+                        new Vec3d(14.5F / 16F, 4F / 16F, -16F / 16F),
+                        new Vec3d(-14.5F / 16F, 4F / 16F, 12F / 16F),
+                        new Vec3d(-14.5F / 16F, 4F / 16F, -16F / 16F),
+                        new Vec3d(14.5F / 16F, 4F / 16F, 3F / 16F),
+                        new Vec3d(-14.5F / 16F, 4F / 16F, 3F / 16F)
+                },
+                new Vec3d[]{
+                        new Vec3d(0.55D, -0.378D, -0.38D),
+                        new Vec3d(0.55D, -0.378D, 0.38D)
+                },
+                new Vec3d(0D, 7D / 16D, 17.5D / 16D),
+                2.0F,
+                1.51F,
+                2.0F
         );
     }
 
@@ -99,10 +138,10 @@ public class PartRegistry {
             return false;
         }
 
-        List<Part> unmodifiableList= Collections.unmodifiableList(modelParts);
+        List<Part> unmodifiableList = Collections.unmodifiableList(modelParts);
 
-        for(Part part:modelParts){
-            if(!part.isValid(unmodifiableList)){
+        for (Part part : modelParts) {
+            if (!part.isValid(unmodifiableList)) {
                 return false;
             }
         }

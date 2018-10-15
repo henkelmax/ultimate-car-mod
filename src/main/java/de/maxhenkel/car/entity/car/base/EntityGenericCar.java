@@ -4,6 +4,7 @@ import de.maxhenkel.car.DataSerializerStringList;
 import de.maxhenkel.car.entity.car.parts.*;
 import de.maxhenkel.car.entity.model.obj.OBJModelInstance;
 import de.maxhenkel.car.sounds.ModSounds;
+import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
@@ -12,11 +13,9 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
-
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -62,7 +61,11 @@ public class EntityGenericCar extends EntityCarNumberPlateBase {
 
     @Override
     public float getMinRotationSpeed() {
-        return 2.0F;
+        PartChassis chassis=getPartByClass(PartChassis.class);
+        if(chassis==null){
+            return 2.0F;
+        }
+        return chassis.getMinRotationSpeed();
     }
 
     @Override
@@ -96,12 +99,38 @@ public class EntityGenericCar extends EntityCarNumberPlateBase {
     }
 
     @Override
+    public Vec3d[] getPlayerOffsets() {
+        PartChassis chassis=getPartByClass(PartChassis.class);
+        if(chassis==null){
+            return new Vec3d[]{new Vec3d(0.55D, 0D, -0.38D), new Vec3d(0.55D, 0D, 0.38D)};
+        }
+        return chassis.getPlayerOffsets();
+    }
+
+    @Override
+    public int getPassengerSize() {
+        PartChassis chassis=getPartByClass(PartChassis.class);
+        if(chassis==null){
+            return 0;
+        }
+        return chassis.getPlayerOffsets().length;
+    }
+
+        //new Vec3d(0F, -0.45F, -0.94F)
+    @Override
     public Vec3d getNumberPlateOffset() {
+        PartChassis chassis=getPartByClass(PartChassis.class);
+        if(chassis==null){
+            return new Vec3d(0F, 0F, 0F);
+        }
+
         PartNumberPlate numberPlate=getPartByClass(PartNumberPlate.class);
         if(numberPlate==null){
             return new Vec3d(0F, 0F, 0F);
         }
-        return numberPlate.getNumberPlateTextOffset();
+        Vec3d offset=chassis.getNumberPlateOffset();
+        Vec3d textOffset=numberPlate.getTextOffset();
+        return new Vec3d(offset.x+textOffset.x, -offset.y+textOffset.y, -offset.z+textOffset.z);
     }
 
     @Override
@@ -114,41 +143,68 @@ public class EntityGenericCar extends EntityCarNumberPlateBase {
         return new TextComponentTranslation("entity.car.name");
     }
 
-    @Override
-    public int getPassengerSize() {
-        return 1;
-    }
-
     public SoundEvent getStopSound() {
-        return ModSounds.engine_stop;
+        PartEngine engine=getPartByClass(PartEngine.class);
+        if(engine==null){
+            return ModSounds.engine_stop;
+        }
+        return engine.getStopSound();
     }
 
     public SoundEvent getFailSound() {
-        return ModSounds.engine_fail;
+        PartEngine engine=getPartByClass(PartEngine.class);
+        if(engine==null){
+            return ModSounds.engine_fail;
+        }
+        return engine.getFailSound();
     }
 
     public SoundEvent getCrashSound() {
-        return ModSounds.car_crash;
+        PartEngine engine=getPartByClass(PartEngine.class);
+        if(engine==null){
+            return ModSounds.car_crash;
+        }
+        return engine.getCrashSound();
     }
 
     public SoundEvent getStartSound() {
-        return ModSounds.engine_start;
+        PartEngine engine=getPartByClass(PartEngine.class);
+        if(engine==null){
+            return ModSounds.engine_start;
+        }
+        return engine.getStartSound();
     }
 
     public SoundEvent getStartingSound() {
-        return ModSounds.engine_starting;
+        PartEngine engine=getPartByClass(PartEngine.class);
+        if(engine==null){
+            return ModSounds.engine_starting;
+        }
+        return engine.getStartingSound();
     }
 
     public SoundEvent getIdleSound() {
-        return ModSounds.engine_idle;
+        PartEngine engine=getPartByClass(PartEngine.class);
+        if(engine==null){
+            return ModSounds.engine_idle;
+        }
+        return engine.getIdleSound();
     }
 
     public SoundEvent getHighSound() {
-        return ModSounds.engine_high;
+        PartEngine engine=getPartByClass(PartEngine.class);
+        if(engine==null){
+            return ModSounds.engine_high;
+        }
+        return engine.getHighSound();
     }
 
     public SoundEvent getHornSound() {
-        return ModSounds.car_horn;
+        PartEngine engine=getPartByClass(PartEngine.class);
+        if(engine==null){
+            return ModSounds.car_horn;
+        }
+        return engine.getHornSound();
     }
 
     private static final DataParameter<String[]> PARTS = EntityDataManager.<String[]>createKey(EntityGenericCar.class, DataSerializerStringList.STRING_LIST);
@@ -169,7 +225,7 @@ public class EntityGenericCar extends EntityCarNumberPlateBase {
 
     private List<Part> parts = new ArrayList<>();
 
-    private <T extends Part> T getPartByClass(Class<T> clazz) {
+    public <T extends Part> T getPartByClass(Class<T> clazz) {
         for (Part part : parts){
             if(clazz.isInstance(part)){
                 return (T) part;
@@ -242,6 +298,12 @@ public class EntityGenericCar extends EntityCarNumberPlateBase {
         for (String s : getPartStrings()) {
             Part part = PartRegistry.getPart(s);
             if (part != null) {
+
+                if(part instanceof PartChassis){
+                    PartChassis chassis= (PartChassis) part;
+                    setSize(chassis.getWidth(), chassis.getHeight());
+                }
+
                 parts.add(part);
             } else {
                 System.err.println("Failed to load car part '" + s + "'");
