@@ -1,22 +1,25 @@
 package de.maxhenkel.car.entity.car.parts;
 
-import de.maxhenkel.car.entity.car.base.EntityGenericCar;
-import de.maxhenkel.car.entity.model.obj.OBJModel;
-import de.maxhenkel.car.entity.model.obj.OBJModelInstance;
 
 import java.util.List;
 
 public abstract class Part {
-
-    protected OBJModel model;
-
-    public Part(OBJModel model) {
-        this.model = model;
+    public boolean isValid(List<Part> parts) {
+        return true;
     }
 
-    public OBJModel getModel() {
-        return model;
+    protected static boolean checkAmount(List<Part> modelParts, int min, int max, Checker checker) {
+        int i = 0;
+        for (Part part : modelParts) {
+            if (checker.check(part)) {
+                i++;
+            }
+        }
+
+        return i >= min && i <= max;
     }
 
-    public abstract List<OBJModelInstance> getInstances(EntityGenericCar car);
+    protected static interface Checker {
+        boolean check(Part part);
+    }
 }

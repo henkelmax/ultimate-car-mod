@@ -2,6 +2,7 @@ package de.maxhenkel.car.blocks.tileentity;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import de.maxhenkel.car.entity.car.base.EntityCarTemperatureBase;
 import de.maxhenkel.car.entity.car.base.EntityGenericCar;
 import de.maxhenkel.car.entity.car.parts.PartRegistry;
@@ -27,316 +28,318 @@ import net.minecraft.util.text.TextComponentTranslation;
 
 public class TileEntityCarWorkshop extends TileEntityBase implements IInventory {
 
-	private InventoryBasic craftingMatrix;
-	private InventoryBasic repairInventory;
-	private EntityGenericCar currentCraftingCar;
+    private InventoryBasic craftingMatrix;
+    private InventoryBasic repairInventory;
+    private EntityGenericCar currentCraftingCar;
 
-	public TileEntityCarWorkshop() {
-		this.craftingMatrix = new InventoryBasic(getDisplayName().getFormattedText(), false, 15);
-		this.repairInventory=new InventoryBasic(getDisplayName().getFormattedText(), false, 3);
-		//updateRecipe();
-	}
-	
-	public InventoryBasic getRepairInventory() {
-		return repairInventory;
-	}
-	
-	public EntityCarBase getCarOnTop() {
-		IBlockState ownState = world.getBlockState(getPos());
+    public TileEntityCarWorkshop() {
+        this.craftingMatrix = new InventoryBasic(getDisplayName().getFormattedText(), false, 15);
+        this.repairInventory = new InventoryBasic(getDisplayName().getFormattedText(), false, 3);
+        //updateRecipe();
+    }
 
-		if (!ownState.getBlock().equals(ModBlocks.CAR_WORKSHOP)) {
-			return null;
-		}
+    public InventoryBasic getRepairInventory() {
+        return repairInventory;
+    }
 
-		BlockPos start = getPos().offset(EnumFacing.UP);
+    public EntityCarBase getCarOnTop() {
+        IBlockState ownState = world.getBlockState(getPos());
 
-		AxisAlignedBB aabb = new AxisAlignedBB(start.getX(), start.getY(), start.getZ(), start.getX() + 1,
-				start.getY() + 1, start.getZ() + 1);
+        if (!ownState.getBlock().equals(ModBlocks.CAR_WORKSHOP)) {
+            return null;
+        }
 
-		List<EntityCarBase> cars = world.getEntitiesWithinAABB(EntityCarBase.class, aabb);
-		if (cars.isEmpty()) {
-			return null;
-		}
+        BlockPos start = getPos().offset(EnumFacing.UP);
 
-		return cars.get(0);
-	}
+        AxisAlignedBB aabb = new AxisAlignedBB(start.getX(), start.getY(), start.getZ(), start.getX() + 1,
+                start.getY() + 1, start.getZ() + 1);
 
-	public void spawnCar(EntityPlayer player) {
-		if (!areBlocksAround()) {
-			player.sendMessage(new TextComponentTranslation("message.incomplete_structure"));
-			return;
-		}
+        List<EntityCarBase> cars = world.getEntitiesWithinAABB(EntityCarBase.class, aabb);
+        if (cars.isEmpty()) {
+            return null;
+        }
 
-		if (!isTopFree()) {
-			player.sendMessage(new TextComponentTranslation("message.blocks_on_top"));
-			return;
-		}
-		
-		updateRecipe();
+        return cars.get(0);
+    }
 
-		EntityGenericCar car = currentCraftingCar;
+    public void spawnCar(EntityPlayer player) {
+        if (!areBlocksAround()) {
+            player.sendMessage(new TextComponentTranslation("message.incomplete_structure"));
+            return;
+        }
 
-		if (car == null) {
-			player.sendMessage(new TextComponentTranslation("message.no_reciepe"));
-			return;
-		}
-		BlockPos spawnPos = pos.up();
-		car.setPosition(spawnPos.getX()+0.5, spawnPos.getY(), spawnPos.getZ()+0.5);
-		
-		removeCraftItems();
-		car.setFuelAmount(100);
-		world.spawnEntity(car);
-		car.initTemperature();
-	}
+        if (!isTopFree()) {
+            player.sendMessage(new TextComponentTranslation("message.blocks_on_top"));
+            return;
+        }
 
-	// Multiblock \/
+        updateRecipe();
 
-	public void checkValidity() {
-		if (areBlocksAround()) {
-			placeStructure();
-		}
-	}
+        EntityGenericCar car = currentCraftingCar;
 
-	@Override
-	public ITextComponent getDisplayName() {
-		return new TextComponentTranslation("tile.car_workshop.name");
-	}
+        if (car == null) {
+            player.sendMessage(new TextComponentTranslation("message.no_reciepe"));
+            return;
+        }
+        BlockPos spawnPos = pos.up();
+        car.setPosition(spawnPos.getX() + 0.5, spawnPos.getY(), spawnPos.getZ() + 0.5);
 
-	/*
-	 * north=1 northeast=2 east=3 southeast=4 south=5 southwest=6 west=7
-	 * northwest=8
-	 */
-	private void placeStructure() {
-		world.setBlockState(pos.add(0, 0, -1), getState(1));
-		world.setBlockState(pos.add(1, 0, -1), getState(2));
-		world.setBlockState(pos.add(1, 0, 0), getState(3));
-		world.setBlockState(pos.add(1, 0, 1), getState(4));
-		world.setBlockState(pos.add(0, 0, 1), getState(5));
-		world.setBlockState(pos.add(-1, 0, 1), getState(6));
-		world.setBlockState(pos.add(-1, 0, 0), getState(7));
-		world.setBlockState(pos.add(-1, 0, -1), getState(8));
+        removeCraftItems();
+        car.setFuelAmount(100);
+        world.spawnEntity(car);
+        car.initTemperature();
+    }
 
-		setOwnBlockValid(true);
-	}
+    // Multiblock \/
 
-	private void setOwnBlockValid(boolean valid) {
-		IBlockState state = world.getBlockState(pos);
-		if (!state.getBlock().equals(ModBlocks.CAR_WORKSHOP)) {
-			return;
-		}
-		ModBlocks.CAR_WORKSHOP.setValid(world, pos, state, valid);
-	}
+    public void checkValidity() {
+        if (areBlocksAround()) {
+            placeStructure();
+        }
+    }
 
-	private IBlockState getState(int meta) {
-		return ModBlocks.CAR_WORKSHOP_OUTTER.getDefaultState().withProperty(BlockCarWorkshopOutter.POSITION,
-				meta);
-	}
+    @Override
+    public ITextComponent getDisplayName() {
+        return new TextComponentTranslation("tile.car_workshop.name");
+    }
 
-	public boolean areBlocksAround() {
-		if (!checkSideBlock(pos.add(0, 0, 1))) {
-			return false;
-		}
-		if (!checkSideBlock(pos.add(1, 0, 0))) {
-			return false;
-		}
-		if (!checkSideBlock(pos.add(1, 0, 1))) {
-			return false;
-		}
-		if (!checkSideBlock(pos.add(0, 0, -1))) {
-			return false;
-		}
-		if (!checkSideBlock(pos.add(-1, 0, 0))) {
-			return false;
-		}
-		if (!checkSideBlock(pos.add(-1, 0, -1))) {
-			return false;
-		}
-		if (!checkSideBlock(pos.add(-1, 0, 1))) {
-			return false;
-		}
-		if (!checkSideBlock(pos.add(1, 0, -1))) {
-			return false;
-		}
-		return true;
-	}
+    /*
+     * north=1 northeast=2 east=3 southeast=4 south=5 southwest=6 west=7
+     * northwest=8
+     */
+    private void placeStructure() {
+        world.setBlockState(pos.add(0, 0, -1), getState(1));
+        world.setBlockState(pos.add(1, 0, -1), getState(2));
+        world.setBlockState(pos.add(1, 0, 0), getState(3));
+        world.setBlockState(pos.add(1, 0, 1), getState(4));
+        world.setBlockState(pos.add(0, 0, 1), getState(5));
+        world.setBlockState(pos.add(-1, 0, 1), getState(6));
+        world.setBlockState(pos.add(-1, 0, 0), getState(7));
+        world.setBlockState(pos.add(-1, 0, -1), getState(8));
 
-	public boolean isTopFree() {
-		BlockPos pos=getPos();
-		for (int x = - 1; x <= 1; x++) {
-			for (int y = 1; y <= 2; y++) {
-				for (int z =  - 1; z <= 1; z++) {
-					if (!checkBlockAir(pos.add(x, y, z))) {
-						return false;
-					}
-				}
-			}
-		}
+        setOwnBlockValid(true);
+    }
 
-		return true;
-	}
+    private void setOwnBlockValid(boolean valid) {
+        IBlockState state = world.getBlockState(pos);
+        if (!state.getBlock().equals(ModBlocks.CAR_WORKSHOP)) {
+            return;
+        }
+        ModBlocks.CAR_WORKSHOP.setValid(world, pos, state, valid);
+    }
 
-	private boolean checkBlockAir(BlockPos p) {
-		return world.isAirBlock(p);
-	}
+    private IBlockState getState(int meta) {
+        return ModBlocks.CAR_WORKSHOP_OUTTER.getDefaultState().withProperty(BlockCarWorkshopOutter.POSITION,
+                meta);
+    }
 
-	private boolean checkSideBlock(BlockPos p) {
-		IBlockState state = world.getBlockState(p);
-		if (state.getBlock().equals(ModBlocks.CAR_WORKSHOP_OUTTER)) {
-			return true;
-		}
-		return false;
-	}
+    public boolean areBlocksAround() {
+        if (!checkSideBlock(pos.add(0, 0, 1))) {
+            return false;
+        }
+        if (!checkSideBlock(pos.add(1, 0, 0))) {
+            return false;
+        }
+        if (!checkSideBlock(pos.add(1, 0, 1))) {
+            return false;
+        }
+        if (!checkSideBlock(pos.add(0, 0, -1))) {
+            return false;
+        }
+        if (!checkSideBlock(pos.add(-1, 0, 0))) {
+            return false;
+        }
+        if (!checkSideBlock(pos.add(-1, 0, -1))) {
+            return false;
+        }
+        if (!checkSideBlock(pos.add(-1, 0, 1))) {
+            return false;
+        }
+        if (!checkSideBlock(pos.add(1, 0, -1))) {
+            return false;
+        }
+        return true;
+    }
 
-	// Inventory
-
-	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
-		ItemTools.saveInventory(compound, "crafting", craftingMatrix);
-		
-		ItemTools.saveInventory(compound, "repair", repairInventory);
-
-		return super.writeToNBT(compound);
-	}
-
-	@Override
-	public void readFromNBT(NBTTagCompound compound) {
-		ItemTools.readInventory(compound, "crafting", craftingMatrix);
-		
-		ItemTools.readInventory(compound, "repair", repairInventory);
-
-		super.readFromNBT(compound);
-	}
-
-	public void updateRecipe() {
-		EntityGenericCar car=new EntityGenericCar(world);
-
-		List<String> parts=new ArrayList<>();
-
-		for(int i=0; i<craftingMatrix.getSizeInventory(); i++){
-		    ItemStack stack=craftingMatrix.getStackInSlot(i);
-
-		    if(stack.getItem().equals(Items.STICK)){
-                parts.add("oak_chassis");
-                parts.add("wheel");
+    public boolean isTopFree() {
+        BlockPos pos = getPos();
+        for (int x = -1; x <= 1; x++) {
+            for (int y = 1; y <= 2; y++) {
+                for (int z = -1; z <= 1; z++) {
+                    if (!checkBlockAir(pos.add(x, y, z))) {
+                        return false;
+                    }
+                }
             }
         }
 
-		car.setPartStrings(parts.toArray(new String[0]));
-		car.initParts();
+        return true;
+    }
 
-		if(!PartRegistry.isValid(car.getModelParts())){
-		    return;
+    private boolean checkBlockAir(BlockPos p) {
+        return world.isAirBlock(p);
+    }
+
+    private boolean checkSideBlock(BlockPos p) {
+        IBlockState state = world.getBlockState(p);
+        if (state.getBlock().equals(ModBlocks.CAR_WORKSHOP_OUTTER)) {
+            return true;
+        }
+        return false;
+    }
+
+    // Inventory
+
+    @Override
+    public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+        ItemTools.saveInventory(compound, "crafting", craftingMatrix);
+
+        ItemTools.saveInventory(compound, "repair", repairInventory);
+
+        return super.writeToNBT(compound);
+    }
+
+    @Override
+    public void readFromNBT(NBTTagCompound compound) {
+        ItemTools.readInventory(compound, "crafting", craftingMatrix);
+
+        ItemTools.readInventory(compound, "repair", repairInventory);
+
+        super.readFromNBT(compound);
+    }
+
+    public void updateRecipe() {
+        EntityGenericCar car = new EntityGenericCar(world);
+
+        List<String> parts = new ArrayList<>();
+
+        for (int i = 0; i < craftingMatrix.getSizeInventory(); i++) {
+            ItemStack stack = craftingMatrix.getStackInSlot(i);
+
+            if (stack.getItem().equals(Items.STICK)) {
+                parts.add("wheel");
+                parts.add("wheel");
+                parts.add("wheel");
+                parts.add("wheel");
+                //parts.add("oak_number_plate");
+                //parts.add("oak_bumper");
+                parts.add("engine_3_cylinder");
+                parts.add("white_sport_chassis");
+            }
         }
 
-		car.tryInitModel();
+        car.setPartStrings(parts.toArray(new String[0]));
+        car.initParts();
 
-		this.currentCraftingCar = car;
-	}
-/*
-	@Nullable
-	public ICarbuilder getCurrentRecipe() {
-		return CarCraftingRegistry.findMatchingRecipe(this);
-	}*/
+        if (!PartRegistry.isValid(car.getModelParts())) {
+            this.currentCraftingCar=null;
+            return;
+        }
 
-	public void removeCraftItems() {
-		for (int i = 0; i < craftingMatrix.getSizeInventory(); i++) {
-			ItemStack stack = craftingMatrix.getStackInSlot(i);
-			if (!ItemTools.isStackEmpty(stack)) {
-				craftingMatrix.setInventorySlotContents(i, ItemTools.decrItemStack(stack, null));
-			}
-		}
-	}
+        car.tryInitModel();
 
-	@Override
-	public String getName() {
-		return craftingMatrix.getName();
-	}
+        this.currentCraftingCar = car;
+    }
 
-	@Override
-	public boolean hasCustomName() {
-		return craftingMatrix.hasCustomName();
-	}
+    public void removeCraftItems() {
+        for (int i = 0; i < craftingMatrix.getSizeInventory(); i++) {
+            ItemStack stack = craftingMatrix.getStackInSlot(i);
+            if (!ItemTools.isStackEmpty(stack)) {
+                craftingMatrix.setInventorySlotContents(i, ItemTools.decrItemStack(stack, null));
+            }
+        }
+    }
 
-	@Override
-	public int getSizeInventory() {
-		return craftingMatrix.getSizeInventory();
-	}
+    @Override
+    public String getName() {
+        return craftingMatrix.getName();
+    }
 
-	@Override
-	public ItemStack getStackInSlot(int index) {
-		return craftingMatrix.getStackInSlot(index);
-	}
+    @Override
+    public boolean hasCustomName() {
+        return craftingMatrix.hasCustomName();
+    }
 
-	@Override
-	public ItemStack decrStackSize(int index, int count) {
-		ItemStack stack = craftingMatrix.decrStackSize(index, count);
-		updateRecipe();
-		return stack;
-	}
+    @Override
+    public int getSizeInventory() {
+        return craftingMatrix.getSizeInventory();
+    }
 
-	@Override
-	public ItemStack removeStackFromSlot(int index) {
-		ItemStack stack = craftingMatrix.removeStackFromSlot(index);
-		updateRecipe();
-		return stack;
-	}
+    @Override
+    public ItemStack getStackInSlot(int index) {
+        return craftingMatrix.getStackInSlot(index);
+    }
 
-	@Override
-	public void setInventorySlotContents(int index, ItemStack stack) {
-		craftingMatrix.setInventorySlotContents(index, stack);
-		updateRecipe();
-	}
+    @Override
+    public ItemStack decrStackSize(int index, int count) {
+        ItemStack stack = craftingMatrix.decrStackSize(index, count);
+        updateRecipe();
+        return stack;
+    }
 
-	@Override
-	public int getInventoryStackLimit() {
-		return craftingMatrix.getInventoryStackLimit();
-	}
+    @Override
+    public ItemStack removeStackFromSlot(int index) {
+        ItemStack stack = craftingMatrix.removeStackFromSlot(index);
+        updateRecipe();
+        return stack;
+    }
 
-	@Override
-	public boolean isUsableByPlayer(EntityPlayer player) {
-		return craftingMatrix.isUsableByPlayer(player);
-	}
-	
-	@Override
-	public boolean isEmpty() {
-		return craftingMatrix.isEmpty();
-	}
+    @Override
+    public void setInventorySlotContents(int index, ItemStack stack) {
+        craftingMatrix.setInventorySlotContents(index, stack);
+        updateRecipe();
+    }
 
-	@Override
-	public void openInventory(EntityPlayer player) {
-		craftingMatrix.openInventory(player);
-	}
+    @Override
+    public int getInventoryStackLimit() {
+        return craftingMatrix.getInventoryStackLimit();
+    }
 
-	@Override
-	public void closeInventory(EntityPlayer player) {
-		craftingMatrix.openInventory(player);
-	}
+    @Override
+    public boolean isUsableByPlayer(EntityPlayer player) {
+        return craftingMatrix.isUsableByPlayer(player);
+    }
 
-	@Override
-	public boolean isItemValidForSlot(int index, ItemStack stack) {
-		return craftingMatrix.isItemValidForSlot(index, stack);
-	}
+    @Override
+    public boolean isEmpty() {
+        return craftingMatrix.isEmpty();
+    }
 
-	@Override
-	public int getField(int id) {
-		return craftingMatrix.getField(id);
-	}
+    @Override
+    public void openInventory(EntityPlayer player) {
+        craftingMatrix.openInventory(player);
+    }
 
-	@Override
-	public void setField(int id, int value) {
-		craftingMatrix.setField(id, value);
-	}
+    @Override
+    public void closeInventory(EntityPlayer player) {
+        craftingMatrix.openInventory(player);
+    }
 
-	@Override
-	public int getFieldCount() {
-		return craftingMatrix.getFieldCount();
-	}
+    @Override
+    public boolean isItemValidForSlot(int index, ItemStack stack) {
+        return craftingMatrix.isItemValidForSlot(index, stack);
+    }
 
-	@Override
-	public void clear() {
-		craftingMatrix.clear();
-		updateRecipe();
-	}
+    @Override
+    public int getField(int id) {
+        return craftingMatrix.getField(id);
+    }
+
+    @Override
+    public void setField(int id, int value) {
+        craftingMatrix.setField(id, value);
+    }
+
+    @Override
+    public int getFieldCount() {
+        return craftingMatrix.getFieldCount();
+    }
+
+    @Override
+    public void clear() {
+        craftingMatrix.clear();
+        updateRecipe();
+    }
 
 	/*@Override
 	public ItemStack getStackInRowAndColumn(int row, int column) {
@@ -344,58 +347,58 @@ public class TileEntityCarWorkshop extends TileEntityBase implements IInventory 
 				: ItemTools.EMPTY;
 	}*/
 
-	public EntityGenericCar getCurrentCraftingCar() {
-		return currentCraftingCar;
-	}
+    public EntityGenericCar getCurrentCraftingCar() {
+        return currentCraftingCar;
+    }
 
-	public void repairCar(EntityPlayer player) {
-		if (!areBlocksAround()) {
-			player.sendMessage(new TextComponentTranslation("message.incomplete_structure"));
-			return;
-		}
-		
-		if(!areRepairItemsInside()){
-			player.sendMessage(new TextComponentTranslation("message.no_repair_items"));
-			return;
-		}
-		
-		EntityCarBase carBase=getCarOnTop();
-		
-		if(!(carBase instanceof EntityCarDamageBase)){
-			player.sendMessage(new TextComponentTranslation("message.no_car"));
-			return;
-		}
-		
-		EntityCarDamageBase car=(EntityCarDamageBase) carBase;
-		
-		if(car.getDamage()<=0){
-			return;
-		}
-		
-		damageRepairItemsInside(player);
-		
-		car.setDamage(car.getDamage()-10F);
-		
-		ModSounds.playSound(ModSounds.ratchet, world, pos, null, SoundCategory.BLOCKS);
-	}
-	
-	public boolean areRepairItemsInside(){
-		for (int i = 0; i < repairInventory.getSizeInventory(); i++) {
-			if(ItemTools.isStackEmpty(repairInventory.getStackInSlot(i))){
-				return false;
-			}
-		}
-		
-		return true;
-	}
-	
-	public void damageRepairItemsInside(EntityPlayer player){
-		for (int i = 0; i < repairInventory.getSizeInventory(); i++) {
-			ItemStack stack=repairInventory.getStackInSlot(i);
-			if(!ItemTools.isStackEmpty(stack)){
-				ItemTools.damageStack(stack, 10, player);
-			}
-		}
-	}
+    public void repairCar(EntityPlayer player) {
+        if (!areBlocksAround()) {
+            player.sendMessage(new TextComponentTranslation("message.incomplete_structure"));
+            return;
+        }
+
+        if (!areRepairItemsInside()) {
+            player.sendMessage(new TextComponentTranslation("message.no_repair_items"));
+            return;
+        }
+
+        EntityCarBase carBase = getCarOnTop();
+
+        if (!(carBase instanceof EntityCarDamageBase)) {
+            player.sendMessage(new TextComponentTranslation("message.no_car"));
+            return;
+        }
+
+        EntityCarDamageBase car = (EntityCarDamageBase) carBase;
+
+        if (car.getDamage() <= 0) {
+            return;
+        }
+
+        damageRepairItemsInside(player);
+
+        car.setDamage(car.getDamage() - 10F);
+
+        ModSounds.playSound(ModSounds.ratchet, world, pos, null, SoundCategory.BLOCKS);
+    }
+
+    public boolean areRepairItemsInside() {
+        for (int i = 0; i < repairInventory.getSizeInventory(); i++) {
+            if (ItemTools.isStackEmpty(repairInventory.getStackInSlot(i))) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public void damageRepairItemsInside(EntityPlayer player) {
+        for (int i = 0; i < repairInventory.getSizeInventory(); i++) {
+            ItemStack stack = repairInventory.getStackInSlot(i);
+            if (!ItemTools.isStackEmpty(stack)) {
+                ItemTools.damageStack(stack, 10, player);
+            }
+        }
+    }
 
 }

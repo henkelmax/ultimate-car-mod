@@ -1,6 +1,6 @@
 # Blender v2.79 (sub 0) OBJ File: 'woodcar.blend'
 # www.blender.org
-mtllib woodcar.mtl
+mtllib wood_chassis.mtl
 o Plane_Plane.004
 v 0.562500 0.875000 -0.281250
 v 0.562500 0.875000 0.281250

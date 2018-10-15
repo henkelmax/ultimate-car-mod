@@ -1,8 +1,7 @@
 package de.maxhenkel.car.entity.car.base;
 
 import de.maxhenkel.car.DataSerializerStringList;
-import de.maxhenkel.car.entity.car.parts.Part;
-import de.maxhenkel.car.entity.car.parts.PartRegistry;
+import de.maxhenkel.car.entity.car.parts.*;
 import de.maxhenkel.car.entity.model.obj.OBJModelInstance;
 import de.maxhenkel.car.sounds.ModSounds;
 import net.minecraft.nbt.NBTTagCompound;
@@ -17,6 +16,7 @@ import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
+
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -30,17 +30,29 @@ public class EntityGenericCar extends EntityCarNumberPlateBase {
 
     @Override
     public float getMaxSpeed() {
-        return 0.5F;
+        PartEngine engine=getPartByClass(PartEngine.class);
+        if(engine==null){
+            return 0;
+        }
+        return engine.getMaxSpeed();
     }
 
     @Override
     public float getMaxReverseSpeed() {
-        return 0.2F;
+        PartEngine engine=getPartByClass(PartEngine.class);
+        if(engine==null){
+            return 0;
+        }
+        return engine.getMaxReverseSpeed();
     }
 
     @Override
     public float getAcceleration() {
-        return 0.032F;
+        PartEngine engine=getPartByClass(PartEngine.class);
+        if(engine==null){
+            return 0;
+        }
+        return engine.getAcceleration();
     }
 
     @Override
@@ -84,6 +96,15 @@ public class EntityGenericCar extends EntityCarNumberPlateBase {
     }
 
     @Override
+    public Vec3d getNumberPlateOffset() {
+        PartNumberPlate numberPlate=getPartByClass(PartNumberPlate.class);
+        if(numberPlate==null){
+            return new Vec3d(0F, 0F, 0F);
+        }
+        return numberPlate.getNumberPlateTextOffset();
+    }
+
+    @Override
     public boolean doesEnterThirdPerson() {
         return true;
     }
@@ -96,21 +117,6 @@ public class EntityGenericCar extends EntityCarNumberPlateBase {
     @Override
     public int getPassengerSize() {
         return 1;
-    }
-
-    @Override
-    public float getNumberPlateOffsetX() {
-        return 0F;
-    }
-
-    @Override
-    public float getNumberPlateOffsetY() {
-        return -0.45F;
-    }
-
-    @Override
-    public float getNumberPlateOffsetZ() {
-        return -0.94F;
     }
 
     public SoundEvent getStopSound() {
@@ -163,6 +169,16 @@ public class EntityGenericCar extends EntityCarNumberPlateBase {
 
     private List<Part> parts = new ArrayList<>();
 
+    private <T extends Part> T getPartByClass(Class<T> clazz) {
+        for (Part part : parts){
+            if(clazz.isInstance(part)){
+                return (T) part;
+            }
+        }
+
+        return null;
+    }
+
     //  /summon car:car ~ ~ ~ {parts:["oak_chassis", "wheel"]}
     @Override
     protected void readEntityFromNBT(NBTTagCompound compound) {
@@ -180,14 +196,14 @@ public class EntityGenericCar extends EntityCarNumberPlateBase {
         tryInitModel();
     }
 
-    public void tryInitModel(){
-        if(!isInitialized){
+    public void tryInitModel() {
+        if (!isInitialized) {
             initParts();
 
             if (world.isRemote) {
                 initModel();
             }
-            isInitialized=true;
+            isInitialized = true;
         }
     }
 
@@ -209,9 +225,9 @@ public class EntityGenericCar extends EntityCarNumberPlateBase {
 
     public void readPartsFromNBT(NBTTagCompound compound) {
         NBTTagList list = compound.getTagList("parts", 8);
-        String[] partData=new String[list.tagCount()];
+        String[] partData = new String[list.tagCount()];
         for (int i = 0; i < list.tagCount(); i++) {
-            partData[i]=list.getStringTagAt(i);
+            partData[i] = list.getStringTagAt(i);
         }
 
         setPartStrings(partData);
@@ -240,8 +256,19 @@ public class EntityGenericCar extends EntityCarNumberPlateBase {
     protected void initModel() {
         modelInstances.clear();
 
+        boolean addedWheels = false;
         for (Part part : parts) {
-            modelInstances.addAll(part.getInstances(this));
+            if (part instanceof PartModel) {
+                if (part instanceof PartWheels) {
+                    //TODO fix wheels
+                    if (!addedWheels) {
+                        addedWheels = true;
+                    } else {
+                        continue;
+                    }
+                }
+                modelInstances.addAll(((PartModel) part).getInstances(this));
+            }
         }
     }
 

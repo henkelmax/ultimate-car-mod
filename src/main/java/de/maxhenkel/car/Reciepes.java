@@ -105,7 +105,7 @@ public class Reciepes {
 			//Engine Piston
 			GameRegistry.addShapedRecipe(new ResourceLocation(Main.MODID, "engine_piston"), null, new ItemStack(ModItems.ENGINE_PISTON, 1), new Object[] { "  I", " S ", "S  ",
 					Character.valueOf('I'), new ItemStack(Items.IRON_INGOT), Character.valueOf('S'), new ItemStack(ModItems.IRON_STICK)});
-			
+			/*
 			//Body Part
 			GameRegistry.addShapedRecipe(new ResourceLocation(Main.MODID, "car_body_part_wood_0"), null, new ItemStack(ModItems.CAR_BODY_PART_WOOD, 1, 0), new Object[] { "LPL", "LPL",
 					Character.valueOf('L'), new ItemStack(Blocks.LOG, 1, 0), 
@@ -130,7 +130,7 @@ public class Reciepes {
 			GameRegistry.addShapedRecipe(new ResourceLocation(Main.MODID, "car_body_part_wood_5"), null, new ItemStack(ModItems.CAR_BODY_PART_WOOD, 1, 5), new Object[] { "LPL", "LPL",
 					Character.valueOf('L'), new ItemStack(Blocks.LOG2, 1, 1), 
 					Character.valueOf('P'), new ItemStack(Blocks.PLANKS, 1, 5)});
-			
+			*/
 		}
 		
 		if(Config.crashBarrierRecipe){

@@ -14,7 +14,6 @@ public class ModItems {
 	public static final ItemCraftingComponent CAR_SEAT = new ItemCraftingComponent("car_seat");
 	public static final ItemCraftingComponent WINDSHIELD = new ItemCraftingComponent("windshield");
 	public static final ItemCraftingComponent WHEEL = new ItemCraftingComponent("wheel");
-	public static final ItemCarBodyPartWood CAR_BODY_PART_WOOD = new ItemCarBodyPartWood();
 	public static final ItemCraftingComponent CAR_TANK = new ItemCraftingComponent("car_tank");
 	public static final ItemCraftingComponent CONTROL_UNIT = new ItemCraftingComponent("control_unit");
 	public static final ItemCanister CANISTER = new ItemCanister();

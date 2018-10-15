@@ -5,6 +5,7 @@ import de.maxhenkel.car.entity.model.obj.OBJModelInstance;
 import de.maxhenkel.car.entity.model.obj.OBJModelRenderer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.util.math.Vec3d;
 
 import java.util.List;
 
@@ -21,6 +22,7 @@ public class TestCarModel extends OBJModelRenderer {
 
     @Override
     public void translateNumberPlate(EntityGenericCar entity) {
-        GlStateManager.translate(entity.getNumberPlateOffsetX(), entity.getNumberPlateOffsetY(), entity.getNumberPlateOffsetZ());
+        Vec3d offset=entity.getNumberPlateOffset();
+        GlStateManager.translate(offset.x, offset.y, offset.z);
     }
 }

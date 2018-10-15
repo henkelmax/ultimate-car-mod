@@ -9,7 +9,7 @@ import net.minecraft.util.math.Vec3d;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PartWheels extends Part {
+public class PartWheels extends PartModel {
 
     protected float rotationModifier;
 
@@ -22,15 +22,15 @@ public class PartWheels extends Part {
     public List<OBJModelInstance> getInstances(EntityGenericCar car) {
         List<OBJModelInstance> list = new ArrayList<>();
 
-        Vec3d[] wheelOffsets=new Vec3d[0];
+        Vec3d[] wheelOffsets = new Vec3d[0];
 
         for (Part part : car.getModelParts()) {
             if (part instanceof PartChassis) {
-                wheelOffsets=((PartChassis)part).getWheelOffsets();
+                wheelOffsets = ((PartChassis) part).getWheelOffsets();
             }
         }
 
-        for(Vec3d vec3d:wheelOffsets){
+        for (Vec3d vec3d : wheelOffsets) {
             list.add(new OBJModelInstance(model, new OBJModelOptions(vec3d, rotationModifier)));
         }
 

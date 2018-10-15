@@ -1,21 +1,16 @@
 package de.maxhenkel.car.entity.car.parts;
 
-import de.maxhenkel.car.entity.car.base.EntityGenericCar;
 import de.maxhenkel.car.entity.model.obj.OBJModel;
-import de.maxhenkel.car.entity.model.obj.OBJModelInstance;
-import de.maxhenkel.car.entity.model.obj.OBJModelOptions;
 import net.minecraft.util.math.Vec3d;
-import java.util.ArrayList;
 import java.util.List;
 
-public class PartChassis extends Part{
+public class PartChassis extends PartModel{
 
     protected Vec3d[] wheelOffsets;
-    protected Vec3d offset;
+
 
     public PartChassis(OBJModel model, Vec3d offset, Vec3d[] wheelOffsets) {
-        super(model);
-        this.offset=offset;
+        super(model, offset);
         this.wheelOffsets = wheelOffsets;
     }
 
@@ -24,9 +19,23 @@ public class PartChassis extends Part{
     }
 
     @Override
-    public List<OBJModelInstance> getInstances(EntityGenericCar car) {
-        List<OBJModelInstance> list=new ArrayList<>();
-        list.add(new OBJModelInstance(model, new OBJModelOptions(offset)));
-        return list;
+    public boolean isValid(List<Part> parts) {
+        if(!checkAmount(parts, 4, 4, part -> part instanceof PartWheels)){
+            return false;
+        }
+
+        if(!checkAmount(parts, 1, 1, part -> part instanceof PartEngine)){
+            return false;
+        }
+
+        if(!checkAmount(parts, 0, 1, part -> part instanceof PartNumberPlate)){
+            return false;
+        }
+
+        if(!checkAmount(parts, 0, 1, part -> part instanceof PartBumper)){
+            return false;
+        }
+
+        return true;
     }
 }

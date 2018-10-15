@@ -255,7 +255,6 @@ public class Registry {
         registerItem(event.getRegistry(), ModItems.WHEEL);
         registerItem(event.getRegistry(), ModItems.AXLE);
         registerItem(event.getRegistry(), ModItems.CONTAINER);
-        registerItem(event.getRegistry(), ModItems.CAR_BODY_PART_WOOD);
         registerItem(event.getRegistry(), ModItems.CAR_TANK);
         registerItem(event.getRegistry(), ModItems.CONTROL_UNIT);
         registerItem(event.getRegistry(), ModItems.CANISTER);
@@ -323,7 +322,6 @@ public class Registry {
         addRenderItem(ModItems.WHEEL);
         addRenderItem(ModItems.AXLE);
         addRenderItem(ModItems.CONTAINER);
-        addRenderItem(ModItems.CAR_BODY_PART_WOOD);
         addRenderItem(ModItems.CAR_TANK);
         addRenderItem(ModItems.CONTROL_UNIT);
         addRenderItem(ModItems.CANISTER);

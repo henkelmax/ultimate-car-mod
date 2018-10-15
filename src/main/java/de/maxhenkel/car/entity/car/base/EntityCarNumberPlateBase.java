@@ -10,6 +10,7 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 public abstract class EntityCarNumberPlateBase extends EntityCarLockBase {
@@ -65,9 +66,5 @@ public abstract class EntityCarNumberPlateBase extends EntityCarLockBase {
         setNumberPlate(compound.getString("number_plate"));
     }
 
-    public abstract float getNumberPlateOffsetX();
-
-    public abstract float getNumberPlateOffsetY();
-
-    public abstract float getNumberPlateOffsetZ();
+    public abstract Vec3d getNumberPlateOffset();
 }
