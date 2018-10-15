@@ -287,6 +287,7 @@ public class EntityGenericCar extends EntityCarNumberPlateBase {
         }
 
         setPartStrings(partData);
+        tryInitModel();
     }
 
     @Nullable
@@ -322,7 +323,7 @@ public class EntityGenericCar extends EntityCarNumberPlateBase {
         for (Part part : parts) {
             if (part instanceof PartModel) {
                 if (part instanceof PartWheels) {
-                    //TODO fix wheels
+                    //TODO fix wheels (fixed!?)
                     if (!addedWheels) {
                         addedWheels = true;
                     } else {

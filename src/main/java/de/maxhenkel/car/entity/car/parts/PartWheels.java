@@ -30,8 +30,16 @@ public class PartWheels extends PartModel {
             }
         }
 
-        for (Vec3d vec3d : wheelOffsets) {
-            list.add(new OBJModelInstance(model, new OBJModelOptions(vec3d, rotationModifier)));
+        List<PartWheels> wheels=new ArrayList<>();
+
+        for (Part part : car.getModelParts()) {
+            if (part instanceof PartWheels) {
+                wheels.add((PartWheels) part);
+            }
+        }
+
+        for (int i=0; i<wheelOffsets.length&&i<wheels.size(); i++) {
+            list.add(new OBJModelInstance(wheels.get(i).model, new OBJModelOptions(wheelOffsets[i], rotationModifier)));
         }
 
         return list;
