@@ -21,7 +21,9 @@ public class PartRegistry {
 
         partRegistry.put("engine_6_cylinder", new PartEngine6Cylinder(0.65F, 0.2F, 0.04F));
 
-        partRegistry.put("oak_chassis", createWoodChassis(new ResourceLocation(Main.MODID, "textures/entity/oak_wood.png")));
+        partRegistry.put("oak_chassis", createWoodChassis(new ResourceLocation(Main.MODID, "textures/entity/car_wood_oak.png")));
+
+        partRegistry.put("big_oak_chassis", createBigWoodChassis(new ResourceLocation(Main.MODID, "textures/entity/car_big_wood_oak.png")));
 
         partRegistry.put("black_sport_chassis", createSportChassis(new ResourceLocation(Main.MODID, "textures/entity/car_sport_black.png")));
         partRegistry.put("blue_sport_chassis", createSportChassis(new ResourceLocation(Main.MODID, "textures/entity/car_sport_blue.png")));
@@ -67,7 +69,7 @@ public class PartRegistry {
         return new PartChassisWood(new OBJModel(
                 new ResourceLocation(Main.MODID, "models/entity/wood_chassis.obj"),
                 texture),
-                new Vec3d(0D, 8.5D / 16D, 0D),
+                new Vec3d(0D, 4D / 16D, 0D),
                 new Vec3d[]{
                         new Vec3d(9.5F / 16F, 4F / 16F, 8F / 16F),
                         new Vec3d(9.5F / 16F, 4F / 16F, -8F / 16F),
@@ -78,6 +80,27 @@ public class PartRegistry {
                         new Vec3d(0D, -0.378D, 0D)
                 },
                 new Vec3d(0D, 7D / 16D, 14.5D / 16D),
+                1.3F,
+                1.6F,
+                2.0F
+        );
+    }
+
+    private static Part createBigWoodChassis(ResourceLocation texture) {
+        return new PartChassisWood(new OBJModel(
+                new ResourceLocation(Main.MODID, "models/entity/wood_chassis_big.obj"),
+                texture),
+                new Vec3d(0D, 4D / 16D, 0D),
+                new Vec3d[]{
+                        new Vec3d(12.5F / 16F, 4F / 16F, 8F / 16F),
+                        new Vec3d(12.5F / 16F, 4F / 16F, -8F / 16F),
+                        new Vec3d(-12.5F / 16F, 4F / 16F, 8F / 16F),
+                        new Vec3d(-12.5F / 16F, 4F / 16F, -8F / 16F)
+                },
+                new Vec3d[]{
+                        new Vec3d(0D, -0.378D, 0D)
+                },
+                new Vec3d(0D, 7D / 16D, 17D / 16D),
                 1.3F,
                 1.6F,
                 2.0F

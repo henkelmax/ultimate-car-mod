@@ -226,9 +226,10 @@ public class TileEntityCarWorkshop extends TileEntityBase implements IInventory 
                 parts.add("engine_6_cylinder");
                 //parts.add("white_transporter_chassis");
                 //parts.add("oak_chassis");
+                parts.add("big_oak_chassis");
                 parts.add("oak_number_plate");
-                //parts.add("oak_bumper");
-                parts.add("white_sport_chassis");
+                parts.add("oak_bumper");
+                //parts.add("white_sport_chassis");
             }
         }
 
