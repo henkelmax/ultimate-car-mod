@@ -2,10 +2,10 @@ package de.maxhenkel.car.blocks.tileentity;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import de.maxhenkel.car.entity.car.base.EntityCarTemperatureBase;
 import de.maxhenkel.car.entity.car.base.EntityGenericCar;
+import de.maxhenkel.car.entity.car.parts.Part;
 import de.maxhenkel.car.entity.car.parts.PartRegistry;
+import de.maxhenkel.car.items.ICarPart;
 import de.maxhenkel.tools.ItemTools;
 import de.maxhenkel.car.blocks.BlockCarWorkshopOutter;
 import de.maxhenkel.car.blocks.ModBlocks;
@@ -14,7 +14,6 @@ import de.maxhenkel.car.entity.car.base.EntityCarDamageBase;
 import de.maxhenkel.car.sounds.ModSounds;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.item.ItemStack;
@@ -87,6 +86,7 @@ public class TileEntityCarWorkshop extends TileEntityBase implements IInventory 
         removeCraftItems();
         car.setFuelAmount(100);
         world.spawnEntity(car);
+        car.setIsSpawned(true);
         car.initTemperature();
     }
 
@@ -211,37 +211,43 @@ public class TileEntityCarWorkshop extends TileEntityBase implements IInventory 
     public void updateRecipe() {
         EntityGenericCar car = new EntityGenericCar(world);
 
-        List<String> parts = new ArrayList<>();
+        car.setIsSpawned(false);
+
+        List<Part> parts = new ArrayList<>();
+        List<ItemStack> partStacks = new ArrayList<>();
 
         for (int i = 0; i < craftingMatrix.getSizeInventory(); i++) {
             ItemStack stack = craftingMatrix.getStackInSlot(i);
 
-            if (stack.getItem().equals(Items.STICK)) {
-                parts.add("wheel");
-                parts.add("wheel");
-                parts.add("wheel");
-                parts.add("wheel");
-                //parts.add("wheel");
-                //parts.add("wheel");
-                parts.add("engine_6_cylinder");
-                //parts.add("white_transporter_chassis");
-                //parts.add("oak_chassis");
-                parts.add("big_oak_chassis");
-                parts.add("oak_number_plate");
-                parts.add("oak_bumper");
-                //parts.add("white_sport_chassis");
+            if(!(stack.getItem() instanceof ICarPart)){
+                continue;
             }
+
+            ICarPart itemCarPart=(ICarPart) stack.getItem();
+
+            Part part=itemCarPart.getPart(stack);
+
+            if(part==null){
+                continue;
+            }
+
+            parts.add(part);
+            partStacks.add(stack);
         }
 
-        car.setPartStrings(parts.toArray(new String[0]));
+        for(int i=0; i<partStacks.size(); i++){
+            car.getPartInventory().setInventorySlotContents(i, partStacks.get(i).copy().splitStack(1));
+        }
+
         car.initParts();
 
-        if (!PartRegistry.isValid(car.getModelParts())) {
+        if (!PartRegistry.isValid(parts)) {
             this.currentCraftingCar=null;
             return;
         }
 
-        car.tryInitModel();
+        car.tryInitPartsAndModel();
+        car.setPartSerializer();
 
         this.currentCraftingCar = car;
     }

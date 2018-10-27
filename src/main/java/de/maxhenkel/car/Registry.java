@@ -162,6 +162,10 @@ public class Registry {
         registerBlock(event.getRegistry(), ModBlocks.SIGN);
         registerBlock(event.getRegistry(), ModBlocks.SIGN_POST);
 
+        /*for(Block block:ModBlocks.getAll()){
+            registerBlock(event.getRegistry(), block);
+        }*/
+
         for (BlockPaint block : ModBlocks.PAINTS) {
             registerBlock(event.getRegistry(), block);
         }
@@ -232,6 +236,10 @@ public class Registry {
         registerItemBlock(event.getRegistry(), ModBlocks.SIGN);
         registerItemBlock(event.getRegistry(), ModBlocks.SIGN_POST);
 
+        /*for(Block block:ModBlocks.getAllNoBlock()){
+            registerItemBlock(event.getRegistry(), block);
+        }*/
+
         for (BlockPaint block : ModBlocks.PAINTS) {
             registerItemBlock(event.getRegistry(), block);
         }
@@ -240,7 +248,7 @@ public class Registry {
             registerItemBlock(event.getRegistry(), block);
         }
 
-        registerItem(event.getRegistry(), ModItems.PAINTER);
+        /*registerItem(event.getRegistry(), ModItems.PAINTER);
         registerItem(event.getRegistry(), ModItems.PAINTER_YELLOW);
         registerItem(event.getRegistry(), ModItems.CANOLA_SEEDS);
         registerItem(event.getRegistry(), ModItems.CANOLA);
@@ -265,7 +273,11 @@ public class Registry {
         registerItem(event.getRegistry(), ModItems.CABLE_INSULATOR);
         registerItem(event.getRegistry(), ModItems.KEY);
         registerItem(event.getRegistry(), ModItems.BATTERY);
-        registerItem(event.getRegistry(), ModItems.NUMBER_PLATE);
+        registerItem(event.getRegistry(), ModItems.NUMBER_PLATE);*/
+
+        for (Item item : ModItems.getAll()) {
+            registerItem(event.getRegistry(), item);
+        }
     }
 
     @SideOnly(Side.CLIENT)
@@ -299,6 +311,10 @@ public class Registry {
         addRenderBlock(ModBlocks.SIGN);
         addRenderBlock(ModBlocks.SIGN_POST);
 
+        /*for (Block block : ModBlocks.getAllNoBlock()) {
+            addRenderBlock(block);
+        }*/
+
         for (BlockPaint block : ModBlocks.PAINTS) {
             addRenderBlock(block);
         }
@@ -307,7 +323,7 @@ public class Registry {
             addRenderBlock(block);
         }
 
-        addRenderItem(ModItems.PAINTER);
+        /*addRenderItem(ModItems.PAINTER);
         addRenderItem(ModItems.PAINTER_YELLOW);
         addRenderItem(ModItems.CANOLA_SEEDS);
         addRenderItem(ModItems.CANOLA);
@@ -332,7 +348,11 @@ public class Registry {
         addRenderItem(ModItems.CABLE_INSULATOR);
         addRenderItem(ModItems.KEY);
         addRenderItem(ModItems.BATTERY);
-        addRenderItem(ModItems.NUMBER_PLATE);
+        addRenderItem(ModItems.NUMBER_PLATE);*/
+
+        for (Item item : ModItems.getAll()) {
+            addRenderItem(item);
+        }
 
         registerFluidModel(ModBlocks.METHANOL);
         registerFluidModel(ModBlocks.CANOLA_OIL);

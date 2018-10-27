@@ -1,29 +1,19 @@
 package de.maxhenkel.car.items;
 
-import de.maxhenkel.car.ModCreativeTabs;
 import de.maxhenkel.car.entity.car.parts.Part;
-import de.maxhenkel.car.entity.car.parts.PartRegistry;
-import net.minecraft.item.Item;
-import javax.annotation.Nullable;
+import net.minecraft.item.ItemStack;
 
-public class ItemCarPart extends Item {
+public class ItemCarPart extends AbstractItemCarPart{
 
-    private String partName;
+    private Part part;
 
-    public ItemCarPart(String name, String partName) {
-        this.partName=partName;
-        setUnlocalizedName(name);
-        setRegistryName(name);
-        setCreativeTab(ModCreativeTabs.TAB_CAR);
+    public ItemCarPart(String name, Part part){
+        super(name);
+        this.part=part;
     }
 
-    @Nullable
-    public Part getPart(){
-        return PartRegistry.getPart(partName);
+    @Override
+    public Part getPart(ItemStack stack) {
+        return part;
     }
-
-    public String getPartName(){
-        return partName;
-    }
-
 }

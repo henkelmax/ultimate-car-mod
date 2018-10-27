@@ -19,7 +19,7 @@ public abstract class Part {
         return i >= min && i <= max;
     }
 
-    protected static interface Checker {
+    protected interface Checker {
         boolean check(Part part);
     }
 }

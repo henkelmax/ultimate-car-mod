@@ -4,6 +4,7 @@ import java.io.File;
 import java.lang.reflect.Field;
 import java.util.Map;
 import de.maxhenkel.car.Config;
+import de.maxhenkel.car.DataSerializerItemList;
 import de.maxhenkel.car.DataSerializerStringList;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.entity.car.base.EntityGenericCar;
@@ -53,6 +54,7 @@ public class CommonProxy {
         CommonProxy.simpleNetworkWrapper.registerMessage(MessageEditNumberPlate.class, MessageEditNumberPlate.class, 16, Side.SERVER);
 
         DataSerializers.registerSerializer(DataSerializerStringList.STRING_LIST);
+        DataSerializers.registerSerializer(DataSerializerItemList.ITEM_LIST);
 
         try {
             File configFolder = new File(event.getModConfigurationDirectory(), Main.MODID);

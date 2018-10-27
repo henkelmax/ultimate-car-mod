@@ -28,7 +28,7 @@ public class MessageSyncCarParts implements IMessage, IMessageHandler<MessageSyn
 	public MessageSyncCarParts(EntityGenericCar car) {
 		this.uuid=car.getUniqueID();
 		this.tag=new NBTTagCompound();
-		car.writePartsToNBT(this.tag);
+		//car.writePartsToNBT(this.tag);
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -44,7 +44,7 @@ public class MessageSyncCarParts implements IMessage, IMessageHandler<MessageSyn
 			List<EntityGenericCar> carList=player.world.getEntities(EntityGenericCar.class, new PredicateUUID(message.uuid));
 
 			for(EntityGenericCar car:carList) {
-                car.readPartsFromNBT(message.tag);
+                //car.readPartsFromNBT(message.tag);
             }
 		}
 		return null;
