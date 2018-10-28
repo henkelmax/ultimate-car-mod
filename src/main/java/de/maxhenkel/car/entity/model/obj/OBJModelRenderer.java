@@ -1,7 +1,7 @@
 package de.maxhenkel.car.entity.model.obj;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
-import de.maxhenkel.car.entity.car.base.EntityCarNumberPlateBase;
+import de.maxhenkel.car.entity.car.base.EntityCarLicensePlateBase;
 import de.maxhenkel.car.entity.car.base.EntityGenericCar;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
@@ -75,8 +75,8 @@ public abstract class OBJModelRenderer<T extends EntityGenericCar> extends Rende
 
         GlStateManager.popMatrix();
 
-        if (entity instanceof EntityCarNumberPlateBase) {
-            String text = entity.getNumberPlate();
+        if (entity instanceof EntityCarLicensePlateBase) {
+            String text = entity.getLicensePlate();
             if (text != null && !text.isEmpty()) {
                 GlStateManager.enableNormalize();
                 drawNumberPlate(entity, text);

@@ -95,7 +95,9 @@ public class JEIPlugin implements IModPlugin {
         registry.addIngredientInfo(new ItemStack(ModItems.CONTAINER), VanillaTypes.ITEM, "description.container");
 
         // Number plate
-        registry.addIngredientInfo(new ItemStack(ModItems.NUMBER_PLATE), VanillaTypes.ITEM, "description.number_plate");
+        //registry.addIngredientInfo(new ItemStack(ModItems.NUMBER_PLATE), VanillaTypes.ITEM, "description.license_plate");
+        //TODO license plate
+
     }
 
     @Override

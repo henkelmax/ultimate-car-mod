@@ -17,10 +17,10 @@ import net.minecraft.world.World;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class ItemNumberPlate extends ItemCarPart {
+public class ItemLicensePlate extends ItemCraftingComponent {
 
-    public ItemNumberPlate(String name, Part part) {
-        super(name, part);
+    public ItemLicensePlate(String name) {
+        super(name);
     }
 
     @Override
@@ -30,7 +30,7 @@ public class ItemNumberPlate extends ItemCarPart {
         String text = getText(stack);
 
         if (text != null && !text.isEmpty()) {
-            tooltip.add(new TextComponentTranslation("tooltip.number_plate_text", text).getFormattedText());
+            tooltip.add(new TextComponentTranslation("tooltip.license_plate_text", text).getFormattedText());
         }
     }
 

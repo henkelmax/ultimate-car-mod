@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class EntityGenericCar extends EntityCarNumberPlateBase {
+public class EntityGenericCar extends EntityCarLicensePlateBase {
 
     private IInventory partInventory;
 
@@ -131,13 +131,13 @@ public class EntityGenericCar extends EntityCarNumberPlateBase {
     }
 
     @Override
-    public Vec3d getNumberPlateOffset() {
+    public Vec3d getLicensePlateOffset() {
         PartBody chassis = getPartByClass(PartBody.class);
         if (chassis == null) {
             return new Vec3d(0F, 0F, 0F);
         }
 
-        PartNumberPlate numberPlate = getPartByClass(PartNumberPlate.class);
+        PartLicensePlateHolder numberPlate = getPartByClass(PartLicensePlateHolder.class);
         if (numberPlate == null) {
             return new Vec3d(0F, 0F, 0F);
         }

@@ -1,10 +1,8 @@
 package de.maxhenkel.car.gui;
 
 import de.maxhenkel.car.Main;
-import de.maxhenkel.car.blocks.tileentity.TileEntitySign;
-import de.maxhenkel.car.items.ItemNumberPlate;
-import de.maxhenkel.car.net.MessageEditNumberPlate;
-import de.maxhenkel.car.net.MessageEditSign;
+import de.maxhenkel.car.items.ItemLicensePlate;
+import de.maxhenkel.car.net.MessageEditLicensePlate;
 import de.maxhenkel.car.proxy.CommonProxy;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
@@ -19,9 +17,9 @@ import org.lwjgl.input.Keyboard;
 import java.awt.*;
 import java.io.IOException;
 
-public class GuiNumberPlate extends GuiBase {
+public class GuiLicensePlate extends GuiBase {
 
-	private static final ResourceLocation GUI_TEXTURE = new ResourceLocation(Main.MODID, "textures/gui/gui_number_plate.png");
+	private static final ResourceLocation GUI_TEXTURE = new ResourceLocation(Main.MODID, "textures/gui/gui_license_plate.png");
 
     private static final int TITLE_COLOR = Color.WHITE.getRGB();
 
@@ -33,8 +31,8 @@ public class GuiNumberPlate extends GuiBase {
 
 	protected GuiTextField textField;
 
-	public GuiNumberPlate(EntityPlayer player, ItemStack plate) {
-		super(new ContainerNumberPlate());
+	public GuiLicensePlate(EntityPlayer player, ItemStack plate) {
+		super(new ContainerLicensePlate());
 		this.plate=plate;
 		this.player=player;
 		this.xSize = 176;
@@ -55,7 +53,7 @@ public class GuiNumberPlate extends GuiBase {
         textField.setDisabledTextColour(-1);
         textField.setEnableBackgroundDrawing(true);
         textField.setMaxStringLength(10);
-        textField.setText(ItemNumberPlate.getText(plate));
+        textField.setText(ItemLicensePlate.getText(plate));
 	}
 
 	@Override
@@ -78,7 +76,7 @@ public class GuiNumberPlate extends GuiBase {
 		int j = this.guiTop;
 		this.drawTexturedModalRect(i, j, 0, 0, this.xSize, this.ySize);
 
-        drawCenteredString(fontRenderer, new TextComponentTranslation("gui.number_plate").getFormattedText(),
+        drawCenteredString(fontRenderer, new TextComponentTranslation("gui.license_plate").getFormattedText(),
                 width / 2, guiTop + 5, TITLE_COLOR);
 
 	}
@@ -90,8 +88,8 @@ public class GuiNumberPlate extends GuiBase {
 		if (button.equals(buttonCancel)) {
 			Minecraft.getMinecraft().displayGuiScreen(null);
 		} else if (button.equals(buttonSubmit)) {
-			CommonProxy.simpleNetworkWrapper.sendToServer(new MessageEditNumberPlate(player, textField.getText()));
-			MessageEditNumberPlate.setItemText(player, textField.getText());
+			CommonProxy.simpleNetworkWrapper.sendToServer(new MessageEditLicensePlate(player, textField.getText()));
+			MessageEditLicensePlate.setItemText(player, textField.getText());
 			Minecraft.getMinecraft().displayGuiScreen(null);
 		}
 	}

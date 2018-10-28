@@ -8,23 +8,32 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentTranslation;
+
 import java.util.*;
 
 public class PartRegistry {
 
     public static final Part ENGINE_3_CYLINDER = new PartEngine3Cylinder(0.5F, 0.2F, 0.032F);
     public static final Part ENGINE_6_CYLINDER = new PartEngine6Cylinder(0.65F, 0.2F, 0.04F);
-    public static final Part NUMBER_PLATE_OAK = new PartNumberPlate(new OBJModel(
-            new ResourceLocation(Main.MODID, "models/entity/wood_number_plate.obj"),
-            new ResourceLocation(Main.MODID, "textures/entity/oak_wood.png")),
-            MathTools.rotate(90F, 0F, 0F, 1F),
-            new Vec3d(0D, -0.5D / 16D, -0.5D / 16D - 0.001D)
-    );
+
+    public static final Part OAK_LICENSE_PLATE_HOLDER = createLicensePlateHolder(new ResourceLocation("textures/blocks/planks_oak.png"));
+    public static final Part ACACIA_LICENSE_PLATE_HOLDER = createLicensePlateHolder(new ResourceLocation("textures/blocks/planks_acacia.png"));
+    public static final Part DARK_OAK_LICENSE_PLATE_HOLDER = createLicensePlateHolder(new ResourceLocation("textures/blocks/planks_big_oak.png"));
+    public static final Part BIRCH_LICENSE_PLATE_HOLDER = createLicensePlateHolder(new ResourceLocation("textures/blocks/planks_birch.png"));
+    public static final Part JUNGLE_LICENSE_PLATE_HOLDER = createLicensePlateHolder(new ResourceLocation("textures/blocks/planks_jungle.png"));
+    public static final Part SPRUCE_LICENSE_PLATE_HOLDER = createLicensePlateHolder(new ResourceLocation("textures/blocks/planks_spruce.png"));
+
+    public static final Part IRON_LICENSE_PLATE_HOLDER = createLicensePlateHolder(new ResourceLocation("textures/blocks/iron_block.png"));
+    public static final Part DIAMOND_LICENSE_PLATE_HOLDER = createLicensePlateHolder(new ResourceLocation("textures/blocks/diamond_block.png"));
+    public static final Part GOLD_LICENSE_PLATE_HOLDER = createLicensePlateHolder(new ResourceLocation("textures/blocks/gold_block.png"));
+    public static final Part EMERALD_LICENSE_PLATE_HOLDER = createLicensePlateHolder(new ResourceLocation("textures/blocks/emerald_block.png"));
+
     public static final Part WHEEL = new PartWheel(new OBJModel(
             new ResourceLocation(Main.MODID, "models/entity/wheel.obj"),
             new ResourceLocation(Main.MODID, "textures/entity/wheel.png")),
             80F
     );
+
     public static final Part OAK_BODY = createWoodBody(new ResourceLocation(Main.MODID, "textures/entity/car_wood_oak.png"));
     public static final Part ACACIA_BODY = createWoodBody(new ResourceLocation(Main.MODID, "textures/entity/car_wood_acacia.png"));
     public static final Part DARK_OAK_BODY = createWoodBody(new ResourceLocation(Main.MODID, "textures/entity/car_wood_dark_oak.png"));
@@ -74,13 +83,18 @@ public class PartRegistry {
     public static final Part YELLOW_TRANSPORTER_BODY = createTransporterBody(new ResourceLocation(Main.MODID, "textures/entity/car_transporter_yellow.png"));
 
     public static final Part OAK_BUMPER = createWoodBumper(new ResourceLocation(Main.MODID, "textures/entity/oak_wood.png"));
+    public static final Part ACACIA_BUMPER = createWoodBumper(new ResourceLocation(Main.MODID, "textures/entity/acacia_wood.png"));
+    public static final Part DARK_OAK_BUMPER = createWoodBumper(new ResourceLocation(Main.MODID, "textures/entity/birch_wood.png"));
+    public static final Part BIRCH_BUMPER = createWoodBumper(new ResourceLocation(Main.MODID, "textures/entity/dark_oak_wood.png"));
+    public static final Part JUNGLE_BUMPER = createWoodBumper(new ResourceLocation(Main.MODID, "textures/entity/jungle_wood.png"));
+    public static final Part SPRUCE_BUMPER = createWoodBumper(new ResourceLocation(Main.MODID, "textures/entity/spruce_wood.png"));
 
 
     private static Map<String, Part> partRegistry = new HashMap<>();
 
     static {
 
-        partRegistry.put("engine_3_cylinder", new PartEngine3Cylinder(0.5F, 0.2F, 0.032F));
+        /*partRegistry.put("engine_3_cylinder", new PartEngine3Cylinder(0.5F, 0.2F, 0.032F));
 
         partRegistry.put("engine_6_cylinder", new PartEngine6Cylinder(0.65F, 0.2F, 0.04F));
 
@@ -113,7 +127,7 @@ public class PartRegistry {
                 80F
         ));
 
-        partRegistry.put("oak_number_plate", new PartNumberPlate(new OBJModel(
+        partRegistry.put("oak_number_plate", new PartLicensePlateHolder(new OBJModel(
                 new ResourceLocation(Main.MODID, "models/entity/wood_number_plate.obj"),
                 new ResourceLocation(Main.MODID, "textures/entity/oak_wood.png")),
                 MathTools.rotate(90F, 0F, 0F, 1F),
@@ -125,7 +139,16 @@ public class PartRegistry {
                 new ResourceLocation(Main.MODID, "textures/entity/oak_wood.png")),
                 new Vec3d(0D, 6D / 16D, -14.5D / 16D),
                 MathTools.rotate(90F, 0F, 0F, 1F)
-        ));
+        ));*/
+    }
+
+    private static Part createLicensePlateHolder(ResourceLocation texture) {
+        return new PartLicensePlateHolder(new OBJModel(
+                new ResourceLocation(Main.MODID, "models/entity/license_plate.obj"),
+                texture),
+                MathTools.rotate(90F, 0F, 0F, 1F),
+                new Vec3d(0D, -0.5D / 16D, -0.5D / 16D - 0.001D)
+        );
     }
 
     private static Part createWoodBumper(ResourceLocation texture) {

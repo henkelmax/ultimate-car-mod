@@ -9,11 +9,11 @@ import org.lwjgl.util.vector.Quaternion;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PartNumberPlate extends PartModel {
+public class PartLicensePlateHolder extends PartModel {
 
     protected Vec3d textOffset;
 
-    public PartNumberPlate(OBJModel model, Quaternion rotation, Vec3d textOffset) {
+    public PartLicensePlateHolder(OBJModel model, Quaternion rotation, Vec3d textOffset) {
         super(model, new Vec3d(0D, 0D, 0D), rotation);
         this.textOffset=textOffset;
     }

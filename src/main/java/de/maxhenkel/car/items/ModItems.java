@@ -41,6 +41,7 @@ public class ModItems {
 
     public static final ItemCraftingComponent CAR_TANK = new ItemCraftingComponent("car_tank");
 
+    public static final ItemLicensePlate LICENSE_PLATE = new ItemLicensePlate("license_plate");
 
     public static final ItemCarPart OAK_BODY = new ItemCarPart("oak_body", PartRegistry.OAK_BODY);
     public static final ItemCarPart ACACIA_BODY = new ItemCarPart("acacia_body", PartRegistry.ACACIA_BODY);
@@ -91,10 +92,26 @@ public class ModItems {
     public static final ItemCarPart YELLOW_SPORT_BODY = new ItemCarPart("yellow_sport_body", PartRegistry.YELLOW_SPORT_BODY);
 
     public static final ItemCarPart OAK_BUMPER = new ItemCarPart("oak_bumper", PartRegistry.OAK_BUMPER);
+    public static final ItemCarPart ACACIA_BUMPER = new ItemCarPart("acacia_bumper", PartRegistry.ACACIA_BUMPER);
+    public static final ItemCarPart DARK_OAK_BUMPER = new ItemCarPart("dark_oak_bumper", PartRegistry.DARK_OAK_BUMPER);
+    public static final ItemCarPart BIRCH_BUMPER = new ItemCarPart("birch_bumper", PartRegistry.BIRCH_BUMPER);
+    public static final ItemCarPart JUNGLE_BUMPER = new ItemCarPart("jungle_bumper", PartRegistry.JUNGLE_BUMPER);
+    public static final ItemCarPart SPRUCE_BUMPER = new ItemCarPart("spruce_bumper", PartRegistry.SPRUCE_BUMPER);
 
     public static final ItemCarPart CONTAINER = new ItemCarPart("container", null);
 
-    public static final ItemNumberPlate NUMBER_PLATE = new ItemNumberPlate("number_plate", PartRegistry.NUMBER_PLATE_OAK);//TODO
+    public static final ItemCarPart OAK_LICENSE_PLATE_HOLDER = new ItemCarPart("oak_license_plate_holder", PartRegistry.OAK_LICENSE_PLATE_HOLDER);
+    public static final ItemCarPart ACACIA_LICENSE_PLATE_HOLDER = new ItemCarPart("acacia_license_plate_holder", PartRegistry.ACACIA_LICENSE_PLATE_HOLDER);
+    public static final ItemCarPart DARK_OAK_LICENSE_PLATE_HOLDER = new ItemCarPart("dark_oak_license_plate_holder", PartRegistry.DARK_OAK_LICENSE_PLATE_HOLDER);
+    public static final ItemCarPart BIRCH_LICENSE_PLATE_HOLDER = new ItemCarPart("birch_license_plate_holder", PartRegistry.BIRCH_LICENSE_PLATE_HOLDER);
+    public static final ItemCarPart JUNGLE_LICENSE_PLATE_HOLDER = new ItemCarPart("jungle_license_plate_holder", PartRegistry.JUNGLE_LICENSE_PLATE_HOLDER);
+    public static final ItemCarPart SPRUCE_LICENSE_PLATE_HOLDER = new ItemCarPart("spruce_license_plate_holder", PartRegistry.SPRUCE_LICENSE_PLATE_HOLDER);
+
+    public static final ItemCarPart IRON_LICENSE_PLATE_HOLDER = new ItemCarPart("iron_license_plate_holder", PartRegistry.IRON_LICENSE_PLATE_HOLDER);
+    public static final ItemCarPart DIAMOND_LICENSE_PLATE_HOLDER = new ItemCarPart("diamond_license_plate_holder", PartRegistry.DIAMOND_LICENSE_PLATE_HOLDER);
+    public static final ItemCarPart GOLD_LICENSE_PLATE_HOLDER = new ItemCarPart("gold_license_plate_holder", PartRegistry.GOLD_LICENSE_PLATE_HOLDER);
+    public static final ItemCarPart EMERALD_LICENSE_PLATE_HOLDER = new ItemCarPart("emerald_license_plate_holder", PartRegistry.EMERALD_LICENSE_PLATE_HOLDER);
+
 
 
     public static List<Item> getAll() {

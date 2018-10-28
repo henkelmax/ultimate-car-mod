@@ -67,7 +67,7 @@ public class PartBody extends PartModel {
             messages.add(new TextComponentTranslation("message.parts.too_many_engines"));
         }
 
-        if (getAmount(parts, part -> part instanceof PartNumberPlate) > 1) {
+        if (getAmount(parts, part -> part instanceof PartLicensePlateHolder) > 1) {
             messages.add(new TextComponentTranslation("message.parts.too_many_number_plates"));
         }
 

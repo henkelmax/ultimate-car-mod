@@ -1,36 +1,31 @@
 package de.maxhenkel.car.net;
 
-import de.maxhenkel.car.blocks.tileentity.TileEntitySign;
-import de.maxhenkel.car.gui.GuiNumberPlate;
-import de.maxhenkel.car.items.ItemNumberPlate;
-import de.maxhenkel.car.items.ModItems;
+import de.maxhenkel.car.items.ItemLicensePlate;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 
 import java.util.UUID;
 
-public class MessageEditNumberPlate extends MessageToServer<MessageEditNumberPlate> {
+public class MessageEditLicensePlate extends MessageToServer<MessageEditLicensePlate> {
 
     private UUID uuid;
     private String text;
 
-    public MessageEditNumberPlate() {
+    public MessageEditLicensePlate() {
         this.uuid = new UUID(0, 0);
         this.text = "";
     }
 
-    public MessageEditNumberPlate(EntityPlayer player, String text) {
+    public MessageEditLicensePlate(EntityPlayer player, String text) {
         this.uuid = player.getUniqueID();
         this.text = text;
     }
 
     @Override
-    public void execute(EntityPlayer player, MessageEditNumberPlate message) {
+    public void execute(EntityPlayer player, MessageEditLicensePlate message) {
         if (!player.getUniqueID().equals(message.uuid)) {
             return;
         }
@@ -40,13 +35,13 @@ public class MessageEditNumberPlate extends MessageToServer<MessageEditNumberPla
 
     public static void setItemText(EntityPlayer player, String text) {
         ItemStack stack = player.getHeldItem(EnumHand.MAIN_HAND);
-        if (stack.getItem().equals(ModItems.NUMBER_PLATE)) {
-            ItemNumberPlate.setText(stack, text);
+        if (stack.getItem() instanceof ItemLicensePlate) {
+            ItemLicensePlate.setText(stack, text);
             player.setHeldItem(EnumHand.MAIN_HAND, stack);
         } else {
             stack = player.getHeldItem(EnumHand.OFF_HAND);
-            if (stack.getItem().equals(ModItems.NUMBER_PLATE)) {
-                ItemNumberPlate.setText(stack, text);
+            if (stack.getItem() instanceof ItemLicensePlate) {
+                ItemLicensePlate.setText(stack, text);
                 player.setHeldItem(EnumHand.OFF_HAND, stack);
             }
         }

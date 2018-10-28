@@ -10,7 +10,7 @@ import de.maxhenkel.car.blocks.tileentity.TileEntityOilMill;
 import de.maxhenkel.car.blocks.tileentity.TileEntitySign;
 import de.maxhenkel.car.blocks.tileentity.TileEntitySplitTank;
 import de.maxhenkel.car.entity.car.base.EntityCarInventoryBase;
-import de.maxhenkel.car.items.ModItems;
+import de.maxhenkel.car.items.ItemLicensePlate;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -106,7 +106,7 @@ public class GuiHandler implements IGuiHandler{
 				return new ContainerSign((TileEntitySign) te);
 			}
 		}else if(id==GUI_NUMBER_PLATE){
-		    return new ContainerNumberPlate();
+		    return new ContainerLicensePlate();
         }
 		
 		return null;
@@ -183,12 +183,12 @@ public class GuiHandler implements IGuiHandler{
 			}
 		}else if(id==GUI_NUMBER_PLATE){
             ItemStack stack=player.getHeldItem(EnumHand.MAIN_HAND);
-            if(stack.getItem().equals(ModItems.NUMBER_PLATE)){
-                return new GuiNumberPlate(player, stack);
+            if(stack.getItem() instanceof ItemLicensePlate){
+                return new GuiLicensePlate(player, stack);
             }else{
                 stack=player.getHeldItem(EnumHand.OFF_HAND);
-                if(stack.getItem().equals(ModItems.NUMBER_PLATE)){
-                    return new GuiNumberPlate(player, stack);
+                if(stack.getItem() instanceof ItemLicensePlate){
+                    return new GuiLicensePlate(player, stack);
                 }
             }
         }

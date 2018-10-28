@@ -22,7 +22,7 @@ public class TestCarModel extends OBJModelRenderer {
 
     @Override
     public void translateNumberPlate(EntityGenericCar entity) {
-        Vec3d offset=entity.getNumberPlateOffset();
+        Vec3d offset=entity.getLicensePlateOffset();
         GlStateManager.translate(offset.x, offset.y, offset.z);
     }
 }
