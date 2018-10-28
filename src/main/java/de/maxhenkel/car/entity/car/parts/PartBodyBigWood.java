@@ -22,7 +22,7 @@ public class PartBodyBigWood extends PartBodyWoodBase {
                 new Vec3d(0D, -0.378D, 0D)
         };
         this.numberPlateOffset = new Vec3d(0D, 7D / 16D, 17D / 16D);
-        this.width = 1.5F;
+        this.width = 1.625F;
         this.height = 1.6F;
         this.minRotationSpeed = 2F;
         this.maxRotationSpeed = 5F;
