@@ -1,14 +1,14 @@
 package de.maxhenkel.car.entity.car.parts;
 
-
+import net.minecraft.util.text.ITextComponent;
 import java.util.List;
 
 public abstract class Part {
-    public boolean isValid(List<Part> parts) {
+    public boolean validate(List<Part> parts, List<ITextComponent> messages) {
         return true;
     }
 
-    protected static boolean checkAmount(List<Part> modelParts, int min, int max, Checker checker) {
+    protected static int getAmount(List<Part> modelParts, Checker checker) {
         int i = 0;
         for (Part part : modelParts) {
             if (checker.check(part)) {
@@ -16,7 +16,7 @@ public abstract class Part {
             }
         }
 
-        return i >= min && i <= max;
+        return i;
     }
 
     protected interface Checker {

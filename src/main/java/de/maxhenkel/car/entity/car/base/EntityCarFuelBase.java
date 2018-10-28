@@ -162,7 +162,7 @@ public abstract class EntityCarFuelBase extends EntityCarDamageBase implements I
 			if(!cf.getCarID().equals(getID())) {
 				continue;
 			}
-			if(cf.getInput().isValid(fluid)){
+			if(cf.getInput().validate(fluid)){
 				return cf.getEfficiency();
 			}
 		}

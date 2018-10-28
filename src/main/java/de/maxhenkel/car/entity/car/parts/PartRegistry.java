@@ -1,15 +1,15 @@
 package de.maxhenkel.car.entity.car.parts;
 
 import de.maxhenkel.car.Main;
+import de.maxhenkel.car.entity.car.base.EntityGenericCar;
 import de.maxhenkel.car.entity.model.obj.OBJModel;
 import de.maxhenkel.tools.MathTools;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentTranslation;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class PartRegistry {
 
@@ -47,6 +47,9 @@ public class PartRegistry {
     public static final Part YELLOW_SPORT_CHASSIS = createSportChassis(new ResourceLocation(Main.MODID, "textures/entity/car_sport_yellow.png"));
 
     public static final Part WHITE_TRANSPORTER_CHASSIS = createTransporterChassis(new ResourceLocation(Main.MODID, "textures/entity/car_transporter_white.png"));
+
+    public static final Part OAK_BUMPER = createWoodBumper(new ResourceLocation(Main.MODID, "textures/entity/oak_wood.png"));
+
 
     private static Map<String, Part> partRegistry = new HashMap<>();
 
@@ -98,6 +101,15 @@ public class PartRegistry {
                 new Vec3d(0D, 6D / 16D, -14.5D / 16D),
                 MathTools.rotate(90F, 0F, 0F, 1F)
         ));
+    }
+
+    private static Part createWoodBumper(ResourceLocation texture) {
+        return new PartBumper(new OBJModel(
+                new ResourceLocation(Main.MODID, "models/entity/wood_front.obj"),
+                texture),
+                new Vec3d(0D, 6D / 16D, -14.5D / 16D),
+                MathTools.rotate(90F, 0F, 0F, 1F)
+        );
     }
 
     private static Part createWoodChassis(ResourceLocation texture) {
@@ -187,23 +199,35 @@ public class PartRegistry {
         );
     }
 
+    @Deprecated
     public static Part getPart(String name) {
         return partRegistry.get(name);
     }
 
-    public static boolean isValid(List<Part> modelParts) {
-        if (!Part.checkAmount(modelParts, 1, 1, part -> part instanceof PartChassis)) {
+    public static boolean isValid(EntityGenericCar car, List<ITextComponent> messages) {
+        return isValid(car.getModelParts(), messages);
+    }
+
+    public static boolean isValid(List<Part> modelParts, List<ITextComponent> messages) {
+        int chassisAmount = Part.getAmount(modelParts, part -> part instanceof PartChassis);
+        if (chassisAmount <= 0) {
+            messages.add(new TextComponentTranslation("message.parts.no_chassis"));
+            return false;
+        } else if (chassisAmount > 1) {
+            messages.add(new TextComponentTranslation("message.parts.too_many_chassis"));
             return false;
         }
 
         List<Part> unmodifiableList = Collections.unmodifiableList(modelParts);
 
+        boolean flag = true;
+
         for (Part part : modelParts) {
-            if (!part.isValid(unmodifiableList)) {
-                return false;
+            if (!part.validate(unmodifiableList, messages)) {
+                flag = false;
             }
         }
 
-        return true;
+        return flag;
     }
 }

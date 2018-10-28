@@ -34,6 +34,8 @@ public class ModItems {
 
     public static final ItemCarPart WHITE_SPORT_CHASSIS = new ItemCarPart("white_sport_chassis", PartRegistry.WHITE_SPORT_CHASSIS);
 
+    public static final ItemCarPart OAK_BUMPER = new ItemCarPart("oak_bumper", PartRegistry.OAK_BUMPER);
+
     public static final ItemCanister CANISTER = new ItemCanister();
     public static final ItemRepairKit REPAIR_KIT = new ItemRepairKit();
     public static final ItemRepairTool WRENCH = new ItemRepairTool("wrench");

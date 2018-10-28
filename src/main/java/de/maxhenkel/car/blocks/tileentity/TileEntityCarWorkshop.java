@@ -2,6 +2,7 @@ package de.maxhenkel.car.blocks.tileentity;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import de.maxhenkel.car.entity.car.base.EntityGenericCar;
 import de.maxhenkel.car.entity.car.parts.Part;
 import de.maxhenkel.car.entity.car.parts.PartRegistry;
@@ -30,10 +31,12 @@ public class TileEntityCarWorkshop extends TileEntityBase implements IInventory 
     private InventoryBasic craftingMatrix;
     private InventoryBasic repairInventory;
     private EntityGenericCar currentCraftingCar;
+    private List<ITextComponent> messages;
 
     public TileEntityCarWorkshop() {
         this.craftingMatrix = new InventoryBasic(getDisplayName().getFormattedText(), false, 15);
         this.repairInventory = new InventoryBasic(getDisplayName().getFormattedText(), false, 3);
+        this.messages = new ArrayList<>();
         //updateRecipe();
     }
 
@@ -76,7 +79,7 @@ public class TileEntityCarWorkshop extends TileEntityBase implements IInventory 
 
         EntityGenericCar car = currentCraftingCar;
 
-        if (car == null) {
+        if (car == null || !isCurrentCraftingCarValid()) {
             player.sendMessage(new TextComponentTranslation("message.no_reciepe"));
             return;
         }
@@ -213,38 +216,50 @@ public class TileEntityCarWorkshop extends TileEntityBase implements IInventory 
 
         car.setIsSpawned(false);
 
-        List<Part> parts = new ArrayList<>();
         List<ItemStack> partStacks = new ArrayList<>();
 
         for (int i = 0; i < craftingMatrix.getSizeInventory(); i++) {
             ItemStack stack = craftingMatrix.getStackInSlot(i);
 
-            if(!(stack.getItem() instanceof ICarPart)){
+            if (!(stack.getItem() instanceof ICarPart)) {
                 continue;
             }
 
-            ICarPart itemCarPart=(ICarPart) stack.getItem();
+            ICarPart itemCarPart = (ICarPart) stack.getItem();
 
-            Part part=itemCarPart.getPart(stack);
+            Part part = itemCarPart.getPart(stack);
 
-            if(part==null){
+            if (part == null) {
                 continue;
             }
 
-            parts.add(part);
             partStacks.add(stack);
         }
 
-        for(int i=0; i<partStacks.size(); i++){
+        for (int i = 0; i < partStacks.size(); i++) {
             car.getPartInventory().setInventorySlotContents(i, partStacks.get(i).copy().splitStack(1));
         }
 
         car.initParts();
 
-        if (!PartRegistry.isValid(parts)) {
-            this.currentCraftingCar=null;
+        List<ITextComponent> messages = new ArrayList<>();
+
+        boolean showable = PartRegistry.isValid(car, messages);
+
+        this.messages = messages;
+
+        if (!showable) {
+            this.currentCraftingCar = null;
             return;
         }
+
+        /*if (messages.size()>0) {
+            for(ITextComponent component:messages){
+                System.out.println(component.getUnformattedText());
+            }
+            this.currentCraftingCar=null;
+            return;
+        }*/
 
         car.tryInitPartsAndModel();
         car.setPartSerializer();
@@ -360,6 +375,14 @@ public class TileEntityCarWorkshop extends TileEntityBase implements IInventory 
 
     public EntityGenericCar getCurrentCraftingCar() {
         return currentCraftingCar;
+    }
+
+    public boolean isCurrentCraftingCarValid() {
+        return messages.size() <= 0;
+    }
+
+    public List<ITextComponent> getMessages() {
+        return messages;
     }
 
     public void repairCar(EntityPlayer player) {
