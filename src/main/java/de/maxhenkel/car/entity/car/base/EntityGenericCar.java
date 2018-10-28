@@ -356,7 +356,7 @@ public class EntityGenericCar extends EntityCarNumberPlateBase {
         boolean addedWheels = false;
         for (Part part : parts) {
             if (part instanceof PartModel) {
-                if (part instanceof PartWheels) {
+                if (part instanceof PartWheel) {
                     //TODO fix wheels (fixed!?)
                     if (!addedWheels) {
                         addedWheels = true;

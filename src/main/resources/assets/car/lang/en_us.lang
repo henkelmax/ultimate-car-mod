@@ -188,7 +188,6 @@ tooltip.repair_kit_1=Repairs your car when it has more than 90%% damage
 tooltip.repair_kit_2=Can be applied in the car GUI
 tooltip.battery_energy=Energy stored: %s
 tooltip.battery=Restores the energy of your car battery in the car GUI
-tooltip.container=Sneak + right-click to add to a transporter
 tooltip.trade=%s %s for %s mb
 tooltip.number_plate_text=Text: %s
 

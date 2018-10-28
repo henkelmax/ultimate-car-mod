@@ -9,11 +9,11 @@ import net.minecraft.util.math.Vec3d;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PartWheels extends PartModel {
+public class PartWheel extends PartModel {
 
     protected float rotationModifier;
 
-    public PartWheels(OBJModel model, float rotationModifier) {
+    public PartWheel(OBJModel model, float rotationModifier) {
         super(model);
         this.rotationModifier = rotationModifier;
     }
@@ -30,11 +30,11 @@ public class PartWheels extends PartModel {
             }
         }
 
-        List<PartWheels> wheels=new ArrayList<>();
+        List<PartWheel> wheels=new ArrayList<>();
 
         for (Part part : car.getModelParts()) {
-            if (part instanceof PartWheels) {
-                wheels.add((PartWheels) part);
+            if (part instanceof PartWheel) {
+                wheels.add((PartWheel) part);
             }
         }
 

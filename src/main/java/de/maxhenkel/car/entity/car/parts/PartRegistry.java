@@ -8,7 +8,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentTranslation;
-
 import java.util.*;
 
 public class PartRegistry {
@@ -21,7 +20,7 @@ public class PartRegistry {
             MathTools.rotate(90F, 0F, 0F, 1F),
             new Vec3d(0D, -0.5D / 16D, -0.5D / 16D - 0.001D)
     );
-    public static final Part WHEELS = new PartWheels(new OBJModel(
+    public static final Part WHEEL = new PartWheel(new OBJModel(
             new ResourceLocation(Main.MODID, "models/entity/wheel.obj"),
             new ResourceLocation(Main.MODID, "textures/entity/wheel.png")),
             80F
@@ -82,7 +81,7 @@ public class PartRegistry {
 
         partRegistry.put("white_transporter_chassis", createTransporterChassis(new ResourceLocation(Main.MODID, "textures/entity/car_transporter_white.png")));
 
-        partRegistry.put("wheel", new PartWheels(new OBJModel(
+        partRegistry.put("wheel", new PartWheel(new OBJModel(
                 new ResourceLocation(Main.MODID, "models/entity/wheel.obj"),
                 new ResourceLocation(Main.MODID, "textures/entity/wheel.png")),
                 80F

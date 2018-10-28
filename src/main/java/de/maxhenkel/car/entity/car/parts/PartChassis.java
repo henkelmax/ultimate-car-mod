@@ -56,7 +56,7 @@ public class PartChassis extends PartModel {
 
     @Override
     public boolean validate(List<Part> parts, List<ITextComponent> messages) {
-        if (getAmount(parts, part -> part instanceof PartWheels) != getWheelAmount()) {
+        if (getAmount(parts, part -> part instanceof PartWheel) != getWheelAmount()) {
             messages.add(new TextComponentTranslation("message.parts.wheel_amount", getWheelAmount()));
         }
 
