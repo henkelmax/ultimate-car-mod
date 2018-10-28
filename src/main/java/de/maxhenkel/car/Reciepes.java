@@ -56,13 +56,13 @@ public class Reciepes {
 
         if (Config.carPartsRecipe) {
             //Car Tank
-            GameRegistry.addShapedRecipe(new ResourceLocation(Main.MODID, "car_tank"), null, new ItemStack(ModItems.CAR_TANK, 1), new Object[]{"III", "ITI", "III",
-                    Character.valueOf('T'), new ItemStack(ModBlocks.TANK), Character.valueOf('I'), new ItemStack(Items.IRON_INGOT)});
+            /*GameRegistry.addShapedRecipe(new ResourceLocation(Main.MODID, "car_tank"), null, new ItemStack(ModItems.CAR_TANK, 1), new Object[]{"III", "ITI", "III",
+                    Character.valueOf('T'), new ItemStack(ModBlocks.TANK), Character.valueOf('I'), new ItemStack(Items.IRON_INGOT)});*/
 
             //Car Seat
-            GameRegistry.addShapedRecipe(new ResourceLocation(Main.MODID, "car_seat"), null, new ItemStack(ModItems.CAR_SEAT, 1), new Object[]{" WP", "WWP", "PPP",
+           /* GameRegistry.addShapedRecipe(new ResourceLocation(Main.MODID, "car_seat"), null, new ItemStack(ModItems.CAR_SEAT, 1), new Object[]{" WP", "WWP", "PPP",
                     Character.valueOf('P'), Blocks.PLANKS, Character.valueOf('W'), Blocks.WOOL});//TODO planks
-
+*/
             //Car Engine
             GameRegistry.addShapedRecipe(new ResourceLocation(Main.MODID, "engine_3_cylinder"), null, new ItemStack(ModItems.ENGINE_3_CYLINDER, 1), new Object[]{"FFF", "PPP", "BBB",
                     Character.valueOf('F'), new ItemStack(Items.FLINT), Character.valueOf('P'), new ItemStack(ModItems.ENGINE_PISTON),

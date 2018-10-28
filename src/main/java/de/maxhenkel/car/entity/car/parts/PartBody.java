@@ -15,8 +15,12 @@ public class PartBody extends PartModel {
     protected float width;
     protected float height;
     protected float minRotationSpeed;
+    protected float maxRotationSpeed;
+    protected float fuelEfficiency;
+    protected float acceleration;
+    protected float maxSpeed;
 
-    public PartBody(OBJModel model, Vec3d offset, Vec3d[] wheelOffsets, Vec3d[] playerOffsets, Vec3d numberPlateOffset, float width, float height, float minRotationSpeed) {
+    public PartBody(OBJModel model, Vec3d offset, Vec3d[] wheelOffsets, Vec3d[] playerOffsets, Vec3d numberPlateOffset, float width, float height, float minRotationSpeed, float maxRotationSpeed, float fuelEfficiency, float acceleration, float maxSpeed) {
         super(model, offset);
         this.wheelOffsets = wheelOffsets;
         this.playerOffsets = playerOffsets;
@@ -24,6 +28,14 @@ public class PartBody extends PartModel {
         this.width = width;
         this.height = height;
         this.minRotationSpeed = minRotationSpeed;
+        this.maxRotationSpeed = maxRotationSpeed;
+        this.fuelEfficiency = fuelEfficiency;
+        this.acceleration = acceleration;
+        this.maxSpeed = maxSpeed;
+    }
+
+    public PartBody(OBJModel model, Vec3d offset) {
+        super(model, offset);
     }
 
     public Vec3d[] getWheelOffsets() {
@@ -42,6 +54,10 @@ public class PartBody extends PartModel {
         return minRotationSpeed;
     }
 
+    public float getMaxRotationSpeed() {
+        return maxRotationSpeed;
+    }
+
     public float getWidth() {
         return width;
     }
@@ -51,7 +67,19 @@ public class PartBody extends PartModel {
     }
 
     protected int getWheelAmount() {
-        return 4;
+        return wheelOffsets.length;
+    }
+
+    public float getFuelEfficiency() {
+        return fuelEfficiency;
+    }
+
+    public float getAcceleration() {
+        return acceleration;
+    }
+
+    public float getMaxSpeed() {
+        return maxSpeed;
     }
 
     @Override

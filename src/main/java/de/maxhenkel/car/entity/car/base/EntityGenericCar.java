@@ -20,6 +20,7 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
+
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -35,16 +36,20 @@ public class EntityGenericCar extends EntityCarLicensePlateBase {
     public float getMaxSpeed() {
         PartEngine engine = getPartByClass(PartEngine.class);
         if (engine == null) {
-            return 0;
+            return 0F;
         }
-        return engine.getMaxSpeed();
+        PartBody chassis = getPartByClass(PartBody.class);
+        if (chassis == null) {
+            return 0F;
+        }
+        return engine.getMaxSpeed()*chassis.getMaxSpeed();
     }
 
     @Override
     public float getMaxReverseSpeed() {
         PartEngine engine = getPartByClass(PartEngine.class);
         if (engine == null) {
-            return 0;
+            return 0F;
         }
         return engine.getMaxReverseSpeed();
     }
@@ -53,14 +58,22 @@ public class EntityGenericCar extends EntityCarLicensePlateBase {
     public float getAcceleration() {
         PartEngine engine = getPartByClass(PartEngine.class);
         if (engine == null) {
-            return 0;
+            return 0F;
         }
-        return engine.getAcceleration();
+        PartBody chassis = getPartByClass(PartBody.class);
+        if (chassis == null) {
+            return 0F;
+        }
+        return engine.getAcceleration() * chassis.getAcceleration();
     }
 
     @Override
     public float getMaxRotationSpeed() {
-        return 5F;
+        PartBody chassis = getPartByClass(PartBody.class);
+        if (chassis == null) {
+            return 5.0F;
+        }
+        return chassis.getMaxRotationSpeed();
     }
 
     @Override
@@ -84,12 +97,25 @@ public class EntityGenericCar extends EntityCarLicensePlateBase {
 
     @Override
     public int getMaxFuel() {
-        return 1000;
+        PartTank tank = getPartByClass(PartTank.class);
+        if (tank == null) {
+            return 0;
+        }
+        return tank.getSize();
     }
 
     @Override
-    public double getEfficiency(@Nullable Fluid fluid) {
-        return 1.0;
+    public float getEfficiency(@Nullable Fluid fluid) {
+        PartEngine engine = getPartByClass(PartEngine.class);
+        if (engine == null) {
+            return 0F;
+        }
+
+        PartBody chassis = getPartByClass(PartBody.class);
+        if (chassis == null) {
+            return 0F;
+        }
+        return chassis.getFuelEfficiency() * engine.getFuelEfficiency();
     }
 
     @Override

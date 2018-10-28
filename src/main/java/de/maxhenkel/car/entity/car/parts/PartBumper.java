@@ -1,17 +1,21 @@
 package de.maxhenkel.car.entity.car.parts;
 
+import de.maxhenkel.car.Main;
 import de.maxhenkel.car.entity.model.obj.OBJModel;
+import de.maxhenkel.tools.MathTools;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentTranslation;
-import org.lwjgl.util.vector.Quaternion;
-
 import java.util.List;
 
 public class PartBumper extends PartModel {
 
-    public PartBumper(OBJModel model, Vec3d offset, Quaternion rotation) {
-        super(model, offset, rotation);
+    public PartBumper(ResourceLocation texture) {
+        super(new OBJModel(new ResourceLocation(Main.MODID, "models/entity/wood_front.obj"), texture),
+                new Vec3d(0D, 6D / 16D, -14.5D / 16D),
+                MathTools.rotate(90F, 0F, 0F, 1F)
+        );
     }
 
 

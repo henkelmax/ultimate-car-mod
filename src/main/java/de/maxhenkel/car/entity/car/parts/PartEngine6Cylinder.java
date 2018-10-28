@@ -5,8 +5,8 @@ import net.minecraft.util.SoundEvent;
 
 public class PartEngine6Cylinder extends PartEngine{
 
-    public PartEngine6Cylinder(float maxSpeed, float maxReverseSpeed, float acceleration) {
-        super(maxSpeed, maxReverseSpeed, acceleration);
+    public PartEngine6Cylinder() {
+        super(0.65F, 0.2F, 0.04F, 0.12F);
     }
 
     @Override

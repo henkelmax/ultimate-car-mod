@@ -125,11 +125,9 @@ item.rapecake.name=Canola Cake
 item.engine_piston.name=Engine Piston
 item.wheel.name=Wheel
 item.container.name=Container
-item.car_seat.name=Car Seat
 item.iron_stick.name=Iron Stick
 item.engine_3_cylinder.name=3 Cylinder Engine
 item.engine_6_cylinder.name=6 Cylinder Engine
-item.car_tank.name=Car Tank
 item.canister.name=Canister
 item.repair_kit.name=Repair Kit
 item.wrench.name=Wrench
@@ -205,6 +203,10 @@ item.red_sport_body.name=Red Sportscar Body
 item.silver_sport_body.name=Light Gray Sportscar Body
 item.white_sport_body.name=White Sportscar Body
 item.yellow_sport_body.name=Yellow Sportscar Body
+
+item.small_tank.name=Small Tank
+item.medium_tank.name=Medium Tank
+item.large_tank.name=Large Tank
 
 button.start=Start
 button.stop=Stop

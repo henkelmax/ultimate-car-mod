@@ -37,7 +37,7 @@ public abstract class EntityCarFuelBase extends EntityCarDamageBase implements I
 	}
 	
 	protected int calculateTickFuel(){
-		double efficiency=getEfficiency(getFluid());
+		float efficiency=getEfficiency(getFluid());
 		int ticks=(int)(efficiency*100D);
 		if(ticks<=0){
 			ticks=1;
@@ -151,10 +151,10 @@ public abstract class EntityCarFuelBase extends EntityCarDamageBase implements I
 		if(fluid==null) {
 			return false;
 		}
-		return getEfficiency(fluid)>0D;
+		return getEfficiency(fluid)>0F;
 	}
 	
-	public abstract double getEfficiency(@Nullable Fluid fluid);/*{
+	public abstract float getEfficiency(@Nullable Fluid fluid);/*{
 		if(fluid==null){
 			return 1D;
 		}

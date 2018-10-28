@@ -26,6 +26,8 @@ public class ModItems {
     public static final ItemKey KEY = new ItemKey();
     public static final ItemBattery BATTERY = new ItemBattery();
 
+    public static final ItemLicensePlate LICENSE_PLATE = new ItemLicensePlate("license_plate");
+
     //public static final ItemCraftingComponent WINDSHIELD = new ItemCraftingComponent("windshield");
     //public static final ItemCraftingComponent CONTROL_UNIT = new ItemCraftingComponent("control_unit");
     //public static final ItemCraftingComponent AXLE = new ItemCraftingComponent("axle");
@@ -35,13 +37,7 @@ public class ModItems {
     public static final ItemCarPart ENGINE_3_CYLINDER = new ItemCarPart("engine_3_cylinder", PartRegistry.ENGINE_3_CYLINDER);
     public static final ItemCarPart ENGINE_6_CYLINDER = new ItemCarPart("engine_6_cylinder", PartRegistry.ENGINE_6_CYLINDER);
 
-    public static final ItemCarPart CAR_SEAT = new ItemCarPart("car_seat", null);
-
     public static final ItemCarPart WHEEL = new ItemCarPart("wheel", PartRegistry.WHEEL);
-
-    public static final ItemCraftingComponent CAR_TANK = new ItemCraftingComponent("car_tank");
-
-    public static final ItemLicensePlate LICENSE_PLATE = new ItemLicensePlate("license_plate");
 
     public static final ItemCarPart OAK_BODY = new ItemCarPart("oak_body", PartRegistry.OAK_BODY);
     public static final ItemCarPart ACACIA_BODY = new ItemCarPart("acacia_body", PartRegistry.ACACIA_BODY);
@@ -127,7 +123,9 @@ public class ModItems {
     public static final ItemCarPart GOLD_LICENSE_PLATE_HOLDER = new ItemCarPart("gold_license_plate_holder", PartRegistry.GOLD_LICENSE_PLATE_HOLDER);
     public static final ItemCarPart EMERALD_LICENSE_PLATE_HOLDER = new ItemCarPart("emerald_license_plate_holder", PartRegistry.EMERALD_LICENSE_PLATE_HOLDER);
 
-
+    public static final ItemCarPart SMALL_TANK = new ItemCarPart("small_tank", PartRegistry.SMALL_TANK);
+    public static final ItemCarPart MEDIUM_TANK = new ItemCarPart("medium_tank", PartRegistry.MEDIUM_TANK);
+    public static final ItemCarPart LARGE_TANK = new ItemCarPart("large_tank", PartRegistry.LARGE_TANK);
 
     public static List<Item> getAll() {
         List<Item> items = new ArrayList<>();

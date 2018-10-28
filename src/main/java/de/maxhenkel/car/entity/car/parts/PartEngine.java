@@ -1,18 +1,22 @@
 package de.maxhenkel.car.entity.car.parts;
 
-import de.maxhenkel.car.sounds.ModSounds;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentTranslation;
+import java.util.List;
 
 public abstract class PartEngine extends Part {
 
     protected float maxSpeed;
     protected float maxReverseSpeed;
     protected float acceleration;
+    protected float fuelEfficiency;
 
-    public PartEngine(float maxSpeed, float maxReverseSpeed, float acceleration) {
+    public PartEngine(float maxSpeed, float maxReverseSpeed, float acceleration, float fuelEfficiency) {
         this.maxSpeed = maxSpeed;
         this.maxReverseSpeed = maxReverseSpeed;
         this.acceleration = acceleration;
+        this.fuelEfficiency = fuelEfficiency;
     }
 
     public abstract SoundEvent getStopSound();
@@ -42,4 +46,33 @@ public abstract class PartEngine extends Part {
     public float getAcceleration() {
         return acceleration;
     }
+
+    public float getFuelEfficiency() {
+        return fuelEfficiency;
+    }
+
+    @Override
+    public boolean validate(List<Part> parts, List<ITextComponent> messages) {
+        if (getAmount(parts, part -> part instanceof PartTank) > 1) {
+            messages.add(new TextComponentTranslation("message.parts.too_many_tanks"));
+        } else if (getAmount(parts, part -> part instanceof PartTank) <= 0) {
+            messages.add(new TextComponentTranslation("message.parts.no_tank"));
+        }
+        return super.validate(parts, messages);
+    }
+    /*
+    Speeds
+
+    transporter 3 -> 27.54
+    transporter 6 -> 35.8
+
+    big wood 3 -> 30.6
+    big wood 6 -> 39.78
+
+    wood 3 -> 32.4
+    wood 6 -> 42.12
+
+    sport 3 -> 36
+    sport 6 -> 46.8
+    */
 }
