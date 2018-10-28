@@ -75,7 +75,7 @@ public class EntityGenericCar extends EntityCarNumberPlateBase {
 
     @Override
     public float getMinRotationSpeed() {
-        PartChassis chassis = getPartByClass(PartChassis.class);
+        PartBody chassis = getPartByClass(PartBody.class);
         if (chassis == null) {
             return 2.0F;
         }
@@ -114,7 +114,7 @@ public class EntityGenericCar extends EntityCarNumberPlateBase {
 
     @Override
     public Vec3d[] getPlayerOffsets() {
-        PartChassis chassis = getPartByClass(PartChassis.class);
+        PartBody chassis = getPartByClass(PartBody.class);
         if (chassis == null) {
             return new Vec3d[]{new Vec3d(0.55D, 0D, -0.38D), new Vec3d(0.55D, 0D, 0.38D)};
         }
@@ -123,7 +123,7 @@ public class EntityGenericCar extends EntityCarNumberPlateBase {
 
     @Override
     public int getPassengerSize() {
-        PartChassis chassis = getPartByClass(PartChassis.class);
+        PartBody chassis = getPartByClass(PartBody.class);
         if (chassis == null) {
             return 0;
         }
@@ -132,7 +132,7 @@ public class EntityGenericCar extends EntityCarNumberPlateBase {
 
     @Override
     public Vec3d getNumberPlateOffset() {
-        PartChassis chassis = getPartByClass(PartChassis.class);
+        PartBody chassis = getPartByClass(PartBody.class);
         if (chassis == null) {
             return new Vec3d(0F, 0F, 0F);
         }
@@ -340,8 +340,8 @@ public class EntityGenericCar extends EntityCarNumberPlateBase {
     }
 
     private void checkBoundingBox(Part part) {
-        if (part instanceof PartChassis) {
-            PartChassis chassis = (PartChassis) part;
+        if (part instanceof PartBody) {
+            PartBody chassis = (PartBody) part;
             setSize(chassis.getWidth(), chassis.getHeight());
         }
     }

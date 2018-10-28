@@ -25,8 +25,8 @@ public class PartWheel extends PartModel {
         Vec3d[] wheelOffsets = new Vec3d[0];
 
         for (Part part : car.getModelParts()) {
-            if (part instanceof PartChassis) {
-                wheelOffsets = ((PartChassis) part).getWheelOffsets();
+            if (part instanceof PartBody) {
+                wheelOffsets = ((PartBody) part).getWheelOffsets();
             }
         }
 

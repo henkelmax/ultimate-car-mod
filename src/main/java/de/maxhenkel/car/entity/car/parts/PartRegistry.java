@@ -25,27 +25,38 @@ public class PartRegistry {
             new ResourceLocation(Main.MODID, "textures/entity/wheel.png")),
             80F
     );
-    public static final Part OAK_CHASSIS = createWoodChassis(new ResourceLocation(Main.MODID, "textures/entity/car_wood_oak.png"));
-    public static final Part BIG_OAK_CHASSIS = createBigWoodChassis(new ResourceLocation(Main.MODID, "textures/entity/car_big_wood_oak.png"));
+    public static final Part OAK_BODY = createWoodBody(new ResourceLocation(Main.MODID, "textures/entity/car_wood_oak.png"));
+    public static final Part ACACIA_BODY = createWoodBody(new ResourceLocation(Main.MODID, "textures/entity/car_wood_acacia.png"));
+    public static final Part DARK_OAK_BODY = createWoodBody(new ResourceLocation(Main.MODID, "textures/entity/car_wood_dark_oak.png"));
+    public static final Part BIRCH_BODY = createWoodBody(new ResourceLocation(Main.MODID, "textures/entity/car_wood_birch.png"));
+    public static final Part JUNGLE_BODY = createWoodBody(new ResourceLocation(Main.MODID, "textures/entity/car_wood_jungle.png"));
+    public static final Part SPRUCE_BODY = createWoodBody(new ResourceLocation(Main.MODID, "textures/entity/car_wood_spruce.png"));
 
-    public static final Part BLACK_SPORT_CHASSIS = createSportChassis(new ResourceLocation(Main.MODID, "textures/entity/car_sport_black.png"));
-    public static final Part BLUE_SPORT_CHASSIS = createSportChassis(new ResourceLocation(Main.MODID, "textures/entity/car_sport_blue.png"));
-    public static final Part BROWN_SPORT_CHASSIS = createSportChassis(new ResourceLocation(Main.MODID, "textures/entity/car_sport_brown.png"));
-    public static final Part CYAN_SPORT_CHASSIS = createSportChassis(new ResourceLocation(Main.MODID, "textures/entity/car_sport_cyane.png"));
-    public static final Part GRAY_SPORT_CHASSIS = createSportChassis(new ResourceLocation(Main.MODID, "textures/entity/car_sport_gray.png"));
-    public static final Part GREEN_SPORT_CHASSIS = createSportChassis(new ResourceLocation(Main.MODID, "textures/entity/car_sport_green.png"));
-    public static final Part LIGHT_BLUE_SPORT_CHASSIS = createSportChassis(new ResourceLocation(Main.MODID, "textures/entity/car_sport_light_blue.png"));
-    public static final Part LIME_SPORT_CHASSIS = createSportChassis(new ResourceLocation(Main.MODID, "textures/entity/car_sport_lime.png"));
-    public static final Part MAGENTA_SPORT_CHASSIS = createSportChassis(new ResourceLocation(Main.MODID, "textures/entity/car_sport_magenta.png"));
-    public static final Part ORANGE_SPORT_CHASSIS = createSportChassis(new ResourceLocation(Main.MODID, "textures/entity/car_sport_orange.png"));
-    public static final Part PINK_SPORT_CHASSIS = createSportChassis(new ResourceLocation(Main.MODID, "textures/entity/car_sport_pink.png"));
-    public static final Part PURPLE_SPORT_CHASSIS = createSportChassis(new ResourceLocation(Main.MODID, "textures/entity/car_sport_purple.png"));
-    public static final Part RED_SPORT_CHASSIS = createSportChassis(new ResourceLocation(Main.MODID, "textures/entity/car_sport_red.png"));
-    public static final Part SILVER_SPORT_CHASSIS = createSportChassis(new ResourceLocation(Main.MODID, "textures/entity/car_sport_silver.png"));
-    public static final Part WHITE_SPORT_CHASSIS = createSportChassis(new ResourceLocation(Main.MODID, "textures/entity/car_sport_white.png"));
-    public static final Part YELLOW_SPORT_CHASSIS = createSportChassis(new ResourceLocation(Main.MODID, "textures/entity/car_sport_yellow.png"));
+    public static final Part BIG_OAK_BODY = createBigWoodBody(new ResourceLocation(Main.MODID, "textures/entity/car_big_wood_oak.png"));
+    public static final Part BIG_ACACIA_BODY = createBigWoodBody(new ResourceLocation(Main.MODID, "textures/entity/car_big_wood_acacia.png"));
+    public static final Part BIG_DARK_OAK_BODY = createBigWoodBody(new ResourceLocation(Main.MODID, "textures/entity/car_big_wood_dark_oak.png"));
+    public static final Part BIG_BIRCH_BODY = createBigWoodBody(new ResourceLocation(Main.MODID, "textures/entity/car_big_wood_birch.png"));
+    public static final Part BIG_JUNGLE_BODY = createBigWoodBody(new ResourceLocation(Main.MODID, "textures/entity/car_big_wood_jungle.png"));
+    public static final Part BIG_SPRUCE_BODY = createBigWoodBody(new ResourceLocation(Main.MODID, "textures/entity/car_big_wood_spruce.png"));
 
-    public static final Part WHITE_TRANSPORTER_CHASSIS = createTransporterChassis(new ResourceLocation(Main.MODID, "textures/entity/car_transporter_white.png"));
+    public static final Part BLACK_SPORT_BODY = createSportBody(new ResourceLocation(Main.MODID, "textures/entity/car_sport_black.png"));
+    public static final Part BLUE_SPORT_BODY = createSportBody(new ResourceLocation(Main.MODID, "textures/entity/car_sport_blue.png"));
+    public static final Part BROWN_SPORT_BODY = createSportBody(new ResourceLocation(Main.MODID, "textures/entity/car_sport_brown.png"));
+    public static final Part CYAN_SPORT_BODY = createSportBody(new ResourceLocation(Main.MODID, "textures/entity/car_sport_cyane.png"));
+    public static final Part GRAY_SPORT_BODY = createSportBody(new ResourceLocation(Main.MODID, "textures/entity/car_sport_gray.png"));
+    public static final Part GREEN_SPORT_BODY = createSportBody(new ResourceLocation(Main.MODID, "textures/entity/car_sport_green.png"));
+    public static final Part LIGHT_BLUE_SPORT_BODY = createSportBody(new ResourceLocation(Main.MODID, "textures/entity/car_sport_light_blue.png"));
+    public static final Part LIME_SPORT_BODY = createSportBody(new ResourceLocation(Main.MODID, "textures/entity/car_sport_lime.png"));
+    public static final Part MAGENTA_SPORT_BODY = createSportBody(new ResourceLocation(Main.MODID, "textures/entity/car_sport_magenta.png"));
+    public static final Part ORANGE_SPORT_BODY = createSportBody(new ResourceLocation(Main.MODID, "textures/entity/car_sport_orange.png"));
+    public static final Part PINK_SPORT_BODY = createSportBody(new ResourceLocation(Main.MODID, "textures/entity/car_sport_pink.png"));
+    public static final Part PURPLE_SPORT_BODY = createSportBody(new ResourceLocation(Main.MODID, "textures/entity/car_sport_purple.png"));
+    public static final Part RED_SPORT_BODY = createSportBody(new ResourceLocation(Main.MODID, "textures/entity/car_sport_red.png"));
+    public static final Part SILVER_SPORT_BODY = createSportBody(new ResourceLocation(Main.MODID, "textures/entity/car_sport_silver.png"));
+    public static final Part WHITE_SPORT_BODY = createSportBody(new ResourceLocation(Main.MODID, "textures/entity/car_sport_white.png"));
+    public static final Part YELLOW_SPORT_BODY = createSportBody(new ResourceLocation(Main.MODID, "textures/entity/car_sport_yellow.png"));
+
+    public static final Part WHITE_TRANSPORTER_BODY = createTransporterBody(new ResourceLocation(Main.MODID, "textures/entity/car_transporter_white.png"));
 
     public static final Part OAK_BUMPER = createWoodBumper(new ResourceLocation(Main.MODID, "textures/entity/oak_wood.png"));
 
@@ -58,28 +69,28 @@ public class PartRegistry {
 
         partRegistry.put("engine_6_cylinder", new PartEngine6Cylinder(0.65F, 0.2F, 0.04F));
 
-        partRegistry.put("oak_chassis", createWoodChassis(new ResourceLocation(Main.MODID, "textures/entity/car_wood_oak.png")));
+        partRegistry.put("oak_body", createWoodBody(new ResourceLocation(Main.MODID, "textures/entity/car_wood_oak.png")));
 
-        partRegistry.put("big_oak_chassis", createBigWoodChassis(new ResourceLocation(Main.MODID, "textures/entity/car_big_wood_oak.png")));
+        partRegistry.put("big_oak_body", createBigWoodBody(new ResourceLocation(Main.MODID, "textures/entity/car_big_wood_oak.png")));
 
-        partRegistry.put("black_sport_chassis", createSportChassis(new ResourceLocation(Main.MODID, "textures/entity/car_sport_black.png")));
-        partRegistry.put("blue_sport_chassis", createSportChassis(new ResourceLocation(Main.MODID, "textures/entity/car_sport_blue.png")));
-        partRegistry.put("brown_sport_chassis", createSportChassis(new ResourceLocation(Main.MODID, "textures/entity/car_sport_brown.png")));
-        partRegistry.put("cyan_sport_chassis", createSportChassis(new ResourceLocation(Main.MODID, "textures/entity/car_sport_cyane.png")));
-        partRegistry.put("gray_sport_chassis", createSportChassis(new ResourceLocation(Main.MODID, "textures/entity/car_sport_gray.png")));
-        partRegistry.put("green_sport_chassis", createSportChassis(new ResourceLocation(Main.MODID, "textures/entity/car_sport_green.png")));
-        partRegistry.put("light_blue_sport_chassis", createSportChassis(new ResourceLocation(Main.MODID, "textures/entity/car_sport_light_blue.png")));
-        partRegistry.put("lime_sport_chassis", createSportChassis(new ResourceLocation(Main.MODID, "textures/entity/car_sport_lime.png")));
-        partRegistry.put("magenta_sport_chassis", createSportChassis(new ResourceLocation(Main.MODID, "textures/entity/car_sport_magenta.png")));
-        partRegistry.put("orange_sport_chassis", createSportChassis(new ResourceLocation(Main.MODID, "textures/entity/car_sport_orange.png")));
-        partRegistry.put("pink_sport_chassis", createSportChassis(new ResourceLocation(Main.MODID, "textures/entity/car_sport_pink.png")));
-        partRegistry.put("purple_sport_chassis", createSportChassis(new ResourceLocation(Main.MODID, "textures/entity/car_sport_purple.png")));
-        partRegistry.put("red_sport_chassis", createSportChassis(new ResourceLocation(Main.MODID, "textures/entity/car_sport_red.png")));
-        partRegistry.put("silver_sport_chassis", createSportChassis(new ResourceLocation(Main.MODID, "textures/entity/car_sport_silver.png")));
-        partRegistry.put("white_sport_chassis", createSportChassis(new ResourceLocation(Main.MODID, "textures/entity/car_sport_white.png")));
-        partRegistry.put("yellow_sport_chassis", createSportChassis(new ResourceLocation(Main.MODID, "textures/entity/car_sport_yellow.png")));
+        partRegistry.put("black_sport_body", createSportBody(new ResourceLocation(Main.MODID, "textures/entity/car_sport_black.png")));
+        partRegistry.put("blue_sport_body", createSportBody(new ResourceLocation(Main.MODID, "textures/entity/car_sport_blue.png")));
+        partRegistry.put("brown_sport_body", createSportBody(new ResourceLocation(Main.MODID, "textures/entity/car_sport_brown.png")));
+        partRegistry.put("cyan_sport_body", createSportBody(new ResourceLocation(Main.MODID, "textures/entity/car_sport_cyane.png")));
+        partRegistry.put("gray_sport_body", createSportBody(new ResourceLocation(Main.MODID, "textures/entity/car_sport_gray.png")));
+        partRegistry.put("green_sport_body", createSportBody(new ResourceLocation(Main.MODID, "textures/entity/car_sport_green.png")));
+        partRegistry.put("light_blue_sport_body", createSportBody(new ResourceLocation(Main.MODID, "textures/entity/car_sport_light_blue.png")));
+        partRegistry.put("lime_sport_body", createSportBody(new ResourceLocation(Main.MODID, "textures/entity/car_sport_lime.png")));
+        partRegistry.put("magenta_sport_body", createSportBody(new ResourceLocation(Main.MODID, "textures/entity/car_sport_magenta.png")));
+        partRegistry.put("orange_sport_body", createSportBody(new ResourceLocation(Main.MODID, "textures/entity/car_sport_orange.png")));
+        partRegistry.put("pink_sport_body", createSportBody(new ResourceLocation(Main.MODID, "textures/entity/car_sport_pink.png")));
+        partRegistry.put("purple_sport_body", createSportBody(new ResourceLocation(Main.MODID, "textures/entity/car_sport_purple.png")));
+        partRegistry.put("red_sport_body", createSportBody(new ResourceLocation(Main.MODID, "textures/entity/car_sport_red.png")));
+        partRegistry.put("silver_sport_body", createSportBody(new ResourceLocation(Main.MODID, "textures/entity/car_sport_silver.png")));
+        partRegistry.put("white_sport_body", createSportBody(new ResourceLocation(Main.MODID, "textures/entity/car_sport_white.png")));
+        partRegistry.put("yellow_sport_body", createSportBody(new ResourceLocation(Main.MODID, "textures/entity/car_sport_yellow.png")));
 
-        partRegistry.put("white_transporter_chassis", createTransporterChassis(new ResourceLocation(Main.MODID, "textures/entity/car_transporter_white.png")));
+        partRegistry.put("white_transporter_body", createTransporterBody(new ResourceLocation(Main.MODID, "textures/entity/car_transporter_white.png")));
 
         partRegistry.put("wheel", new PartWheel(new OBJModel(
                 new ResourceLocation(Main.MODID, "models/entity/wheel.obj"),
@@ -111,9 +122,9 @@ public class PartRegistry {
         );
     }
 
-    private static Part createWoodChassis(ResourceLocation texture) {
-        return new PartChassisWood(new OBJModel(
-                new ResourceLocation(Main.MODID, "models/entity/wood_chassis.obj"),
+    private static Part createWoodBody(ResourceLocation texture) {
+        return new PartBodyWood(new OBJModel(
+                new ResourceLocation(Main.MODID, "models/entity/wood_body.obj"),
                 texture),
                 new Vec3d(0D, 4D / 16D, 0D),
                 new Vec3d[]{
@@ -132,9 +143,9 @@ public class PartRegistry {
         );
     }
 
-    private static Part createBigWoodChassis(ResourceLocation texture) {
-        return new PartChassisWood(new OBJModel(
-                new ResourceLocation(Main.MODID, "models/entity/wood_chassis_big.obj"),
+    private static Part createBigWoodBody(ResourceLocation texture) {
+        return new PartBodyWood(new OBJModel(
+                new ResourceLocation(Main.MODID, "models/entity/wood_body_big.obj"),
                 texture),
                 new Vec3d(0D, 4D / 16D, 0D),
                 new Vec3d[]{
@@ -153,9 +164,9 @@ public class PartRegistry {
         );
     }
 
-    private static Part createSportChassis(ResourceLocation texture) {
-        return new PartChassis(new OBJModel(
-                new ResourceLocation(Main.MODID, "models/entity/sport_chassis.obj"),
+    private static Part createSportBody(ResourceLocation texture) {
+        return new PartBody(new OBJModel(
+                new ResourceLocation(Main.MODID, "models/entity/sport_body.obj"),
                 texture),
                 new Vec3d(0D, 4D / 16D, 0D),
                 new Vec3d[]{
@@ -174,9 +185,9 @@ public class PartRegistry {
         );
     }
 
-    private static Part createTransporterChassis(ResourceLocation texture) {
-        return new PartChassisTransporter(new OBJModel(
-                new ResourceLocation(Main.MODID, "models/entity/transporter_chassis.obj"),
+    private static Part createTransporterBody(ResourceLocation texture) {
+        return new PartBodyTransporter(new OBJModel(
+                new ResourceLocation(Main.MODID, "models/entity/transporter_body.obj"),
                 texture),
                 new Vec3d(0D, 4D / 16D, 0D),
                 new Vec3d[]{
@@ -208,12 +219,12 @@ public class PartRegistry {
     }
 
     public static boolean isValid(List<Part> modelParts, List<ITextComponent> messages) {
-        int chassisAmount = Part.getAmount(modelParts, part -> part instanceof PartChassis);
-        if (chassisAmount <= 0) {
-            messages.add(new TextComponentTranslation("message.parts.no_chassis"));
+        int bodyAmount = Part.getAmount(modelParts, part -> part instanceof PartBody);
+        if (bodyAmount <= 0) {
+            messages.add(new TextComponentTranslation("message.parts.no_body"));
             return false;
-        } else if (chassisAmount > 1) {
-            messages.add(new TextComponentTranslation("message.parts.too_many_chassis"));
+        } else if (bodyAmount > 1) {
+            messages.add(new TextComponentTranslation("message.parts.too_many_body"));
             return false;
         }
 

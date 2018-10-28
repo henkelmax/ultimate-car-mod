@@ -18,7 +18,7 @@ public class PartBumper extends PartModel {
     @Override
     public boolean validate(List<Part> parts, List<ITextComponent> messages) {
 
-        if (Part.getAmount(parts, part -> part instanceof PartChassisWood) != 1) {
+        if (Part.getAmount(parts, part -> part instanceof PartBodyWood) != 1) {
             messages.add(new TextComponentTranslation("message.parts.no_chassis_for_bumper"));
             return false;
         }

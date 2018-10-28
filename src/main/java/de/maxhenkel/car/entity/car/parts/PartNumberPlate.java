@@ -24,7 +24,7 @@ public class PartNumberPlate extends PartModel {
 
     @Override
     public List<OBJModelInstance> getInstances(EntityGenericCar car) {
-        PartChassis chassis = car.getPartByClass(PartChassis.class);
+        PartBody chassis = car.getPartByClass(PartBody.class);
 
         if (chassis == null) {
             return super.getInstances(car);

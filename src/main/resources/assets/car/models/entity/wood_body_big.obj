@@ -1,6 +1,6 @@
 # Blender v2.79 (sub 0) OBJ File: ''
 # www.blender.org
-mtllib wood_chassis_big.mtl
+mtllib wood_body_big.mtl
 o Import.006
 v -0.687500 -0.848958 0.500000
 v 0.687500 -0.848958 0.562500

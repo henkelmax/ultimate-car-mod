@@ -42,13 +42,23 @@ public class ModItems {
     public static final ItemCraftingComponent CAR_TANK = new ItemCraftingComponent("car_tank");
 
 
-    public static final ItemCarPart OAK_CHASSIS = new ItemCarPart("oak_chassis", PartRegistry.OAK_CHASSIS);
+    public static final ItemCarPart OAK_BODY = new ItemCarPart("oak_body", PartRegistry.OAK_BODY);
+    public static final ItemCarPart ACACIA_BODY = new ItemCarPart("acacia_body", PartRegistry.ACACIA_BODY);
+    public static final ItemCarPart DARK_OAK_BODY = new ItemCarPart("dark_oak_body", PartRegistry.DARK_OAK_BODY);
+    public static final ItemCarPart BIRCH_BODY = new ItemCarPart("birch_body", PartRegistry.BIRCH_BODY);
+    public static final ItemCarPart JUNGLE_BODY = new ItemCarPart("jungle_body", PartRegistry.JUNGLE_BODY);
+    public static final ItemCarPart SPRUCE_BODY = new ItemCarPart("spruce_body", PartRegistry.SPRUCE_BODY);
 
-    public static final ItemCarPart BIG_OAK_CHASSIS = new ItemCarPart("big_oak_chassis", PartRegistry.BIG_OAK_CHASSIS);
+    public static final ItemCarPart BIG_OAK_BODY = new ItemCarPart("big_oak_body", PartRegistry.BIG_OAK_BODY);
+    public static final ItemCarPart BIG_ACACIA_BODY = new ItemCarPart("big_acacia_body", PartRegistry.BIG_ACACIA_BODY);
+    public static final ItemCarPart BIG_DARK_OAK_BODY = new ItemCarPart("big_dark_oak_body", PartRegistry.BIG_DARK_OAK_BODY);
+    public static final ItemCarPart BIG_BIRCH_BODY = new ItemCarPart("big_birch_body", PartRegistry.BIG_BIRCH_BODY);
+    public static final ItemCarPart BIG_JUNGLE_BODY = new ItemCarPart("big_jungle_body", PartRegistry.BIG_JUNGLE_BODY);
+    public static final ItemCarPart BIG_SPRUCE_BODY = new ItemCarPart("big_spruce_body", PartRegistry.BIG_SPRUCE_BODY);
 
-    public static final ItemCarPart WHITE_TRANSPORTER_CHASSIS = new ItemCarPart("white_transporter_chassis", PartRegistry.WHITE_TRANSPORTER_CHASSIS);
+    public static final ItemCarPart WHITE_TRANSPORTER_BODY = new ItemCarPart("white_transporter_body", PartRegistry.WHITE_TRANSPORTER_BODY);
 
-    public static final ItemCarPart WHITE_SPORT_CHASSIS = new ItemCarPart("white_sport_chassis", PartRegistry.WHITE_SPORT_CHASSIS);
+    public static final ItemCarPart WHITE_SPORT_BODY = new ItemCarPart("white_sport_body", PartRegistry.WHITE_SPORT_BODY);
 
     public static final ItemCarPart OAK_BUMPER = new ItemCarPart("oak_bumper", PartRegistry.OAK_BUMPER);
 

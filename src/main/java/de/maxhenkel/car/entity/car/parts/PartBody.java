@@ -7,7 +7,7 @@ import net.minecraft.util.text.TextComponentTranslation;
 
 import java.util.List;
 
-public class PartChassis extends PartModel {
+public class PartBody extends PartModel {
 
     protected Vec3d[] wheelOffsets;
     protected Vec3d[] playerOffsets;
@@ -16,7 +16,7 @@ public class PartChassis extends PartModel {
     protected float height;
     protected float minRotationSpeed;
 
-    public PartChassis(OBJModel model, Vec3d offset, Vec3d[] wheelOffsets, Vec3d[] playerOffsets, Vec3d numberPlateOffset, float width, float height, float minRotationSpeed) {
+    public PartBody(OBJModel model, Vec3d offset, Vec3d[] wheelOffsets, Vec3d[] playerOffsets, Vec3d numberPlateOffset, float width, float height, float minRotationSpeed) {
         super(model, offset);
         this.wheelOffsets = wheelOffsets;
         this.playerOffsets = playerOffsets;
