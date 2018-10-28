@@ -42,7 +42,7 @@ public class PartRegistry {
     public static final Part BLACK_SPORT_BODY = createSportBody(new ResourceLocation(Main.MODID, "textures/entity/car_sport_black.png"));
     public static final Part BLUE_SPORT_BODY = createSportBody(new ResourceLocation(Main.MODID, "textures/entity/car_sport_blue.png"));
     public static final Part BROWN_SPORT_BODY = createSportBody(new ResourceLocation(Main.MODID, "textures/entity/car_sport_brown.png"));
-    public static final Part CYAN_SPORT_BODY = createSportBody(new ResourceLocation(Main.MODID, "textures/entity/car_sport_cyane.png"));
+    public static final Part CYAN_SPORT_BODY = createSportBody(new ResourceLocation(Main.MODID, "textures/entity/car_sport_cyan.png"));
     public static final Part GRAY_SPORT_BODY = createSportBody(new ResourceLocation(Main.MODID, "textures/entity/car_sport_gray.png"));
     public static final Part GREEN_SPORT_BODY = createSportBody(new ResourceLocation(Main.MODID, "textures/entity/car_sport_green.png"));
     public static final Part LIGHT_BLUE_SPORT_BODY = createSportBody(new ResourceLocation(Main.MODID, "textures/entity/car_sport_light_blue.png"));
@@ -56,7 +56,22 @@ public class PartRegistry {
     public static final Part WHITE_SPORT_BODY = createSportBody(new ResourceLocation(Main.MODID, "textures/entity/car_sport_white.png"));
     public static final Part YELLOW_SPORT_BODY = createSportBody(new ResourceLocation(Main.MODID, "textures/entity/car_sport_yellow.png"));
 
+    public static final Part BLACK_TRANSPORTER_BODY = createTransporterBody(new ResourceLocation(Main.MODID, "textures/entity/car_transporter_black.png"));
+    public static final Part BLUE_TRANSPORTER_BODY = createTransporterBody(new ResourceLocation(Main.MODID, "textures/entity/car_transporter_blue.png"));
+    public static final Part BROWN_TRANSPORTER_BODY = createTransporterBody(new ResourceLocation(Main.MODID, "textures/entity/car_transporter_brown.png"));
+    public static final Part CYAN_TRANSPORTER_BODY = createTransporterBody(new ResourceLocation(Main.MODID, "textures/entity/car_transporter_cyan.png"));
+    public static final Part GRAY_TRANSPORTER_BODY = createTransporterBody(new ResourceLocation(Main.MODID, "textures/entity/car_transporter_gray.png"));
+    public static final Part GREEN_TRANSPORTER_BODY = createTransporterBody(new ResourceLocation(Main.MODID, "textures/entity/car_transporter_green.png"));
+    public static final Part LIGHT_BLUE_TRANSPORTER_BODY = createTransporterBody(new ResourceLocation(Main.MODID, "textures/entity/car_transporter_light_blue.png"));
+    public static final Part LIME_TRANSPORTER_BODY = createTransporterBody(new ResourceLocation(Main.MODID, "textures/entity/car_transporter_lime.png"));
+    public static final Part MAGENTA_TRANSPORTER_BODY = createTransporterBody(new ResourceLocation(Main.MODID, "textures/entity/car_transporter_magenta.png"));
+    public static final Part ORANGE_TRANSPORTER_BODY = createTransporterBody(new ResourceLocation(Main.MODID, "textures/entity/car_transporter_orange.png"));
+    public static final Part PINK_TRANSPORTER_BODY = createTransporterBody(new ResourceLocation(Main.MODID, "textures/entity/car_transporter_pink.png"));
+    public static final Part PURPLE_TRANSPORTER_BODY = createTransporterBody(new ResourceLocation(Main.MODID, "textures/entity/car_transporter_purple.png"));
+    public static final Part RED_TRANSPORTER_BODY = createTransporterBody(new ResourceLocation(Main.MODID, "textures/entity/car_transporter_red.png"));
+    public static final Part SILVER_TRANSPORTER_BODY = createTransporterBody(new ResourceLocation(Main.MODID, "textures/entity/car_transporter_silver.png"));
     public static final Part WHITE_TRANSPORTER_BODY = createTransporterBody(new ResourceLocation(Main.MODID, "textures/entity/car_transporter_white.png"));
+    public static final Part YELLOW_TRANSPORTER_BODY = createTransporterBody(new ResourceLocation(Main.MODID, "textures/entity/car_transporter_yellow.png"));
 
     public static final Part OAK_BUMPER = createWoodBumper(new ResourceLocation(Main.MODID, "textures/entity/oak_wood.png"));
 

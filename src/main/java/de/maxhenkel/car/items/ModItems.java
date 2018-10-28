@@ -56,9 +56,39 @@ public class ModItems {
     public static final ItemCarPart BIG_JUNGLE_BODY = new ItemCarPart("big_jungle_body", PartRegistry.BIG_JUNGLE_BODY);
     public static final ItemCarPart BIG_SPRUCE_BODY = new ItemCarPart("big_spruce_body", PartRegistry.BIG_SPRUCE_BODY);
 
+    public static final ItemCarPart BLACK_TRANSPORTER_BODY = new ItemCarPart("black_transporter_body", PartRegistry.BLACK_TRANSPORTER_BODY);
+    public static final ItemCarPart BLUE_TRANSPORTER_BODY = new ItemCarPart("blue_transporter_body", PartRegistry.BLUE_TRANSPORTER_BODY);
+    public static final ItemCarPart BROWN_TRANSPORTER_BODY = new ItemCarPart("brown_transporter_body", PartRegistry.BROWN_TRANSPORTER_BODY);
+    public static final ItemCarPart CYAN_TRANSPORTER_BODY = new ItemCarPart("cyan_transporter_body", PartRegistry.CYAN_TRANSPORTER_BODY);
+    public static final ItemCarPart GRAY_TRANSPORTER_BODY = new ItemCarPart("gray_transporter_body", PartRegistry.GRAY_TRANSPORTER_BODY);
+    public static final ItemCarPart GREEN_TRANSPORTER_BODY = new ItemCarPart("green_transporter_body", PartRegistry.GREEN_TRANSPORTER_BODY);
+    public static final ItemCarPart LIGHT_BLUE_TRANSPORTER_BODY = new ItemCarPart("light_blue_transporter_body", PartRegistry.LIGHT_BLUE_TRANSPORTER_BODY);
+    public static final ItemCarPart LIME_TRANSPORTER_BODY = new ItemCarPart("lime_transporter_body", PartRegistry.LIME_TRANSPORTER_BODY);
+    public static final ItemCarPart MAGENTA_TRANSPORTER_BODY = new ItemCarPart("magenta_transporter_body", PartRegistry.MAGENTA_TRANSPORTER_BODY);
+    public static final ItemCarPart ORANGE_TRANSPORTER_BODY = new ItemCarPart("orange_transporter_body", PartRegistry.ORANGE_TRANSPORTER_BODY);
+    public static final ItemCarPart PINK_TRANSPORTER_BODY = new ItemCarPart("pink_transporter_body", PartRegistry.PINK_TRANSPORTER_BODY);
+    public static final ItemCarPart PURPLE_TRANSPORTER_BODY = new ItemCarPart("purple_transporter_body", PartRegistry.PURPLE_TRANSPORTER_BODY);
+    public static final ItemCarPart RED_TRANSPORTER_BODY = new ItemCarPart("red_transporter_body", PartRegistry.RED_TRANSPORTER_BODY);
+    public static final ItemCarPart SILVER_TRANSPORTER_BODY = new ItemCarPart("silver_transporter_body", PartRegistry.SILVER_TRANSPORTER_BODY);
     public static final ItemCarPart WHITE_TRANSPORTER_BODY = new ItemCarPart("white_transporter_body", PartRegistry.WHITE_TRANSPORTER_BODY);
+    public static final ItemCarPart YELLOW_TRANSPORTER_BODY = new ItemCarPart("yellow_transporter_body", PartRegistry.YELLOW_TRANSPORTER_BODY);
 
+    public static final ItemCarPart BLACK_SPORT_BODY = new ItemCarPart("black_sport_body", PartRegistry.BLACK_SPORT_BODY);
+    public static final ItemCarPart BLUE_SPORT_BODY = new ItemCarPart("blue_sport_body", PartRegistry.BLUE_SPORT_BODY);
+    public static final ItemCarPart BROWN_SPORT_BODY = new ItemCarPart("brown_sport_body", PartRegistry.BROWN_SPORT_BODY);
+    public static final ItemCarPart CYAN_SPORT_BODY = new ItemCarPart("cyan_sport_body", PartRegistry.CYAN_SPORT_BODY);
+    public static final ItemCarPart GRAY_SPORT_BODY = new ItemCarPart("gray_sport_body", PartRegistry.GRAY_SPORT_BODY);
+    public static final ItemCarPart GREEN_SPORT_BODY = new ItemCarPart("green_sport_body", PartRegistry.GREEN_SPORT_BODY);
+    public static final ItemCarPart LIGHT_BLUE_SPORT_BODY = new ItemCarPart("light_blue_sport_body", PartRegistry.LIGHT_BLUE_SPORT_BODY);
+    public static final ItemCarPart LIME_SPORT_BODY = new ItemCarPart("lime_sport_body", PartRegistry.LIME_SPORT_BODY);
+    public static final ItemCarPart MAGENTA_SPORT_BODY = new ItemCarPart("magenta_sport_body", PartRegistry.MAGENTA_SPORT_BODY);
+    public static final ItemCarPart ORANGE_SPORT_BODY = new ItemCarPart("orange_sport_body", PartRegistry.ORANGE_SPORT_BODY);
+    public static final ItemCarPart PINK_SPORT_BODY = new ItemCarPart("pink_sport_body", PartRegistry.PINK_SPORT_BODY);
+    public static final ItemCarPart PURPLE_SPORT_BODY = new ItemCarPart("purple_sport_body", PartRegistry.PURPLE_SPORT_BODY);
+    public static final ItemCarPart RED_SPORT_BODY = new ItemCarPart("red_sport_body", PartRegistry.RED_SPORT_BODY);
+    public static final ItemCarPart SILVER_SPORT_BODY = new ItemCarPart("silver_sport_body", PartRegistry.SILVER_SPORT_BODY);
     public static final ItemCarPart WHITE_SPORT_BODY = new ItemCarPart("white_sport_body", PartRegistry.WHITE_SPORT_BODY);
+    public static final ItemCarPart YELLOW_SPORT_BODY = new ItemCarPart("yellow_sport_body", PartRegistry.YELLOW_SPORT_BODY);
 
     public static final ItemCarPart OAK_BUMPER = new ItemCarPart("oak_bumper", PartRegistry.OAK_BUMPER);
 
