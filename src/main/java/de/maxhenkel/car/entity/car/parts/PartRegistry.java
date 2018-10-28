@@ -8,7 +8,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentTranslation;
-
 import java.util.*;
 
 public class PartRegistry {
@@ -82,6 +81,23 @@ public class PartRegistry {
     public static final Part WHITE_TRANSPORTER_BODY = createTransporterBody(new ResourceLocation(Main.MODID, "textures/entity/car_transporter_white.png"));
     public static final Part YELLOW_TRANSPORTER_BODY = createTransporterBody(new ResourceLocation(Main.MODID, "textures/entity/car_transporter_yellow.png"));
 
+    public static final Part BLACK_CONTAINER = createContainer(new ResourceLocation(Main.MODID, "textures/entity/car_transporter_black.png"));
+    public static final Part BLUE_CONTAINER = createContainer(new ResourceLocation(Main.MODID, "textures/entity/car_transporter_blue.png"));
+    public static final Part BROWN_CONTAINER = createContainer(new ResourceLocation(Main.MODID, "textures/entity/car_transporter_brown.png"));
+    public static final Part CYAN_CONTAINER = createContainer(new ResourceLocation(Main.MODID, "textures/entity/car_transporter_cyan.png"));
+    public static final Part GRAY_CONTAINER = createContainer(new ResourceLocation(Main.MODID, "textures/entity/car_transporter_gray.png"));
+    public static final Part GREEN_CONTAINER = createContainer(new ResourceLocation(Main.MODID, "textures/entity/car_transporter_green.png"));
+    public static final Part LIGHT_BLUE_CONTAINER = createContainer(new ResourceLocation(Main.MODID, "textures/entity/car_transporter_light_blue.png"));
+    public static final Part LIME_CONTAINER = createContainer(new ResourceLocation(Main.MODID, "textures/entity/car_transporter_lime.png"));
+    public static final Part MAGENTA_CONTAINER = createContainer(new ResourceLocation(Main.MODID, "textures/entity/car_transporter_magenta.png"));
+    public static final Part ORANGE_CONTAINER = createContainer(new ResourceLocation(Main.MODID, "textures/entity/car_transporter_orange.png"));
+    public static final Part PINK_CONTAINER = createContainer(new ResourceLocation(Main.MODID, "textures/entity/car_transporter_pink.png"));
+    public static final Part PURPLE_CONTAINER = createContainer(new ResourceLocation(Main.MODID, "textures/entity/car_transporter_purple.png"));
+    public static final Part RED_CONTAINER = createContainer(new ResourceLocation(Main.MODID, "textures/entity/car_transporter_red.png"));
+    public static final Part SILVER_CONTAINER = createContainer(new ResourceLocation(Main.MODID, "textures/entity/car_transporter_silver.png"));
+    public static final Part WHITE_CONTAINER = createContainer(new ResourceLocation(Main.MODID, "textures/entity/car_transporter_white.png"));
+    public static final Part YELLOW_CONTAINER = createContainer(new ResourceLocation(Main.MODID, "textures/entity/car_transporter_yellow.png"));
+
     public static final Part OAK_BUMPER = createWoodBumper(new ResourceLocation(Main.MODID, "textures/entity/oak_wood.png"));
     public static final Part ACACIA_BUMPER = createWoodBumper(new ResourceLocation(Main.MODID, "textures/entity/acacia_wood.png"));
     public static final Part DARK_OAK_BUMPER = createWoodBumper(new ResourceLocation(Main.MODID, "textures/entity/birch_wood.png"));
@@ -89,57 +105,12 @@ public class PartRegistry {
     public static final Part JUNGLE_BUMPER = createWoodBumper(new ResourceLocation(Main.MODID, "textures/entity/jungle_wood.png"));
     public static final Part SPRUCE_BUMPER = createWoodBumper(new ResourceLocation(Main.MODID, "textures/entity/spruce_wood.png"));
 
-
-    private static Map<String, Part> partRegistry = new HashMap<>();
-
-    static {
-
-        /*partRegistry.put("engine_3_cylinder", new PartEngine3Cylinder(0.5F, 0.2F, 0.032F));
-
-        partRegistry.put("engine_6_cylinder", new PartEngine6Cylinder(0.65F, 0.2F, 0.04F));
-
-        partRegistry.put("oak_body", createWoodBody(new ResourceLocation(Main.MODID, "textures/entity/car_wood_oak.png")));
-
-        partRegistry.put("big_oak_body", createBigWoodBody(new ResourceLocation(Main.MODID, "textures/entity/car_big_wood_oak.png")));
-
-        partRegistry.put("black_sport_body", createSportBody(new ResourceLocation(Main.MODID, "textures/entity/car_sport_black.png")));
-        partRegistry.put("blue_sport_body", createSportBody(new ResourceLocation(Main.MODID, "textures/entity/car_sport_blue.png")));
-        partRegistry.put("brown_sport_body", createSportBody(new ResourceLocation(Main.MODID, "textures/entity/car_sport_brown.png")));
-        partRegistry.put("cyan_sport_body", createSportBody(new ResourceLocation(Main.MODID, "textures/entity/car_sport_cyane.png")));
-        partRegistry.put("gray_sport_body", createSportBody(new ResourceLocation(Main.MODID, "textures/entity/car_sport_gray.png")));
-        partRegistry.put("green_sport_body", createSportBody(new ResourceLocation(Main.MODID, "textures/entity/car_sport_green.png")));
-        partRegistry.put("light_blue_sport_body", createSportBody(new ResourceLocation(Main.MODID, "textures/entity/car_sport_light_blue.png")));
-        partRegistry.put("lime_sport_body", createSportBody(new ResourceLocation(Main.MODID, "textures/entity/car_sport_lime.png")));
-        partRegistry.put("magenta_sport_body", createSportBody(new ResourceLocation(Main.MODID, "textures/entity/car_sport_magenta.png")));
-        partRegistry.put("orange_sport_body", createSportBody(new ResourceLocation(Main.MODID, "textures/entity/car_sport_orange.png")));
-        partRegistry.put("pink_sport_body", createSportBody(new ResourceLocation(Main.MODID, "textures/entity/car_sport_pink.png")));
-        partRegistry.put("purple_sport_body", createSportBody(new ResourceLocation(Main.MODID, "textures/entity/car_sport_purple.png")));
-        partRegistry.put("red_sport_body", createSportBody(new ResourceLocation(Main.MODID, "textures/entity/car_sport_red.png")));
-        partRegistry.put("silver_sport_body", createSportBody(new ResourceLocation(Main.MODID, "textures/entity/car_sport_silver.png")));
-        partRegistry.put("white_sport_body", createSportBody(new ResourceLocation(Main.MODID, "textures/entity/car_sport_white.png")));
-        partRegistry.put("yellow_sport_body", createSportBody(new ResourceLocation(Main.MODID, "textures/entity/car_sport_yellow.png")));
-
-        partRegistry.put("white_transporter_body", createTransporterBody(new ResourceLocation(Main.MODID, "textures/entity/car_transporter_white.png")));
-
-        partRegistry.put("wheel", new PartWheel(new OBJModel(
-                new ResourceLocation(Main.MODID, "models/entity/wheel.obj"),
-                new ResourceLocation(Main.MODID, "textures/entity/wheel.png")),
-                80F
-        ));
-
-        partRegistry.put("oak_number_plate", new PartLicensePlateHolder(new OBJModel(
-                new ResourceLocation(Main.MODID, "models/entity/wood_number_plate.obj"),
-                new ResourceLocation(Main.MODID, "textures/entity/oak_wood.png")),
-                MathTools.rotate(90F, 0F, 0F, 1F),
-                new Vec3d(0D, -0.5D / 16D, -0.5D / 16D - 0.001D)
-        ));
-
-        partRegistry.put("oak_bumper", new PartBumper(new OBJModel(
-                new ResourceLocation(Main.MODID, "models/entity/wood_front.obj"),
-                new ResourceLocation(Main.MODID, "textures/entity/oak_wood.png")),
-                new Vec3d(0D, 6D / 16D, -14.5D / 16D),
-                MathTools.rotate(90F, 0F, 0F, 1F)
-        ));*/
+    private static Part createContainer(ResourceLocation texture) {
+        return new PartContainer(new OBJModel(
+                new ResourceLocation(Main.MODID, "models/entity/container.obj"),
+                texture),
+                new Vec3d(0D / 16D, 17D / 16D, 5.5D / 16D)
+        );
     }
 
     private static Part createLicensePlateHolder(ResourceLocation texture) {
@@ -187,16 +158,16 @@ public class PartRegistry {
                 texture),
                 new Vec3d(0D, 4D / 16D, 0D),
                 new Vec3d[]{
-                        new Vec3d(12.5F / 16F, 4F / 16F, 8F / 16F),
-                        new Vec3d(12.5F / 16F, 4F / 16F, -8F / 16F),
-                        new Vec3d(-12.5F / 16F, 4F / 16F, 8F / 16F),
-                        new Vec3d(-12.5F / 16F, 4F / 16F, -8F / 16F)
+                        new Vec3d(12.5F / 16F, 4F / 16F, 11F / 16F),
+                        new Vec3d(12.5F / 16F, 4F / 16F, -13F / 16F),
+                        new Vec3d(-12.5F / 16F, 4F / 16F, 11F / 16F),
+                        new Vec3d(-12.5F / 16F, 4F / 16F, -13F / 16F)
                 },
                 new Vec3d[]{
                         new Vec3d(0D, -0.378D, 0D)
                 },
                 new Vec3d(0D, 7D / 16D, 17D / 16D),
-                1.3F,
+                1.5F,
                 1.6F,
                 2.0F
         );
@@ -245,11 +216,6 @@ public class PartRegistry {
                 1.51F,
                 2.0F
         );
-    }
-
-    @Deprecated
-    public static Part getPart(String name) {
-        return partRegistry.get(name);
     }
 
     public static boolean isValid(EntityGenericCar car, List<ITextComponent> messages) {

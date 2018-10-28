@@ -84,7 +84,7 @@ public class ItemTools {
 	/**
 	 * Changes the Itemstack amount. If a player is provided and the player is in
 	 * Creative Mode, the stack wont be changed
-	 * 
+	 *
 	 * @param amount
 	 *            The amount to change
 	 * @param stack

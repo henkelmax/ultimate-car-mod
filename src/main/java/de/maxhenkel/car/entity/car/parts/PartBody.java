@@ -75,6 +75,10 @@ public class PartBody extends PartModel {
             messages.add(new TextComponentTranslation("message.parts.too_many_bumpers"));
         }
 
+        if (getAmount(parts, part -> part instanceof PartContainer) > 1) {
+            messages.add(new TextComponentTranslation("message.parts.too_many_containers"));
+        }
+
         return true;
     }
 }

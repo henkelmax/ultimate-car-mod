@@ -20,7 +20,6 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
-
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -333,16 +332,27 @@ public class EntityGenericCar extends EntityCarLicensePlateBase {
                 continue;
             }
 
-            checkBoundingBox(part);
-
             parts.add(part);
         }
+
+        checkInitializing();
     }
 
-    private void checkBoundingBox(Part part) {
-        if (part instanceof PartBody) {
-            PartBody chassis = (PartBody) part;
-            setSize(chassis.getWidth(), chassis.getHeight());
+    private void checkInitializing() {
+        PartBody body = getPartByClass(PartBody.class);
+        if (body != null) {
+            setSize(body.getWidth(), body.getHeight());
+        }
+
+        if (body instanceof PartBodyTransporter) {
+            PartContainer container = getPartByClass(PartContainer.class);
+            if (externalInventory.getSizeInventory() <= 0) {
+                if (container != null) {
+                    externalInventory = new InventoryBasic(getCarName().getUnformattedText(), false, 54);
+                } else {
+                    externalInventory = new InventoryBasic(getCarName().getUnformattedText(), false, 27);
+                }
+            }
         }
     }
 
@@ -357,7 +367,6 @@ public class EntityGenericCar extends EntityCarLicensePlateBase {
         for (Part part : parts) {
             if (part instanceof PartModel) {
                 if (part instanceof PartWheel) {
-                    //TODO fix wheels (fixed!?)
                     if (!addedWheels) {
                         addedWheels = true;
                     } else {

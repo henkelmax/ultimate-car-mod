@@ -92,7 +92,8 @@ public class JEIPlugin implements IModPlugin {
         registry.addIngredientInfo(new ItemStack(ModItems.BATTERY), VanillaTypes.ITEM, "description.battery");
 
         // Container
-        registry.addIngredientInfo(new ItemStack(ModItems.CONTAINER), VanillaTypes.ITEM, "description.container");
+        //registry.addIngredientInfo(new ItemStack(ModItems.CONTAINER), VanillaTypes.ITEM, "description.container");
+        //TODO containers
 
         // Number plate
         //registry.addIngredientInfo(new ItemStack(ModItems.NUMBER_PLATE), VanillaTypes.ITEM, "description.license_plate");

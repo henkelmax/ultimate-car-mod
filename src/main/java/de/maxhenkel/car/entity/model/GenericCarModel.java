@@ -9,9 +9,9 @@ import net.minecraft.util.math.Vec3d;
 
 import java.util.List;
 
-public class TestCarModel extends OBJModelRenderer {
+public class GenericCarModel extends OBJModelRenderer {
 
-    public TestCarModel(RenderManager renderManager) {
+    public GenericCarModel(RenderManager renderManager) {
         super(renderManager);
     }
 

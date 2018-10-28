@@ -91,14 +91,29 @@ public class ModItems {
     public static final ItemCarPart WHITE_SPORT_BODY = new ItemCarPart("white_sport_body", PartRegistry.WHITE_SPORT_BODY);
     public static final ItemCarPart YELLOW_SPORT_BODY = new ItemCarPart("yellow_sport_body", PartRegistry.YELLOW_SPORT_BODY);
 
+    public static final ItemCarPart BLACK_CONTAINER = new ItemCarPart("black_container", PartRegistry.BLACK_CONTAINER);
+    public static final ItemCarPart BLUE_CONTAINER = new ItemCarPart("blue_container", PartRegistry.BLUE_CONTAINER);
+    public static final ItemCarPart BROWN_CONTAINER = new ItemCarPart("brown_container", PartRegistry.BROWN_CONTAINER);
+    public static final ItemCarPart CYAN_CONTAINER = new ItemCarPart("cyan_container", PartRegistry.CYAN_CONTAINER);
+    public static final ItemCarPart GRAY_CONTAINER = new ItemCarPart("gray_container", PartRegistry.GRAY_CONTAINER);
+    public static final ItemCarPart GREEN_CONTAINER = new ItemCarPart("green_container", PartRegistry.GREEN_CONTAINER);
+    public static final ItemCarPart LIGHT_BLUE_CONTAINER = new ItemCarPart("light_blue_container", PartRegistry.LIGHT_BLUE_CONTAINER);
+    public static final ItemCarPart LIME_CONTAINER = new ItemCarPart("lime_container", PartRegistry.LIME_CONTAINER);
+    public static final ItemCarPart MAGENTA_CONTAINER = new ItemCarPart("magenta_container", PartRegistry.MAGENTA_CONTAINER);
+    public static final ItemCarPart ORANGE_CONTAINER = new ItemCarPart("orange_container", PartRegistry.ORANGE_CONTAINER);
+    public static final ItemCarPart PINK_CONTAINER = new ItemCarPart("pink_container", PartRegistry.PINK_CONTAINER);
+    public static final ItemCarPart PURPLE_CONTAINER = new ItemCarPart("purple_container", PartRegistry.PURPLE_CONTAINER);
+    public static final ItemCarPart RED_CONTAINER = new ItemCarPart("red_container", PartRegistry.RED_CONTAINER);
+    public static final ItemCarPart SILVER_CONTAINER = new ItemCarPart("silver_container", PartRegistry.SILVER_CONTAINER);
+    public static final ItemCarPart WHITE_CONTAINER = new ItemCarPart("white_container", PartRegistry.WHITE_CONTAINER);
+    public static final ItemCarPart YELLOW_CONTAINER = new ItemCarPart("yellow_container", PartRegistry.YELLOW_CONTAINER);
+
     public static final ItemCarPart OAK_BUMPER = new ItemCarPart("oak_bumper", PartRegistry.OAK_BUMPER);
     public static final ItemCarPart ACACIA_BUMPER = new ItemCarPart("acacia_bumper", PartRegistry.ACACIA_BUMPER);
     public static final ItemCarPart DARK_OAK_BUMPER = new ItemCarPart("dark_oak_bumper", PartRegistry.DARK_OAK_BUMPER);
     public static final ItemCarPart BIRCH_BUMPER = new ItemCarPart("birch_bumper", PartRegistry.BIRCH_BUMPER);
     public static final ItemCarPart JUNGLE_BUMPER = new ItemCarPart("jungle_bumper", PartRegistry.JUNGLE_BUMPER);
     public static final ItemCarPart SPRUCE_BUMPER = new ItemCarPart("spruce_bumper", PartRegistry.SPRUCE_BUMPER);
-
-    public static final ItemCarPart CONTAINER = new ItemCarPart("container", null);
 
     public static final ItemCarPart OAK_LICENSE_PLATE_HOLDER = new ItemCarPart("oak_license_plate_holder", PartRegistry.OAK_LICENSE_PLATE_HOLDER);
     public static final ItemCarPart ACACIA_LICENSE_PLATE_HOLDER = new ItemCarPart("acacia_license_plate_holder", PartRegistry.ACACIA_LICENSE_PLATE_HOLDER);

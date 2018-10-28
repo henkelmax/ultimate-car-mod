@@ -78,9 +78,9 @@ public class Reciepes {
                     Character.valueOf('I'), new ItemStack(Items.IRON_INGOT)});
 
             //Container
-            GameRegistry.addShapedRecipe(new ResourceLocation(Main.MODID, "container"), null, new ItemStack(ModItems.CONTAINER, 1), new Object[]{"ICI", "C C", "ICI",
+           /* GameRegistry.addShapedRecipe(new ResourceLocation(Main.MODID, "container"), null, new ItemStack(ModItems.CONTAINER, 1), new Object[]{"ICI", "C C", "ICI",
                     Character.valueOf('I'), new ItemStack(Items.IRON_INGOT),
-                    Character.valueOf('C'), new ItemStack(Blocks.CHEST)});
+                    Character.valueOf('C'), new ItemStack(Blocks.CHEST)});*/
 
             //Iron Stick
             GameRegistry.addShapedRecipe(new ResourceLocation(Main.MODID, "iron_stick"), null, new ItemStack(ModItems.IRON_STICK, 2), new Object[]{"I", "I",
