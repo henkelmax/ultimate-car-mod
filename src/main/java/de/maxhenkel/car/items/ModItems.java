@@ -38,6 +38,7 @@ public class ModItems {
     public static final ItemCarPart ENGINE_6_CYLINDER = new ItemCarPart("engine_6_cylinder", PartRegistry.ENGINE_6_CYLINDER);
 
     public static final ItemCarPart WHEEL = new ItemCarPart("wheel", PartRegistry.WHEEL);
+    public static final ItemCarPart BIG_WHEEL = new ItemCarPart("big_wheel", PartRegistry.BIG_WHEEL);
 
     public static final ItemCarPart OAK_BODY = new ItemCarPart("oak_body", PartRegistry.OAK_BODY);
     public static final ItemCarPart ACACIA_BODY = new ItemCarPart("acacia_body", PartRegistry.ACACIA_BODY);
@@ -69,6 +70,23 @@ public class ModItems {
     public static final ItemCarPart SILVER_TRANSPORTER_BODY = new ItemCarPart("silver_transporter_body", PartRegistry.SILVER_TRANSPORTER_BODY);
     public static final ItemCarPart WHITE_TRANSPORTER_BODY = new ItemCarPart("white_transporter_body", PartRegistry.WHITE_TRANSPORTER_BODY);
     public static final ItemCarPart YELLOW_TRANSPORTER_BODY = new ItemCarPart("yellow_transporter_body", PartRegistry.YELLOW_TRANSPORTER_BODY);
+
+    public static final ItemCarPart BLACK_SUV_BODY = new ItemCarPart("black_suv_body", PartRegistry.BLACK_SUV_BODY);
+    public static final ItemCarPart BLUE_SUV_BODY = new ItemCarPart("blue_suv_body", PartRegistry.BLUE_SUV_BODY);
+    public static final ItemCarPart BROWN_SUV_BODY = new ItemCarPart("brown_suv_body", PartRegistry.BROWN_SUV_BODY);
+    public static final ItemCarPart CYAN_SUV_BODY = new ItemCarPart("cyan_suv_body", PartRegistry.CYAN_SUV_BODY);
+    public static final ItemCarPart GRAY_SUV_BODY = new ItemCarPart("gray_suv_body", PartRegistry.GRAY_SUV_BODY);
+    public static final ItemCarPart GREEN_SUV_BODY = new ItemCarPart("green_suv_body", PartRegistry.GREEN_SUV_BODY);
+    public static final ItemCarPart LIGHT_BLUE_SUV_BODY = new ItemCarPart("light_blue_suv_body", PartRegistry.LIGHT_BLUE_SUV_BODY);
+    public static final ItemCarPart LIME_SUV_BODY = new ItemCarPart("lime_suv_body", PartRegistry.LIME_SUV_BODY);
+    public static final ItemCarPart MAGENTA_SUV_BODY = new ItemCarPart("magenta_suv_body", PartRegistry.MAGENTA_SUV_BODY);
+    public static final ItemCarPart ORANGE_SUV_BODY = new ItemCarPart("orange_suv_body", PartRegistry.ORANGE_SUV_BODY);
+    public static final ItemCarPart PINK_SUV_BODY = new ItemCarPart("pink_suv_body", PartRegistry.PINK_SUV_BODY);
+    public static final ItemCarPart PURPLE_SUV_BODY = new ItemCarPart("purple_suv_body", PartRegistry.PURPLE_SUV_BODY);
+    public static final ItemCarPart RED_SUV_BODY = new ItemCarPart("red_suv_body", PartRegistry.RED_SUV_BODY);
+    public static final ItemCarPart SILVER_SUV_BODY = new ItemCarPart("silver_suv_body", PartRegistry.SILVER_SUV_BODY);
+    public static final ItemCarPart WHITE_SUV_BODY = new ItemCarPart("white_suv_body", PartRegistry.WHITE_SUV_BODY);
+    public static final ItemCarPart YELLOW_SUV_BODY = new ItemCarPart("yellow_suv_body", PartRegistry.YELLOW_SUV_BODY);
 
     public static final ItemCarPart BLACK_SPORT_BODY = new ItemCarPart("black_sport_body", PartRegistry.BLACK_SPORT_BODY);
     public static final ItemCarPart BLUE_SPORT_BODY = new ItemCarPart("blue_sport_body", PartRegistry.BLUE_SPORT_BODY);

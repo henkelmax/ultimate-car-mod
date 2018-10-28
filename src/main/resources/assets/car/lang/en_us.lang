@@ -123,7 +123,6 @@ item.canola_seeds.name=Canola Seeds
 item.canola.name=Canola
 item.rapecake.name=Canola Cake
 item.engine_piston.name=Engine Piston
-item.wheel.name=Wheel
 item.container.name=Container
 item.iron_stick.name=Iron Stick
 item.engine_3_cylinder.name=3 Cylinder Engine
@@ -186,6 +185,26 @@ item.red_transporter_body.name=Red Transporter Body
 item.silver_transporter_body.name=Light Gray Transporter Body
 item.white_transporter_body.name=White Transporter Body
 item.yellow_transporter_body.name=Yellow Transporter Body
+
+item.black_suv_body.name=Black SUV Body
+item.blue_suv_body.name=Blue SUV Body
+item.brown_suv_body.name=Brown SUV Body
+item.cyan_suv_body.name=Cyan SUV Body
+item.gray_suv_body.name=Gray SUV Body
+item.green_suv_body.name=Green SUV Body
+item.light_blue_suv_body.name=Light Blue SUV Body
+item.lime_suv_body.name=Lime SUV Body
+item.magenta_suv_body.name=Magenta SUV Body
+item.orange_suv_body.name=Orange SUV Body
+item.pink_suv_body.name=Pink SUV Body
+item.purple_suv_body.name=Purple SUV Body
+item.red_suv_body.name=Red SUV Body
+item.silver_suv_body.name=Light Gray SUV Body
+item.white_suv_body.name=White SUV Body
+item.yellow_suv_body.name=Yellow SUV Body
+
+item.wheel.name=Wheel
+item.big_wheel.name=Big Wheel
 
 item.black_sport_body.name=Black Sportscar Body
 item.blue_sport_body.name=Blue Sportscar Body

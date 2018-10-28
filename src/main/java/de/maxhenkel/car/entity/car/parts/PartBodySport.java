@@ -12,9 +12,9 @@ public class PartBodySport extends PartBody {
                 new Vec3d(0D, 4D / 16D, 0D));
         this.wheelOffsets = new Vec3d[]{
                 new Vec3d(9.5F / 16F, 4F / 16F, 8F / 16F),
-                new Vec3d(9.5F / 16F, 4F / 16F, -8F / 16F),
+                new Vec3d(9.5F / 16F, 4F / 16F, -9F / 16F),
                 new Vec3d(-9.5F / 16F, 4F / 16F, 8F / 16F),
-                new Vec3d(-9.5F / 16F, 4F / 16F, -8F / 16F)
+                new Vec3d(-9.5F / 16F, 4F / 16F, -9F / 16F)
         };
         this.playerOffsets = new Vec3d[]{
                 new Vec3d(0D, -0.378D, 0D)

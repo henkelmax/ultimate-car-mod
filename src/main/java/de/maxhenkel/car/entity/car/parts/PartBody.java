@@ -82,9 +82,13 @@ public class PartBody extends PartModel {
         return maxSpeed;
     }
 
+    public boolean canFitWheel(PartWheelBase wheel) {
+        return wheel instanceof PartWheel;
+    }
+
     @Override
     public boolean validate(List<Part> parts, List<ITextComponent> messages) {
-        if (getAmount(parts, part -> part instanceof PartWheel) != getWheelAmount()) {
+        if (getAmount(parts, part -> part instanceof PartWheelBase) != getWheelAmount()) {
             messages.add(new TextComponentTranslation("message.parts.wheel_amount", getWheelAmount()));
         }
 

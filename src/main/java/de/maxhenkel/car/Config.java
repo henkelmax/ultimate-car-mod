@@ -214,7 +214,7 @@ public class Config {
         //Car
         carVolume = config.getFloat("car_volume", "car", 0.1F, 0F, 1F, "");
         thirdPersonEnter = config.getBoolean("third_person_when_enter_car", "car", true, "");
-        carStepHeight = config.getFloat("car_step_height", "car", 0.6F, 0.1F, 128F, "The height a car can drive up");
+        carStepHeight = config.getFloat("car_step_height", "car", 0.6F, 0.1F, 1F, "The height a car can drive up");
         collideWithEntities = config.getBoolean("collide_with_entities", "car", false, "Whether the cars should collide with other entities (except cars)");
         damageEntities = config.getBoolean("damage_entities", "car", true, "Whether the cars should damage other entities on collision");
         hornFlee = config.getBoolean("horn_flee", "car", true, "Whether animals flee from the car when the horn is activted");

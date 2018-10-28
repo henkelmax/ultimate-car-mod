@@ -6,11 +6,7 @@ import de.maxhenkel.car.entity.model.obj.OBJModelInstance;
 import de.maxhenkel.car.items.ICarPart;
 import de.maxhenkel.car.registries.CarFluidRegistry;
 import de.maxhenkel.car.sounds.ModSounds;
-import de.maxhenkel.tools.ItemTools;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryBasic;
-import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
@@ -21,7 +17,6 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
-
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -368,6 +363,11 @@ public class EntityGenericCar extends EntityCarLicensePlateBase {
                 }
             }
         }
+
+        PartWheelBase partWheels = getPartByClass(PartWheelBase.class);
+        if (partWheels != null) {
+            stepHeight=partWheels.getStepHeight();
+        }
     }
 
     //---------------CLIENT---------------------------------
@@ -380,7 +380,7 @@ public class EntityGenericCar extends EntityCarLicensePlateBase {
         boolean addedWheels = false;
         for (Part part : parts) {
             if (part instanceof PartModel) {
-                if (part instanceof PartWheel) {
+                if (part instanceof PartWheelBase) {
                     if (!addedWheels) {
                         addedWheels = true;
                     } else {

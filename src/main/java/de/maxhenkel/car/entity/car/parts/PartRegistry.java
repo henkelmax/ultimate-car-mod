@@ -1,11 +1,13 @@
 package de.maxhenkel.car.entity.car.parts;
 
+import de.maxhenkel.car.Config;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.entity.car.base.EntityGenericCar;
 import de.maxhenkel.car.entity.model.obj.OBJModel;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentTranslation;
+
 import java.util.*;
 
 public class PartRegistry {
@@ -73,6 +75,24 @@ public class PartRegistry {
     public static final Part WHITE_TRANSPORTER_BODY = new PartBodyTransporter(new ResourceLocation(Main.MODID, "textures/entity/car_transporter_white.png"));
     public static final Part YELLOW_TRANSPORTER_BODY = new PartBodyTransporter(new ResourceLocation(Main.MODID, "textures/entity/car_transporter_yellow.png"));
 
+    public static final Part BLACK_SUV_BODY = new PartBodySUV(new ResourceLocation(Main.MODID, "textures/entity/car_suv_black.png"));
+    public static final Part BLUE_SUV_BODY = new PartBodySUV(new ResourceLocation(Main.MODID, "textures/entity/car_suv_blue.png"));
+    public static final Part BROWN_SUV_BODY = new PartBodySUV(new ResourceLocation(Main.MODID, "textures/entity/car_suv_brown.png"));
+    public static final Part CYAN_SUV_BODY = new PartBodySUV(new ResourceLocation(Main.MODID, "textures/entity/car_suv_cyan.png"));
+    public static final Part GRAY_SUV_BODY = new PartBodySUV(new ResourceLocation(Main.MODID, "textures/entity/car_suv_gray.png"));
+    public static final Part GREEN_SUV_BODY = new PartBodySUV(new ResourceLocation(Main.MODID, "textures/entity/car_suv_green.png"));
+    public static final Part LIGHT_BLUE_SUV_BODY = new PartBodySUV(new ResourceLocation(Main.MODID, "textures/entity/car_suv_light_blue.png"));
+    public static final Part LIME_SUV_BODY = new PartBodySUV(new ResourceLocation(Main.MODID, "textures/entity/car_suv_lime.png"));
+    public static final Part MAGENTA_SUV_BODY = new PartBodySUV(new ResourceLocation(Main.MODID, "textures/entity/car_suv_magenta.png"));
+    public static final Part ORANGE_SUV_BODY = new PartBodySUV(new ResourceLocation(Main.MODID, "textures/entity/car_suv_orange.png"));
+    public static final Part PINK_SUV_BODY = new PartBodySUV(new ResourceLocation(Main.MODID, "textures/entity/car_suv_pink.png"));
+    public static final Part PURPLE_SUV_BODY = new PartBodySUV(new ResourceLocation(Main.MODID, "textures/entity/car_suv_purple.png"));
+    public static final Part RED_SUV_BODY = new PartBodySUV(new ResourceLocation(Main.MODID, "textures/entity/car_suv_red.png"));
+    public static final Part SILVER_SUV_BODY = new PartBodySUV(new ResourceLocation(Main.MODID, "textures/entity/car_suv_silver.png"));
+    public static final Part WHITE_SUV_BODY = new PartBodySUV(new ResourceLocation(Main.MODID, "textures/entity/car_suv_white.png"));
+    public static final Part YELLOW_SUV_BODY = new PartBodySUV(new ResourceLocation(Main.MODID, "textures/entity/car_suv_yellow.png"));
+
+
     public static final Part BLACK_CONTAINER = new PartContainer(new ResourceLocation(Main.MODID, "textures/entity/car_transporter_black.png"));
     public static final Part BLUE_CONTAINER = new PartContainer(new ResourceLocation(Main.MODID, "textures/entity/car_transporter_blue.png"));
     public static final Part BROWN_CONTAINER = new PartContainer(new ResourceLocation(Main.MODID, "textures/entity/car_transporter_brown.png"));
@@ -104,7 +124,15 @@ public class PartRegistry {
     public static final Part WHEEL = new PartWheel(new OBJModel(
             new ResourceLocation(Main.MODID, "models/entity/wheel.obj"),
             new ResourceLocation(Main.MODID, "textures/entity/wheel.png")),
-            80F
+            75F,
+            Config.carStepHeight
+    );
+
+    public static final Part BIG_WHEEL = new PartWheelBig(new OBJModel(
+            new ResourceLocation(Main.MODID, "models/entity/big_wheel.obj"),
+            new ResourceLocation(Main.MODID, "textures/entity/big_wheel.png")),
+            70F,
+            1F
     );
 
     public static boolean isValid(EntityGenericCar car, List<ITextComponent> messages) {
