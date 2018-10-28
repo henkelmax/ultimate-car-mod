@@ -27,7 +27,7 @@ public class PartBodyTransporter extends PartBody {
         this.height = 1.51F;
         this.minRotationSpeed = 2.0F;
         this.maxRotationSpeed = 5F;
-        this.fuelEfficiency = 0.5F;
+        this.fuelEfficiency = 0.6F;
         this.acceleration = 0.8F;
         this.maxSpeed = 0.765F;
     }
