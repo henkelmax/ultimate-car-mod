@@ -1,6 +1,7 @@
 package de.maxhenkel.car.entity.car.base;
 
 import java.util.List;
+
 import de.maxhenkel.car.Config;
 import de.maxhenkel.car.DamageSourceCar;
 import de.maxhenkel.car.net.*;
@@ -200,7 +201,6 @@ public abstract class EntityCarBase extends EntityVehicleBase {
     }
 
     public void destroyCar(EntityPlayer player, boolean dropParts) {
-        //TODO drop items?
         setDead();
     }
 
@@ -259,15 +259,23 @@ public abstract class EntityCarBase extends EntityVehicleBase {
             deltaRotation += rotationSpeed;
         }
 
-        this.rotationYaw += this.deltaRotation;
-
-        if (rotationYaw > 180) {
-            rotationYaw -= 360;
-            prevRotationYaw = rotationYaw;
-        } else if (rotationYaw <= -180) {
-            rotationYaw += 360;
-            prevRotationYaw = rotationYaw;
+        rotationYaw += deltaRotation;
+        float delta = Math.abs(rotationYaw - prevRotationYaw);
+        while (rotationYaw > 180F) {
+            rotationYaw -= 360F;
+            prevRotationYaw =  rotationYaw - delta;
         }
+        while (rotationYaw <= -180F) {
+            rotationYaw += 360F;
+            prevRotationYaw = delta + rotationYaw;
+        }
+        /*if (rotationYaw > 180) {
+            rotationYaw %= 360F;
+            //prevRotationYaw = rotationYaw;
+        } else if (rotationYaw <= -180) {
+            rotationYaw %= 360;
+            //prevRotationYaw = rotationYaw;
+        }*/
 
         if (collidedHorizontally) {
             if (world.isRemote && !collidedLastTick) {
