@@ -115,6 +115,7 @@ tile.line_double_end.name=End Double Line
 tile.line_double_end_yellow.name=End Double Line
 
 itemGroup.car=Car
+itemGroup.car_parts=Car Parts
 
 item.painter.name=Painter
 item.painter_yellow.name=Yellow Painter

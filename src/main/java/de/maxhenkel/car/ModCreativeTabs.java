@@ -2,6 +2,7 @@ package de.maxhenkel.car;
 
 import de.maxhenkel.car.blocks.ModBlocks;
 import de.maxhenkel.car.fluids.ModFluids;
+import de.maxhenkel.car.items.ModItems;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -28,6 +29,14 @@ public class ModCreativeTabs {
 			super.displayAllRelevantItems(list);
 		}
 		
+	};
+
+	public static final CreativeTabs TAB_CAR_PARTS = new CreativeTabs("car_parts") {
+		@Override
+		public ItemStack getTabIconItem() {
+			return new ItemStack(ModItems.OAK_BODY);
+		}
+
 	};
 	
 }

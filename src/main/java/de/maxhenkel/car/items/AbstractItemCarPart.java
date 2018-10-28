@@ -13,7 +13,7 @@ public abstract class AbstractItemCarPart extends Item implements ICarPart{
     public AbstractItemCarPart(String name) {
         setUnlocalizedName(name);
         setRegistryName(name);
-        setCreativeTab(ModCreativeTabs.TAB_CAR);
+        setCreativeTab(ModCreativeTabs.TAB_CAR_PARTS);
     }
 
 }
