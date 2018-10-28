@@ -4,6 +4,7 @@ import de.maxhenkel.car.DataSerializerItemList;
 import de.maxhenkel.car.entity.car.parts.*;
 import de.maxhenkel.car.entity.model.obj.OBJModelInstance;
 import de.maxhenkel.car.items.ICarPart;
+import de.maxhenkel.car.registries.CarFluidRegistry;
 import de.maxhenkel.car.sounds.ModSounds;
 import de.maxhenkel.tools.ItemTools;
 import net.minecraft.entity.player.EntityPlayer;
@@ -42,7 +43,7 @@ public class EntityGenericCar extends EntityCarLicensePlateBase {
         if (chassis == null) {
             return 0F;
         }
-        return engine.getMaxSpeed()*chassis.getMaxSpeed();
+        return engine.getMaxSpeed() * chassis.getMaxSpeed();
     }
 
     @Override
@@ -115,7 +116,17 @@ public class EntityGenericCar extends EntityCarLicensePlateBase {
         if (chassis == null) {
             return 0F;
         }
-        return chassis.getFuelEfficiency() * engine.getFuelEfficiency();
+
+        float fluidEfficiency = 1F;
+
+        if (fluid != null) {
+            CarFluidRegistry entry = CarFluidRegistry.REGISTRY.getEntry(fluid.getName());
+            if (entry != null) {
+                fluidEfficiency = entry.getEfficiency();
+            }
+        }
+
+        return chassis.getFuelEfficiency() * engine.getFuelEfficiency() * fluidEfficiency;
     }
 
     @Override

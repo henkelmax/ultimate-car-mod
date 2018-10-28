@@ -5,13 +5,13 @@ import de.maxhenkel.car.entity.model.obj.OBJModel;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.Vec3d;
 
-public class PartBodyBigWood extends PartBody {
+public class PartBodyBigWood extends PartBodyWoodBase {
 
     public PartBodyBigWood(ResourceLocation texture) {
         super(new OBJModel(new ResourceLocation(Main.MODID, "models/entity/wood_body_big.obj"), texture),
                 new Vec3d(0D, 4D / 16D, 0D));
 
-
+        this.bumperOffset = new Vec3d(0D, 6D / 16D, -19D / 16D);
         this.wheelOffsets = new Vec3d[]{
                 new Vec3d(12.5F / 16F, 4F / 16F, 11F / 16F),
                 new Vec3d(12.5F / 16F, 4F / 16F, -13F / 16F),

@@ -95,9 +95,8 @@ public class Registry {
     @SubscribeEvent
     public static void registerRecipes(RegistryEvent.Register<IRecipe> event) {
         Reciepes.registerReciepes();
-        if (Config.keyRecipe) {
-            event.getRegistry().register(new ReciepeKey().setRegistryName(new ResourceLocation(Main.MODID, "key")));
-        }
+
+        event.getRegistry().register(new ReciepeKey().setRegistryName(new ResourceLocation(Main.MODID, "key")));
     }
 
     @SubscribeEvent

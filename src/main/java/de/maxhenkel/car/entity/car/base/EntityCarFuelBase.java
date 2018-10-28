@@ -2,7 +2,6 @@ package de.maxhenkel.car.entity.car.base;
 
 import javax.annotation.Nullable;
 import de.maxhenkel.car.fluids.ModFluids;
-import de.maxhenkel.car.registries.CarFluid;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
@@ -158,7 +157,7 @@ public abstract class EntityCarFuelBase extends EntityCarDamageBase implements I
 		if(fluid==null){
 			return 1D;
 		}
-		for(CarFluid cf:CarFluid.REGISTRY){
+		for(CarFluidRegistry cf:CarFluidRegistry.REGISTRY){
 			if(!cf.getCarID().equals(getID())) {
 				continue;
 			}

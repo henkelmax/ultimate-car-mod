@@ -85,8 +85,6 @@ public abstract class EntityCarBase extends EntityVehicleBase {
     public void onUpdate() {
         super.onUpdate();
 
-        handleTeleport();
-
         if (isStarted() && !canEngineStayOn()) {
             setStarted(false);
         }
@@ -136,26 +134,6 @@ public abstract class EntityCarBase extends EntityVehicleBase {
             }
         }
         return super.getCollisionBox(entityIn);
-    }
-
-    private void handleTeleport() {
-        if (!Config.teleportDimension) {
-            return;
-        }
-
-        if (getSpeed() >= getMaxSpeed()) {
-            int dimid = world.provider.getDimension();
-            if (dimid == Config.teleportDimID) {
-                return;
-            }
-
-            for (Entity e : getPassengers()) {
-                e.dismountRidingEntity();
-                Teleport.teleportToDimension(e, Config.teleportDimID);
-
-            }
-            Teleport.teleportToDimension(this, Config.teleportDimID);
-        }
     }
 
 

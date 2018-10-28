@@ -90,12 +90,12 @@ public class PartRegistry {
     public static final Part WHITE_CONTAINER = new PartContainer(new ResourceLocation(Main.MODID, "textures/entity/car_transporter_white.png"));
     public static final Part YELLOW_CONTAINER = new PartContainer(new ResourceLocation(Main.MODID, "textures/entity/car_transporter_yellow.png"));
 
-    public static final Part OAK_BUMPER = new PartBumper(new ResourceLocation(Main.MODID, "textures/entity/oak_wood.png"));
-    public static final Part ACACIA_BUMPER = new PartBumper(new ResourceLocation(Main.MODID, "textures/entity/acacia_wood.png"));
-    public static final Part DARK_OAK_BUMPER = new PartBumper(new ResourceLocation(Main.MODID, "textures/entity/birch_wood.png"));
-    public static final Part BIRCH_BUMPER = new PartBumper(new ResourceLocation(Main.MODID, "textures/entity/dark_oak_wood.png"));
-    public static final Part JUNGLE_BUMPER = new PartBumper(new ResourceLocation(Main.MODID, "textures/entity/jungle_wood.png"));
-    public static final Part SPRUCE_BUMPER = new PartBumper(new ResourceLocation(Main.MODID, "textures/entity/spruce_wood.png"));
+    public static final Part OAK_BUMPER = new PartBumper(new ResourceLocation("textures/blocks/planks_oak.png"));
+    public static final Part ACACIA_BUMPER = new PartBumper(new ResourceLocation("textures/blocks/planks_acacia.png"));
+    public static final Part DARK_OAK_BUMPER = new PartBumper(new ResourceLocation("textures/blocks/planks_big_oak.png"));
+    public static final Part BIRCH_BUMPER = new PartBumper(new ResourceLocation("textures/blocks/planks_birch.png"));
+    public static final Part JUNGLE_BUMPER = new PartBumper(new ResourceLocation("textures/blocks/planks_jungle.png"));
+    public static final Part SPRUCE_BUMPER = new PartBumper(new ResourceLocation("textures/blocks/planks_spruce.png"));
 
     public static final Part SMALL_TANK = new PartTank(500);
     public static final Part MEDIUM_TANK = new PartTank(1000);
