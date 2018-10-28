@@ -32,30 +32,30 @@ public class ItemKey extends Item {
 		
 		if(carUUID==null){
 			if(worldIn.isRemote){
-				playerIn.sendMessage(new TextComponentTranslation("message.key_no_car"));
+				playerIn.sendStatusMessage(new TextComponentTranslation("message.key_no_car"), true);
 			}
-			return new ActionResult<ItemStack>(EnumActionResult.PASS, stack);
+			return new ActionResult(EnumActionResult.PASS, stack);
 		}else if(worldIn.isRemote){
-			return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, stack);
+			return new ActionResult(EnumActionResult.SUCCESS, stack);
 		}
 		
 		List<EntityCarLockBase> cars=worldIn.getEntitiesWithinAABB(EntityCarLockBase.class, new AxisAlignedBB(playerIn.posX-25D, playerIn.posY-25D, playerIn.posZ-25D, playerIn.posX+25D, playerIn.posY+25D, playerIn.posZ+25D), new PredicateUUID(carUUID));
 
 		if(cars.isEmpty()){
-			playerIn.sendMessage(new TextComponentTranslation("message.car_out_of_range"));
-			return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, stack);
+			playerIn.sendStatusMessage(new TextComponentTranslation("message.car_out_of_range"), true);
+			return new ActionResult(EnumActionResult.SUCCESS, stack);
 		}
 		
 		EntityCarLockBase car=cars.get(0);
 		
 		if(car==null){
 			playerIn.sendMessage(new TextComponentTranslation("message.car_out_of_range"));
-			return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, stack);
+			return new ActionResult(EnumActionResult.SUCCESS, stack);
 		}
 		
 		car.setLocked(!car.isLocked(), true);
 		
-		return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, stack);
+		return new ActionResult(EnumActionResult.SUCCESS, stack);
 	}
 	
 	public static void setCar(ItemStack stack, UUID carUUID){

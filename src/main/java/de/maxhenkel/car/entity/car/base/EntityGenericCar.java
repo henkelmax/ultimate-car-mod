@@ -27,17 +27,8 @@ import java.util.List;
 
 public class EntityGenericCar extends EntityCarLicensePlateBase {
 
-    private IInventory partInventory;
-
     public EntityGenericCar(World worldIn) {
         super(worldIn);
-        this.partInventory = new InventoryBasic(getCarName().getUnformattedText(), false, 15);
-    }
-
-    @Override
-    public void destroyCar(EntityPlayer player, boolean dropParts) {
-        super.destroyCar(player, dropParts);
-        InventoryHelper.dropInventoryItems(world, this, partInventory);
     }
 
     @Override
@@ -263,18 +254,8 @@ public class EntityGenericCar extends EntityCarLicensePlateBase {
     protected void readEntityFromNBT(NBTTagCompound compound) {
         super.readEntityFromNBT(compound);
 
-        ItemTools.readInventory(compound, "parts", partInventory);
-
         setPartSerializer();
-
         tryInitPartsAndModel();
-    }
-
-    @Override
-    protected void writeEntityToNBT(NBTTagCompound compound) {
-        super.writeEntityToNBT(compound);
-
-        ItemTools.saveInventory(compound, "parts", partInventory);
     }
 
     private boolean isInitialized;
@@ -308,10 +289,6 @@ public class EntityGenericCar extends EntityCarLicensePlateBase {
 
     public List<Part> getModelParts() {
         return Collections.unmodifiableList(parts);
-    }
-
-    public IInventory getPartInventory() {
-        return partInventory;
     }
 
     public void initParts() {

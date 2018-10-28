@@ -39,7 +39,7 @@ public abstract class EntityCarLockBase extends EntityCarInventoryBase {
 	@Override
 	public void destroyCar(EntityPlayer player, boolean dropParts) {
 		if (isLocked()) {
-			player.sendMessage(new TextComponentTranslation("message.car_locked"));
+			player.sendStatusMessage(new TextComponentTranslation("message.car_locked"), true);
 			return;
 		}
 

@@ -20,12 +20,14 @@ public abstract class EntityCarInventoryBase extends EntityCarFuelBase implement
 
     protected IInventory internalInventory;
     protected IInventory externalInventory;
+    protected IInventory partInventory;
 
     public EntityCarInventoryBase(World worldIn) {
         super(worldIn);
 
         this.internalInventory = new InventoryBasic(getCarName().getUnformattedText(), false, 27);
         this.externalInventory = new InventoryBasic(getCarName().getUnformattedText(), false, 0);
+        this.partInventory = new InventoryBasic(getCarName().getUnformattedText(), false, 15);
     }
 
     @Override
@@ -60,11 +62,17 @@ public abstract class EntityCarInventoryBase extends EntityCarFuelBase implement
         return true;
     }
 
+    public IInventory getPartInventory() {
+        return partInventory;
+    }
+
     @Override
     public void destroyCar(EntityPlayer player, boolean dropParts) {
+        super.destroyCar(player, dropParts);
+
         InventoryHelper.dropInventoryItems(world, this, this);
         InventoryHelper.dropInventoryItems(world, this, externalInventory);
-        super.destroyCar(player, dropParts);
+        InventoryHelper.dropInventoryItems(world, this, partInventory);
     }
 
     @Override
@@ -83,6 +91,8 @@ public abstract class EntityCarInventoryBase extends EntityCarFuelBase implement
 
         this.externalInventory= new InventoryBasic(getCarName().getUnformattedText(), false, compound.getInteger("external_inventory_size"));
         ItemTools.readInventory(compound, "external_inventory", externalInventory);
+
+        ItemTools.readInventory(compound, "parts", partInventory);
     }
 
     @Override
@@ -93,6 +103,8 @@ public abstract class EntityCarInventoryBase extends EntityCarFuelBase implement
 
         compound.setInteger("external_inventory_size", externalInventory.getSizeInventory());
         ItemTools.saveInventory(compound, "external_inventory", externalInventory);
+
+        ItemTools.saveInventory(compound, "parts", partInventory);
     }
 
     @Override

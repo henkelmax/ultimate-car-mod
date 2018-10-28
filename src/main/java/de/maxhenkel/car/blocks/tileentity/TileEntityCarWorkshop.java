@@ -7,6 +7,7 @@ import de.maxhenkel.car.entity.car.base.EntityGenericCar;
 import de.maxhenkel.car.entity.car.parts.Part;
 import de.maxhenkel.car.entity.car.parts.PartRegistry;
 import de.maxhenkel.car.items.ICarPart;
+import de.maxhenkel.car.items.ItemKey;
 import de.maxhenkel.tools.ItemTools;
 import de.maxhenkel.car.blocks.BlockCarWorkshopOutter;
 import de.maxhenkel.car.blocks.ModBlocks;
@@ -214,6 +215,10 @@ public class TileEntityCarWorkshop extends TileEntityBase implements IInventory 
     public void updateRecipe() {
         EntityGenericCar car = new EntityGenericCar(world);
 
+        //Put keys in inventory
+        car.setInventorySlotContents(0, ItemKey.getKeyForCar(car.getUniqueID()));
+        car.setInventorySlotContents(1, ItemKey.getKeyForCar(car.getUniqueID()));
+
         car.setIsSpawned(false);
 
         List<ItemStack> partStacks = new ArrayList<>();
@@ -252,14 +257,6 @@ public class TileEntityCarWorkshop extends TileEntityBase implements IInventory 
             this.currentCraftingCar = null;
             return;
         }
-
-        /*if (messages.size()>0) {
-            for(ITextComponent component:messages){
-                System.out.println(component.getUnformattedText());
-            }
-            this.currentCraftingCar=null;
-            return;
-        }*/
 
         car.tryInitPartsAndModel();
         car.setPartSerializer();
