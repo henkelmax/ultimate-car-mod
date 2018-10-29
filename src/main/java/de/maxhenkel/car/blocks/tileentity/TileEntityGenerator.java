@@ -99,7 +99,7 @@ public class TileEntityGenerator extends TileEntityBase
 
 	private void handlePushEnergy() {
 		for (EnumFacing side : EnumFacing.values()) {
-			IEnergyStorage storage= EnergyUtil.getEnergyStorage(world, pos, side);
+			IEnergyStorage storage= EnergyUtil.getEnergyStorageOffset(world, pos, side);
 			if(storage==null){
 			    continue;
             }

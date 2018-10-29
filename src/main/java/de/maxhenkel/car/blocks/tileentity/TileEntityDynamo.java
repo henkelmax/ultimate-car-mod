@@ -23,7 +23,7 @@ public class TileEntityDynamo extends TileEntityBase implements IEnergyStorage, 
 	@Override
 	public void update() {
 		for(EnumFacing side:EnumFacing.values()){
-			IEnergyStorage storage=EnergyUtil.getEnergyStorage(world, pos, side);
+			IEnergyStorage storage=EnergyUtil.getEnergyStorageOffset(world, pos, side);
 
 			if(storage==null){
 				continue;

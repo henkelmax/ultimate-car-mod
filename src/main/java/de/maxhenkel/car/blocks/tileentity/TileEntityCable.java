@@ -35,7 +35,7 @@ public class TileEntityCable extends TileEntityBase implements ITickable, IEnerg
         List<IEnergyStorage> providers = new ArrayList<>();
 
         for (EnumFacing facing : EnumFacing.values()) {
-            IEnergyStorage provider = EnergyUtil.getEnergyStorage(world, pos, facing);
+            IEnergyStorage provider = EnergyUtil.getEnergyStorageOffset(world, pos, facing);
 
             if (provider == null || provider instanceof TileEntityCable) {
                 continue;
@@ -105,7 +105,7 @@ public class TileEntityCable extends TileEntityBase implements ITickable, IEnerg
                 continue;
             }
 
-            IEnergyStorage storage = EnergyUtil.getEnergyStorage(world, pos, side);
+            IEnergyStorage storage = EnergyUtil.getEnergyStorageOffset(world, pos, side);
 
             if (storage == null || storage.equals(this)) {
                 continue;

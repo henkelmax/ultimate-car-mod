@@ -224,10 +224,9 @@ public class Reciepes {
                 'H', new ItemStack(ModItems.HAMMER, 1, 0)
         );
 
-        //battery
-        //TODO spawn without durability
+        //Battery
         GameRegistry.addShapedRecipe(new ResourceLocation(Main.MODID, "battery"), null,
-                new ItemStack(ModItems.BATTERY, 1),
+                new ItemStack(ModItems.BATTERY, 1, 500),
                 "S S", "III", "III",
                 'I', new ItemStack(Items.IRON_INGOT),
                 'S', new ItemStack(ModItems.IRON_STICK)

@@ -22,12 +22,17 @@ public class EnergyUtil {
 
     @Nullable
     public static IEnergyStorage getEnergyStorage(IBlockAccess world, BlockPos pos, EnumFacing side) {
-        TileEntity te = world.getTileEntity(pos.offset(side));
+        TileEntity te = world.getTileEntity(pos);
 
         if (te == null || !te.hasCapability(CapabilityEnergy.ENERGY, side.getOpposite())) {
             return null;
         }
         return te.getCapability(CapabilityEnergy.ENERGY, side.getOpposite());
+    }
+
+    @Nullable
+    public static IEnergyStorage getEnergyStorageOffset(IBlockAccess world, BlockPos pos, EnumFacing side) {
+        return getEnergyStorage(world, pos.offset(side), side);
     }
 
 }

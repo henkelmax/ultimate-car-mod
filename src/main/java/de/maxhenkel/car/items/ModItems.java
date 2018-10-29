@@ -3,10 +3,7 @@ package de.maxhenkel.car.items;
 import de.maxhenkel.car.blocks.ModBlocks;
 import de.maxhenkel.car.entity.car.parts.PartRegistry;
 import de.maxhenkel.tools.NoRegister;
-import net.minecraft.block.BlockPlanks;
 import net.minecraft.item.Item;
-
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,10 +27,6 @@ public class ModItems {
     public static final ItemBattery BATTERY = new ItemBattery();
 
     public static final ItemLicensePlate LICENSE_PLATE = new ItemLicensePlate("license_plate");
-
-    //public static final ItemCraftingComponent WINDSHIELD = new ItemCraftingComponent("windshield");
-    //public static final ItemCraftingComponent CONTROL_UNIT = new ItemCraftingComponent("control_unit");
-    //public static final ItemCraftingComponent AXLE = new ItemCraftingComponent("axle");
 
     /**
      * ---- CAR PARTS ----
