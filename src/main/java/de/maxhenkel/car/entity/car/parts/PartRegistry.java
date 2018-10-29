@@ -110,6 +110,23 @@ public class PartRegistry {
     public static final Part WHITE_CONTAINER = new PartContainer(new ResourceLocation(Main.MODID, "textures/entity/car_transporter_white.png"));
     public static final Part YELLOW_CONTAINER = new PartContainer(new ResourceLocation(Main.MODID, "textures/entity/car_transporter_yellow.png"));
 
+    public static final Part BLACK_TANK_CONTAINER = new PartTankContainer(new ResourceLocation(Main.MODID, "textures/entity/tank_container_black.png"));
+    public static final Part BLUE_TANK_CONTAINER = new PartTankContainer(new ResourceLocation(Main.MODID, "textures/entity/tank_container_blue.png"));
+    public static final Part BROWN_TANK_CONTAINER = new PartTankContainer(new ResourceLocation(Main.MODID, "textures/entity/tank_container_brown.png"));
+    public static final Part CYAN_TANK_CONTAINER = new PartTankContainer(new ResourceLocation(Main.MODID, "textures/entity/tank_container_cyan.png"));
+    public static final Part GRAY_TANK_CONTAINER = new PartTankContainer(new ResourceLocation(Main.MODID, "textures/entity/tank_container_gray.png"));
+    public static final Part GREEN_TANK_CONTAINER = new PartTankContainer(new ResourceLocation(Main.MODID, "textures/entity/tank_container_green.png"));
+    public static final Part LIGHT_BLUE_TANK_CONTAINER = new PartTankContainer(new ResourceLocation(Main.MODID, "textures/entity/tank_container_light_blue.png"));
+    public static final Part LIME_TANK_CONTAINER = new PartTankContainer(new ResourceLocation(Main.MODID, "textures/entity/tank_container.png_lime"));
+    public static final Part MAGENTA_TANK_CONTAINER = new PartTankContainer(new ResourceLocation(Main.MODID, "textures/entity/tank_container_magenta.png"));
+    public static final Part ORANGE_TANK_CONTAINER = new PartTankContainer(new ResourceLocation(Main.MODID, "textures/entity/tank_container_orange.png"));
+    public static final Part PINK_TANK_CONTAINER = new PartTankContainer(new ResourceLocation(Main.MODID, "textures/entity/tank_container_pink.png"));
+    public static final Part PURPLE_TANK_CONTAINER = new PartTankContainer(new ResourceLocation(Main.MODID, "textures/entity/tank_container_purple.png"));
+    public static final Part RED_TANK_CONTAINER = new PartTankContainer(new ResourceLocation(Main.MODID, "textures/entity/tank_container_red.png"));
+    public static final Part SILVER_TANK_CONTAINER = new PartTankContainer(new ResourceLocation(Main.MODID, "textures/entity/tank_container_silver.png"));
+    public static final Part WHITE_TANK_CONTAINER = new PartTankContainer(new ResourceLocation(Main.MODID, "textures/entity/tank_container_white.png"));
+    public static final Part YELLOW_TANK_CONTAINER = new PartTankContainer(new ResourceLocation(Main.MODID, "textures/entity/tank_container_yellow.png"));
+
     public static final Part OAK_BUMPER = new PartBumper(new ResourceLocation("textures/blocks/planks_oak.png"));
     public static final Part ACACIA_BUMPER = new PartBumper(new ResourceLocation("textures/blocks/planks_acacia.png"));
     public static final Part DARK_OAK_BUMPER = new PartBumper(new ResourceLocation("textures/blocks/planks_big_oak.png"));

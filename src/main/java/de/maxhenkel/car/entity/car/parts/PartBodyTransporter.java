@@ -4,6 +4,10 @@ import de.maxhenkel.car.Main;
 import de.maxhenkel.car.entity.model.obj.OBJModel;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentTranslation;
+
+import java.util.List;
 
 public class PartBodyTransporter extends PartBody {
 
@@ -31,4 +35,15 @@ public class PartBodyTransporter extends PartBody {
         this.acceleration = 0.8F;
         this.maxSpeed = 0.765F;
     }
+
+    @Override
+    public boolean validate(List<Part> parts, List<ITextComponent> messages) {
+        if (getAmount(parts, part -> part instanceof PartTransporterBack) > 1) {
+            messages.add(new TextComponentTranslation("message.parts.too_many_containers"));
+            return false;
+        }
+
+        return super.validate(parts, messages);
+    }
+
 }

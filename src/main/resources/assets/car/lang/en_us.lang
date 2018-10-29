@@ -240,6 +240,23 @@ item.silver_container.name=Light Gray Container
 item.white_container.name=White Container
 item.yellow_container.name=Yellow Container
 
+item.black_tank_container.name=Black Tank Container
+item.blue_tank_container.name=Blue Tank Container
+item.brown_tank_container.name=Brown Tank Container
+item.cyan_tank_container.name=Cyan Tank Container
+item.gray_tank_container.name=Gray Tank Container
+item.green_tank_container.name=Green Tank Container
+item.light_blue_tank_container.name=Light Blue Tank Container
+item.lime_tank_container.name=Lime Tank Container
+item.magenta_tank_container.name=Magenta Tank Container
+item.orange_tank_container.name=Orange Tank Container
+item.pink_tank_container.name=Pink Tank Container
+item.purple_tank_container.name=Purple Tank Container
+item.red_tank_container.name=Red Tank Container
+item.silver_tank_container.name=Light Gray Tank Container
+item.white_tank_container.name=White Tank Container
+item.yellow_tank_container.name=Yellow Tank Container
+
 item.small_tank.name=Small Tank
 item.medium_tank.name=Medium Tank
 item.large_tank.name=Large Tank

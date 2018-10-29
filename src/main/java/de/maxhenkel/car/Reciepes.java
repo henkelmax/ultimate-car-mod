@@ -391,6 +391,15 @@ public class Reciepes {
             );
         }
 
+        for(EnumDyeColor color:EnumDyeColor.values()){
+            GameRegistry.addShapedRecipe(new ResourceLocation(Main.MODID, color.getName() +"_tank_container"), null,
+                    new ItemStack(ModItems.TANK_CONTAINERS[color.getMetadata()], 1),
+                    "CTC", "TTT", "CTC",
+                    'C', new ItemStack(Blocks.STAINED_HARDENED_CLAY, 1, color.getMetadata()),
+                    'T', new ItemStack(ModBlocks.TANK, 1)
+            );
+        }
+
         for(BlockPlanks.EnumType wood: BlockPlanks.EnumType.values()){
             GameRegistry.addShapedRecipe(new ResourceLocation(Main.MODID, wood.getName() +"_wood_body"), null,
                     new ItemStack(ModItems.WOOD_BODIES[wood.getMetadata()], 1),

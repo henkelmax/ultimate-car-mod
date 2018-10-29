@@ -29,6 +29,15 @@ public class EntityGenericCar extends EntityCarLicensePlateBase {
     }
 
     @Override
+    public int getFluidInventorySize() {
+        PartTankContainer tank = getPartByClass(PartTankContainer.class);
+        if (tank == null) {
+            return 0;
+        }
+        return tank.getFluidAmount();
+    }
+
+    @Override
     public float getMaxSpeed() {
         PartEngine engine = getPartByClass(PartEngine.class);
         if (engine == null) {
