@@ -60,6 +60,8 @@ public class Config {
     public static int splitTankGlycerinGeneration = 10;
     public static int splitTankBioDieselGeneration = 100;
 
+    public static boolean pickUpTank;
+
     public static float repairKitRepairAmount = 5F;
 
     public static int canisterMaxFuel = 100;
@@ -204,6 +206,9 @@ public class Config {
         splitTankMixUsage = config.getInt("split_tank_mix_usage", "machines.split_tank", 100, 1, Short.MAX_VALUE, "");
         splitTankGlycerinGeneration = config.getInt("split_tank_glycerin_generation", "machines.split_tank", 10, 1, Short.MAX_VALUE, "");
         splitTankBioDieselGeneration = config.getInt("split_tank_bio_diesel_generation", "machines.split_tank", 100, 1, Short.MAX_VALUE, "");
+
+        //Tank
+        pickUpTank=config.getBoolean("pick_up_tank", "machines.tank", true, "If tanks keep their fluids when broken");
 
         //Repair kit
         repairKitRepairAmount = config.getFloat("repair_kit_repair_amount", "items.repair_kit", 5F, 0.1F, 100F, "");

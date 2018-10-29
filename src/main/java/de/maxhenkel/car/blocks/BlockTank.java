@@ -2,6 +2,7 @@ package de.maxhenkel.car.blocks;
 
 import java.util.List;
 
+import de.maxhenkel.car.Config;
 import de.maxhenkel.car.ModCreativeTabs;
 import de.maxhenkel.car.blocks.tileentity.TileEntityTank;
 import net.minecraft.block.BlockContainer;
@@ -42,7 +43,7 @@ public class BlockTank extends BlockContainer {
     public void onBlockHarvested(World worldIn, BlockPos pos, IBlockState state, EntityPlayer player) {
         super.onBlockHarvested(worldIn, pos, state, player);
 
-        if (player.capabilities.isCreativeMode) {
+        if (player.capabilities.isCreativeMode || !Config.pickUpTank) {
             return;
         }
 
@@ -95,7 +96,9 @@ public class BlockTank extends BlockContainer {
 
     @Override
     public void dropBlockAsItemWithChance(World worldIn, BlockPos pos, IBlockState state, float chance, int fortune) {
-
+        if(!Config.pickUpTank){
+            super.dropBlockAsItemWithChance(worldIn, pos, state, chance, fortune);
+        }
     }
 
     @Override
