@@ -68,16 +68,11 @@ public class ModBlocks {
 		}
 	}
 
-	public static List<Block> getAllNoBlock(){
+	public static List<Block> getBlocksWithItems(){
         List<Block> blocks=new ArrayList<>();
         for(Field field: ModBlocks.class.getFields()){
-            for(Annotation annotation:field.getAnnotations()){
-                if(annotation instanceof NoRegister){
-                    continue;
-                }
-                if(annotation instanceof OnlyBlock){
-                    continue;
-                }
+            if(hasAnnotation(field, NoRegister.class)||hasAnnotation(field, OnlyBlock.class)){
+                continue;
             }
             try {
                 Object obj=field.get(null);
@@ -92,13 +87,20 @@ public class ModBlocks {
         return blocks;
     }
 
+    public static boolean hasAnnotation(Field field, Class<? extends Annotation> annotationClass){
+        for(Annotation annotation:field.getAnnotations()){
+            if(annotation.annotationType().equals(annotationClass)){
+                return true;
+            }
+        }
+        return false;
+    }
+
     public static List<Block> getAll(){
         List<Block> blocks=new ArrayList<>();
         for(Field field: ModBlocks.class.getFields()){
-            for(Annotation annotation:field.getAnnotations()){
-                if(annotation instanceof NoRegister){
-                    continue;
-                }
+            if(hasAnnotation(field, NoRegister.class)){
+                continue;
             }
             try {
                 Object obj=field.get(null);

@@ -1,8 +1,10 @@
 package de.maxhenkel.car.items;
 
+import de.maxhenkel.car.blocks.ModBlocks;
 import de.maxhenkel.car.entity.car.parts.PartRegistry;
 import de.maxhenkel.tools.NoRegister;
 import net.minecraft.item.Item;
+
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -32,7 +34,9 @@ public class ModItems {
     //public static final ItemCraftingComponent CONTROL_UNIT = new ItemCraftingComponent("control_unit");
     //public static final ItemCraftingComponent AXLE = new ItemCraftingComponent("axle");
 
-    /** ---- CAR PARTS ---- **/
+    /**
+     * ---- CAR PARTS ----
+     **/
 
     public static final ItemCarPart ENGINE_3_CYLINDER = new ItemCarPart("engine_3_cylinder", PartRegistry.ENGINE_3_CYLINDER);
     public static final ItemCarPart ENGINE_6_CYLINDER = new ItemCarPart("engine_6_cylinder", PartRegistry.ENGINE_6_CYLINDER);
@@ -148,10 +152,8 @@ public class ModItems {
     public static List<Item> getAll() {
         List<Item> items = new ArrayList<>();
         for (Field field : ModItems.class.getFields()) {
-            for (Annotation annotation : field.getAnnotations()) {
-                if (annotation instanceof NoRegister) {
-                    continue;
-                }
+            if (ModBlocks.hasAnnotation(field, NoRegister.class)) {
+                continue;
             }
             try {
                 Object obj = field.get(null);
