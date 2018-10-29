@@ -223,6 +223,23 @@ item.silver_sport_body.name=Light Gray Sportscar Body
 item.white_sport_body.name=White Sportscar Body
 item.yellow_sport_body.name=Yellow Sportscar Body
 
+item.black_container.name=Black Container
+item.blue_container.name=Blue Container
+item.brown_container.name=Brown Container
+item.cyan_container.name=Cyan Container
+item.gray_container.name=Gray Container
+item.green_container.name=Green Container
+item.light_blue_container.name=Light Blue Container
+item.lime_container.name=Lime Container
+item.magenta_container.name=Magenta Container
+item.orange_container.name=Orange Container
+item.pink_container.name=Pink Container
+item.purple_container.name=Purple Container
+item.red_container.name=Red Container
+item.silver_container.name=Light Gray Container
+item.white_container.name=White Container
+item.yellow_container.name=Yellow Container
+
 item.small_tank.name=Small Tank
 item.medium_tank.name=Medium Tank
 item.large_tank.name=Large Tank

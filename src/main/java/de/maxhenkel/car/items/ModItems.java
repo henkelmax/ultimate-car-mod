@@ -3,6 +3,7 @@ package de.maxhenkel.car.items;
 import de.maxhenkel.car.blocks.ModBlocks;
 import de.maxhenkel.car.entity.car.parts.PartRegistry;
 import de.maxhenkel.tools.NoRegister;
+import net.minecraft.block.BlockPlanks;
 import net.minecraft.item.Item;
 
 import java.lang.annotation.Annotation;
@@ -51,12 +52,20 @@ public class ModItems {
     public static final ItemCarPart JUNGLE_BODY = new ItemCarPart("jungle_body", PartRegistry.JUNGLE_BODY);
     public static final ItemCarPart SPRUCE_BODY = new ItemCarPart("spruce_body", PartRegistry.SPRUCE_BODY);
 
+    public static final ItemCarPart[] WOOD_BODIES = new ItemCarPart[]{
+            OAK_BODY, SPRUCE_BODY, BIRCH_BODY, JUNGLE_BODY, ACACIA_BODY, DARK_OAK_BODY
+    };
+
     public static final ItemCarPart BIG_OAK_BODY = new ItemCarPart("big_oak_body", PartRegistry.BIG_OAK_BODY);
     public static final ItemCarPart BIG_ACACIA_BODY = new ItemCarPart("big_acacia_body", PartRegistry.BIG_ACACIA_BODY);
     public static final ItemCarPart BIG_DARK_OAK_BODY = new ItemCarPart("big_dark_oak_body", PartRegistry.BIG_DARK_OAK_BODY);
     public static final ItemCarPart BIG_BIRCH_BODY = new ItemCarPart("big_birch_body", PartRegistry.BIG_BIRCH_BODY);
     public static final ItemCarPart BIG_JUNGLE_BODY = new ItemCarPart("big_jungle_body", PartRegistry.BIG_JUNGLE_BODY);
     public static final ItemCarPart BIG_SPRUCE_BODY = new ItemCarPart("big_spruce_body", PartRegistry.BIG_SPRUCE_BODY);
+
+    public static final ItemCarPart[] BIG_WOOD_BODIES = new ItemCarPart[]{
+            BIG_OAK_BODY, BIG_SPRUCE_BODY, BIG_BIRCH_BODY, BIG_JUNGLE_BODY, BIG_ACACIA_BODY, BIG_DARK_OAK_BODY
+    };
 
     public static final ItemCarPart BLACK_TRANSPORTER_BODY = new ItemCarPart("black_transporter_body", PartRegistry.BLACK_TRANSPORTER_BODY);
     public static final ItemCarPart BLUE_TRANSPORTER_BODY = new ItemCarPart("blue_transporter_body", PartRegistry.BLUE_TRANSPORTER_BODY);
@@ -75,6 +84,12 @@ public class ModItems {
     public static final ItemCarPart WHITE_TRANSPORTER_BODY = new ItemCarPart("white_transporter_body", PartRegistry.WHITE_TRANSPORTER_BODY);
     public static final ItemCarPart YELLOW_TRANSPORTER_BODY = new ItemCarPart("yellow_transporter_body", PartRegistry.YELLOW_TRANSPORTER_BODY);
 
+    public static final ItemCarPart[] TRANSPORTER_BODIES = new ItemCarPart[]{
+            WHITE_TRANSPORTER_BODY, ORANGE_TRANSPORTER_BODY, MAGENTA_TRANSPORTER_BODY, LIGHT_BLUE_TRANSPORTER_BODY, YELLOW_TRANSPORTER_BODY,
+            LIME_TRANSPORTER_BODY, PINK_TRANSPORTER_BODY, GRAY_TRANSPORTER_BODY, SILVER_TRANSPORTER_BODY, CYAN_TRANSPORTER_BODY,
+            PURPLE_TRANSPORTER_BODY, BLUE_TRANSPORTER_BODY, BROWN_TRANSPORTER_BODY, GREEN_TRANSPORTER_BODY, RED_TRANSPORTER_BODY, BLACK_TRANSPORTER_BODY
+    };
+
     public static final ItemCarPart BLACK_SUV_BODY = new ItemCarPart("black_suv_body", PartRegistry.BLACK_SUV_BODY);
     public static final ItemCarPart BLUE_SUV_BODY = new ItemCarPart("blue_suv_body", PartRegistry.BLUE_SUV_BODY);
     public static final ItemCarPart BROWN_SUV_BODY = new ItemCarPart("brown_suv_body", PartRegistry.BROWN_SUV_BODY);
@@ -91,6 +106,12 @@ public class ModItems {
     public static final ItemCarPart SILVER_SUV_BODY = new ItemCarPart("silver_suv_body", PartRegistry.SILVER_SUV_BODY);
     public static final ItemCarPart WHITE_SUV_BODY = new ItemCarPart("white_suv_body", PartRegistry.WHITE_SUV_BODY);
     public static final ItemCarPart YELLOW_SUV_BODY = new ItemCarPart("yellow_suv_body", PartRegistry.YELLOW_SUV_BODY);
+
+    public static final ItemCarPart[] SUV_BODIES = new ItemCarPart[]{
+            WHITE_SUV_BODY, ORANGE_SUV_BODY, MAGENTA_SUV_BODY, LIGHT_BLUE_SUV_BODY, YELLOW_SUV_BODY,
+            LIME_SUV_BODY, PINK_SUV_BODY, GRAY_SUV_BODY, SILVER_SUV_BODY, CYAN_SUV_BODY,
+            PURPLE_SUV_BODY, BLUE_SUV_BODY, BROWN_SUV_BODY, GREEN_SUV_BODY, RED_SUV_BODY, BLACK_SUV_BODY
+    };
 
     public static final ItemCarPart BLACK_SPORT_BODY = new ItemCarPart("black_sport_body", PartRegistry.BLACK_SPORT_BODY);
     public static final ItemCarPart BLUE_SPORT_BODY = new ItemCarPart("blue_sport_body", PartRegistry.BLUE_SPORT_BODY);
@@ -109,6 +130,12 @@ public class ModItems {
     public static final ItemCarPart WHITE_SPORT_BODY = new ItemCarPart("white_sport_body", PartRegistry.WHITE_SPORT_BODY);
     public static final ItemCarPart YELLOW_SPORT_BODY = new ItemCarPart("yellow_sport_body", PartRegistry.YELLOW_SPORT_BODY);
 
+    public static final ItemCarPart[] SPORT_BODIES = new ItemCarPart[]{
+            WHITE_SPORT_BODY, ORANGE_SPORT_BODY, MAGENTA_SPORT_BODY, LIGHT_BLUE_SPORT_BODY, YELLOW_SPORT_BODY,
+            LIME_SPORT_BODY, PINK_SPORT_BODY, GRAY_SPORT_BODY, SILVER_SPORT_BODY, CYAN_SPORT_BODY,
+            PURPLE_SPORT_BODY, BLUE_SPORT_BODY, BROWN_SPORT_BODY, GREEN_SPORT_BODY, RED_SPORT_BODY, BLACK_SPORT_BODY
+    };
+
     public static final ItemCarPart BLACK_CONTAINER = new ItemCarPart("black_container", PartRegistry.BLACK_CONTAINER);
     public static final ItemCarPart BLUE_CONTAINER = new ItemCarPart("blue_container", PartRegistry.BLUE_CONTAINER);
     public static final ItemCarPart BROWN_CONTAINER = new ItemCarPart("brown_container", PartRegistry.BROWN_CONTAINER);
@@ -126,6 +153,12 @@ public class ModItems {
     public static final ItemCarPart WHITE_CONTAINER = new ItemCarPart("white_container", PartRegistry.WHITE_CONTAINER);
     public static final ItemCarPart YELLOW_CONTAINER = new ItemCarPart("yellow_container", PartRegistry.YELLOW_CONTAINER);
 
+    public static final ItemCarPart[] CONTAINERS = new ItemCarPart[]{
+            WHITE_CONTAINER, ORANGE_CONTAINER, MAGENTA_CONTAINER, LIGHT_BLUE_CONTAINER, YELLOW_CONTAINER,
+            LIME_CONTAINER, PINK_CONTAINER, GRAY_CONTAINER, SILVER_CONTAINER, CYAN_CONTAINER,
+            PURPLE_CONTAINER, BLUE_CONTAINER, BROWN_CONTAINER, GREEN_CONTAINER, RED_CONTAINER, BLACK_CONTAINER
+    };
+
     public static final ItemCarPart OAK_BUMPER = new ItemCarPart("oak_bumper", PartRegistry.OAK_BUMPER);
     public static final ItemCarPart ACACIA_BUMPER = new ItemCarPart("acacia_bumper", PartRegistry.ACACIA_BUMPER);
     public static final ItemCarPart DARK_OAK_BUMPER = new ItemCarPart("dark_oak_bumper", PartRegistry.DARK_OAK_BUMPER);
@@ -133,12 +166,21 @@ public class ModItems {
     public static final ItemCarPart JUNGLE_BUMPER = new ItemCarPart("jungle_bumper", PartRegistry.JUNGLE_BUMPER);
     public static final ItemCarPart SPRUCE_BUMPER = new ItemCarPart("spruce_bumper", PartRegistry.SPRUCE_BUMPER);
 
+    public static final ItemCarPart[] BUMPERS = new ItemCarPart[]{
+            OAK_BUMPER, SPRUCE_BUMPER, BIRCH_BUMPER, JUNGLE_BUMPER, ACACIA_BUMPER, DARK_OAK_BUMPER
+    };
+
     public static final ItemCarPart OAK_LICENSE_PLATE_HOLDER = new ItemCarPart("oak_license_plate_holder", PartRegistry.OAK_LICENSE_PLATE_HOLDER);
     public static final ItemCarPart ACACIA_LICENSE_PLATE_HOLDER = new ItemCarPart("acacia_license_plate_holder", PartRegistry.ACACIA_LICENSE_PLATE_HOLDER);
     public static final ItemCarPart DARK_OAK_LICENSE_PLATE_HOLDER = new ItemCarPart("dark_oak_license_plate_holder", PartRegistry.DARK_OAK_LICENSE_PLATE_HOLDER);
     public static final ItemCarPart BIRCH_LICENSE_PLATE_HOLDER = new ItemCarPart("birch_license_plate_holder", PartRegistry.BIRCH_LICENSE_PLATE_HOLDER);
     public static final ItemCarPart JUNGLE_LICENSE_PLATE_HOLDER = new ItemCarPart("jungle_license_plate_holder", PartRegistry.JUNGLE_LICENSE_PLATE_HOLDER);
     public static final ItemCarPart SPRUCE_LICENSE_PLATE_HOLDER = new ItemCarPart("spruce_license_plate_holder", PartRegistry.SPRUCE_LICENSE_PLATE_HOLDER);
+
+    public static final ItemCarPart[] WOODEN_LICENSE_PLATE_HOLDERS = new ItemCarPart[]{
+            OAK_LICENSE_PLATE_HOLDER, SPRUCE_LICENSE_PLATE_HOLDER, BIRCH_LICENSE_PLATE_HOLDER, JUNGLE_LICENSE_PLATE_HOLDER,
+            ACACIA_LICENSE_PLATE_HOLDER, DARK_OAK_LICENSE_PLATE_HOLDER
+    };
 
     public static final ItemCarPart IRON_LICENSE_PLATE_HOLDER = new ItemCarPart("iron_license_plate_holder", PartRegistry.IRON_LICENSE_PLATE_HOLDER);
     public static final ItemCarPart DIAMOND_LICENSE_PLATE_HOLDER = new ItemCarPart("diamond_license_plate_holder", PartRegistry.DIAMOND_LICENSE_PLATE_HOLDER);
