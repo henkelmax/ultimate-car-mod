@@ -13,25 +13,25 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ModSounds {
-    public static SoundEvent engine_stop = registerSound("engine_stop");
-    public static SoundEvent engine_starting = registerSound("engine_starting");
-    public static SoundEvent engine_start = registerSound("engine_start");
-    public static SoundEvent engine_idle = registerSound("engine_idle");
-    public static SoundEvent engine_high = registerSound("engine_high");
-    public static SoundEvent engine_fail = registerSound("engine_fail");
-    public static SoundEvent sport_engine_stop = registerSound("sport_engine_stop");
-    public static SoundEvent sport_engine_starting = registerSound("sport_engine_starting");
-    public static SoundEvent sport_engine_start = registerSound("sport_engine_start");
-    public static SoundEvent sport_engine_idle = registerSound("sport_engine_idle");
-    public static SoundEvent sport_engine_high = registerSound("sport_engine_high");
-    public static SoundEvent sport_engine_fail = registerSound("sport_engine_fail");
-    public static SoundEvent car_crash = registerSound("car_crash");
-    public static SoundEvent gas_ststion = registerSound("gas_station");
-    public static SoundEvent generator = registerSound("generator");
-    public static SoundEvent car_horn = registerSound("car_horn");
-    public static SoundEvent car_lock = registerSound("car_lock");
-    public static SoundEvent car_unlock = registerSound("car_unlock");
-    public static SoundEvent ratchet = registerSound("ratchet");
+    public static SoundEvent ENGINE_STOP = registerSound("engine_stop");
+    public static SoundEvent ENGINE_STARTING = registerSound("engine_starting");
+    public static SoundEvent ENGINE_START = registerSound("engine_start");
+    public static SoundEvent ENGINE_IDLE = registerSound("engine_idle");
+    public static SoundEvent ENGINE_HIGH = registerSound("engine_high");
+    public static SoundEvent ENGINE_FAIL = registerSound("engine_fail");
+    public static SoundEvent SPORT_ENGINE_STOP = registerSound("sport_engine_stop");
+    public static SoundEvent SPORT_ENGINE_STARTING = registerSound("sport_engine_starting");
+    public static SoundEvent SPORT_ENGINE_START = registerSound("sport_engine_start");
+    public static SoundEvent SPORT_ENGINE_IDLE = registerSound("sport_engine_idle");
+    public static SoundEvent SPORT_ENGINE_HIGH = registerSound("sport_engine_high");
+    public static SoundEvent SPORT_ENGINE_FAIL = registerSound("sport_engine_fail");
+    public static SoundEvent CAR_CRASH = registerSound("car_crash");
+    public static SoundEvent GAS_STATION = registerSound("gas_station");
+    public static SoundEvent GENERATOR = registerSound("generator");
+    public static SoundEvent CAR_HORN = registerSound("car_horn");
+    public static SoundEvent CAR_LOCK = registerSound("car_lock");
+    public static SoundEvent CAR_UNLOCK = registerSound("car_unlock");
+    public static SoundEvent RATCHET = registerSound("ratchet");
 
     public static SoundEvent registerSound(String soundName) {
         SoundEvent event = new SoundEvent(new ResourceLocation(Main.MODID, soundName));

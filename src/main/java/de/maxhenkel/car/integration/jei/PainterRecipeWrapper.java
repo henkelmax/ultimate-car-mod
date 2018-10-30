@@ -27,7 +27,7 @@ public class PainterRecipeWrapper implements IRecipeWrapper{
 
 	@Override
 	public void getIngredients(IIngredients ingredients) {
-		ingredients.setInput(ItemStack.class, new ItemStack(ModItems.PAINTER));
+		ingredients.setInput(VanillaTypes.ITEM, new ItemStack(ModItems.PAINTER));
 		
 		List<ItemStack> list=new ArrayList<ItemStack>();
 		

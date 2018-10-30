@@ -158,7 +158,7 @@ public class Reciepes {
         );
 
         //Generator
-        GameRegistry.addShapedRecipe(new ResourceLocation(Main.MODID, "generator"), null,
+        GameRegistry.addShapedRecipe(new ResourceLocation(Main.MODID, "GENERATOR"), null,
                 new ItemStack(ModBlocks.GENERATOR, 1),
                 "ICI", "IEI", "ITI",
                 'I', new ItemStack(Items.IRON_INGOT),

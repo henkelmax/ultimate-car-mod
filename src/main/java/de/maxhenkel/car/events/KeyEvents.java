@@ -50,7 +50,7 @@ public class KeyEvents {
 		this.keyStart = new KeyBinding("key.car_start", Keyboard.KEY_R, "category.car");
 		ClientRegistry.registerKeyBinding(keyStart);
 		
-		this.keyHorn = new KeyBinding("key.car_horn", Keyboard.KEY_H, "category.car");
+		this.keyHorn = new KeyBinding("key.CAR_HORN", Keyboard.KEY_H, "category.car");
 		ClientRegistry.registerKeyBinding(keyHorn);
 
         this.keyCenter = new KeyBinding("key.center_car", Keyboard.KEY_SPACE, "category.car");

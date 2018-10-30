@@ -101,7 +101,7 @@ public class Config {
     }
 
     private static void initGenerator() {
-        JsonConfig cfg = new JsonConfig(new File(configFolder, "generator.json"));
+        JsonConfig cfg = new JsonConfig(new File(configFolder, "GENERATOR.json"));
         JSONArray arr = new JSONArray();
         arr.put(new JSONObject().put("fluid", new FluidSelector(ModFluids.BIO_DIESEL).toString()).put("energy", 500));
         JSONArray fluids = cfg.getJsonArray("generator_fluids", arr);
@@ -197,8 +197,8 @@ public class Config {
         fuelStationTransferRate = config.getInt("fuel_station_transfer_rate", "machines.fuel_station", 5, 1, Short.MAX_VALUE, "");
 
         //Generator
-        generatorEnergyStorage = config.getInt("generator_energy_storage", "machines.generator", 30000, 1000, Short.MAX_VALUE, "");
-        generatorFluidStorage = config.getInt("generator_fluid_storage", "machines.generator", 3000, 1000, Short.MAX_VALUE, "");
+        generatorEnergyStorage = config.getInt("generator_energy_storage", "machines.GENERATOR", 30000, 1000, Short.MAX_VALUE, "");
+        generatorFluidStorage = config.getInt("generator_fluid_storage", "machines.GENERATOR", 3000, 1000, Short.MAX_VALUE, "");
 
         //Split Tank
         splitTankFluidStorage = config.getInt("split_tank_fluid_storage", "machines.split_tank", 3000, 1000, Short.MAX_VALUE, "");

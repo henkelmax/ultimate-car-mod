@@ -410,7 +410,7 @@ public class TileEntityCarWorkshop extends TileEntityBase implements IInventory 
 
         car.setDamage(car.getDamage() - 10F);
 
-        ModSounds.playSound(ModSounds.ratchet, world, pos, null, SoundCategory.BLOCKS);
+        ModSounds.playSound(ModSounds.RATCHET, world, pos, null, SoundCategory.BLOCKS);
     }
 
     public boolean areRepairItemsInside() {

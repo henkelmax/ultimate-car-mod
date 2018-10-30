@@ -11,41 +11,41 @@ public class PartEngine3Cylinder extends PartEngine{
 
     @Override
     public SoundEvent getStopSound() {
-        return ModSounds.engine_stop;
+        return ModSounds.ENGINE_STOP;
     }
 
     @Override
     public SoundEvent getFailSound() {
-        return ModSounds.engine_fail;
+        return ModSounds.ENGINE_FAIL;
     }
 
     @Override
     public SoundEvent getCrashSound() {
-        return ModSounds.car_crash;
+        return ModSounds.CAR_CRASH;
     }
 
     @Override
     public SoundEvent getStartSound() {
-        return ModSounds.engine_start;
+        return ModSounds.ENGINE_START;
     }
 
     @Override
     public SoundEvent getStartingSound() {
-        return ModSounds.engine_starting;
+        return ModSounds.ENGINE_STARTING;
     }
 
     @Override
     public SoundEvent getIdleSound() {
-        return ModSounds.engine_idle;
+        return ModSounds.ENGINE_IDLE;
     }
 
     @Override
     public SoundEvent getHighSound() {
-        return ModSounds.engine_high;
+        return ModSounds.ENGINE_HIGH;
     }
 
     @Override
     public SoundEvent getHornSound() {
-        return ModSounds.car_horn;
+        return ModSounds.CAR_HORN;
     }
 }

@@ -567,7 +567,7 @@ public class TileEntityFuelStation extends TileEntityBase implements ITickable, 
 
     @SideOnly(Side.CLIENT)
     public void playSound() {
-        ModSounds.playSoundLoop(new SoundLoopTileentity(ModSounds.gas_ststion, SoundCategory.BLOCKS, this), world);
+        ModSounds.playSoundLoop(new SoundLoopTileentity(ModSounds.GAS_STATION, SoundCategory.BLOCKS, this), world);
     }
 
     @Override

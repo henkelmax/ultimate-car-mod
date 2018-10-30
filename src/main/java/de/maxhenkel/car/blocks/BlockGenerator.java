@@ -20,7 +20,7 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 public class BlockGenerator extends BlockGui{
 
 	protected BlockGenerator() {
-		super(Material.IRON, "generator");
+		super(Material.IRON, "GENERATOR");
 		useNeighborBrightness=true;
 		setHardness(3.0F);
 	}

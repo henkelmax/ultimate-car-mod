@@ -84,11 +84,11 @@ public abstract class EntityCarLockBase extends EntityCarInventoryBase {
 	}
 
 	public SoundEvent getLockSound() {
-		return ModSounds.car_lock;
+		return ModSounds.CAR_LOCK;
 	}
 
 	public SoundEvent getUnLockSound() {
-		return ModSounds.car_unlock;
+		return ModSounds.CAR_UNLOCK;
 	}
 
 	@Override

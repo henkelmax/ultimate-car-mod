@@ -90,25 +90,25 @@ public class Registry {
 
     @SubscribeEvent
     public static void registerSounds(RegistryEvent.Register<SoundEvent> event) {
-        registerSound(event.getRegistry(), ModSounds.engine_stop);
-        registerSound(event.getRegistry(), ModSounds.engine_starting);
-        registerSound(event.getRegistry(), ModSounds.engine_start);
-        registerSound(event.getRegistry(), ModSounds.engine_idle);
-        registerSound(event.getRegistry(), ModSounds.engine_high);
-        registerSound(event.getRegistry(), ModSounds.engine_fail);
-        registerSound(event.getRegistry(), ModSounds.sport_engine_stop);
-        registerSound(event.getRegistry(), ModSounds.sport_engine_starting);
-        registerSound(event.getRegistry(), ModSounds.sport_engine_start);
-        registerSound(event.getRegistry(), ModSounds.sport_engine_idle);
-        registerSound(event.getRegistry(), ModSounds.sport_engine_high);
-        registerSound(event.getRegistry(), ModSounds.sport_engine_fail);
-        registerSound(event.getRegistry(), ModSounds.gas_ststion);
-        registerSound(event.getRegistry(), ModSounds.car_crash);
-        registerSound(event.getRegistry(), ModSounds.generator);
-        registerSound(event.getRegistry(), ModSounds.car_horn);
-        registerSound(event.getRegistry(), ModSounds.car_lock);
-        registerSound(event.getRegistry(), ModSounds.car_unlock);
-        registerSound(event.getRegistry(), ModSounds.ratchet);
+        registerSound(event.getRegistry(), ModSounds.ENGINE_STOP);
+        registerSound(event.getRegistry(), ModSounds.ENGINE_STARTING);
+        registerSound(event.getRegistry(), ModSounds.ENGINE_START);
+        registerSound(event.getRegistry(), ModSounds.ENGINE_IDLE);
+        registerSound(event.getRegistry(), ModSounds.ENGINE_HIGH);
+        registerSound(event.getRegistry(), ModSounds.ENGINE_FAIL);
+        registerSound(event.getRegistry(), ModSounds.SPORT_ENGINE_STOP);
+        registerSound(event.getRegistry(), ModSounds.SPORT_ENGINE_STARTING);
+        registerSound(event.getRegistry(), ModSounds.SPORT_ENGINE_START);
+        registerSound(event.getRegistry(), ModSounds.SPORT_ENGINE_IDLE);
+        registerSound(event.getRegistry(), ModSounds.SPORT_ENGINE_HIGH);
+        registerSound(event.getRegistry(), ModSounds.SPORT_ENGINE_FAIL);
+        registerSound(event.getRegistry(), ModSounds.GAS_STATION);
+        registerSound(event.getRegistry(), ModSounds.CAR_CRASH);
+        registerSound(event.getRegistry(), ModSounds.GENERATOR);
+        registerSound(event.getRegistry(), ModSounds.CAR_HORN);
+        registerSound(event.getRegistry(), ModSounds.CAR_LOCK);
+        registerSound(event.getRegistry(), ModSounds.CAR_UNLOCK);
+        registerSound(event.getRegistry(), ModSounds.RATCHET);
     }
 
     public static void registerSound(IForgeRegistry<SoundEvent> registry, SoundEvent sound) {
@@ -135,7 +135,7 @@ public class Registry {
         GameRegistry.registerTileEntity(TileEntityOilMill.class, new ResourceLocation(Main.MODID, "oil_mill"));
         GameRegistry.registerTileEntity(TileEntityBlastFurnace.class, new ResourceLocation(Main.MODID, "blast_furnace"));
         GameRegistry.registerTileEntity(TileEntityBackmixReactor.class, new ResourceLocation(Main.MODID, "backmix_reactor"));
-        GameRegistry.registerTileEntity(TileEntityGenerator.class, new ResourceLocation(Main.MODID, "generator"));
+        GameRegistry.registerTileEntity(TileEntityGenerator.class, new ResourceLocation(Main.MODID, "GENERATOR"));
         GameRegistry.registerTileEntity(TileEntitySplitTank.class, new ResourceLocation(Main.MODID, "split_tank"));
         GameRegistry.registerTileEntity(TileEntityTank.class, new ResourceLocation(Main.MODID, "tank"));
         GameRegistry.registerTileEntity(TileEntityCarWorkshop.class, new ResourceLocation(Main.MODID, "car_workshop"));
