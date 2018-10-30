@@ -36,7 +36,7 @@ public class PartBumper extends PartModel {
     public boolean validate(List<Part> parts, List<ITextComponent> messages) {
 
         if (Part.getAmount(parts, part -> part instanceof PartBodyWoodBase) != 1) {
-            messages.add(new TextComponentTranslation("message.parts.no_chassis_for_bumper"));
+            messages.add(new TextComponentTranslation("message.parts.no_body_for_bumper"));
             return false;
         }
 

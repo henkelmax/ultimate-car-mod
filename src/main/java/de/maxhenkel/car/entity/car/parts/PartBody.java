@@ -88,8 +88,11 @@ public class PartBody extends PartModel {
 
     @Override
     public boolean validate(List<Part> parts, List<ITextComponent> messages) {
-        if (getAmount(parts, part -> part instanceof PartWheelBase) != getWheelAmount()) {
-            messages.add(new TextComponentTranslation("message.parts.wheel_amount", getWheelAmount()));
+        int wheelAmount=getAmount(parts, part -> part instanceof PartWheelBase);
+        if ( wheelAmount < getWheelAmount()) {
+            messages.add(new TextComponentTranslation("message.parts.too_few_wheels", getWheelAmount()));
+        }else if(wheelAmount > getWheelAmount()){
+            messages.add(new TextComponentTranslation("message.parts.too_many_wheels", getWheelAmount()));
         }
 
         int engineAmount = getAmount(parts, part -> part instanceof PartEngine);
@@ -100,7 +103,7 @@ public class PartBody extends PartModel {
         }
 
         if (getAmount(parts, part -> part instanceof PartLicensePlateHolder) > 1) {
-            messages.add(new TextComponentTranslation("message.parts.too_many_number_plates"));
+            messages.add(new TextComponentTranslation("message.parts.too_many_license_plates"));
         }
 
         if (getAmount(parts, part -> part instanceof PartBumper) > 1) {

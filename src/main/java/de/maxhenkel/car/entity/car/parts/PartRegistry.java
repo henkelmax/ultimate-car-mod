@@ -162,7 +162,7 @@ public class PartRegistry {
             messages.add(new TextComponentTranslation("message.parts.no_body"));
             return false;
         } else if (bodyAmount > 1) {
-            messages.add(new TextComponentTranslation("message.parts.too_many_body"));
+            messages.add(new TextComponentTranslation("message.parts.too_many_bodies"));
             return false;
         }
 

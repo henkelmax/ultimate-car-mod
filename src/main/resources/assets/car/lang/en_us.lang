@@ -1,5 +1,21 @@
 category.car=Car
 
+message.parts.too_few_wheels=Too few wheels
+message.parts.too_many_wheels=Too many wheels
+message.parts.no_engine=No Engine
+message.parts.too_many_engines=Too many engines
+message.parts.too_many_license_plates=Too many license plates
+message.parts.too_many_bumpers=Too many bumpers
+message.parts.too_many_containers=Too many containers
+message.parts.no_body_for_bumper=This body doesn't support bumpers
+message.parts.no_body_for_container=This body doesn't support containers
+message.parts.too_many_tanks=Too many tanks
+message.parts.no_tank=No tank
+message.parts.no_body_for_tank_container=This body doesn't support tank containers
+message.parts.wrong_wheel_type=Wrong wheel type
+message.parts.no_body=No body
+message.parts.too_many_bodies=Too many bodies
+
 gui.car_fuel=%s %% Fuel
 gui.car_damage=%s %% Damage
 gui.car_battery=%s %% Battery
