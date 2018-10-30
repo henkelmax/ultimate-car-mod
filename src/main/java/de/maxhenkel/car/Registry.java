@@ -135,7 +135,7 @@ public class Registry {
         GameRegistry.registerTileEntity(TileEntityOilMill.class, new ResourceLocation(Main.MODID, "oil_mill"));
         GameRegistry.registerTileEntity(TileEntityBlastFurnace.class, new ResourceLocation(Main.MODID, "blast_furnace"));
         GameRegistry.registerTileEntity(TileEntityBackmixReactor.class, new ResourceLocation(Main.MODID, "backmix_reactor"));
-        GameRegistry.registerTileEntity(TileEntityGenerator.class, new ResourceLocation(Main.MODID, "GENERATOR"));
+        GameRegistry.registerTileEntity(TileEntityGenerator.class, new ResourceLocation(Main.MODID, "generator"));
         GameRegistry.registerTileEntity(TileEntitySplitTank.class, new ResourceLocation(Main.MODID, "split_tank"));
         GameRegistry.registerTileEntity(TileEntityTank.class, new ResourceLocation(Main.MODID, "tank"));
         GameRegistry.registerTileEntity(TileEntityCarWorkshop.class, new ResourceLocation(Main.MODID, "car_workshop"));

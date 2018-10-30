@@ -8,7 +8,6 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.util.ResourceLocation;
-
 import java.util.List;
 
 // https://github.com/2piradians/Minewatch/tree/1.12.1/src/main/java/twopiradians/minewatch/client
@@ -56,7 +55,7 @@ public abstract class OBJModelRenderer<T extends EntityGenericCar> extends Rende
             GlStateManager.rotate(-90F, 1F, 0F, 0F);
 
             if (models.get(i).getOptions().getRotation() != null) {
-                GlStateManager.rotate(models.get(i).getOptions().getRotation());
+                GlStateManager.rotate(models.get(i).getOptions().getRotation().getQuaternion());
             }
 
             if (models.get(i).getOptions().getSpeedRotationFactor() > 0F) {

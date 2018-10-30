@@ -77,7 +77,6 @@ public class Config {
     public static boolean damageEntities = true;
     public static boolean hornFlee = true;
     public static boolean useBattery = true;
-    public static boolean dynamicLights = true;
     public static boolean tempInFarenheit = false;
 
     public static boolean canolaSeedDrop = true;
@@ -101,7 +100,7 @@ public class Config {
     }
 
     private static void initGenerator() {
-        JsonConfig cfg = new JsonConfig(new File(configFolder, "GENERATOR.json"));
+        JsonConfig cfg = new JsonConfig(new File(configFolder, "generator.json"));
         JSONArray arr = new JSONArray();
         arr.put(new JSONObject().put("fluid", new FluidSelector(ModFluids.BIO_DIESEL).toString()).put("energy", 500));
         JSONArray fluids = cfg.getJsonArray("generator_fluids", arr);
@@ -197,8 +196,8 @@ public class Config {
         fuelStationTransferRate = config.getInt("fuel_station_transfer_rate", "machines.fuel_station", 5, 1, Short.MAX_VALUE, "");
 
         //Generator
-        generatorEnergyStorage = config.getInt("generator_energy_storage", "machines.GENERATOR", 30000, 1000, Short.MAX_VALUE, "");
-        generatorFluidStorage = config.getInt("generator_fluid_storage", "machines.GENERATOR", 3000, 1000, Short.MAX_VALUE, "");
+        generatorEnergyStorage = config.getInt("generator_energy_storage", "machines.generator", 30000, 1000, Short.MAX_VALUE, "");
+        generatorFluidStorage = config.getInt("generator_fluid_storage", "machines.generator", 3000, 1000, Short.MAX_VALUE, "");
 
         //Split Tank
         splitTankFluidStorage = config.getInt("split_tank_fluid_storage", "machines.split_tank", 3000, 1000, Short.MAX_VALUE, "");
@@ -224,7 +223,6 @@ public class Config {
         damageEntities = config.getBoolean("damage_entities", "car", true, "Whether the cars should damage other entities on collision");
         hornFlee = config.getBoolean("horn_flee", "car", true, "Whether animals flee from the car when the horn is activted");
         useBattery = config.getBoolean("use_battery", "car", true, "True if starting the car should use battery");
-        dynamicLights = config.getBoolean("dynamic_lights", "car", true, "Whether cars should emit light when the DynamicLights mod is installed");
         tempInFarenheit = config.getBoolean("temp_farenheit", "car", false, "True if the car temperature should be displayed in farenheit");
 
         carGroundSpeed = config.getBoolean("road_blocks_enabled", "car", false, "Whether the cars drive slower on non road blocks");

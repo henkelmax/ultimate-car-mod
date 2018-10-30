@@ -9,12 +9,11 @@ import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
-import org.lwjgl.util.vector.Quaternion;
 
 public class MathTools {
 
-	public static Quaternion rotate(float angle, float x, float y, float z){
-        return new Quaternion(x*(float)Math.sin(Math.toRadians(angle)/2F), y*(float)Math.sin(Math.toRadians(angle)/2F), z*(float)Math.sin(Math.toRadians(angle)/2F),(float)Math.cos(Math.toRadians(angle)/2F));
+	public static QuaternionWrapper rotate(float angle, float x, float y, float z){
+        return new QuaternionWrapper(x*(float)Math.sin(Math.toRadians(angle)/2F), y*(float)Math.sin(Math.toRadians(angle)/2F), z*(float)Math.sin(Math.toRadians(angle)/2F),(float)Math.cos(Math.toRadians(angle)/2F));
         //new Quaternion().setFromMatrix(new Matrix4f().rotate((float) Math.PI / 2, new Vector3f(0F, 0F, 1F)))
 	}
 

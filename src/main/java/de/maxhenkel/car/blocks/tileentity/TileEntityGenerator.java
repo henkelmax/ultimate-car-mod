@@ -176,7 +176,7 @@ public class TileEntityGenerator extends TileEntityBase
 
 	@Override
 	public ITextComponent getDisplayName() {
-		return new TextComponentTranslation("tile.GENERATOR.name");
+		return new TextComponentTranslation("tile.generator.name");
 	}
 
 	@Override

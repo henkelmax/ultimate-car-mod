@@ -4,8 +4,8 @@ import de.maxhenkel.car.entity.car.base.EntityGenericCar;
 import de.maxhenkel.car.entity.model.obj.OBJModel;
 import de.maxhenkel.car.entity.model.obj.OBJModelInstance;
 import de.maxhenkel.car.entity.model.obj.OBJModelOptions;
+import de.maxhenkel.tools.QuaternionWrapper;
 import net.minecraft.util.math.Vec3d;
-import org.lwjgl.util.vector.Quaternion;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,9 +13,9 @@ public class PartModel extends Part{
 
     protected OBJModel model;
     protected Vec3d offset;
-    protected Quaternion rotation;
+    protected QuaternionWrapper rotation;
 
-    public PartModel(OBJModel model, Vec3d offset, Quaternion rotation) {
+    public PartModel(OBJModel model, Vec3d offset, QuaternionWrapper rotation) {
         this.model = model;
         this.offset = offset;
         this.rotation=rotation;
