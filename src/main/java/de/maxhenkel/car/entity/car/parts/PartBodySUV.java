@@ -1,5 +1,6 @@
 package de.maxhenkel.car.entity.car.parts;
 
+import de.maxhenkel.car.Config;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.entity.model.obj.OBJModel;
 import net.minecraft.util.ResourceLocation;
@@ -24,9 +25,9 @@ public class PartBodySUV extends PartBody {
         this.height = 1.4F;
         this.minRotationSpeed = 1.1F;
         this.maxRotationSpeed = 5F;
-        this.fuelEfficiency = 0.6F;
-        this.acceleration = 0.8F;
-        this.maxSpeed = 0.7F;
+        this.fuelEfficiency = Config.bodySUVFuelEfficiency;
+        this.acceleration =  Config.bodySUVAcceleration;
+        this.maxSpeed =  Config.bodySUVMaxSpeed;
     }
 
     @Override

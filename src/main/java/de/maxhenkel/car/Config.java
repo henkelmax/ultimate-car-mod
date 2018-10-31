@@ -3,7 +3,6 @@ package de.maxhenkel.car;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.ResourceLocation;
@@ -80,6 +79,39 @@ public class Config {
     public static boolean tempInFarenheit = false;
 
     public static boolean canolaSeedDrop = true;
+
+    public static float engine6CylinderFuelEfficiency = 0.25F;
+    public static float engine3CylinderFuelEfficiency = 0.6F;
+
+    public static float engine6CylinderAcceleration = 0.04F;
+    public static float engine3CylinderAcceleration = 0.032F;
+
+    public static float engine6CylinderMaxSpeed = 0.65F;
+    public static float engine3CylinderMaxSpeed = 0.5F;
+
+    public static float engine6CylinderMaxReverseSpeed = 0.2F;
+    public static float engine3CylinderMaxReverseSpeed = 0.2F;
+
+    public static float bodyBigWoodFuelEfficiency = 0.7F;
+    public static float bodyBigWoodAcceleration = 0.95F;
+    public static float bodyBigWoodMaxSpeed = 0.85F;
+
+    public static float bodyWoodFuelEfficiency = 0.8F;
+    public static float bodyWoodAcceleration = 1F;
+    public static float bodyWoodMaxSpeed = 0.9F;
+
+    public static float bodySportFuelEfficiency = 0.9F;
+    public static float bodySportAcceleration = 1F;
+    public static float bodySportMaxSpeed = 1F;
+
+    public static float bodySUVFuelEfficiency = 0.6F;
+    public static float bodySUVAcceleration = 0.8F;
+    public static float bodySUVMaxSpeed = 0.7F;
+
+    public static float bodyTransporterFuelEfficiency = 0.6F;
+    public static float bodyTransporterAcceleration = 0.8F;
+    public static float bodyTransporterMaxSpeed = 0.765F;
+
 
     public static void init(File configFolder) {
         Config.configFolder = configFolder;
@@ -207,7 +239,7 @@ public class Config {
         splitTankBioDieselGeneration = config.getInt("split_tank_bio_diesel_generation", "machines.split_tank", 100, 1, Short.MAX_VALUE, "");
 
         //Tank
-        pickUpTank=config.getBoolean("pick_up_tank", "machines.tank", true, "If tanks keep their fluids when broken");
+        pickUpTank = config.getBoolean("pick_up_tank", "machines.tank", true, "If tanks keep their fluids when broken");
 
         //Repair kit
         repairKitRepairAmount = config.getFloat("repair_kit_repair_amount", "items.repair_kit", 5F, 0.1F, 100F, "");
@@ -241,6 +273,30 @@ public class Config {
         carDriveBlocksStr = blocks;
 
         canolaSeedDrop = config.getBoolean("canola_seed_drop", "drops", true, "");
+
+        engine6CylinderFuelEfficiency = config.getFloat("car_6_cylinder_fuel_efficiency", "car_parts", engine6CylinderFuelEfficiency, 0.001F, 10F, "");
+        engine3CylinderFuelEfficiency = config.getFloat("car_3_cylinder_fuel_efficiency", "car_parts", engine3CylinderFuelEfficiency, 0.001F, 10F, "");
+        engine6CylinderAcceleration = config.getFloat("car_6_cylinder_acceleration", "car_parts", engine6CylinderAcceleration, 0.001F, 10F, "");
+        engine3CylinderAcceleration = config.getFloat("car_3_cylinder_acceleration", "car_parts", engine3CylinderAcceleration, 0.001F, 10F, "");
+        engine6CylinderMaxSpeed = config.getFloat("car_6_cylinder_max_speed", "car_parts", engine6CylinderMaxSpeed, 0.001F, 10F, "");
+        engine3CylinderMaxSpeed = config.getFloat("car_3_cylinder_max_speed", "car_parts", engine3CylinderMaxSpeed, 0.001F, 10F, "");
+        engine6CylinderMaxReverseSpeed = config.getFloat("car_6_cylinder_max_reverse_speed", "car_parts", engine6CylinderMaxReverseSpeed, 0.001F, 10F, "");
+        engine3CylinderMaxReverseSpeed = config.getFloat("car_3_cylinder_max_reverse_speed", "car_parts", engine3CylinderMaxReverseSpeed, 0.001F, 10F, "");
+        bodyBigWoodFuelEfficiency = config.getFloat("car_body_big_wood_fuel_efficiency", "car_parts", bodyBigWoodFuelEfficiency, 0.001F, 10F, "");
+        bodyBigWoodAcceleration = config.getFloat("car_body_big_wood_acceleration", "car_parts", bodyBigWoodAcceleration, 0.001F, 10F, "");
+        bodyBigWoodMaxSpeed = config.getFloat("car_body_big_wood_max_speed", "car_parts", bodyBigWoodMaxSpeed, 0.001F, 10F, "");
+        bodyWoodFuelEfficiency = config.getFloat("car_body_wood_fuel_efficiency", "car_parts", bodyWoodFuelEfficiency, 0.001F, 10F, "");
+        bodyWoodAcceleration = config.getFloat("car_body_wood_acceleration", "car_parts", bodyWoodAcceleration, 0.001F, 10F, "");
+        bodyWoodMaxSpeed = config.getFloat("car_body_wood_max_speed", "car_parts", bodyWoodMaxSpeed, 0.001F, 10F, "");
+        bodySportFuelEfficiency = config.getFloat("car_body_sport_fuel_efficiency", "car_parts", bodySportFuelEfficiency, 0.001F, 10F, "");
+        bodySportAcceleration = config.getFloat("car_body_sport_acceleration", "car_parts", bodySportAcceleration, 0.001F, 10F, "");
+        bodySportMaxSpeed = config.getFloat("car_body_sport_max_speed", "car_parts", bodySportMaxSpeed, 0.001F, 10F, "");
+        bodySUVFuelEfficiency = config.getFloat("car_body_suv_fuel_efficiency", "car_parts", bodySUVFuelEfficiency, 0.001F, 10F, "");
+        bodySUVAcceleration = config.getFloat("car_body_suv_acceleration", "car_parts", bodySUVAcceleration, 0.001F, 10F, "");
+        bodySUVMaxSpeed = config.getFloat("car_body_suv_max_speed", "car_parts", bodySUVMaxSpeed, 0.001F, 10F, "");
+        bodyTransporterFuelEfficiency = config.getFloat("car_body_transporter_fuel_efficiency", "car_parts", bodyTransporterFuelEfficiency, 0.001F, 10F, "");
+        bodyTransporterAcceleration = config.getFloat("car_body_transporter_acceleration", "car_parts", bodyTransporterAcceleration, 0.001F, 10F, "");
+        bodyTransporterMaxSpeed = config.getFloat("car_body_transporter_max_speed", "car_parts", bodyTransporterMaxSpeed, 0.001F, 10F, "");
 
         config.save();
     }

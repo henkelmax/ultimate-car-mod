@@ -31,17 +31,12 @@ public class OBJRenderer {
     public static void renderObj(OBJModel model) {
         //Prepare to draw
         Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder vertexbuffer = tessellator.getBuffer();
-        GlStateManager.disableLighting();
-        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240f, 240f);
-        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+        BufferBuilder vertexBuffer = tessellator.getBuffer();
         //Yes it's deprecated but I don't know any alternatives
         Collection<OBJModel.Group> groups = model.getMatLib().getGroups().values();
         Iterator<OBJModel.Group> iterGroup = groups.iterator();
-        renderGroups(vertexbuffer, iterGroup);
+        renderGroups(vertexBuffer, iterGroup);
         tessellator.draw();
-        //Clear up
-        GlStateManager.enableLighting();
     }
 
     private static void renderGroups(BufferBuilder vertexbuffer, Iterator<OBJModel.Group> iterGroup) {
