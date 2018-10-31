@@ -77,9 +77,14 @@ public abstract class OBJModelRenderer<T extends EntityGenericCar> extends Rende
         if (entity instanceof EntityCarLicensePlateBase) {
             String text = entity.getLicensePlate();
             if (text != null && !text.isEmpty()) {
+                GlStateManager.pushMatrix();
                 GlStateManager.enableNormalize();
+                GlStateManager.disableLighting();
+                GlStateManager.color(1F, 1F, 1F, 1F);
                 drawNumberPlate(entity, text);
+                GlStateManager.enableLighting();
                 GlStateManager.disableNormalize();
+                GlStateManager.popMatrix();
             }
         }
 
