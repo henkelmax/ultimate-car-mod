@@ -1,27 +1,8 @@
 package de.maxhenkel.car.gui;
 
-import de.maxhenkel.car.blocks.tileentity.TileEntityBackmixReactor;
-import de.maxhenkel.car.blocks.tileentity.TileEntityBlastFurnace;
-import de.maxhenkel.car.blocks.tileentity.TileEntityCarWorkshop;
-import de.maxhenkel.car.blocks.tileentity.TileEntityFluidExtractor;
-import de.maxhenkel.car.blocks.tileentity.TileEntityFuelStation;
-import de.maxhenkel.car.blocks.tileentity.TileEntityGenerator;
-import de.maxhenkel.car.blocks.tileentity.TileEntityOilMill;
-import de.maxhenkel.car.blocks.tileentity.TileEntitySign;
-import de.maxhenkel.car.blocks.tileentity.TileEntitySplitTank;
-import de.maxhenkel.car.entity.car.base.EntityCarInventoryBase;
-import de.maxhenkel.car.items.ItemLicensePlate;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.common.network.IGuiHandler;
-
-public class GuiHandler implements IGuiHandler{
-
+@Deprecated
+public class GuiHandler /*implements IGuiHandler*/{
+/*
 	public static final int GUI_CAR=0;
 	public static final int GUI_PAINTER=1;
 	public static final int GUI_PAINTER_YELLOW=2;
@@ -208,6 +189,6 @@ public class GuiHandler implements IGuiHandler{
 		}
 		
 		return null;
-	}
+	}*/
 
 }

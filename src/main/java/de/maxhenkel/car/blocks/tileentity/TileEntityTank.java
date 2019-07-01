@@ -1,334 +1,322 @@
 package de.maxhenkel.car.blocks.tileentity;
 
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.SPacketUpdateTileEntity;
+import de.maxhenkel.car.Main;
+import net.minecraft.client.renderer.texture.ITickable;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ITickable;
+import net.minecraft.tileentity.TileEntityType;
+import net.minecraft.util.Direction;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+
+import java.util.Iterator;
 
 public class TileEntityTank extends TileEntityBase implements IFluidHandler, ITickable {
 
-	private FluidStack fluid;
-	public static final int CAPACITY = 16000;
+    private FluidStack fluid;
+    public static final int CAPACITY = 16000;
 
-	public TileEntityTank() {
-		this.fluid = null;
-	}
+    public TileEntityTank() {
+        super(Main.TANK_TILE_ENTITY_TYPE);
+        this.fluid = null;
+    }
 
-	@Override
-	public void update() {
-		if (!world.isRemote) {
-			if (world.getTotalWorldTime() % 20 == 0) {
-				synchronize();
-			}
-		}else {
-			updateClientSide();
-		}
-		
-		if (fluid == null) {
-			return;
-		}
 
-		checkDown();
+    @Override
+    public void tick() {
+        if (!world.isRemote) {
+            if (world.getGameTime() % 20 == 0) {
+                synchronize();
+            }
+        } else {
+            updateClientSide();
+        }
 
-		for (EnumFacing facing : EnumFacing.HORIZONTALS) {
-			if (fluid == null) {
-				return;
-			}
-			checkSide(facing);
-		}
-	}
-	
-	public void checkSide(EnumFacing side) {
-		TileEntity te = world.getTileEntity(pos.offset(side));
+        if (fluid == null) {
+            return;
+        }
 
-		if (!(te instanceof TileEntityTank)) {
-			return;
-		}
+        checkDown();
 
-		TileEntityTank otherTank = (TileEntityTank) te;
+        Iterator<Direction> i = Direction.Plane.HORIZONTAL.iterator();
+        while (i.hasNext()) {
+            Direction facing = i.next();
+            if (fluid == null) {
+                return;
+            }
+            checkSide(facing);
+        }
+    }
 
-		FluidStack other = otherTank.getFluid();
+    public void checkSide(Direction side) {
+        TileEntity te = world.getTileEntity(pos.offset(side));
 
-		if (other == null) {
-			otherTank.setFluid(new FluidStack(fluid.getFluid(), 0));
-			other = otherTank.getFluid();
-		}
+        if (!(te instanceof TileEntityTank)) {
+            return;
+        }
 
-		if (!other.getFluid().equals(fluid.getFluid())) {
-			return;
-		}
+        TileEntityTank otherTank = (TileEntityTank) te;
 
-		int dif = other.amount - fluid.amount;
+        FluidStack other = otherTank.getFluid();
 
-		if (dif >= -2) {
-			return;
-		}
+        if (other == null) {
+            otherTank.setFluid(new FluidStack(fluid.getFluid(), 0));
+            other = otherTank.getFluid();
+        }
 
-		FluidUtil.tryFluidTransfer(otherTank, this, (-dif) / 2, true);
-	}
+        if (!other.getFluid().equals(fluid.getFluid())) {
+            return;
+        }
 
-	public void checkDown() {
-		TileEntity te = world.getTileEntity(pos.down());
+        int dif = other.amount - fluid.amount;
 
-		if (!(te instanceof TileEntityTank)) {
-			return;
-		}
+        if (dif >= -2) {
+            return;
+        }
 
-		TileEntityTank otherTank = (TileEntityTank) te;
+        FluidUtil.tryFluidTransfer(otherTank, this, (-dif) / 2, true);
+    }
 
-		FluidStack stack = FluidUtil.tryFluidTransfer(otherTank, this, Integer.MAX_VALUE, true);
+    public void checkDown() {
+        TileEntity te = world.getTileEntity(pos.down());
 
-		if (stack == null) {
-			return;
-		}
+        if (!(te instanceof TileEntityTank)) {
+            return;
+        }
 
-		if (fluid != null && fluid.amount <= 0) {
-			fluid = null;
-		}
-	}
+        TileEntityTank otherTank = (TileEntityTank) te;
 
-	public float getFillPercent() {
-		if (fluid == null) {
-			return 0F;
-		}
+        FluidStack stack = FluidUtil.tryFluidTransfer(otherTank, this, Integer.MAX_VALUE, true);
 
-		return ((float) fluid.amount) / ((float) CAPACITY);
-	}
+        if (stack == null) {
+            return;
+        }
 
-	public FluidStack getFluid() {
-		return fluid;
-	}
+        if (fluid != null && fluid.amount <= 0) {
+            fluid = null;
+        }
+    }
 
-	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+    public float getFillPercent() {
+        if (fluid == null) {
+            return 0F;
+        }
 
-		if (fluid != null && fluid.amount > 0) {
-			NBTTagCompound comp = new NBTTagCompound();
+        return ((float) fluid.amount) / ((float) CAPACITY);
+    }
 
-			fluid.writeToNBT(comp);
+    public FluidStack getFluid() {
+        return fluid;
+    }
 
-			compound.setTag("fluid", comp);
-		}
+    @Override
+    public CompoundNBT write(CompoundNBT compound) {
+        if (fluid != null && fluid.amount > 0) {
+            CompoundNBT comp = new CompoundNBT();
 
-		return super.writeToNBT(compound);
-	}
+            fluid.writeToNBT(comp);
 
-	@Override
-	public void readFromNBT(NBTTagCompound compound) {
-		if (compound.hasKey("fluid")) {
-			NBTTagCompound comp = compound.getCompoundTag("fluid");
-			fluid = FluidStack.loadFluidStackFromNBT(comp);
-		} else {
-			fluid = null;
-		}
-		super.readFromNBT(compound);
-	}
+            compound.put("fluid", comp);
+        }
+        return super.write(compound);
+    }
 
-	@Override
-	public SPacketUpdateTileEntity getUpdatePacket() {
-		return new SPacketUpdateTileEntity(this.pos, 1, getUpdateTag());
-	}
+    @Override
+    public void read(CompoundNBT compound) {
+        if (compound.contains("fluid")) {
+            CompoundNBT comp = compound.getCompound("fluid");
+            fluid = FluidStack.loadFluidStackFromNBT(comp);
+        } else {
+            fluid = null;
+        }
+        super.read(compound);
+    }
 
-	@Override
-	public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
-		this.readFromNBT(pkt.getNbtCompound());
-	}
+    @Override
+    public IFluidTankProperties[] getTankProperties() {
+        return new IFluidTankProperties[]{new IFluidTankProperties() {
 
-	@Override
-	public NBTTagCompound getUpdateTag() {
-		return this.writeToNBT(new NBTTagCompound());
-	}
+            @Override
+            public FluidStack getContents() {
+                return fluid;
+            }
 
-	@Override
-	public IFluidTankProperties[] getTankProperties() {
-		return new IFluidTankProperties[] { new IFluidTankProperties() {
+            @Override
+            public int getCapacity() {
+                return CAPACITY;
+            }
 
-			@Override
-			public FluidStack getContents() {
-				return fluid;
-			}
+            @Override
+            public boolean canFillFluidType(FluidStack fluidStack) {
+                return true;
+            }
 
-			@Override
-			public int getCapacity() {
-				return CAPACITY;
-			}
+            @Override
+            public boolean canFill() {
+                return true;
+            }
 
-			@Override
-			public boolean canFillFluidType(FluidStack fluidStack) {
-				return true;
-			}
+            @Override
+            public boolean canDrainFluidType(FluidStack fluidStack) {
+                return true;
+            }
 
-			@Override
-			public boolean canFill() {
-				return true;
-			}
+            @Override
+            public boolean canDrain() {
+                return true;
+            }
+        }};
+    }
 
-			@Override
-			public boolean canDrainFluidType(FluidStack fluidStack) {
-				return true;
-			}
+    @Override
+    public int fill(FluidStack resource, boolean doFill) {
+        if (fluid == null) {
+            int amount = Math.min(resource.amount, CAPACITY);
 
-			@Override
-			public boolean canDrain() {
-				return true;
-			}
-		} };
-	}
+            if (doFill) {
+                fluid = new FluidStack(resource.getFluid(), amount);
+                // synchronize();
+                markDirty();
+            }
 
-	@Override
-	public int fill(FluidStack resource, boolean doFill) {
-		if (fluid == null) {
-			int amount = Math.min(resource.amount, CAPACITY);
+            return amount;
+        } else if (resource.getFluid().equals(fluid.getFluid())) {
+            int amount = Math.min(resource.amount, CAPACITY - fluid.amount);
 
-			if (doFill) {
-				fluid = new FluidStack(resource.getFluid(), amount);
-				// synchronize();
-				markDirty();
-			}
+            if (doFill) {
+                fluid.amount += amount;
+                // synchronize();
+                markDirty();
+            }
 
-			return amount;
-		} else if (resource.getFluid().equals(fluid.getFluid())) {
-			int amount = Math.min(resource.amount, CAPACITY - fluid.amount);
+            return amount;
+        }
+        return 0;
+    }
 
-			if (doFill) {
-				fluid.amount += amount;
-				// synchronize();
-				markDirty();
-			}
+    @Override
+    public FluidStack drain(FluidStack resource, boolean doDrain) {
 
-			return amount;
-		}
-		return 0;
-	}
+        if (fluid == null) {
+            return null;
+        }
 
-	@Override
-	public FluidStack drain(FluidStack resource, boolean doDrain) {
+        if (fluid.getFluid().equals(resource.getFluid())) {
+            int amount = Math.min(resource.amount, fluid.amount);
 
-		if (fluid == null) {
-			return null;
-		}
+            Fluid f = fluid.getFluid();
 
-		if (fluid.getFluid().equals(resource.getFluid())) {
-			int amount = Math.min(resource.amount, fluid.amount);
+            if (doDrain) {
+                fluid.amount -= amount;
+                if (fluid.amount <= 0) {
+                    fluid = null;
+                }
+                // synchronize();
+                markDirty();
+            }
 
-			Fluid f = fluid.getFluid();
+            return new FluidStack(f, amount);
+        }
 
-			if (doDrain) {
-				fluid.amount -= amount;
-				if (fluid.amount <= 0) {
-					fluid = null;
-				}
-				// synchronize();
-				markDirty();
-			}
+        return null;
+    }
 
-			return new FluidStack(f, amount);
-		}
+    @Override
+    public FluidStack drain(int maxDrain, boolean doDrain) {
+        if (fluid == null) {
+            return null;
+        }
 
-		return null;
-	}
+        int amount = Math.min(maxDrain, fluid.amount);
 
-	@Override
-	public FluidStack drain(int maxDrain, boolean doDrain) {
-		if (fluid == null) {
-			return null;
-		}
+        Fluid f = fluid.getFluid();
 
-		int amount = Math.min(maxDrain, fluid.amount);
+        if (doDrain) {
+            fluid.amount -= amount;
+            if (fluid.amount <= 0) {
+                fluid = null;
+            }
+            // synchronize();
+            markDirty();
+        }
 
-		Fluid f = fluid.getFluid();
+        return new FluidStack(f, amount);
+    }
 
-		if (doDrain) {
-			fluid.amount -= amount;
-			if (fluid.amount <= 0) {
-				fluid = null;
-			}
-			// synchronize();
-			markDirty();
-		}
+    public void setFluid(FluidStack fluid) {
+        this.fluid = fluid;
+    }
 
-		return new FluidStack(f, amount);
-	}
+    /* **********************RENDERING************************ */
 
-	public void setFluid(FluidStack fluid) {
-		this.fluid = fluid;
-	}
-	
-	/* **********************RENDERING************************ */
-	
-	//@SideOnly(Side.CLIENT)
-	private boolean[] sides=new boolean[EnumFacing.values().length];
-	
-	//@SideOnly(Side.CLIENT)
-	private boolean[] sidesFluid=new boolean[EnumFacing.values().length];
+    //@SideOnly(Side.CLIENT)
+    private boolean[] sides = new boolean[Direction.values().length];
 
-	@SideOnly(Side.CLIENT)
-	private void recalculateSides() {
-		for(EnumFacing facing:EnumFacing.values()) {
-			sides[facing.getIndex()]=isTankConnectedCalc(facing);
-			sidesFluid[facing.getIndex()]=isFluidConnectedCalc(facing);
-		}
-	}
-	
-	@SideOnly(Side.CLIENT)
-	private boolean isFluidConnectedCalc(EnumFacing facing) {
-		TileEntity te=world.getTileEntity(pos.offset(facing));
-		if(te instanceof TileEntityTank) {
-			TileEntityTank tank=(TileEntityTank) te;
-			if(tank.fluid==null||fluid==null||tank.fluid.amount==0||fluid.amount==0) {
-				return false;
-			}
-			
-			if(tank.fluid.getFluid().equals(fluid.getFluid())) {
-				return true;
-			}
-		}
-		return false;
-	}
+    //@SideOnly(Side.CLIENT)
+    private boolean[] sidesFluid = new boolean[Direction.values().length];
 
-	
-	@SideOnly(Side.CLIENT)
-	private boolean isTankConnectedCalc(EnumFacing facing) {
-		TileEntity te=world.getTileEntity(pos.offset(facing));
-		if(te instanceof TileEntityTank) {
-			TileEntityTank tank=(TileEntityTank) te;
-			if(tank.fluid==null&&fluid==null) {
-				return true;
-			}
-			
-			if(tank.fluid==null||fluid==null) {
-				return true;//Check TODO
-			}
-			
-			if(tank.fluid.getFluid().equals(fluid.getFluid())) {
-				return true;
-			}
-		}
-		return false;
-	}
-	
-	@SideOnly(Side.CLIENT)
-	private void updateClientSide() {
-		recalculateSides();
-	}
-	
-	@SideOnly(Side.CLIENT)
-	public boolean isTankConnectedTo(EnumFacing facing) {
-		return sides[facing.getIndex()];
-	}
-	
-	@SideOnly(Side.CLIENT)
-	public boolean isFluidConnected(EnumFacing facing) {
-		return sidesFluid[facing.getIndex()];
-	}
-	
+    @OnlyIn(Dist.CLIENT)
+    private void recalculateSides() {
+        for (Direction facing : Direction.values()) {
+            sides[facing.getIndex()] = isTankConnectedCalc(facing);
+            sidesFluid[facing.getIndex()] = isFluidConnectedCalc(facing);
+        }
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    private boolean isFluidConnectedCalc(Direction facing) {
+        TileEntity te = world.getTileEntity(pos.offset(facing));
+        if (te instanceof TileEntityTank) {
+            TileEntityTank tank = (TileEntityTank) te;
+            if (tank.fluid == null || fluid == null || tank.fluid.amount == 0 || fluid.amount == 0) {
+                return false;
+            }
+
+            if (tank.fluid.getFluid().equals(fluid.getFluid())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    @OnlyIn(Dist.CLIENT)
+    private boolean isTankConnectedCalc(Direction facing) {
+        TileEntity te = world.getTileEntity(pos.offset(facing));
+        if (te instanceof TileEntityTank) {
+            TileEntityTank tank = (TileEntityTank) te;
+            if (tank.fluid == null && fluid == null) {
+                return true;
+            }
+
+            if (tank.fluid == null || fluid == null) {
+                return true;//Check TODO
+            }
+
+            if (tank.fluid.getFluid().equals(fluid.getFluid())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    private void updateClientSide() {
+        recalculateSides();
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public boolean isTankConnectedTo(Direction facing) {
+        return sides[facing.getIndex()];
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public boolean isFluidConnected(Direction facing) {
+        return sidesFluid[facing.getIndex()];
+    }
 }

@@ -1,7 +1,6 @@
 {
     "pack": {
-        "description": "car resources",
-        "pack_format": 3,
-        "_comment": ""
+        "description": "camera resources",
+        "pack_format": 4
     }
 }

@@ -1,110 +1,104 @@
 package de.maxhenkel.car.blocks;
 
 import de.maxhenkel.car.blocks.tileentity.TileEntityGenerator;
-import de.maxhenkel.car.gui.GuiHandler;
+import de.maxhenkel.car.gui.ContainerGenerator;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.Direction;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.math.shapes.ISelectionContext;
+import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IEnviromentBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fml.network.NetworkHooks;
 
-public class BlockGenerator extends BlockGui{
+import javax.annotation.Nullable;
 
-	protected BlockGenerator() {
-		super(Material.IRON, "generator");
-		useNeighborBrightness=true;
-		setHardness(3.0F);
-	}
+public class BlockGenerator extends BlockGui<TileEntityGenerator> {
 
-	@Override
-	public TileEntity createNewTileEntity(World worldIn, int meta) {
-		return new TileEntityGenerator();
-	}
-	
-	@Override
-	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn,
-			EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-		ItemStack stack = playerIn.getHeldItem(hand);
+    protected BlockGenerator() {
+        super("generator", Material.IRON, SoundType.STONE, 3F, 3F);
+    }
 
-		if (stack != null) {
-			FluidStack fluidStack = FluidUtil.getFluidContained(stack);
+    @Override
+    public boolean onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
+        ItemStack stack = player.getHeldItem(handIn);
 
-			if (fluidStack != null) {
-				boolean success = BlockTank.handleEmpty(stack, worldIn, pos, playerIn, hand);
-				if (success) {
-					return true;
-				}
-			}
-			IFluidHandler handler = FluidUtil.getFluidHandler(stack);
+        if (stack != null) {
+            FluidStack fluidStack = FluidUtil.getFluidContained(stack).orElse(null);
 
-			if (handler != null) {
-				boolean success1 = BlockTank.handleFill(stack, worldIn, pos, playerIn, hand);
-				if (success1) {
-					return true;
-				}
-			}
+            if (fluidStack != null) {
+                boolean success = BlockTank.handleEmpty(stack, worldIn, pos, player, handIn);
+                if (success) {
+                    return true;
+                }
+            }
+            IFluidHandler handler = FluidUtil.getFluidHandler(stack).orElse(null);
 
-		}
+            if (handler != null) {
+                boolean success1 = BlockTank.handleFill(stack, worldIn, pos, player, handIn);
+                if (success1) {
+                    return true;
+                }
+            }
 
-		return super.onBlockActivated(worldIn, pos, state, playerIn, hand, facing, hitX, hitY, hitZ);
-	}
+        }
 
-	@Override
-	public int getGUIID() {
-		return GuiHandler.GUI_GENERATOR;
-	}
-	
-	@Override
-	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-		return new AxisAlignedBB(0, 0, 0, 1, 14F/16F, 1);
-	}
+        return super.onBlockActivated(state, worldIn, pos, player, handIn, hit);
+    }
 
-	@Override
-	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos) {
-		return getBoundingBox(blockState, worldIn, pos);
-	}
+    @Override
+    public void openGui(BlockState state, World worldIn, BlockPos pos, ServerPlayerEntity player, Hand handIn, TileEntityGenerator tileEntity) {
+        NetworkHooks.openGui(player, new INamedContainerProvider() {
 
-	@Override
-	public boolean doesSideBlockRendering(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing face) {
-		return false;
-	}
-	
-	@Override
-	public boolean isFullBlock(IBlockState state) {
-		return false;
-	}
-	
-	@Override
-	public boolean isFullCube(IBlockState state) {
-		return false;
-	}
-	
-	@Override
-	public boolean isBlockNormalCube(IBlockState state) {
-		return false;
-	}
-	
-	@Override
-	public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos) {
-		return false;
-	}
-	
-	@Override
-	public boolean isNormalCube(IBlockState state) {
-		return false;
-	}
-	
-	@Override
-	public boolean isOpaqueCube(IBlockState state) {
-		return false;
-	}
+            @Nullable
+            @Override
+            public Container createMenu(int id, PlayerInventory playerInventory, PlayerEntity playerEntity) {
+                return new ContainerGenerator(id, tileEntity, playerInventory, tileEntity.FIELDS);
+            }
+
+            @Override
+            public ITextComponent getDisplayName() {
+                return tileEntity.getDisplayName();
+            }
+        });
+    }
+
+
+    @Override
+    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
+        return Block.makeCuboidShape(0D, 0D, 0D, 16D, 14D, 16D);
+    }
+
+    @Override
+    public boolean doesSideBlockRendering(BlockState state, IEnviromentBlockReader world, BlockPos pos, Direction face) {
+        return false;
+    }
+
+    @Override
+    public boolean isNormalCube(BlockState state, IBlockReader worldIn, BlockPos pos) {
+        return false;
+    }
+
+    @Nullable
+    @Override
+    public TileEntity createNewTileEntity(IBlockReader worldIn) {
+        return new TileEntityGenerator();
+    }
 }

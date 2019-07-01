@@ -1,0 +1,23 @@
+modLoader="javafml"
+loaderVersion="${mod_forge_version}"
+issueTrackerURL="https://www.curseforge.com/minecraft/mc-mods/ultimate-car-mod/issues"
+displayURL="https://www.curseforge.com/minecraft/mc-mods/ultimate-car-mod"
+authors="${mod_vendor}"
+[[mods]]
+modId="${mod_id}"
+version="${mod_version}"
+displayName="${mod_name}"
+updateJSONURL="https://maxhenkel.de/update/car.json"
+description='''This mod brings cars, road construction and biodiesel production into your Minecraft world'''
+[[dependencies.${mod_id}]]
+    modId="forge"
+    mandatory=true
+    versionRange="${mod_forge_version}"
+    ordering="NONE"
+    side="BOTH"
+[[dependencies.${mod_id}]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[${mod_minecraft_version}]"
+    ordering="NONE"
+    side="BOTH"

@@ -1,119 +1,89 @@
 package de.maxhenkel.car.gui;
 
 import javax.annotation.Nullable;
-import de.maxhenkel.tools.ItemTools;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.Container;
-import net.minecraft.inventory.IContainerListener;
+
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.Slot;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.ContainerType;
+import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 
 public abstract class ContainerBase extends Container {
 
-	protected IInventory tileInventory;
-	protected IInventory playerInventory;
+    protected IInventory tileInventory;
+    protected PlayerInventory playerInventory;
 
-	public ContainerBase(IInventory tileInventory, IInventory playerInventory) {
-		this.tileInventory = tileInventory;
-		this.playerInventory = playerInventory;
-	}
-	
-	protected void addInvSlots(){
-		if(playerInventory!=null){
-			for (int i = 0; i < 3; i++) {
-				for (int j = 0; j < 9; j++) {
-					this.addSlotToContainer(
-							new Slot(playerInventory, j + i * 9 + 9, 8 + j * 18, 84 + i * 18 + getInvOffset()));
-				}
-			}
+    public ContainerBase(ContainerType type, int id, IInventory tileInventory, PlayerInventory playerInventory) {
+        super(type, id);
+        this.playerInventory = playerInventory;
+        this.tileInventory = tileInventory;
+    }
 
-			for (int k = 0; k < 9; k++) {
-				this.addSlotToContainer(new Slot(playerInventory, k, 8 + k * 18, 142 + getInvOffset()));
-			}
-		}
-	}
+    protected void addInvSlots() {
+        if (playerInventory != null) {
+            for (int i = 0; i < 3; i++) {
+                for (int j = 0; j < 9; j++) {
+                    addSlot(new Slot(playerInventory, j + i * 9 + 9, 8 + j * 18, 84 + i * 18 + getInvOffset()));
+                }
+            }
 
-	public int getInvOffset() {
-		return 0;
-	}
+            for (int k = 0; k < 9; k++) {
+                addSlot(new Slot(playerInventory, k, 8 + k * 18, 142 + getInvOffset()));
+            }
+        }
+    }
 
-	@Override
-	public boolean canInteractWith(EntityPlayer playerIn) {
-		return true;
-	}
+    public int getInvOffset() {
+        return 0;
+    }
 
-	@Nullable
-	public IInventory getPlayerInventory() {
-		return playerInventory;
-	}
+    public int getInventorySize(){
+        if(tileInventory==null){
+            return 0;
+        }
+        return tileInventory.getSizeInventory();
+    }
 
-	@Override
-	public ItemStack transferStackInSlot(EntityPlayer player, int slotIndex) {
+    @Override
+    public boolean canInteractWith(PlayerEntity playerIn) {
+        return true;
+    }
 
-		if (!supportsShiftClick(player, slotIndex)) {
-			return ItemTools.EMPTY;
-		}
+    @Nullable
+    public IInventory getPlayerInventory() {
+        return playerInventory;
+    }
 
-		ItemStack stack = ItemTools.EMPTY;
-		Slot slot = inventorySlots.get(slotIndex);
+    @Override
+    public ItemStack transferStackInSlot(PlayerEntity playerIn, int index) {
+        ItemStack itemstack = ItemStack.EMPTY;
+        Slot slot = inventorySlots.get(index);
 
-		if (slot != null && slot.getHasStack()) {
-			ItemStack stackInSlot = slot.getStack();
-			stack = stackInSlot.copy();
+        if (slot != null && slot.getHasStack()) {
+            ItemStack itemstack1 = slot.getStack();
+            itemstack = itemstack1.copy();
 
-			if (!performMerge(player, slotIndex, stackInSlot)) {
-				return ItemTools.EMPTY;
-			}
+            if (index < getInventorySize()) {
+                if (!this.mergeItemStack(itemstack1, getInventorySize(), inventorySlots.size(), true)) {
+                    return ItemStack.EMPTY;
+                }
+            } else if (!this.mergeItemStack(itemstack1, 0, getInventorySize(), false)) {
+                return ItemStack.EMPTY;
+            }
 
-			slot.onSlotChange(stackInSlot, stack);
+            if (itemstack1.isEmpty()) {
+                slot.putStack(ItemStack.EMPTY);
+            } else {
+                slot.onSlotChanged();
+            }
+        }
+        return itemstack;
+    }
 
-			if (stackInSlot.getCount() <= 0) {
-				slot.putStack(ItemTools.EMPTY);
-			} else {
-				slot.putStack(stackInSlot);
-			}
-
-			if (stackInSlot.getCount() == stack.getCount()) {
-				return ItemTools.EMPTY;
-			}
-			slot.onTake(player, stackInSlot);
-		}
-		return stack;
-	}
-
-	protected boolean supportsShiftClick(int slotIndex) {
-		return true;
-	}
-
-	protected boolean supportsShiftClick(EntityPlayer player, int slotIndex) {
-
-		return supportsShiftClick(slotIndex);
-	}
-
-	protected boolean performMerge(EntityPlayer player, int slotIndex, ItemStack stack) {
-
-		return performMerge(slotIndex, stack);
-	}
-
-	protected boolean performMerge(int slotIndex, ItemStack stack) {
-
-		int invBase = getSizeInventory();
-		int invFull = inventorySlots.size();
-
-		if (slotIndex < invBase) {
-			return mergeItemStack(stack, invBase, invFull, true);
-		}
-		return mergeItemStack(stack, 0, invBase, false);
-	}
-
-	protected int getSizeInventory() {
-		if(tileInventory==null){
-			return 0;
-		}
-		return tileInventory.getSizeInventory();
-	}
-
+    //TODO fields
+    /*
 	//
 	private int[] fields = new int[0];
 
@@ -158,5 +128,5 @@ public abstract class ContainerBase extends Container {
 			return 0;
 		}
 		return fields[i];
-	}
+	}*/
 }

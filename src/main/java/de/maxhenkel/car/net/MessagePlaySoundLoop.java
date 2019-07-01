@@ -1,63 +1,67 @@
 package de.maxhenkel.car.net;
 
 import de.maxhenkel.car.sounds.SoundLoopTileentity.ISoundLoopable;
-import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
-import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fml.network.NetworkEvent;
 
-public class MessagePlaySoundLoop implements IMessage, IMessageHandler<MessagePlaySoundLoop, IMessage>{
+public class MessagePlaySoundLoop implements Message<MessagePlaySoundLoop> {
 
-	private int posX;
-	private int posY;
-	private int posZ;
-	
-	public MessagePlaySoundLoop() {
-		
-	}
-	
-	public MessagePlaySoundLoop(TileEntity tileEntity) {
-		this.posX=tileEntity.getPos().getX();
-		this.posY=tileEntity.getPos().getY();
-		this.posZ=tileEntity.getPos().getZ();
+    private int posX;
+    private int posY;
+    private int posZ;
 
-	}
-	
-	@SideOnly(Side.CLIENT)
-	@Override
-	public IMessage onMessage(MessagePlaySoundLoop message, MessageContext ctx) {
-		if(ctx.side.equals(Side.CLIENT)){
-			EntityPlayer player=Minecraft.getMinecraft().player;
-			
-			TileEntity te=player.world.getTileEntity(new BlockPos(message.posX, message.posY, message.posZ));
-			
-			if(te instanceof ISoundLoopable){
-				ISoundLoopable loop=(ISoundLoopable) te;
-				loop.play();
-			}
-			
-		}
-		return null;
-	}
+    public MessagePlaySoundLoop() {
 
-	@Override
-	public void fromBytes(ByteBuf buf) {
-		this.posX=buf.readInt();
-		this.posY=buf.readInt();
-		this.posZ=buf.readInt();
-	}
+    }
 
-	@Override
-	public void toBytes(ByteBuf buf) {
-		buf.writeInt(posX);
-		buf.writeInt(posY);
-		buf.writeInt(posZ);
-	}
+    public MessagePlaySoundLoop(TileEntity tileEntity) {
+        this.posX = tileEntity.getPos().getX();
+        this.posY = tileEntity.getPos().getY();
+        this.posZ = tileEntity.getPos().getZ();
 
+    }
+
+    @Override
+    public void executeServerSide(NetworkEvent.Context context) {
+
+    }
+
+    @Override
+    public void executeClientSide(NetworkEvent.Context context) {
+        playSound();
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    private void playSound() {
+        PlayerEntity player = Minecraft.getInstance().player;
+
+        TileEntity te = player.world.getTileEntity(new BlockPos(posX, posY, posZ));
+
+        if (te instanceof ISoundLoopable) {
+            ISoundLoopable loop = (ISoundLoopable) te;
+            loop.play();
+        }
+    }
+
+    @Override
+    public MessagePlaySoundLoop fromBytes(PacketBuffer buf) {
+        this.posX = buf.readInt();
+        this.posY = buf.readInt();
+        this.posZ = buf.readInt();
+
+        return this;
+    }
+
+    @Override
+    public void toBytes(PacketBuffer buf) {
+        buf.writeInt(posX);
+        buf.writeInt(posY);
+        buf.writeInt(posZ);
+    }
 }

@@ -1,217 +1,183 @@
 package de.maxhenkel.car.blocks;
 
-import java.util.Random;
-
+import de.maxhenkel.car.Main;
+import de.maxhenkel.car.ModCreativeTabs;
+import de.maxhenkel.tools.IItemBlock;
 import net.minecraft.block.Block;
-import net.minecraft.block.material.MapColor;
+import net.minecraft.block.BlockRenderType;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
-import net.minecraft.block.properties.PropertyDirection;
-import net.minecraft.block.state.BlockFaceShape;
-import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.block.material.MaterialColor;
+import net.minecraft.block.material.PushReaction;
+import net.minecraft.item.BlockItem;
+import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.Item;
+import net.minecraft.state.DirectionProperty;
+import net.minecraft.state.StateContainer;
 import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.util.EnumBlockRenderType;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.Direction;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.util.math.shapes.ISelectionContext;
+import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.util.math.shapes.VoxelShapes;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
-public class BlockPaint extends Block {
+import javax.annotation.Nullable;
 
-	public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
+public class BlockPaint extends Block implements IItemBlock {
 
-	private boolean isYellow;
-	
-	public BlockPaint(EnumPaintType type, boolean isYellow) {
-		super(new Material(MapColor.AIR));
-		this.isYellow=isYellow;
+    public static final DirectionProperty FACING = DirectionProperty.create("facing", Direction.Plane.HORIZONTAL);
 
-		if (isYellow) {
-			setUnlocalizedName(type.name + "_yellow");
-			setRegistryName(type.name + "_yellow");
-		} else {
-			setUnlocalizedName(type.name);
-			setRegistryName(type.name);
-		}
+    private boolean isYellow;
 
-		setHardness(2.0F);
+    //TODO connect with fences usw
+    //TODO check no silk harvest / drops
+    public BlockPaint(EnumPaintType type, boolean isYellow) {
+        super(Properties.create(
+                new Material(MaterialColor.AIR, false, true, false, false, true, false, false, PushReaction.DESTROY))
+                .hardnessAndResistance(2F).sound(SoundType.STONE));
+        setRegistryName(new ResourceLocation(Main.MODID, type.name + (isYellow ? "_yellow" : "")));
+        this.isYellow = isYellow;
 
-		setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
-	}
-	
-	@Override
-	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
-		return BlockFaceShape.UNDEFINED;
-	}
+        setDefaultState(stateContainer.getBaseState().with(FACING, Direction.NORTH));
+    }
 
-	@Override
-	public IBlockState getStateFromMeta(int meta) {
-		EnumFacing enumFacing = EnumFacing.getFront(meta);
+    @Override
+    public Item toItem() {
+        return new BlockItem(this, new Item.Properties().group(ModCreativeTabs.TAB_CAR)) {
+            @Override
+            protected boolean canPlace(BlockItemUseContext context, BlockState state) {
+                if (!canPlaceBlockAt(context.getWorld(), context.getPos())) {
+                    return false;
+                }
+                return super.canPlace(context, state);
+            }
+        }.setRegistryName(this.getRegistryName());
+    }
 
-		if (enumFacing.getAxis() == EnumFacing.Axis.Y) {
-			enumFacing = EnumFacing.NORTH;
-		}
 
-		return this.getDefaultState().withProperty(FACING, enumFacing);
-	}
+    @Nullable
+    @Override
+    public BlockState getStateForPlacement(BlockItemUseContext context) {
+        return this.getDefaultState().with(FACING, context.getPlacementHorizontalFacing().getOpposite());
+    }
 
-	@Override
-	public int getMetaFromState(IBlockState state) {
-		return ((EnumFacing) state.getValue(FACING)).getIndex();
-	}
+    @Override
+    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+        builder.add(FACING);
+    }
 
-	@Override
-	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, new IProperty[] { FACING });
-	}
-	
-	@Override
-	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY,
-			float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
-		return this.getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite());
-	}
-	
-	@Override
-	public boolean canSilkHarvest(World world, BlockPos pos, IBlockState state, EntityPlayer player) {
-		return false;
-	}
 
-	@Override
-	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-		return new AxisAlignedBB(0, 0, 0, 1, 0.01, 1);
-	}
-	
-	@Override
-	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos) {
-		return NULL_AABB;
-	}
+    @Override
+    public VoxelShape getRenderShape(BlockState state, IBlockReader worldIn, BlockPos pos) {
+        return Block.makeCuboidShape(0D, 0D, 0D, 16D, 0.25D, 16D);
+    }
 
-	@Override
-	public boolean isFullBlock(IBlockState state) {
-		return false;
-	}
+    @Override
+    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
+        return VoxelShapes.empty();
+    }
 
-	@Override
-	public boolean isOpaqueCube(IBlockState state) {
-		return false;
-	}
+    @Override
+    public VoxelShape getRaytraceShape(BlockState state, IBlockReader worldIn, BlockPos pos) {
+        return VoxelShapes.empty();
+    }
 
-	@Override
-	public boolean isFullCube(IBlockState state) {
-		return false;
-	}
-	
-	@Override
-	public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {
-		this.checkForDrop(worldIn, pos, state);
-	}
+    @Override
+    public VoxelShape getCollisionShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
+        return VoxelShapes.empty();
+    }
 
-	private boolean checkForDrop(World worldIn, BlockPos pos, IBlockState state) {
-		if (!this.canBlockStay(worldIn, pos)) {
-			worldIn.setBlockToAir(pos);
-			return false;
-		} else {
-			return true;
-		}
-	}
+    @Override
+    public boolean isNormalCube(BlockState state, IBlockReader worldIn, BlockPos pos) {
+        return false;
+    }
 
-	private boolean canBlockStay(World worldIn, BlockPos pos) {
-		return canPlaceBlockAt(worldIn, pos);
-	}
+    @Override
+    public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean p_220069_6_) {
+        super.neighborChanged(state, worldIn, pos, blockIn, fromPos, p_220069_6_);
+        checkForDrop(worldIn, pos, state);
+    }
 
-	@Override
-	public boolean canPlaceBlockAt(World worldIn, BlockPos pos) {
-		return canPlaceBlockAt((IBlockAccess) worldIn, pos);
-	}
+    private boolean checkForDrop(World worldIn, BlockPos pos, BlockState state) {
+        if (!this.canBlockStay(worldIn, pos)) {
+            worldIn.destroyBlock(pos, false);
+            return false;
+        } else {
+            return true;
+        }
+    }
 
-	public static boolean canPlaceBlockAt(IBlockAccess worldIn, BlockPos pos) {
-		IBlockState state = worldIn.getBlockState(pos.down());
-		return state.getBlock().isNormalCube(state, worldIn, pos.down());
-	}
+    private boolean canBlockStay(World worldIn, BlockPos pos) {
+        return canPlaceBlockAt(worldIn, pos);
+    }
 
-	@Override
-	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
-		return (Item) null;
-	}
+    public static boolean canPlaceBlockAt(World worldIn, BlockPos pos) {
+        BlockState state = worldIn.getBlockState(pos.down());
+        return state.getBlock().isNormalCube(state, worldIn, pos.down());
+    }
 
-	@Override
-	public BlockRenderLayer getBlockLayer() {
-		return BlockRenderLayer.CUTOUT;
-	}
+    @Override
+    public BlockRenderLayer getRenderLayer() {
+        return BlockRenderLayer.CUTOUT;
+    }
 
-	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state) {
-		return EnumBlockRenderType.MODEL;
-	}
+    @Override
+    public BlockRenderType getRenderType(BlockState state) {
+        return BlockRenderType.MODEL;
+    }
 
-	@Override
-	public boolean isReplaceable(IBlockAccess worldIn, BlockPos pos) {
-		return false;
-	}
+    @Override
+    public boolean isReplaceable(BlockState state, BlockItemUseContext useContext) {
+        return false;
+    }
 
-	@Override
-	public boolean canPlaceTorchOnTop(IBlockState state, IBlockAccess world, BlockPos pos) {
-		return false;
-	}
+    public enum EnumPaintType {
+        ARROW_FRONT_LEFT_RIGHT_LONG("arrow_front_left_right_long"),
+        ARROW_LONG("arrow_long"),
+        ARROW_LEFT_LONG("arrow_left"),
+        ARROW_RIGHT_LONG("arrow_right"),
+        ARROW_LEFT_RIGHT_LONG("arrow_left_right_long"),
+        ARROW_FRONT_LEFT_LONG("arrow_front_left_long"),
+        ARROW_FRONT_RIGHT_LONG("arrow_front_right_long"),
+        ARROW_LEFT_DIA("arrow_left_dia"),
+        LINE_RIGHT_DIA("arrow_right_dia"),
+        ARROW_FRONT_LEFT_RIGHT("arrow_front_left_right"),
+        ARROW("arrow"),
+        ARROW_LEFT("arrow_left_short"),
+        ARROW_RIGHT("arrow_right_short"),
+        ARROW_LEFT_RIGHT("arrow_left_right"),
+        ARROW_FRONT_LEFT("arrow_front_left"),
+        ARROW_FRONT_RIGHT("arrow_front_right"),
+        ARROW_LEFT_DIA_SHORT("arrow_left_dia_short"),
+        LINE_RIGHT_DIA_SHORT("arrow_right_dia_short"),
+        LINE_MIDDLE("line_middle"),
+        LINE_LONG("line_long"),
+        LINE_END("line_end"),
+        LINE_SIDE_MIDDLE("line_side_middle"),
+        LINE_SIDE_LONG("line_side_long"),
+        LINE_SIDE_START("line_side_start"),
+        LINE_SIDE_END("line_side_end"),
+        LINE_SIDE_LONG_LEFT("line_side_long_left"),
+        LINE_SIDE_LONG_LEFT_FRONT("line_side_long_left_front"),
+        LINE_MIDDLE_EDGE("line_middle_edge"),
+        LINE_CORNER("line_corner"),
+        LINE_DOUBLE("line_double"),
+        LINE_DOUBLE_MIDDLE("line_double_middle"),
+        LINE_DOUBLE_END("line_double_end"),
+        ARROW_ZEBRAS("arrow_zebras"),
+        ARROW_P("arrow_p"),
+        ARROW_NO_PARKING("arrow_no_parking"),
+        ARROW_CROSS("arrow_cross");
 
-	@Override
-	public boolean canBeReplacedByLeaves(IBlockState state, IBlockAccess world, BlockPos pos) {
-		return false;
-	}
-	
-	public boolean isYellow(){
-		return isYellow;
-	}
+        private String name;
 
-	public static enum EnumPaintType {
-		ARROW_FRONT_LEFT_RIGHT_LONG("arrow_front_left_right_long"), 
-		ARROW_LONG("arrow_long"), 
-		ARROW_LEFT_LONG("arrow_left"),
-		ARROW_RIGHT_LONG("arrow_right"),
-		ARROW_LEFT_RIGHT_LONG("arrow_left_right_long"),
-		ARROW_FRONT_LEFT_LONG("arrow_front_left_long"), 
-		ARROW_FRONT_RIGHT_LONG("arrow_front_right_long"), 
-		ARROW_LEFT_DIA("arrow_left_dia"),
-		LINE_RIGHT_DIA("arrow_right_dia"),
-		ARROW_FRONT_LEFT_RIGHT("arrow_front_left_right"), 
-		ARROW("arrow"),
-		ARROW_LEFT("arrow_left_short"),
-		ARROW_RIGHT("arrow_right_short"),
-		ARROW_LEFT_RIGHT("arrow_left_right"),
-		ARROW_FRONT_LEFT("arrow_front_left"), 
-		ARROW_FRONT_RIGHT("arrow_front_right"), 
-		ARROW_LEFT_DIA_SHORT("arrow_left_dia_short"),
-		LINE_RIGHT_DIA_SHORT("arrow_right_dia_short"),
-		LINE_MIDDLE("line_middle"), 
-		LINE_LONG("line_long"), 
-		LINE_END("line_end"), 
-		LINE_SIDE_MIDDLE("line_side_middle"),
-		LINE_SIDE_LONG("line_side_long"), 
-		LINE_SIDE_START("line_side_start"), 
-		LINE_SIDE_END("line_side_end"), 
-		LINE_SIDE_LONG_LEFT("line_side_long_left"), 
-		LINE_SIDE_LONG_LEFT_FRONT("line_side_long_left_front"), 
-		LINE_MIDDLE_EDGE("line_middle_edge"), 
-		LINE_CORNER("line_corner"),
-		LINE_DOUBLE("line_double"),
-		LINE_DOUBLE_MIDDLE("line_double_middle"),
-		LINE_DOUBLE_END("line_double_end"),
-		ARROW_ZEBRAS("arrow_zebras"),
-		ARROW_P("arrow_p"),
-		ARROW_NO_PARKING("arrow_no_parking"),
-		ARROW_CROSS("arrow_cross");
-
-		private String name;
-
-		private EnumPaintType(String name) {
-			this.name = name;
-		}
-	}
+        EnumPaintType(String name) {
+            this.name = name;
+        }
+    }
 
 }

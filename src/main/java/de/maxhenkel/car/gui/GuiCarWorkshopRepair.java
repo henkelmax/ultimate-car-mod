@@ -1,8 +1,9 @@
 package de.maxhenkel.car.gui;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.mojang.blaze3d.platform.GlStateManager;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.tools.MathTools;
 import de.maxhenkel.car.blocks.tileentity.TileEntityCarWorkshop;
@@ -10,150 +11,141 @@ import de.maxhenkel.car.entity.car.base.EntityCarBase;
 import de.maxhenkel.car.entity.car.base.EntityCarDamageBase;
 import de.maxhenkel.car.net.MessageOpenGui;
 import de.maxhenkel.car.net.MessageRepairCar;
-import de.maxhenkel.car.proxy.CommonProxy;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.client.gui.widget.button.Button;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.TranslationTextComponent;
 
 public class GuiCarWorkshopRepair extends GuiBase {
 
-	private static final ResourceLocation GUI_TEXTURE = new ResourceLocation(Main.MODID,
-			"textures/gui/gui_car_workshop_repair.png");
+    private static final ResourceLocation GUI_TEXTURE = new ResourceLocation(Main.MODID,
+            "textures/gui/gui_car_workshop_repair.png");
 
-	private static final int fontColor = 4210752;
+    private static final int fontColor = 4210752;
 
-	private EntityPlayer player;
-	private TileEntityCarWorkshop tile;
-	private float rotoation;
+    private PlayerEntity player;
+    private TileEntityCarWorkshop tile;
+    private float rotoation;
 
-	private GuiButton buttonBack;
-	private GuiButton buttonRepair;
+    private Button buttonBack;
+    private Button buttonRepair;
 
-	public GuiCarWorkshopRepair(ContainerCarWorkshopRepair container) {
-		super(container);
-		this.player = container.getPlayer();
-		this.tile = container.getTile();
+    public GuiCarWorkshopRepair(ContainerCarWorkshopRepair container, PlayerInventory playerInventory) {
+        super(GUI_TEXTURE, container, playerInventory, new TranslationTextComponent("block.car.car_workshop"));
+        this.player = container.getPlayer();
+        this.tile = container.getTile();
 
-		xSize = 176;
-		ySize = 222;
-	}
+        xSize = 176;
+        ySize = 222;
+    }
 
-	@Override
-	public void initGui() {
-		super.initGui();
+    @Override
+    protected void init() {
+        super.init();
 
-		this.buttonRepair = addButton(new GuiButton(0, guiLeft + xSize - 7 - 60, guiTop + 105, 60, 20,
-				new TextComponentTranslation("button.repair_car").getFormattedText()));
-		this.buttonRepair.enabled = false;
+        this.buttonRepair = addButton(new Button(guiLeft + xSize - 7 - 60, guiTop + 105, 60, 20, new TranslationTextComponent("button.repair_car").getFormattedText(), button -> {
+            if (tile.getWorld().isRemote) {
+                Main.SIMPLE_CHANNEL.sendToServer(new MessageRepairCar(tile.getPos(), player));
+            }
+        }));
+        this.buttonRepair.active = false;
 
-		this.buttonBack = addButton(new GuiButton(1, guiLeft + 7, guiTop + 105, 60, 20,
-				new TextComponentTranslation("button.back").getFormattedText()));
-		this.buttonBack.enabled = true;
-	}
+        this.buttonBack = addButton(new Button(guiLeft + 7, guiTop + 105, 60, 20, new TranslationTextComponent("button.back").getFormattedText(), button -> {
+            if (tile.getWorld().isRemote) {
+                Main.SIMPLE_CHANNEL.sendToServer(
+                        new MessageOpenGui(tile.getPos(), GuiHandler.GUI_CAR_WORKSHOP_CRAFTING, player).open(player));
+            }
+        }));
+        this.buttonBack.active = true;
+    }
 
-	@Override
-	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-		super.drawGuiContainerForegroundLayer(mouseX, mouseY);
 
-		// Titles
-		fontRenderer.drawString(tile.getDisplayName().getUnformattedText(), 8, 6, fontColor);
-		fontRenderer.drawString(player.inventory.getDisplayName().getFormattedText(), 8, ySize - 96 + 2,
-				fontColor);
-		
-		EntityCarBase carTop = tile.getCarOnTop();
+    @Override
+    protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
+        super.drawGuiContainerForegroundLayer(mouseX, mouseY);
 
-		if (!(carTop instanceof EntityCarDamageBase)) {
-			buttonRepair.enabled = false;
-			return;
-		}
+        // Titles
+        font.drawString(tile.getDisplayName().getUnformattedText(), 8, 6, fontColor);
+        font.drawString(player.inventory.getDisplayName().getFormattedText(), 8, ySize - 96 + 2,
+                fontColor);
 
-		EntityCarDamageBase car = (EntityCarDamageBase) carTop;
+        EntityCarBase carTop = tile.getCarOnTop();
 
-		if (mouseX >= guiLeft + 52 && mouseX <= guiLeft + 123) {
-			if (mouseY >= guiTop + 81 && mouseY <= guiTop + 90) {
-				List<String> list = new ArrayList<String>();
-				list.add(new TextComponentTranslation("tooltip.damage", MathTools.round(car.getDamage(), 2))
-						.getFormattedText());
-				drawHoveringText(list, mouseX - guiLeft, mouseY - guiTop);
-			}
-		}
-		
-		if (tile.areRepairItemsInside()&&car.getDamage()>0) {
-			buttonRepair.enabled = true;
-		} else {
-			buttonRepair.enabled = false;
-		}
-		drawCar(carTop);
+        if (!(carTop instanceof EntityCarDamageBase)) {
+            buttonRepair.active = false;
+            return;
+        }
 
-	}
+        EntityCarDamageBase car = (EntityCarDamageBase) carTop;
 
-	private void drawCar(EntityCarBase car) {
-		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-		MathTools.drawCarOnScreen(xSize / 2, 55, 23, rotoation, car);
-		float parts = Minecraft.getMinecraft().getRenderPartialTicks();
-		rotoation += parts / 4;
-		if (!(rotoation < 360)) {
-			rotoation = 0F;
-		}
+        if (mouseX >= guiLeft + 52 && mouseX <= guiLeft + 123) {
+            if (mouseY >= guiTop + 81 && mouseY <= guiTop + 90) {
+                List<String> list = new ArrayList<String>();
+                list.add(new TranslationTextComponent("tooltip.damage", MathTools.round(car.getDamage(), 2))
+                        .getFormattedText());
+                drawHoveringText(list, mouseX - guiLeft, mouseY - guiTop);
+            }
+        }
 
-	}
+        if (tile.areRepairItemsInside() && car.getDamage() > 0) {
+            buttonRepair.active = true;
+        } else {
+            buttonRepair.active = false;
+        }
+        drawCar(carTop);
 
-	public double getDamagePercent(EntityCarDamageBase car) {
-		float dmg = car.getDamage();
-		dmg = Math.min(dmg, 100);
-		return MathTools.round(dmg, 2);
-	}
+    }
 
-	@Override
-	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
-		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-		this.mc.getTextureManager().bindTexture(GUI_TEXTURE);
-		int i = this.guiLeft;
-		int j = this.guiTop;
-		this.drawTexturedModalRect(i, j, 0, 0, this.xSize, this.ySize);
+    private void drawCar(EntityCarBase car) {
+        GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+        MathTools.drawCarOnScreen(xSize / 2, 55, 23, rotoation, car);
+        float parts = Minecraft.getInstance().getRenderPartialTicks();
+        rotoation += parts / 4;
+        if (!(rotoation < 360)) {
+            rotoation = 0F;
+        }
 
-		drawDamage();
-	}
+    }
 
-	@Override
-	public boolean doesGuiPauseGame() {
-		return false;
-	}
+    public double getDamagePercent(EntityCarDamageBase car) {
+        float dmg = car.getDamage();
+        dmg = Math.min(dmg, 100);
+        return MathTools.round(dmg, 2);
+    }
 
-	public void drawDamage() {
-		EntityCarBase car = tile.getCarOnTop();
-		if (!(car instanceof EntityCarDamageBase)) {
-			return;
-		}
+    @Override
+    protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
+        GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+        minecraft.getTextureManager().bindTexture(GUI_TEXTURE);
+        int i = this.guiLeft;
+        int j = this.guiTop;
+        blit(i, j, 0, 0, this.xSize, this.ySize);
 
-		EntityCarDamageBase c = (EntityCarDamageBase) car;
+        drawDamage();
+    }
 
-		double percent = 100 - getDamagePercent(c);
+    @Override
+    public boolean isPauseScreen() {
+        return false;
+    }
 
-		this.mc.getTextureManager().bindTexture(GUI_TEXTURE);
-		int scaled = (int) (72 * percent / 100);
-		int i = this.guiLeft;
-		int j = this.guiTop;
-		this.drawTexturedModalRect(i + 52, j + 81, 176, 0, scaled, 10);
-	}
+    public void drawDamage() {
+        EntityCarBase car = tile.getCarOnTop();
+        if (!(car instanceof EntityCarDamageBase)) {
+            return;
+        }
 
-	@Override
-	protected void actionPerformed(GuiButton button) throws IOException {
-		super.actionPerformed(button);
+        EntityCarDamageBase c = (EntityCarDamageBase) car;
 
-		if (button.id == buttonBack.id) {
-			if (tile.getWorld().isRemote) {
-				CommonProxy.simpleNetworkWrapper.sendToServer(
-						new MessageOpenGui(tile.getPos(), GuiHandler.GUI_CAR_WORKSHOP_CRAFTING, player).open(player));
-			}
-		} else if (button.id == buttonRepair.id) {
-			if (tile.getWorld().isRemote) {
-				CommonProxy.simpleNetworkWrapper.sendToServer(new MessageRepairCar(tile.getPos(), player));
-			}
-		}
-	}
+        double percent = 100 - getDamagePercent(c);
+
+        minecraft.getTextureManager().bindTexture(GUI_TEXTURE);
+        int scaled = (int) (72 * percent / 100);
+        int i = this.guiLeft;
+        int j = this.guiTop;
+        blit(i + 52, j + 81, 176, 0, scaled, 10);
+    }
 
 }

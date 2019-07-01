@@ -1,15 +1,17 @@
 package de.maxhenkel.car.blocks.liquid;
 
 import de.maxhenkel.car.fluids.ModFluids;
-import net.minecraft.block.material.Material;
-import net.minecraftforge.fluids.BlockFluidClassic;
+import net.minecraftforge.fluids.Fluid;
 
-public class BlockCanolaOil extends BlockFluidClassic {
+public class BlockCanolaOil extends FluidBlockBase {
 
 	public BlockCanolaOil() {
-		super(ModFluids.CANOLA_OIL, Material.WATER);
-		setRegistryName("canola_oil");
-		setUnlocalizedName("canola_oil");
+		super("canola_oil");
+	}
+
+	@Override
+	public Fluid getFluid() {
+		return ModFluids.BIO_DIESEL;
 	}
 
 }

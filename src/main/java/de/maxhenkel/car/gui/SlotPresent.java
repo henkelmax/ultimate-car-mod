@@ -1,26 +1,21 @@
 package de.maxhenkel.car.gui;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.Slot;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 
-public class SlotPresent extends Slot{
+public class SlotPresent extends Slot {
 
-	private ItemStack stack;
+    private ItemStack stack;
 
-	public SlotPresent(ItemStack s, int xPosition, int yPosition) {
-		super(null, 0, xPosition, yPosition);
-		this.stack=s.copy();
-		if(!stack.hasTagCompound()){
-		    stack.setTagCompound(new NBTTagCompound());
-        }
+    public SlotPresent(ItemStack s, int xPosition, int yPosition) {
+        super(null, 0, xPosition, yPosition);
+        this.stack = s.copy();
+        CompoundNBT compound = stack.getOrCreateTag();
 
-        NBTTagCompound compound=stack.getTagCompound();
-
-		compound.setBoolean("trading_item", true);
-	}
+        compound.putBoolean("trading_item", true);
+    }
 
     @Override
     public ItemStack getStack() {
@@ -47,18 +42,20 @@ public class SlotPresent extends Slot{
         return ItemStack.EMPTY;
     }
 
+
+    /*
     @Override
     public boolean isHere(IInventory inv, int slotIn) {
+        return false;
+    }*/
+
+    @Override
+    public boolean isItemValid(ItemStack stack) {
         return false;
     }
 
     @Override
-	public boolean isItemValid(ItemStack stack) {
-		return false;
-	}
-
-    @Override
-    public boolean canTakeStack(EntityPlayer playerIn) {
+    public boolean canTakeStack(PlayerEntity playerIn) {
         return false;
     }
 }

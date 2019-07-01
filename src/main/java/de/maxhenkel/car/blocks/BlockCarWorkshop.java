@@ -3,146 +3,134 @@ package de.maxhenkel.car.blocks;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.ModCreativeTabs;
 import de.maxhenkel.car.blocks.tileentity.TileEntityCarWorkshop;
-import de.maxhenkel.car.gui.GuiHandler;
-import net.minecraft.block.BlockContainer;
+import de.maxhenkel.tools.IItemBlock;
+import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
-import net.minecraft.block.properties.PropertyBool;
-import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.block.material.MaterialColor;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.InventoryHelper;
+import net.minecraft.item.BlockItem;
+import net.minecraft.item.BlockItemUseContext;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.state.BooleanProperty;
+import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumBlockRenderType;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.Hand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
-public class BlockCarWorkshop extends BlockContainer {
+import javax.annotation.Nullable;
 
-	public static final PropertyBool VALID = PropertyBool.create("valid");
+public class BlockCarWorkshop extends Block implements ITileEntityProvider, IItemBlock {
 
-	protected BlockCarWorkshop() {
-		super(Material.IRON);
-		setUnlocalizedName("car_workshop");
-		setRegistryName("car_workshop");
-		setCreativeTab(ModCreativeTabs.TAB_CAR);
-		setHardness(3.0F);
+    public static final BooleanProperty VALID = BooleanProperty.create("valid");
 
-		this.setDefaultState(blockState.getBaseState().withProperty(VALID, false));
-	}
-	
-	@Override
-	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn,
-			EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-		TileEntityCarWorkshop workshop=getOwnTileEntity(worldIn, pos);
-		
-		if(workshop==null){
-			return false;
-		}
-		
-		if(!workshop.areBlocksAround()){
-			return false;
-		}
-		//open gui
-		playerIn.openGui(Main.MODID, GuiHandler.GUI_CAR_WORKSHOP_CRAFTING, worldIn, pos.getX(), pos.getY(), pos.getZ());
-		
-		return true;
-	}
-	
-	public TileEntityCarWorkshop getOwnTileEntity(World world, BlockPos pos){
-		TileEntity tile=world.getTileEntity(pos);
-		if(tile==null){
-			return null;
-		}
-		
-		if(!(tile instanceof TileEntityCarWorkshop)){
-			return null;
-		}
-		
-		return (TileEntityCarWorkshop) tile;
-	}
-	
-	@Override
-	public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer,
-			ItemStack stack) {
-		super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
-		
-		TileEntityCarWorkshop workshop=getOwnTileEntity(worldIn, pos);
-		
-		if(workshop==null){
-			return;
-		}
-		
-		workshop.checkValidity();
-	}
+    protected BlockCarWorkshop() {
+        super(Properties.create(Material.IRON, MaterialColor.GRAY).hardnessAndResistance(3F).sound(SoundType.METAL));
+        setRegistryName(new ResourceLocation(Main.MODID, "car_workshop"));
+        this.setDefaultState(stateContainer.getBaseState().with(VALID, false));
+    }
 
-	@Override
-	public TileEntity createNewTileEntity(World worldIn, int meta) {
-		return new TileEntityCarWorkshop();
-	}
+    @Override
+    public Item toItem() {
+        return new BlockItem(this, new Item.Properties().group(ModCreativeTabs.TAB_CAR)).setRegistryName(this.getRegistryName());
+    }
 
-	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state) {
-		return EnumBlockRenderType.MODEL;
-	}
+    @Override
+    public boolean onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
+        TileEntityCarWorkshop workshop = getOwnTileEntity(worldIn, pos);
 
-	@Override
-	public int getMetaFromState(IBlockState state) {
-		if (state.getValue(VALID)) {
-			return 1;
-		} else {
-			return 0;
-		}
-	}
+        if (workshop == null) {
+            return false;
+        }
 
-	@Override
-	public IBlockState getStateFromMeta(int meta) {
-		if (meta == 0) {
-			return getDefaultState().withProperty(VALID, false);
-		} else {
-			return getDefaultState().withProperty(VALID, true);
-		}
+        if (!workshop.areBlocksAround()) {
+            return false;
+        }
+        //TODO gui
+        //playerIn.openGui(Main.MODID, GuiHandler.GUI_CAR_WORKSHOP_CRAFTING, worldIn, pos.getX(), pos.getY(), pos.getZ());
 
-	}
+        return true;
+    }
 
-	@Override
-	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, new IProperty[] { VALID });
-	}
+    public TileEntityCarWorkshop getOwnTileEntity(World world, BlockPos pos) {
+        TileEntity tile = world.getTileEntity(pos);
+        if (tile == null) {
+            return null;
+        }
 
-	@Override
-	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY,
-			float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
-		return this.getDefaultState().withProperty(VALID, false);
-	}
+        if (!(tile instanceof TileEntityCarWorkshop)) {
+            return null;
+        }
 
-	public void setValid(World world, BlockPos pos, IBlockState state, boolean valid) {
-		if (state.getValue(VALID).equals(valid)) {
-			return;
-		}
+        return (TileEntityCarWorkshop) tile;
+    }
 
-		TileEntity tileentity = world.getTileEntity(pos);
+    @Override
+    public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
+        super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
 
-		world.setBlockState(pos, state.withProperty(VALID, valid), 2);
+        TileEntityCarWorkshop workshop = getOwnTileEntity(worldIn, pos);
 
-		if (tileentity != null) {
-			tileentity.validate();
-			world.setTileEntity(pos, tileentity);
-		}
-	}
-	
-	@Override
-	public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
-		TileEntityCarWorkshop workshop=getOwnTileEntity(worldIn, pos);
-		
-		if(workshop!=null){
-			InventoryHelper.dropInventoryItems(worldIn, pos, workshop);
-		}
-		super.breakBlock(worldIn, pos, state);
-	}
+        if (workshop == null) {
+            return;
+        }
 
+        workshop.checkValidity();
+    }
+
+    @Override
+    public BlockRenderType getRenderType(BlockState state) {
+        return BlockRenderType.MODEL;
+    }
+
+
+    @Nullable
+    @Override
+    public BlockState getStateForPlacement(BlockItemUseContext context) {
+        return this.getDefaultState().with(VALID, false);
+    }
+
+    @Override
+    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+        builder.add(VALID);
+    }
+
+
+    public void setValid(World world, BlockPos pos, BlockState state, boolean valid) {
+        if (state.get(VALID).equals(valid)) {
+            return;
+        }
+
+        TileEntity tileentity = world.getTileEntity(pos);
+
+        world.setBlockState(pos, state.with(VALID, valid), 2);
+
+        if (tileentity != null) {
+            tileentity.validate();
+            world.setTileEntity(pos, tileentity);
+        }
+    }
+
+    @Override
+    public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
+        TileEntityCarWorkshop workshop = getOwnTileEntity(worldIn, pos);
+
+        if (workshop != null) {
+            InventoryHelper.dropInventoryItems(worldIn, pos, workshop);
+        }
+
+        super.onReplaced(state, worldIn, pos, newState, isMoving);
+    }
+
+    @Nullable
+    @Override
+    public TileEntity createNewTileEntity(IBlockReader worldIn) {
+        return new TileEntityCarWorkshop();
+    }
 }

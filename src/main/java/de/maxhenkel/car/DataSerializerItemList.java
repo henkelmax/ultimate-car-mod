@@ -3,13 +3,13 @@ package de.maxhenkel.car;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializer;
-import java.io.IOException;
+import net.minecraft.network.datasync.IDataSerializer;
+
 import java.util.Arrays;
 
 public class DataSerializerItemList {
 
-    public static final DataSerializer<ItemStack[]> ITEM_LIST = new DataSerializer<ItemStack[]>() {
+    public static final IDataSerializer<ItemStack[]> ITEM_LIST = new IDataSerializer<ItemStack[]>() {
 
         @Override
         public void write(PacketBuffer packetBuffer, ItemStack[] itemStacks) {
@@ -26,7 +26,7 @@ public class DataSerializerItemList {
             }
         }
 
-        public ItemStack[] read(PacketBuffer buf) throws IOException {
+        public ItemStack[] read(PacketBuffer buf) {
             int length=buf.readInt();
 
             if(length<0){

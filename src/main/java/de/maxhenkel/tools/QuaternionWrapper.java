@@ -1,6 +1,7 @@
 package de.maxhenkel.tools;
 
-import org.lwjgl.util.vector.Quaternion;
+
+import net.minecraft.client.renderer.Quaternion;
 
 public class QuaternionWrapper {
 

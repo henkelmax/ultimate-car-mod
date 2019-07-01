@@ -1,62 +1,59 @@
 package de.maxhenkel.car.blocks;
 
 import de.maxhenkel.car.blocks.tileentity.TileEntityOilMill;
-import de.maxhenkel.car.gui.GuiHandler;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 
-public class BlockOilMill extends BlockGui{
+import javax.annotation.Nullable;
 
-	protected BlockOilMill() {
-		super(Material.IRON, "oilmill");
-		setHardness(3.0F);
-	}
-	
-	@Override
-	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn,
-			EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-		ItemStack stack = playerIn.getHeldItem(hand);
+public class BlockOilMill extends BlockGui {
 
-		if (stack != null) {
-			FluidStack fluidStack = FluidUtil.getFluidContained(stack);
+    protected BlockOilMill() {
+        super("oilmill", Material.IRON, SoundType.STONE, 3F, 3F);
+    }
 
-			if (fluidStack != null) {
-				boolean success = BlockTank.handleEmpty(stack, worldIn, pos, playerIn, hand);
-				if (success) {
-					return true;
-				}
-			}
-			IFluidHandler handler = FluidUtil.getFluidHandler(stack);
+    @Override
+    public boolean onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
+        ItemStack stack = player.getHeldItem(handIn);
 
-			if (handler != null) {
-				boolean success1 = BlockTank.handleFill(stack, worldIn, pos, playerIn, hand);
-				if (success1) {
-					return true;
-				}
-			}
+        if (stack != null) {
+            FluidStack fluidStack = FluidUtil.getFluidContained(stack).orElse(null);
 
-		}
+            if (fluidStack != null) {
+                boolean success = BlockTank.handleEmpty(stack, worldIn, pos, player, handIn);
+                if (success) {
+                    return true;
+                }
+            }
+            IFluidHandler handler = FluidUtil.getFluidHandler(stack).orElse(null);
 
-		return super.onBlockActivated(worldIn, pos, state, playerIn, hand, facing, hitX, hitY, hitZ);
-	}
+            if (handler != null) {
+                boolean success1 = BlockTank.handleFill(stack, worldIn, pos, player, handIn);
+                if (success1) {
+                    return true;
+                }
+            }
 
-	@Override
-	public TileEntity createNewTileEntity(World worldIn, int meta) {
-		return new TileEntityOilMill();
-	}
+        }
 
-	@Override
-	public int getGUIID() {
-		return GuiHandler.GUI_OIL_MILL;
-	}
+        return super.onBlockActivated(state, worldIn, pos, player, handIn, hit);
+    }
+
+    @Nullable
+    @Override
+    public TileEntity createNewTileEntity(IBlockReader worldIn) {
+        return new TileEntityOilMill();
+    }
 }

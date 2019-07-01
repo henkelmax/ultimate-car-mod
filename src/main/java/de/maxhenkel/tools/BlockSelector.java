@@ -3,11 +3,12 @@ package de.maxhenkel.tools;
 import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.registries.ForgeRegistries;
 
-public class BlockSelector implements Selector<IBlockState>{
+public class BlockSelector implements Selector<BlockState>{
 
 	private Block block;
 	private int meta;
@@ -32,7 +33,7 @@ public class BlockSelector implements Selector<IBlockState>{
 			return null;
 		}
 
-		Block block = Block.REGISTRY.getObject(new ResourceLocation(split[0], split[1]));
+		Block block = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(split[0], split[1]));
 		if (block == null||block.equals(Blocks.AIR)) {
 			return null;
 		}
@@ -57,7 +58,7 @@ public class BlockSelector implements Selector<IBlockState>{
 		
 		ResourceLocation loc=block.getRegistryName();
 		
-		String str=loc.getResourceDomain() +":" +loc.getResourcePath();
+		String str=loc.getNamespace() +":" +loc.getPath();
 		
 		if(meta>=0){
 			str=str+":" +meta;
@@ -67,24 +68,24 @@ public class BlockSelector implements Selector<IBlockState>{
 	}
 
 	@Override
-	public boolean isValid(IBlockState state) {
+	public boolean isValid(BlockState state) {
 		if(block==null||state==null||state.getBlock()==null){
 			return false;
 		}
-		
+
 		if(!block.equals(state.getBlock())){
 			return false;
 		}
-		
-		if(meta<0){
+
+		//TODO metadata
+		/*if(meta<0){
 			return true;
 		}
-		
+
 		if(meta!=block.getMetaFromState(state)){
 			return false;
-		}
-		
+		}*/
+
 		return true;
 	}
-	
 }

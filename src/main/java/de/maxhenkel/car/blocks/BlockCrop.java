@@ -1,108 +1,57 @@
 package de.maxhenkel.car.blocks;
 
-import java.util.Random;
-import net.minecraft.block.BlockCrops;
-import net.minecraft.block.properties.IProperty;
-import net.minecraft.block.properties.PropertyInteger;
-import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.item.Item;
-import net.minecraft.util.math.AxisAlignedBB;
+import de.maxhenkel.car.Main;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.CropsBlock;
+import net.minecraft.block.SoundType;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.material.MaterialColor;
+import net.minecraft.state.IntegerProperty;
+import net.minecraft.state.StateContainer;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
+import net.minecraft.util.math.shapes.ISelectionContext;
+import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.world.IBlockReader;
 
-public abstract class BlockCrop extends BlockCrops{
+public abstract class BlockCrop extends CropsBlock {
 
-	public static final AxisAlignedBB[] CROPS_AABB = new AxisAlignedBB[] {
-			new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.125D, 1.0D),
-			new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.25D, 1.0D),
-			new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.375D, 1.0D),
-			new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.5D, 1.0D),
-			new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.625D, 1.0D),
-			new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.75D, 1.0D),
-			new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.875D, 1.0D),
-			new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D) };
+    public IntegerProperty CROP_AGE = IntegerProperty.create("age", 0, getMaxAge());
 
-	public BlockCrop(String name) {
-		this.setUnlocalizedName(name);
-		this.setRegistryName(name);
-		this.setDefaultState(blockState.getBaseState().withProperty(getAgeProperty(), 0));
-	}
+    public static final VoxelShape[] SHAPES_BY_AGE = new VoxelShape[]{
+            Block.makeCuboidShape(0D, 0D, 0D, 16D, 2D, 16D),
+            Block.makeCuboidShape(0D, 0D, 0D, 16D, 4D, 16D),
+            Block.makeCuboidShape(0D, 0D, 0D, 16D, 6D, 16D),
+            Block.makeCuboidShape(0D, 0D, 0D, 16D, 8D, 16D),
+            Block.makeCuboidShape(0D, 0D, 0D, 16D, 10D, 16D),
+            Block.makeCuboidShape(0D, 0D, 0D, 16D, 12D, 16D),
+            Block.makeCuboidShape(0D, 0D, 0D, 16D, 14D, 16D),
+            Block.makeCuboidShape(0D, 0D, 0D, 16D, 16D, 16D)};
 
-	@Override
-	protected abstract Item getSeed();
+    //TODO block loot table
+    //TODO check growth rate
+    public BlockCrop(String name) {
+        super(Properties.create(Material.PLANTS, MaterialColor.GREEN).sound(SoundType.PLANT));
+        setRegistryName(new ResourceLocation(Main.MODID, name));
+        this.setDefaultState(stateContainer.getBaseState().with(getAgeProperty(), 0));
+    }
 
-	@Override
-	protected abstract Item getCrop();
+    public IntegerProperty getAgeProperty() {
+        return CROP_AGE;
+    }
 
-	@Override
-	public PropertyInteger getAgeProperty() {
-		return PropertyInteger.create("age", 0, getMaxAge());
-	}
+    @Override
+    public VoxelShape getShape(BlockState state, IBlockReader iBlockReader, BlockPos pos, ISelectionContext selectionContext) {
+        return SHAPES_BY_AGE[state.get(getAgeProperty())];
+    }
 
-	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-		int age=getAge(state);
-		if(age>=CROPS_AABB.length){
-			return CROPS_AABB[CROPS_AABB.length-1];
-		}else{
-			return CROPS_AABB[age];
-		}
-		
-	}
+    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+        builder.add(CROP_AGE);
+    }
 
-	@Override
-	public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
-
-		if (worldIn.getLightFromNeighbors(pos.up()) >= getMinLightLevel()) {
-			int i = this.getAge(state);
-
-			if (i < this.getMaxAge()) {
-
-				if (rand.nextInt(getGrowthChance()) == 0) {
-					worldIn.setBlockState(pos, this.withAge(i + 1), 2);
-				}
-			}
-		}
-	}
-
-	@Override
-	public abstract int getMaxAge();
-
-	/*
-	 * Default is 8
-	 */
-	public int getMinLightLevel(){
-		return 8;
-	}
-
-	@Override
-	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, new IProperty[] { getAgeProperty() });
-	}
-
-	@Override
-	protected boolean canSustainBush(IBlockState state) {
-		return isSoil(state);
-	}
-
-	@Override
-	public boolean canBlockStay(World worldIn, BlockPos pos, IBlockState state) {
-		IBlockState soil = worldIn.getBlockState(pos.down());
-		return (worldIn.getLight(pos) >= getMinLightLevel() || worldIn.canSeeSky(pos)) && isSoil(soil);
-	}
-
-	public abstract boolean isSoil(IBlockState state);
-
-	public abstract boolean canPlant(IBlockState state);
-
-	public boolean isMaxAge(IBlockState state) {
-		return getAge(state) >= getMaxAge();
-	}
-
-	public int getGrowthChance() {
-		return 20;
-	}
+    @Override
+    public abstract int getMaxAge();
 
 }
 

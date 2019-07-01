@@ -1,56 +1,36 @@
 package de.maxhenkel.car.blocks;
 
+import de.maxhenkel.car.Main;
 import de.maxhenkel.car.ModCreativeTabs;
+import de.maxhenkel.tools.IItemBlock;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
-import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.block.material.MaterialColor;
+import net.minecraft.item.BlockItem;
+import net.minecraft.item.Item;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.util.math.shapes.ISelectionContext;
+import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.world.IBlockReader;
 
-public class BlockTarSlab extends Block{
+public class BlockTarSlab extends Block implements IItemBlock {
 
-	public BlockTarSlab() {
-		super(Material.ROCK, MapColor.OBSIDIAN);
-		setUnlocalizedName("tar_slab");
-		setRegistryName("tar_slab");
-		setHardness(2.2F);
-		setResistance(20.0F);
-		setSoundType(SoundType.STONE);
-		setCreativeTab(ModCreativeTabs.TAB_CAR);
-		useNeighborBrightness=true;
-	}
+    protected static final VoxelShape SHAPE = Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 8.0D, 16.0D);
 
-	@Override
-	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-		return new AxisAlignedBB(0, 0, 0, 1, 0.5F, 1);
-	}
-
-    @Override
-    public boolean canPlaceTorchOnTop(IBlockState state, IBlockAccess world, BlockPos pos) {
-        return false;
+    public BlockTarSlab() {
+        super(Properties.create(Material.ROCK, MaterialColor.OBSIDIAN).hardnessAndResistance(2.2F, 20F).sound(SoundType.STONE));
+        setRegistryName(new ResourceLocation(Main.MODID, "tar_slab"));
     }
 
     @Override
-	public boolean isOpaqueCube(IBlockState state) {
-		return false;
-	}
+    public Item toItem() {
+        return new BlockItem(this, new Item.Properties().group(ModCreativeTabs.TAB_CAR)).setRegistryName(this.getRegistryName());
+    }
 
-	@Override
-	public boolean isFullCube(IBlockState state) {
-		return false;
-	}
-	
-	@Override
-	public boolean doesSideBlockRendering(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing face) {
-		return false;
-	}
-
-    @Override
-    public boolean isSideSolid(IBlockState base_state, IBlockAccess world, BlockPos pos, EnumFacing side) {
-        return false;
+    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
+        return SHAPE;
     }
 }

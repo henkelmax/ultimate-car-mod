@@ -1,137 +1,136 @@
 package de.maxhenkel.car.blocks;
 
+import de.maxhenkel.car.Main;
 import de.maxhenkel.car.ModCreativeTabs;
 import de.maxhenkel.car.blocks.tileentity.TileEntityCarWorkshop;
+import de.maxhenkel.tools.IItemBlock;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockRenderType;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
-import net.minecraft.block.properties.PropertyInteger;
-import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.block.material.MaterialColor;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.BlockItem;
+import net.minecraft.item.BlockItemUseContext;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.state.IntegerProperty;
+import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumBlockRenderType;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.Hand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.world.World;
 
-public class BlockCarWorkshopOutter extends Block {
+import javax.annotation.Nullable;
 
-	public static final PropertyInteger POSITION = PropertyInteger.create("position", 0, 8);
+public class BlockCarWorkshopOutter extends Block implements IItemBlock {
 
-	public BlockCarWorkshopOutter() {
-		super(Material.IRON);
-		setUnlocalizedName("car_workshop_outter");
-		setRegistryName("car_workshop_outter");
-		setCreativeTab(ModCreativeTabs.TAB_CAR);
-		setHardness(3.0F);
+    public static final IntegerProperty POSITION = IntegerProperty.create("position", 0, 8);
 
-		this.setDefaultState(blockState.getBaseState().withProperty(POSITION, 0));
-	}
-	
-	@Override
-	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn,
-			EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-		BlockPos tePos=findCenter(worldIn, pos);
-		
-		if(tePos==null){
-			return false;
-		}
-		return ModBlocks.CAR_WORKSHOP.onBlockActivated(worldIn, tePos, worldIn.getBlockState(tePos), playerIn, hand, facing, hitX, hitY, hitZ);
-	}
-	
-	@Override
-	public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer,
-			ItemStack stack) {
-		super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
-		
-		validate(worldIn, pos);
-	}
-	
-	@Override
-	public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
-		super.breakBlock(worldIn, pos, state);
-		
-		validate(worldIn, pos);
-	}
-	
-	private void validate(World worldIn, BlockPos pos){
-		BlockPos tePos=findCenter(worldIn, pos);
-		
-		if(tePos==null){
-			return;
-		}
-		
-		TileEntity te=worldIn.getTileEntity(tePos);
-		
-		if(!(te instanceof TileEntityCarWorkshop)){
-			return;
-		}
-		
-		TileEntityCarWorkshop workshop=(TileEntityCarWorkshop) te;
-		
-		workshop.checkValidity();
-	}
+    public BlockCarWorkshopOutter() {
+        super(Properties.create(Material.IRON, MaterialColor.GRAY).hardnessAndResistance(3F).sound(SoundType.METAL));
+        setRegistryName(new ResourceLocation(Main.MODID, "car_workshop_outter"));
 
-	private static BlockPos findCenter(World world, BlockPos pos) {
-		if (isCenter(world, pos.add(0, 0, 1))) {
-			return pos.add(0, 0, 1);
-		}
-		if (isCenter(world, pos.add(1, 0, 0))) {
-			return pos.add(1, 0, 0);
-		}
-		if (isCenter(world, pos.add(1, 0, 1))) {
-			return pos.add(1, 0, 1);
-		}
-		if (isCenter(world, pos.add(0, 0, -1))) {
-			return pos.add(0, 0, -1);
-		}
-		if (isCenter(world, pos.add(-1, 0, 0))) {
-			return pos.add(-1, 0, 0);
-		}
-		if (isCenter(world, pos.add(-1, 0, -1))) {
-			return pos.add(-1, 0, -1);
-		}
-		if (isCenter(world, pos.add(-1, 0, 1))) {
-			return pos.add(-1, 0, 1);
-		}
-		if (isCenter(world, pos.add(1, 0, -1))) {
-			return pos.add(1, 0, -1);
-		}
-		return null;
-	}
+        this.setDefaultState(stateContainer.getBaseState().with(POSITION, 0));
+    }
 
-	private static boolean isCenter(World world, BlockPos pos) {
-		return world.getBlockState(pos).getBlock().equals(ModBlocks.CAR_WORKSHOP);
-	}
+    @Override
+    public Item toItem() {
+        return new BlockItem(this, new Item.Properties().group(ModCreativeTabs.TAB_CAR)).setRegistryName(this.getRegistryName());
+    }
 
-	@Override
-	public int getMetaFromState(IBlockState state) {
-		return state.getValue(POSITION);
-	}
+    @Override
+    public boolean onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
+        BlockPos tePos = findCenter(worldIn, pos);
 
-	@Override
-	public IBlockState getStateFromMeta(int meta) {
-		return getDefaultState().withProperty(POSITION, meta);
-	}
+        if (tePos == null) {
+            return false;
+        }
+        return ModBlocks.CAR_WORKSHOP.onBlockActivated(worldIn.getBlockState(tePos), worldIn, tePos, player, handIn, hit);
+    }
 
-	@Override
-	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, new IProperty[] { POSITION });
-	}
+    @Override
+    public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
+        super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
+        validate(worldIn, pos);
+    }
 
-	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state) {
-		return EnumBlockRenderType.MODEL;
-	}
-	
-	@Override
-	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY,
-			float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
-		return this.getDefaultState().withProperty(POSITION, 0);
-	}
+    @Override
+    public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
+        super.onReplaced(state, worldIn, pos, newState, isMoving);
+        validate(worldIn, pos);
+    }
+
+    private void validate(World worldIn, BlockPos pos) {
+        BlockPos tePos = findCenter(worldIn, pos);
+
+        if (tePos == null) {
+            return;
+        }
+
+        TileEntity te = worldIn.getTileEntity(tePos);
+
+        if (!(te instanceof TileEntityCarWorkshop)) {
+            return;
+        }
+
+        TileEntityCarWorkshop workshop = (TileEntityCarWorkshop) te;
+
+        workshop.checkValidity();
+    }
+
+    private static BlockPos findCenter(World world, BlockPos pos) {
+        if (isCenter(world, pos.add(0, 0, 1))) {
+            return pos.add(0, 0, 1);
+        }
+        if (isCenter(world, pos.add(1, 0, 0))) {
+            return pos.add(1, 0, 0);
+        }
+        if (isCenter(world, pos.add(1, 0, 1))) {
+            return pos.add(1, 0, 1);
+        }
+        if (isCenter(world, pos.add(0, 0, -1))) {
+            return pos.add(0, 0, -1);
+        }
+        if (isCenter(world, pos.add(-1, 0, 0))) {
+            return pos.add(-1, 0, 0);
+        }
+        if (isCenter(world, pos.add(-1, 0, -1))) {
+            return pos.add(-1, 0, -1);
+        }
+        if (isCenter(world, pos.add(-1, 0, 1))) {
+            return pos.add(-1, 0, 1);
+        }
+        if (isCenter(world, pos.add(1, 0, -1))) {
+            return pos.add(1, 0, -1);
+        }
+        return null;
+    }
+
+    private static boolean isCenter(World world, BlockPos pos) {
+        return world.getBlockState(pos).getBlock().equals(ModBlocks.CAR_WORKSHOP);
+    }
+
+
+    @Nullable
+    @Override
+    public BlockState getStateForPlacement(BlockItemUseContext context) {
+        return this.getDefaultState().with(POSITION, 0);
+    }
+
+    @Override
+    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+        builder.add(POSITION);
+    }
+
+
+    @Override
+    public BlockRenderType getRenderType(BlockState state) {
+        return BlockRenderType.MODEL;
+    }
 
 }

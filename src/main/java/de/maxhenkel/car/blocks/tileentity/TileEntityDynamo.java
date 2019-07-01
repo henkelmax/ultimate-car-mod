@@ -1,57 +1,60 @@
 package de.maxhenkel.car.blocks.tileentity;
 
 import de.maxhenkel.car.Config;
+import de.maxhenkel.car.Main;
 import de.maxhenkel.tools.EnergyUtil;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ITickable;
+import net.minecraft.client.renderer.texture.ITickable;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.tileentity.TileEntityType;
+import net.minecraft.util.Direction;
 import net.minecraftforge.energy.IEnergyStorage;
 
-public class TileEntityDynamo extends TileEntityBase implements IEnergyStorage, ITickable{
+public class TileEntityDynamo extends TileEntityBase implements IEnergyStorage, ITickable {
 
-	private int storedEnergy;
-	public final int maxStorage;
-	public final int generation;
-	
-	public TileEntityDynamo() {
-		this.maxStorage=Config.dynamoEnergyStorage;
-		this.generation=Config.dynamoEnergyGeneration;
-		this.storedEnergy=0;
-		
-	}
-	
-	@Override
-	public void update() {
-		for(EnumFacing side:EnumFacing.values()){
-			IEnergyStorage storage=EnergyUtil.getEnergyStorageOffset(world, pos, side);
+    private int storedEnergy;
+    public final int maxStorage;
+    public final int generation;
 
-			if(storage==null){
-				continue;
-			}
-			
-			EnergyUtil.pushEnergy(this, storage, storedEnergy, side.getOpposite(), side);
-		}
-	}
-	
-	public void addEnergy(int energy){
-		storedEnergy+=energy;
-		if(storedEnergy>maxStorage){
-			storedEnergy=maxStorage;
-		}
-		markDirty();
-	}
-	
-	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
-		compound.setInteger("stored_energy", storedEnergy);
-		return super.writeToNBT(compound);
-	}
+    public TileEntityDynamo() {
+        super(Main.DYNAMO_TILE_ENTITY_TYPE);
+        this.maxStorage = Config.dynamoEnergyStorage;
+        this.generation = Config.dynamoEnergyGeneration;
+        this.storedEnergy = 0;
 
-	@Override
-	public void readFromNBT(NBTTagCompound compound) {
-		storedEnergy=compound.getInteger("stored_energy");
-		super.readFromNBT(compound);
-	}
+    }
+
+    @Override
+    public void tick() {
+        for (Direction side : Direction.values()) {
+            IEnergyStorage storage = EnergyUtil.getEnergyStorageOffset(world, pos, side);
+
+            if (storage == null) {
+                continue;
+            }
+
+            EnergyUtil.pushEnergy(this, storage, storedEnergy, side.getOpposite(), side);
+        }
+    }
+
+    public void addEnergy(int energy) {
+        storedEnergy += energy;
+        if (storedEnergy > maxStorage) {
+            storedEnergy = maxStorage;
+        }
+        markDirty();
+    }
+
+    @Override
+    public CompoundNBT write(CompoundNBT compound) {
+        compound.putInt("stored_energy", storedEnergy);
+        return super.write(compound);
+    }
+
+    @Override
+    public void read(CompoundNBT compound) {
+        storedEnergy = compound.getInt("stored_energy");
+        super.read(compound);
+    }
 
     @Override
     public int receiveEnergy(int maxReceive, boolean simulate) {
@@ -60,10 +63,10 @@ public class TileEntityDynamo extends TileEntityBase implements IEnergyStorage, 
 
     @Override
     public int extractEnergy(int maxExtract, boolean simulate) {
-        int i=Math.min(maxExtract, storedEnergy);
+        int i = Math.min(maxExtract, storedEnergy);
 
-        if(!simulate){
-            storedEnergy-=i;
+        if (!simulate) {
+            storedEnergy -= i;
             markDirty();
         }
 

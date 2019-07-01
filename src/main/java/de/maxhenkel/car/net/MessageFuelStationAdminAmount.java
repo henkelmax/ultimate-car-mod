@@ -1,12 +1,12 @@
 package de.maxhenkel.car.net;
 
 import de.maxhenkel.car.blocks.tileentity.TileEntityFuelStation;
-import io.netty.buffer.ByteBuf;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.fml.network.NetworkEvent;
 
-public class MessageFuelStationAdminAmount extends MessageToServer<MessageFuelStationAdminAmount> {
+public class MessageFuelStationAdminAmount implements Message<MessageFuelStationAdminAmount> {
 
     private int posX;
     private int posY;
@@ -25,29 +25,36 @@ public class MessageFuelStationAdminAmount extends MessageToServer<MessageFuelSt
     }
 
     @Override
-    public void execute(EntityPlayer player, MessageFuelStationAdminAmount message) {
-        TileEntity te = player.world.getTileEntity(new BlockPos(message.posX, message.posY, message.posZ));
+    public void executeServerSide(NetworkEvent.Context context) {
+        TileEntity te = context.getSender().world.getTileEntity(new BlockPos(posX, posY, posZ));
 
         if (te instanceof TileEntityFuelStation) {
-            ((TileEntityFuelStation) te).setField(2, message.amount);
+            //TODO fields
+            //((TileEntityFuelStation) te).setField(2, message.amount);
 
         }
     }
 
     @Override
-    public void fromBytes(ByteBuf buf) {
+    public void executeClientSide(NetworkEvent.Context context) {
+
+    }
+
+    @Override
+    public MessageFuelStationAdminAmount fromBytes(PacketBuffer buf) {
         this.posX = buf.readInt();
         this.posY = buf.readInt();
         this.posZ = buf.readInt();
         this.amount = buf.readInt();
+
+        return this;
     }
 
     @Override
-    public void toBytes(ByteBuf buf) {
+    public void toBytes(PacketBuffer buf) {
         buf.writeInt(posX);
         buf.writeInt(posY);
         buf.writeInt(posZ);
         buf.writeInt(amount);
     }
-
 }

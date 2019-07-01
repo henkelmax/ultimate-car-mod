@@ -1,31 +1,35 @@
 package de.maxhenkel.car.blocks.tileentity;
 
-import net.minecraft.nbt.NBTTagCompound;
+
+import de.maxhenkel.car.Main;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.tileentity.TileEntityType;
 
 public class TileEntitySign extends TileEntityBase{
 
 	private String[] text=new String[8];
 	
 	public TileEntitySign() {
+		super(Main.SIGN_TILE_ENTITY_TYPE);
 		for(int i=0; i<text.length; i++) {
 			text[i]="";
 		}
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+	public CompoundNBT write(CompoundNBT compound) {
 		for(int i=0; i<text.length; i++) {
-			compound.setString("text" +i, text[i]);
+			compound.putString("text" +i, text[i]);
 		}
-		return super.writeToNBT(compound);
+		return super.write(compound);
 	}
 	
 	@Override
-	public void readFromNBT(NBTTagCompound compound) {
-		super.readFromNBT(compound);
+	public void read(CompoundNBT compound) {
 		for(int i=0; i<text.length; i++) {
 			this.text[i]=compound.getString("text" +i);
 		}
+		super.read(compound);
 	}
 
 	public String getText(int i) {

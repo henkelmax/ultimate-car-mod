@@ -14,12 +14,11 @@ public class SoundLoopStarting extends SoundLoopCar {
 	}
 
     @Override
-    public void update() {
-	    //pitch-=0.01;
+    public void tick() {
         if(car instanceof EntityCarBatteryBase){
             pitch=((EntityCarBatteryBase) car).getBatterySoundPitchLevel();
         }
-        super.update();
+        super.tick();
     }
 
     @Override

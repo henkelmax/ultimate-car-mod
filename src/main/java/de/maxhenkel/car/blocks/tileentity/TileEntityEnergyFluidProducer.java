@@ -2,17 +2,16 @@ package de.maxhenkel.car.blocks.tileentity;
 
 import de.maxhenkel.tools.ItemTools;
 import de.maxhenkel.car.blocks.BlockGui;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.block.BlockState;
+import net.minecraft.client.renderer.texture.ITickable;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.ISidedInventory;
-import net.minecraft.inventory.InventoryBasic;
+import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.SPacketUpdateTileEntity;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ITickable;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.tileentity.TileEntityType;
+import net.minecraft.util.Direction;
+import net.minecraft.util.IIntArray;
 import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -21,21 +20,22 @@ import net.minecraftforge.fluids.capability.IFluidTankProperties;
 
 public abstract class TileEntityEnergyFluidProducer extends TileEntityBase implements IEnergyStorage, ISidedInventory, ITickable, IFluidHandler{
 
-	protected InventoryBasic inventory;
+	protected Inventory inventory;
 
-	protected int maxStorage; //final
+	protected int maxStorage;
 	protected int storedEnergy;
-	protected int energyUsage; //final
+	protected int energyUsage;
 
 	protected int timeToGenerate;
-	protected int generatingTime; //final
+	protected int generatingTime;
 
-	protected int maxMillibuckets; //final
-	protected int millibucketsPerUse; //final
+	protected int maxMillibuckets;
+	protected int millibucketsPerUse;
 	protected int currentMillibuckets;
 
-	public TileEntityEnergyFluidProducer() {
-		this.inventory = new InventoryBasic(getDisplayName().getFormattedText(), false, 2);
+	public TileEntityEnergyFluidProducer(TileEntityType<?> tileEntityTypeIn) {
+		super(tileEntityTypeIn);
+		this.inventory = new Inventory(2);
 		this.maxStorage = 10000;
 		this.storedEnergy = 0;
 		this.timeToGenerate = 0;
@@ -46,9 +46,42 @@ public abstract class TileEntityEnergyFluidProducer extends TileEntityBase imple
 		this.millibucketsPerUse = 100;
 	}
 
+	public final IIntArray FIELDS = new IIntArray() {
+		public int get(int index) {
+			switch (index) {
+				case 0:
+					return timeToGenerate;
+				case 1:
+					return storedEnergy;
+				case 2:
+					return currentMillibuckets;
+				default:
+					return 0;
+			}
+		}
+
+		public void set(int index, int value) {
+			switch (index) {
+				case 0:
+					timeToGenerate = value;
+					break;
+				case 1:
+					storedEnergy = value;
+					break;
+				case 2:
+					currentMillibuckets = value;
+					break;
+			}
+		}
+		public int size() {
+			return 3;
+		}
+	};
+
+
+
 	@Override
-	public void update() {
-		
+	public void tick() {
 		if (world.isRemote) {
 			return;
 		}
@@ -114,7 +147,7 @@ public abstract class TileEntityEnergyFluidProducer extends TileEntityBase imple
 	public abstract BlockGui getOwnBlock();
 
 	public void setBlockEnabled(boolean enabled) {
-		IBlockState state = world.getBlockState(getPos());
+		BlockState state = world.getBlockState(getPos());
 		if (state.getBlock().equals(getOwnBlock())) {
 			getOwnBlock().setPowered(world, pos, state, enabled);
 		}
@@ -137,78 +170,26 @@ public abstract class TileEntityEnergyFluidProducer extends TileEntityBase imple
 	}
 
 	@Override
-	public int getField(int id) {
-		switch (id) {
-		case 0:
-			return timeToGenerate;
-		case 1:
-			return storedEnergy;
-		case 2:
-			return currentMillibuckets;
-		default:
-			return 0;
-		}
-	}
-
-	@Override
-	public void setField(int id, int value) {
-		switch (id) {
-		case 0:
-			timeToGenerate = value;
-			break;
-		case 1:
-			storedEnergy = value;
-			break;
-		case 2:
-			currentMillibuckets = value;
-			break;
-		}
-	}
-
-	@Override
-	public int getFieldCount() {
-		return 3;
-	}
-
-	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
-		compound.setInteger("energy_stored", storedEnergy);
-		compound.setInteger("time_generated", timeToGenerate);
-		compound.setInteger("fluid_stored", currentMillibuckets);
+	public CompoundNBT write(CompoundNBT compound) {
+		compound.putInt("energy_stored", storedEnergy);
+		compound.putInt("time_generated", timeToGenerate);
+		compound.putInt("fluid_stored", currentMillibuckets);
 
 		ItemTools.saveInventory(compound, "slots", inventory);
 
-		return super.writeToNBT(compound);
+		return super.write(compound);
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound compound) {
-		storedEnergy = compound.getInteger("energy_stored");
-		timeToGenerate = compound.getInteger("time_generated");
-		currentMillibuckets = compound.getInteger("fluid_stored");
+	public void read(CompoundNBT compound) {
+		storedEnergy = compound.getInt("energy_stored");
+		timeToGenerate = compound.getInt("time_generated");
+		currentMillibuckets = compound.getInt("fluid_stored");
 
 		ItemTools.readInventory(compound, "slots", inventory);
 		
-		super.readFromNBT(compound);
+		super.read(compound);
 	}
-
-	@Override
-	public SPacketUpdateTileEntity getUpdatePacket() {
-		return new SPacketUpdateTileEntity(this.pos, 1, getUpdateTag());
-	}
-
-	@Override
-	public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
-		this.readFromNBT(pkt.getNbtCompound());
-	}
-
-	@Override
-	public NBTTagCompound getUpdateTag() {
-		return this.writeToNBT(new NBTTagCompound());
-	}
-
-	@Override
-	public abstract ITextComponent getDisplayName();
 
 	@Override
 	public int getSizeInventory() {
@@ -241,17 +222,17 @@ public abstract class TileEntityEnergyFluidProducer extends TileEntityBase imple
 	}
 
 	@Override
-	public boolean isUsableByPlayer(EntityPlayer player) {
+	public boolean isUsableByPlayer(PlayerEntity player) {
 		return inventory.isUsableByPlayer(player);
 	}
 
 	@Override
-	public void openInventory(EntityPlayer player) {
+	public void openInventory(PlayerEntity player) {
 		inventory.openInventory(player);
 	}
 
 	@Override
-	public void closeInventory(EntityPlayer player) {
+	public void closeInventory(PlayerEntity player) {
 		inventory.closeInventory(player);
 	}
 
@@ -265,7 +246,7 @@ public abstract class TileEntityEnergyFluidProducer extends TileEntityBase imple
 		inventory.clear();
 	}
 
-	@Override
+	/*@Override
 	public String getName() {
 		return inventory.getName();
 	}
@@ -274,19 +255,19 @@ public abstract class TileEntityEnergyFluidProducer extends TileEntityBase imple
 	public boolean hasCustomName() {
 		return inventory.hasCustomName();
 	}
-	
+	*/
 	@Override
 	public boolean isEmpty() {
 		return inventory.isEmpty();
 	}
 
 	@Override
-	public int[] getSlotsForFace(EnumFacing side) {
+	public int[] getSlotsForFace(Direction side) {
 		return new int[] { 0, 1 };
 	}
 
 	@Override
-	public boolean canInsertItem(int index, ItemStack itemStackIn, EnumFacing direction) {
+	public boolean canInsertItem(int index, ItemStack itemStackIn, Direction direction) {
 		if (index == 0) {
 			return true;
 		}
@@ -294,7 +275,7 @@ public abstract class TileEntityEnergyFluidProducer extends TileEntityBase imple
 	}
 
 	@Override
-	public boolean canExtractItem(int index, ItemStack stack, EnumFacing direction) {
+	public boolean canExtractItem(int index, ItemStack stack, Direction direction) {
 		if (index == 1) {
 			return true;
 		}
@@ -302,7 +283,7 @@ public abstract class TileEntityEnergyFluidProducer extends TileEntityBase imple
 	}
 	
 
-	public InventoryBasic getInventory() {
+	public Inventory getInventory() {
 		return inventory;
 	}
 

@@ -1,26 +1,15 @@
 package de.maxhenkel.car.gui;
 
-import com.mojang.realmsclient.gui.ChatFormatting;
+import com.mojang.blaze3d.platform.GlStateManager;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.blocks.tileentity.TileEntityFuelStation;
-import de.maxhenkel.car.entity.car.base.EntityCarFuelBase;
-import de.maxhenkel.car.net.MessageEditSign;
 import de.maxhenkel.car.net.MessageFuelStationAdminAmount;
-import de.maxhenkel.car.proxy.CommonProxy;
-import de.maxhenkel.tools.MathTools;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiTextField;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.inventory.IInventory;
+import net.minecraft.client.gui.widget.TextFieldWidget;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.TextComponentTranslation;
-import net.minecraftforge.fluids.FluidStack;
-import scala.Int;
+import net.minecraft.util.text.TranslationTextComponent;
 
-import java.awt.*;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.awt.Color;
 
 public class GuiFuelStationAdmin extends GuiBase {
 
@@ -28,81 +17,72 @@ public class GuiFuelStationAdmin extends GuiBase {
             "textures/gui/gui_fuelstation_admin.png");
 
     private TileEntityFuelStation fuelStation;
-    private IInventory inventoryPlayer;
+    private PlayerInventory inventoryPlayer;
 
     private static final int TITLE_COLOR = Color.WHITE.getRGB();
     private static final int FONT_COLOR = Color.DARK_GRAY.getRGB();
 
-    protected GuiTextField textField;
+    protected TextFieldWidget textField;
 
-    public GuiFuelStationAdmin(TileEntityFuelStation fuelStation, IInventory inventoryPlayer) {
-        super(new ContainerFuelStationAdmin(fuelStation, inventoryPlayer));
-        this.fuelStation = fuelStation;
-        this.inventoryPlayer = inventoryPlayer;
+    public GuiFuelStationAdmin(ContainerFuelStationAdmin fuelStation, PlayerInventory playerInventory) {
+        super(GUI_TEXTURE, fuelStation, playerInventory, new TranslationTextComponent("block.car.fuelstation"));
+        this.fuelStation = fuelStation.getFuelStation();
+        this.inventoryPlayer = playerInventory;
 
         xSize = 176;
         ySize = 197;
     }
 
     @Override
-    public void initGui() {
-        super.initGui();
+    protected void init() {
+        super.init();
 
-        //this.guiLeft = (this.width - this.xSize) / 2;
-        //this.guiTop = (this.height - this.ySize) / 2;
-
-        textField = new GuiTextField(0, fontRenderer, guiLeft + 54, guiTop + 22, 100, 16);
+        textField = new TextFieldWidget(font, guiLeft + 54, guiTop + 22, 100, 16, ""); //TODO name
         textField.setTextColor(-1);
         textField.setDisabledTextColour(-1);
         textField.setEnableBackgroundDrawing(true);
         textField.setMaxStringLength(20);
         textField.setText(String.valueOf(fuelStation.getField(2)));
+
+        children.add(textField);
+        func_212928_a(textField);
     }
 
     @Override
     protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
         // Background
-        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-        this.mc.getTextureManager().bindTexture(GUI_TEXTURE);
+        GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+        minecraft.getTextureManager().bindTexture(GUI_TEXTURE);
         int i = this.guiLeft;
         int j = this.guiTop;
-        this.drawTexturedModalRect(i, j, 0, 0, this.xSize, this.ySize);
+        blit(i, j, 0, 0, this.xSize, this.ySize);
 
         // text
-        drawCenteredString(fontRenderer, new TextComponentTranslation("gui.fuelstation").getFormattedText(),
+        drawCenteredString(font, new TranslationTextComponent("gui.fuelstation").getFormattedText(),
                 width / 2, guiTop + 5, TITLE_COLOR);
 
-        fontRenderer.drawString(inventoryPlayer.getDisplayName().getUnformattedText(), guiLeft + 8, guiTop + ySize - 93, FONT_COLOR);
-
-        textField.drawTextBox();
+        font.drawString(inventoryPlayer.getDisplayName().getFormattedText(), guiLeft + 8, guiTop + ySize - 93, FONT_COLOR);
     }
 
     @Override
-    protected void keyTyped(char typedChar, int keyCode) throws IOException {
-        if (textField.textboxKeyTyped(typedChar, keyCode)) {
-            if(!textField.getText().isEmpty()){
-                int i=0;
-                try{
-                    i=Integer.parseInt(textField.getText());
-                }catch (Exception e){}
+    public boolean keyReleased(int p_keyReleased_1_, int p_keyReleased_2_, int p_keyReleased_3_) {
+        if (textField.isFocused()) {
+            if (!textField.getText().isEmpty()) {
+                int i = 0;
+                try {
+                    i = Integer.parseInt(textField.getText());
+                } catch (Exception e) {
+                }
 
                 textField.setText(String.valueOf(i));
-                CommonProxy.simpleNetworkWrapper.sendToServer(new MessageFuelStationAdminAmount(fuelStation.getPos(), i));
+                Main.SIMPLE_CHANNEL.sendToServer(new MessageFuelStationAdminAmount(fuelStation.getPos(), i));
             }
-        } else {
-            super.keyTyped(typedChar, keyCode);
         }
+        return super.keyReleased(p_keyReleased_1_, p_keyReleased_2_, p_keyReleased_3_);
     }
 
     @Override
-    protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
-        super.mouseClicked(mouseX, mouseY, mouseButton);
-        this.textField.mouseClicked(mouseX, mouseY, mouseButton);
-    }
-
-    @Override
-    public boolean doesGuiPauseGame() {
+    public boolean isPauseScreen() {
         return false;
     }
-
 }

@@ -1,14 +1,17 @@
 package de.maxhenkel.car.blocks.tileentity;
 
+import de.maxhenkel.car.Main;
 import de.maxhenkel.tools.EnergyUtil;
 import de.maxhenkel.tools.BlockPosList;
 import de.maxhenkel.car.Config;
 import de.maxhenkel.car.blocks.ModBlocks;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ITickable;
+import net.minecraft.block.BlockState;
+import net.minecraft.client.renderer.texture.ITickable;
+import net.minecraft.tileentity.TileEntityType;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.energy.IEnergyStorage;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,6 +20,7 @@ public class TileEntityCable extends TileEntityBase implements ITickable, IEnerg
     private final int transferRate;
 
     public TileEntityCable(int transferRate) {
+        super(Main.CABLE_TILE_ENTITY_TYPE);
         this.transferRate = transferRate;
     }
 
@@ -25,7 +29,7 @@ public class TileEntityCable extends TileEntityBase implements ITickable, IEnerg
     }
 
     @Override
-    public void update() {
+    public void tick() {
 
         if (world.isRemote) {
             return;
@@ -34,7 +38,7 @@ public class TileEntityCable extends TileEntityBase implements ITickable, IEnerg
         int energy = 0;
         List<IEnergyStorage> providers = new ArrayList<>();
 
-        for (EnumFacing facing : EnumFacing.values()) {
+        for (Direction facing : Direction.values()) {
             IEnergyStorage provider = EnergyUtil.getEnergyStorageOffset(world, pos, facing);
 
             if (provider == null || provider instanceof TileEntityCable) {
@@ -90,14 +94,14 @@ public class TileEntityCable extends TileEntityBase implements ITickable, IEnerg
     }
 
     public void getConnectedReceivers(List<IEnergyStorage> sources, List<IEnergyStorage> receivers, BlockPosList positions, BlockPos pos) {
-        for (EnumFacing side : EnumFacing.values()) {
+        for (Direction side : Direction.values()) {
             BlockPos p = pos.offset(side);
 
             if (positions.contains(p)) {
                 continue;
             }
 
-            IBlockState state = world.getBlockState(p);
+            BlockState state = world.getBlockState(p);
 
             if (state.getBlock().equals(ModBlocks.CABLE)) {
                 positions.add(p);
@@ -111,11 +115,11 @@ public class TileEntityCable extends TileEntityBase implements ITickable, IEnerg
                 continue;
             }
 
-            if(sources.contains(storage)){
+            if (sources.contains(storage)) {
                 continue;
             }
 
-            if(receivers.contains(storage)){
+            if (receivers.contains(storage)) {
                 continue;
             }
 

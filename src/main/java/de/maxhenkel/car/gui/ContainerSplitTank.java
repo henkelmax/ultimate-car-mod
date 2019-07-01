@@ -1,12 +1,20 @@
 package de.maxhenkel.car.gui;
 
-import net.minecraft.inventory.IInventory;
+import de.maxhenkel.car.blocks.tileentity.TileEntitySplitTank;
+import net.minecraft.entity.player.PlayerInventory;
 
-public class ContainerSplitTank extends ContainerBase{
+public class ContainerSplitTank extends ContainerBase {
 
-	public ContainerSplitTank(IInventory tileInv, IInventory playerInv) {
-		super(tileInv, playerInv);
-		addInvSlots();
-	}
-	
+    private TileEntitySplitTank splitTank;
+
+    public ContainerSplitTank(int id, TileEntitySplitTank splitTank, PlayerInventory playerInv) {
+        super(null, id, splitTank, playerInv);
+        this.splitTank = splitTank;
+        addInvSlots();
+    }
+
+
+    public TileEntitySplitTank getSplitTank() {
+        return splitTank;
+    }
 }

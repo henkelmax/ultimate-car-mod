@@ -1,182 +1,152 @@
 package de.maxhenkel.car.blocks;
 
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Maps;
+import de.maxhenkel.car.Main;
+import de.maxhenkel.tools.BlockTools;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockRenderType;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
-import net.minecraft.block.material.EnumPushReaction;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
-import net.minecraft.block.properties.PropertyDirection;
-import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.block.material.PushReaction;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.InventoryHelper;
+import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumBlockRenderType;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.state.DirectionProperty;
+import net.minecraft.state.StateContainer;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.Direction;
+import net.minecraft.util.Hand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.util.math.shapes.ISelectionContext;
+import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IEnviromentBlockReader;
 import net.minecraft.world.World;
+
+import javax.annotation.Nullable;
+import java.util.Map;
 
 public class BlockFuelStationTop extends Block {
 
-    public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
+    public static final DirectionProperty FACING = DirectionProperty.create("facing", Direction.Plane.HORIZONTAL);
 
-	public BlockFuelStationTop() {
-		super(Material.IRON);
-		setUnlocalizedName("fuelstation_top");
-		setRegistryName("fuelstation_top");
-		setHardness(4.0F);
-		setResistance(Float.MAX_VALUE);
-		setSoundType(SoundType.METAL);
-		useNeighborBrightness = true;
-
-        setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
-	}
-	@Override
-	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn,
-			EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-		return ModBlocks.FUEL_STATION.onBlockActivated(worldIn, pos.down(), worldIn.getBlockState(pos.down()), playerIn, hand, facing, hitX, hitY, hitZ);
-	}
-
-	@Override
-	public boolean isBlockNormalCube(IBlockState state) {
-		return false;
-	}
-
-	@Override
-	public boolean doesSideBlockRendering(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing face) {
-		return false;
-	}
-
-	@Override
-	public boolean isFullCube(IBlockState state) {
-		return false;
-	}
-
-	@Override
-	public boolean isNormalCube(IBlockState state) {
-		return false;
-	}
-
-	@Override
-	public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos) {
-		return false;
-	}
-
-	@Override
-	public boolean canPlaceTorchOnTop(IBlockState state, IBlockAccess world, BlockPos pos) {
-		return false;
-	}
-
-	@Override
-	public EnumPushReaction getMobilityFlag(IBlockState state) {
-		return EnumPushReaction.BLOCK;
-	}
-
-	@Override
-	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-		IBlockState stateDown = source.getBlockState(pos.down());
-		if (stateDown == null || stateDown.getBlock() == null || !stateDown.getBlock().equals(ModBlocks.FUEL_STATION)) {
-			return BlockFuelStation.AABB_NORTH_SOUTH.offset(0, -1, 0);
-		}
-
-		EnumFacing facing = stateDown.getValue(BlockOrientableHorizontal.FACING);
-
-		if (facing == null) {
-			return BlockFuelStation.AABB_NORTH_SOUTH.offset(0, -1, 0);
-		}
-
-		if (facing.equals(EnumFacing.NORTH) || facing.equals(EnumFacing.SOUTH)) {
-			return BlockFuelStation.AABB_NORTH_SOUTH.offset(0, -1, 0);
-		} else {
-			return BlockFuelStation.AABB_EAST_WEST.offset(0, -1, 0);
-		}
-	}
-	
-	@Override
-	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos) {
-		IBlockState stateDown = worldIn.getBlockState(pos.down());
-		if(stateDown==null || stateDown.getBlock() == null || !stateDown.getBlock().equals(ModBlocks.FUEL_STATION)){
-			return BlockFuelStation.AABB_NORTH_SOUTH.offset(0, -1, 0);
-		}
-		
-		EnumFacing facing = stateDown.getValue(BlockOrientableHorizontal.FACING);
-
-		if (facing.equals(EnumFacing.NORTH) || facing.equals(EnumFacing.SOUTH)) {
-			return BlockFuelStation.AABB_NORTH_SOUTH.offset(0, -1, 0);
-		} else {
-			return BlockFuelStation.AABB_EAST_WEST.offset(0, -1, 0);
-		}
-	}
-
-	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state) {
-		return EnumBlockRenderType.MODEL;
-	}
-
-	@Override
-	public boolean canPlaceBlockAt(World worldIn, BlockPos pos) {
-		return false;
-	}
-
-	@Override
-	public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
-		super.breakBlock(worldIn, pos, state);
-		IBlockState stateDown = worldIn.getBlockState(pos.down());
-		if (stateDown != null && stateDown.getBlock() != null && stateDown.getBlock().equals(ModBlocks.FUEL_STATION)) {
-			BlockFuelStation.dropItems(worldIn, pos.down());
-			worldIn.setBlockToAir(pos.down());
-		}
-	}
-
-	@Override
-	public void onBlockHarvested(World worldIn, BlockPos pos, IBlockState state, EntityPlayer player) {
-		super.onBlockHarvested(worldIn, pos, state, player);
-
-		if (player != null && player.capabilities.isCreativeMode) {
-			return;
-		}
-
-		IBlockState stateDown = worldIn.getBlockState(pos.down());
-		if (stateDown != null && stateDown.getBlock() != null && stateDown.getBlock().equals(ModBlocks.FUEL_STATION)) {
-			ModBlocks.FUEL_STATION.dropBlockAsItem(worldIn, pos.down(), stateDown, 0);
-			worldIn.setBlockToAir(pos.down());
-		}
-	}
-
-	@Override
-	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos,
-			EntityPlayer player) {
-
-		IBlockState stateDown = world.getBlockState(pos.down());
-		if (stateDown != null && stateDown.getBlock() != null && stateDown.getBlock().equals(ModBlocks.FUEL_STATION)) {
-			return ModBlocks.FUEL_STATION.getPickBlock(stateDown, target, world, pos.down(), player);
-		}
-
-		return super.getPickBlock(stateDown, target, world, pos, player);
-	}
+    public BlockFuelStationTop() {
+        super(Properties.create(Material.IRON).hardnessAndResistance(4F).sound(SoundType.METAL));
+        setRegistryName(new ResourceLocation(Main.MODID, "fuelstation_top"));
+        setDefaultState(stateContainer.getBaseState().with(FACING, Direction.NORTH));
+    }
 
     @Override
-    public IBlockState getStateFromMeta(int meta) {
-        EnumFacing enumFacing = EnumFacing.getFront(meta);
+    public boolean onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
+        return ModBlocks.FUEL_STATION.onBlockActivated(worldIn.getBlockState(pos.down()), worldIn, pos.down(), player, handIn, hit);
+    }
 
-        if (enumFacing.getAxis() == EnumFacing.Axis.Y) {
-            enumFacing = EnumFacing.NORTH;
+    @Override
+    public boolean isNormalCube(BlockState state, IBlockReader worldIn, BlockPos pos) {
+        return false;
+    }
+
+    @Override
+    public boolean doesSideBlockRendering(BlockState state, IEnviromentBlockReader world, BlockPos pos, Direction face) {
+        return false;
+    }
+
+    @Override
+    public PushReaction getPushReaction(BlockState state) {
+        return PushReaction.BLOCK;
+    }
+
+
+    @Nullable
+    @Override
+    public BlockState getStateForPlacement(BlockItemUseContext context) {
+        return this.getDefaultState().with(FACING, context.getPlacementHorizontalFacing());
+    }
+
+    @Override
+    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+        builder.add(FACING);
+    }
+
+    public static VoxelShape SHAPE_NORTH_SOUTH = Block.makeCuboidShape(2D, -16D, 5D, 14D, 15D, 11D);
+    public static VoxelShape SHAPE_NEAST_WEST = Block.makeCuboidShape(5D, -16D, 2D, 11D, 15D, 14D);
+    public static VoxelShape SHAPE_SLAB = Block.makeCuboidShape(0D, -16D, 0D, 16D, -8D, 16D);
+
+    private static final Map<Direction, VoxelShape> SHAPES = Maps.newEnumMap(ImmutableMap.of(
+            Direction.NORTH,
+            BlockTools.combine(
+                    SHAPE_NORTH_SOUTH,
+                    SHAPE_SLAB
+            ),
+            Direction.SOUTH,
+            BlockTools.combine(
+                    SHAPE_NORTH_SOUTH,
+                    SHAPE_SLAB
+            ),
+            Direction.EAST,
+            BlockTools.combine(
+                    SHAPE_NEAST_WEST,
+                    SHAPE_SLAB
+            ),
+            Direction.WEST,
+            BlockTools.combine(
+                    SHAPE_NEAST_WEST,
+                    SHAPE_SLAB
+            )
+    ));
+
+    @Override
+    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
+        return SHAPES.get(state.get(FACING));
+    }
+
+    @Override
+    public BlockRenderType getRenderType(BlockState state) {
+        return BlockRenderType.MODEL;
+    }
+
+    @Override
+    public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
+        if (state.getBlock() != newState.getBlock()) {
+            super.onReplaced(state, worldIn, pos, newState, isMoving);
+
+            BlockState stateDown = worldIn.getBlockState(pos.down());
+            if (stateDown != null && stateDown.getBlock().equals(ModBlocks.FUEL_STATION)) {
+                worldIn.destroyBlock(pos.down(), false);
+            }
+        }
+        super.onReplaced(state, worldIn, pos, newState, isMoving);
+    }
+
+    @Override
+    public void harvestBlock(World worldIn, PlayerEntity player, BlockPos pos, BlockState state, @Nullable TileEntity te, ItemStack stack) {
+        super.harvestBlock(worldIn, player, pos, state, te, stack);
+
+        if (player.abilities.isCreativeMode) {
+            return;
         }
 
-        return this.getDefaultState().withProperty(FACING, enumFacing);
+        BlockState stateDown = worldIn.getBlockState(pos.down());
+        if (stateDown != null && stateDown.getBlock() != null && stateDown.getBlock().equals(ModBlocks.FUEL_STATION)) {
+            //TODO check if it works
+            //ModBlocks.SPLIT_TANK.dropBlockAsItem(worldIn, pos.down(), stateDown, 0);
+            InventoryHelper.spawnItemStack(worldIn, pos.down().getX() + 0.5D, pos.down().getY() + 0.5D, pos.down().getZ() + 0.5D, new ItemStack(ModBlocks.FUEL_STATION.toItem()));
+        }
     }
 
     @Override
-    public int getMetaFromState(IBlockState state) {
-        return state.getValue(FACING).getIndex();
-    }
-
-    @Override
-    protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, new IProperty[] { FACING });
+    public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, PlayerEntity player) {
+        BlockState stateDown = world.getBlockState(pos.down());
+        if (stateDown != null && stateDown.getBlock() != null && stateDown.getBlock().equals(ModBlocks.FUEL_STATION)) {
+            return ModBlocks.FUEL_STATION.getPickBlock(stateDown, target, world, pos.down(), player);
+        }
+        return super.getPickBlock(state, target, world, pos, player);
     }
 
 }

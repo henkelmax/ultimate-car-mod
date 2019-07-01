@@ -15,13 +15,13 @@ public class SoundLoopIdle extends SoundLoopCar{
 		volume=volume/2.5F;
 	}
 
-    @Override
-    public void update() {
-        if(volume<volumeToReach){
-            volume=Math.min(volume+volumeToReach/2.5F, volumeToReach);
-        }
-        super.update();
-    }
+	@Override
+	public void tick() {
+		if(volume<volumeToReach){
+			volume=Math.min(volume+volumeToReach/2.5F, volumeToReach);
+		}
+		super.tick();
+	}
 
     @Override
 	public boolean shouldStopSound() {
@@ -30,8 +30,8 @@ public class SoundLoopIdle extends SoundLoopCar{
 		}else if(!car.isStarted()){
 			return true;
 		}
-		
 		return false;
 	}
+
 
 }

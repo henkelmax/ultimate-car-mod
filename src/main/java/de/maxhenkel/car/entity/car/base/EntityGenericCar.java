@@ -1,22 +1,25 @@
 package de.maxhenkel.car.entity.car.base;
 
 import de.maxhenkel.car.DataSerializerItemList;
+import de.maxhenkel.car.Main;
 import de.maxhenkel.car.entity.car.parts.*;
 import de.maxhenkel.car.entity.model.obj.OBJModelInstance;
 import de.maxhenkel.car.items.ICarPart;
 import de.maxhenkel.car.registries.CarFluidRegistry;
 import de.maxhenkel.car.sounds.ModSounds;
-import net.minecraft.inventory.InventoryBasic;
+import net.minecraft.entity.EntityType;
+import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
+
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -24,8 +27,12 @@ import java.util.List;
 
 public class EntityGenericCar extends EntityCarLicensePlateBase {
 
+    public EntityGenericCar(EntityType type, World worldIn) {
+        super(type, worldIn);
+    }
+
     public EntityGenericCar(World worldIn) {
-        super(worldIn);
+        this(Main.CAR_ENTITY_TYPE, worldIn);
     }
 
     @Override
@@ -184,7 +191,7 @@ public class EntityGenericCar extends EntityCarLicensePlateBase {
 
     @Override
     public ITextComponent getCarName() {
-        return new TextComponentTranslation("entity.car.name");
+        return new TranslationTextComponent("entity.car.name");
     }
 
     public SoundEvent getStopSound() {
@@ -254,8 +261,8 @@ public class EntityGenericCar extends EntityCarLicensePlateBase {
     private static final DataParameter<ItemStack[]> PARTS = EntityDataManager.createKey(EntityGenericCar.class, DataSerializerItemList.ITEM_LIST);
 
     @Override
-    protected void entityInit() {
-        super.entityInit();
+    protected void registerData() {
+        super.registerData();
         this.dataManager.register(PARTS, null);
     }
 
@@ -292,8 +299,8 @@ public class EntityGenericCar extends EntityCarLicensePlateBase {
     }
 
     @Override
-    protected void readEntityFromNBT(NBTTagCompound compound) {
-        super.readEntityFromNBT(compound);
+    public void readAdditional(CompoundNBT compound) {
+        super.readAdditional(compound);
 
         setPartSerializer();
         tryInitPartsAndModel();
@@ -307,8 +314,8 @@ public class EntityGenericCar extends EntityCarLicensePlateBase {
     }
 
     @Override
-    public void onEntityUpdate() {
-        super.onEntityUpdate();
+    public void tick() {
+        super.tick();
 
         tryInitPartsAndModel();
     }
@@ -358,25 +365,43 @@ public class EntityGenericCar extends EntityCarLicensePlateBase {
 
     private void checkInitializing() {
         PartBody body = getPartByClass(PartBody.class);
-        if (body != null) {
+        /*if (body != null) {
             setSize(body.getWidth(), body.getHeight());
-        }
+        }*/
 
         if (body instanceof PartBodyTransporter) {
             PartContainer container = getPartByClass(PartContainer.class);
             if (externalInventory.getSizeInventory() <= 0) {
                 if (container != null) {
-                    externalInventory = new InventoryBasic(getCarName().getUnformattedText(), false, 54);
+                    externalInventory = new Inventory(54);
                 } else {
-                    externalInventory = new InventoryBasic(getCarName().getUnformattedText(), false, 27);
+                    externalInventory = new Inventory(27);
                 }
             }
         }
 
         PartWheelBase partWheels = getPartByClass(PartWheelBase.class);
         if (partWheels != null) {
-            stepHeight=partWheels.getStepHeight();
+            stepHeight = partWheels.getStepHeight();
         }
+    }
+
+    @Override
+    public double getCarWidth() {
+        PartBody body = getPartByClass(PartBody.class);
+        if (body != null) {
+            return body.getWidth();
+        }
+        return super.getCarWidth();
+    }
+
+    @Override
+    public double getCarHeight() {
+        PartBody body = getPartByClass(PartBody.class);
+        if (body != null) {
+            return body.getHeight();
+        }
+        return super.getCarHeight();
     }
 
     //---------------CLIENT---------------------------------

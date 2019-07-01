@@ -1,48 +1,50 @@
 package de.maxhenkel.car.blocks;
 
+import de.maxhenkel.car.Main;
 import de.maxhenkel.car.ModCreativeTabs;
+import de.maxhenkel.tools.IItemBlock;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
-import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.block.material.MaterialColor;
+import net.minecraft.item.BlockItem;
+import net.minecraft.item.Item;
+import net.minecraft.util.Direction;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.util.math.shapes.ISelectionContext;
+import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IEnviromentBlockReader;
 
-public class BlockSignPost extends Block{
+public class BlockSignPost extends Block implements IItemBlock {
 
 	public static final AxisAlignedBB AABB = new AxisAlignedBB(7.5/16D, 0D, 7.5D/16D, 8.5/16D, 1D, 8.5D/16D);
 	
 	public BlockSignPost() {
-		super(Material.IRON, MapColor.IRON);
-		setUnlocalizedName("sign_post");
-		setRegistryName("sign_post");
-		setHardness(2.0F);
-		setSoundType(SoundType.METAL);
-		setCreativeTab(ModCreativeTabs.TAB_CAR);
-		useNeighborBrightness=true;
-	}
-	
-	@Override
-	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-		return AABB;
+		super(Properties.create(Material.IRON, MaterialColor.IRON).hardnessAndResistance(2F).sound(SoundType.METAL));
+		setRegistryName(new ResourceLocation(Main.MODID, "sign_post"));
 	}
 
 	@Override
-	public boolean isOpaqueCube(IBlockState state) {
+	public Item toItem() {
+		return new BlockItem(this, new Item.Properties().group(ModCreativeTabs.TAB_CAR)).setRegistryName(this.getRegistryName());
+	}
+
+	@Override
+	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
+		return Block.makeCuboidShape(7.5D, 0D, 7.5D, 8.5D, 16D, 8.5D);
+	}
+
+	@Override
+	public boolean isNormalCube(BlockState state, IBlockReader worldIn, BlockPos pos) {
 		return false;
 	}
 
 	@Override
-	public boolean isFullCube(IBlockState state) {
+	public boolean doesSideBlockRendering(BlockState state, IEnviromentBlockReader world, BlockPos pos, Direction face) {
 		return false;
 	}
-
-	@Override
-	public boolean doesSideBlockRendering(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing face) {
-		return false;
-	}
-
 }

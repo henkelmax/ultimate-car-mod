@@ -1,57 +1,64 @@
 package de.maxhenkel.car.net;
 
 import java.util.UUID;
+
 import de.maxhenkel.car.entity.car.base.EntityCarBase;
-import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.network.PacketBuffer;
+import net.minecraftforge.fml.network.NetworkEvent;
 
-public class MessageCrash extends MessageToServer<MessageCrash>{
+public class MessageCrash implements Message<MessageCrash> {
 
-	private float speed;
-	private UUID uuid;
-	
-	public MessageCrash() {
-		this.speed=0;
-		this.uuid=new UUID(0, 0);
-	}
-	
-	public MessageCrash(float speed, EntityCarBase car) {
-		this.speed=speed;
-		this.uuid=car.getUniqueID();
-	}
+    private float speed;
+    private UUID uuid;
 
-	@Override
-	public void execute(EntityPlayer player, MessageCrash message) {
-		Entity riding=player.getRidingEntity();
+    public MessageCrash() {
+        this.speed = 0;
+        this.uuid = new UUID(0, 0);
+    }
 
-		if(!(riding instanceof EntityCarBase)){
-			return;
-		}
+    public MessageCrash(float speed, EntityCarBase car) {
+        this.speed = speed;
+        this.uuid = car.getUniqueID();
+    }
 
-		EntityCarBase car=(EntityCarBase) riding;
+    @Override
+    public void executeServerSide(NetworkEvent.Context context) {
+        Entity riding = context.getSender().getRidingEntity();
 
-		if(!car.getUniqueID().equals(message.uuid)){
-			return;
-		}
+        if (!(riding instanceof EntityCarBase)) {
+            return;
+        }
 
-		car.onCollision(message.speed);
-	}
+        EntityCarBase car = (EntityCarBase) riding;
 
-	@Override
-	public void fromBytes(ByteBuf buf) {
-		this.speed=buf.readFloat();
-		
-		long l1=buf.readLong();
-		long l2=buf.readLong();
-		this.uuid=new UUID(l1, l2);
-	}
+        if (!car.getUniqueID().equals(uuid)) {
+            return;
+        }
 
-	@Override
-	public void toBytes(ByteBuf buf) {
-		buf.writeFloat(speed);
-		buf.writeLong(uuid.getMostSignificantBits());
-		buf.writeLong(uuid.getLeastSignificantBits());
-	}
+        car.onCollision(speed);
+    }
 
+    @Override
+    public void executeClientSide(NetworkEvent.Context context) {
+
+    }
+
+    @Override
+    public MessageCrash fromBytes(PacketBuffer buf) {
+        this.speed = buf.readFloat();
+
+        long l1 = buf.readLong();
+        long l2 = buf.readLong();
+        this.uuid = new UUID(l1, l2);
+
+        return this;
+    }
+
+    @Override
+    public void toBytes(PacketBuffer buf) {
+        buf.writeFloat(speed);
+        buf.writeLong(uuid.getMostSignificantBits());
+        buf.writeLong(uuid.getLeastSignificantBits());
+    }
 }

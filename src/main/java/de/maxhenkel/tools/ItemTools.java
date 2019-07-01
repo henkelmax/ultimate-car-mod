@@ -1,14 +1,14 @@
 package de.maxhenkel.tools;
 
 import java.util.List;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
+
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraftforge.oredict.OreDictionary;
+import net.minecraft.item.Items;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.ListNBT;
 
 public class ItemTools {
 
@@ -35,7 +35,9 @@ public class ItemTools {
 	}
 
 	public static boolean matchesOredict(ItemStack stack, String name) {
-		return contains(OreDictionary.getOres(name), stack);
+		return false;
+		//TODO oredict
+		//return contains(OreDictionary.getOres(name), stack);
 	}
 
 	public static boolean areItemsEqualWithEmpty(ItemStack stack1, ItemStack stack2) {
@@ -64,9 +66,9 @@ public class ItemTools {
 
 		if (stack1.getItem() == stack2.getItem()) {
 
-			return stack1.getItemDamage() == OreDictionary.WILDCARD_VALUE
-					|| stack2.getItemDamage() == OreDictionary.WILDCARD_VALUE
-					|| stack1.getItemDamage() == stack2.getItemDamage();
+			return stack1.getDamage() == -1//OreDictionary.WILDCARD_VALUE // TODO fix
+					|| stack2.getDamage() == -1//OreDictionary.WILDCARD_VALUE // TODO fix
+					|| stack1.getDamage() == stack2.getDamage();
 		}
 
 		return false;
@@ -93,12 +95,12 @@ public class ItemTools {
 	 *            The player. Can be null
 	 * @return The Itemstack with the changed amount
 	 */
-	public static ItemStack itemStackAmount(int amount, ItemStack stack, EntityPlayer player) {
+	public static ItemStack itemStackAmount(int amount, ItemStack stack, PlayerEntity player) {
 		if (stack == null) {
 			return ItemStack.EMPTY;
 		}
 
-		if (player != null && player.capabilities.isCreativeMode) {
+		if (player != null && player.abilities.isCreativeMode) {
 			return stack;
 		}
 
@@ -115,55 +117,56 @@ public class ItemTools {
 		return stack;
 	}
 
-	public static ItemStack decrItemStack(ItemStack stack, EntityPlayer player) {
+	public static ItemStack decrItemStack(ItemStack stack, PlayerEntity player) {
 		return itemStackAmount(-1, stack, player);
 	}
 
-	public static ItemStack incrItemStack(ItemStack stack, EntityPlayer player) {
+	public static ItemStack incrItemStack(ItemStack stack, PlayerEntity player) {
 		return itemStackAmount(1, stack, player);
 	}
 
-	public static ItemStack damageStack(ItemStack stack, int amount, EntityLivingBase entity) {
+	//TODO implement
+	/*public static ItemStack damageStack(ItemStack stack, int amount, LivingEntity entity) {
 		stack.damageItem(amount, entity);
 		return stack;
-	}
+	}*/
 
 	public static void removeStackFromSlot(IInventory inventory, int index) {
 		inventory.setInventorySlotContents(index, ItemStack.EMPTY);
 	}
 
-	public static void saveInventory(NBTTagCompound compound, String name, IInventory inv) {
-		NBTTagList nbttaglist = new NBTTagList();
+	public static void saveInventory(CompoundNBT compound, String name, IInventory inv) {
+		ListNBT nbttaglist = new ListNBT();
 
 		for (int i = 0; i < inv.getSizeInventory(); i++) {
 			if (!isStackEmpty(inv.getStackInSlot(i))) {
-				NBTTagCompound nbttagcompound = new NBTTagCompound();
-				nbttagcompound.setInteger("Slot", i);
-				inv.getStackInSlot(i).writeToNBT(nbttagcompound);
-				nbttaglist.appendTag(nbttagcompound);
+				CompoundNBT nbttagcompound = new CompoundNBT();
+				nbttagcompound.putInt("Slot", i);
+				inv.getStackInSlot(i).write(nbttagcompound);
+				nbttaglist.add(nbttagcompound);
 			}
 		}
 
-		compound.setTag(name, nbttaglist);
+		compound.put(name, nbttaglist);
 	}
 
-	public static void readInventory(NBTTagCompound compound, String name, IInventory inv) {
-		if (!compound.hasKey(name)) {
+	public static void readInventory(CompoundNBT compound, String name, IInventory inv) {
+		if (!compound.contains(name)) {
 			return;
 		}
 
-		NBTTagList nbttaglist = compound.getTagList(name, 10);
+		ListNBT nbttaglist = compound.getList(name, 10);
 
 		if (nbttaglist == null) {
 			return;
 		}
 
-		for (int i = 0; i < nbttaglist.tagCount(); i++) {
-			NBTTagCompound nbttagcompound = nbttaglist.getCompoundTagAt(i);
-			int j = nbttagcompound.getInteger("Slot");
+		for (int i = 0; i < nbttaglist.size(); i++) {
+			CompoundNBT nbttagcompound = nbttaglist.getCompound(i);
+			int j = nbttagcompound.getInt("Slot");
 
 			if (j >= 0 && j < inv.getSizeInventory()) {
-				inv.setInventorySlotContents(j, new ItemStack(nbttagcompound));
+				inv.setInventorySlotContents(j, ItemStack.read(nbttagcompound));
 			}
 		}
 	}

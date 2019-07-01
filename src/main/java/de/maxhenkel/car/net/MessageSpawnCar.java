@@ -1,12 +1,12 @@
 package de.maxhenkel.car.net;
 
 import de.maxhenkel.car.blocks.tileentity.TileEntityCarWorkshop;
-import io.netty.buffer.ByteBuf;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.fml.network.NetworkEvent;
 
-public class MessageSpawnCar extends MessageToServer<MessageSpawnCar> {
+public class MessageSpawnCar implements Message<MessageSpawnCar> {
 
     private int posX;
     private int posY;
@@ -22,26 +22,32 @@ public class MessageSpawnCar extends MessageToServer<MessageSpawnCar> {
     }
 
     @Override
-    public void execute(EntityPlayer player, MessageSpawnCar message) {
-        TileEntity te = player.world.getTileEntity(new BlockPos(message.posX, message.posY, message.posZ));
+    public void executeServerSide(NetworkEvent.Context context) {
+        TileEntity te = context.getSender().world.getTileEntity(new BlockPos(posX, posY, posZ));
 
         if (te instanceof TileEntityCarWorkshop) {
-            ((TileEntityCarWorkshop) te).spawnCar(player);
+            ((TileEntityCarWorkshop) te).spawnCar(context.getSender());
         }
     }
 
     @Override
-    public void fromBytes(ByteBuf buf) {
-        this.posX = buf.readInt();
-        this.posY = buf.readInt();
-        this.posZ = buf.readInt();
+    public void executeClientSide(NetworkEvent.Context context) {
+
     }
 
     @Override
-    public void toBytes(ByteBuf buf) {
+    public MessageSpawnCar fromBytes(PacketBuffer buf) {
+        this.posX = buf.readInt();
+        this.posY = buf.readInt();
+        this.posZ = buf.readInt();
+
+        return this;
+    }
+
+    @Override
+    public void toBytes(PacketBuffer buf) {
         buf.writeInt(posX);
         buf.writeInt(posY);
         buf.writeInt(posZ);
     }
-
 }

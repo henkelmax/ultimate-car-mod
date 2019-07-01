@@ -1,8 +1,10 @@
 package de.maxhenkel.tools;
 
 import javax.annotation.Nullable;
+
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class FluidSelector implements Selector<Fluid>{
 
@@ -18,7 +20,8 @@ public class FluidSelector implements Selector<Fluid>{
 	
 	@Nullable
 	public static FluidSelector fromString(String str){
-		Fluid fluid = FluidRegistry.getFluid(str);
+
+		Fluid fluid = ForgeRegistries.FLUIDS.getValue(new ResourceLocation(str)).getFluid();
 		if (fluid == null) {
 			return null;
 		}
@@ -27,7 +30,7 @@ public class FluidSelector implements Selector<Fluid>{
 	}
 	
 	public String toString() {
-		return FluidRegistry.getFluidName(fluid);
+		return ForgeRegistries.FLUIDS.getKey(fluid).toString();
 	}
 
 	@Override

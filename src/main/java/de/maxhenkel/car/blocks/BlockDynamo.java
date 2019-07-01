@@ -1,32 +1,42 @@
 package de.maxhenkel.car.blocks;
 
+import de.maxhenkel.car.Main;
 import de.maxhenkel.car.ModCreativeTabs;
 import de.maxhenkel.car.blocks.tileentity.TileEntityDynamo;
-import net.minecraft.block.BlockContainer;
+import de.maxhenkel.tools.IItemBlock;
+import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.material.MaterialColor;
+import net.minecraft.item.BlockItem;
+import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumBlockRenderType;
-import net.minecraft.world.World;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.IBlockReader;
 
-public class BlockDynamo extends BlockContainer{
+import javax.annotation.Nullable;
 
-	protected BlockDynamo() {
-		super(Material.IRON);
-		setRegistryName("dynamo");
-		setUnlocalizedName("dynamo");
-		setCreativeTab(ModCreativeTabs.TAB_CAR);
-		setHardness(3.0F);
-	}
+public class BlockDynamo extends Block implements ITileEntityProvider, IItemBlock {
 
-	@Override
-	public TileEntity createNewTileEntity(World worldIn, int meta) {
-		return new TileEntityDynamo();
-	}
-	
-	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state) {
-		return EnumBlockRenderType.MODEL;
-	}
+    protected BlockDynamo() {
+        super(Properties.create(Material.IRON, MaterialColor.OBSIDIAN).hardnessAndResistance(3F).sound(SoundType.METAL));
+        setRegistryName(new ResourceLocation(Main.MODID, "dynamo"));
+    }
+
+    @Override
+    public Item toItem() {
+        return new BlockItem(this, new Item.Properties().group(ModCreativeTabs.TAB_CAR)).setRegistryName(this.getRegistryName());
+    }
+
+    @Override
+    public BlockRenderType getRenderType(BlockState state) {
+        return BlockRenderType.MODEL;
+    }
+
+    @Nullable
+    @Override
+    public TileEntity createNewTileEntity(IBlockReader worldIn) {
+        return new TileEntityDynamo();
+    }
+
 
 }

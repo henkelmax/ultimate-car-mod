@@ -4,38 +4,37 @@ import java.util.List;
 import java.util.UUID;
 
 import de.maxhenkel.car.Config;
+import de.maxhenkel.car.Main;
 import de.maxhenkel.car.blocks.BlockFuelStation;
 import de.maxhenkel.car.blocks.ModBlocks;
 import de.maxhenkel.car.entity.car.base.EntityCarFuelBase;
 import de.maxhenkel.car.net.MessageStartFuel;
-import de.maxhenkel.car.proxy.CommonProxy;
 import de.maxhenkel.car.registries.FuelStationFluid;
 import de.maxhenkel.car.sounds.ModSounds;
 import de.maxhenkel.car.sounds.SoundLoopTileentity;
 import de.maxhenkel.car.sounds.SoundLoopTileentity.ISoundLoopable;
 import de.maxhenkel.tools.ItemTools;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.block.BlockState;
+import net.minecraft.client.renderer.texture.ITickable;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.InventoryBasic;
+import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.SPacketUpdateTileEntity;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ITickable;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.tileentity.TileEntityType;
+import net.minecraft.util.Direction;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class TileEntityFuelStation extends TileEntityBase implements ITickable, IFluidHandler, ISoundLoopable, IInventory {
 
@@ -49,39 +48,40 @@ public class TileEntityFuelStation extends TileEntityBase implements ITickable, 
     private boolean isFueling;
     private boolean wasFueling;
 
-    private InventoryBasic inventory;
-    private InventoryBasic trading;
+    private Inventory inventory;
+    private Inventory trading;
     private int tradeAmount;
 
     private int freeAmountLeft;
 
     private UUID owner;
 
-    public TileEntityFuelStation() {
+    public TileEntityFuelStation(TileEntityType<?> tileEntityTypeIn) {
+        super(tileEntityTypeIn);
         this.transferRate = Config.fuelStationTransferRate;
         this.fuelCounter = 0;
-        this.inventory = new InventoryBasic(new TextComponentTranslation("gui.fuelstation").getFormattedText(), false, 27);
-        this.trading = new InventoryBasic(new TextComponentTranslation("gui.fuelstation").getFormattedText(), false, 2);
-        this.owner=new UUID(0L, 0L);
+        this.inventory = new Inventory(27);
+        this.trading = new Inventory(2);
+        this.owner = new UUID(0L, 0L);
     }
 
-    private void fixTop(){
-        IBlockState top=world.getBlockState(pos.up());
-        IBlockState bottom=world.getBlockState(pos);
-        EnumFacing facing=bottom.getValue(ModBlocks.FUEL_STATION.FACING);
-        if(top.getBlock().equals(ModBlocks.FUEL_STATION_TOP)){
-            if(!top.getValue(ModBlocks.FUEL_STATION_TOP.FACING).equals(facing)){
-                world.setBlockState(pos.up(), ModBlocks.FUEL_STATION_TOP.getDefaultState().withProperty(ModBlocks.FUEL_STATION_TOP.FACING, facing));
+    private void fixTop() {
+        BlockState top = world.getBlockState(pos.up());
+        BlockState bottom = world.getBlockState(pos);
+        Direction facing = bottom.get(ModBlocks.FUEL_STATION.FACING);
+        if (top.getBlock().equals(ModBlocks.FUEL_STATION_TOP)) {
+            if (!top.get(ModBlocks.FUEL_STATION_TOP.FACING).equals(facing)) {
+                world.setBlockState(pos.up(), ModBlocks.FUEL_STATION_TOP.getDefaultState().with(ModBlocks.FUEL_STATION_TOP.FACING, facing));
             }
-        }else if(world.isAirBlock(pos.up())){
-            world.setBlockState(pos.up(), ModBlocks.FUEL_STATION_TOP.getDefaultState().withProperty(ModBlocks.FUEL_STATION_TOP.FACING, facing));
+        } else if (world.isAirBlock(pos.up())) {
+            world.setBlockState(pos.up(), ModBlocks.FUEL_STATION_TOP.getDefaultState().with(ModBlocks.FUEL_STATION_TOP.FACING, facing));
         }
 
     }
 
     @Override
-    public void update() {
-        if(world.getTotalWorldTime()%100==0){
+    public void tick() {
+        if (world.getGameTime() % 100 == 0) {
             fixTop();
         }
 
@@ -116,14 +116,14 @@ public class TileEntityFuelStation extends TileEntityBase implements ITickable, 
         }
 
         if (freeAmountLeft <= 0) {
-            if(tradeAmount<=0){
-                freeAmountLeft=transferRate;
+            if (tradeAmount <= 0) {
+                freeAmountLeft = transferRate;
                 markDirty();
-            }else if (removeTradeItem()) {
+            } else if (removeTradeItem()) {
                 freeAmountLeft = tradeAmount;
                 markDirty();
             } else {
-                isFueling=false;
+                isFueling = false;
                 synchronize();
                 return;
             }
@@ -168,18 +168,18 @@ public class TileEntityFuelStation extends TileEntityBase implements ITickable, 
             return false;
         }
 
-        if (tradeTemplate.getItemDamage() != tradingStack.getItemDamage()) {
+        /*if (tradeTemplate.getItemDamage() != tradingStack.getItemDamage()) {
             return false;
-        }
+        }*/
 
         if (tradingStack.getCount() < tradeTemplate.getCount()) {
             return false;
         }
 
-        ItemStack addStack=tradingStack.copy();
+        ItemStack addStack = tradingStack.copy();
         addStack.setCount(tradeTemplate.getCount());
-        ItemStack add=inventory.addItem(addStack);
-        if(add.getCount()>0){
+        ItemStack add = inventory.addItem(addStack);
+        if (add.getCount() > 0) {
             return false;
         }
         tradingStack.setCount(tradingStack.getCount() - tradeTemplate.getCount());
@@ -205,7 +205,7 @@ public class TileEntityFuelStation extends TileEntityBase implements ITickable, 
 
         return false;
     }
-
+/*
     @Override
     public int getField(int id) {
         switch (id) {
@@ -243,78 +243,78 @@ public class TileEntityFuelStation extends TileEntityBase implements ITickable, 
     @Override
     public int getFieldCount() {
         return 3;
-    }
+    }*/
 
-    public void setOwner(UUID owner){
-        this.owner=owner;
+    public void setOwner(UUID owner) {
+        this.owner = owner;
         markDirty();
     }
 
-    public void setOwner(EntityPlayer player){
-        this.owner=new UUID(player.getUniqueID().getMostSignificantBits(), player.getUniqueID().getLeastSignificantBits());
+    public void setOwner(PlayerEntity player) {
+        this.owner = new UUID(player.getUniqueID().getMostSignificantBits(), player.getUniqueID().getLeastSignificantBits());
         markDirty();
     }
 
     /**
      * OPs are also owners
      */
-    public boolean isOwner(EntityPlayer player){
-        if(player instanceof EntityPlayerMP){
-            EntityPlayerMP p = (EntityPlayerMP) player;
+    public boolean isOwner(PlayerEntity player) {
+        if (player instanceof ServerPlayerEntity) {
+            ServerPlayerEntity p = (ServerPlayerEntity) player;
 
-            boolean isOp = p.canUseCommand(p.mcServer.getOpPermissionLevel(), "op");
-            if(isOp){
+            boolean isOp = p.hasPermissionLevel(p.server.getOpPermissionLevel());
+            if (isOp) {
                 return true;
             }
         }
         return player.getUniqueID().equals(owner);
     }
 
-    public boolean hasTrade(){
+    public boolean hasTrade() {
         return !ItemTools.isStackEmpty(trading.getStackInSlot(0));
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound compound) {
-        compound.setInteger("counter", fuelCounter);
+    public CompoundNBT write(CompoundNBT compound) {
+        compound.putInt("counter", fuelCounter);
 
         if (storage != null) {
-            NBTTagCompound comp = new NBTTagCompound();
+            CompoundNBT comp = new CompoundNBT();
             storage.writeToNBT(comp);
-            compound.setTag("fluid", comp);
+            compound.put("fluid", comp);
         }
 
         ItemTools.saveInventory(compound, "inventory", inventory);
 
         ItemTools.saveInventory(compound, "trading", trading);
 
-        compound.setInteger("trade_amount", tradeAmount);
-        compound.setInteger("free_amount", freeAmountLeft);
+        compound.putInt("trade_amount", tradeAmount);
+        compound.putInt("free_amount", freeAmountLeft);
 
-        compound.setUniqueId("owner", owner);
+        compound.putUniqueId("owner", owner);
 
-        return super.writeToNBT(compound);
+        return super.write(compound);
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound compound) {
+    public void read(CompoundNBT compound) {
 
-        fuelCounter = compound.getInteger("counter");
+        fuelCounter = compound.getInt("counter");
 
-        if (compound.hasKey("fluid")) {
-            NBTTagCompound comp = compound.getCompoundTag("fluid");
+        if (compound.contains("fluid")) {
+            CompoundNBT comp = compound.getCompound("fluid");
             storage = FluidStack.loadFluidStackFromNBT(comp);
         }
 
         ItemTools.readInventory(compound, "inventory", inventory);
         ItemTools.readInventory(compound, "trading", trading);
 
-        tradeAmount = compound.getInteger("trade_amount");
-        freeAmountLeft = compound.getInteger("free_amount");
+        tradeAmount = compound.getInt("trade_amount");
+        freeAmountLeft = compound.getInt("free_amount");
 
-        owner=compound.getUniqueId("owner");
+        owner = compound.getUniqueId("owner");
 
-        super.readFromNBT(compound);
+        super.read(compound);
     }
 
     public boolean isFueling() {
@@ -358,23 +358,23 @@ public class TileEntityFuelStation extends TileEntityBase implements ITickable, 
     public String getRenderText() {
         EntityCarFuelBase car = getCarInFront();
         if (car == null) {
-            return new TextComponentTranslation("fuelstation.no_car").getFormattedText();
+            return new TranslationTextComponent("fuelstation.no_car").getFormattedText();
         } else if (fuelCounter <= 0) {
-            return new TextComponentTranslation("fuelstation.ready").getFormattedText();
+            return new TranslationTextComponent("fuelstation.ready").getFormattedText();
         } else {
-            return new TextComponentTranslation("fuelstation.fuel_amount", fuelCounter)
+            return new TranslationTextComponent("fuelstation.fuel_amount", fuelCounter)
                     .getFormattedText();
         }
     }
 
     public EntityCarFuelBase getCarInFront() {
-        IBlockState ownState = world.getBlockState(getPos());
+        BlockState ownState = world.getBlockState(getPos());
 
         if (!ownState.getBlock().equals(ModBlocks.FUEL_STATION)) {
             return null;
         }
 
-        EnumFacing facing = ownState.getValue(BlockFuelStation.FACING);
+        Direction facing = ownState.get(BlockFuelStation.FACING);
 
         BlockPos start = getPos().offset(facing);
 
@@ -401,8 +401,8 @@ public class TileEntityFuelStation extends TileEntityBase implements ITickable, 
         return true;
     }
 
-    public IBlockState getBlockState() {
-        IBlockState ownState = world.getBlockState(getPos());
+    public BlockState getBlockState() {
+        BlockState ownState = world.getBlockState(getPos());
 
         if (!ownState.getBlock().equals(ModBlocks.FUEL_STATION)) {
             return null;
@@ -410,13 +410,13 @@ public class TileEntityFuelStation extends TileEntityBase implements ITickable, 
         return ownState;
     }
 
-    public EnumFacing getDirection() {
-        IBlockState state = getBlockState();
+    public Direction getDirection() {
+        BlockState state = getBlockState();
         if (state == null) {
-            return EnumFacing.NORTH;
+            return Direction.NORTH;
         }
 
-        return state.getValue(BlockFuelStation.FACING);
+        return state.get(BlockFuelStation.FACING);
     }
 
     @Override
@@ -535,24 +535,9 @@ public class TileEntityFuelStation extends TileEntityBase implements ITickable, 
         return new FluidStack(f, amount);
     }
 
-    @Override
-    public SPacketUpdateTileEntity getUpdatePacket() {
-        return new SPacketUpdateTileEntity(this.pos, 1, getUpdateTag());
-    }
-
-    @Override
-    public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
-        this.readFromNBT(pkt.getNbtCompound());
-    }
-
-    @Override
-    public NBTTagCompound getUpdateTag() {
-        return this.writeToNBT(new NBTTagCompound());
-    }
-
     public void sendStartFuelPacket(boolean start) {
         if (world.isRemote) {
-            CommonProxy.simpleNetworkWrapper.sendToServer(new MessageStartFuel(pos, start));
+            Main.SIMPLE_CHANNEL.sendToServer(new MessageStartFuel(pos, start));
         }
     }
 
@@ -565,7 +550,7 @@ public class TileEntityFuelStation extends TileEntityBase implements ITickable, 
         return canCarBeFueled();
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public void playSound() {
         ModSounds.playSoundLoop(new SoundLoopTileentity(ModSounds.GAS_STATION, SoundCategory.BLOCKS, this), world);
     }
@@ -574,7 +559,7 @@ public class TileEntityFuelStation extends TileEntityBase implements ITickable, 
     public void play() {
 
     }
-
+/*
     @Override
     public String getName() {
         return "";
@@ -583,7 +568,7 @@ public class TileEntityFuelStation extends TileEntityBase implements ITickable, 
     @Override
     public boolean hasCustomName() {
         return false;
-    }
+    }*/
 
     @Override
     public int getSizeInventory() {
@@ -616,7 +601,7 @@ public class TileEntityFuelStation extends TileEntityBase implements ITickable, 
     }
 
     @Override
-    public boolean isUsableByPlayer(EntityPlayer player) {
+    public boolean isUsableByPlayer(PlayerEntity player) {
         return true;
     }
 
@@ -626,12 +611,12 @@ public class TileEntityFuelStation extends TileEntityBase implements ITickable, 
     }
 
     @Override
-    public void openInventory(EntityPlayer player) {
+    public void openInventory(PlayerEntity player) {
 
     }
 
     @Override
-    public void closeInventory(EntityPlayer player) {
+    public void closeInventory(PlayerEntity player) {
 
     }
 

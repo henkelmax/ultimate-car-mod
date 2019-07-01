@@ -1,58 +1,50 @@
 package de.maxhenkel.car.blocks;
 
-import net.minecraft.block.BlockContainer;
-import net.minecraft.block.material.MapColor;
+import de.maxhenkel.car.Main;
+import de.maxhenkel.car.ModCreativeTabs;
+import de.maxhenkel.tools.IItemBlock;
+import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
-import net.minecraft.block.properties.PropertyDirection;
-import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.util.EnumBlockRenderType;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.block.material.MaterialColor;
+import net.minecraft.item.BlockItem;
+import net.minecraft.item.BlockItemUseContext;
+import net.minecraft.item.Item;
+import net.minecraft.state.DirectionProperty;
+import net.minecraft.state.StateContainer;
+import net.minecraft.util.Direction;
+import net.minecraft.util.ResourceLocation;
 
-public abstract class BlockOrientableHorizontal extends BlockContainer{
+import javax.annotation.Nullable;
 
-	public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
-	
-	public BlockOrientableHorizontal(Material materialIn, MapColor color) {
-		super(materialIn, color);
-		setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
-	}
+public abstract class BlockOrientableHorizontal extends Block implements ITileEntityProvider, IItemBlock {
 
-	@Override
-	public IBlockState getStateFromMeta(int meta) {
-		EnumFacing enumFacing = EnumFacing.getFront(meta);
+    public static final DirectionProperty FACING = DirectionProperty.create("facing", Direction.Plane.HORIZONTAL);
 
-		if (enumFacing.getAxis() == EnumFacing.Axis.Y) {
-			enumFacing = EnumFacing.NORTH;
-		}
+    public BlockOrientableHorizontal(String name, Material material, MaterialColor color, SoundType soundType, float hardness, float resistance) {
+        super(Properties.create(material, color).hardnessAndResistance(hardness, resistance).sound(soundType));
+        setRegistryName(new ResourceLocation(Main.MODID, name));
+        setDefaultState(stateContainer.getBaseState().with(FACING, Direction.NORTH));
+    }
 
-		return this.getDefaultState().withProperty(FACING, enumFacing);
-	}
+    @Override
+    public Item toItem() {
+        return new BlockItem(this, new Item.Properties().group(ModCreativeTabs.TAB_CAR)).setRegistryName(this.getRegistryName());
+    }
 
-	@Override
-	public int getMetaFromState(IBlockState state) {
-		return state.getValue(FACING).getIndex();
-	}
+    @Nullable
+    @Override
+    public BlockState getStateForPlacement(BlockItemUseContext context) {
+        return this.getDefaultState().with(FACING, context.getPlacementHorizontalFacing().getOpposite());
+    }
 
-	@Override
-	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, new IProperty[] { FACING });
-	}
-	
-	@Override
-	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY,
-			float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
-		return this.getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite());
-	}
+    @Override
+    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+        builder.add(FACING);
+    }
 
-	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state) {
-		return EnumBlockRenderType.MODEL;
-	}
-	
+    @Override
+    public BlockRenderType getRenderType(BlockState state) {
+        return BlockRenderType.MODEL;
+    }
+
 }

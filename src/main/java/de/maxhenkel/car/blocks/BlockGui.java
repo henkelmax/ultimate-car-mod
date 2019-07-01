@@ -2,122 +2,122 @@ package de.maxhenkel.car.blocks;
 
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.ModCreativeTabs;
-import net.minecraft.block.BlockContainer;
-import net.minecraft.block.material.MapColor;
+import de.maxhenkel.tools.IItemBlock;
+import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
-import net.minecraft.block.properties.PropertyBool;
-import net.minecraft.block.properties.PropertyDirection;
-import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.block.material.MaterialColor;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryHelper;
+import net.minecraft.item.BlockItem;
+import net.minecraft.item.BlockItemUseContext;
+import net.minecraft.item.Item;
+import net.minecraft.state.BooleanProperty;
+import net.minecraft.state.DirectionProperty;
+import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumBlockRenderType;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.Direction;
+import net.minecraft.util.Hand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.world.World;
 
-public abstract class BlockGui extends BlockContainer{
+import javax.annotation.Nullable;
 
-	public static final PropertyBool POWERED = PropertyBool.create("powered");
-	public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
-	
-	protected BlockGui(Material materialIn, String name) {
-		super(materialIn, MapColor.IRON);
-		setUnlocalizedName(name);
-		setRegistryName(name);
-		setCreativeTab(ModCreativeTabs.TAB_CAR);
-		
-		setDefaultState(blockState.getBaseState().withProperty(POWERED, false).withProperty(FACING, EnumFacing.NORTH));
-	}
-	
-	public abstract int getGUIID();
-	
-	@Override
-	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn,
-			EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-		if(!playerIn.isSneaking()){
-			playerIn.openGui(Main.instance(), getGUIID(), worldIn, pos.getX(), pos.getY(), pos.getZ());
-			return true;
-		}
-		
-		return false;
-	}
-	
-	@Override
-	public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
-		TileEntity tileentity = worldIn.getTileEntity(pos);
+public abstract class BlockGui<T extends TileEntity> extends Block implements ITileEntityProvider, IItemBlock {
 
-		if (tileentity!=null && tileentity instanceof IInventory) {
-			InventoryHelper.dropInventoryItems(worldIn, pos, (IInventory) tileentity);
-			worldIn.updateComparatorOutputLevel(pos, this);
-		}
+    public static final BooleanProperty POWERED = BooleanProperty.create("powered");
+    public static final DirectionProperty FACING = DirectionProperty.create("facing", Direction.Plane.HORIZONTAL);
 
-		super.breakBlock(worldIn, pos, state);
-	}
-	
-	@Override
-	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, new IProperty[] { FACING, POWERED});
-	}
-	
-	public boolean isPowered(IBlockState state){
-		return state.getValue(POWERED);
-	}
-	
-	private static boolean isPowered(int meta) {
-		return (meta & 8) != 8;
-	}
+    protected BlockGui(String name, Material material, SoundType soundType, float hardness, float resistance) {
+        super(Properties.create(material, MaterialColor.IRON).hardnessAndResistance(hardness, resistance).sound(soundType));
+        setRegistryName(new ResourceLocation(Main.MODID, name));
+        setDefaultState(stateContainer.getBaseState().with(POWERED, false).with(FACING, Direction.NORTH));
+    }
 
-	@Override
-	public IBlockState getStateFromMeta(int meta) {
-		EnumFacing facing=EnumFacing.getFront(meta&7);//TODO change in new version to plane
-		if(facing.equals(EnumFacing.UP)||facing.equals(EnumFacing.DOWN)){
-			facing=EnumFacing.NORTH;
-		}
-		return getDefaultState().withProperty(FACING, facing).withProperty(POWERED, isPowered(meta));
-	}
+    @Override
+    public Item toItem() {
+        return new BlockItem(this, new Item.Properties().group(ModCreativeTabs.TAB_CAR)).setRegistryName(this.getRegistryName());
+    }
 
-	@Override
-	public int getMetaFromState(IBlockState state) {
-		int i= state.getValue(FACING).getIndex();
-		
-		if (!state.getValue(POWERED)) {
-			i |= 8;
-		}
-		
-		return i;
-	}
+    @Override
+    public boolean onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
+        if (!player.isSneaking()) {
+            //TODO gui
+            //playerIn.openGui(Main.instance(), getGUIID(), worldIn, pos.getX(), pos.getY(), pos.getZ());
 
-	@Override
-	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY,
-			float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
-		return this.getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite());
-	}
-	
-	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state) {
-		return EnumBlockRenderType.MODEL;
-	}
-	
-	public void setPowered(World world, BlockPos pos, IBlockState state, boolean powered){
-		
-		if(state.getValue(POWERED).equals(powered)){
-			return;
-		}
-		
-		TileEntity tileentity = world.getTileEntity(pos);
+            if (!(player instanceof ServerPlayerEntity)) {
+                return true;
+            }
 
-		world.setBlockState(pos, state.withProperty(POWERED, powered), 2);
-		
-		if (tileentity != null) {
-			tileentity.validate();
-			world.setTileEntity(pos, tileentity);
-		}
-	}
+            TileEntity tileEntity = worldIn.getTileEntity(pos);
+
+            try {
+                T tile = (T) tileEntity;
+                openGui(state, worldIn, pos, (ServerPlayerEntity) player, handIn, tile);
+            } catch (ClassCastException e) {
+
+            }
+            return true;
+        }
+
+        return false;
+    }
+
+    public abstract void openGui(BlockState state, World worldIn, BlockPos pos, ServerPlayerEntity player, Hand handIn, T tileEntity);
+
+    @Override
+    public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
+        TileEntity tileentity = worldIn.getTileEntity(pos);
+
+        if (tileentity != null && tileentity instanceof IInventory) {
+            InventoryHelper.dropInventoryItems(worldIn, pos, (IInventory) tileentity);
+            worldIn.updateComparatorOutputLevel(pos, this);
+        }
+        super.onReplaced(state, worldIn, pos, newState, isMoving);
+    }
+
+    public boolean isPowered(BlockState state) {
+        return state.get(POWERED);
+    }
+
+    private static boolean isPowered(int meta) {
+        return (meta & 8) != 8;
+    }
+
+
+    @Nullable
+    @Override
+    public BlockState getStateForPlacement(BlockItemUseContext context) {
+        return this.getDefaultState().with(FACING, context.getPlacementHorizontalFacing().getOpposite()).with(POWERED, false);
+    }
+
+    @Override
+    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+        builder.add(FACING, POWERED);
+    }
+
+    @Override
+    public BlockRenderType getRenderType(BlockState state) {
+        return BlockRenderType.MODEL;
+    }
+
+    public void setPowered(World world, BlockPos pos, BlockState state, boolean powered) {
+
+        if (state.get(POWERED).equals(powered)) {
+            return;
+        }
+
+        TileEntity tileentity = world.getTileEntity(pos);
+
+        world.setBlockState(pos, state.with(POWERED, powered), 2);
+
+        if (tileentity != null) {
+            tileentity.validate();
+            world.setTileEntity(pos, tileentity);
+        }
+    }
 
 }

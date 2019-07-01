@@ -1,24 +1,30 @@
 package de.maxhenkel.car.gui;
 
 import de.maxhenkel.car.blocks.tileentity.TileEntityFuelStation;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.Slot;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.container.Slot;
 
-public class ContainerFuelStationAdmin extends ContainerBase{
+public class ContainerFuelStationAdmin extends ContainerBase {
 
-	public ContainerFuelStationAdmin(TileEntityFuelStation fuelStation, IInventory playerInv) {
-		super(fuelStation, playerInv);
+    private TileEntityFuelStation fuelStation;
 
-        addSlotToContainer(new Slot(fuelStation.getTradingInventory(), 0,26, 22));
+    public ContainerFuelStationAdmin(int id, TileEntityFuelStation fuelStation, PlayerInventory playerInv) {
+        super(null, id, fuelStation, playerInv);
+        this.fuelStation = fuelStation;
+        addSlot(new Slot(fuelStation.getTradingInventory(), 0, 26, 22));
 
         for (int j = 0; j < 3; j++) {
             for (int k = 0; k < 9; k++) {
-                this.addSlotToContainer(new Slot(fuelStation.getInventory(), k + j * 9, 8 + k * 18, 49 + j * 18));
+                addSlot(new Slot(fuelStation.getInventory(), k + j * 9, 8 + k * 18, 49 + j * 18));
             }
         }
 
-		addInvSlots();
-	}
+        addInvSlots();
+    }
+
+    public TileEntityFuelStation getFuelStation() {
+        return fuelStation;
+    }
 
     @Override
     public int getInvOffset() {

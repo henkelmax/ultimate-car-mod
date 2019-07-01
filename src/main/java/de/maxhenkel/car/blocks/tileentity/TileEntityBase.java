@@ -1,41 +1,57 @@
 package de.maxhenkel.car.blocks.tileentity;
 
-import de.maxhenkel.tools.MathTools;
+import de.maxhenkel.car.Main;
 import de.maxhenkel.car.net.MessageSyncTileEntity;
-import de.maxhenkel.car.proxy.CommonProxy;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.SPacketUpdateTileEntity;
+import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityType;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.world.ServerWorld;
+import net.minecraftforge.fml.network.NetworkDirection;
 
-public class TileEntityBase extends TileEntity{
+public abstract class TileEntityBase extends TileEntity {
 
-	private NBTTagCompound compoundLast;
-	
-	public void synchronize(){
-		if (!world.isRemote) {
-			NBTTagCompound last=writeToNBT(new NBTTagCompound());
-			if(compoundLast==null||!compoundLast.equals(last)){
-				CommonProxy.simpleNetworkWrapper.sendToAllAround(new MessageSyncTileEntity(pos, last), MathTools.getTileEntityTargetPoint(this));
-				this.compoundLast=last;
-			}
-		}
-	}
-	
-	public void synchronize(int ticks){
-		if(world.getTotalWorldTime()%ticks==0){
-			synchronize();
-		}
-	}
-	
-	@Override
-	public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
-		this.readFromNBT(pkt.getNbtCompound());
-	}
+    private CompoundNBT compoundLast;
 
-	@Override
-	public NBTTagCompound getUpdateTag() {
-		return this.writeToNBT(new NBTTagCompound());
-	}
-	
+    public TileEntityBase(TileEntityType<?> tileEntityTypeIn) {
+        super(tileEntityTypeIn);
+    }
+
+    public void synchronize() {
+        if (!world.isRemote && world instanceof ServerWorld) {
+            CompoundNBT last = write(new CompoundNBT());
+            if (compoundLast == null || !compoundLast.equals(last)) {
+                //CommonProxy.simpleNetworkWrapper.sendToAllAround(new MessageSyncTileEntity(pos, last), MathTools.getTileEntityTargetPoint(this));
+                ServerWorld serverWorld = (ServerWorld) world;
+
+                //TODO check if multiple instances
+                MessageSyncTileEntity msg = new MessageSyncTileEntity(pos, last);
+                serverWorld.getPlayers(player -> getDistanceSq(player.posX, player.posY, player.posZ) / 2D <= 128D).forEach(player -> Main.SIMPLE_CHANNEL.sendTo(msg, player.connection.netManager, NetworkDirection.PLAY_TO_CLIENT));
+
+
+                this.compoundLast = last;
+            }
+        }
+    }
+
+    public void synchronize(int ticks) {
+        if (world.getGameTime() % ticks == 0) {
+            synchronize();
+        }
+    }
+
+    @Override
+    public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
+        read(pkt.getNbtCompound());
+    }
+
+
+    @Override
+    public CompoundNBT getUpdateTag() {
+        return this.write(new CompoundNBT());
+    }
+
+    public abstract ITextComponent getDisplayName();
 }

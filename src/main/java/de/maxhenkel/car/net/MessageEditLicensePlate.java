@@ -1,15 +1,15 @@
 package de.maxhenkel.car.net;
 
 import de.maxhenkel.car.items.ItemLicensePlate;
-import io.netty.buffer.ByteBuf;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumHand;
-import net.minecraftforge.fml.common.network.ByteBufUtils;
+import net.minecraft.network.PacketBuffer;
+import net.minecraft.util.Hand;
+import net.minecraftforge.fml.network.NetworkEvent;
 
 import java.util.UUID;
 
-public class MessageEditLicensePlate extends MessageToServer<MessageEditLicensePlate> {
+public class MessageEditLicensePlate implements Message<MessageEditLicensePlate> {
 
     private UUID uuid;
     private String text;
@@ -19,48 +19,55 @@ public class MessageEditLicensePlate extends MessageToServer<MessageEditLicenseP
         this.text = "";
     }
 
-    public MessageEditLicensePlate(EntityPlayer player, String text) {
+    public MessageEditLicensePlate(PlayerEntity player, String text) {
         this.uuid = player.getUniqueID();
         this.text = text;
     }
 
+
     @Override
-    public void execute(EntityPlayer player, MessageEditLicensePlate message) {
-        if (!player.getUniqueID().equals(message.uuid)) {
+    public void executeServerSide(NetworkEvent.Context context) {
+        if (!context.getSender().getUniqueID().equals(uuid)) {
             return;
         }
-
-        setItemText(player, message.text);
+        setItemText(context.getSender(), text);
     }
 
-    public static void setItemText(EntityPlayer player, String text) {
-        ItemStack stack = player.getHeldItem(EnumHand.MAIN_HAND);
+    public static void setItemText(PlayerEntity player, String text) {
+        ItemStack stack = player.getHeldItem(Hand.MAIN_HAND);
         if (stack.getItem() instanceof ItemLicensePlate) {
             ItemLicensePlate.setText(stack, text);
-            player.setHeldItem(EnumHand.MAIN_HAND, stack);
+            player.setHeldItem(Hand.MAIN_HAND, stack);
         } else {
-            stack = player.getHeldItem(EnumHand.OFF_HAND);
+            stack = player.getHeldItem(Hand.OFF_HAND);
             if (stack.getItem() instanceof ItemLicensePlate) {
                 ItemLicensePlate.setText(stack, text);
-                player.setHeldItem(EnumHand.OFF_HAND, stack);
+                player.setHeldItem(Hand.OFF_HAND, stack);
             }
         }
     }
 
+
     @Override
-    public void fromBytes(ByteBuf buf) {
+    public void executeClientSide(NetworkEvent.Context context) {
+
+    }
+
+    @Override
+    public MessageEditLicensePlate fromBytes(PacketBuffer buf) {
         long l1 = buf.readLong();
         long l2 = buf.readLong();
         this.uuid = new UUID(l1, l2);
 
-        text = ByteBufUtils.readUTF8String(buf);
+        text = buf.readString();
+
+        return this;
     }
 
     @Override
-    public void toBytes(ByteBuf buf) {
+    public void toBytes(PacketBuffer buf) {
         buf.writeLong(uuid.getMostSignificantBits());
         buf.writeLong(uuid.getLeastSignificantBits());
-        ByteBufUtils.writeUTF8String(buf, text);
+        buf.writeString(text);
     }
-
 }

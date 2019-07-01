@@ -4,6 +4,7 @@ import javax.annotation.Nullable;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class ItemStackSelector implements Selector<ItemStack>{
 
@@ -27,7 +28,7 @@ public class ItemStackSelector implements Selector<ItemStack>{
 			return null;
 		}
 
-		Item item = Item.REGISTRY.getObject(new ResourceLocation(split[0], split[1]));
+		Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(split[0], split[1]));
 		if (item == null) {//Evtl air
 			return null;
 		}
@@ -60,7 +61,7 @@ public class ItemStackSelector implements Selector<ItemStack>{
 		
 		ResourceLocation loc=item.getRegistryName();
 		
-		String str=loc.getResourceDomain() +":" +loc.getResourcePath();
+		String str=loc.getNamespace() +":" +loc.getPath();
 		
 		if(meta>=0){
 			str=str+":" +meta;
@@ -78,14 +79,15 @@ public class ItemStackSelector implements Selector<ItemStack>{
 		if(!item.equals(stack.getItem())){
 			return false;
 		}
-		
-		if(meta<0){
+
+		//TODO meta
+		/*if(meta<0){
 			return true;
 		}
 		
 		if(meta!=stack.getMetadata()){
 			return false;
-		}
+		}*/
 		
 		return true;
 	}

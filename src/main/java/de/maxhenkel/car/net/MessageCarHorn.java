@@ -1,64 +1,73 @@
 package de.maxhenkel.car.net;
 
 import java.util.UUID;
+
 import de.maxhenkel.car.entity.car.base.EntityCarBase;
-import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.network.PacketBuffer;
+import net.minecraftforge.fml.network.NetworkEvent;
 
-public class MessageCarHorn extends MessageToServer<MessageCarHorn>{
+public class MessageCarHorn implements Message<MessageCarHorn> {
 
-	private boolean pressed;
-	private UUID uuid;
-	
-	public MessageCarHorn() {
-		this.pressed=false;
-		this.uuid=new UUID(0, 0);
-	}
-	
-	public MessageCarHorn(boolean pressed, EntityPlayer player) {
-		this.pressed=pressed;
-		this.uuid=player.getUniqueID();
-	}
+    private boolean pressed;
+    private UUID uuid;
 
-	@Override
-	public void execute(EntityPlayer player, MessageCarHorn message) {
-		if(!message.pressed){
-			return;
-		}
+    public MessageCarHorn() {
+        this.pressed = false;
+        this.uuid = new UUID(0, 0);
+    }
 
-		if(!player.getUniqueID().equals(message.uuid)){
-			System.out.println("---------UUID was not the same-----------");
-			return;
-		}
+    public MessageCarHorn(boolean pressed, PlayerEntity player) {
+        this.pressed = pressed;
+        this.uuid = player.getUniqueID();
+    }
 
-		Entity riding=player.getRidingEntity();
 
-		if(!(riding instanceof EntityCarBase)){
-			return;
-		}
+    @Override
+    public void executeServerSide(NetworkEvent.Context context) {
+        if (!pressed) {
+            return;
+        }
 
-		EntityCarBase car=(EntityCarBase) riding;
-		if(player.equals(car.getDriver())){
-			car.onHornPressed(player);
-		}
-	}
+        if (!context.getSender().getUniqueID().equals(uuid)) {
+            System.out.println("---------UUID was not the same-----------");
+            return;
+        }
 
-	@Override
-	public void fromBytes(ByteBuf buf) {
-		this.pressed=buf.readBoolean();
-		
-		long l1=buf.readLong();
-		long l2=buf.readLong();
-		this.uuid=new UUID(l1, l2);
-	}
+        Entity riding = context.getSender().getRidingEntity();
 
-	@Override
-	public void toBytes(ByteBuf buf) {
-		buf.writeBoolean(pressed);
-		
-		buf.writeLong(uuid.getMostSignificantBits());
-		buf.writeLong(uuid.getLeastSignificantBits());
-	}
+        if (!(riding instanceof EntityCarBase)) {
+            return;
+        }
 
+        EntityCarBase car = (EntityCarBase) riding;
+        if (context.getSender().equals(car.getDriver())) {
+            car.onHornPressed(context.getSender());
+        }
+    }
+
+    @Override
+    public void executeClientSide(NetworkEvent.Context context) {
+
+    }
+
+    @Override
+    public MessageCarHorn fromBytes(PacketBuffer buf) {
+        this.pressed = buf.readBoolean();
+
+        long l1 = buf.readLong();
+        long l2 = buf.readLong();
+        this.uuid = new UUID(l1, l2);
+
+        return this;
+    }
+
+    @Override
+    public void toBytes(PacketBuffer buf) {
+        buf.writeBoolean(pressed);
+
+        buf.writeLong(uuid.getMostSignificantBits());
+        buf.writeLong(uuid.getLeastSignificantBits());
+    }
 }

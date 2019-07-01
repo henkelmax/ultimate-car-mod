@@ -2,12 +2,13 @@ package de.maxhenkel.car.gui;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import com.mojang.blaze3d.platform.GlStateManager;
 import de.maxhenkel.car.Main;
-import de.maxhenkel.car.blocks.tileentity.TileEntityBackmixReactor;
-import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.TranslationTextComponent;
 
 public class GuiBackmixReactor extends GuiBase {
 
@@ -16,12 +17,12 @@ public class GuiBackmixReactor extends GuiBase {
 	private static final int fontColor = 4210752;
 
 	private IInventory playerInv;
-	private TileEntityBackmixReactor tile;
+	private ContainerBackmixReactor containerBackmixReactor;
 
-	public GuiBackmixReactor(TileEntityBackmixReactor tile, IInventory playerInv) {
-		super(new ContainerBackmixReactor(tile, playerInv));
+	public GuiBackmixReactor(ContainerBackmixReactor container, PlayerInventory playerInv) {
+		super(GUI_TEXTURE, container, playerInv, new TranslationTextComponent("block.car.backmix_reactor"));
 		this.playerInv = playerInv;
-		this.tile = tile;
+		this.containerBackmixReactor = container;
 
 		xSize = 176;
 		ySize = 166;
@@ -32,13 +33,13 @@ public class GuiBackmixReactor extends GuiBase {
 		super.drawGuiContainerForegroundLayer(mouseX, mouseY);
 
 		// Title
-		fontRenderer.drawString(playerInv.getDisplayName().getUnformattedText(), 8, this.ySize - 96 + 2,
+		font.drawString(playerInventory.getDisplayName().getFormattedText(), 8, this.ySize - 96 + 2,
 				fontColor);
 
 		if (mouseX >= guiLeft + 11 && mouseX <= guiLeft + 16 + 11) {
 			if (mouseY >= guiTop + 8 && mouseY <= guiTop + 57 + 8) {
 				List<String> list = new ArrayList<String>();
-				list.add(new TextComponentTranslation("tooltip.energy", tile.getField(0))
+				list.add(new TranslationTextComponent("tooltip.energy", tile.getField(0))
 						.getFormattedText());
 				drawHoveringText(list, mouseX - guiLeft, mouseY - guiTop);
 			}
@@ -47,7 +48,7 @@ public class GuiBackmixReactor extends GuiBase {
 		if (mouseX >= guiLeft + 33 && mouseX <= guiLeft + 16 + 33) {
 			if (mouseY >= guiTop + 8 && mouseY <= guiTop + 57 + 8) {
 				List<String> list = new ArrayList<String>();
-				list.add(new TextComponentTranslation("tooltip.oil", tile.getField(1))
+				list.add(new TranslationTextComponent("tooltip.oil", tile.getField(1))
 						.getFormattedText());
 				drawHoveringText(list, mouseX - guiLeft, mouseY - guiTop);
 			}
@@ -56,7 +57,7 @@ public class GuiBackmixReactor extends GuiBase {
 		if (mouseX >= guiLeft + 55 && mouseX <= guiLeft + 16 + 55) {
 			if (mouseY >= guiTop + 8 && mouseY <= guiTop + 57 + 8) {
 				List<String> list = new ArrayList<String>();
-				list.add(new TextComponentTranslation("tooltip.methanol", tile.getField(2))
+				list.add(new TranslationTextComponent("tooltip.methanol", tile.getField(2))
 						.getFormattedText());
 				drawHoveringText(list, mouseX - guiLeft, mouseY - guiTop);
 			}
@@ -65,7 +66,7 @@ public class GuiBackmixReactor extends GuiBase {
 		if (mouseX >= guiLeft + 122 && mouseX <= guiLeft + 16 + 122) {
 			if (mouseY >= guiTop + 8 && mouseY <= guiTop + 57 + 8) {
 				List<String> list = new ArrayList<String>();
-				list.add(new TextComponentTranslation("tooltip.mix", tile.getField(3))
+				list.add(new TranslationTextComponent("tooltip.mix", tile.getField(3))
 						.getFormattedText());
 				drawHoveringText(list, mouseX - guiLeft, mouseY - guiTop);
 			}
@@ -74,7 +75,7 @@ public class GuiBackmixReactor extends GuiBase {
 		if (mouseX >= guiLeft + 79 && mouseX <= guiLeft + 24 + 79) {
 			if (mouseY >= guiTop + 34 && mouseY <= guiTop + 17 + 34) {
 				List<String> list = new ArrayList<String>();
-				list.add(new TextComponentTranslation("tooltip.progress", ((int)(getProgress()*100F))).getFormattedText());
+				list.add(new TranslationTextComponent("tooltip.progress", ((int)(getProgress()*100F))).getFormattedText());
 				drawHoveringText(list, mouseX - guiLeft, mouseY - guiTop);
 			}
 		}
@@ -82,11 +83,11 @@ public class GuiBackmixReactor extends GuiBase {
 
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
-		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-		this.mc.getTextureManager().bindTexture(GUI_TEXTURE);
+		GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+		minecraft.getTextureManager().bindTexture(GUI_TEXTURE);
 		int i = this.guiLeft;
 		int j = this.guiTop;
-		this.drawTexturedModalRect(i, j, 0, 0, this.xSize, this.ySize);
+		blit(i, j, 0, 0, this.xSize, this.ySize);
 
 		drawProgress();
 		drawEnergy();
@@ -108,7 +109,7 @@ public class GuiBackmixReactor extends GuiBase {
 		int scHeight = (int) (texH * (1 - perc));
 		int i = this.guiLeft;
 		int j = this.guiTop;
-		this.drawTexturedModalRect(i + targetX, j + targetY + scHeight, texX, texY + scHeight, texW, texH - scHeight);
+		blit(i + targetX, j + targetY + scHeight, texX, texY + scHeight, texW, texH - scHeight);
 	}
 
 	public void drawCanola() {
@@ -124,7 +125,7 @@ public class GuiBackmixReactor extends GuiBase {
 		int scHeight = (int) (texH * (1 - perc));
 		int i = this.guiLeft;
 		int j = this.guiTop;
-		this.drawTexturedModalRect(i + targetX, j + targetY + scHeight, texX, texY + scHeight, texW, texH - scHeight);
+		blit(i + targetX, j + targetY + scHeight, texX, texY + scHeight, texW, texH - scHeight);
 	}
 
 	public void drawMethanol() {
@@ -140,7 +141,7 @@ public class GuiBackmixReactor extends GuiBase {
 		int scHeight = (int) (texH * (1 - perc));
 		int i = this.guiLeft;
 		int j = this.guiTop;
-		this.drawTexturedModalRect(i + targetX, j + targetY + scHeight, texX, texY + scHeight, texW, texH - scHeight);
+		blit(i + targetX, j + targetY + scHeight, texX, texY + scHeight, texW, texH - scHeight);
 	}
 
 	public void drawMix() {
@@ -156,7 +157,7 @@ public class GuiBackmixReactor extends GuiBase {
 		int scHeight = (int) (texH * (1 - perc));
 		int i = this.guiLeft;
 		int j = this.guiTop;
-		this.drawTexturedModalRect(i + targetX, j + targetY + scHeight, texX, texY + scHeight, texW, texH - scHeight);
+		blit(i + targetX, j + targetY + scHeight, texX, texY + scHeight, texW, texH - scHeight);
 	}
 
 	public void drawProgress() {
@@ -172,7 +173,7 @@ public class GuiBackmixReactor extends GuiBase {
 		int scWidth = (int) (texW * perc);
 		int i = this.guiLeft;
 		int j = this.guiTop;
-		this.drawTexturedModalRect(i + targetX, j + targetY, texX, texY, scWidth, texH);
+		blit(i + targetX, j + targetY, texX, texY, scWidth, texH);
 	}
 
 	public float getEnergy() {

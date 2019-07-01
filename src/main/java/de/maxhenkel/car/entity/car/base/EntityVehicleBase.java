@@ -4,15 +4,18 @@ import java.util.List;
 import javax.annotation.Nullable;
 import de.maxhenkel.car.Config;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.network.IPacket;
+import net.minecraft.util.Direction;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fml.network.NetworkHooks;
 
 public abstract class EntityVehicleBase extends Entity {
 
@@ -27,14 +30,14 @@ public abstract class EntityVehicleBase extends Entity {
 
     protected float deltaRotation;
 
-    public EntityVehicleBase(World worldIn) {
-        super(worldIn);
+    public EntityVehicleBase(EntityType type, World worldIn) {
+        super(type, worldIn);
         this.preventEntitySpawning = true;
         this.stepHeight = 0.6F;
     }
 
     @Override
-    public void onUpdate() {
+    public void tick() {
 
         if (!world.isRemote) {
             this.prevPosX = this.posX;
@@ -44,31 +47,39 @@ public abstract class EntityVehicleBase extends Entity {
 
         this.setPositionNonDirty();
 
-        super.onUpdate();
+        super.tick();
         this.tickLerp();
+    }
+
+    public double getCarWidth(){
+        return 1.3D;
+    }
+
+    public double getCarHeight(){
+        return 1.6D;
     }
 
     @Override
     protected void removePassenger(Entity passenger) {
         super.removePassenger(passenger);
-        if (passenger instanceof EntityPlayer) {
-            EntityPlayer player = (EntityPlayer) passenger;
-            EnumFacing facing = getHorizontalFacing();
+        if (passenger instanceof PlayerEntity) {
+            PlayerEntity player = (PlayerEntity) passenger;
+            Direction facing = getHorizontalFacing();
 
             double offsetX = 0;
             double offsetZ = 0;
 
             for (int i = 0; i < 4; i++) {
-                AxisAlignedBB playerbb = player.getEntityBoundingBox();
+                AxisAlignedBB playerbb = player.getBoundingBox();
                 double playerHitboxWidth = (playerbb.maxX - playerbb.minX) / 2;
-                double carHitboxWidth = width / 2;
+                double carHitboxWidth = getCarWidth() / 2;
 
                 double offset = playerHitboxWidth + carHitboxWidth + 0.2;
 
-                offsetX += facing.getFrontOffsetX() * offset;
-                offsetZ += facing.getFrontOffsetZ() * offset;
+                offsetX += facing.getXOffset() * offset;
+                offsetZ += facing.getZOffset() * offset;
 
-                AxisAlignedBB aabb = player.getEntityBoundingBox().offset(offsetX, 0, offsetZ);
+                AxisAlignedBB aabb = player.getBoundingBox().offset(offsetX, 0, offsetZ);
 
                 if (!world.checkBlockCollision(aabb)) {
                     break;
@@ -83,14 +94,14 @@ public abstract class EntityVehicleBase extends Entity {
         }
     }
 
-    public EntityPlayer getDriver() {
+    public PlayerEntity getDriver() {
         List<Entity> passengers = getPassengers();
         if (passengers.size() <= 0) {
             return null;
         }
 
-        if (passengers.get(0) instanceof EntityPlayer) {
-            return (EntityPlayer) passengers.get(0);
+        if (passengers.get(0) instanceof PlayerEntity) {
+            return (PlayerEntity) passengers.get(0);
         }
 
         return null;
@@ -116,7 +127,7 @@ public abstract class EntityVehicleBase extends Entity {
      * Applies this entity's orientation (pitch/yaw) to another entity. Used to
      * update passenger orientation.
      */
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public void applyOrientationToEntity(Entity entityToUpdate) {
         this.applyYawToEntity(entityToUpdate);
     }
@@ -182,7 +193,7 @@ public abstract class EntityVehicleBase extends Entity {
                 return null;
             }
         }
-        return entityIn.canBePushed() ? entityIn.getEntityBoundingBox() : null;
+        return entityIn.canBePushed() ? entityIn.getBoundingBox() : null;
     }
 
     /**
@@ -191,7 +202,7 @@ public abstract class EntityVehicleBase extends Entity {
     @Nullable
     @Override
     public AxisAlignedBB getCollisionBoundingBox() {
-        return this.getEntityBoundingBox();
+        return this.getBoundingBox();
     }
 
     /**
@@ -209,7 +220,7 @@ public abstract class EntityVehicleBase extends Entity {
      */
     @Override
     public boolean canBeCollidedWith() {
-        return !this.isDead;
+        return isAlive();
     }
 
     private void tickLerp() {
@@ -230,7 +241,7 @@ public abstract class EntityVehicleBase extends Entity {
     /**
      * Set the position and rotation values directly without any clamping.
      */
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public void setPositionAndRotationDirect(double x, double y, double z, float yaw, float pitch,
                                              int posRotationIncrements, boolean teleport) {
         this.clientX = x;
@@ -255,7 +266,7 @@ public abstract class EntityVehicleBase extends Entity {
     }
 
     @Override
-    public boolean processInitialInteract(EntityPlayer player, EnumHand hand) {
+    public boolean processInitialInteract(PlayerEntity player, Hand hand) {
         if (!player.isSneaking()) {
             if (player.getRidingEntity() != this) {
                 if (!world.isRemote) {
@@ -269,4 +280,8 @@ public abstract class EntityVehicleBase extends Entity {
 
     public abstract boolean doesEnterThirdPerson();
 
+    @Override
+    public IPacket<?> createSpawnPacket() {
+        return NetworkHooks.getEntitySpawningPacket(this);
+    }
 }

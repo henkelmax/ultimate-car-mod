@@ -1,23 +1,143 @@
 package de.maxhenkel.car;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 import net.minecraft.block.Block;
-import net.minecraft.init.Blocks;
-import net.minecraft.util.ResourceLocation;
-import de.maxhenkel.car.fluids.ModFluids;
-import de.maxhenkel.car.registries.CarFluidRegistry;
-import de.maxhenkel.car.registries.FuelStationFluid;
-import de.maxhenkel.car.registries.GeneratorRecipe;
-import de.maxhenkel.tools.FluidSelector;
-import de.maxhenkel.tools.json.JSONArray;
-import de.maxhenkel.tools.json.JSONObject;
-import de.maxhenkel.tools.json.JsonConfig;
-import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.common.ForgeConfigSpec;
+import org.apache.commons.lang3.tuple.Pair;
 
 public class Config {
 
+    public static int backmixReactorEnergyStorage = 10000;
+    public static int backmixReactorEnergyUsage = 10;
+    public static int backmixReactorFluidStorage = 3000;
+    public static int backmixReactorGeneratingTime = 200;
+    public static int backmixReactorMixGeneration = 100;
+    public static int backmixReactorMethanolUsage = 50;
+    public static int backmixReactorCanolaUsage = 50;
+
+    public static int blastFurnaceEnergyStorage = 10000;
+    public static int blastFurnaceGeneratingTime = 200;
+    public static int blastFurnaceFluidStorage = 3000;
+    public static int blastFurnaceEnergyUsage = 10;
+    public static int blastFurnaceFluidGeneration = 100;
+
+    public static int oilMillEnergyStorage = 10000;
+    public static int oilMillGeneratingTime = 200;
+    public static int oilMillFluidStorage = 3000;
+    public static int oilMillEnergyUsage = 10;
+    public static int oilMillFluidGeneration = 100;
+
+    public static int cableTransferRate = 256;
+
+    public static int dynamoEnergyStorage = 1000;
+    public static int dynamoEnergyGeneration = 25;
+
+    public static int fluidExtractorDrainSpeed = 25;
+
+    public static int fuelStationTransferRate = 5;
+
+    public static int generatorEnergyStorage = 30000;
+    public static int generatorFluidStorage = 3000;
+
+    public static int splitTankFluidStorage = 3000;
+    public static int splitTankGeneratingTime = 800;
+    public static int splitTankMixUsage = 100;
+    public static int splitTankGlycerinGeneration = 10;
+    public static int splitTankBioDieselGeneration = 100;
+
+    public static boolean pickUpTank;
+
+    public static float repairKitRepairAmount = 5F;
+
+    public static int canisterMaxFuel = 100;
+
+    public static float carVolume = 0.1F;
+
+    public static boolean thirdPersonEnter = true;
+    public static boolean carGroundSpeed = false;
+    public static Block[] carDriveBlocks = new Block[0];
+    private static String[] carDriveBlocksStr = new String[0];
+    public static float carStepHeight;
+    public static boolean collideWithEntities = false;
+    public static boolean damageEntities = true;
+    public static boolean hornFlee = true;
+    public static boolean useBattery = true;
+    public static boolean tempInFarenheit = false;
+
+    public static boolean canolaSeedDrop = true;
+
+    public static float engine6CylinderFuelEfficiency = 0.25F;
+    public static float engine3CylinderFuelEfficiency = 0.6F;
+
+    public static float engine6CylinderAcceleration = 0.04F;
+    public static float engine3CylinderAcceleration = 0.032F;
+
+    public static float engine6CylinderMaxSpeed = 0.65F;
+    public static float engine3CylinderMaxSpeed = 0.5F;
+
+    public static float engine6CylinderMaxReverseSpeed = 0.2F;
+    public static float engine3CylinderMaxReverseSpeed = 0.2F;
+
+    public static float bodyBigWoodFuelEfficiency = 0.7F;
+    public static float bodyBigWoodAcceleration = 0.95F;
+    public static float bodyBigWoodMaxSpeed = 0.85F;
+
+    public static float bodyWoodFuelEfficiency = 0.8F;
+    public static float bodyWoodAcceleration = 1F;
+    public static float bodyWoodMaxSpeed = 0.9F;
+
+    public static float bodySportFuelEfficiency = 0.9F;
+    public static float bodySportAcceleration = 1F;
+    public static float bodySportMaxSpeed = 1F;
+
+    public static float bodySUVFuelEfficiency = 0.6F;
+    public static float bodySUVAcceleration = 0.8F;
+    public static float bodySUVMaxSpeed = 0.7F;
+
+    public static float bodyTransporterFuelEfficiency = 0.6F;
+    public static float bodyTransporterAcceleration = 0.8F;
+    public static float bodyTransporterMaxSpeed = 0.765F;
+
+    public static final ServerConfig SERVER;
+    public static final ForgeConfigSpec SERVER_SPEC;
+
+    public static final ClientConfig CLIENT;
+    public static final ForgeConfigSpec CLIENT_SPEC;
+
+    static {
+        Pair<ServerConfig, ForgeConfigSpec> specPairServer = new ForgeConfigSpec.Builder().configure(ServerConfig::new);
+        SERVER_SPEC = specPairServer.getRight();
+        SERVER = specPairServer.getLeft();
+
+        Pair<ClientConfig, ForgeConfigSpec> specPairClient = new ForgeConfigSpec.Builder().configure(ClientConfig::new);
+        CLIENT_SPEC = specPairClient.getRight();
+        CLIENT = specPairClient.getLeft();
+    }
+
+    public static void loadServer() {
+
+    }
+
+    public static void loadClient() {
+
+    }
+
+    public static class ServerConfig {
+
+
+        public ServerConfig(ForgeConfigSpec.Builder builder) {
+
+        }
+    }
+
+    public static class ClientConfig {
+
+
+        public ClientConfig(ForgeConfigSpec.Builder builder) {
+
+        }
+    }
+
+/*
     public static File configFolder;
     public static Configuration config;
 
@@ -338,6 +458,6 @@ public class Config {
             }
         }
         return false;
-    }
+    }*/
 
 }

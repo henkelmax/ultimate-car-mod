@@ -4,20 +4,19 @@ import java.util.LinkedList;
 import java.util.List;
 import javax.annotation.Nullable;
 
+import de.maxhenkel.car.Main;
 import de.maxhenkel.tools.BlockPosList;
 import de.maxhenkel.car.Config;
 import de.maxhenkel.tools.FluidUtils;
 import de.maxhenkel.car.blocks.BlockFluidExtractor;
 import de.maxhenkel.car.blocks.ModBlocks;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
+import net.minecraft.client.renderer.texture.ITickable;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ITickable;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.tileentity.TileEntityType;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
@@ -32,6 +31,7 @@ public class TileEntityFluidExtractor extends TileEntityBase implements ITickabl
     private ItemStack filter;
 
     public TileEntityFluidExtractor() {
+        super(Main.FLUID_EXTRACTOR_TILE_ENTITY_TYPE);
         this.drainSpeed = Config.fluidExtractorDrainSpeed;
         filter = null;
     }
@@ -42,7 +42,7 @@ public class TileEntityFluidExtractor extends TileEntityBase implements ITickabl
             return null;
         }
 
-        FluidStack stack = FluidUtil.getFluidContained(filter);
+        FluidStack stack = FluidUtil.getFluidContained(filter).orElse(null);
 
         if (stack == null || stack.amount <= 0) {
             return null;
@@ -52,7 +52,7 @@ public class TileEntityFluidExtractor extends TileEntityBase implements ITickabl
     }
 
     @Override
-    public void update() {
+    public void tick() {
         if (world.isRemote) {
             return;
         }
@@ -100,27 +100,27 @@ public class TileEntityFluidExtractor extends TileEntityBase implements ITickabl
     }
 
     public void updateExtractHandler() {
-        IBlockState state = world.getBlockState(pos);
+        BlockState state = world.getBlockState(pos);
 
         if (!state.getBlock().equals(ModBlocks.FLUID_EXTRACTOR)) {
             extractHandler = null;
             return;
         }
 
-        EnumFacing side = state.getValue(BlockFluidExtractor.FACING);
+        Direction side = state.get(BlockFluidExtractor.FACING);
 
         extractHandler = FluidUtils.getFluidHandler(world, pos, side);
     }
 
     public void getConnectedHandlers(List<IFluidHandler> handlers, BlockPosList positions, BlockPos pos) {
-        for (EnumFacing side : EnumFacing.values()) {
+        for (Direction side : Direction.values()) {
             BlockPos p = pos.offset(side);
 
             if (positions.contains(p)) {
                 continue;
             }
 
-            IBlockState state = world.getBlockState(p);
+            BlockState state = world.getBlockState(p);
 
             if (state.getBlock().equals(ModBlocks.FLUID_PIPE) || state.getBlock().equals(ModBlocks.FLUID_EXTRACTOR)) {
                 positions.add(p);
@@ -139,34 +139,33 @@ public class TileEntityFluidExtractor extends TileEntityBase implements ITickabl
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+    public CompoundNBT write(CompoundNBT compound) {
 
         if (filter != null) {
-            NBTTagCompound tag = new NBTTagCompound();
-            filter.writeToNBT(tag);
-            compound.setTag("filter", tag);
+            CompoundNBT tag = new CompoundNBT();
+            filter.write(tag);
+            compound.put("filter", tag);
         }
 
-        return super.writeToNBT(compound);
+        return super.write(compound);
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound compound) {
-
-        if (compound.hasKey("filter")) {
-            NBTTagCompound tag = compound.getCompoundTag("filter");
-            filter = new ItemStack(tag);
+    public void read(CompoundNBT compound) {
+        if (compound.contains("filter")) {
+            CompoundNBT tag = compound.getCompound("filter");
+            filter = ItemStack.read(tag);
         } else {
             filter = null;
         }
 
-        super.readFromNBT(compound);
+        super.read(compound);
     }
-
+/*
     @Override
     public ITextComponent getDisplayName() {
         return new TextComponentTranslation("tile.fluid_extractor.name");
-    }
+    }*/
 
     public ItemStack getFilter() {
         if (filter == null) {

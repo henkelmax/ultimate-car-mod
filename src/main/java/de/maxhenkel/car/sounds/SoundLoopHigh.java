@@ -9,15 +9,12 @@ public class SoundLoopHigh extends SoundLoopCar{
 
 	public SoundLoopHigh(World world, EntityCarBase car, SoundEvent event, SoundCategory category) {
 		super(world, car, event, category);
-		
 	}
 
 	@Override
-	public void update() {
-		float p=Math.abs(car.getSpeed())/car.getMaxSpeed();
-		pitch=p;
-		
-		super.update();
+	public void tick() {
+		pitch=Math.abs(car.getSpeed())/car.getMaxSpeed();
+		super.tick();
 	}
 	
 	@Override

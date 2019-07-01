@@ -1,17 +1,16 @@
 package de.maxhenkel.car.blocks.tileentity.render;
 
-import net.minecraft.client.renderer.GlStateManager;
-import org.lwjgl.opengl.GL11;
+import com.mojang.blaze3d.platform.GlStateManager;
+import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 
 import de.maxhenkel.car.blocks.tileentity.TileEntityFuelStation;
 import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 
-public class TileentitySpecialRendererFuelStation extends TileEntitySpecialRenderer<TileEntityFuelStation>{
+public class TileentitySpecialRendererFuelStation extends TileEntityRenderer<TileEntityFuelStation> {
 
 	@Override
-	public void render(TileEntityFuelStation target, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
+	public void render(TileEntityFuelStation target, double x, double y, double z, float partialTicks, int destroyStage) {
 		String name = target.getRenderText();
 
 		if (name == null || name.isEmpty()) {
@@ -19,12 +18,12 @@ public class TileentitySpecialRendererFuelStation extends TileEntitySpecialRende
 		}
 
 		GlStateManager.pushMatrix();
-        GlStateManager.translate(x + 0.5, y + 1, z + 0.5);
-        GlStateManager.rotate(180.0F, 1.0F, 0.0F, 0.0F);
+		GlStateManager.translated(x + 0.5D, y + 1D, z + 0.5D);
+		GlStateManager.rotatef(180.0F, 1.0F, 0.0F, 0.0F);
 
-		EnumFacing dir=target.getDirection();
+		Direction dir=target.getDirection();
 
-        GlStateManager.rotate(-getDirection(dir), 0.0F, 1.0F, 0.0F);
+		GlStateManager.rotatef(-getDirection(dir), 0.0F, 1.0F, 0.0F);
 
 		FontRenderer renderer = getFontRenderer();
 
@@ -35,19 +34,19 @@ public class TileentitySpecialRendererFuelStation extends TileEntitySpecialRende
 
 			float posX=-(textScale * textWidth) / 2.0F;
 
-            GlStateManager.translate(posX, -0.815F, -0.188F);
+			GlStateManager.translatef(posX, -0.815F, -0.188F);
 
-            GlStateManager.scale(textScale, textScale, textScale);
+			GlStateManager.scalef(textScale, textScale, textScale);
 
-            GlStateManager.depthMask(false);
+			GlStateManager.depthMask(false);
 			renderer.drawString(name, 0, 0, 0);
-            GlStateManager.depthMask(true);
+			GlStateManager.depthMask(true);
 		}
 
-        GlStateManager.popMatrix();
+		GlStateManager.popMatrix();
 	}
 	
-	private int getDirection(EnumFacing facing) {
+	private int getDirection(Direction facing) {
 		switch (facing) {
 		case SOUTH:
 			return 0;

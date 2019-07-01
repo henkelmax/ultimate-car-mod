@@ -3,27 +3,27 @@ package de.maxhenkel.car.events;
 import de.maxhenkel.car.Config;
 import de.maxhenkel.car.entity.car.base.EntityVehicleBase;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.entity.Entity;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
-@SideOnly(Side.CLIENT)
+@OnlyIn(Dist.CLIENT)
 public class PlayerEvents {
 
 	private Minecraft minecraft;
 	private EntityVehicleBase lastVehicle;
 
 	public PlayerEvents() {
-		this.minecraft = Minecraft.getMinecraft();
+		this.minecraft = Minecraft.getInstance();
 		this.lastVehicle = null;
 	}
 
 	@SubscribeEvent
 	public void onPlayerTick(PlayerTickEvent evt) {
-		if (evt.side.equals(Side.SERVER)) {
+		if (evt.side.equals(Dist.DEDICATED_SERVER)) {
 			return;
 		}
 		
@@ -58,7 +58,7 @@ public class PlayerEvents {
 
 	}
 
-	private EntityPlayerSP getPlayer() {
+	private ClientPlayerEntity getPlayer() {
 		return minecraft.player;
 	}
 

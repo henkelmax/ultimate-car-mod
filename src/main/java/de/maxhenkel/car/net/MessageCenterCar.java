@@ -1,92 +1,93 @@
 package de.maxhenkel.car.net;
 
+import de.maxhenkel.car.Main;
 import de.maxhenkel.car.entity.car.base.EntityCarBase;
 import de.maxhenkel.car.entity.car.base.EntityCarBatteryBase;
-import de.maxhenkel.car.proxy.CommonProxy;
-import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraftforge.fml.common.network.NetworkRegistry;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
-import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.network.PacketBuffer;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fml.network.NetworkDirection;
+import net.minecraftforge.fml.network.NetworkEvent;
 
 import java.util.UUID;
 
-public class MessageCenterCar implements IMessage, IMessageHandler<MessageCenterCar, IMessage>{
+public class MessageCenterCar implements Message<MessageCenterCar> {
 
-	private UUID uuid;
+    private UUID uuid;
 
-	public MessageCenterCar() {
-		this.uuid=new UUID(0, 0);
-	}
-
-	public MessageCenterCar(EntityPlayer player) {
-		this.uuid=player.getUniqueID();
-	}
-
-    public MessageCenterCar(UUID uuid) {
-        this.uuid=uuid;
+    public MessageCenterCar() {
+        this.uuid = new UUID(0, 0);
     }
 
-	@Override
-	public IMessage onMessage(MessageCenterCar message, MessageContext ctx) {
-		if(ctx.side.equals(Side.SERVER)){
-			EntityPlayer player=ctx.getServerHandler().player;
-			
-			if(!player.getUniqueID().equals(message.uuid)){
-				return null;
-			}
-			
-			Entity riding=player.getRidingEntity();
-			
-			if(!(riding instanceof EntityCarBatteryBase)){
-				return null;
-			}
+    public MessageCenterCar(PlayerEntity player) {
+        this.uuid = player.getUniqueID();
+    }
 
-			EntityCarBatteryBase car=(EntityCarBatteryBase) riding;
-			if(player.equals(car.getDriver())){
-				car.centerCar();
-			}
+    public MessageCenterCar(UUID uuid) {
+        this.uuid = uuid;
+    }
 
-            CommonProxy.simpleNetworkWrapper.sendToAllAround(new MessageCenterCar(message.uuid), new NetworkRegistry.TargetPoint(car.dimension, car.posX, car.posY, car.posZ, 128));
-			
-		}else{
-            centerClient(message);
-		}
-		return null;
-	}
+    @OnlyIn(Dist.CLIENT.CLIENT)
+    public void centerClient() {
+        PlayerEntity player = Minecraft.getInstance().player;
+        PlayerEntity ridingPlayer = player.world.getPlayerByUuid(uuid);
+        Entity riding = ridingPlayer.getRidingEntity();
 
-	@Override
-	public void fromBytes(ByteBuf buf) {
-		long l1=buf.readLong();
-		long l2=buf.readLong();
-		this.uuid=new UUID(l1, l2);
-	}
+        if (!(riding instanceof EntityCarBase)) {
+            return;
+        }
 
-	@Override
-	public void toBytes(ByteBuf buf) {
-		buf.writeLong(uuid.getMostSignificantBits());
-		buf.writeLong(uuid.getLeastSignificantBits());
-	}
+        EntityCarBase car = (EntityCarBase) riding;
+        if (ridingPlayer.equals(car.getDriver())) {
+            car.centerCar();
+        }
+    }
 
-	@SideOnly(Side.CLIENT)
-	public void centerClient(MessageCenterCar message){
-		EntityPlayer player= Minecraft.getMinecraft().player;
-		EntityPlayer ridingPlayer=player.world.getPlayerEntityByUUID(message.uuid);
-		Entity riding=ridingPlayer.getRidingEntity();
+    @Override
+    public void executeServerSide(NetworkEvent.Context context) {
+        if (!context.getSender().getUniqueID().equals(uuid)) {
+            System.out.println("---------UUID was not the same-----------");
+            return;
+        }
 
-		if(!(riding instanceof EntityCarBase)){
-			return;
-		}
+        Entity riding = context.getSender().getRidingEntity();
 
-		EntityCarBase car=(EntityCarBase) riding;
-		if(ridingPlayer.equals(car.getDriver())){
-			car.centerCar();
-		}
-	}
+        if (!(riding instanceof EntityCarBatteryBase)) {
+            return;
+        }
 
+        EntityCarBatteryBase car = (EntityCarBatteryBase) riding;
+        if (context.getSender().equals(car.getDriver())) {
+            car.centerCar();
+        }
+
+        //TODO check if multiple instances
+        MessageCenterCar msg = new MessageCenterCar(uuid);
+        context.getSender().getServerWorld().getPlayers(player -> player.getDistance(car) <= 128F).forEach(player -> Main.SIMPLE_CHANNEL.sendTo(msg, player.connection.netManager, NetworkDirection.PLAY_TO_CLIENT));
+
+        //CommonProxy.simpleNetworkWrapper.sendToAllAround(, new NetworkRegistry.TargetPoint(car.dimension, car.posX, car.posY, car.posZ, 128));
+    }
+
+    @Override
+    public void executeClientSide(NetworkEvent.Context context) {
+        centerClient();
+    }
+
+    @Override
+    public MessageCenterCar fromBytes(PacketBuffer buf) {
+        long l1 = buf.readLong();
+        long l2 = buf.readLong();
+        this.uuid = new UUID(l1, l2);
+
+        return this;
+    }
+
+    @Override
+    public void toBytes(PacketBuffer buf) {
+        buf.writeLong(uuid.getMostSignificantBits());
+        buf.writeLong(uuid.getLeastSignificantBits());
+    }
 }

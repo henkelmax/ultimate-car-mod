@@ -3,16 +3,19 @@ package de.maxhenkel.car.entity.car.base;
 import de.maxhenkel.car.Config;
 import de.maxhenkel.car.sounds.ModSounds;
 import de.maxhenkel.car.sounds.SoundLoopStarting;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.entity.EntityType;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.particles.IParticleData;
+import net.minecraft.particles.ParticleType;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 public abstract class EntityCarBatteryBase extends EntityCarTemperatureBase {
 
@@ -23,7 +26,7 @@ public abstract class EntityCarBatteryBase extends EntityCarTemperatureBase {
     private static final DataParameter<Boolean> STARTING = EntityDataManager.<Boolean>createKey(EntityCarBatteryBase.class,
             DataSerializers.BOOLEAN);
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     private SoundLoopStarting startingLoop;
 
     //Server side
@@ -33,14 +36,14 @@ public abstract class EntityCarBatteryBase extends EntityCarTemperatureBase {
     //Client side
     private int timeSinceStarted;
 
-    public EntityCarBatteryBase(World worldIn) {
-        super(worldIn);
+    public EntityCarBatteryBase(EntityType type, World worldIn) {
+        super(type, worldIn);
     }
 
     // /summon car:car_wood ~ ~ ~ {"fuel": 1000, "battery":10000}
     @Override
-    public void onUpdate() {
-        super.onUpdate();
+    public void tick() {
+        super.tick();
 
         if (world.isRemote) {
             if (isStarted()) {
@@ -122,31 +125,31 @@ public abstract class EntityCarBatteryBase extends EntityCarTemperatureBase {
                     r = 0.3;
                 }
                 for (int i = 0; i <= count; i++) {
-                    spawnParticle(EnumParticleTypes.SMOKE_LARGE, offX, offY, offZ, speedX, speedZ, r);
+                    spawnParticle(ParticleTypes.LARGE_SMOKE, offX, offY, offZ, speedX, speedZ, r);
                 }
             } else {
-                spawnParticle(EnumParticleTypes.SMOKE_LARGE, offX, offY, offZ, speedX, speedZ);
+                spawnParticle(ParticleTypes.LARGE_SMOKE, offX, offY, offZ, speedX, speedZ);
             }
         } else if (driving) {
             double speedX = lookVec.x * -0.2D;
             double speedZ = lookVec.z * -0.2D;
-            spawnParticle(EnumParticleTypes.SMOKE_NORMAL, offX, offY, offZ, speedX, speedZ);
+            spawnParticle(ParticleTypes.SMOKE, offX, offY, offZ, speedX, speedZ);
         } else {
             double speedX = lookVec.x * -0.05D;
             double speedZ = lookVec.z * -0.05D;
-            spawnParticle(EnumParticleTypes.SMOKE_NORMAL, offX, offY, offZ, speedX, speedZ);
+            spawnParticle(ParticleTypes.SMOKE, offX, offY, offZ, speedX, speedZ);
         }
 
     }
 
-    private void spawnParticle(EnumParticleTypes particleTypes, double offX, double offY, double offZ, double speedX, double speedZ, double random) {
-        world.spawnParticle(particleTypes,
+    private void spawnParticle(IParticleData particleTypes, double offX, double offY, double offZ, double speedX, double speedZ, double random) {
+        world.addParticle(particleTypes,
                 posX + offX + (rand.nextDouble() * random),
-                posY + (rand.nextDouble() * random) + height / 8F,
+                posY + (rand.nextDouble() * random) + getCarHeight() / 8F,
                 posZ + offZ + (rand.nextDouble() * random), speedX, 0.0D, speedZ);
     }
 
-    private void spawnParticle(EnumParticleTypes particleTypes, double offX, double offY, double offZ, double speedX, double speedZ) {
+    private void spawnParticle(IParticleData particleTypes, double offX, double offY, double offZ, double speedX, double speedZ) {
         spawnParticle(particleTypes, offX, offY, offZ, speedX, speedZ, 0.1D);
     }
 
@@ -197,8 +200,8 @@ public abstract class EntityCarBatteryBase extends EntityCarTemperatureBase {
     }
 
     @Override
-    protected void entityInit() {
-        super.entityInit();
+    protected void registerData() {
+        super.registerData();
         this.dataManager.register(BATTERY_LEVEL, Integer.valueOf(getMaxBatteryLevel()));
         this.dataManager.register(STARTING_TIME, Integer.valueOf(0));
         this.dataManager.register(STARTING, Boolean.valueOf(false));
@@ -296,18 +299,18 @@ public abstract class EntityCarBatteryBase extends EntityCarTemperatureBase {
     }
 
     @Override
-    protected void readEntityFromNBT(NBTTagCompound compound) {
-        super.readEntityFromNBT(compound);
-        setBatteryLevel(compound.getInteger("battery"));
+    public void readAdditional(CompoundNBT compound) {
+        super.readAdditional(compound);
+        setBatteryLevel(compound.getInt("battery"));
     }
 
     @Override
-    protected void writeEntityToNBT(NBTTagCompound compound) {
-        super.writeEntityToNBT(compound);
-        compound.setInteger("battery", getBatteryLevel());
+    protected void writeAdditional(CompoundNBT compound) {
+        super.writeAdditional(compound);
+        compound.putInt("battery", getBatteryLevel());
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public void checkStartingLoop() {
         if (!isSoundPlaying(startingLoop)) {
             startingLoop = new SoundLoopStarting(world, this, getStartingSound(), SoundCategory.NEUTRAL);

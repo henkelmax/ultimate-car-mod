@@ -1,7 +1,8 @@
 package de.maxhenkel.car.entity.car.base;
 
 import de.maxhenkel.tools.MathTools;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.entity.EntityType;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
@@ -12,13 +13,13 @@ public abstract class EntityCarTemperatureBase extends EntityCarBase {
     private static final DataParameter<Float> TEMPERATURE = EntityDataManager.<Float>createKey(EntityCarTemperatureBase.class,
             DataSerializers.FLOAT);
 
-    public EntityCarTemperatureBase(World worldIn) {
-        super(worldIn);
+    public EntityCarTemperatureBase(EntityType type, World worldIn) {
+        super(type, worldIn);
     }
 
     @Override
-    public void onUpdate() {
-        super.onUpdate();
+    public void tick() {
+        super.tick();
 
         if (world.isRemote) {
             return;
@@ -82,21 +83,21 @@ public abstract class EntityCarTemperatureBase extends EntityCarBase {
     public abstract float getOptimalTemperature();
 
     @Override
-    protected void entityInit() {
-        super.entityInit();
+    protected void registerData() {
+        super.registerData();
         this.dataManager.register(TEMPERATURE, Float.valueOf(0F));
     }
 
     @Override
-    protected void readEntityFromNBT(NBTTagCompound compound) {
-        super.readEntityFromNBT(compound);
+    public void readAdditional(CompoundNBT compound) {
+        super.readAdditional(compound);
         setTemperature(compound.getFloat("temperature"));
     }
 
     @Override
-    protected void writeEntityToNBT(NBTTagCompound compound) {
-        super.writeEntityToNBT(compound);
-        compound.setFloat("temperature", getTemperature());
+    protected void writeAdditional(CompoundNBT compound) {
+        super.writeAdditional(compound);
+        compound.putFloat("temperature", getTemperature());
     }
 
     /**

@@ -1,22 +1,18 @@
 package de.maxhenkel.car.entity.car.base;
 
-import de.maxhenkel.car.blocks.BlockTank;
 import de.maxhenkel.tools.ItemTools;
-import de.maxhenkel.car.Main;
-import de.maxhenkel.car.gui.GuiHandler;
 import de.maxhenkel.car.items.ItemCanister;
 import de.maxhenkel.car.sounds.ModSounds;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.SoundEvents;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.InventoryBasic;
+import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumHand;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.Hand;
 import net.minecraft.util.SoundCategory;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidActionResult;
@@ -26,6 +22,7 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
+
 import javax.annotation.Nullable;
 
 public abstract class EntityCarInventoryBase extends EntityCarFuelBase implements IInventory {
@@ -36,17 +33,17 @@ public abstract class EntityCarInventoryBase extends EntityCarFuelBase implement
 
     protected FluidStack fluidInventory;
 
-    public EntityCarInventoryBase(World worldIn) {
-        super(worldIn);
+    public EntityCarInventoryBase(EntityType type, World worldIn) {
+        super(type, worldIn);
 
-        this.internalInventory = new InventoryBasic(getCarName().getUnformattedText(), false, 27);
-        this.externalInventory = new InventoryBasic(getCarName().getUnformattedText(), false, 0);
-        this.partInventory = new InventoryBasic(getCarName().getUnformattedText(), false, 15);
+        this.internalInventory = new Inventory(27);
+        this.externalInventory = new Inventory(0);
+        this.partInventory = new Inventory(15);
         this.fluidInventory = null;
     }
 
     @Override
-    public boolean processInitialInteract(EntityPlayer player, EnumHand hand) {
+    public boolean processInitialInteract(PlayerEntity player, Hand hand) {
         if (canPlayerAccessInventoryExternal(player) && player.isSneaking()) {
             //Canister
             ItemStack stack = player.getHeldItem(hand);
@@ -59,18 +56,18 @@ public abstract class EntityCarInventoryBase extends EntityCarFuelBase implement
                     }
                     return true;
                 }
-                if(getFluidInventorySize()>0){
-                    IFluidHandler handler = FluidUtil.getFluidHandler(stack);
+                if (getFluidInventorySize() > 0) {
+                    IFluidHandler handler = FluidUtil.getFluidHandler(stack).orElse(null);
                     if (handler != null) {
-                        FluidStack fluidStack = FluidUtil.getFluidContained(stack);
+                        FluidStack fluidStack = FluidUtil.getFluidContained(stack).orElse(null);
 
                         if (fluidStack != null) {
-                            if(handleEmpty(stack, getInventoryFluidHandler(), player, hand)){
+                            if (handleEmpty(stack, getInventoryFluidHandler(), player, hand)) {
                                 return true;
                             }
                         }
 
-                        if(handleFill(stack, getInventoryFluidHandler(), player, hand)){
+                        if (handleFill(stack, getInventoryFluidHandler(), player, hand)) {
                             return true;
                         }
                     }
@@ -79,9 +76,11 @@ public abstract class EntityCarInventoryBase extends EntityCarFuelBase implement
 
             //Inv
             if (externalInventory.getSizeInventory() <= 0) {
-                player.displayGUIChest(internalInventory);
+                //TODO gui
+                //player.displayGUIChest(internalInventory);
             } else {
-                player.displayGUIChest(externalInventory);
+                //TODO gui
+                //player.displayGUIChest(externalInventory);
             }
 
             return true;
@@ -89,7 +88,7 @@ public abstract class EntityCarInventoryBase extends EntityCarFuelBase implement
         return super.processInitialInteract(player, hand);
     }
 
-    public static boolean handleEmpty(ItemStack stack, IFluidHandler handler, EntityPlayer playerIn, EnumHand hand) {
+    public static boolean handleEmpty(ItemStack stack, IFluidHandler handler, PlayerEntity playerIn, Hand hand) {
         IItemHandler inv = new InvWrapper(playerIn.inventory);
 
         FluidActionResult res = FluidUtil.tryEmptyContainerAndStow(stack, handler, inv, Integer.MAX_VALUE, playerIn, true);
@@ -102,7 +101,7 @@ public abstract class EntityCarInventoryBase extends EntityCarFuelBase implement
         return false;
     }
 
-    public static boolean handleFill(ItemStack stack, IFluidHandler handler, EntityPlayer playerIn, EnumHand hand) {
+    public static boolean handleFill(ItemStack stack, IFluidHandler handler, PlayerEntity playerIn, Hand hand) {
         IItemHandler inv = new InvWrapper(playerIn.inventory);
 
         FluidActionResult result = FluidUtil.tryFillContainerAndStow(stack, handler, inv, Integer.MAX_VALUE,
@@ -118,7 +117,7 @@ public abstract class EntityCarInventoryBase extends EntityCarFuelBase implement
 
     public abstract int getFluidInventorySize();
 
-    public boolean canPlayerAccessInventoryExternal(EntityPlayer player) {
+    public boolean canPlayerAccessInventoryExternal(PlayerEntity player) {
         return true;
     }
 
@@ -127,7 +126,7 @@ public abstract class EntityCarInventoryBase extends EntityCarFuelBase implement
     }
 
     @Override
-    public void destroyCar(EntityPlayer player, boolean dropParts) {
+    public void destroyCar(PlayerEntity player, boolean dropParts) {
         super.destroyCar(player, dropParts);
 
         InventoryHelper.dropInventoryItems(world, this, this);
@@ -136,42 +135,42 @@ public abstract class EntityCarInventoryBase extends EntityCarFuelBase implement
     }
 
     @Override
-    public void openCarGUi(EntityPlayer player) {
+    public void openCarGUi(PlayerEntity player) {
         super.openCarGUi(player);
         if (!world.isRemote) {
-            player.openGui(Main.instance(), GuiHandler.GUI_CAR, world, player.getPosition().getX(), player.getPosition().getY(), player.getPosition().getZ());
+            //TODO gui
+            //player.openGui(Main.instance(), GuiHandler.GUI_CAR, world, player.getPosition().getX(), player.getPosition().getY(), player.getPosition().getZ());
         }
     }
 
     @Override
-    protected void readEntityFromNBT(NBTTagCompound compound) {
-        super.readEntityFromNBT(compound);
-
+    public void readAdditional(CompoundNBT compound) {
+        super.readAdditional(compound);
         ItemTools.readInventory(compound, "int_inventory", internalInventory);
 
-        this.externalInventory = new InventoryBasic(getCarName().getUnformattedText(), false, compound.getInteger("external_inventory_size"));
+        this.externalInventory = new Inventory(compound.getInt("external_inventory_size"));
         ItemTools.readInventory(compound, "external_inventory", externalInventory);
 
         ItemTools.readInventory(compound, "parts", partInventory);
 
-        if (compound.hasKey("fluid_inventory")) {
-            fluidInventory = FluidStack.loadFluidStackFromNBT(compound.getCompoundTag("fluid_inventory"));
+        if (compound.contains("fluid_inventory")) {
+            fluidInventory = FluidStack.loadFluidStackFromNBT(compound.getCompound("fluid_inventory"));
         }
     }
 
     @Override
-    protected void writeEntityToNBT(NBTTagCompound compound) {
-        super.writeEntityToNBT(compound);
+    protected void writeAdditional(CompoundNBT compound) {
+        super.writeAdditional(compound);
 
         ItemTools.saveInventory(compound, "int_inventory", internalInventory);
 
-        compound.setInteger("external_inventory_size", externalInventory.getSizeInventory());
+        compound.putInt("external_inventory_size", externalInventory.getSizeInventory());
         ItemTools.saveInventory(compound, "external_inventory", externalInventory);
 
         ItemTools.saveInventory(compound, "parts", partInventory);
 
         if (fluidInventory != null) {
-            compound.setTag("fluid_inventory", fluidInventory.writeToNBT(new NBTTagCompound()));
+            compound.put("fluid_inventory", fluidInventory.writeToNBT(new CompoundNBT()));
         }
     }
 
@@ -324,7 +323,7 @@ public abstract class EntityCarInventoryBase extends EntityCarFuelBase implement
     }
 
     @Override
-    public boolean isUsableByPlayer(EntityPlayer player) {
+    public boolean isUsableByPlayer(PlayerEntity player) {
         return internalInventory.isUsableByPlayer(player);
     }
 
@@ -334,12 +333,12 @@ public abstract class EntityCarInventoryBase extends EntityCarFuelBase implement
     }
 
     @Override
-    public void openInventory(EntityPlayer player) {
+    public void openInventory(PlayerEntity player) {
         internalInventory.openInventory(player);
     }
 
     @Override
-    public void closeInventory(EntityPlayer player) {
+    public void closeInventory(PlayerEntity player) {
         internalInventory.closeInventory(player);
     }
 
@@ -347,7 +346,7 @@ public abstract class EntityCarInventoryBase extends EntityCarFuelBase implement
     public boolean isItemValidForSlot(int index, ItemStack stack) {
         return internalInventory.isItemValidForSlot(index, stack);
     }
-
+/*
     @Override
     public int getField(int id) {
         return internalInventory.getField(id);
@@ -361,7 +360,7 @@ public abstract class EntityCarInventoryBase extends EntityCarFuelBase implement
     @Override
     public int getFieldCount() {
         return internalInventory.getFieldCount();
-    }
+    }*/
 
     @Override
     public void clear() {

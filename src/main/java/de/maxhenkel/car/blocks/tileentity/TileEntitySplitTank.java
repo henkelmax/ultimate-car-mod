@@ -1,108 +1,109 @@
 package de.maxhenkel.car.blocks.tileentity;
 
 import de.maxhenkel.car.Config;
+import de.maxhenkel.car.Main;
 import de.maxhenkel.car.fluids.ModFluids;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.client.renderer.texture.ITickable;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.InventoryBasic;
+import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.SPacketUpdateTileEntity;
-import net.minecraft.util.ITickable;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
 
 public class TileEntitySplitTank extends TileEntityBase implements ITickable, IFluidHandler, IInventory {
 
-	private int currentMix;
-	public int maxMix;
-	public int mixUsage;
+    private int currentMix;
+    public int maxMix;
+    public int mixUsage;
 
-	private int currentBioDiesel;
-	public int maxBioDiesel;
-	public int bioDieselGeneration;
+    private int currentBioDiesel;
+    public int maxBioDiesel;
+    public int bioDieselGeneration;
 
-	private int currentGlycerin;
-	public int maxGlycerin;
-	public int glycerinGeneration;
+    private int currentGlycerin;
+    public int maxGlycerin;
+    public int glycerinGeneration;
 
-	public int generatingTime;
-	private int timeToGenerate;
+    public int generatingTime;
+    private int timeToGenerate;
 
-	protected InventoryBasic inventory;
+    protected Inventory inventory;
 
-	public TileEntitySplitTank() {
-		this.inventory = new InventoryBasic("", false, 0);
-		this.currentMix = 0;
-		this.maxMix = Config.splitTankFluidStorage;
+    public TileEntitySplitTank() {
+        super(Main.SPLIT_TANK_TILE_ENTITY_TYPE);
+        this.inventory = new Inventory(0);
+        this.currentMix = 0;
+        this.maxMix = Config.splitTankFluidStorage;
 
-		this.currentBioDiesel = 0;
-		this.maxBioDiesel = Config.splitTankFluidStorage;
+        this.currentBioDiesel = 0;
+        this.maxBioDiesel = Config.splitTankFluidStorage;
 
-		this.currentGlycerin = 0;
-		this.maxGlycerin = Config.splitTankFluidStorage;
+        this.currentGlycerin = 0;
+        this.maxGlycerin = Config.splitTankFluidStorage;
 
-		this.generatingTime = Config.splitTankGeneratingTime;
-		this.timeToGenerate = 0;
+        this.generatingTime = Config.splitTankGeneratingTime;
+        this.timeToGenerate = 0;
 
-		this.mixUsage = Config.splitTankMixUsage;
-		this.glycerinGeneration = Config.splitTankGlycerinGeneration;
-		this.bioDieselGeneration = Config.splitTankBioDieselGeneration;
-	}
+        this.mixUsage = Config.splitTankMixUsage;
+        this.glycerinGeneration = Config.splitTankGlycerinGeneration;
+        this.bioDieselGeneration = Config.splitTankBioDieselGeneration;
+    }
 
-	@Override
-	public void update() {
-		if (world.isRemote) {
-			return;
-		}
+    @Override
+    public void tick() {
+        if (world.isRemote) {
+            return;
+        }
 
-		if (timeToGenerate > 0) {
-			timeToGenerate--;
+        if (timeToGenerate > 0) {
+            timeToGenerate--;
 
-			if (timeToGenerate == 0) {
+            if (timeToGenerate == 0) {
 
-				if (currentMix - mixUsage >= 0) {
-					currentMix -= mixUsage;
-					if (currentBioDiesel + bioDieselGeneration <= maxBioDiesel) {
-						currentBioDiesel += bioDieselGeneration;
-					}
-					if (currentGlycerin + glycerinGeneration <= maxGlycerin) {
-						currentGlycerin += glycerinGeneration;
-					}
-				}
-				// synchronize();
-			}
-		} else {
-			if (currentMix >= mixUsage) {
-				if (currentBioDiesel + bioDieselGeneration <= maxBioDiesel) {
-					if (currentGlycerin + glycerinGeneration <= maxGlycerin) {
-						timeToGenerate = generatingTime;
-					}
+                if (currentMix - mixUsage >= 0) {
+                    currentMix -= mixUsage;
+                    if (currentBioDiesel + bioDieselGeneration <= maxBioDiesel) {
+                        currentBioDiesel += bioDieselGeneration;
+                    }
+                    if (currentGlycerin + glycerinGeneration <= maxGlycerin) {
+                        currentGlycerin += glycerinGeneration;
+                    }
+                }
+                // synchronize();
+            }
+        } else {
+            if (currentMix >= mixUsage) {
+                if (currentBioDiesel + bioDieselGeneration <= maxBioDiesel) {
+                    if (currentGlycerin + glycerinGeneration <= maxGlycerin) {
+                        timeToGenerate = generatingTime;
+                    }
 
-				}
+                }
 
-			}
-		}
+            }
+        }
 
-		if (world.getTotalWorldTime() % 200 == 0) {
-			synchronize();
-		}
+        if (world.getGameTime() % 200 == 0) {
+            synchronize();
+        }
 
-		markDirty();
-	}
+        markDirty();
+    }
 
-	public float getBioDieselPerc() {
-		return ((float) currentBioDiesel) / ((float) maxBioDiesel);
-	}
+    public float getBioDieselPerc() {
+        return ((float) currentBioDiesel) / ((float) maxBioDiesel);
+    }
 
-	public float getGlycerinPerc() {
-		return ((float) currentGlycerin) / ((float) maxGlycerin);
-	}
-
+    public float getGlycerinPerc() {
+        return ((float) currentGlycerin) / ((float) maxGlycerin);
+    }
+/*
 	@Override
 	public int getField(int id) {
 		switch (id) {
@@ -136,209 +137,193 @@ public class TileEntitySplitTank extends TileEntityBase implements ITickable, IF
 			break;
 		}
 	}
-
-	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
-		compound.setInteger("mix", currentMix);
-		compound.setInteger("bio_diesel", currentBioDiesel);
-		compound.setInteger("glycerin", currentGlycerin);
-		compound.setInteger("time", timeToGenerate);
-		return super.writeToNBT(compound);
-	}
-
-	@Override
-	public void readFromNBT(NBTTagCompound compound) {
-		currentMix = compound.getInteger("mix");
-		currentBioDiesel = compound.getInteger("bio_diesel");
-		currentGlycerin = compound.getInteger("glycerin");
-		timeToGenerate = compound.getInteger("timeToGenerate");
-		super.readFromNBT(compound);
-	}
-
-	@Override
-	public SPacketUpdateTileEntity getUpdatePacket() {
-		return new SPacketUpdateTileEntity(this.pos, 1, getUpdateTag());
-	}
-
-	@Override
-	public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
-		this.readFromNBT(pkt.getNbtCompound());
-	}
-
-	@Override
-	public NBTTagCompound getUpdateTag() {
-		return this.writeToNBT(new NBTTagCompound());
-	}
-
 	@Override
 	public int getFieldCount() {
 		return 4;
 	}
-
 	@Override
 	public ITextComponent getDisplayName() {
 		return new TextComponentTranslation("tile.split_tank.name");
 	}
+	*/
 
-	@Override
-	public IFluidTankProperties[] getTankProperties() {
-		return new IFluidTankProperties[] { new IFluidTankProperties() {
+    @Override
+    public CompoundNBT write(CompoundNBT compound) {
+        compound.putInt("mix", currentMix);
+        compound.putInt("bio_diesel", currentBioDiesel);
+        compound.putInt("glycerin", currentGlycerin);
+        compound.putInt("time", timeToGenerate);
+        return super.write(compound);
+    }
 
-			@Override
-			public FluidStack getContents() {
-				return new FluidStack(ModFluids.CANOLA_METHANOL_MIX, currentMix);
-			}
+    @Override
+    public void read(CompoundNBT compound) {
+        currentMix = compound.getInt("mix");
+        currentBioDiesel = compound.getInt("bio_diesel");
+        currentGlycerin = compound.getInt("glycerin");
+        timeToGenerate = compound.getInt("timeToGenerate");
+        super.read(compound);
+    }
 
-			@Override
-			public int getCapacity() {
-				return maxMix;
-			}
+    @Override
+    public IFluidTankProperties[] getTankProperties() {
+        return new IFluidTankProperties[]{new IFluidTankProperties() {
 
-			@Override
-			public boolean canFillFluidType(FluidStack fluidStack) {
-				return fluidStack.getFluid().equals(ModFluids.CANOLA_METHANOL_MIX);
-			}
+            @Override
+            public FluidStack getContents() {
+                return new FluidStack(ModFluids.CANOLA_METHANOL_MIX, currentMix);
+            }
 
-			@Override
-			public boolean canFill() {
-				return true;
-			}
+            @Override
+            public int getCapacity() {
+                return maxMix;
+            }
 
-			@Override
-			public boolean canDrainFluidType(FluidStack fluidStack) {
-				return false;
-			}
+            @Override
+            public boolean canFillFluidType(FluidStack fluidStack) {
+                return fluidStack.getFluid().equals(ModFluids.CANOLA_METHANOL_MIX);
+            }
 
-			@Override
-			public boolean canDrain() {
-				return false;
-			}
-		}, new IFluidTankProperties() {
+            @Override
+            public boolean canFill() {
+                return true;
+            }
 
-			@Override
-			public FluidStack getContents() {
-				return new FluidStack(ModFluids.BIO_DIESEL, currentBioDiesel);
-			}
+            @Override
+            public boolean canDrainFluidType(FluidStack fluidStack) {
+                return false;
+            }
 
-			@Override
-			public int getCapacity() {
-				return maxBioDiesel;
-			}
+            @Override
+            public boolean canDrain() {
+                return false;
+            }
+        }, new IFluidTankProperties() {
 
-			@Override
-			public boolean canFillFluidType(FluidStack fluidStack) {
-				return false;
-			}
+            @Override
+            public FluidStack getContents() {
+                return new FluidStack(ModFluids.BIO_DIESEL, currentBioDiesel);
+            }
 
-			@Override
-			public boolean canFill() {
-				return false;
-			}
+            @Override
+            public int getCapacity() {
+                return maxBioDiesel;
+            }
 
-			@Override
-			public boolean canDrainFluidType(FluidStack fluidStack) {
-				return fluidStack.getFluid().equals(ModFluids.BIO_DIESEL);
-			}
+            @Override
+            public boolean canFillFluidType(FluidStack fluidStack) {
+                return false;
+            }
 
-			@Override
-			public boolean canDrain() {
-				return true;
-			}
-		}, new IFluidTankProperties() {
+            @Override
+            public boolean canFill() {
+                return false;
+            }
 
-			@Override
-			public FluidStack getContents() {
-				return new FluidStack(ModFluids.GLYCERIN, currentGlycerin);
-			}
+            @Override
+            public boolean canDrainFluidType(FluidStack fluidStack) {
+                return fluidStack.getFluid().equals(ModFluids.BIO_DIESEL);
+            }
 
-			@Override
-			public int getCapacity() {
-				return maxGlycerin;
-			}
+            @Override
+            public boolean canDrain() {
+                return true;
+            }
+        }, new IFluidTankProperties() {
 
-			@Override
-			public boolean canFillFluidType(FluidStack fluidStack) {
-				return false;
-			}
+            @Override
+            public FluidStack getContents() {
+                return new FluidStack(ModFluids.GLYCERIN, currentGlycerin);
+            }
 
-			@Override
-			public boolean canFill() {
-				return false;
-			}
+            @Override
+            public int getCapacity() {
+                return maxGlycerin;
+            }
 
-			@Override
-			public boolean canDrainFluidType(FluidStack fluidStack) {
-				return fluidStack.getFluid().equals(ModFluids.GLYCERIN);
-			}
+            @Override
+            public boolean canFillFluidType(FluidStack fluidStack) {
+                return false;
+            }
 
-			@Override
-			public boolean canDrain() {
-				return true;
-			}
-		} };
-	}
+            @Override
+            public boolean canFill() {
+                return false;
+            }
 
-	@Override
-	public int fill(FluidStack resource, boolean doFill) {
-		if (resource.getFluid().equals(ModFluids.CANOLA_METHANOL_MIX)) {
-			int amount = Math.min(maxMix - currentMix, resource.amount);
-			if (doFill) {
-				currentMix += amount;
-				markDirty();
-			}
-			return amount;
-		}
+            @Override
+            public boolean canDrainFluidType(FluidStack fluidStack) {
+                return fluidStack.getFluid().equals(ModFluids.GLYCERIN);
+            }
 
-		return 0;
-	}
+            @Override
+            public boolean canDrain() {
+                return true;
+            }
+        }};
+    }
 
-	@Override
-	public FluidStack drain(FluidStack resource, boolean doDrain) {
-		if (resource.getFluid().equals(ModFluids.GLYCERIN)) {
-			int amount = Math.min(resource.amount, currentGlycerin);
+    @Override
+    public int fill(FluidStack resource, boolean doFill) {
+        if (resource.getFluid().equals(ModFluids.CANOLA_METHANOL_MIX)) {
+            int amount = Math.min(maxMix - currentMix, resource.amount);
+            if (doFill) {
+                currentMix += amount;
+                markDirty();
+            }
+            return amount;
+        }
 
-			if (doDrain) {
-				currentGlycerin -= amount;
-				markDirty();
-			}
+        return 0;
+    }
 
-			return new FluidStack(ModFluids.GLYCERIN, amount);
-		} else if (resource.getFluid().equals(ModFluids.BIO_DIESEL)) {
-			int amount = Math.min(resource.amount, currentBioDiesel);
+    @Override
+    public FluidStack drain(FluidStack resource, boolean doDrain) {
+        if (resource.getFluid().equals(ModFluids.GLYCERIN)) {
+            int amount = Math.min(resource.amount, currentGlycerin);
 
-			if (doDrain) {
-				currentBioDiesel -= amount;
-				markDirty();
-			}
-			return new FluidStack(ModFluids.BIO_DIESEL, amount);
-		}
+            if (doDrain) {
+                currentGlycerin -= amount;
+                markDirty();
+            }
 
-		return null;
-	}
+            return new FluidStack(ModFluids.GLYCERIN, amount);
+        } else if (resource.getFluid().equals(ModFluids.BIO_DIESEL)) {
+            int amount = Math.min(resource.amount, currentBioDiesel);
 
-	@Override
-	public FluidStack drain(int maxDrain, boolean doDrain) {
-		if (currentGlycerin > currentBioDiesel) {
-			int amount = Math.min(maxDrain, currentGlycerin);
+            if (doDrain) {
+                currentBioDiesel -= amount;
+                markDirty();
+            }
+            return new FluidStack(ModFluids.BIO_DIESEL, amount);
+        }
 
-			if (doDrain) {
-				currentGlycerin -= amount;
-				markDirty();
-			}
+        return null;
+    }
 
-			return new FluidStack(ModFluids.GLYCERIN, amount);
-		} else {
-			int amount = Math.min(maxDrain, currentBioDiesel);
+    @Override
+    public FluidStack drain(int maxDrain, boolean doDrain) {
+        if (currentGlycerin > currentBioDiesel) {
+            int amount = Math.min(maxDrain, currentGlycerin);
 
-			if (doDrain) {
-				currentBioDiesel -= amount;
-				markDirty();
-			}
-			return new FluidStack(ModFluids.BIO_DIESEL, amount);
-		}
-	}
+            if (doDrain) {
+                currentGlycerin -= amount;
+                markDirty();
+            }
 
-	@Override
+            return new FluidStack(ModFluids.GLYCERIN, amount);
+        } else {
+            int amount = Math.min(maxDrain, currentBioDiesel);
+
+            if (doDrain) {
+                currentBioDiesel -= amount;
+                markDirty();
+            }
+            return new FluidStack(ModFluids.BIO_DIESEL, amount);
+        }
+    }
+
+	/*@Override
 	public String getName() {
 		return inventory.getName();
 	}
@@ -346,66 +331,66 @@ public class TileEntitySplitTank extends TileEntityBase implements ITickable, IF
 	@Override
 	public boolean hasCustomName() {
 		return inventory.hasCustomName();
-	}
+	}*/
 
-	@Override
-	public int getSizeInventory() {
-		return inventory.getSizeInventory();
-	}
+    @Override
+    public int getSizeInventory() {
+        return inventory.getSizeInventory();
+    }
 
-	@Override
-	public ItemStack getStackInSlot(int index) {
-		return inventory.getStackInSlot(index);
-	}
+    @Override
+    public ItemStack getStackInSlot(int index) {
+        return inventory.getStackInSlot(index);
+    }
 
-	@Override
-	public ItemStack decrStackSize(int index, int count) {
-		return inventory.decrStackSize(index, count);
-	}
+    @Override
+    public ItemStack decrStackSize(int index, int count) {
+        return inventory.decrStackSize(index, count);
+    }
 
-	@Override
-	public ItemStack removeStackFromSlot(int index) {
-		return inventory.removeStackFromSlot(index);
-	}
+    @Override
+    public ItemStack removeStackFromSlot(int index) {
+        return inventory.removeStackFromSlot(index);
+    }
 
-	@Override
-	public void setInventorySlotContents(int index, ItemStack stack) {
-		inventory.setInventorySlotContents(index, stack);
-	}
+    @Override
+    public void setInventorySlotContents(int index, ItemStack stack) {
+        inventory.setInventorySlotContents(index, stack);
+    }
 
-	@Override
-	public int getInventoryStackLimit() {
-		return inventory.getInventoryStackLimit();
-	}
+    @Override
+    public int getInventoryStackLimit() {
+        return inventory.getInventoryStackLimit();
+    }
 
-	@Override
-	public boolean isUsableByPlayer(EntityPlayer player) {
-		return inventory.isUsableByPlayer(player);
-	}
+    @Override
+    public boolean isUsableByPlayer(PlayerEntity player) {
+        return inventory.isUsableByPlayer(player);
+    }
 
-	@Override
-	public boolean isEmpty() {
-		return inventory.isEmpty();
-	}
-	
-	@Override
-	public void openInventory(EntityPlayer player) {
-		inventory.openInventory(player);
-	}
+    @Override
+    public boolean isEmpty() {
+        return inventory.isEmpty();
+    }
 
-	@Override
-	public void closeInventory(EntityPlayer player) {
-		inventory.closeInventory(player);
-	}
+    @Override
+    public void openInventory(PlayerEntity player) {
+        inventory.openInventory(player);
+    }
 
-	@Override
-	public boolean isItemValidForSlot(int index, ItemStack stack) {
-		return inventory.isItemValidForSlot(index, stack);
-	}
+    @Override
+    public void closeInventory(PlayerEntity player) {
+        inventory.closeInventory(player);
+    }
 
-	@Override
-	public void clear() {
-		inventory.clear();
-	}
+    @Override
+    public boolean isItemValidForSlot(int index, ItemStack stack) {
+        return inventory.isItemValidForSlot(index, stack);
+    }
+
+    @Override
+    public void clear() {
+        inventory.clear();
+    }
 
 }

@@ -1,106 +1,92 @@
 package de.maxhenkel.car.blocks;
 
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Maps;
+import de.maxhenkel.car.Main;
 import de.maxhenkel.car.ModCreativeTabs;
+import de.maxhenkel.tools.IItemBlock;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockRenderType;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
-import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
-import net.minecraft.block.properties.PropertyDirection;
-import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.util.EnumBlockRenderType;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.block.material.MaterialColor;
+import net.minecraft.item.BlockItem;
+import net.minecraft.item.BlockItemUseContext;
+import net.minecraft.item.Item;
+import net.minecraft.state.DirectionProperty;
+import net.minecraft.state.StateContainer;
+import net.minecraft.util.Direction;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
+import net.minecraft.util.math.shapes.ISelectionContext;
+import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IEnviromentBlockReader;
 
-public class BlockCrashBarrier extends Block {
+import javax.annotation.Nullable;
+import java.util.Map;
 
-	public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
+public class BlockCrashBarrier extends Block implements IItemBlock {
 
-	public static final AxisAlignedBB AABB_NORTH = new AxisAlignedBB(0, 0, 1 - 0.0625F, 1, 1, 1 - 3 * 0.0625F);
-	public static final AxisAlignedBB AABB_SOUTH = new AxisAlignedBB(0, 0, 0.0625F, 1, 1, 3 * 0.0625F);
-	public static final AxisAlignedBB AABB_EAST = new AxisAlignedBB(3 * 0.0625F, 0, 0, 0.0625F, 1, 1);
-	public static final AxisAlignedBB AABB_WEST = new AxisAlignedBB(1 - 0.0625F, 0, 0, 1 - 3 * 0.0625F, 1, 1);
+    public static final DirectionProperty FACING = DirectionProperty.create("facing", Direction.Plane.HORIZONTAL);
 
-	public BlockCrashBarrier() {
-		super(Material.IRON, MapColor.IRON);
-		setUnlocalizedName("crash_barrier");
-		setRegistryName("crash_barrier");
-		setHardness(2.0F);
-		setSoundType(SoundType.ANVIL);
-		setCreativeTab(ModCreativeTabs.TAB_CAR);
+    public static final VoxelShape SHAPE_NORTH = Block.makeCuboidShape(0D, 0D, 15D, 16D, 16D, 13D);
+    public static final VoxelShape SHAPE_SOUTH = Block.makeCuboidShape(0D, 0D, 1D, 16D, 16D, 13D);
+    public static final VoxelShape SHAPE_EAST = Block.makeCuboidShape(3D, 0D, 0D, 1D, 16D, 16D);
+    public static final VoxelShape SHAPE_WEST = Block.makeCuboidShape(15D, 0D, 0D, 13D, 16D, 16D);
 
-		setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
-	}
+    public BlockCrashBarrier() {
+        super(Properties.create(Material.IRON, MaterialColor.IRON).hardnessAndResistance(2F).sound(SoundType.ANVIL));
+        setRegistryName(new ResourceLocation(Main.MODID, "crash_barrier"));
 
-	@Override
-	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-		EnumFacing facing = state.getValue(FACING);
+        setDefaultState(stateContainer.getBaseState().with(FACING, Direction.NORTH));
+    }
 
-		switch (facing) {
-		case NORTH:
-			return AABB_NORTH;
-		case SOUTH:
-			return AABB_SOUTH;
-		case EAST:
-			return AABB_EAST;
-		case WEST:
-			return AABB_WEST;
-		default:
-			return AABB_NORTH;
-		}
-	}
+    @Override
+    public Item toItem() {
+        return new BlockItem(this, new Item.Properties().group(ModCreativeTabs.TAB_CAR)).setRegistryName(this.getRegistryName());
+    }
 
-	@Override
-	public boolean isOpaqueCube(IBlockState state) {
-		return false;
-	}
+    private static final Map<Direction, VoxelShape> SHAPES = Maps.newEnumMap(ImmutableMap.of(
+            Direction.NORTH,
+            SHAPE_NORTH,
+            Direction.SOUTH,
+            SHAPE_SOUTH,
+            Direction.EAST,
+            SHAPE_EAST,
+            Direction.WEST,
+            SHAPE_WEST
+    ));
 
-	@Override
-	public boolean isFullCube(IBlockState state) {
-		return false;
-	}
+    @Override
+    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
+        return SHAPES.get(state.get(FACING));
+    }
 
-	@Override
-	public boolean doesSideBlockRendering(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing face) {
-		return false;
-	}
+    @Override
+    public boolean isNormalCube(BlockState state, IBlockReader worldIn, BlockPos pos) {
+        return false;
+    }
 
-	@Override
-	public IBlockState getStateFromMeta(int meta) {
-		EnumFacing enumFacing = EnumFacing.getFront(meta);
+    @Override
+    public boolean doesSideBlockRendering(BlockState state, IEnviromentBlockReader world, BlockPos pos, Direction face) {
+        return false;
+    }
 
-		if (enumFacing.getAxis() == EnumFacing.Axis.Y) {
-			enumFacing = EnumFacing.NORTH;
-		}
+    @Nullable
+    @Override
+    public BlockState getStateForPlacement(BlockItemUseContext context) {
+        return this.getDefaultState().with(FACING, context.getPlacementHorizontalFacing());
+    }
 
-		return this.getDefaultState().withProperty(FACING, enumFacing);
-	}
+    @Override
+    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+        builder.add(FACING);
+    }
 
-	@Override
-	public int getMetaFromState(IBlockState state) {
-		return state.getValue(FACING).getIndex();
-	}
-
-	@Override
-	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, new IProperty[] { FACING });
-	}
-
-	@Override
-	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY,
-			float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
-		return this.getDefaultState().withProperty(FACING, placer.getHorizontalFacing());
-	}
-
-	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state) {
-		return EnumBlockRenderType.MODEL;
-	}
-
+    @Override
+    public BlockRenderType getRenderType(BlockState state) {
+        return BlockRenderType.MODEL;
+    }
 }

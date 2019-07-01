@@ -2,30 +2,30 @@ package de.maxhenkel.car;
 
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializer;
-import java.io.IOException;
+import net.minecraft.network.datasync.IDataSerializer;
+
 import java.util.Arrays;
 
 public class DataSerializerStringList {
 
-    public static final DataSerializer<String[]> STRING_LIST = new DataSerializer<String[]>() {
+    public static final IDataSerializer<String[]> STRING_LIST = new IDataSerializer<String[]>() {
 
         @Override
         public void write(PacketBuffer packetBuffer, String[] strings) {
             packetBuffer.writeInt(strings.length);
 
-            for(int i=0; i<strings.length; i++){
+            for (int i = 0; i < strings.length; i++) {
                 packetBuffer.writeString(strings[i]);
             }
         }
 
-        public String[] read(PacketBuffer buf) throws IOException {
-            int length=buf.readInt();
+        public String[] read(PacketBuffer buf) {
+            int length = buf.readInt();
 
-            String[] list=new String[length];
+            String[] list = new String[length];
 
-            for(int i=0; i<length; i++){
-                list[i]=buf.readString(128);
+            for (int i = 0; i < length; i++) {
+                list[i] = buf.readString(128);
             }
 
             return list;

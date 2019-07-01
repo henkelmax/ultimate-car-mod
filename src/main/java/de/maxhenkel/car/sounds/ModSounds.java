@@ -2,15 +2,15 @@ package de.maxhenkel.car.sounds;
 
 import de.maxhenkel.car.Main;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.audio.MovingSound;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.client.audio.TickableSound;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class ModSounds {
     public static SoundEvent ENGINE_STOP = registerSound("engine_stop");
@@ -39,11 +39,11 @@ public class ModSounds {
         return event;
     }
 
-    public static void playSound(SoundEvent evt, World world, BlockPos pos, EntityPlayer entity, SoundCategory category, float volume) {
+    public static void playSound(SoundEvent evt, World world, BlockPos pos, PlayerEntity entity, SoundCategory category, float volume) {
         playSound(evt, world, pos, entity, category, volume, 1.0F);
     }
 
-    public static void playSound(SoundEvent evt, World world, BlockPos pos, EntityPlayer entity, SoundCategory category, float volume, float pitch) {
+    public static void playSound(SoundEvent evt, World world, BlockPos pos, PlayerEntity entity, SoundCategory category, float volume, float pitch) {
         if (entity != null) {
             world.playSound(entity, pos, evt, category, volume, pitch);
         } else {
@@ -53,14 +53,14 @@ public class ModSounds {
         }
     }
 
-    public static void playSound(SoundEvent evt, World world, BlockPos pos, EntityPlayer entity, SoundCategory category) {
+    public static void playSound(SoundEvent evt, World world, BlockPos pos, PlayerEntity entity, SoundCategory category) {
         playSound(evt, world, pos, entity, category, 0.15F);
     }
 
-    @SideOnly(Side.CLIENT)
-    public static void playSoundLoop(MovingSound loop, World world) {
+    @OnlyIn(Dist.CLIENT)
+    public static void playSoundLoop(TickableSound loop, World world) {
         if (world.isRemote) {
-            Minecraft.getMinecraft().getSoundHandler().playSound(loop);
+            Minecraft.getInstance().getSoundHandler().play(loop);
         }
     }
 }

@@ -1,50 +1,49 @@
 package de.maxhenkel.car.blocks.tileentity.render;
 
-import net.minecraft.client.renderer.RenderHelper;
+import com.mojang.blaze3d.platform.GlStateManager;
+import net.minecraft.client.renderer.texture.AtlasTexture;
+import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
+import net.minecraft.util.Direction;
 import org.lwjgl.opengl.GL11;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.blocks.tileentity.TileEntityTank;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.renderer.texture.TextureMap;
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
-public class TileEntitySpecialRendererTank extends TileEntitySpecialRenderer<TileEntityTank> {
+public class TileEntitySpecialRendererTank extends TileEntityRenderer<TileEntityTank> {
 
 	public static final ResourceLocation LOCATION_TANK = new ResourceLocation(Main.MODID,
 			"textures/blocks/tank_line.png");
 
 	@Override
-	public void render(TileEntityTank te, double x, double y, double z, float f, int i, float alpha) {
+	public void render(TileEntityTank te, double x, double y, double z, float partialTicks, int destroyStage) {
 		GlStateManager.pushMatrix();
-		GlStateManager.translate(x, y, z);
+		GlStateManager.translated(x, y, z);
 
-        GlStateManager.disableLighting();
-        GlStateManager.enableBlend();
-        GlStateManager.enableAlpha();
-        GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+		GlStateManager.disableLighting();
+		GlStateManager.enableBlend();
+		GlStateManager.enableAlphaTest();
+		GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
 		double amount = te.getFillPercent();
 		FluidStack stack = te.getFluid();
 		if (amount > 0 && stack != null) {
-			bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
+			bindTexture(AtlasTexture.LOCATION_BLOCKS_TEXTURE);
 			renderFluid(te, stack.getFluid(), amount, 0.0D);
 		}
 
 		bindTexture(LOCATION_TANK);
 		renderLines(te);
 
-        GlStateManager.enableLighting();
-        GlStateManager.disableBlend();
-        GlStateManager.disableAlpha();
+		GlStateManager.enableLighting();
+		GlStateManager.disableBlend();
+		GlStateManager.disableAlphaTest();
 
 		GlStateManager.popMatrix();
 	}
@@ -52,7 +51,7 @@ public class TileEntitySpecialRendererTank extends TileEntitySpecialRenderer<Til
 	public static void renderFluid(TileEntityTank tank, Fluid fluid, double amount, double yStart) {
 		GlStateManager.pushMatrix();
 
-		TextureAtlasSprite texture = Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(fluid.getStill().toString());
+		TextureAtlasSprite texture = Minecraft.getInstance().getTextureMap().getAtlasSprite(fluid.getStill().toString());
 
 		double uMin = texture.getMinU();
 		double uMax = texture.getMaxU();
@@ -68,7 +67,7 @@ public class TileEntitySpecialRendererTank extends TileEntitySpecialRenderer<Til
 
 		float s = 0.0F;
 
-		if (!tank.isFluidConnected(EnumFacing.NORTH)) {
+		if (!tank.isFluidConnected(Direction.NORTH)) {
 			// North
 			buffer.pos(1D - s, yStart, 0D + s).tex(uMax, vMin).endVertex();
 			buffer.pos(0D + s, yStart, 0D + s).tex(uMin, vMin).endVertex();
@@ -76,7 +75,7 @@ public class TileEntitySpecialRendererTank extends TileEntitySpecialRenderer<Til
 			buffer.pos(1D - s, yStart + amount - s * 2D, 0D + s).tex(uMax, vMin + vHeight * amount).endVertex();
 		}
 
-		if (!tank.isFluidConnected(EnumFacing.SOUTH)) {
+		if (!tank.isFluidConnected(Direction.SOUTH)) {
 			// South
 			buffer.pos(1D - s, yStart, 1D - s).tex(uMin, vMin).endVertex();
 			buffer.pos(1D - s, yStart + amount - s * 2D, 1D - s).tex(uMin, vMin + vHeight * amount).endVertex();
@@ -84,7 +83,7 @@ public class TileEntitySpecialRendererTank extends TileEntitySpecialRenderer<Til
 			buffer.pos(0D + s, yStart, 1D - s).tex(uMax, vMin).endVertex();
 		}
 
-		if (!tank.isFluidConnected(EnumFacing.EAST)) {
+		if (!tank.isFluidConnected(Direction.EAST)) {
 			// East
 			buffer.pos(1D - s, yStart, 0D + s).tex(uMin, vMin).endVertex();
 			buffer.pos(1D - s, yStart + amount - s * 2D, 0D + s).tex(uMin, vMin + vHeight * amount).endVertex();
@@ -92,7 +91,7 @@ public class TileEntitySpecialRendererTank extends TileEntitySpecialRenderer<Til
 			buffer.pos(1D - s, yStart, 1D - s).tex(uMax, vMin).endVertex();
 		}
 
-		if (!tank.isFluidConnected(EnumFacing.WEST)) {
+		if (!tank.isFluidConnected(Direction.WEST)) {
 			// West
 			buffer.pos(0D + s, yStart, 1D - s).tex(uMin, vMin).endVertex();
 			buffer.pos(0D + s, yStart + amount - s * 2D, 1D - s).tex(uMin, vMin + vHeight * amount).endVertex();
@@ -100,7 +99,7 @@ public class TileEntitySpecialRendererTank extends TileEntitySpecialRenderer<Til
 			buffer.pos(0D + s, yStart, 0D + s).tex(uMax, vMin).endVertex();
 		}
 
-		if (!tank.isFluidConnected(EnumFacing.DOWN)) {
+		if (!tank.isFluidConnected(Direction.DOWN)) {
 			// Down
 			buffer.pos(1D - s, yStart, 0D + s).tex(uMax, vMin).endVertex();
 			buffer.pos(1D - s, yStart, 1D - s).tex(uMin, vMin).endVertex();
@@ -108,7 +107,7 @@ public class TileEntitySpecialRendererTank extends TileEntitySpecialRenderer<Til
 			buffer.pos(0D + s, yStart, 0D + s).tex(uMax, vMax).endVertex();
 		}
 
-		if (!tank.isFluidConnected(EnumFacing.UP)) {
+		if (!tank.isFluidConnected(Direction.UP)) {
 			// Up
 			buffer.pos(0D + s, yStart + amount - s * 2D, 0D + s).tex(uMax, vMax).endVertex();
 			buffer.pos(0D + s, yStart + amount - s * 2D, 1D - s).tex(uMin, vMax).endVertex();
@@ -122,7 +121,7 @@ public class TileEntitySpecialRendererTank extends TileEntitySpecialRenderer<Til
 	}
 
 	public static void renderLines(TileEntityTank te) {
-		for (EnumFacing facing : EnumFacing.values()) {
+		for (Direction facing : Direction.values()) {
 			if (!te.isTankConnectedTo(facing)) {
 				for (EnumDirection direction : EnumDirection.values()) {
 					if (!te.isTankConnectedTo(direction.to(facing))) {
@@ -133,7 +132,7 @@ public class TileEntitySpecialRendererTank extends TileEntitySpecialRenderer<Til
 		}
 	}
 
-	public static void drawLine(EnumFacing side, EnumDirection line) {
+	public static void drawLine(Direction side, EnumDirection line) {
 		GlStateManager.pushMatrix();
 
 		Tessellator tessellator = Tessellator.getInstance();
@@ -142,44 +141,44 @@ public class TileEntitySpecialRendererTank extends TileEntitySpecialRenderer<Til
 		buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
 		rotate(side);
 		// Resize a little bit
-		GlStateManager.scale(1.01D, 1.01D, 1.01D);
-		GlStateManager.translate(-0.005D, -0.005D, -0.005D);
+		GlStateManager.scaled(1.01D, 1.01D, 1.01D);
+		GlStateManager.translated(-0.005D, -0.005D, -0.005D);
 		drawSide(line, side, buffer);
 		tessellator.draw();
 
 		GlStateManager.popMatrix();
 	}
 
-	public static void rotate(EnumFacing facing) {
-		GlStateManager.translate(0.5D, 0.5D, 0.5D);
+	public static void rotate(Direction facing) {
+		GlStateManager.translated(0.5D, 0.5D, 0.5D);
 
 		switch (facing) {
 		case NORTH:
-			GlStateManager.rotate(0F, 0F, 1F, 0F);
+			GlStateManager.rotatef(0F, 0F, 1F, 0F);
 			break;
 		case SOUTH:
-			GlStateManager.rotate(180F, 0F, 1F, 0F);
+			GlStateManager.rotatef(180F, 0F, 1F, 0F);
 			break;
 		case EAST:
-			GlStateManager.rotate(270F, 0F, 1F, 0F);
+			GlStateManager.rotatef(270F, 0F, 1F, 0F);
 			break;
 		case WEST:
-			GlStateManager.rotate(90F, 0F, 1F, 0F);
+			GlStateManager.rotatef(90F, 0F, 1F, 0F);
 			break;
 		case UP:
-			GlStateManager.rotate(180F, 0F, 1F, 0F);
-			GlStateManager.rotate(90F, 1F, 0F, 0F);
+			GlStateManager.rotatef(180F, 0F, 1F, 0F);
+			GlStateManager.rotatef(90F, 1F, 0F, 0F);
 			break;
 		case DOWN:
-			GlStateManager.rotate(180F, 0F, 1F, 0F);
-			GlStateManager.rotate(270F, 1F, 0F, 0F);
+			GlStateManager.rotatef(180F, 0F, 1F, 0F);
+			GlStateManager.rotatef(270F, 1F, 0F, 0F);
 			break;
 		}
 
-		GlStateManager.translate(-0.5D, -0.5D, -0.5D);
+		GlStateManager.translated(-0.5D, -0.5D, -0.5D);
 	}
 
-	public static void drawSide(EnumDirection line, EnumFacing side, BufferBuilder buffer) {
+	public static void drawSide(EnumDirection line, Direction side, BufferBuilder buffer) {
 		switch (line) {
 		case UP:
 			// Top
@@ -237,76 +236,76 @@ public class TileEntitySpecialRendererTank extends TileEntitySpecialRenderer<Til
 	public enum EnumDirection {
 		UP, DOWN, LEFT, RIGHT;
 
-		public EnumFacing to(EnumFacing facing) {
+		public Direction to(Direction facing) {
 			switch (facing) {
 			case NORTH:
 				switch (this) {
 				case UP:
-					return EnumFacing.UP;
+					return Direction.UP;
 				case DOWN:
-					return EnumFacing.DOWN;
+					return Direction.DOWN;
 				case LEFT:
-					return EnumFacing.EAST;
+					return Direction.EAST;
 				case RIGHT:
-					return EnumFacing.WEST;
+					return Direction.WEST;
 				}
 			case SOUTH:
 				switch (this) {
 				case UP:
-					return EnumFacing.UP;
+					return Direction.UP;
 				case DOWN:
-					return EnumFacing.DOWN;
+					return Direction.DOWN;
 				case LEFT:
-					return EnumFacing.WEST;
+					return Direction.WEST;
 				case RIGHT:
-					return EnumFacing.EAST;
+					return Direction.EAST;
 				}
 			case EAST:
 				switch (this) {
 				case UP:
-					return EnumFacing.UP;
+					return Direction.UP;
 				case DOWN:
-					return EnumFacing.DOWN;
+					return Direction.DOWN;
 				case LEFT:
-					return EnumFacing.SOUTH;
+					return Direction.SOUTH;
 				case RIGHT:
-					return EnumFacing.NORTH;
+					return Direction.NORTH;
 				}
 			case WEST:
 				switch (this) {
 				case UP:
-					return EnumFacing.UP;
+					return Direction.UP;
 				case DOWN:
-					return EnumFacing.DOWN;
+					return Direction.DOWN;
 				case LEFT:
-					return EnumFacing.NORTH;
+					return Direction.NORTH;
 				case RIGHT:
-					return EnumFacing.SOUTH;
+					return Direction.SOUTH;
 				}
 			case UP:
 				switch (this) {
 				case UP:
-					return EnumFacing.NORTH;
+					return Direction.NORTH;
 				case DOWN:
-					return EnumFacing.SOUTH;
+					return Direction.SOUTH;
 				case LEFT:
-					return EnumFacing.WEST;
+					return Direction.WEST;
 				case RIGHT:
-					return EnumFacing.EAST;
+					return Direction.EAST;
 				}
 			case DOWN:
 				switch (this) {
 				case UP:
-					return EnumFacing.SOUTH;
+					return Direction.SOUTH;
 				case DOWN:
-					return EnumFacing.NORTH;
+					return Direction.NORTH;
 				case LEFT:
-					return EnumFacing.WEST;
+					return Direction.WEST;
 				case RIGHT:
-					return EnumFacing.EAST;
+					return Direction.EAST;
 				}
 			}
-			return EnumFacing.UP;
+			return Direction.UP;
 		}
 	}
 

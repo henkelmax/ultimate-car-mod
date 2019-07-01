@@ -1,22 +1,22 @@
 package de.maxhenkel.car.blocks.tileentity;
 
 import de.maxhenkel.car.Config;
+import de.maxhenkel.car.Main;
 import de.maxhenkel.car.blocks.ModBlocks;
 import de.maxhenkel.car.fluids.ModFluids;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.block.BlockState;
+import net.minecraft.client.renderer.texture.ITickable;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ITickable;
-import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
 
-public class TileEntityBackmixReactor extends TileEntityBase
-		implements ITickable, IFluidHandler, IEnergyStorage, IInventory {
+public class TileEntityBackmixReactor extends TileEntityBase implements ITickable, IFluidHandler, IEnergyStorage, IInventory {
 
 	public final int maxStorage;
 	protected int storedEnergy;
@@ -39,6 +39,7 @@ public class TileEntityBackmixReactor extends TileEntityBase
 	protected int timeToGenerate;
 
 	public TileEntityBackmixReactor() {
+		super(Main.BACKMIX_REACTOR_TILE_ENTITY_TYPE);
 		this.maxStorage = Config.backmixReactorEnergyStorage;
 		this.storedEnergy = 0;
 		this.energyUsage = Config.backmixReactorEnergyUsage;
@@ -58,9 +59,8 @@ public class TileEntityBackmixReactor extends TileEntityBase
 		this.methanolUsage = Config.backmixReactorMethanolUsage;
 		this.canolaUsage = Config.backmixReactorCanolaUsage;
 	}
-
 	@Override
-	public void update() {
+	public void tick() {
 		if (world.isRemote) {
 			return;
 		}
@@ -108,13 +108,13 @@ public class TileEntityBackmixReactor extends TileEntityBase
 	}
 
 	public void setBlockEnabled(boolean enabled) {
-		IBlockState state = world.getBlockState(getPos());
+		BlockState state = world.getBlockState(getPos());
 		if (state.getBlock().equals(ModBlocks.BACKMIX_REACTOR)) {
 			ModBlocks.BACKMIX_REACTOR.setPowered(world, pos, state, enabled);
 		}
 	}
 
-	@Override
+	/*@Override
 	public int getField(int id) {
 		switch (id) {
 		case 0:
@@ -152,30 +152,31 @@ public class TileEntityBackmixReactor extends TileEntityBase
 			break;
 		}
 	}
-	
-	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
-		compound.setInteger("stored_endergy", storedEnergy);
-		compound.setInteger("canola", currentCanola);
-		compound.setInteger("methanol", currentMethanol);
-		compound.setInteger("mix", currentMix);
-		compound.setInteger("time", timeToGenerate);
-		return super.writeToNBT(compound);
-	}
-	
-	@Override
-	public void readFromNBT(NBTTagCompound compound) {
-		storedEnergy=compound.getInteger("stored_endergy");
-		currentCanola=compound.getInteger("canola");
-		currentMethanol=compound.getInteger("methanol");
-		currentMix=compound.getInteger("mix");
-		timeToGenerate=compound.getInteger("time");
-		super.readFromNBT(compound);
-	}
 
 	@Override
 	public int getFieldCount() {
 		return 5;
+	}
+	*/
+
+	@Override
+	public CompoundNBT write(CompoundNBT compound) {
+		compound.putInt("stored_endergy", storedEnergy);
+		compound.putInt("canola", currentCanola);
+		compound.putInt("methanol", currentMethanol);
+		compound.putInt("mix", currentMix);
+		compound.putInt("time", timeToGenerate);
+		return super.write(compound);
+	}
+
+	@Override
+	public void read(CompoundNBT compound) {
+		storedEnergy=compound.getInt("stored_endergy");
+		currentCanola=compound.getInt("canola");
+		currentMethanol=compound.getInt("methanol");
+		currentMix=compound.getInt("mix");
+		timeToGenerate=compound.getInt("time");
+		super.read(compound);
 	}
 
 	@Override
@@ -321,15 +322,15 @@ public class TileEntityBackmixReactor extends TileEntityBase
 		return new FluidStack(ModFluids.CANOLA_METHANOL_MIX, amount);
 	}
 
-	@Override
+	/*@Override
 	public String getName() {
-		return new TextComponentTranslation("tile.backmix_reactor.name").getFormattedText();
+		return new TranslationTextComponent("tile.backmix_reactor.name").getFormattedText();
 	}
 
 	@Override
 	public boolean hasCustomName() {
 		return false;
-	}
+	}*/
 
 	@Override
 	public int getSizeInventory() {
@@ -362,17 +363,17 @@ public class TileEntityBackmixReactor extends TileEntityBase
 	}
 
 	@Override
-	public boolean isUsableByPlayer(EntityPlayer player) {
+	public boolean isUsableByPlayer(PlayerEntity player) {
 		return true;
 	}
 
 	@Override
-	public void openInventory(EntityPlayer player) {
+	public void openInventory(PlayerEntity player) {
 
 	}
 
 	@Override
-	public void closeInventory(EntityPlayer player) {
+	public void closeInventory(PlayerEntity player) {
 
 	}
 
@@ -427,4 +428,6 @@ public class TileEntityBackmixReactor extends TileEntityBase
 	public boolean canReceive() {
 		return true;
 	}
+
+
 }

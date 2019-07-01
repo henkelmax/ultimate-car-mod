@@ -3,13 +3,14 @@ package de.maxhenkel.car.entity.car.base;
 import de.maxhenkel.car.entity.car.parts.PartLicensePlateHolder;
 import de.maxhenkel.car.items.ItemLicensePlate;
 import de.maxhenkel.tools.ItemTools;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
@@ -18,18 +19,18 @@ public abstract class EntityCarLicensePlateBase extends EntityCarLockBase {
     private static final DataParameter<String> LICENSE_PLATE = EntityDataManager
             .<String>createKey(EntityCarLicensePlateBase.class, DataSerializers.STRING);
 
-    public EntityCarLicensePlateBase(World worldIn) {
-        super(worldIn);
+    public EntityCarLicensePlateBase(EntityType type, World worldIn) {
+        super(type, worldIn);
     }
 
     @Override
-    protected void entityInit() {
-        super.entityInit();
+    protected void registerData() {
+        super.registerData();
         this.dataManager.register(LICENSE_PLATE, "");
     }
 
     @Override
-    public boolean processInitialInteract(EntityPlayer player, EnumHand hand) {
+    public boolean processInitialInteract(PlayerEntity player, Hand hand) {
         if (player.isSneaking() && !isLocked()) {
             if (hasLicensePlateHolder()) {
                 ItemStack stack = player.getHeldItem(hand);
@@ -70,14 +71,14 @@ public abstract class EntityCarLicensePlateBase extends EntityCarLockBase {
     }
 
     @Override
-    protected void writeEntityToNBT(NBTTagCompound compound) {
-        super.writeEntityToNBT(compound);
-        compound.setString("license_plate", getLicensePlate());
+    protected void writeAdditional(CompoundNBT compound) {
+        super.writeAdditional(compound);
+        compound.putString("license_plate", getLicensePlate());
     }
 
     @Override
-    protected void readEntityFromNBT(NBTTagCompound compound) {
-        super.readEntityFromNBT(compound);
+    public void readAdditional(CompoundNBT compound) {
+        super.readAdditional(compound);
         setLicensePlate(compound.getString("license_plate"));
     }
 
