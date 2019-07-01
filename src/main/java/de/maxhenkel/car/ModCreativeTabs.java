@@ -14,7 +14,6 @@ public class ModCreativeTabs {
         public ItemStack createIcon() {
             return new ItemStack(ModBlocks.TAR);
         }
-
 		/*@Override
 		public void displayAllRelevantItems(NonNullList<ItemStack> list) {
 

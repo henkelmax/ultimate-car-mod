@@ -13,7 +13,6 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.IIntArray;
 import net.minecraft.util.text.ITextComponent;
@@ -353,5 +352,14 @@ public class TileEntityGenerator extends TileEntityBase implements ITickable, IF
     @Override
     public boolean canReceive() {
         return false;
+    }
+
+
+    public int getStoredEnergy() {
+        return storedEnergy;
+    }
+
+    public int getCurrentMillibuckets() {
+        return currentMillibuckets;
     }
 }

@@ -1,13 +1,20 @@
 package de.maxhenkel.car.gui;
 
+import de.maxhenkel.car.Main;
 import de.maxhenkel.car.blocks.tileentity.TileEntityBackmixReactor;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.IInventory;
 
-public class ContainerBackmixReactor extends ContainerBase{
-	
-	public ContainerBackmixReactor(int id, TileEntityBackmixReactor tileInv, PlayerInventory playerInv) {
-		super(null, id, tileInv, playerInv);
-		addInvSlots();
-	}
+public class ContainerBackmixReactor extends ContainerBase {
+
+    private TileEntityBackmixReactor backmixReactor;
+
+    public ContainerBackmixReactor(int id, TileEntityBackmixReactor backmixReactor, PlayerInventory playerInv) {
+        super(Main.BACKMIX_REACTOR_CONTAINER_TYPE, id, backmixReactor, playerInv);
+        this.backmixReactor = backmixReactor;
+        addInvSlots();
+    }
+
+    public TileEntityBackmixReactor getBackmixReactor() {
+        return backmixReactor;
+    }
 }

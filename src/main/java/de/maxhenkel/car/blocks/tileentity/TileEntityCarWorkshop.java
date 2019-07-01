@@ -104,11 +104,6 @@ public class TileEntityCarWorkshop extends TileEntityBase implements IInventory 
             placeStructure();
         }
     }
-/*
-    @Override
-    public ITextComponent getDisplayName() {
-        return new TranslationTextComponent("tile.car_workshop.name");
-    }*/
 
     /*
      * north=1 northeast=2 east=3 southeast=4 south=5 southwest=6 west=7
@@ -436,4 +431,8 @@ public class TileEntityCarWorkshop extends TileEntityBase implements IInventory 
         }
     }
 
+    @Override
+    public ITextComponent getDisplayName() {
+        return new TranslationTextComponent("block.car.car_workshop.name");
+    }
 }

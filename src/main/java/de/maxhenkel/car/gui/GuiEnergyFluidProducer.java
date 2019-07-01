@@ -3,21 +3,21 @@ package de.maxhenkel.car.gui;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.mojang.blaze3d.platform.GlStateManager;
 import de.maxhenkel.car.blocks.tileentity.TileEntityEnergyFluidProducer;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.container.Container;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
-public abstract class GuiEnergyFluidProducer extends GuiBase {
+public abstract class GuiEnergyFluidProducer<T extends ContainerEnergyFluidProducer> extends GuiBase<T> {
 
     private static final int fontColor = 4210752;
 
     private PlayerInventory playerInv;
     private TileEntityEnergyFluidProducer tile;
 
-    public GuiEnergyFluidProducer(ResourceLocation texture, ContainerEnergyFluidProducer container, PlayerInventory playerInventory, ITextComponent title) {
+    public GuiEnergyFluidProducer(ResourceLocation texture, T container, PlayerInventory playerInventory, ITextComponent title) {
         super(texture, container, playerInventory, title);
         this.playerInv = playerInventory;
         this.tile = container.getTile();
@@ -50,16 +50,16 @@ public abstract class GuiEnergyFluidProducer extends GuiBase {
         if (mouseX >= guiLeft + 11 && mouseX <= guiLeft + 16 + 11) {
             if (mouseY >= guiTop + 8 && mouseY <= guiTop + 57 + 8) {
                 List<String> list = new ArrayList<String>();
-                list.add(new TranslationTextComponent(getUnlocalizedTooltipEnergy(), tile.getField(1)).getFormattedText());
-                drawHoveringText(list, mouseX - guiLeft, mouseY - guiTop);
+                list.add(new TranslationTextComponent(getUnlocalizedTooltipEnergy(), tile.getStoredEnergy()).getFormattedText());
+                renderTooltip(list, mouseX - guiLeft, mouseY - guiTop);
             }
         }
 
         if (mouseX >= guiLeft + 148 && mouseX <= guiLeft + 16 + 148) {
             if (mouseY >= guiTop + 8 && mouseY <= guiTop + 57 + 8) {
                 List<String> list = new ArrayList<String>();
-                list.add(new TranslationTextComponent(getUnlocalizedTooltipLiquid(), tile.getField(2)).getFormattedText());
-                drawHoveringText(list, mouseX - guiLeft, mouseY - guiTop);
+                list.add(new TranslationTextComponent(getUnlocalizedTooltipLiquid(), tile.getCurrentMillibuckets()).getFormattedText());
+                renderTooltip(list, mouseX - guiLeft, mouseY - guiTop);
             }
         }
 
@@ -67,7 +67,7 @@ public abstract class GuiEnergyFluidProducer extends GuiBase {
             if (mouseY >= guiTop + 34 && mouseY <= guiTop + 17 + 34) {
                 List<String> list = new ArrayList<String>();
                 list.add(new TranslationTextComponent(getUnlocalizedTooltipProgress(), ((int) (getProgress() * 100F))).getFormattedText());
-                drawHoveringText(list, mouseX - guiLeft, mouseY - guiTop);
+                renderTooltip(list, mouseX - guiLeft, mouseY - guiTop);
             }
         }
 
@@ -122,29 +122,25 @@ public abstract class GuiEnergyFluidProducer extends GuiBase {
     }
 
     public float getEnergy() {
-        return ((float) tile.getField(1)) / ((float) tile.getMaxStorage());
+        return ((float) tile.getStoredEnergy()) / ((float) tile.getMaxStorage());
     }
 
     public float getFluid() {
-        return ((float) tile.getField(2)) / ((float) tile.getMaxMillibuckets());
+        return ((float) tile.getCurrentMillibuckets()) / ((float) tile.getMaxMillibuckets());
     }
 
     public float getProgress() {
-        if (tile.getField(0) == 0) {
+        if (tile.getTimeToGenerate() == 0) {
             return 0;
         }
 
-        int time = tile.getGeneratingTime() - tile.getField(0);
+        int time = tile.getGeneratingTime() - tile.getTimeToGenerate();
         return ((float) time) / ((float) tile.getGeneratingTime());
     }
 
     @Override
     protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
-        GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-        minecraft.getTextureManager().bindTexture(getGuiTexture());
-        int i = this.guiLeft;
-        int j = this.guiTop;
-        blit(i, j, 0, 0, this.xSize, this.ySize);
+        super.drawGuiContainerBackgroundLayer(partialTicks, mouseX, mouseY);
 
         drawEnergy();
         drawFluid();

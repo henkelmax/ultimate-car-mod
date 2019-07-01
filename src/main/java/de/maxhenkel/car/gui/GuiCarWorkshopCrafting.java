@@ -6,7 +6,6 @@ import de.maxhenkel.car.entity.car.base.EntityGenericCar;
 import de.maxhenkel.tools.MathTools;
 import de.maxhenkel.car.blocks.tileentity.TileEntityCarWorkshop;
 import de.maxhenkel.car.entity.car.base.EntityCarBase;
-import de.maxhenkel.car.net.MessageOpenGui;
 import de.maxhenkel.car.net.MessageSpawnCar;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.widget.button.Button;
@@ -16,7 +15,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
-public class GuiCarWorkshopCrafting extends GuiBase {
+public class GuiCarWorkshopCrafting extends GuiBase<ContainerCarWorkshopCrafting> {
 
     private static final ResourceLocation GUI_TEXTURE = new ResourceLocation(Main.MODID,
             "textures/gui/gui_car_workshop_crafting.png");
@@ -30,8 +29,8 @@ public class GuiCarWorkshopCrafting extends GuiBase {
     private Button buttonSpawn;
     private Button buttonRepair;
 
-    public GuiCarWorkshopCrafting(ContainerCarWorkshopCrafting container, PlayerInventory playerInventory) {
-        super(GUI_TEXTURE, container, playerInventory, new TranslationTextComponent("block.car.car_workshop"));
+    public GuiCarWorkshopCrafting(ContainerCarWorkshopCrafting container, PlayerInventory playerInventory, ITextComponent title) {
+        super(GUI_TEXTURE, container, playerInventory, title);
         this.player = playerInventory.player;
         this.tile = container.getTile();
 
@@ -43,13 +42,14 @@ public class GuiCarWorkshopCrafting extends GuiBase {
     protected void init() {
         super.init();
 
-        this.buttonRepair = addButton(new Button(guiLeft + 105, guiTop + 72, 60, 20, new TranslationTextComponent("button.repair_car").getFormattedText(), button -> {
+        buttonRepair = addButton(new Button(guiLeft + 105, guiTop + 72, 60, 20, new TranslationTextComponent("button.repair_car").getFormattedText(), button -> {
             if (tile.getWorld().isRemote) {
-                Main.SIMPLE_CHANNEL.sendToServer(new MessageOpenGui(tile.getPos(), GuiHandler.GUI_CAR_WORKSHOP_REPAIR, player).open(player));
+                //TODO gui
+                //Main.SIMPLE_CHANNEL.sendToServer(new MessageOpenGui(tile.getPos(), GuiHandler.GUI_CAR_WORKSHOP_REPAIR, player).open(player));
             }
         }));
 
-        this.buttonSpawn = addButton(new Button(guiLeft + 105, guiTop + 106, 60, 20, new TranslationTextComponent("button.spawn_car").getFormattedText(), button -> {
+        buttonSpawn = addButton(new Button(guiLeft + 105, guiTop + 106, 60, 20, new TranslationTextComponent("button.spawn_car").getFormattedText(), button -> {
             if (tile.getWorld().isRemote) {
                 if (tile.isCurrentCraftingCarValid()) {
                     Main.SIMPLE_CHANNEL.sendToServer(new MessageSpawnCar(tile.getPos()));
@@ -60,7 +60,7 @@ public class GuiCarWorkshopCrafting extends GuiBase {
                 }
             }
         }));
-        this.buttonSpawn.active = false;
+        buttonSpawn.active = false;
     }
 
     @Override
@@ -68,7 +68,7 @@ public class GuiCarWorkshopCrafting extends GuiBase {
         super.drawGuiContainerForegroundLayer(mouseX, mouseY);
 
         // Titles
-        font.drawString(tile.getDisplayName().getUnformattedText(), 8, 6, fontColor);
+        font.drawString(tile.getDisplayName().getFormattedText(), 8, 6, fontColor);
         font.drawString(playerInventory.getDisplayName().getFormattedText(), 8, ySize - 96 + 2,
                 fontColor);
 
@@ -95,15 +95,6 @@ public class GuiCarWorkshopCrafting extends GuiBase {
         if (!(rotoation < 360)) {
             rotoation = 0F;
         }
-    }
-
-    @Override
-    protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
-        GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-        minecraft.getTextureManager().bindTexture(GUI_TEXTURE);
-        int i = this.guiLeft;
-        int j = this.guiTop;
-        blit(i, j, 0, 0, this.xSize, this.ySize);
     }
 
     @Override

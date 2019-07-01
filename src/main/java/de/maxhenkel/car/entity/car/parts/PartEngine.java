@@ -2,7 +2,8 @@ package de.maxhenkel.car.entity.car.parts;
 
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.TranslationTextComponent;
+
 import java.util.List;
 
 public abstract class PartEngine extends Part {
@@ -54,9 +55,9 @@ public abstract class PartEngine extends Part {
     @Override
     public boolean validate(List<Part> parts, List<ITextComponent> messages) {
         if (getAmount(parts, part -> part instanceof PartTank) > 1) {
-            messages.add(new TextComponentTranslation("message.parts.too_many_tanks"));
+            messages.add(new TranslationTextComponent("message.parts.too_many_tanks"));
         } else if (getAmount(parts, part -> part instanceof PartTank) <= 0) {
-            messages.add(new TextComponentTranslation("message.parts.no_tank"));
+            messages.add(new TranslationTextComponent("message.parts.no_tank"));
         }
         return super.validate(parts, messages);
     }

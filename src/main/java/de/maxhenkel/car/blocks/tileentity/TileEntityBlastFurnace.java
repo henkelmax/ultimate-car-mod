@@ -5,10 +5,11 @@ import de.maxhenkel.car.Main;
 import de.maxhenkel.car.blocks.BlockGui;
 import de.maxhenkel.car.blocks.ModBlocks;
 import de.maxhenkel.car.fluids.ModFluids;
-import de.maxhenkel.tools.ItemTools;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.tileentity.TileEntityType;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.fluids.Fluid;
 
 public class TileEntityBlastFurnace extends TileEntityEnergyFluidProducer {
@@ -35,19 +36,18 @@ public class TileEntityBlastFurnace extends TileEntityEnergyFluidProducer {
         return new ItemStack(Items.CHARCOAL, 1);
     }
 
-    @Override
-    public boolean isValidItem(ItemStack stack) {
-        return ItemTools.matchesOredict(stack, "logWood");
+    public static boolean isValidItem(ItemStack stack) {
+        //return ItemTools.matchesOredict(stack, "logWood");//TODO oredict
+        return stack.getItem().getTags().contains(new ResourceLocation("minecraft", "log"));//TODO check if it works
     }
-/*
-	@Override
-	public ITextComponent getDisplayName() {
-		return new TextComponentTranslation("tile.blastfurnace.name");
-	}*/
 
     @Override
     public Fluid getProducingFluid() {
         return ModFluids.METHANOL;
     }
 
+    @Override
+    public ITextComponent getDisplayName() {
+        return new TranslationTextComponent("block.car.blastfurnace");
+    }
 }

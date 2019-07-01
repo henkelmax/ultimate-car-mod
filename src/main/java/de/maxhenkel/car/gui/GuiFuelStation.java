@@ -1,29 +1,22 @@
 package de.maxhenkel.car.gui;
 
 import java.awt.Color;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.mojang.blaze3d.platform.GlStateManager;
-import com.mojang.realmsclient.gui.ChatFormatting;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.tools.ItemTools;
 import de.maxhenkel.car.blocks.tileentity.TileEntityFuelStation;
 import de.maxhenkel.car.entity.car.base.EntityCarFuelBase;
-import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.widget.button.Button;
-import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.fluids.FluidStack;
 
-public class GuiFuelStation extends GuiBase {
+public class GuiFuelStation extends GuiBase<ContainerFuelStation> {
 
     private static final ResourceLocation GUI_TEXTURE = new ResourceLocation(Main.MODID,
             "textures/gui/gui_fuelstation.png");
@@ -38,8 +31,8 @@ public class GuiFuelStation extends GuiBase {
     protected Button buttonStart;
     protected Button buttonStop;
 
-    public GuiFuelStation(ContainerFuelStation fuelStation, PlayerInventory playerInventory) {
-        super(GUI_TEXTURE, fuelStation, playerInventory, new TranslationTextComponent("block.car.fuelstation"));
+    public GuiFuelStation(ContainerFuelStation fuelStation, PlayerInventory playerInventory, ITextComponent title) {
+        super(GUI_TEXTURE, fuelStation, playerInventory, title);
         this.fuelStation = fuelStation.getFuelStation();
         this.playerInventory = playerInventory;
 
@@ -65,12 +58,7 @@ public class GuiFuelStation extends GuiBase {
 
     @Override
     protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
-        // Background
-        GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-        minecraft.getTextureManager().bindTexture(GUI_TEXTURE);
-        int i = this.guiLeft;
-        int j = this.guiTop;
-        blit(i, j, 0, 0, this.xSize, this.ySize);
+        super.drawGuiContainerBackgroundLayer(partialTicks, mouseX, mouseY);
 
         // buttons
         buttonStart.active = !fuelStation.isFueling();
@@ -104,9 +92,9 @@ public class GuiFuelStation extends GuiBase {
         if (mouseX >= guiLeft + 18 && mouseX <= guiLeft + 33) {
             if (mouseY >= guiTop + 99 && mouseY <= guiTop + 114) {
                 List<String> list = new ArrayList<String>();
-                list.add(new TranslationTextComponent("tooltip.trade", stack.getCount(), stack.getDisplayName(), fuelStation.getField(2))
+                list.add(new TranslationTextComponent("tooltip.trade", stack.getCount(), stack.getDisplayName(), fuelStation.getTradeAmount())
                         .getFormattedText());
-                drawHoveringText(list, mouseX - guiLeft, mouseY - guiTop);
+                renderTooltip(list, mouseX - guiLeft, mouseY - guiTop);
             }
         }
     }
@@ -146,7 +134,7 @@ public class GuiFuelStation extends GuiBase {
 
     private void drawRefueled() {
         String refueledText = new TranslationTextComponent("fuelstation.refueled",
-                INFO_COLOR + String.valueOf(fuelStation.getField(0))).getFormattedText();
+                INFO_COLOR + String.valueOf(fuelStation.getFuelCounter())).getFormattedText();
 
         font.drawString(refueledText, guiLeft + 63, guiTop + 60, FONT_COLOR);
     }
@@ -163,7 +151,7 @@ public class GuiFuelStation extends GuiBase {
             return;
         }
 
-        int amount = fuelStation.getField(1);
+        int amount = fuelStation.getFuelAmount();
 
         String amountText = new TranslationTextComponent("fuelstation.fuel_buffer_amount",
                 INFO_COLOR + String.valueOf(amount), INFO_COLOR + String.valueOf(fuelStation.maxStorageAmount)).getFormattedText();

@@ -1,42 +1,39 @@
 package de.maxhenkel.car.items;
 
+import de.maxhenkel.car.Main;
 import de.maxhenkel.car.ModCreativeTabs;
 import de.maxhenkel.car.blocks.ModBlocks;
 import de.maxhenkel.tools.EnergyUtil;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.item.ItemUseContext;
+import net.minecraft.util.ActionResultType;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.energy.IEnergyStorage;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 public class ItemBattery extends Item {
 
-	public ItemBattery() {
-		setMaxStackSize(1);
-		setUnlocalizedName("battery");
-		setRegistryName("battery");
-		setCreativeTab(ModCreativeTabs.TAB_CAR);
-		setMaxDamage(500);
-	}
+    public ItemBattery() {
+        super(new Item.Properties().maxStackSize(1).group(ModCreativeTabs.TAB_CAR).maxDamage(500));
+        setRegistryName(new ResourceLocation(Main.MODID, "battery"));
+    }
 
-	@Override
-	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+    @Override
+    public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+        int damage = getMaxDamage(stack) - getDamage(stack);
 
-		int damage=getMaxDamage(stack)-getDamage(stack);
+        tooltip.add(new TranslationTextComponent("tooltip.battery_energy", damage));
+        tooltip.add(new TranslationTextComponent("tooltip.battery", damage));
 
-		tooltip.add(new TextComponentTranslation("tooltip.battery_energy", damage).getFormattedText());
-		tooltip.add(new TextComponentTranslation("tooltip.battery", damage).getFormattedText());
-
-		super.addInformation(stack, worldIn, tooltip, flagIn);
-	}
+        super.addInformation(stack, worldIn, tooltip, flagIn);
+    }
 
     @Override
     public boolean isEnchantable(ItemStack stack) {
@@ -44,22 +41,22 @@ public class ItemBattery extends Item {
     }
 
     @Override
-    public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-	    if(worldIn.getBlockState(pos).getBlock().equals(ModBlocks.GENERATOR)){
-            IEnergyStorage storage= EnergyUtil.getEnergyStorage(worldIn, pos, facing);
-            if(storage!=null){
-                ItemStack stack=player.getHeldItem(hand);
+    public ActionResultType onItemUse(ItemUseContext context) {
+        if (context.getWorld().getBlockState(context.getPos()).getBlock().equals(ModBlocks.GENERATOR)) {
+            IEnergyStorage storage = EnergyUtil.getEnergyStorage(context.getWorld(), context.getPos(), context.getFace());
+            if (storage != null) {
+                ItemStack stack = context.getPlayer().getHeldItem(context.getHand());
 
-                int energyToFill=stack.getItemDamage();
+                int energyToFill = stack.getDamage();
 
-                int amount=storage.extractEnergy(energyToFill, false);
+                int amount = storage.extractEnergy(energyToFill, false);
 
-                stack.setItemDamage(energyToFill-amount);
-                player.setHeldItem(hand, stack);
-                return EnumActionResult.SUCCESS;
+                stack.setDamage(energyToFill - amount);
+                context.getPlayer().setHeldItem(context.getHand(), stack);
+                return ActionResultType.SUCCESS;
             }
         }
 
-	    return super.onItemUse(player, worldIn, pos, hand, facing, hitX, hitY, hitZ);
+        return super.onItemUse(context);
     }
 }

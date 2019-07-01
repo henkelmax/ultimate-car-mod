@@ -5,7 +5,7 @@ import de.maxhenkel.car.entity.model.obj.OBJModel;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.TranslationTextComponent;
 
 import java.util.List;
 
@@ -27,7 +27,7 @@ public class PartTankContainer extends PartTransporterBack {
     public boolean validate(List<Part> parts, List<ITextComponent> messages) {
 
         if (Part.getAmount(parts, part -> part instanceof PartBodyTransporter) != 1) {
-            messages.add(new TextComponentTranslation("message.parts.no_body_for_tank_container"));
+            messages.add(new TranslationTextComponent("message.parts.no_body_for_tank_container"));
             return false;
         }
 

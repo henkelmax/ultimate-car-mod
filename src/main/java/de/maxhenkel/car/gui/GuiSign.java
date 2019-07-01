@@ -1,19 +1,16 @@
 package de.maxhenkel.car.gui;
 
-import java.io.IOException;
-
-import com.mojang.blaze3d.platform.GlStateManager;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.blocks.tileentity.TileEntitySign;
 import de.maxhenkel.car.net.MessageEditSign;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.gui.widget.button.Button;
-import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
-public class GuiSign extends GuiBase {
+public class GuiSign extends GuiBase<ContainerSign> {
 
     private static final ResourceLocation GUI_TEXTURE = new ResourceLocation(Main.MODID, "textures/gui/gui_sign.png");
 
@@ -36,8 +33,8 @@ public class GuiSign extends GuiBase {
 
     protected boolean front = true;
 
-    public GuiSign(ContainerSign containerSign) {
-        super(GUI_TEXTURE, containerSign, null, new TranslationTextComponent("block.car.sign"));
+    public GuiSign(ContainerSign containerSign, ITextComponent title) {
+        super(GUI_TEXTURE, containerSign, null, title);
         this.sign = containerSign.getSign();
         this.xSize = 176;
         this.ySize = 142;
@@ -120,17 +117,6 @@ public class GuiSign extends GuiBase {
     public void onClose() {
         super.onClose();
         //Keyboard.enableRepeatEvents(false);
-    }
-
-    @Override
-    protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
-        // Background
-        GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-        minecraft.getTextureManager().bindTexture(GUI_TEXTURE);
-        int i = this.guiLeft;
-        int j = this.guiTop;
-        blit(i, j, 0, 0, this.xSize, this.ySize);
-
     }
 
     private void save() {

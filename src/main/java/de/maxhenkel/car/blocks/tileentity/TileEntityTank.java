@@ -6,6 +6,8 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fluids.Fluid;
@@ -318,5 +320,10 @@ public class TileEntityTank extends TileEntityBase implements IFluidHandler, ITi
     @OnlyIn(Dist.CLIENT)
     public boolean isFluidConnected(Direction facing) {
         return sidesFluid[facing.getIndex()];
+    }
+
+    @Override
+    public ITextComponent getDisplayName() {
+        return new TranslationTextComponent("block.car.tank");
     }
 }

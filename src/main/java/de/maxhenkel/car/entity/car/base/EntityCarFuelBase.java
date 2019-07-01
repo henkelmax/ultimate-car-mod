@@ -11,7 +11,6 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
@@ -136,11 +135,12 @@ public abstract class EntityCarFuelBase extends EntityCarDamageBase implements I
 
     @Nullable
     public Fluid getFluid() {
+        //TODO fluid
         String fuelType = getFuelType();
         if (fuelType == null || fuelType.isEmpty()) {
             return null;
         }
-        return FluidRegistry.getFluid(fuelType);
+        return null;//FluidRegistry.getFluid(fuelType);//TODO
     }
 
     public int getFuelAmount() {

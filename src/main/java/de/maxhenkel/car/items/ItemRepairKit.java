@@ -2,36 +2,30 @@ package de.maxhenkel.car.items;
 
 import java.util.List;
 
-import de.maxhenkel.car.Config;
+import de.maxhenkel.car.Main;
 import de.maxhenkel.car.ModCreativeTabs;
-import de.maxhenkel.car.entity.car.base.EntityCarDamageBase;
-import de.maxhenkel.car.sounds.ModSounds;
-import de.maxhenkel.tools.ItemTools;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
+
+import javax.annotation.Nullable;
 
 public class ItemRepairKit extends Item {
 
-	public ItemRepairKit() {
-		setMaxStackSize(1);
-		setUnlocalizedName("repair_kit");
-		setRegistryName("repair_kit");
-		setCreativeTab(ModCreativeTabs.TAB_CAR);
-	}
-	
-	@Override
-	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-		tooltip.add(new TextComponentTranslation("tooltip.repair_kit_1").getUnformattedText());
-		tooltip.add(new TextComponentTranslation("tooltip.repair_kit_2").getUnformattedText());
-		super.addInformation(stack, worldIn, tooltip, flagIn);
-	}
+    public ItemRepairKit() {
+        super(new Item.Properties().maxStackSize(1).group(ModCreativeTabs.TAB_CAR));
+        setRegistryName(new ResourceLocation(Main.MODID, "repair_kit"));
+    }
+
+    @Override
+    public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+        tooltip.add(new TranslationTextComponent("tooltip.repair_kit_1"));
+        tooltip.add(new TranslationTextComponent("tooltip.repair_kit_2"));
+        super.addInformation(stack, worldIn, tooltip, flagIn);
+    }
 
 }

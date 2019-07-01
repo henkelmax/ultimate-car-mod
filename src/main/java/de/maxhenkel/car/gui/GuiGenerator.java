@@ -3,14 +3,14 @@ package de.maxhenkel.car.gui;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.mojang.blaze3d.platform.GlStateManager;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.blocks.tileentity.TileEntityGenerator;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
-public class GuiGenerator extends GuiBase {
+public class GuiGenerator extends GuiBase<ContainerGenerator> {
 
     private static final ResourceLocation GUI_TEXTURE = new ResourceLocation(Main.MODID,
             "textures/gui/gui_generator.png");
@@ -19,10 +19,10 @@ public class GuiGenerator extends GuiBase {
     private PlayerInventory playerInv;
     private TileEntityGenerator tile;
 
-    public GuiGenerator(ContainerGenerator containerGenerator, PlayerInventory playerInv) {
-        super(GUI_TEXTURE, containerGenerator, playerInv, new TranslationTextComponent("block.car.generator"));
+    public GuiGenerator(ContainerGenerator containerGenerator, PlayerInventory playerInv, ITextComponent title) {
+        super(GUI_TEXTURE, containerGenerator, playerInv, title);
         this.playerInv = playerInv;
-        this.tile = tile;
+        this.tile = containerGenerator.getGenerator();
 
         xSize = 176;
         ySize = 166;
@@ -35,34 +35,30 @@ public class GuiGenerator extends GuiBase {
         // Title
         font.drawString(playerInv.getDisplayName().getFormattedText(), 8, this.ySize - 96 + 2,
                 fontColor);
-        font.drawString(tile.getDisplayName().getUnformattedText(), 62, 6, fontColor);
+        font.drawString(tile.getDisplayName().getFormattedText(), 62, 6, fontColor);
 
         if (mouseX >= guiLeft + 122 && mouseX <= guiLeft + 16 + 122) {
             if (mouseY >= guiTop + 8 && mouseY <= guiTop + 57 + 8) {
                 List<String> list = new ArrayList<String>();
-                list.add(new TranslationTextComponent("tooltip.energy", tile.getField(0))
+                list.add(new TranslationTextComponent("tooltip.energy", tile.getStoredEnergy())
                         .getFormattedText());
-                drawHoveringText(list, mouseX - guiLeft, mouseY - guiTop);
+                renderTooltip(list, mouseX - guiLeft, mouseY - guiTop);
             }
         }
 
         if (mouseX >= guiLeft + 39 && mouseX <= guiLeft + 16 + 39) {
             if (mouseY >= guiTop + 8 && mouseY <= guiTop + 57 + 8) {
                 List<String> list = new ArrayList<String>();
-                list.add(new TranslationTextComponent("tooltip.fuel", tile.getField(1))
+                list.add(new TranslationTextComponent("tooltip.fuel", tile.getCurrentMillibuckets())
                         .getFormattedText());
-                drawHoveringText(list, mouseX - guiLeft, mouseY - guiTop);
+                renderTooltip(list, mouseX - guiLeft, mouseY - guiTop);
             }
         }
     }
 
     @Override
     protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
-        GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-        minecraft.getTextureManager().bindTexture(GUI_TEXTURE);
-        int i = this.guiLeft;
-        int j = this.guiTop;
-        blit(i, j, 0, 0, this.xSize, this.ySize);
+        super.drawGuiContainerBackgroundLayer(partialTicks, mouseX, mouseY);
 
         drawEnergy();
         drawFluid();
@@ -101,11 +97,11 @@ public class GuiGenerator extends GuiBase {
     }
 
     public float getEnergy() {
-        return ((float) tile.getField(0)) / ((float) tile.maxStorage);
+        return ((float) tile.getStoredEnergy()) / ((float) tile.maxStorage);
     }
 
     public float getFluid() {
-        return ((float) tile.getField(1)) / ((float) tile.maxMillibuckets);
+        return ((float) tile.getCurrentMillibuckets()) / ((float) tile.maxMillibuckets);
     }
 
 }

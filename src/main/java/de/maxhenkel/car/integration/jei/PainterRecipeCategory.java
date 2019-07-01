@@ -2,17 +2,17 @@ package de.maxhenkel.car.integration.jei;
 
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.items.ModItems;
-import mezz.jei.api.IGuiHelper;
-import mezz.jei.api.gui.IDrawable;
-import mezz.jei.api.gui.IGuiItemStackGroup;
 import mezz.jei.api.gui.IRecipeLayout;
+import mezz.jei.api.gui.drawable.IDrawable;
+import mezz.jei.api.gui.ingredient.IGuiItemStackGroup;
+import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.ingredients.IIngredients;
-import mezz.jei.api.recipe.IRecipeCategory;
+import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.TranslationTextComponent;
 
-public class PainterRecipeCategory implements IRecipeCategory<PainterRecipeWrapper>{
+public class PainterRecipeCategory implements IRecipeCategory<PainterRecipeWrapper> {
 
 	private IGuiHelper helper;
 
@@ -27,13 +27,28 @@ public class PainterRecipeCategory implements IRecipeCategory<PainterRecipeWrapp
 	}
 
 	@Override
-	public String getTitle() {
-		return new TextComponentTranslation("item.painter.name").getFormattedText();
+	public IDrawable getIcon() {
+		return helper.createDrawableIngredient(ModItems.PAINTER);
 	}
 
 	@Override
-	public String getUid() {
+	public void setIngredients(PainterRecipeWrapper painterRecipeWrapper, IIngredients iIngredients) {
+
+	}
+
+	@Override
+	public String getTitle() {
+		return new TranslationTextComponent("item.car.painter").getFormattedText();
+	}
+
+	@Override
+	public ResourceLocation getUid() {
 		return JEIPlugin.CATEGORY_PAINTER;
+	}
+
+	@Override
+	public Class<? extends PainterRecipeWrapper> getRecipeClass() {
+		return PainterRecipeWrapper.class;
 	}
 
 	@Override
@@ -44,13 +59,8 @@ public class PainterRecipeCategory implements IRecipeCategory<PainterRecipeWrapp
 		group.set(0, new ItemStack(ModItems.PAINTER));
 		
 		group.init(1, true, 58, 18);
-		group.set(1, new ItemStack(wrapper.getPaint()));
+//		group.set(1, new ItemStack(wrapper.getPaint())); //TODO
 		
-	}
-
-	@Override
-	public String getModName() {
-		return Main.MODID;
 	}
 
 }

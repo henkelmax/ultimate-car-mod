@@ -1,5 +1,6 @@
 package de.maxhenkel.car.gui;
 
+import de.maxhenkel.car.Main;
 import de.maxhenkel.car.blocks.tileentity.TileEntityFuelStation;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Slot;
@@ -9,7 +10,7 @@ public class ContainerFuelStation extends ContainerBase {
     private TileEntityFuelStation fuelStation;
 
     public ContainerFuelStation(int id, TileEntityFuelStation fuelStation, PlayerInventory playerInv) {
-        super(null, id, fuelStation, playerInv);
+        super(Main.FUEL_STATION_CONTAINER_TYPE, id, fuelStation, playerInv);
         this.fuelStation=fuelStation;
 
         addSlot(new SlotPresent(fuelStation.getTradingInventory().getStackInSlot(0), 18, 99));

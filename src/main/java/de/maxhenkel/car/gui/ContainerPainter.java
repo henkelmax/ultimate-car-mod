@@ -1,5 +1,6 @@
 package de.maxhenkel.car.gui;
 
+import de.maxhenkel.car.Main;
 import de.maxhenkel.car.blocks.BlockPaint;
 import net.minecraft.entity.player.PlayerInventory;
 
@@ -8,7 +9,7 @@ public class ContainerPainter extends ContainerBase {
     protected PlayerInventory playerInventory;
 
     public ContainerPainter(int id, PlayerInventory playerInventory, boolean isYellow) {
-        super(null, id, new InventoryPainter(isYellow), null);
+        super(Main.PAINTER_CONTAINER_TYPE, id, new InventoryPainter(isYellow), null);
         this.playerInventory = playerInventory;
 
         for (int j = 0; j < 4; j++) {

@@ -1,16 +1,15 @@
 package de.maxhenkel.car.items;
 
+import de.maxhenkel.car.Main;
 import de.maxhenkel.car.ModCreativeTabs;
 import net.minecraft.item.Item;
+import net.minecraft.util.ResourceLocation;
 
-public class ItemRepairTool extends Item{
+public class ItemRepairTool extends Item {
 
-	public ItemRepairTool(String name) {
-		setUnlocalizedName(name);
-		setRegistryName(name);
-		setCreativeTab(ModCreativeTabs.TAB_CAR);
-		setMaxDamage(200);
-		setMaxStackSize(1);
-	}
-	
+    public ItemRepairTool(String name) {
+        super(new Item.Properties().maxStackSize(1).maxDamage(200).group(ModCreativeTabs.TAB_CAR));
+        setRegistryName(new ResourceLocation(Main.MODID, name));
+    }
+
 }

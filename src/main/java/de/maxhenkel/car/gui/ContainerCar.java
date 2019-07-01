@@ -1,5 +1,6 @@
 package de.maxhenkel.car.gui;
 
+import de.maxhenkel.car.Main;
 import de.maxhenkel.car.entity.car.base.EntityCarInventoryBase;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Slot;
@@ -9,7 +10,7 @@ public class ContainerCar extends ContainerBase {
     protected EntityCarInventoryBase car;
 
     public ContainerCar(int id, EntityCarInventoryBase car, PlayerInventory playerInv) {
-        super(null, id, car, playerInv);
+        super(Main.CAR_CONTAINER_TYPE, id, car, playerInv);
         this.car = car;
 
         int numRows = car.getSizeInventory() / 9;

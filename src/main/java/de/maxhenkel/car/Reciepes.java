@@ -1,18 +1,9 @@
 package de.maxhenkel.car;
 
-import de.maxhenkel.car.blocks.ModBlocks;
-import de.maxhenkel.car.items.ModItems;
-import net.minecraft.block.BlockPlanks;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.EnumDyeColor;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.oredict.OreDictionary;
 
 public class Reciepes {
-
+    //TODO recipes
+/*
     public static void registerReciepes() {
 
         //Tar
@@ -461,6 +452,6 @@ public class Reciepes {
                 'W', new ItemStack(Items.EMERALD, 1),
                 'I', new ItemStack(ModItems.IRON_STICK, 1)
         );
-    }
+    }*/
 
 }

@@ -1,15 +1,15 @@
 package de.maxhenkel.car.gui;
 
-import com.mojang.blaze3d.platform.GlStateManager;
 import de.maxhenkel.car.Config;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.tools.MathTools;
 import de.maxhenkel.car.entity.car.base.EntityCarInventoryBase;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
-public class GuiCar extends GuiBase {
+public class GuiCar extends GuiBase<ContainerCar> {
 
     private static final ResourceLocation CAR_GUI_TEXTURE = new ResourceLocation(Main.MODID, "textures/gui/gui_car.png");
 
@@ -18,8 +18,8 @@ public class GuiCar extends GuiBase {
     private PlayerInventory playerInv;
     private EntityCarInventoryBase car;
 
-    public GuiCar(ContainerCar containerCar, PlayerInventory playerInv) {
-        super(CAR_GUI_TEXTURE, containerCar, playerInv, new TranslationTextComponent(""));//TODO title
+    public GuiCar(ContainerCar containerCar, PlayerInventory playerInv, ITextComponent title) {
+        super(CAR_GUI_TEXTURE, containerCar, playerInv, title);
         this.playerInv = playerInv;
         this.car = containerCar.getCar();
 
@@ -39,8 +39,6 @@ public class GuiCar extends GuiBase {
         font.drawString(getDamageString(), 7, 35, fontColor);
         font.drawString(getBatteryString(), 95, 9, fontColor);
         font.drawString(getTempString(), 95, 35, fontColor);
-
-        //drawCenteredString(fontRendererObj, new TextComponentTranslation("car.fuel_slot").getFormattedText(), 123, 28, fontColor);
 
     }
 
@@ -101,11 +99,7 @@ public class GuiCar extends GuiBase {
 
     @Override
     protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
-        GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-        minecraft.getTextureManager().bindTexture(CAR_GUI_TEXTURE);
-        int i = this.guiLeft;
-        int j = this.guiTop;
-        blit(i, j, 0, 0, this.xSize, this.ySize);
+        super.drawGuiContainerBackgroundLayer(partialTicks, mouseX, mouseY);
         drawFuel(getFuelPercent());
         drawDamage(100F - getDamagePercent());
         drawBattery(car.getBatteryPercentage());

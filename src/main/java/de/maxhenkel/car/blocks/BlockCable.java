@@ -109,44 +109,6 @@ public class BlockCable extends Block implements ITileEntityProvider, IItemBlock
 
         return shape;
     }
-    /*
-    @Override
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-
-        float x1 = 0.40625F;
-        float y1 = 0.40625F;
-        float z1 = 0.40625F;
-        float x2 = 0.59375F;
-        float y2 = 0.59375F;
-        float z2 = 0.59375F;
-
-
-        if (isConnectedTo(source, pos, EnumFacing.UP)) {
-            y2 = 1.0F;
-        }
-
-        if (isConnectedTo(source, pos, EnumFacing.DOWN)) {
-            y1 = 0.0F;
-        }
-
-        if (isConnectedTo(source, pos, EnumFacing.SOUTH)) {
-            z2 = 1.0F;
-        }
-
-        if (isConnectedTo(source, pos, EnumFacing.NORTH)) {
-            z1 = 0.0F;
-        }
-
-        if (isConnectedTo(source, pos, EnumFacing.EAST)) {
-            x2 = 1.0F;
-        }
-
-        if (isConnectedTo(source, pos, EnumFacing.WEST)) {
-            x1 = 0.0F;
-        }
-
-        return new AxisAlignedBB(x1, y1, z1, x2, y2, z2);
-    }*/
 
 
     public static boolean isConnectedTo(IWorldReader world, BlockPos pos, Direction facing) {
@@ -161,7 +123,6 @@ public class BlockCable extends Block implements ITileEntityProvider, IItemBlock
         if (te == null || te.getCapability(CapabilityEnergy.ENERGY, facing.getOpposite()).isPresent()) {
             return false;
         }
-        // te.getCapability(CapabilityEnergy.ENERGY, side.getOpposite());
         return true;
     }
 

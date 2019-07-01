@@ -1,15 +1,15 @@
 package de.maxhenkel.car.gui;
 
-import com.mojang.blaze3d.platform.GlStateManager;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.blocks.tileentity.TileEntityFluidExtractor;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
-public class GuiFluidExtractor extends GuiBase {
+public class GuiFluidExtractor extends GuiBase<ContainerFluidExtractor> {
 
     private static final ResourceLocation GUI_TEXTURE = new ResourceLocation(Main.MODID,
             "textures/gui/gui_fluid_extractor.png");
@@ -18,8 +18,8 @@ public class GuiFluidExtractor extends GuiBase {
     private PlayerInventory playerInv;
     private TileEntityFluidExtractor tile;
 
-    public GuiFluidExtractor(ContainerFluidExtractor container, PlayerInventory player) {
-        super(GUI_TEXTURE, container, player, new TranslationTextComponent("block.car.fluid.extractor"));
+    public GuiFluidExtractor(ContainerFluidExtractor container, PlayerInventory player, ITextComponent title) {
+        super(GUI_TEXTURE, container, player, title);
         this.playerInv = player;
         this.tile = tile;
 
@@ -34,7 +34,7 @@ public class GuiFluidExtractor extends GuiBase {
         // Title
         font.drawString(playerInv.getDisplayName().getFormattedText(), 8, this.ySize - 96 + 2,
                 fontColor);
-        font.drawString(tile.getDisplayName().getUnformattedText(), 8, 6, fontColor);
+        font.drawString(tile.getDisplayName().getFormattedText(), 8, 6, fontColor);
 
         drawFilter();
     }
@@ -49,15 +49,6 @@ public class GuiFluidExtractor extends GuiBase {
         }
 
         font.drawString(new TranslationTextComponent("filter.fluid", name).getFormattedText(), 46, 28, fontColor);
-    }
-
-    @Override
-    protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
-        GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-        minecraft.getTextureManager().bindTexture(GUI_TEXTURE);
-        int i = this.guiLeft;
-        int j = this.guiTop;
-        blit(i, j, 0, 0, this.xSize, this.ySize);
     }
 
 }

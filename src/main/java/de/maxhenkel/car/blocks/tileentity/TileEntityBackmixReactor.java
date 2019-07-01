@@ -10,7 +10,9 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tileentity.TileEntityType;
+import net.minecraft.util.IIntArray;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
@@ -59,6 +61,48 @@ public class TileEntityBackmixReactor extends TileEntityBase implements ITickabl
 		this.methanolUsage = Config.backmixReactorMethanolUsage;
 		this.canolaUsage = Config.backmixReactorCanolaUsage;
 	}
+
+	public final IIntArray FIELDS = new IIntArray() {
+		public int get(int index) {
+			switch (index) {
+				case 0:
+					return storedEnergy;
+				case 1:
+					return currentCanola;
+				case 2:
+					return currentMethanol;
+				case 3:
+					return currentMix;
+				case 4:
+					return timeToGenerate;
+			}
+			return 0;
+		}
+
+		public void set(int index, int value) {
+			switch (index) {
+				case 0:
+					storedEnergy = value;
+					break;
+				case 1:
+					currentCanola = value;
+					break;
+				case 2:
+					currentMethanol = value;
+					break;
+				case 3:
+					currentMix = value;
+					break;
+				case 4:
+					timeToGenerate = value;
+					break;
+			}
+		}
+		public int size() {
+			return 5;
+		}
+	};
+
 	@Override
 	public void tick() {
 		if (world.isRemote) {
@@ -113,51 +157,6 @@ public class TileEntityBackmixReactor extends TileEntityBase implements ITickabl
 			ModBlocks.BACKMIX_REACTOR.setPowered(world, pos, state, enabled);
 		}
 	}
-
-	/*@Override
-	public int getField(int id) {
-		switch (id) {
-		case 0:
-			return storedEnergy;
-		case 1:
-			return currentCanola;
-		case 2:
-			return currentMethanol;
-		case 3:
-			return currentMix;
-		case 4:
-			return timeToGenerate;
-		}
-
-		return 0;
-	}
-
-	@Override
-	public void setField(int id, int value) {
-		switch (id) {
-		case 0:
-			storedEnergy = value;
-			break;
-		case 1:
-			currentCanola = value;
-			break;
-		case 2:
-			currentMethanol = value;
-			break;
-		case 3:
-			currentMix = value;
-			break;
-		case 4:
-			timeToGenerate = value;
-			break;
-		}
-	}
-
-	@Override
-	public int getFieldCount() {
-		return 5;
-	}
-	*/
 
 	@Override
 	public CompoundNBT write(CompoundNBT compound) {
@@ -322,16 +321,6 @@ public class TileEntityBackmixReactor extends TileEntityBase implements ITickabl
 		return new FluidStack(ModFluids.CANOLA_METHANOL_MIX, amount);
 	}
 
-	/*@Override
-	public String getName() {
-		return new TranslationTextComponent("tile.backmix_reactor.name").getFormattedText();
-	}
-
-	@Override
-	public boolean hasCustomName() {
-		return false;
-	}*/
-
 	@Override
 	public int getSizeInventory() {
 		return 0;
@@ -429,5 +418,28 @@ public class TileEntityBackmixReactor extends TileEntityBase implements ITickabl
 		return true;
 	}
 
+	public int getCurrentCanola() {
+		return currentCanola;
+	}
 
+	public int getCurrentMethanol() {
+		return currentMethanol;
+	}
+
+	public int getCurrentMix() {
+		return currentMix;
+	}
+
+	public int getStoredEnergy() {
+		return storedEnergy;
+	}
+
+	public int getTimeToGenerate() {
+		return timeToGenerate;
+	}
+
+	@Override
+	public ITextComponent getDisplayName() {
+		return new TranslationTextComponent("block.car.backmix_reactor");
+	}
 }

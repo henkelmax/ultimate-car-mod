@@ -1,67 +1,56 @@
 package de.maxhenkel.car.integration.jei;
 
-import java.util.ArrayList;
-import java.util.List;
-import de.maxhenkel.car.blocks.BlockPaint;
+import java.util.Arrays;
+import de.maxhenkel.car.Main;
 import de.maxhenkel.car.blocks.ModBlocks;
 import de.maxhenkel.car.items.ModItems;
-import mezz.jei.api.IJeiRuntime;
 import mezz.jei.api.IModPlugin;
-import mezz.jei.api.IModRegistry;
-import mezz.jei.api.ISubtypeRegistry;
-import mezz.jei.api.ingredients.IModIngredientRegistration;
-import mezz.jei.api.ingredients.VanillaTypes;
-import mezz.jei.api.recipe.IRecipeCategoryRegistration;
+import mezz.jei.api.registration.*;
+import mezz.jei.api.runtime.IJeiRuntime;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 
-@mezz.jei.api.JEIPlugin
+@mezz.jei.api.JeiPlugin
 public class JEIPlugin implements IModPlugin {
 
-    public static final String CATEGORY_CAR_WORKSHOP = "car.carworkshop";
-    public static final String CATEGORY_PAINTER = "car.painter";
-    public static final String CATEGORY_PAINTER_YELLOW = "car.painter_yellow";
+    public static final ResourceLocation CATEGORY_CAR_WORKSHOP = new ResourceLocation(Main.MODID, "carworkshop");
+    public static final ResourceLocation CATEGORY_PAINTER = new ResourceLocation(Main.MODID, "painter");
+    public static final ResourceLocation CATEGORY_PAINTER_YELLOW = new ResourceLocation(Main.MODID, "painter_yellow");
 
     @Override
     public void onRuntimeAvailable(IJeiRuntime runtime) {
 
     }
 
-    @Override
-    public void register(IModRegistry registry) {
-       /* // Car Workshop
-        registry.handleRecipes(ICarRecipe.class, new CarRecipeWrapperFactory(), JEIPlugin.CATEGORY_CAR_WORKSHOP);
 
-        List<CarRecipeWrapper> recipes = new ArrayList<CarRecipeWrapper>();
-        for (ICarRecipe recipe : CarCraftingRegistry.REGISTRY) {
-            recipes.add(new CarRecipeWrapper(recipe));
-        }*/
-        //registry.addRecipes(recipes, JEIPlugin.CATEGORY_CAR_WORKSHOP);
-        registry.addRecipeCatalyst(new ItemStack(ModBlocks.CAR_WORKSHOP), JEIPlugin.CATEGORY_CAR_WORKSHOP);
-        registry.addIngredientInfo(new ItemStack(ModBlocks.CAR_WORKSHOP), VanillaTypes.ITEM, "description.car_workshop");
+    @Override
+    public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
+        registration.addRecipeCatalyst(new ItemStack(ModBlocks.CAR_WORKSHOP), JEIPlugin.CATEGORY_CAR_WORKSHOP);
+        registration.addRecipeCatalyst(new ItemStack(ModItems.PAINTER), JEIPlugin.CATEGORY_PAINTER);
+        registration.addRecipeCatalyst(new ItemStack(ModItems.PAINTER_YELLOW), JEIPlugin.CATEGORY_PAINTER_YELLOW);
+    }
+
+    @Override
+    public void registerRecipes(IRecipeRegistration registration) {
+        registration.addRecipes(Arrays.asList(ModBlocks.PAINTS), JEIPlugin.CATEGORY_PAINTER);
+        registration.addRecipes(Arrays.asList(ModBlocks.YELLOW_PAINTS), JEIPlugin.CATEGORY_PAINTER_YELLOW);
+
+    }
+
+    @Override
+    public void registerIngredients(IModIngredientRegistration registry) {
+        //TODO descriptions -> https://github.com/mezz/JustEnoughItems/blob/1.14/src/main/java/mezz/jei/plugins/vanilla/VanillaPlugin.java
+        /*registry.addIngredientInfo(new ItemStack(ModBlocks.CAR_WORKSHOP), VanillaTypes.ITEM, "description.car_workshop");
         registry.addIngredientInfo(new ItemStack(ModBlocks.CAR_WORKSHOP_OUTTER), VanillaTypes.ITEM,
                 "description.car_workshop_outter");
 
         // Line Painter
         registry.handleRecipes(BlockPaint.class, new PainterRecipeWrapperFactory(), JEIPlugin.CATEGORY_PAINTER);
 
-        List<PainterRecipeWrapper> paints = new ArrayList<PainterRecipeWrapper>();
-        for (BlockPaint paint : ModBlocks.PAINTS) {
-            paints.add(new PainterRecipeWrapper(paint));
-        }
-        registry.addRecipes(paints, JEIPlugin.CATEGORY_PAINTER);
-        registry.addRecipeCatalyst(new ItemStack(ModItems.PAINTER), JEIPlugin.CATEGORY_PAINTER);
-
         registry.addIngredientInfo(new ItemStack(ModItems.PAINTER), VanillaTypes.ITEM, "description.painter_white");
 
         // Line Painter Yellow
         registry.handleRecipes(BlockPaint.class, new PainterRecipeWrapperFactoryYellow(), JEIPlugin.CATEGORY_PAINTER_YELLOW);
-
-        List<PainterRecipeWrapperYellow> paintsY = new ArrayList<PainterRecipeWrapperYellow>();
-        for (BlockPaint paint : ModBlocks.YELLOW_PAINTS) {
-            paintsY.add(new PainterRecipeWrapperYellow(paint));
-        }
-        registry.addRecipes(paintsY, JEIPlugin.CATEGORY_PAINTER_YELLOW);
-        registry.addRecipeCatalyst(new ItemStack(ModItems.PAINTER_YELLOW), JEIPlugin.CATEGORY_PAINTER_YELLOW);
 
         registry.addIngredientInfo(new ItemStack(ModItems.PAINTER_YELLOW), VanillaTypes.ITEM, "description.painter_yellow");
 
@@ -90,7 +79,7 @@ public class JEIPlugin implements IModPlugin {
 
         // Battery
         registry.addIngredientInfo(new ItemStack(ModItems.BATTERY), VanillaTypes.ITEM, "description.battery");
-
+*/
         // Container
         //registry.addIngredientInfo(new ItemStack(ModItems.CONTAINER), VanillaTypes.ITEM, "description.container");
         //TODO containers
@@ -102,18 +91,12 @@ public class JEIPlugin implements IModPlugin {
     }
 
     @Override
-    public void registerIngredients(IModIngredientRegistration reg) {
-
-    }
-
-    @Override
-    public void registerItemSubtypes(ISubtypeRegistry reg) {
-
+    public ResourceLocation getPluginUid() {
+        return new ResourceLocation(Main.MODID, "car");
     }
 
     @Override
     public void registerCategories(IRecipeCategoryRegistration registry) {
-        //registry.addRecipeCategories(new CarRecipeCategory(registry.getJeiHelpers().getGuiHelper()));
         registry.addRecipeCategories(new PainterRecipeCategory(registry.getJeiHelpers().getGuiHelper()));
         registry.addRecipeCategories(new PainterRecipeCategoryYellow(registry.getJeiHelpers().getGuiHelper()));
     }

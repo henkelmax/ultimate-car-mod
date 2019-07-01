@@ -1,17 +1,17 @@
 package de.maxhenkel.car.gui;
 
-import com.mojang.blaze3d.platform.GlStateManager;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.blocks.tileentity.TileEntityFuelStation;
 import de.maxhenkel.car.net.MessageFuelStationAdminAmount;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
 import java.awt.Color;
 
-public class GuiFuelStationAdmin extends GuiBase {
+public class GuiFuelStationAdmin extends GuiBase<ContainerFuelStationAdmin> {
 
     private static final ResourceLocation GUI_TEXTURE = new ResourceLocation(Main.MODID,
             "textures/gui/gui_fuelstation_admin.png");
@@ -24,8 +24,8 @@ public class GuiFuelStationAdmin extends GuiBase {
 
     protected TextFieldWidget textField;
 
-    public GuiFuelStationAdmin(ContainerFuelStationAdmin fuelStation, PlayerInventory playerInventory) {
-        super(GUI_TEXTURE, fuelStation, playerInventory, new TranslationTextComponent("block.car.fuelstation"));
+    public GuiFuelStationAdmin(ContainerFuelStationAdmin fuelStation, PlayerInventory playerInventory, ITextComponent title) {
+        super(GUI_TEXTURE, fuelStation, playerInventory, title);
         this.fuelStation = fuelStation.getFuelStation();
         this.inventoryPlayer = playerInventory;
 
@@ -42,7 +42,7 @@ public class GuiFuelStationAdmin extends GuiBase {
         textField.setDisabledTextColour(-1);
         textField.setEnableBackgroundDrawing(true);
         textField.setMaxStringLength(20);
-        textField.setText(String.valueOf(fuelStation.getField(2)));
+        textField.setText(String.valueOf(fuelStation.getTradeAmount()));
 
         children.add(textField);
         func_212928_a(textField);
@@ -50,12 +50,7 @@ public class GuiFuelStationAdmin extends GuiBase {
 
     @Override
     protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
-        // Background
-        GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-        minecraft.getTextureManager().bindTexture(GUI_TEXTURE);
-        int i = this.guiLeft;
-        int j = this.guiTop;
-        blit(i, j, 0, 0, this.xSize, this.ySize);
+        super.drawGuiContainerBackgroundLayer(partialTicks, mouseX, mouseY);
 
         // text
         drawCenteredString(font, new TranslationTextComponent("gui.fuelstation").getFormattedText(),

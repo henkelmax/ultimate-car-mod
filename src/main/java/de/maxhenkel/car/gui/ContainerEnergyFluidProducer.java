@@ -6,14 +6,14 @@ import net.minecraft.inventory.container.ContainerType;
 
 public abstract class ContainerEnergyFluidProducer extends ContainerBase {
 
-    protected TileEntityEnergyFluidProducer tile;
+    private TileEntityEnergyFluidProducer tile;
 
     public ContainerEnergyFluidProducer(ContainerType containerType, int id, TileEntityEnergyFluidProducer tile, PlayerInventory playerInv) {
         super(containerType, id, tile, playerInv);
         this.tile = tile;
 
-        this.addSlot(new SlotInputEnergyFluidProducer(tile, 0, 56, 34, tile));
-        this.addSlot(new SlotResult(tile, 1, 116, 35));
+        this.addSlot(new SlotInputEnergyFluidProducer(tileInventory, 0, 56, 34));
+        this.addSlot(new SlotResult(tileInventory, 1, 116, 35));
 
         addInvSlots();
     }
@@ -21,5 +21,4 @@ public abstract class ContainerEnergyFluidProducer extends ContainerBase {
     public TileEntityEnergyFluidProducer getTile() {
         return tile;
     }
-
 }

@@ -78,8 +78,6 @@ public abstract class TileEntityEnergyFluidProducer extends TileEntityBase imple
 		}
 	};
 
-
-
 	@Override
 	public void tick() {
 		if (world.isRemote) {
@@ -155,7 +153,9 @@ public abstract class TileEntityEnergyFluidProducer extends TileEntityBase imple
 
 	public abstract ItemStack getOutputItem();
 
-	public abstract boolean isValidItem(ItemStack stack);
+	public static boolean isValidItem(ItemStack stack){
+		throw new RuntimeException("OVERRIDE!"); //TODO
+	}
 	
 	public float getEnergyPercent() {
 		return ((float) storedEnergy) / ((float) maxStorage);

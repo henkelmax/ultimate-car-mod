@@ -1,17 +1,16 @@
 package de.maxhenkel.car.items;
 
 import de.maxhenkel.car.Main;
-import de.maxhenkel.car.entity.car.parts.Part;
-import de.maxhenkel.car.entity.car.parts.PartRegistry;
 import de.maxhenkel.car.gui.GuiHandler;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ActionResult;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.ActionResultType;
+import net.minecraft.util.Hand;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
@@ -24,44 +23,38 @@ public class ItemLicensePlate extends ItemCraftingComponent {
     }
 
     @Override
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-        super.addInformation(stack, worldIn, tooltip, flagIn);
-
+    public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         String text = getText(stack);
 
         if (text != null && !text.isEmpty()) {
-            tooltip.add(new TextComponentTranslation("tooltip.license_plate_text", text).getFormattedText());
+            tooltip.add(new TranslationTextComponent("tooltip.license_plate_text", text));
         }
+
+        super.addInformation(stack, worldIn, tooltip, flagIn);
     }
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
+    public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
         ItemStack stack = playerIn.getHeldItem(handIn);
-        playerIn.openGui(Main.MODID, GuiHandler.GUI_NUMBER_PLATE, worldIn, (int) playerIn.posX, (int) playerIn.posY, (int) playerIn.posZ);
-        return new ActionResult(EnumActionResult.SUCCESS, stack);
+        // TODO GUI
+        // playerIn.openGui(Main.MODID, GuiHandler.GUI_NUMBER_PLATE, worldIn, (int) playerIn.posX, (int) playerIn.posY, (int) playerIn.posZ);
+        return new ActionResult(ActionResultType.SUCCESS, stack);
     }
 
     public static void setText(ItemStack stack, String text) {
-        if (!stack.hasTagCompound()) {
-            stack.setTagCompound(new NBTTagCompound());
-        }
+        CompoundNBT compound = stack.getOrCreateTag();
 
-        NBTTagCompound compound = stack.getTagCompound();
-
-        compound.setString("plate_text", text);
+        compound.putString("plate_text", text);
     }
 
     public static String getText(ItemStack stack) {
-        if (!stack.hasTagCompound()) {
+        if (!stack.hasTag()) {
             return "";
         }
-
-        NBTTagCompound compound = stack.getTagCompound();
-
-        if (!compound.hasKey("plate_text")) {
+        CompoundNBT compound = stack.getTag();
+        if (!compound.contains("plate_text")) {
             return "";
         }
-
         return compound.getString("plate_text");
     }
 }

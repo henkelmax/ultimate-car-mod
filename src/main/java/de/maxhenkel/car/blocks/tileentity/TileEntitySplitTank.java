@@ -11,7 +11,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.tileentity.TileEntityType;
+import net.minecraft.util.IIntArray;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
@@ -54,6 +56,42 @@ public class TileEntitySplitTank extends TileEntityBase implements ITickable, IF
         this.glycerinGeneration = Config.splitTankGlycerinGeneration;
         this.bioDieselGeneration = Config.splitTankBioDieselGeneration;
     }
+
+    public final IIntArray FIELDS = new IIntArray() {
+        public int get(int index) {
+            switch (index) {
+                case 0:
+                    return currentMix;
+                case 1:
+                    return currentBioDiesel;
+                case 2:
+                    return currentGlycerin;
+                case 3:
+                    return timeToGenerate;
+            }
+            return 0;
+        }
+
+        public void set(int index, int value) {
+            switch (index) {
+                case 0:
+                    currentMix = value;
+                    break;
+                case 1:
+                    currentBioDiesel = value;
+                    break;
+                case 2:
+                    currentGlycerin = value;
+                    break;
+                case 3:
+                    timeToGenerate = value;
+                    break;
+            }
+        }
+        public int size() {
+            return 4;
+        }
+    };
 
     @Override
     public void tick() {
@@ -103,49 +141,6 @@ public class TileEntitySplitTank extends TileEntityBase implements ITickable, IF
     public float getGlycerinPerc() {
         return ((float) currentGlycerin) / ((float) maxGlycerin);
     }
-/*
-	@Override
-	public int getField(int id) {
-		switch (id) {
-		case 0:
-			return currentMix;
-		case 1:
-			return currentBioDiesel;
-		case 2:
-			return currentGlycerin;
-		case 3:
-			return timeToGenerate;
-		}
-
-		return 0;
-	}
-
-	@Override
-	public void setField(int id, int value) {
-		switch (id) {
-		case 0:
-			currentMix = value;
-			break;
-		case 1:
-			currentBioDiesel = value;
-			break;
-		case 2:
-			currentGlycerin = value;
-			break;
-		case 3:
-			timeToGenerate = value;
-			break;
-		}
-	}
-	@Override
-	public int getFieldCount() {
-		return 4;
-	}
-	@Override
-	public ITextComponent getDisplayName() {
-		return new TextComponentTranslation("tile.split_tank.name");
-	}
-	*/
 
     @Override
     public CompoundNBT write(CompoundNBT compound) {
@@ -323,16 +318,6 @@ public class TileEntitySplitTank extends TileEntityBase implements ITickable, IF
         }
     }
 
-	/*@Override
-	public String getName() {
-		return inventory.getName();
-	}
-
-	@Override
-	public boolean hasCustomName() {
-		return inventory.hasCustomName();
-	}*/
-
     @Override
     public int getSizeInventory() {
         return inventory.getSizeInventory();
@@ -393,4 +378,24 @@ public class TileEntitySplitTank extends TileEntityBase implements ITickable, IF
         inventory.clear();
     }
 
+    public int getCurrentMix() {
+        return currentMix;
+    }
+
+    public int getCurrentBioDiesel() {
+        return currentBioDiesel;
+    }
+
+    public int getCurrentGlycerin() {
+        return currentGlycerin;
+    }
+
+    public int getTimeToGenerate() {
+        return timeToGenerate;
+    }
+
+    @Override
+    public ITextComponent getDisplayName() {
+        return new TranslationTextComponent("block.car.split_tank");
+    }
 }

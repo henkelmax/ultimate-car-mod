@@ -7,13 +7,11 @@ import de.maxhenkel.car.blocks.BlockPaint;
 import de.maxhenkel.car.blocks.ModBlocks;
 import de.maxhenkel.car.items.ModItems;
 import mezz.jei.api.ingredients.IIngredients;
-import mezz.jei.api.ingredients.VanillaTypes;
-import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 
-public class PainterRecipeWrapperYellow implements IRecipeWrapper{
-
+public class PainterRecipeWrapperYellow /*implements IRecipeWrapper*/{
+/*
 	private BlockPaint paint;
 	
 	public PainterRecipeWrapperYellow(BlockPaint paint) {
@@ -50,6 +48,6 @@ public class PainterRecipeWrapperYellow implements IRecipeWrapper{
 
 	public BlockPaint getPaint() {
 		return paint;
-	}
+	}*/
 
 }

@@ -6,7 +6,7 @@ import de.maxhenkel.car.entity.model.obj.OBJModelInstance;
 import de.maxhenkel.car.entity.model.obj.OBJModelOptions;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.TranslationTextComponent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +32,7 @@ public class PartWheelBase extends PartModel {
             if(part instanceof PartBody){
                 PartBody body= (PartBody) part;
                 if(!body.canFitWheel(this)){
-                    messages.add(new TextComponentTranslation("message.parts.wrong_wheel_type"));
+                    messages.add(new TranslationTextComponent("message.parts.wrong_wheel_type"));
                     return false;
                 }
             }

@@ -1,24 +1,32 @@
 package de.maxhenkel.car.gui;
 
 import de.maxhenkel.car.Main;
+import de.maxhenkel.car.blocks.tileentity.TileEntityGenerator;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Inventory;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIntArray;
 import net.minecraft.util.IntArray;
 
 public class ContainerGenerator extends ContainerBase {
 
-    public ContainerGenerator(int id, IInventory tileInv, PlayerInventory playerInv, IIntArray fields) {
-        super(Main.GENERATOR_CONTAINER_TYPE, id, tileInv, playerInv);
+    private TileEntityGenerator generator;
+
+    public ContainerGenerator(int id, TileEntityGenerator generator, PlayerInventory playerInv, IIntArray fields) {
+        super(Main.GENERATOR_CONTAINER_TYPE, id, generator, playerInv);
+        this.generator=generator;
 
         addInvSlots();
 
         func_216961_a(fields);
     }
 
-    public ContainerGenerator(int id, PlayerInventory playerInv){
-        this(id, new Inventory(0), playerInv, new IntArray(2));
+    public ContainerGenerator(int id, TileEntityGenerator generator, PlayerInventory playerInv){
+        this(id, generator, playerInv, new IntArray(2));
     }
 
+    public TileEntityGenerator getGenerator() {
+        return generator;
+    }
 }

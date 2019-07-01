@@ -24,9 +24,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
+import net.minecraft.util.IIntArray;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -56,13 +58,55 @@ public class TileEntityFuelStation extends TileEntityBase implements ITickable, 
 
     private UUID owner;
 
-    public TileEntityFuelStation(TileEntityType<?> tileEntityTypeIn) {
-        super(tileEntityTypeIn);
+    public TileEntityFuelStation() {
+        super(Main.FUEL_STATION_TILE_ENTITY_TYPE);
         this.transferRate = Config.fuelStationTransferRate;
         this.fuelCounter = 0;
         this.inventory = new Inventory(27);
         this.trading = new Inventory(2);
         this.owner = new UUID(0L, 0L);
+    }
+
+    public final IIntArray FIELDS = new IIntArray() {
+        public int get(int index) {
+            switch (index) {
+                case 0:
+                    return fuelCounter;
+                case 1:
+                    if (storage != null) {
+                        return storage.amount;
+                    }
+                    return 0;
+                case 2:
+                    return tradeAmount;
+            }
+            return 0;
+        }
+
+        public void set(int index, int value) {
+            switch (index) {
+                case 0:
+                    fuelCounter = value;
+                    break;
+                case 1:
+                    if (storage != null) {
+                        storage.amount = value;
+                    }
+                    break;
+                case 2:
+                    tradeAmount = value;
+                    markDirty();
+                    break;
+            }
+        }
+        public int size() {
+            return 3;
+        }
+    };
+
+    @Override
+    public ITextComponent getDisplayName() {
+        return new TranslationTextComponent("block.car.fuel_station");
     }
 
     private void fixTop() {
@@ -205,45 +249,6 @@ public class TileEntityFuelStation extends TileEntityBase implements ITickable, 
 
         return false;
     }
-/*
-    @Override
-    public int getField(int id) {
-        switch (id) {
-            case 0:
-                return fuelCounter;
-            case 1:
-                if (storage != null) {
-                    return storage.amount;
-                }
-                return 0;
-            case 2:
-                return tradeAmount;
-        }
-        return 0;
-    }
-
-    @Override
-    public void setField(int id, int value) {
-        switch (id) {
-            case 0:
-                this.fuelCounter = value;
-                break;
-            case 1:
-                if (storage != null) {
-                    this.storage.amount = value;
-                }
-                break;
-            case 2:
-                this.tradeAmount = value;
-                markDirty();
-                break;
-        }
-    }
-
-    @Override
-    public int getFieldCount() {
-        return 3;
-    }*/
 
     public void setOwner(UUID owner) {
         this.owner = owner;
@@ -559,16 +564,6 @@ public class TileEntityFuelStation extends TileEntityBase implements ITickable, 
     public void play() {
 
     }
-/*
-    @Override
-    public String getName() {
-        return "";
-    }
-
-    @Override
-    public boolean hasCustomName() {
-        return false;
-    }*/
 
     @Override
     public int getSizeInventory() {
@@ -630,4 +625,14 @@ public class TileEntityFuelStation extends TileEntityBase implements ITickable, 
 
     }
 
+    public int getTradeAmount() {
+        return tradeAmount;
+    }
+
+    public int getFuelAmount() {
+        if (storage != null) {
+            return storage.amount;
+        }
+        return 0;
+    }
 }

@@ -9,16 +9,16 @@ import de.maxhenkel.tools.MathTools;
 import de.maxhenkel.car.blocks.tileentity.TileEntityCarWorkshop;
 import de.maxhenkel.car.entity.car.base.EntityCarBase;
 import de.maxhenkel.car.entity.car.base.EntityCarDamageBase;
-import de.maxhenkel.car.net.MessageOpenGui;
 import de.maxhenkel.car.net.MessageRepairCar;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
-public class GuiCarWorkshopRepair extends GuiBase {
+public class GuiCarWorkshopRepair extends GuiBase<ContainerCarWorkshopRepair> {
 
     private static final ResourceLocation GUI_TEXTURE = new ResourceLocation(Main.MODID,
             "textures/gui/gui_car_workshop_repair.png");
@@ -32,8 +32,8 @@ public class GuiCarWorkshopRepair extends GuiBase {
     private Button buttonBack;
     private Button buttonRepair;
 
-    public GuiCarWorkshopRepair(ContainerCarWorkshopRepair container, PlayerInventory playerInventory) {
-        super(GUI_TEXTURE, container, playerInventory, new TranslationTextComponent("block.car.car_workshop"));
+    public GuiCarWorkshopRepair(ContainerCarWorkshopRepair container, PlayerInventory playerInventory, ITextComponent title) {
+        super(GUI_TEXTURE, container, playerInventory, title);
         this.player = container.getPlayer();
         this.tile = container.getTile();
 
@@ -54,8 +54,8 @@ public class GuiCarWorkshopRepair extends GuiBase {
 
         this.buttonBack = addButton(new Button(guiLeft + 7, guiTop + 105, 60, 20, new TranslationTextComponent("button.back").getFormattedText(), button -> {
             if (tile.getWorld().isRemote) {
-                Main.SIMPLE_CHANNEL.sendToServer(
-                        new MessageOpenGui(tile.getPos(), GuiHandler.GUI_CAR_WORKSHOP_CRAFTING, player).open(player));
+                //TODO gui
+                //Main.SIMPLE_CHANNEL.sendToServer(new MessageOpenGui(tile.getPos(), GuiHandler.GUI_CAR_WORKSHOP_CRAFTING, player).open(player));
             }
         }));
         this.buttonBack.active = true;
@@ -67,7 +67,7 @@ public class GuiCarWorkshopRepair extends GuiBase {
         super.drawGuiContainerForegroundLayer(mouseX, mouseY);
 
         // Titles
-        font.drawString(tile.getDisplayName().getUnformattedText(), 8, 6, fontColor);
+        font.drawString(tile.getDisplayName().getFormattedText(), 8, 6, fontColor);
         font.drawString(player.inventory.getDisplayName().getFormattedText(), 8, ySize - 96 + 2,
                 fontColor);
 
@@ -85,7 +85,7 @@ public class GuiCarWorkshopRepair extends GuiBase {
                 List<String> list = new ArrayList<String>();
                 list.add(new TranslationTextComponent("tooltip.damage", MathTools.round(car.getDamage(), 2))
                         .getFormattedText());
-                drawHoveringText(list, mouseX - guiLeft, mouseY - guiTop);
+                renderTooltip(list, mouseX - guiLeft, mouseY - guiTop);
             }
         }
 
@@ -117,11 +117,7 @@ public class GuiCarWorkshopRepair extends GuiBase {
 
     @Override
     protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
-        GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-        minecraft.getTextureManager().bindTexture(GUI_TEXTURE);
-        int i = this.guiLeft;
-        int j = this.guiTop;
-        blit(i, j, 0, 0, this.xSize, this.ySize);
+        super.drawGuiContainerBackgroundLayer(partialTicks, mouseX, mouseY);
 
         drawDamage();
     }

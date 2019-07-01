@@ -4,109 +4,95 @@ import de.maxhenkel.car.Main;
 import de.maxhenkel.car.ModCreativeTabs;
 import de.maxhenkel.car.blocks.BlockPaint;
 import de.maxhenkel.car.blocks.ModBlocks;
-import de.maxhenkel.car.gui.GuiHandler;
 import de.maxhenkel.car.gui.SlotPainter;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.block.BlockState;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.item.ItemUseContext;
+import net.minecraft.util.*;
 import net.minecraft.world.World;
 
-public class ItemPainter extends Item{
+public class ItemPainter extends Item {
 
-	private boolean isYellow;
-	
-	public ItemPainter(boolean isYellow) {
-		this.isYellow=isYellow;
-		if(isYellow){
-			setUnlocalizedName("painter_yellow");
-			setRegistryName("painter_yellow");
-		}else{
-			setUnlocalizedName("painter");
-			setRegistryName("painter");
-		}
-		
-		setMaxStackSize(1);
-		setMaxDamage(1024);
+    private boolean isYellow;
 
-		setCreativeTab(ModCreativeTabs.TAB_CAR);
-		
-	}
+    public ItemPainter(boolean isYellow) {
+        super(new Item.Properties().maxStackSize(1).maxDamage(1024).group(ModCreativeTabs.TAB_CAR));
+        setRegistryName(new ResourceLocation(Main.MODID, "painter" + (isYellow ? "_yellow" : "")));
+        this.isYellow = isYellow;
 
-	@Override
-	public float getDestroySpeed(ItemStack stack, IBlockState state) {
-		if(state.getBlock() instanceof BlockPaint){
-			return 50F;
-		}
-		return super.getDestroySpeed(stack, state);
-	}
-	
-	@Override
-	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
-		if(playerIn.isSneaking()){
-			int id;
-			if(isYellow){
-				id=GuiHandler.GUI_PAINTER_YELLOW;
-			}else{
-				id=GuiHandler.GUI_PAINTER;
-			}
-			playerIn.openGui(Main.instance(), id, worldIn, playerIn.getPosition().getX(), playerIn.getPosition().getY(), playerIn.getPosition().getZ());
-		}
-		return super.onItemRightClick(worldIn, playerIn, handIn);
-	}
-	
-	@Override
-	public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand,
-			EnumFacing facing, float hitX, float hitY, float hitZ) {
-		if(player.isSneaking()){
-			return EnumActionResult.PASS;
-		}
-		
-		if(!facing.equals(EnumFacing.UP)){
-			return EnumActionResult.FAIL;
-		}
-		
-		if(!BlockPaint.canPlaceBlockAt((IBlockAccess)worldIn, pos.up())){
-			return EnumActionResult.FAIL;
-		}
-		
-		if(!worldIn.isAirBlock(pos.up())){
-			return EnumActionResult.FAIL;
-		}
-		
-		int index=SlotPainter.getPainterID(player);
-		ItemStack stack1=SlotPainter.getPainterStack(player);
-		
-		if(stack1==null){
-			return EnumActionResult.FAIL;
-		}
-		
-		if(index<0||index>=ModBlocks.PAINTS.length){
-			return EnumActionResult.FAIL;
-		}
-		
-		BlockPaint block;
-		
-		if(isYellow){
-			block=ModBlocks.YELLOW_PAINTS[index];
-		}else{
-			block=ModBlocks.PAINTS[index];
-		}
-		
-		
-		IBlockState state=block.getDefaultState().withProperty(BlockPaint.FACING, player.getHorizontalFacing());
-		
-		worldIn.setBlockState(pos.up(), state);
-		
-		stack1.damageItem(1, player);
-		
-		return EnumActionResult.SUCCESS;
-	}
-	
+    }
+
+    @Override
+    public float getDestroySpeed(ItemStack stack, BlockState state) {
+        if (state.getBlock() instanceof BlockPaint) {
+            return 50F;
+        }
+        return super.getDestroySpeed(stack, state);
+    }
+
+    @Override
+    public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
+        if (playerIn.isSneaking()) {
+            int id;
+            if (isYellow) {
+                //id = GuiHandler.GUI_PAINTER_YELLOW;
+            } else {
+                // id = GuiHandler.GUI_PAINTER;
+            }
+            // TODO GUI
+            //playerIn.openGui(Main.instance(), id, worldIn, playerIn.getPosition().getX(), playerIn.getPosition().getY(), playerIn.getPosition().getZ());
+        }
+        return super.onItemRightClick(worldIn, playerIn, handIn);
+    }
+
+    @Override
+    public ActionResultType onItemUse(ItemUseContext context) {
+        if (context.getPlayer().isSneaking()) {
+            return ActionResultType.PASS;
+        }
+
+        if (!context.getFace().equals(Direction.UP)) {
+            return ActionResultType.FAIL;
+        }
+
+        if (!BlockPaint.canPlaceBlockAt(context.getWorld(), context.getPos().up())) {
+            return ActionResultType.FAIL;
+        }
+
+        if (!context.getWorld().isAirBlock(context.getPos().up())) {
+            return ActionResultType.FAIL;
+        }
+
+        int index = SlotPainter.getPainterID(context.getPlayer());
+        ItemStack stack1 = SlotPainter.getPainterStack(context.getPlayer());
+
+        if (stack1 == null) {
+            return ActionResultType.FAIL;
+        }
+
+        if (index < 0 || index >= ModBlocks.PAINTS.length) {
+            return ActionResultType.FAIL;
+        }
+
+        BlockPaint block;
+
+        if (isYellow) {
+            block = ModBlocks.YELLOW_PAINTS[index];
+        } else {
+            block = ModBlocks.PAINTS[index];
+        }
+
+
+        BlockState state = block.getDefaultState().with(BlockPaint.FACING, context.getPlayer().getHorizontalFacing());
+
+        context.getWorld().setBlockState(context.getPos().up(), state);
+
+        stack1.damageItem(1, context.getPlayer(), playerEntity -> {
+        });
+
+        return ActionResultType.SUCCESS;
+    }
+
 }

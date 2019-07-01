@@ -16,7 +16,7 @@ public class SlotFluidFilter extends Slot {
     private TileEntityFluidExtractor tile;
     private int index;
 
-    public SlotFluidFilter(IInventory inv, int index, int xPosition, int yPosition, TileEntityFluidExtractor tile, PlayerEntity player) {
+    public SlotFluidFilter(IInventory inv, int index, int xPosition, int yPosition, TileEntityFluidExtractor tile) {
         super(inv, index, xPosition, yPosition);
         this.tile = tile;
         this.index = index;

@@ -1,14 +1,15 @@
 package de.maxhenkel.car.items;
 
+import de.maxhenkel.car.Main;
 import de.maxhenkel.car.ModCreativeTabs;
 import net.minecraft.item.Item;
+import net.minecraft.util.ResourceLocation;
 
 public class ItemCraftingComponent extends Item {
 
     public ItemCraftingComponent(String name) {
-        setUnlocalizedName(name);
-        setRegistryName(name);
-        setCreativeTab(ModCreativeTabs.TAB_CAR);
+        super(new Item.Properties().group(ModCreativeTabs.TAB_CAR));
+        setRegistryName(new ResourceLocation(Main.MODID, name));
     }
 
 }

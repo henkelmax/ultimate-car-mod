@@ -3,16 +3,14 @@ package de.maxhenkel.car.gui;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.mojang.blaze3d.platform.GlStateManager;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.blocks.tileentity.TileEntitySplitTank;
-import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
-public class GuiSplitTank extends ContainerScreen {
+public class GuiSplitTank extends GuiBase<ContainerSplitTank> {
 
     private static final ResourceLocation GUI_TEXTURE = new ResourceLocation(Main.MODID,
             "textures/gui/gui_split_tank.png");
@@ -21,8 +19,8 @@ public class GuiSplitTank extends ContainerScreen {
     private PlayerInventory playerInv;
     private TileEntitySplitTank tile;
 
-    public GuiSplitTank(ContainerSplitTank containerSplitTank, PlayerInventory playerInv) {
-        super(containerSplitTank, playerInv, new TranslationTextComponent("block.car.split_tank"));
+    public GuiSplitTank(ContainerSplitTank containerSplitTank, PlayerInventory playerInv, ITextComponent title) {
+        super(GUI_TEXTURE, containerSplitTank, playerInv, title);
         this.playerInv = playerInv;
         this.tile = containerSplitTank.getSplitTank();
 
@@ -41,27 +39,27 @@ public class GuiSplitTank extends ContainerScreen {
         if (mouseX >= guiLeft + 50 && mouseX <= guiLeft + 16 + 50) {
             if (mouseY >= guiTop + 8 && mouseY <= guiTop + 57 + 8) {
                 List<String> list = new ArrayList<String>();
-                list.add(new TranslationTextComponent("tooltip.mix", tile.getField(0))
+                list.add(new TranslationTextComponent("tooltip.mix", tile.getCurrentMix())
                         .getFormattedText());
-                drawHoveringText(list, mouseX - guiLeft, mouseY - guiTop);
+                renderTooltip(list, mouseX - guiLeft, mouseY - guiTop);
             }
         }
 
         if (mouseX >= guiLeft + 120 && mouseX <= guiLeft + 16 + 120) {
             if (mouseY >= guiTop + 8 && mouseY <= guiTop + 57 + 8) {
                 List<String> list = new ArrayList<String>();
-                list.add(new TranslationTextComponent("tooltip.glycerin", tile.getField(2))
+                list.add(new TranslationTextComponent("tooltip.glycerin", tile.getCurrentGlycerin())
                         .getFormattedText());
-                drawHoveringText(list, mouseX - guiLeft, mouseY - guiTop);
+                renderTooltip(list, mouseX - guiLeft, mouseY - guiTop);
             }
         }
 
         if (mouseX >= guiLeft + 141 && mouseX <= guiLeft + 16 + 141) {
             if (mouseY >= guiTop + 8 && mouseY <= guiTop + 57 + 8) {
                 List<String> list = new ArrayList<String>();
-                list.add(new TranslationTextComponent("tooltip.bio_diesel", tile.getField(1))
+                list.add(new TranslationTextComponent("tooltip.bio_diesel", tile.getCurrentBioDiesel())
                         .getFormattedText());
-                drawHoveringText(list, mouseX - guiLeft, mouseY - guiTop);
+                renderTooltip(list, mouseX - guiLeft, mouseY - guiTop);
             }
         }
 
@@ -69,18 +67,14 @@ public class GuiSplitTank extends ContainerScreen {
             if (mouseY >= guiTop + 34 && mouseY <= guiTop + 17 + 34) {
                 List<String> list = new ArrayList<String>();
                 list.add(new TranslationTextComponent("tooltip.progress", ((int) (getProgress() * 100F))).getFormattedText());
-                drawHoveringText(list, mouseX - guiLeft, mouseY - guiTop);
+                renderTooltip(list, mouseX - guiLeft, mouseY - guiTop);
             }
         }
     }
 
     @Override
     protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
-        GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-        minecraft.getTextureManager().bindTexture(GUI_TEXTURE);
-        int i = this.guiLeft;
-        int j = this.guiTop;
-        blit(i, j, 0, 0, this.xSize, this.ySize);
+        super.drawGuiContainerBackgroundLayer(partialTicks, mouseX, mouseY);
 
         drawProgress();
         drawMix();
@@ -154,23 +148,23 @@ public class GuiSplitTank extends ContainerScreen {
     }
 
     public float getMix() {
-        return ((float) tile.getField(0)) / ((float) tile.maxMix);
+        return ((float) tile.getCurrentMix()) / ((float) tile.maxMix);
     }
 
     public float getBioDiesel() {
-        return ((float) tile.getField(1)) / ((float) tile.maxBioDiesel);
+        return ((float) tile.getCurrentBioDiesel()) / ((float) tile.maxBioDiesel);
     }
 
     public float getGlycerin() {
-        return ((float) tile.getField(2)) / ((float) tile.maxGlycerin);
+        return ((float) tile.getCurrentGlycerin()) / ((float) tile.maxGlycerin);
     }
 
     public float getProgress() {
-        if (tile.getField(3) == 0) {
+        if (tile.getTimeToGenerate() == 0) {
             return 0;
         }
 
-        int time = tile.generatingTime - tile.getField(3);
+        int time = tile.generatingTime - tile.getTimeToGenerate();
         return ((float) time) / ((float) tile.generatingTime);
     }
 

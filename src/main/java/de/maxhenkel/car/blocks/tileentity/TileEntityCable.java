@@ -10,6 +10,8 @@ import net.minecraft.client.renderer.texture.ITickable;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.energy.IEnergyStorage;
 
 import java.util.ArrayList;
@@ -155,5 +157,10 @@ public class TileEntityCable extends TileEntityBase implements ITickable, IEnerg
     @Override
     public boolean canReceive() {
         return false;
+    }
+
+    @Override
+    public ITextComponent getDisplayName() {
+        return new TranslationTextComponent("block.car.cable");
     }
 }

@@ -1,6 +1,5 @@
 package de.maxhenkel.car.gui;
 
-import com.mojang.blaze3d.platform.GlStateManager;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.items.ItemLicensePlate;
 import de.maxhenkel.car.net.MessageEditLicensePlate;
@@ -10,11 +9,12 @@ import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
 import java.awt.Color;
 
-public class GuiLicensePlate extends GuiBase {
+public class GuiLicensePlate extends GuiBase<ContainerLicensePlate> {
 
     private static final ResourceLocation GUI_TEXTURE = new ResourceLocation(Main.MODID, "textures/gui/gui_license_plate.png");
 
@@ -28,8 +28,8 @@ public class GuiLicensePlate extends GuiBase {
 
     protected TextFieldWidget textField;
 
-    public GuiLicensePlate(ContainerLicensePlate containerLicensePlate, PlayerInventory playerInventory) {
-        super(GUI_TEXTURE, containerLicensePlate, playerInventory, new TranslationTextComponent("item.car.license_plate"));
+    public GuiLicensePlate(ContainerLicensePlate containerLicensePlate, PlayerInventory playerInventory, ITextComponent title) {
+        super(GUI_TEXTURE, containerLicensePlate, playerInventory, title);
         this.containerLicensePlate = containerLicensePlate;
         this.player = playerInventory.player;
         this.xSize = 176;
@@ -57,7 +57,7 @@ public class GuiLicensePlate extends GuiBase {
         textField.setDisabledTextColour(-1);
         textField.setEnableBackgroundDrawing(true);
         textField.setMaxStringLength(10);
-        textField.setText(ItemLicensePlate.getText(plate)); //TODO item stack
+        textField.setText(ItemLicensePlate.getText(containerLicensePlate.getLicensePlate()));
 
         children.add(textField);
         func_212928_a(textField);
@@ -76,12 +76,7 @@ public class GuiLicensePlate extends GuiBase {
 
     @Override
     protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
-        // Background
-        GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-        minecraft.getTextureManager().bindTexture(GUI_TEXTURE);
-        int i = this.guiLeft;
-        int j = this.guiTop;
-        blit(i, j, 0, 0, this.xSize, this.ySize);
+        super.drawGuiContainerBackgroundLayer(partialTicks, mouseX, mouseY);
 
         drawCenteredString(font, new TranslationTextComponent("gui.license_plate").getFormattedText(),
                 width / 2, guiTop + 5, TITLE_COLOR);

@@ -3,7 +3,8 @@ package de.maxhenkel.car.blocks.tileentity;
 
 import de.maxhenkel.car.Main;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tileentity.TileEntityType;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 
 public class TileEntitySign extends TileEntityBase{
 
@@ -59,5 +60,10 @@ public class TileEntitySign extends TileEntityBase{
 		text=s;
 		markDirty();
 		synchronize();
+	}
+
+	@Override
+	public ITextComponent getDisplayName() {
+		return new TranslationTextComponent("block.car.sign");
 	}
 }

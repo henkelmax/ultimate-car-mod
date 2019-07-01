@@ -30,7 +30,7 @@ public class MessageCenterCar implements Message<MessageCenterCar> {
         this.uuid = uuid;
     }
 
-    @OnlyIn(Dist.CLIENT.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public void centerClient() {
         PlayerEntity player = Minecraft.getInstance().player;
         PlayerEntity ridingPlayer = player.world.getPlayerByUuid(uuid);

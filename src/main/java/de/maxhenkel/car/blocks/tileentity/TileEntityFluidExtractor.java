@@ -14,9 +14,10 @@ import net.minecraft.block.BlockState;
 import net.minecraft.client.renderer.texture.ITickable;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
@@ -161,11 +162,11 @@ public class TileEntityFluidExtractor extends TileEntityBase implements ITickabl
 
         super.read(compound);
     }
-/*
+
     @Override
     public ITextComponent getDisplayName() {
-        return new TextComponentTranslation("tile.fluid_extractor.name");
-    }*/
+        return new TranslationTextComponent("block.car.fluid_extractor");
+    }
 
     public ItemStack getFilter() {
         if (filter == null) {
