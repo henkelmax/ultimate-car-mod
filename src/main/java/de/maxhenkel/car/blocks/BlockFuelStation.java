@@ -41,7 +41,6 @@ public class BlockFuelStation extends BlockOrientableHorizontal {
 
     public BlockFuelStation() {
         super("fuelstation", Material.IRON, MaterialColor.IRON, SoundType.METAL, 4F, 50F);
-        setRegistryName(new ResourceLocation(Main.MODID, "fuelstation"));
     }
 
     @Override

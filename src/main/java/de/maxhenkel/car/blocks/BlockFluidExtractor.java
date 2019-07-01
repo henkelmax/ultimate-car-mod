@@ -31,7 +31,7 @@ import javax.annotation.Nullable;
 
 public class BlockFluidExtractor extends Block implements ITileEntityProvider, IItemBlock {
 
-    public static final DirectionProperty FACING = DirectionProperty.create("facing");
+    public static final DirectionProperty FACING = DirectionProperty.create("facing", Direction.values());
     public static final BooleanProperty DOWN = BooleanProperty.create("down");
     public static final BooleanProperty UP = BooleanProperty.create("up");
     public static final BooleanProperty NORTH = BooleanProperty.create("north");
@@ -79,12 +79,13 @@ public class BlockFluidExtractor extends Block implements ITileEntityProvider, I
                 .with(NORTH, BlockFluidPipe.isConnectedTo(context.getWorld(), context.getPos(), Direction.NORTH))
                 .with(SOUTH, BlockFluidPipe.isConnectedTo(context.getWorld(), context.getPos(), Direction.SOUTH))
                 .with(EAST, BlockFluidPipe.isConnectedTo(context.getWorld(), context.getPos(), Direction.EAST))
-                .with(WEST, BlockFluidPipe.isConnectedTo(context.getWorld(), context.getPos(), Direction.WEST));
+                .with(WEST, BlockFluidPipe.isConnectedTo(context.getWorld(), context.getPos(), Direction.WEST))
+                .with(FACING, context.getFace().getOpposite());
     }
 
     @Override
     protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
-        builder.add(UP, DOWN, NORTH, SOUTH, EAST, WEST);
+        builder.add(FACING, UP, DOWN, NORTH, SOUTH, EAST, WEST);
     }
 
     //TODO fix shapes (copy from fluidpipe

@@ -15,6 +15,7 @@ import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
 
+@Deprecated
 public abstract class BlockCrop extends CropsBlock {
 
     public IntegerProperty CROP_AGE = IntegerProperty.create("age", 0, getMaxAge());
@@ -46,6 +47,7 @@ public abstract class BlockCrop extends CropsBlock {
         return SHAPES_BY_AGE[state.get(getAgeProperty())];
     }
 
+    @Override
     protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
         builder.add(CROP_AGE);
     }
