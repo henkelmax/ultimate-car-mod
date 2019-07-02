@@ -1,11 +1,12 @@
 package de.maxhenkel.car.blocks.tileentity;
 
 import de.maxhenkel.car.Main;
-import net.minecraft.client.renderer.texture.ITickable;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
+import net.minecraft.util.IIntArray;
+import net.minecraft.util.IntArray;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
@@ -18,7 +19,7 @@ import net.minecraftforge.fluids.capability.IFluidTankProperties;
 
 import java.util.Iterator;
 
-public class TileEntityTank extends TileEntityBase implements IFluidHandler, ITickable {
+public class TileEntityTank extends TileEntityBase implements IFluidHandler, ITickableTileEntity {
 
     private FluidStack fluid;
     public static final int CAPACITY = 16000;
@@ -325,5 +326,10 @@ public class TileEntityTank extends TileEntityBase implements IFluidHandler, ITi
     @Override
     public ITextComponent getDisplayName() {
         return new TranslationTextComponent("block.car.tank");
+    }
+
+    @Override
+    public IIntArray getFields() {
+        return new IntArray(0);
     }
 }

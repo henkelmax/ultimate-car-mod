@@ -278,6 +278,7 @@
     "fuelstation.fuel_amount": "%s mb",
     "fuelstation.fuel_empty": "No Fuel stored",
     "fuelstation.nocar": "No Car",
+    "fuelstation.admin.amount_text_field": "Amount",
     "tooltip.energy": "Stored energy: %s RF",
     "tooltip.oil": "Stored Oil: %s mb",
     "tooltip.fuel": "Stored Fuel: %s mb",

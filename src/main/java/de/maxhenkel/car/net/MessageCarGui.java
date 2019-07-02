@@ -10,16 +10,13 @@ import net.minecraftforge.fml.network.NetworkEvent;
 
 public class MessageCarGui implements Message<MessageCarGui> {
 
-    private boolean open;
     private UUID uuid;
 
     public MessageCarGui() {
-        this.open = false;
         this.uuid = new UUID(0, 0);
     }
 
-    public MessageCarGui(boolean open, PlayerEntity player) {
-        this.open = open;
+    public MessageCarGui(PlayerEntity player) {
         this.uuid = player.getUniqueID();
     }
 
@@ -31,13 +28,9 @@ public class MessageCarGui implements Message<MessageCarGui> {
             return;
         }
 
-        if (!open) {
-            return;
-        }
-
         Entity e = context.getSender().getRidingEntity();
         if (e instanceof EntityCarBase) {
-            ((EntityCarBase) e).openCarGUi(context.getSender());
+            ((EntityCarBase) e).openCarGUI(context.getSender());
         }
     }
 
@@ -48,17 +41,12 @@ public class MessageCarGui implements Message<MessageCarGui> {
 
     @Override
     public MessageCarGui fromBytes(PacketBuffer buf) {
-        this.open = buf.readBoolean();
-        long l1 = buf.readLong();
-        long l2 = buf.readLong();
-        this.uuid = new UUID(l1, l2);
+        this.uuid = buf.readUniqueId();
         return this;
     }
 
     @Override
     public void toBytes(PacketBuffer buf) {
-        buf.writeBoolean(open);
-        buf.writeLong(uuid.getMostSignificantBits());
-        buf.writeLong(uuid.getLeastSignificantBits());
+        buf.writeUniqueId(uuid);
     }
 }

@@ -12,7 +12,7 @@ public abstract class ContainerEnergyFluidProducer extends ContainerBase {
         super(containerType, id, tile, playerInv);
         this.tile = tile;
 
-        this.addSlot(new SlotInputEnergyFluidProducer(tileInventory, 0, 56, 34));
+        this.addSlot(new SlotInputEnergyFluidProducer(tileInventory, 0, 56, 34, tile));
         this.addSlot(new SlotResult(tileInventory, 1, 116, 35));
 
         addInvSlots();

@@ -2,6 +2,7 @@ package de.maxhenkel.car.gui;
 
 import javax.annotation.Nullable;
 
+import de.maxhenkel.car.blocks.tileentity.TileEntityBase;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.IInventory;
@@ -19,6 +20,11 @@ public abstract class ContainerBase extends Container {
         super(type, id);
         this.playerInventory = playerInventory;
         this.tileInventory = tileInventory;
+
+        if (tileInventory instanceof TileEntityBase) {
+            func_216961_a(((TileEntityBase) tileInventory).getFields());
+        }
+
     }
 
     protected void addInvSlots() {
@@ -39,8 +45,8 @@ public abstract class ContainerBase extends Container {
         return 0;
     }
 
-    public int getInventorySize(){
-        if(tileInventory==null){
+    public int getInventorySize() {
+        if (tileInventory == null) {
             return 0;
         }
         return tileInventory.getSizeInventory();
@@ -82,23 +88,20 @@ public abstract class ContainerBase extends Container {
         return itemstack;
     }
 
-    //TODO fields
-    /*
-	//
-	private int[] fields = new int[0];
+	/*private int[] fields = new int[0];
 
 	@Override
 	public void detectAndSendChanges() {
 		super.detectAndSendChanges();
 
-		int fieldCount = tileInventory.getFieldCount();
+		int fieldCount = tile.getFields().size();
 
 		for (int i = 0; i < this.listeners.size(); i++) {
 			IContainerListener icontainerlistener = listeners.get(i);
 
 			for (int field = 0; field < fieldCount; field++) {
-				if (field < fields.length && fields[field] != tileInventory.getField(field)) {
-					icontainerlistener.sendWindowProperty(this, field, tileInventory.getField(field));
+				if (field < fields.length && fields[field] != tile.getFields().get(field)) {
+					icontainerlistener.sendWindowProperty(this, field, tile.getFields().get(field));
 				}
 			}
 		}
@@ -106,27 +109,24 @@ public abstract class ContainerBase extends Container {
 		fields = new int[fieldCount];
 
 		for (int field = 0; field < fieldCount; field++) {
-			fields[field] = tileInventory.getField(field);
+			fields[field] = tile.getFields().get(field);
 		}
-	}
-
-	@Override
-	public void addListener(IContainerListener listener) {
-		super.addListener(listener);
-		for (int field = 0; field < fields.length; field++) {
-			listener.sendWindowProperty(this, field, fields[field]);
-		}
-	}
-
-	@Override
-	public void updateProgressBar(int id, int data) {
-		tileInventory.setField(id, data);
-	}
-
-	public int getField(int i) {
-		if (i >= fields.length) {
-			return 0;
-		}
-		return fields[i];
 	}*/
+/*
+    @Override
+    public void addListener(IContainerListener listener) {
+        super.addListener(listener);
+        if (tileInventory instanceof TileEntityBase) {
+            for (int field = 0; field < ((TileEntityBase) tileInventory).getFields().size(); field++) {
+                listener.sendWindowProperty(this, field, ((TileEntityBase) tileInventory).getFields().get(field));
+            }
+        }
+    }
+
+    @Override
+    public void updateProgressBar(int id, int data) {
+        if (tileInventory instanceof TileEntityBase) {
+            ((TileEntityBase) tileInventory).getFields().set(id, data);
+        }
+    }*/
 }

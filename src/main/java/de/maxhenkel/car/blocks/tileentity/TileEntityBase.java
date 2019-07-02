@@ -7,6 +7,7 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
+import net.minecraft.util.IIntArray;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.ServerWorld;
 import net.minecraftforge.fml.network.NetworkDirection;
@@ -47,11 +48,12 @@ public abstract class TileEntityBase extends TileEntity {
         read(pkt.getNbtCompound());
     }
 
-
     @Override
     public CompoundNBT getUpdateTag() {
         return this.write(new CompoundNBT());
     }
 
     public abstract ITextComponent getDisplayName();
+
+    public abstract IIntArray getFields();
 }

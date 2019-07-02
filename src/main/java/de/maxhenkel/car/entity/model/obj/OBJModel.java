@@ -1,5 +1,6 @@
 package de.maxhenkel.car.entity.model.obj;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.obj.OBJLoader;
 
@@ -23,6 +24,8 @@ public class OBJModel {
     public net.minecraftforge.client.model.obj.OBJModel getModel() {
         if (objModel == null) {
             try {
+                //TODO This is just a hotfix
+                OBJLoader.INSTANCE.onResourceManagerReload(Minecraft.getInstance().getResourceManager());
                 this.objModel = (net.minecraftforge.client.model.obj.OBJModel) OBJLoader.INSTANCE.loadModel(model);
             } catch (Exception e) {
                 e.printStackTrace();

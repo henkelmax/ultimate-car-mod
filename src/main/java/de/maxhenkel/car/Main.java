@@ -1,7 +1,6 @@
 package de.maxhenkel.car;
 
 import de.maxhenkel.car.blocks.ModBlocks;
-import de.maxhenkel.car.blocks.liquid.CanolaFluid;
 import de.maxhenkel.car.blocks.tileentity.*;
 import de.maxhenkel.car.blocks.tileentity.render.TileEntitySpecialRendererSign;
 import de.maxhenkel.car.blocks.tileentity.render.TileEntitySpecialRendererSplitTank;
@@ -13,6 +12,7 @@ import de.maxhenkel.car.events.CapabilityEvents;
 import de.maxhenkel.car.events.KeyEvents;
 import de.maxhenkel.car.events.PlayerEvents;
 import de.maxhenkel.car.events.RenderEvents;
+import de.maxhenkel.car.fluids.ModFluids;
 import de.maxhenkel.car.gui.*;
 import de.maxhenkel.car.items.ItemLicensePlate;
 import de.maxhenkel.car.items.ModItems;
@@ -24,7 +24,6 @@ import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
-import net.minecraft.fluid.Fluid;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -40,6 +39,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -64,10 +64,12 @@ public class Main {
 
     public static EntityType CAR_ENTITY_TYPE;
 
+    static {
+        FluidRegistry.enableUniversalBucket();
+    }
+
     //TODO add grass seed
     public Main() {
-        FluidRegistry.enableUniversalBucket();
-
         FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(Item.class, this::registerItems);
         FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(Block.class, this::registerBlocks);
         FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(SoundEvent.class, this::registerSounds);
@@ -75,7 +77,7 @@ public class Main {
         FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(ContainerType.class, this::registerContainers);
         FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(TileEntityType.class, this::registerTileEntities);
         FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(IRecipeSerializer.class, this::registerRecipes);
-        FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(Fluid.class, this::registerFluids);
+        //FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(Fluid.class, this::registerFluids);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::commonSetup);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::configEvent);
 
@@ -127,7 +129,7 @@ public class Main {
         SIMPLE_CHANNEL.registerMessage(5, MessagePlaySoundLoop.class, (msg, buf) -> msg.toBytes(buf), (buf) -> new MessagePlaySoundLoop().fromBytes(buf), (msg, fun) -> msg.executeClientSide(fun.get()));
         SIMPLE_CHANNEL.registerMessage(6, MessageSyncTileEntity.class, (msg, buf) -> msg.toBytes(buf), (buf) -> new MessageSyncTileEntity().fromBytes(buf), (msg, fun) -> msg.executeClientSide(fun.get()));
         SIMPLE_CHANNEL.registerMessage(7, MessageSpawnCar.class, (msg, buf) -> msg.toBytes(buf), (buf) -> new MessageSpawnCar().fromBytes(buf), (msg, fun) -> msg.executeServerSide(fun.get()));
-        SIMPLE_CHANNEL.registerMessage(8, MessageOpenGui.class, (msg, buf) -> msg.toBytes(buf), (buf) -> new MessageOpenGui().fromBytes(buf), (msg, fun) -> msg.executeServerSide(fun.get()));
+        SIMPLE_CHANNEL.registerMessage(8, MessageOpenRepairGui.class, (msg, buf) -> msg.toBytes(buf), (buf) -> new MessageOpenRepairGui().fromBytes(buf), (msg, fun) -> msg.executeServerSide(fun.get()));
         SIMPLE_CHANNEL.registerMessage(9, MessageRepairCar.class, (msg, buf) -> msg.toBytes(buf), (buf) -> new MessageRepairCar().fromBytes(buf), (msg, fun) -> msg.executeServerSide(fun.get()));
         SIMPLE_CHANNEL.registerMessage(10, MessageCarHorn.class, (msg, buf) -> msg.toBytes(buf), (buf) -> new MessageCarHorn().fromBytes(buf), (msg, fun) -> msg.executeServerSide(fun.get()));
         SIMPLE_CHANNEL.registerMessage(11, MessageEditSign.class, (msg, buf) -> msg.toBytes(buf), (buf) -> new MessageEditSign().fromBytes(buf), (msg, fun) -> msg.executeServerSide(fun.get()));
@@ -158,6 +160,9 @@ public class Main {
 
         ScreenManager.IScreenFactory factory3 = (ScreenManager.IScreenFactory<ContainerCar, GuiCar>) (container, playerInventory, name) -> new GuiCar(container, playerInventory, name);
         ScreenManager.registerFactory(Main.CAR_CONTAINER_TYPE, factory3);
+
+        ScreenManager.IScreenFactory factory15 = (ScreenManager.IScreenFactory<ContainerCarInventory, GuiCarInventory>) (container, playerInventory, name) -> new GuiCarInventory(container, playerInventory, name);
+        ScreenManager.registerFactory(Main.CAR_INVENTORY_CONTAINER_TYPE, factory15);
 
         ScreenManager.IScreenFactory factory4 = (ScreenManager.IScreenFactory<ContainerCarWorkshopCrafting, GuiCarWorkshopCrafting>) (container, playerInventory, name) -> new GuiCarWorkshopCrafting(container, playerInventory, name);
         ScreenManager.registerFactory(Main.CAR_WORKSHOP_CRAFTING_CONTAINER_TYPE, factory4);
@@ -262,6 +267,7 @@ public class Main {
     public static ContainerType<ContainerBackmixReactor> BACKMIX_REACTOR_CONTAINER_TYPE;
     public static ContainerType<ContainerBlastFurnace> BLAST_FURNACE_CONTAINER_TYPE;
     public static ContainerType<ContainerCar> CAR_CONTAINER_TYPE;
+    public static ContainerType<ContainerCarInventory> CAR_INVENTORY_CONTAINER_TYPE;
     public static ContainerType<ContainerCarWorkshopCrafting> CAR_WORKSHOP_CRAFTING_CONTAINER_TYPE;
     public static ContainerType<ContainerCarWorkshopRepair> CAR_WORKSHOP_REPAIR_CONTAINER_TYPE;
     public static ContainerType<ContainerFluidExtractor> FLUID_EXTRACTOR_CONTAINER_TYPE;
@@ -285,7 +291,7 @@ public class Main {
         event.getRegistry().register(BLAST_FURNACE_CONTAINER_TYPE);
 
         CAR_CONTAINER_TYPE = new ContainerType<>((IContainerFactory<ContainerCar>) (windowId, inv, data) -> {
-            EntityGenericCar car = EntityTools.getCarByUUID(inv.player, data.readUniqueId()); //TODO send uuid
+            EntityGenericCar car = EntityTools.getCarByUUID(inv.player, data.readUniqueId());
             if (car == null) {
                 return null;
             }
@@ -293,6 +299,16 @@ public class Main {
         });
         CAR_CONTAINER_TYPE.setRegistryName(new ResourceLocation(Main.MODID, "car"));
         event.getRegistry().register(CAR_CONTAINER_TYPE);
+
+        CAR_INVENTORY_CONTAINER_TYPE = new ContainerType<>((IContainerFactory<ContainerCarInventory>) (windowId, inv, data) -> {
+            EntityGenericCar car = EntityTools.getCarByUUID(inv.player, data.readUniqueId());
+            if (car == null) {
+                return null;
+            }
+            return new ContainerCarInventory(windowId, car, inv);
+        });
+        CAR_INVENTORY_CONTAINER_TYPE.setRegistryName(new ResourceLocation(Main.MODID, "car_inventory"));
+        event.getRegistry().register(CAR_INVENTORY_CONTAINER_TYPE);
 
         CAR_WORKSHOP_CRAFTING_CONTAINER_TYPE = new ContainerType<>(new ContainerFactoryTileEntity((ContainerFactoryTileEntity.ContainerCreator<ContainerCarWorkshopCrafting, TileEntityCarWorkshop>) ContainerCarWorkshopCrafting::new));
         CAR_WORKSHOP_CRAFTING_CONTAINER_TYPE.setRegistryName(new ResourceLocation(Main.MODID, "car_workshop_crafting"));
@@ -425,13 +441,11 @@ public class Main {
         event.getRegistry().register(CRAFTING_SPECIAL_KEY);
     }
 
-    public static final Fluid CANOLA = new CanolaFluid();
-
-    @SubscribeEvent
+    /*@SubscribeEvent
     public void registerFluids(RegistryEvent.Register<Fluid> event) {
         event.getRegistry().registerAll(
-                CANOLA
+                ModFluids.CANOLA_OIL
         );
-    }
+    }*/
 
 }

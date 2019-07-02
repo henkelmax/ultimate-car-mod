@@ -7,12 +7,12 @@ import de.maxhenkel.car.blocks.ModBlocks;
 import de.maxhenkel.tools.EnergyUtil;
 import de.maxhenkel.car.registries.GeneratorRecipe;
 import net.minecraft.block.BlockState;
-import net.minecraft.client.renderer.texture.ITickable;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.IIntArray;
 import net.minecraft.util.text.ITextComponent;
@@ -23,7 +23,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
 
-public class TileEntityGenerator extends TileEntityBase implements ITickable, IFluidHandler, IEnergyStorage, IInventory {
+public class TileEntityGenerator extends TileEntityBase implements ITickableTileEntity, IFluidHandler, IEnergyStorage, IInventory {
 
     public final int maxStorage;
     public int storedEnergy;
@@ -361,5 +361,10 @@ public class TileEntityGenerator extends TileEntityBase implements ITickable, IF
 
     public int getCurrentMillibuckets() {
         return currentMillibuckets;
+    }
+
+    @Override
+    public IIntArray getFields() {
+        return FIELDS;
     }
 }

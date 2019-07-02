@@ -22,7 +22,10 @@ import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IEnviromentBlockReader;
 import net.minecraft.world.IWorldReader;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
+import net.minecraftforge.energy.IEnergyStorage;
 
 import javax.annotation.Nullable;
 
@@ -57,13 +60,23 @@ public class BlockCable extends Block implements ITileEntityProvider, IItemBlock
     @Nullable
     @Override
     public BlockState getStateForPlacement(BlockItemUseContext context) {
-        return this.getDefaultState()
-                .with(UP, isConnectedTo(context.getWorld(), context.getPos(), Direction.UP))
-                .with(DOWN, isConnectedTo(context.getWorld(), context.getPos(), Direction.DOWN))
-                .with(NORTH, isConnectedTo(context.getWorld(), context.getPos(), Direction.NORTH))
-                .with(SOUTH, isConnectedTo(context.getWorld(), context.getPos(), Direction.SOUTH))
-                .with(EAST, isConnectedTo(context.getWorld(), context.getPos(), Direction.EAST))
-                .with(WEST, isConnectedTo(context.getWorld(), context.getPos(), Direction.WEST));
+        return getState(context.getWorld(), context.getPos());
+    }
+
+    private BlockState getState(World world, BlockPos pos) {
+        return getDefaultState()
+                .with(UP, isConnectedTo(world, pos, Direction.UP))
+                .with(DOWN, isConnectedTo(world, pos, Direction.DOWN))
+                .with(NORTH, isConnectedTo(world, pos, Direction.NORTH))
+                .with(SOUTH, isConnectedTo(world, pos, Direction.SOUTH))
+                .with(EAST, isConnectedTo(world, pos, Direction.EAST))
+                .with(WEST, isConnectedTo(world, pos, Direction.WEST));
+    }
+
+    @Override
+    public void neighborChanged(BlockState state, World world, BlockPos pos, Block block, BlockPos pos1, boolean b) {
+        super.neighborChanged(state, world, pos, block, pos1, b);
+        world.setBlockState(pos, getState(world, pos));
     }
 
     @Override
@@ -120,7 +133,7 @@ public class BlockCable extends Block implements ITileEntityProvider, IItemBlock
 
         TileEntity te = world.getTileEntity(pos.offset(facing));
 
-        if (te == null || te.getCapability(CapabilityEnergy.ENERGY, facing.getOpposite()).isPresent()) {
+        if (te == null || !te.getCapability(CapabilityEnergy.ENERGY, facing.getOpposite()).isPresent()) {
             return false;
         }
         return true;

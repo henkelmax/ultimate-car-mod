@@ -8,11 +8,8 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import org.lwjgl.glfw.GLFW;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.Entity;
-import net.minecraftforge.fml.client.registry.ClientRegistry;
 
 public class KeyEvents {
 
@@ -88,7 +85,7 @@ public class KeyEvents {
 
         if (Main.CAR_GUI_KEY.isKeyDown()) {
             if (!wasGuiPressed) {
-                car.openCarGUi(player);
+                car.openCarGUI(player);
                 wasGuiPressed = true;
             }
         } else {

@@ -3,15 +3,16 @@ package de.maxhenkel.car.blocks.tileentity;
 import de.maxhenkel.car.Config;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.tools.EnergyUtil;
-import net.minecraft.client.renderer.texture.ITickable;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tileentity.TileEntityType;
+import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.util.Direction;
+import net.minecraft.util.IIntArray;
+import net.minecraft.util.IntArray;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.energy.IEnergyStorage;
 
-public class TileEntityDynamo extends TileEntityBase implements IEnergyStorage, ITickable {
+public class TileEntityDynamo extends TileEntityBase implements IEnergyStorage, ITickableTileEntity {
 
     private int storedEnergy;
     public final int maxStorage;
@@ -98,5 +99,10 @@ public class TileEntityDynamo extends TileEntityBase implements IEnergyStorage, 
     @Override
     public ITextComponent getDisplayName() {
         return new TranslationTextComponent("block.car.dynamo");
+    }
+
+    @Override
+    public IIntArray getFields() {
+        return new IntArray(0);
     }
 }

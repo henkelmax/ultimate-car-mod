@@ -30,6 +30,8 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IEnviromentBlockReader;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.loot.LootContext;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fluids.FluidActionResult;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
@@ -87,47 +89,6 @@ public class BlockTank extends Block implements ITileEntityProvider, IItemBlock 
 
         spawnAsEntity(worldIn, pos, stack);
     }
-
-   /* @Override
-    public void onBlockHarvested(World worldIn, BlockPos pos, IBlockState state, EntityPlayer player) {
-        super.onBlockHarvested(worldIn, pos, state, player);
-
-        if (player.capabilities.isCreativeMode || !Config.pickUpTank) {
-            return;
-        }
-
-        ItemStack stack = new ItemStack(this);
-
-        TileEntity te = worldIn.getTileEntity(pos);
-
-        if (!(te instanceof TileEntityTank)) {
-            spawnAsEntity(worldIn, pos, stack);
-            super.breakBlock(worldIn, pos, state);
-            return;
-        }
-
-        TileEntityTank tank = (TileEntityTank) te;
-
-        FluidStack fluid = tank.getFluid();
-
-        if (fluid == null) {
-            spawnAsEntity(worldIn, pos, stack);
-            super.breakBlock(worldIn, pos, state);
-            return;
-        }
-
-        NBTTagCompound compound = new NBTTagCompound();
-
-        NBTTagCompound comp = new NBTTagCompound();
-
-        fluid.writeToNBT(comp);
-
-        compound.setTag("fluid", comp);
-
-        stack.setTagCompound(compound);
-
-        spawnAsEntity(worldIn, pos, stack);
-    }*/
 
     @Override
     public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
@@ -269,6 +230,17 @@ public class BlockTank extends Block implements ITileEntityProvider, IItemBlock 
     @Override
     public BlockRenderType getRenderType(BlockState state) {
         return BlockRenderType.INVISIBLE;
+    }
+
+    @Override
+    public boolean propagatesSkylightDown(BlockState p_200123_1_, IBlockReader p_200123_2_, BlockPos p_200123_3_) {
+        return true;
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    @Override
+    public float func_220080_a(BlockState state, IBlockReader reader, BlockPos pos) {
+        return 1F;
     }
 
     @Nullable

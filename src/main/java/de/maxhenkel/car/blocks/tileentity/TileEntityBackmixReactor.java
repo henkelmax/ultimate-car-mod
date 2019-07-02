@@ -5,11 +5,11 @@ import de.maxhenkel.car.Main;
 import de.maxhenkel.car.blocks.ModBlocks;
 import de.maxhenkel.car.fluids.ModFluids;
 import net.minecraft.block.BlockState;
-import net.minecraft.client.renderer.texture.ITickable;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.util.IIntArray;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -18,7 +18,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
 
-public class TileEntityBackmixReactor extends TileEntityBase implements ITickable, IFluidHandler, IEnergyStorage, IInventory {
+public class TileEntityBackmixReactor extends TileEntityBase implements ITickableTileEntity, IFluidHandler, IEnergyStorage, IInventory {
 
 	public final int maxStorage;
 	protected int storedEnergy;
@@ -441,5 +441,10 @@ public class TileEntityBackmixReactor extends TileEntityBase implements ITickabl
 	@Override
 	public ITextComponent getDisplayName() {
 		return new TranslationTextComponent("block.car.backmix_reactor");
+	}
+
+	@Override
+	public IIntArray getFields() {
+		return FIELDS;
 	}
 }

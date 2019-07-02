@@ -13,10 +13,10 @@
         {   "when": { "west": "true" },
             "apply": { "model": "car:block/cable_part", "y": 270, "uvlock": true }
         },
-        {   "when": { "west": "true" },
+        {   "when": { "up": "true" },
             "apply": { "model": "car:block/cable_part", "x": 270, "uvlock": true }
         },
-        {   "when": { "west": "true" },
+        {   "when": { "down": "true" },
             "apply": { "model": "car:block/cable_part", "x": 90, "uvlock": true }
         }
     ]

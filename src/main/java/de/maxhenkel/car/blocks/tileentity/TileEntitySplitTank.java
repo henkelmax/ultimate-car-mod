@@ -3,14 +3,12 @@ package de.maxhenkel.car.blocks.tileentity;
 import de.maxhenkel.car.Config;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.fluids.ModFluids;
-import net.minecraft.client.renderer.texture.ITickable;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.tileentity.TileEntityType;
+import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.util.IIntArray;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -18,7 +16,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
 
-public class TileEntitySplitTank extends TileEntityBase implements ITickable, IFluidHandler, IInventory {
+public class TileEntitySplitTank extends TileEntityBase implements ITickableTileEntity, IFluidHandler, IInventory {
 
     private int currentMix;
     public int maxMix;
@@ -397,5 +395,10 @@ public class TileEntitySplitTank extends TileEntityBase implements ITickable, IF
     @Override
     public ITextComponent getDisplayName() {
         return new TranslationTextComponent("block.car.split_tank");
+    }
+
+    @Override
+    public IIntArray getFields() {
+        return FIELDS;
     }
 }

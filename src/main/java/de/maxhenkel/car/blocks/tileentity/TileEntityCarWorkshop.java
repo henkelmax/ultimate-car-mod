@@ -23,6 +23,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
+import net.minecraft.util.IIntArray;
+import net.minecraft.util.IntArray;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -271,16 +273,6 @@ public class TileEntityCarWorkshop extends TileEntityBase implements IInventory 
         }
     }
 
-    /*@Override
-    public String getName() {
-        return craftingMatrix.getName();
-    }
-
-    @Override
-    public boolean hasCustomName() {
-        return craftingMatrix.hasCustomName();
-    }*/
-
     @Override
     public int getSizeInventory() {
         return craftingMatrix.getSizeInventory();
@@ -341,32 +333,11 @@ public class TileEntityCarWorkshop extends TileEntityBase implements IInventory 
         return craftingMatrix.isItemValidForSlot(index, stack);
     }
 
-    /*@Override
-    public int getField(int id) {
-        return craftingMatrix.getField(id);
-    }
-
-    @Override
-    public void setField(int id, int value) {
-        craftingMatrix.setField(id, value);
-    }
-
-    @Override
-    public int getFieldCount() {
-        return craftingMatrix.getFieldCount();
-    }*/
-
     @Override
     public void clear() {
         craftingMatrix.clear();
         updateRecipe();
     }
-
-	/*@Override
-	public ItemStack getStackInRowAndColumn(int row, int column) {
-		return row >= 0 && row < 5 && column >= 0 && column <= 3 ? this.getStackInSlot(row + column * 5)
-				: ItemTools.EMPTY;
-	}*/
 
     public EntityGenericCar getCurrentCraftingCar() {
         return currentCraftingCar;
@@ -425,8 +396,8 @@ public class TileEntityCarWorkshop extends TileEntityBase implements IInventory 
         for (int i = 0; i < repairInventory.getSizeInventory(); i++) {
             ItemStack stack = repairInventory.getStackInSlot(i);
             if (!ItemTools.isStackEmpty(stack)) {
-                //TODO damage
-                //ItemTools.damageStack(stack, 10, player);
+                stack.damageItem(10, player, playerEntity -> {
+                });
             }
         }
     }
@@ -434,5 +405,10 @@ public class TileEntityCarWorkshop extends TileEntityBase implements IInventory 
     @Override
     public ITextComponent getDisplayName() {
         return new TranslationTextComponent("block.car.car_workshop.name");
+    }
+
+    @Override
+    public IIntArray getFields() {
+        return new IntArray(0);
     }
 }

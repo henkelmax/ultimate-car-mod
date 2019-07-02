@@ -1,18 +1,26 @@
 package de.maxhenkel.car.entity.car.base;
 
+import de.maxhenkel.car.gui.ContainerCar;
+import de.maxhenkel.car.gui.ContainerCarInventory;
+import de.maxhenkel.car.gui.TileEntityContainerProvider;
 import de.maxhenkel.tools.ItemTools;
 import de.maxhenkel.car.items.ItemCanister;
 import de.maxhenkel.car.sounds.ModSounds;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.InventoryHelper;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Hand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidActionResult;
@@ -20,6 +28,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
+import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
 
@@ -75,12 +84,25 @@ public abstract class EntityCarInventoryBase extends EntityCarFuelBase implement
             }
 
             //Inv
-            if (externalInventory.getSizeInventory() <= 0) {
-                //TODO gui
-                //player.displayGUIChest(internalInventory);
-            } else {
-                //TODO gui
-                //player.displayGUIChest(externalInventory);
+            if (!world.isRemote) {
+                if (externalInventory.getSizeInventory() <= 0) {
+                    openCarGUI(player);
+                } else {
+                    NetworkHooks.openGui((ServerPlayerEntity) player, new INamedContainerProvider() {
+                        @Override
+                        public ITextComponent getDisplayName() {
+                            return getCarName();
+                        }
+
+                        @Nullable
+                        @Override
+                        public Container createMenu(int i, PlayerInventory playerInventory, PlayerEntity playerEntity) {
+                            return new ContainerCarInventory(i, EntityCarInventoryBase.this, playerInventory);
+                        }
+                    }, packetBuffer -> {
+                        packetBuffer.writeUniqueId(getUniqueID());
+                    });
+                }
             }
 
             return true;
@@ -135,11 +157,23 @@ public abstract class EntityCarInventoryBase extends EntityCarFuelBase implement
     }
 
     @Override
-    public void openCarGUi(PlayerEntity player) {
-        super.openCarGUi(player);
-        if (!world.isRemote) {
-            //TODO gui
-            //player.openGui(Main.instance(), GuiHandler.GUI_CAR, world, player.getPosition().getX(), player.getPosition().getY(), player.getPosition().getZ());
+    public void openCarGUI(PlayerEntity player) {
+        super.openCarGUI(player);
+        if (!world.isRemote && player instanceof ServerPlayerEntity) {
+            NetworkHooks.openGui((ServerPlayerEntity) player, new INamedContainerProvider() {
+                @Override
+                public ITextComponent getDisplayName() {
+                    return getCarName();
+                }
+
+                @Nullable
+                @Override
+                public Container createMenu(int i, PlayerInventory playerInventory, PlayerEntity playerEntity) {
+                    return new ContainerCar(i, EntityCarInventoryBase.this, playerInventory);
+                }
+            }, packetBuffer -> {
+                packetBuffer.writeUniqueId(getUniqueID());
+            });
         }
     }
 
@@ -346,25 +380,13 @@ public abstract class EntityCarInventoryBase extends EntityCarFuelBase implement
     public boolean isItemValidForSlot(int index, ItemStack stack) {
         return internalInventory.isItemValidForSlot(index, stack);
     }
-/*
-    @Override
-    public int getField(int id) {
-        return internalInventory.getField(id);
-    }
-
-    @Override
-    public void setField(int id, int value) {
-        internalInventory.setField(id, value);
-    }
-
-    @Override
-    public int getFieldCount() {
-        return internalInventory.getFieldCount();
-    }*/
 
     @Override
     public void clear() {
         internalInventory.clear();
     }
 
+    public IInventory getExternalInventory() {
+        return externalInventory;
+    }
 }

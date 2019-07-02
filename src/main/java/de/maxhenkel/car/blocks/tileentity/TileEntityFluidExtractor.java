@@ -1,6 +1,5 @@
 package de.maxhenkel.car.blocks.tileentity;
 
-import java.util.LinkedList;
 import java.util.List;
 import javax.annotation.Nullable;
 
@@ -11,10 +10,12 @@ import de.maxhenkel.tools.FluidUtils;
 import de.maxhenkel.car.blocks.BlockFluidExtractor;
 import de.maxhenkel.car.blocks.ModBlocks;
 import net.minecraft.block.BlockState;
-import net.minecraft.client.renderer.texture.ITickable;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.util.Direction;
+import net.minecraft.util.IIntArray;
+import net.minecraft.util.IntArray;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -23,7 +24,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 
-public class TileEntityFluidExtractor extends TileEntityBase implements ITickable {
+public class TileEntityFluidExtractor extends TileEntityBase implements ITickableTileEntity {
 
     private IFluidHandler extractHandler;
 
@@ -54,6 +55,8 @@ public class TileEntityFluidExtractor extends TileEntityBase implements ITickabl
 
     @Override
     public void tick() {
+        //TODO wait until fluids are implemented
+        /*
         if (world.isRemote) {
             return;
         }
@@ -98,6 +101,7 @@ public class TileEntityFluidExtractor extends TileEntityBase implements ITickabl
                 FluidUtils.tryFluidTransfer(handler, extractHandler, drainSpeed, true, getFilterFluid());
             }
         }
+        */
     }
 
     public void updateExtractHandler() {
@@ -185,6 +189,11 @@ public class TileEntityFluidExtractor extends TileEntityBase implements ITickabl
         this.filter = filter.copy();
         markDirty();
         synchronize();
+    }
+
+    @Override
+    public IIntArray getFields() {
+        return new IntArray(0);
     }
 
 }

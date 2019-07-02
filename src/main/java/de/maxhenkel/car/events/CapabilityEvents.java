@@ -33,9 +33,9 @@ public class CapabilityEvents {
                 @Override
                 public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
                     if (cap.equals(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)) {
-                        return LazyOptional.<T>of(() -> (T) handler);
+                        return LazyOptional.of(() -> (T) handler);
                     }
-                    return null;
+                    return LazyOptional.empty();
                 }
             });
         }
@@ -46,9 +46,9 @@ public class CapabilityEvents {
                 @Override
                 public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
                     if (cap.equals(CapabilityEnergy.ENERGY)) {
-                        return LazyOptional.<T>of(() -> (T) handler);
+                        return LazyOptional.of(() -> (T) handler);
                     }
-                    return null;
+                    return LazyOptional.empty();
                 }
             });
         }

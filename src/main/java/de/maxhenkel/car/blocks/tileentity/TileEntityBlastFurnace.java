@@ -7,6 +7,7 @@ import de.maxhenkel.car.blocks.ModBlocks;
 import de.maxhenkel.car.fluids.ModFluids;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.util.IIntArray;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -36,7 +37,8 @@ public class TileEntityBlastFurnace extends TileEntityEnergyFluidProducer {
         return new ItemStack(Items.CHARCOAL, 1);
     }
 
-    public static boolean isValidItem(ItemStack stack) {
+    @Override
+    public boolean isValidItem(ItemStack stack) {
         //return ItemTools.matchesOredict(stack, "logWood");//TODO oredict
         return stack.getItem().getTags().contains(new ResourceLocation("minecraft", "log"));//TODO check if it works
     }

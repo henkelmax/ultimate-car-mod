@@ -401,9 +401,9 @@ public abstract class EntityCarBase extends EntityVehicleBase {
         return wheelRotation * factor;
     }
 
-    public void openCarGUi(PlayerEntity player) {
+    public void openCarGUI(PlayerEntity player) {
         if (world.isRemote) {
-            Main.SIMPLE_CHANNEL.sendToServer(new MessageCarGui(true, player));
+            Main.SIMPLE_CHANNEL.sendToServer(new MessageCarGui(player));
         }
     }
 

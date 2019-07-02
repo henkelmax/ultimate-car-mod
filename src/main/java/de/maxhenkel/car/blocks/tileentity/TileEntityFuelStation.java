@@ -15,14 +15,13 @@ import de.maxhenkel.car.sounds.SoundLoopTileentity;
 import de.maxhenkel.car.sounds.SoundLoopTileentity.ISoundLoopable;
 import de.maxhenkel.tools.ItemTools;
 import net.minecraft.block.BlockState;
-import net.minecraft.client.renderer.texture.ITickable;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tileentity.TileEntityType;
+import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.IIntArray;
 import net.minecraft.util.SoundCategory;
@@ -38,7 +37,7 @@ import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
 
-public class TileEntityFuelStation extends TileEntityBase implements ITickable, IFluidHandler, ISoundLoopable, IInventory {
+public class TileEntityFuelStation extends TileEntityBase implements ITickableTileEntity, IFluidHandler, ISoundLoopable, IInventory {
 
     private FluidStack storage;
 
@@ -634,5 +633,10 @@ public class TileEntityFuelStation extends TileEntityBase implements ITickable, 
             return storage.amount;
         }
         return 0;
+    }
+
+    @Override
+    public IIntArray getFields() {
+        return FIELDS;
     }
 }

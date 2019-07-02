@@ -45,9 +45,6 @@ public abstract class BlockGui<T extends TileEntity> extends Block implements IT
     @Override
     public boolean onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
         if (!player.isSneaking()) {
-            //TODO gui
-            //playerIn.openGui(Main.instance(), getGUIID(), worldIn, pos.getX(), pos.getY(), pos.getZ());
-
             if (!(player instanceof ServerPlayerEntity)) {
                 return true;
             }
@@ -72,21 +69,15 @@ public abstract class BlockGui<T extends TileEntity> extends Block implements IT
     public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
         TileEntity tileentity = worldIn.getTileEntity(pos);
 
-        if (tileentity != null && tileentity instanceof IInventory) {
-            InventoryHelper.dropInventoryItems(worldIn, pos, (IInventory) tileentity);
-            worldIn.updateComparatorOutputLevel(pos, this);
+        if (state.getBlock() != newState.getBlock()) {
+            if (tileentity != null && tileentity instanceof IInventory) {
+                InventoryHelper.dropInventoryItems(worldIn, pos, (IInventory) tileentity);
+                worldIn.updateComparatorOutputLevel(pos, this);
+            }
         }
+
         super.onReplaced(state, worldIn, pos, newState, isMoving);
     }
-
-    public boolean isPowered(BlockState state) {
-        return state.get(POWERED);
-    }
-
-    private static boolean isPowered(int meta) {
-        return (meta & 8) != 8;
-    }
-
 
     @Nullable
     @Override
