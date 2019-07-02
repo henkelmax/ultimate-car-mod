@@ -9,7 +9,7 @@
         "5": "car:block/fuel_station_head",
         "6": "car:block/fuel_station_base_up_down",
         "7": "car:block/fuel_station_head_down",
-		"particle": "block/stone_slab_top"
+		"particle": "block/smooth_stone"
     },
     "elements": [
         {

@@ -2,6 +2,7 @@ package de.maxhenkel.car.gui;
 
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.blocks.tileentity.TileEntityFluidExtractor;
+import de.maxhenkel.tools.FluidStackWrapper;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
@@ -45,7 +46,7 @@ public class GuiFluidExtractor extends GuiBase<ContainerFluidExtractor> {
         Fluid f = tile.getFilterFluid();
 
         if (f != null) {
-            name = f.getLocalizedName(new FluidStack(f, 1));
+            name = f.getLocalizedName(new FluidStackWrapper(f, 1));
         }
 
         font.drawString(new TranslationTextComponent("filter.fluid", name).getFormattedText(), 46, 28, fontColor);

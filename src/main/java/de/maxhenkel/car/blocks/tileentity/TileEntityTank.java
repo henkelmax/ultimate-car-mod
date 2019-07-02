@@ -1,6 +1,7 @@
 package de.maxhenkel.car.blocks.tileentity;
 
 import de.maxhenkel.car.Main;
+import de.maxhenkel.tools.FluidStackWrapper;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
@@ -68,7 +69,7 @@ public class TileEntityTank extends TileEntityBase implements IFluidHandler, ITi
         FluidStack other = otherTank.getFluid();
 
         if (other == null) {
-            otherTank.setFluid(new FluidStack(fluid.getFluid(), 0));
+            otherTank.setFluid(new FluidStackWrapper(fluid.getFluid(), 0));
             other = otherTank.getFluid();
         }
 
@@ -133,7 +134,7 @@ public class TileEntityTank extends TileEntityBase implements IFluidHandler, ITi
     public void read(CompoundNBT compound) {
         if (compound.contains("fluid")) {
             CompoundNBT comp = compound.getCompound("fluid");
-            fluid = FluidStack.loadFluidStackFromNBT(comp);
+            fluid = FluidStackWrapper.loadFluidStackFromNBT(comp);
         } else {
             fluid = null;
         }
@@ -182,7 +183,7 @@ public class TileEntityTank extends TileEntityBase implements IFluidHandler, ITi
             int amount = Math.min(resource.amount, CAPACITY);
 
             if (doFill) {
-                fluid = new FluidStack(resource.getFluid(), amount);
+                fluid = new FluidStackWrapper(resource.getFluid(), amount);
                 // synchronize();
                 markDirty();
             }
@@ -223,7 +224,7 @@ public class TileEntityTank extends TileEntityBase implements IFluidHandler, ITi
                 markDirty();
             }
 
-            return new FluidStack(f, amount);
+            return new FluidStackWrapper(f, amount);
         }
 
         return null;
@@ -248,7 +249,7 @@ public class TileEntityTank extends TileEntityBase implements IFluidHandler, ITi
             markDirty();
         }
 
-        return new FluidStack(f, amount);
+        return new FluidStackWrapper(f, amount);
     }
 
     public void setFluid(FluidStack fluid) {

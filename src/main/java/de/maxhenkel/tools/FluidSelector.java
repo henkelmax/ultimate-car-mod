@@ -19,7 +19,7 @@ public class FluidSelector implements Selector<Fluid>{
 	@Nullable
 	public static FluidSelector fromString(String str){
 		//TODO
-		Fluid fluid = null; //ForgeRegistries.FLUIDS.getValue(new ResourceLocation(str)).getFluid();
+		Fluid fluid = FluidStackWrapper.byName(str); //ForgeRegistries.FLUIDS.getValue(new ResourceLocation(str)).getFluid();
 		if (fluid == null) {
 			return null;
 		}
@@ -29,7 +29,7 @@ public class FluidSelector implements Selector<Fluid>{
 	
 	public String toString() {
 		//TODO
-		return ""; //ForgeRegistries.FLUIDS.getKey(fluid).toString();
+		return FluidStackWrapper.getName(fluid); //ForgeRegistries.FLUIDS.getKey(fluid).toString();
 	}
 
 	@Override

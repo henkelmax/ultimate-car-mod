@@ -7,6 +7,7 @@ import de.maxhenkel.car.Config;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.ModCreativeTabs;
 import de.maxhenkel.car.blocks.tileentity.TileEntityTank;
+import de.maxhenkel.tools.FluidStackWrapper;
 import de.maxhenkel.tools.IItemBlock;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
@@ -94,7 +95,7 @@ public class BlockTank extends Block implements ITileEntityProvider, IItemBlock 
     public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         if (stack.hasTag() && stack.getTag().contains("fluid")) {
             CompoundNBT fluidComp = stack.getTag().getCompound("fluid");
-            FluidStack fluidStack = FluidStack.loadFluidStackFromNBT(fluidComp);
+            FluidStack fluidStack = FluidStackWrapper.loadFluidStackFromNBT(fluidComp);
 
             if (fluidStack != null) {
                 tooltip.add(new TranslationTextComponent("tooltip.fluid", fluidStack.getLocalizedName()));
@@ -138,7 +139,7 @@ public class BlockTank extends Block implements ITileEntityProvider, IItemBlock 
 
         TileEntityTank tank = (TileEntityTank) te;
 
-        FluidStack fluidStack = FluidStack.loadFluidStackFromNBT(fluidTag);
+        FluidStack fluidStack = FluidStackWrapper.loadFluidStackFromNBT(fluidTag);
 
         tank.setFluid(fluidStack);
         tank.synchronize();

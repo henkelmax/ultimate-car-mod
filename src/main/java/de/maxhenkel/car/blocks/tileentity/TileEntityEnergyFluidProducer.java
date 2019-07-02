@@ -1,5 +1,6 @@
 package de.maxhenkel.car.blocks.tileentity;
 
+import de.maxhenkel.tools.FluidStackWrapper;
 import de.maxhenkel.tools.ItemTools;
 import de.maxhenkel.car.blocks.BlockGui;
 import net.minecraft.block.BlockState;
@@ -316,7 +317,7 @@ public abstract class TileEntityEnergyFluidProducer extends TileEntityBase imple
 
             @Override
             public FluidStack getContents() {
-                return new FluidStack(getProducingFluid(), currentMillibuckets);
+                return new FluidStackWrapper(getProducingFluid(), currentMillibuckets);
             }
 
             @Override
@@ -360,7 +361,7 @@ public abstract class TileEntityEnergyFluidProducer extends TileEntityBase imple
             markDirty();
         }
 
-        return new FluidStack(getProducingFluid(), amount);
+        return new FluidStackWrapper(getProducingFluid(), amount);
     }
 
     @Override
@@ -372,7 +373,7 @@ public abstract class TileEntityEnergyFluidProducer extends TileEntityBase imple
             markDirty();
         }
 
-        return new FluidStack(getProducingFluid(), amount);
+        return new FluidStackWrapper(getProducingFluid(), amount);
     }
 
     @Override

@@ -3,6 +3,7 @@ package de.maxhenkel.car.entity.car.base;
 import javax.annotation.Nullable;
 
 import de.maxhenkel.car.fluids.ModFluids;
+import de.maxhenkel.tools.FluidStackWrapper;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
@@ -195,9 +196,9 @@ public abstract class EntityCarFuelBase extends EntityCarDamageBase implements I
             public FluidStack getContents() {
                 Fluid f = getFluid();
                 if (f == null) {
-                    return new FluidStack(ModFluids.BIO_DIESEL, getFuelAmount());
+                    return new FluidStackWrapper(ModFluids.BIO_DIESEL, getFuelAmount());
                 } else {
-                    return new FluidStack(f, getFuelAmount());
+                    return new FluidStackWrapper(f, getFuelAmount());
                 }
             }
 
@@ -294,7 +295,7 @@ public abstract class EntityCarFuelBase extends EntityCarDamageBase implements I
             }
         }
 
-        return new FluidStack(fluid, amount);
+        return new FluidStackWrapper(fluid, amount);
     }
 
 }

@@ -6,7 +6,7 @@ import net.minecraftforge.fluids.Fluid;
 public class BlockGlycerin extends FluidBlockBase {
 
 	public BlockGlycerin() {
-		super("canola_oil");
+		super("glycerin");
 	}
 
 	@Override

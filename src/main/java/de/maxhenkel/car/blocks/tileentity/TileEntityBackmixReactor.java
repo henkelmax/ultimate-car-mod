@@ -4,6 +4,7 @@ import de.maxhenkel.car.Config;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.blocks.ModBlocks;
 import de.maxhenkel.car.fluids.ModFluids;
+import de.maxhenkel.tools.FluidStackWrapper;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.IInventory;
@@ -184,7 +185,7 @@ public class TileEntityBackmixReactor extends TileEntityBase implements ITickabl
 
 			@Override
 			public FluidStack getContents() {
-				return new FluidStack(ModFluids.CANOLA_OIL, currentCanola);
+				return new FluidStackWrapper(ModFluids.CANOLA_OIL, currentCanola);
 			}
 
 			@Override
@@ -215,7 +216,7 @@ public class TileEntityBackmixReactor extends TileEntityBase implements ITickabl
 
 			@Override
 			public FluidStack getContents() {
-				return new FluidStack(ModFluids.METHANOL, currentMethanol);
+				return new FluidStackWrapper(ModFluids.METHANOL, currentMethanol);
 			}
 
 			@Override
@@ -246,7 +247,7 @@ public class TileEntityBackmixReactor extends TileEntityBase implements ITickabl
 
 			@Override
 			public FluidStack getContents() {
-				return new FluidStack(ModFluids.CANOLA_METHANOL_MIX, currentMix);
+				return new FluidStackWrapper(ModFluids.CANOLA_METHANOL_MIX, currentMix);
 			}
 
 			@Override
@@ -306,7 +307,7 @@ public class TileEntityBackmixReactor extends TileEntityBase implements ITickabl
 			markDirty();
 		}
 
-		return new FluidStack(ModFluids.CANOLA_METHANOL_MIX, amount);
+		return new FluidStackWrapper(ModFluids.CANOLA_METHANOL_MIX, amount);
 	}
 
 	@Override
@@ -318,7 +319,7 @@ public class TileEntityBackmixReactor extends TileEntityBase implements ITickabl
 			markDirty();
 		}
 
-		return new FluidStack(ModFluids.CANOLA_METHANOL_MIX, amount);
+		return new FluidStackWrapper(ModFluids.CANOLA_METHANOL_MIX, amount);
 	}
 
 	@Override

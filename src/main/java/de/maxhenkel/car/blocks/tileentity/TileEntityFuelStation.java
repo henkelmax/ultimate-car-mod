@@ -13,6 +13,7 @@ import de.maxhenkel.car.registries.FuelStationFluid;
 import de.maxhenkel.car.sounds.ModSounds;
 import de.maxhenkel.car.sounds.SoundLoopTileentity;
 import de.maxhenkel.car.sounds.SoundLoopTileentity.ISoundLoopable;
+import de.maxhenkel.tools.FluidStackWrapper;
 import de.maxhenkel.tools.ItemTools;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
@@ -307,7 +308,7 @@ public class TileEntityFuelStation extends TileEntityBase implements ITickableTi
 
         if (compound.contains("fluid")) {
             CompoundNBT comp = compound.getCompound("fluid");
-            storage = FluidStack.loadFluidStackFromNBT(comp);
+            storage = FluidStackWrapper.loadFluidStackFromNBT(comp);
         }
 
         ItemTools.readInventory(compound, "inventory", inventory);
@@ -469,7 +470,7 @@ public class TileEntityFuelStation extends TileEntityBase implements ITickableTi
             int amount = Math.min(resource.amount, maxStorageAmount);
 
             if (doFill) {
-                storage = new FluidStack(resource.getFluid(), amount);
+                storage = new FluidStackWrapper(resource.getFluid(), amount);
                 synchronize();
                 markDirty();
             }
@@ -510,7 +511,7 @@ public class TileEntityFuelStation extends TileEntityBase implements ITickableTi
                 markDirty();
             }
 
-            return new FluidStack(f, amount);
+            return new FluidStackWrapper(f, amount);
         }
 
         return null;
@@ -536,7 +537,7 @@ public class TileEntityFuelStation extends TileEntityBase implements ITickableTi
             markDirty();
         }
 
-        return new FluidStack(f, amount);
+        return new FluidStackWrapper(f, amount);
     }
 
     public void sendStartFuelPacket(boolean start) {

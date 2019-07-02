@@ -3,7 +3,9 @@ package de.maxhenkel.car.gui;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
+
 import de.maxhenkel.car.Main;
+import de.maxhenkel.tools.FluidStackWrapper;
 import de.maxhenkel.tools.ItemTools;
 import de.maxhenkel.car.blocks.tileentity.TileEntityFuelStation;
 import de.maxhenkel.car.entity.car.base.EntityCarFuelBase;
@@ -127,7 +129,7 @@ public class GuiFuelStation extends GuiBase<ContainerFuelStation> {
             //TODO
             return;
         } else {
-            String typeText = new TranslationTextComponent("fuelstation.car_fuel_type", INFO_COLOR + car.getFluid().getLocalizedName(new FluidStack(car.getFluid(), 1))).getFormattedText();
+            String typeText = new TranslationTextComponent("fuelstation.car_fuel_type", INFO_COLOR + car.getFluid().getLocalizedName(new FluidStackWrapper(car.getFluid(), 1))).getFormattedText();
             font.drawString(typeText, guiLeft + 63, guiTop + 40, FONT_COLOR);
         }
     }

@@ -3,6 +3,7 @@ package de.maxhenkel.car.blocks.tileentity;
 import de.maxhenkel.car.Config;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.fluids.ModFluids;
+import de.maxhenkel.tools.FluidStackWrapper;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Inventory;
@@ -164,7 +165,7 @@ public class TileEntitySplitTank extends TileEntityBase implements ITickableTile
 
             @Override
             public FluidStack getContents() {
-                return new FluidStack(ModFluids.CANOLA_METHANOL_MIX, currentMix);
+                return new FluidStackWrapper(ModFluids.CANOLA_METHANOL_MIX, currentMix);
             }
 
             @Override
@@ -195,7 +196,7 @@ public class TileEntitySplitTank extends TileEntityBase implements ITickableTile
 
             @Override
             public FluidStack getContents() {
-                return new FluidStack(ModFluids.BIO_DIESEL, currentBioDiesel);
+                return new FluidStackWrapper(ModFluids.BIO_DIESEL, currentBioDiesel);
             }
 
             @Override
@@ -226,7 +227,7 @@ public class TileEntitySplitTank extends TileEntityBase implements ITickableTile
 
             @Override
             public FluidStack getContents() {
-                return new FluidStack(ModFluids.GLYCERIN, currentGlycerin);
+                return new FluidStackWrapper(ModFluids.GLYCERIN, currentGlycerin);
             }
 
             @Override
@@ -280,7 +281,7 @@ public class TileEntitySplitTank extends TileEntityBase implements ITickableTile
                 markDirty();
             }
 
-            return new FluidStack(ModFluids.GLYCERIN, amount);
+            return new FluidStackWrapper(ModFluids.GLYCERIN, amount);
         } else if (resource.getFluid().equals(ModFluids.BIO_DIESEL)) {
             int amount = Math.min(resource.amount, currentBioDiesel);
 
@@ -288,7 +289,7 @@ public class TileEntitySplitTank extends TileEntityBase implements ITickableTile
                 currentBioDiesel -= amount;
                 markDirty();
             }
-            return new FluidStack(ModFluids.BIO_DIESEL, amount);
+            return new FluidStackWrapper(ModFluids.BIO_DIESEL, amount);
         }
 
         return null;
@@ -304,7 +305,7 @@ public class TileEntitySplitTank extends TileEntityBase implements ITickableTile
                 markDirty();
             }
 
-            return new FluidStack(ModFluids.GLYCERIN, amount);
+            return new FluidStackWrapper(ModFluids.GLYCERIN, amount);
         } else {
             int amount = Math.min(maxDrain, currentBioDiesel);
 
@@ -312,7 +313,7 @@ public class TileEntitySplitTank extends TileEntityBase implements ITickableTile
                 currentBioDiesel -= amount;
                 markDirty();
             }
-            return new FluidStack(ModFluids.BIO_DIESEL, amount);
+            return new FluidStackWrapper(ModFluids.BIO_DIESEL, amount);
         }
     }
 

@@ -8,6 +8,7 @@ import de.maxhenkel.car.ModCreativeTabs;
 import de.maxhenkel.car.blocks.ModBlocks;
 import de.maxhenkel.car.blocks.tileentity.TileEntityFuelStation;
 import de.maxhenkel.car.sounds.ModSounds;
+import de.maxhenkel.tools.FluidStackWrapper;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.Item;
@@ -86,7 +87,7 @@ public class ItemCanister extends Item {
             if (comp.contains("fuel")) {
                 CompoundNBT fuel = comp.getCompound("fuel");
 
-                FluidStack fluidStack = FluidStack.loadFluidStackFromNBT(fuel);
+                FluidStack fluidStack = FluidStackWrapper.loadFluidStackFromNBT(fuel);
                 if (fluidStack == null) {
                     addInfo("-", 0, tooltip);
                     super.addInformation(stack, worldIn, tooltip, flagIn);
@@ -117,7 +118,7 @@ public class ItemCanister extends Item {
         FluidStack fluid = null;
 
         if (comp.contains("fuel")) {
-            fluid = FluidStack.loadFluidStackFromNBT(comp.getCompound("fuel"));
+            fluid = FluidStackWrapper.loadFluidStackFromNBT(comp.getCompound("fuel"));
         }
 
         int maxAmount = maxFuel;
@@ -168,7 +169,7 @@ public class ItemCanister extends Item {
 
         CompoundNBT fluid = comp.getCompound("fuel");
 
-        FluidStack stack = FluidStack.loadFluidStackFromNBT(fluid);
+        FluidStack stack = FluidStackWrapper.loadFluidStackFromNBT(fluid);
 
         if (stack == null) {
             return false;

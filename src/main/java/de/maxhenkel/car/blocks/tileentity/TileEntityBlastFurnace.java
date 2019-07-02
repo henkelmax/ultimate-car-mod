@@ -40,7 +40,7 @@ public class TileEntityBlastFurnace extends TileEntityEnergyFluidProducer {
     @Override
     public boolean isValidItem(ItemStack stack) {
         //return ItemTools.matchesOredict(stack, "logWood");//TODO oredict
-        return stack.getItem().getTags().contains(new ResourceLocation("minecraft", "log"));//TODO check if it works
+        return stack.getItem().getTags().contains(new ResourceLocation("minecraft", "logs"));//TODO check if it works
     }
 
     @Override

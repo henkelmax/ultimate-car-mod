@@ -3,6 +3,7 @@ package de.maxhenkel.car.entity.car.base;
 import de.maxhenkel.car.gui.ContainerCar;
 import de.maxhenkel.car.gui.ContainerCarInventory;
 import de.maxhenkel.car.gui.TileEntityContainerProvider;
+import de.maxhenkel.tools.FluidStackWrapper;
 import de.maxhenkel.tools.ItemTools;
 import de.maxhenkel.car.items.ItemCanister;
 import de.maxhenkel.car.sounds.ModSounds;
@@ -188,7 +189,7 @@ public abstract class EntityCarInventoryBase extends EntityCarFuelBase implement
         ItemTools.readInventory(compound, "parts", partInventory);
 
         if (compound.contains("fluid_inventory")) {
-            fluidInventory = FluidStack.loadFluidStackFromNBT(compound.getCompound("fluid_inventory"));
+            fluidInventory = FluidStackWrapper.loadFluidStackFromNBT(compound.getCompound("fluid_inventory"));
         }
     }
 
@@ -257,7 +258,7 @@ public abstract class EntityCarInventoryBase extends EntityCarFuelBase implement
                 int amount = Math.min(resource.amount, getFluidInventorySize());
 
                 if (doFill) {
-                    fluidInventory = new FluidStack(resource.getFluid(), amount);
+                    fluidInventory = new FluidStackWrapper(resource.getFluid(), amount);
                 }
 
                 return amount;
@@ -292,7 +293,7 @@ public abstract class EntityCarInventoryBase extends EntityCarFuelBase implement
                     }
                 }
 
-                return new FluidStack(f, amount);
+                return new FluidStackWrapper(f, amount);
             }
 
             return null;
@@ -316,7 +317,7 @@ public abstract class EntityCarInventoryBase extends EntityCarFuelBase implement
                 }
             }
 
-            return new FluidStack(f, amount);
+            return new FluidStackWrapper(f, amount);
         }
     };
 

@@ -6,6 +6,7 @@ import de.maxhenkel.car.blocks.BlockGui;
 import de.maxhenkel.car.blocks.ModBlocks;
 import de.maxhenkel.tools.EnergyUtil;
 import de.maxhenkel.car.registries.GeneratorRecipe;
+import de.maxhenkel.tools.FluidStackWrapper;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.IInventory;
@@ -163,7 +164,7 @@ public class TileEntityGenerator extends TileEntityBase implements ITickableTile
     public CompoundNBT write(CompoundNBT compound) {
         compound.putInt("stored_energy", storedEnergy);
         if (currentFluid != null) {
-            FluidStack stack = new FluidStack(currentFluid, currentMillibuckets);
+            FluidStack stack = new FluidStackWrapper(currentFluid, currentMillibuckets);
             CompoundNBT comp = new CompoundNBT();
             stack.writeToNBT(comp);
             compound.put("fluid", comp);
@@ -177,7 +178,7 @@ public class TileEntityGenerator extends TileEntityBase implements ITickableTile
         storedEnergy = compound.getInt("stored_energy");
 
         if (compound.contains("fluid")) {
-            FluidStack stack = FluidStack.loadFluidStackFromNBT(compound.getCompound("fluid"));
+            FluidStack stack = FluidStackWrapper.loadFluidStackFromNBT(compound.getCompound("fluid"));
             currentFluid = stack.getFluid();
             currentMillibuckets = stack.amount;
         }
@@ -194,7 +195,7 @@ public class TileEntityGenerator extends TileEntityBase implements ITickableTile
                 if (currentFluid == null) {
                     return null;
                 }
-                return new FluidStack(currentFluid, currentMillibuckets);
+                return new FluidStackWrapper(currentFluid, currentMillibuckets);
             }
 
             @Override

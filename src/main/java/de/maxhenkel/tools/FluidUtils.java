@@ -46,12 +46,12 @@ public class FluidUtils {
     @Nullable
     public static FluidStack tryFluidTransfer(IFluidHandler fluidDestination, IFluidHandler fluidSource, int maxAmount,
                                               boolean doTransfer, Fluid filter) {
-        FluidStack drainable = fluidSource.drain(new FluidStack(filter, maxAmount), false);
+        FluidStack drainable = fluidSource.drain(new FluidStackWrapper(filter, maxAmount), false);
         if (drainable != null && drainable.amount > 0) {
             int fillableAmount = fluidDestination.fill(drainable, false);
             if (fillableAmount > 0) {
                 if (doTransfer) {
-                    FluidStack drained = fluidSource.drain(new FluidStack(filter, fillableAmount), true);
+                    FluidStack drained = fluidSource.drain(new FluidStackWrapper(filter, fillableAmount), true);
                     if (drained != null) {
                         drained.amount = fluidDestination.fill(drained, true);
                         return drained;

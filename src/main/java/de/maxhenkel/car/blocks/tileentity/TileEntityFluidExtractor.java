@@ -1,11 +1,13 @@
 package de.maxhenkel.car.blocks.tileentity;
 
+import java.util.LinkedList;
 import java.util.List;
 import javax.annotation.Nullable;
 
 import de.maxhenkel.car.Main;
 import de.maxhenkel.tools.BlockPosList;
 import de.maxhenkel.car.Config;
+import de.maxhenkel.tools.FluidStackWrapper;
 import de.maxhenkel.tools.FluidUtils;
 import de.maxhenkel.car.blocks.BlockFluidExtractor;
 import de.maxhenkel.car.blocks.ModBlocks;
@@ -55,8 +57,6 @@ public class TileEntityFluidExtractor extends TileEntityBase implements ITickabl
 
     @Override
     public void tick() {
-        //TODO wait until fluids are implemented
-        /*
         if (world.isRemote) {
             return;
         }
@@ -70,18 +70,18 @@ public class TileEntityFluidExtractor extends TileEntityBase implements ITickabl
         if (getFilterFluid() == null) {
             drainSimulated = extractHandler.drain(drainSpeed, false);
         } else {
-            drainSimulated = extractHandler.drain(new FluidStack(getFilterFluid(), drainSpeed), false);
+            drainSimulated = extractHandler.drain(new FluidStackWrapper(getFilterFluid(), drainSpeed), false);
         }
 
         if (drainSimulated == null || drainSimulated.amount <= 0) {
             return;
         }
 
-        List<IFluidHandler> handlers = new LinkedList<IFluidHandler>();
+        List<IFluidHandler> handlers = new LinkedList<>();
 
         getConnectedHandlers(handlers, new BlockPosList(), pos);
 
-        List<IFluidHandler> fillHandlers = new LinkedList<IFluidHandler>();
+        List<IFluidHandler> fillHandlers = new LinkedList<>();
 
         for (IFluidHandler handler : handlers) {
             int amount = handler.fill(drainSimulated, false);
@@ -101,7 +101,6 @@ public class TileEntityFluidExtractor extends TileEntityBase implements ITickabl
                 FluidUtils.tryFluidTransfer(handler, extractHandler, drainSpeed, true, getFilterFluid());
             }
         }
-        */
     }
 
     public void updateExtractHandler() {
