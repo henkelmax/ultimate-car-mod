@@ -16,15 +16,6 @@ import net.minecraftforge.fml.client.registry.ClientRegistry;
 
 public class KeyEvents {
 
-    private KeyBinding keyForward;
-    private KeyBinding keyBack;
-    private KeyBinding keyLeft;
-    private KeyBinding keyRight;
-
-    private KeyBinding keyCarGui;
-    private KeyBinding keyStart;
-    private KeyBinding keyHorn;
-    private KeyBinding keyCenter;
 
     private boolean wasStartPressed;
     private boolean wasGuiPressed;
@@ -32,29 +23,7 @@ public class KeyEvents {
     private boolean wasCenterPressed;
 
     public KeyEvents() {
-        this.keyForward = new KeyBinding("key.car_forward", GLFW.GLFW_KEY_W, "category.car");
-        ClientRegistry.registerKeyBinding(keyForward);
 
-        this.keyBack = new KeyBinding("key.car_back", GLFW.GLFW_KEY_S, "category.car");
-        ClientRegistry.registerKeyBinding(keyBack);
-
-        this.keyLeft = new KeyBinding("key.car_left", GLFW.GLFW_KEY_A, "category.car");
-        ClientRegistry.registerKeyBinding(keyLeft);
-
-        this.keyRight = new KeyBinding("key.car_right", GLFW.GLFW_KEY_D, "category.car");
-        ClientRegistry.registerKeyBinding(keyRight);
-
-        this.keyCarGui = new KeyBinding("key.car_gui", GLFW.GLFW_KEY_I, "category.car");
-        ClientRegistry.registerKeyBinding(keyCarGui);
-
-        this.keyStart = new KeyBinding("key.car_start", GLFW.GLFW_KEY_R, "category.car");
-        ClientRegistry.registerKeyBinding(keyStart);
-
-        this.keyHorn = new KeyBinding("key.car_horn", GLFW.GLFW_KEY_H, "category.car");
-        ClientRegistry.registerKeyBinding(keyHorn);
-
-        this.keyCenter = new KeyBinding("key.center_car", GLFW.GLFW_KEY_SPACE, "category.car");
-        ClientRegistry.registerKeyBinding(keyCenter);
     }
 
     @SubscribeEvent
@@ -76,9 +45,9 @@ public class KeyEvents {
         EntityCarBatteryBase car = (EntityCarBatteryBase) riding;
 
         if (player.equals(car.getDriver())) {
-            car.updateControls(keyForward.isKeyDown(), keyBack.isKeyDown(), keyLeft.isKeyDown(), keyRight.isKeyDown(), player);
+            car.updateControls(Main.FORWARD_KEY.isKeyDown(), Main.BACK_KEY.isKeyDown(), Main.LEFT_KEY.isKeyDown(), Main.RIGHT_KEY.isKeyDown(), player);
 
-            if (keyStart.isKeyDown()) {
+            if (Main.START_KEY.isKeyDown()) {
                 if (!wasStartPressed) {
                     Main.SIMPLE_CHANNEL.sendToServer(new MessageStarting(true, false, player));
                     //car.setStarting(true, false);
@@ -92,7 +61,7 @@ public class KeyEvents {
                 wasStartPressed = false;
             }
 
-            if (keyHorn.isKeyDown()) {
+            if (Main.HORN_KEY.isKeyDown()) {
                 if (!wasHornPressed) {
                     car.onHornPressed(player);
                     wasHornPressed = true;
@@ -101,7 +70,7 @@ public class KeyEvents {
                 wasHornPressed = false;
             }
 
-            if (keyCenter.isKeyDown()) {
+            if (Main.CENTER_KEY.isKeyDown()) {
                 if (!wasCenterPressed) {
                     //car.centerCar();
                     Main.SIMPLE_CHANNEL.sendToServer(new MessageCenterCar(player));
@@ -113,7 +82,7 @@ public class KeyEvents {
             }
         }
 
-        if (keyCarGui.isKeyDown()) {
+        if (Main.CAR_GUI_KEY.isKeyDown()) {
             if (!wasGuiPressed) {
                 car.openCarGUi(player);
                 wasGuiPressed = true;

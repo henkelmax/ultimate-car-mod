@@ -1,6 +1,6 @@
 {
     "parent": "item/generated",
     "textures": {
-        "layer0": "car:items/cyan_tank_container"
+        "layer0": "car:item/cyan_tank_container"
     }
 }

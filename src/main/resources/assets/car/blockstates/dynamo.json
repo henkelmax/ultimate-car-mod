@@ -1,5 +1,5 @@
 {
     "variants": {
-        "normal": { "model": "car:dynamo" }
+        "": { "model": "car:block/dynamo" }
     }
 }

@@ -1,8 +1,8 @@
 {
-    "parent": "block/half_slab",
+    "parent": "block/slab",
     "textures": {
-        "side": "car:blocks/tar",
-        "bottom": "car:blocks/tar",
-        "top": "car:blocks/tar"
+        "side": "car:block/tar",
+        "bottom": "car:block/tar",
+        "top": "car:block/tar"
     }
 }

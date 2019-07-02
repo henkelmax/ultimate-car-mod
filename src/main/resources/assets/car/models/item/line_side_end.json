@@ -1,6 +1,6 @@
 {
     "parent": "item/generated",
     "textures": {
-        "layer0": "car:blocks/line_side_end"
+        "layer0": "car:block/line_side_end"
     }
 }

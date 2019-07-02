@@ -60,7 +60,7 @@ public class GuiFuelStationAdmin extends GuiBase<ContainerFuelStationAdmin> {
     }
 
     @Override
-    public boolean keyReleased(int p_keyReleased_1_, int p_keyReleased_2_, int p_keyReleased_3_) {
+    public boolean keyPressed(int p_keyPressed_1_, int p_keyPressed_2_, int p_keyPressed_3_) {
         if (textField.isFocused()) {
             if (!textField.getText().isEmpty()) {
                 int i = 0;
@@ -73,7 +73,7 @@ public class GuiFuelStationAdmin extends GuiBase<ContainerFuelStationAdmin> {
                 Main.SIMPLE_CHANNEL.sendToServer(new MessageFuelStationAdminAmount(fuelStation.getPos(), i));
             }
         }
-        return super.keyReleased(p_keyReleased_1_, p_keyReleased_2_, p_keyReleased_3_);
+        return super.keyPressed(p_keyPressed_1_, p_keyPressed_2_, p_keyPressed_3_);
     }
 
     @Override

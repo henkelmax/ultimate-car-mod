@@ -1,8 +1,8 @@
 {
     "variants": {
-        "facing=north": { "model": "car:line_middle_edge" },
-        "facing=south": { "model": "car:line_middle_edge", "y": 180 },
-        "facing=west":  { "model": "car:line_middle_edge", "y": 270 },
-        "facing=east":  { "model": "car:line_middle_edge", "y": 90 }
+        "facing=north": { "model": "car:block/line_middle_edge" },
+        "facing=south": { "model": "car:block/line_middle_edge", "y": 180 },
+        "facing=west":  { "model": "car:block/line_middle_edge", "y": 270 },
+        "facing=east":  { "model": "car:block/line_middle_edge", "y": 90 }
     }
 }

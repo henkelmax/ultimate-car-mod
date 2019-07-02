@@ -1,6 +1,6 @@
 {
     "parent": "item/generated",
     "textures": {
-        "layer0": "car:items/gray_container"
+        "layer0": "car:item/gray_container"
     }
 }

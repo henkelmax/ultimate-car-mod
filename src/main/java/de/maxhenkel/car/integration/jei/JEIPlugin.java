@@ -32,8 +32,8 @@ public class JEIPlugin implements IModPlugin {
 
     @Override
     public void registerRecipes(IRecipeRegistration registration) {
-        registration.addRecipes(Arrays.asList(ModBlocks.PAINTS), JEIPlugin.CATEGORY_PAINTER);
-        registration.addRecipes(Arrays.asList(ModBlocks.YELLOW_PAINTS), JEIPlugin.CATEGORY_PAINTER_YELLOW);
+        //registration.addRecipes(Arrays.asList(ModBlocks.PAINTS), JEIPlugin.CATEGORY_PAINTER);
+        //registration.addRecipes(Arrays.asList(ModBlocks.YELLOW_PAINTS), JEIPlugin.CATEGORY_PAINTER_YELLOW);
 
     }
 

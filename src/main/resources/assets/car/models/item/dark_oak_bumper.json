@@ -1,6 +1,6 @@
 {
     "parent": "item/generated",
     "textures": {
-        "layer0": "car:items/dark_oak_bumper"
+        "layer0": "car:item/dark_oak_bumper"
     }
 }

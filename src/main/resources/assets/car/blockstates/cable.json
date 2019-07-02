@@ -1,66 +1,23 @@
 {
-    "forge_marker": 1,
-    "defaults": {
-        "model": "car:cable_core",
-        "uvlock": true
-    },
-    "variants": {
-        "normal": [{
-            "model": "car:cable_core"
-        }],
-        "down": {
-            "true": {
-                "submodel": {
-                    "cable_down": { "model": "car:cable_part", "x": 90 }
-               }
-            },
-            "false": {
-            }
+    "multipart": [
+        {   "apply": { "model": "car:block/cable_core" }},
+        {   "when": { "north": "true" },
+            "apply": { "model": "car:block/cable_part", "uvlock": true }
         },
-        "east": {
-            "true": {
-                "submodel": {
-                    "cable_east": { "model": "car:cable_part", "y": 90 }
-               }
-            },
-            "false": {
-            }
+        {   "when": { "east": "true" },
+            "apply": { "model": "car:block/cable_part", "y": 90, "uvlock": true }
         },
-        "north": {
-            "true": {
-                "submodel": {
-                    "cable_north": { "model": "car:cable_part" }
-               }
-            },
-            "false": {
-            }
+        {   "when": { "south": "true" },
+            "apply": { "model": "car:block/cable_part", "y": 180, "uvlock": true }
         },
-        "south": {
-            "true": {
-                "submodel": {
-                    "cable_south": { "model": "car:cable_part", "y": 180 }
-               }
-            },
-            "false": {
-            }
+        {   "when": { "west": "true" },
+            "apply": { "model": "car:block/cable_part", "y": 270, "uvlock": true }
         },
-        "up": {
-            "true": {
-                "submodel": {
-                    "cable_up": { "model": "car:cable_part", "x": 270 }
-               }
-            },
-            "false": {
-            }
+        {   "when": { "west": "true" },
+            "apply": { "model": "car:block/cable_part", "x": 270, "uvlock": true }
         },
-        "west": {
-            "true": {
-                "submodel": {
-                    "cable_west": { "model": "car:cable_part", "y": 270 }
-               }
-            },
-            "false": {
-            }
+        {   "when": { "west": "true" },
+            "apply": { "model": "car:block/cable_part", "x": 90, "uvlock": true }
         }
-    }
+    ]
 }

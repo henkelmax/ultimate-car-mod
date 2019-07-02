@@ -1,6 +1,6 @@
 {
     "parent": "item/generated",
     "textures": {
-        "layer0": "car:blocks/methanol_still"
+        "layer0": "car:block/methanol_still"
     }
 }

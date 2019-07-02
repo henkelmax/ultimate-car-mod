@@ -1,8 +1,8 @@
 {
     "variants": {
-        "facing=north": { "model": "car:arrow_left_dia_short" },
-        "facing=south": { "model": "car:arrow_left_dia_short", "y": 180 },
-        "facing=west":  { "model": "car:arrow_left_dia_short", "y": 270 },
-        "facing=east":  { "model": "car:arrow_left_dia_short", "y": 90 }
+        "facing=north": { "model": "car:block/arrow_left_dia_short" },
+        "facing=south": { "model": "car:block/arrow_left_dia_short", "y": 180 },
+        "facing=west":  { "model": "car:block/arrow_left_dia_short", "y": 270 },
+        "facing=east":  { "model": "car:block/arrow_left_dia_short", "y": 90 }
     }
 }

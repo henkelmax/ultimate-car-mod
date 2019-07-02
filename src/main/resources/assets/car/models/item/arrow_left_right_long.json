@@ -1,6 +1,6 @@
 {
     "parent": "item/generated",
     "textures": {
-        "layer0": "car:blocks/arrow_left_right_long"
+        "layer0": "car:block/arrow_left_right_long"
     }
 }

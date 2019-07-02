@@ -1,6 +1,6 @@
 {
     "parent": "item/generated",
     "textures": {
-        "layer0": "car:items/gold_license_plate_holder"
+        "layer0": "car:item/gold_license_plate_holder"
     }
 }

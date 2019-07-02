@@ -1,8 +1,8 @@
 {
     "variants": {
-        "age=0": { "model": "car:canola_stage0" },
-        "age=1": { "model": "car:canola_stage1" },
-        "age=2": { "model": "car:canola_stage2" },
-        "age=3": { "model": "car:canola_stage3" }
+        "age=0": { "model": "car:block/canola_stage0" },
+        "age=1": { "model": "car:block/canola_stage1" },
+        "age=2": { "model": "car:block/canola_stage2" },
+        "age=3": { "model": "car:block/canola_stage3" }
     }
 }

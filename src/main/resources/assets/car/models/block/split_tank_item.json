@@ -1,10 +1,10 @@
 {
     "parent": "car:block/block_big",
     "textures": {
-        "0": "blocks/iron_block",
-        "1": "car:blocks/split_tank_glass",
-        "2": "car:blocks/oilmill_side",
-        "particle": "car:blocks/oilmill_side"
+        "0": "block/iron_block",
+        "1": "car:block/split_tank_glass",
+        "2": "car:block/oilmill_side",
+        "particle": "car:block/oilmill_side"
     },
     "elements": [
         {

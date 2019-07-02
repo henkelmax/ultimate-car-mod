@@ -1,8 +1,8 @@
 {
 	"parent": "block/block",
     "textures": {
-        "0": "car:blocks/crash_barrier",
-		"particle": "car:blocks/crash_barrier"
+        "0": "car:block/crash_barrier",
+		"particle": "car:block/crash_barrier"
     },
     "display": {
         "gui": {

@@ -1,8 +1,8 @@
 {
     "variants": {
-        "facing=north": { "model": "car:arrow" },
-        "facing=south": { "model": "car:arrow", "y": 180 },
-        "facing=west":  { "model": "car:arrow", "y": 270 },
-        "facing=east":  { "model": "car:arrow", "y": 90 }
+        "facing=north": { "model": "car:block/arrow" },
+        "facing=south": { "model": "car:block/arrow", "y": 180 },
+        "facing=west":  { "model": "car:block/arrow", "y": 270 },
+        "facing=east":  { "model": "car:block/arrow", "y": 90 }
     }
 }

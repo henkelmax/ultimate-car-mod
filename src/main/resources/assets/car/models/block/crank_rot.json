@@ -1,7 +1,7 @@
 {
     "textures": {
-        "0": "car:blocks/crank",
-		"particle": "car:blocks/crank"
+        "0": "car:block/crank",
+		"particle": "car:block/crank"
     },
     "elements": [
         {

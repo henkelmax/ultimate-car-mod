@@ -1,6 +1,6 @@
 {
     "parent": "item/generated",
     "textures": {
-        "layer0": "car:blocks/arrow_right_dia_short"
+        "layer0": "car:block/arrow_right_dia_short"
     }
 }

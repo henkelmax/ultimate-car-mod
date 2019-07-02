@@ -1,12 +1,12 @@
 {
     "parent": "block/cube",
     "textures": {
-        "up": "car:blocks/car_workshop_top_6",
-        "down": "car:blocks/car_workshop_inside",
-        "north": "car:blocks/car_workshop_inside",
-		"south": "car:blocks/car_workshop_inside",
-		"east": "car:blocks/car_workshop_side_3",
-		"west": "car:blocks/car_workshop_inside",
-		"particle": "car:blocks/car_workshop_inside"
+        "up": "car:block/car_workshop_top_6",
+        "down": "car:block/car_workshop_inside",
+        "north": "car:block/car_workshop_inside",
+		"south": "car:block/car_workshop_inside",
+		"east": "car:block/car_workshop_side_3",
+		"west": "car:block/car_workshop_inside",
+		"particle": "car:block/car_workshop_inside"
     }
 }

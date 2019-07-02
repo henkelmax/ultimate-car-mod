@@ -2,7 +2,7 @@
     "parent": "block/orientable",
     "textures": {
         "top": "blocks/iron_block",
-        "front": "car:blocks/blastfurnace_powered",
+        "front": "car:block/blastfurnace_powered",
         "side": "blocks/iron_block"
     }
 }

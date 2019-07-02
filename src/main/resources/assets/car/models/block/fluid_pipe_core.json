@@ -1,7 +1,7 @@
 {
     "textures": {
-        "particle": "car:blocks/fluid_pipe",
-        "0": "car:blocks/fluid_pipe"
+        "particle": "car:block/fluid_pipe",
+        "0": "car:block/fluid_pipe"
     },
     "elements": [
         {

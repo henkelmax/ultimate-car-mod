@@ -1,6 +1,6 @@
 {
     "parent": "item/generated",
     "textures": {
-        "layer0": "car:items/light_blue_suv_body"
+        "layer0": "car:item/light_blue_suv_body"
     }
 }

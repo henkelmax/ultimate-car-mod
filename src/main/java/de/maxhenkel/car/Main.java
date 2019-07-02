@@ -21,11 +21,10 @@ import de.maxhenkel.car.sounds.ModSounds;
 import de.maxhenkel.tools.EntityTools;
 import net.minecraft.block.Block;
 import net.minecraft.client.gui.ScreenManager;
+import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
 import net.minecraft.fluid.Fluid;
-import net.minecraft.fluid.IFluidState;
-import net.minecraft.fluid.WaterFluid;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -54,6 +53,7 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.network.IContainerFactory;
 import net.minecraftforge.fml.network.NetworkRegistry;
 import net.minecraftforge.fml.network.simple.SimpleChannel;
+import org.lwjgl.glfw.GLFW;
 
 @Mod(Main.MODID)
 public class Main {
@@ -109,10 +109,8 @@ public class Main {
     @SubscribeEvent
     public void commonSetup(FMLCommonSetupEvent event) {
         MinecraftForge.EVENT_BUS.register(this);
-        MinecraftForge.EVENT_BUS.register(new KeyEvents());
-        MinecraftForge.EVENT_BUS.register(new RenderEvents());
-        MinecraftForge.EVENT_BUS.register(new PlayerEvents());
         MinecraftForge.EVENT_BUS.register(new CapabilityEvents());
+        MinecraftForge.EVENT_BUS.register(new PlayerEvents());
 
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityFuelStation.class, new TileentitySpecialRendererFuelStation());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySplitTank.class, new TileEntitySpecialRendererSplitTank());
@@ -139,12 +137,19 @@ public class Main {
         SIMPLE_CHANNEL.registerMessage(15, MessageEditLicensePlate.class, (msg, buf) -> msg.toBytes(buf), (buf) -> new MessageEditLicensePlate().fromBytes(buf), (msg, fun) -> msg.executeServerSide(fun.get()));
     }
 
+    public static KeyBinding FORWARD_KEY;
+    public static KeyBinding BACK_KEY;
+    public static KeyBinding LEFT_KEY;
+    public static KeyBinding RIGHT_KEY;
+
+    public static KeyBinding CAR_GUI_KEY;
+    public static KeyBinding START_KEY;
+    public static KeyBinding HORN_KEY;
+    public static KeyBinding CENTER_KEY;
 
     @SubscribeEvent
     @OnlyIn(Dist.CLIENT)
     public void clientSetup(FMLClientSetupEvent event) {
-        MinecraftForge.EVENT_BUS.register(new RenderEvents());
-
         ScreenManager.IScreenFactory factory1 = (ScreenManager.IScreenFactory<ContainerBackmixReactor, GuiBackmixReactor>) (container, playerInventory, name) -> new GuiBackmixReactor(container, playerInventory, name);
         ScreenManager.registerFactory(Main.BACKMIX_REACTOR_CONTAINER_TYPE, factory1);
 
@@ -186,6 +191,34 @@ public class Main {
 
         ScreenManager.IScreenFactory factory14 = (ScreenManager.IScreenFactory<ContainerSplitTank, GuiSplitTank>) (container, playerInventory, name) -> new GuiSplitTank(container, playerInventory, name);
         ScreenManager.registerFactory(Main.SPLIT_TANK_CONTAINER_TYPE, factory14);
+
+
+        this.FORWARD_KEY = new KeyBinding("key.car_forward", GLFW.GLFW_KEY_W, "category.car");
+        ClientRegistry.registerKeyBinding(FORWARD_KEY);
+
+        this.BACK_KEY = new KeyBinding("key.car_back", GLFW.GLFW_KEY_S, "category.car");
+        ClientRegistry.registerKeyBinding(BACK_KEY);
+
+        this.LEFT_KEY = new KeyBinding("key.car_left", GLFW.GLFW_KEY_A, "category.car");
+        ClientRegistry.registerKeyBinding(LEFT_KEY);
+
+        this.RIGHT_KEY = new KeyBinding("key.car_right", GLFW.GLFW_KEY_D, "category.car");
+        ClientRegistry.registerKeyBinding(RIGHT_KEY);
+
+        this.CAR_GUI_KEY = new KeyBinding("key.car_gui", GLFW.GLFW_KEY_I, "category.car");
+        ClientRegistry.registerKeyBinding(CAR_GUI_KEY);
+
+        this.START_KEY = new KeyBinding("key.car_start", GLFW.GLFW_KEY_R, "category.car");
+        ClientRegistry.registerKeyBinding(START_KEY);
+
+        this.HORN_KEY = new KeyBinding("key.car_horn", GLFW.GLFW_KEY_H, "category.car");
+        ClientRegistry.registerKeyBinding(HORN_KEY);
+
+        this.CENTER_KEY = new KeyBinding("key.center_car", GLFW.GLFW_KEY_SPACE, "category.car");
+        ClientRegistry.registerKeyBinding(CENTER_KEY);
+
+        MinecraftForge.EVENT_BUS.register(new RenderEvents());
+        MinecraftForge.EVENT_BUS.register(new KeyEvents());
     }
 
     @SubscribeEvent
@@ -222,7 +255,7 @@ public class Main {
                 .size(1F, 1F)
                 .setCustomClientFactory((spawnEntity, world) -> new EntityGenericCar(world))
                 .build(Main.MODID + ":car");
-        CAR_ENTITY_TYPE.setRegistryName(new ResourceLocation(Main.MODID, "image_frame"));
+        CAR_ENTITY_TYPE.setRegistryName(new ResourceLocation(Main.MODID, "car"));
         event.getRegistry().register(CAR_ENTITY_TYPE);
     }
 

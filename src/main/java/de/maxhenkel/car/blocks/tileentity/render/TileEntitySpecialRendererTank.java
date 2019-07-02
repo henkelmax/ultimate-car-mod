@@ -19,7 +19,7 @@ import net.minecraftforge.fluids.FluidStack;
 public class TileEntitySpecialRendererTank extends TileEntityRenderer<TileEntityTank> {
 
 	public static final ResourceLocation LOCATION_TANK = new ResourceLocation(Main.MODID,
-			"textures/blocks/tank_line.png");
+			"textures/block/tank_line.png");
 
 	@Override
 	public void render(TileEntityTank te, double x, double y, double z, float partialTicks, int destroyStage) {

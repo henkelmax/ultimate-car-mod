@@ -1,7 +1,7 @@
 {
     "textures": {
-        "0": "car:blocks/cable",
-		"particle": "car:blocks/cable"
+        "0": "car:block/cable",
+		"particle": "car:block/cable"
     },
     "elements": [
         {

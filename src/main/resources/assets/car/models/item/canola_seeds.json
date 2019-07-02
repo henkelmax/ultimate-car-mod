@@ -1,6 +1,6 @@
 {
     "parent": "item/generated",
     "textures": {
-        "layer0": "car:items/canola_seeds"
+        "layer0": "car:item/canola_seeds"
     }
 }

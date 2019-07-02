@@ -1,6 +1,6 @@
 {
     "parent": "item/generated",
     "textures": {
-        "layer0": "car:items/green_sport_body"
+        "layer0": "car:item/green_sport_body"
     }
 }

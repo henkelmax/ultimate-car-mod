@@ -1,17 +1,16 @@
 {
     "variants": {
-        "facing=north,powered=false": { "model": "car:generator" },
-        "facing=south,powered=false": { "model": "car:generator", "y": 180 },
-        "facing=west,powered=false": { "model": "car:generator", "y": 270 },
-        "facing=east,powered=false": { "model": "car:generator", "y": 90 },
-        "facing=up,powered=false": { "model": "car:generator" },
-        "facing=down,powered=false": { "model": "car:generator" },
-        "facing=north,powered=true": { "model": "car:generator_powered" },
-        "facing=south,powered=true": { "model": "car:generator_powered", "y": 180 },
-        "facing=west,powered=true": { "model": "car:generator_powered", "y": 270 },
-        "facing=east,powered=true": { "model": "car:generator_powered", "y": 90 },
-        "facing=up,powered=true": { "model": "car:generator_powered" },
-        "facing=down,powered=true": { "model": "car:generator_powered" },
-        "inventory": { "model": "car:generator_powered" }
+        "facing=north,powered=false": { "model": "car:block/generator" },
+        "facing=south,powered=false": { "model": "car:block/generator", "y": 180 },
+        "facing=west,powered=false": { "model": "car:block/generator", "y": 270 },
+        "facing=east,powered=false": { "model": "car:block/generator", "y": 90 },
+        "facing=up,powered=false": { "model": "car:block/generator" },
+        "facing=down,powered=false": { "model": "car:block/generator" },
+        "facing=north,powered=true": { "model": "car:block/generator_powered" },
+        "facing=south,powered=true": { "model": "car:block/generator_powered", "y": 180 },
+        "facing=west,powered=true": { "model": "car:block/generator_powered", "y": 270 },
+        "facing=east,powered=true": { "model": "car:block/generator_powered", "y": 90 },
+        "facing=up,powered=true": { "model": "car:block/generator_powered" },
+        "facing=down,powered=true": { "model": "car:block/generator_powered" }
     }
 }

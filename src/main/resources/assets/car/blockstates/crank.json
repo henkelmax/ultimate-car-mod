@@ -1,13 +1,12 @@
 {
     "variants": {
-        "rotation=0": { "model": "car:crank", "y": 0 },
-        "rotation=1": { "model": "car:crank_rot", "y": 90 },
-        "rotation=2": { "model": "car:crank", "y": 90 },
-        "rotation=3": { "model": "car:crank_rot", "y": 180 },
-        "rotation=4": { "model": "car:crank", "y": 180 },
-        "rotation=5": { "model": "car:crank_rot", "y": 270 },
-        "rotation=6": { "model": "car:crank", "y": 270 },
-        "rotation=7": { "model": "car:crank_rot", "y": 0 },
-        "inventory": { "model": "car:crank" }
+        "rotation=0": { "model": "car:block/crank", "y": 0 },
+        "rotation=1": { "model": "car:block/crank_rot", "y": 90 },
+        "rotation=2": { "model": "car:block/crank", "y": 90 },
+        "rotation=3": { "model": "car:block/crank_rot", "y": 180 },
+        "rotation=4": { "model": "car:block/crank", "y": 180 },
+        "rotation=5": { "model": "car:block/crank_rot", "y": 270 },
+        "rotation=6": { "model": "car:block/crank", "y": 270 },
+        "rotation=7": { "model": "car:block/crank_rot", "y": 0 }
     }
 }

@@ -6,8 +6,8 @@ import net.minecraftforge.fluids.Fluid;
 
 public class FluidMethanol extends Fluid{
 
-	protected static final ResourceLocation STILL=new ResourceLocation(Main.MODID, "blocks/methanol_still");
-	protected static final ResourceLocation FLOWING=new ResourceLocation(Main.MODID, "blocks/methanol_flowing");
+	protected static final ResourceLocation STILL=new ResourceLocation(Main.MODID, "block/methanol_still");
+	protected static final ResourceLocation FLOWING=new ResourceLocation(Main.MODID, "block/methanol_flowing");
 	
 	public FluidMethanol() {
 		super("methanol", STILL, FLOWING);

@@ -1,5 +1,5 @@
 {
     "variants": {
-        "normal": { "model": "car:split_tank" }
+        "": { "model": "car:block/split_tank" }
     }
 }

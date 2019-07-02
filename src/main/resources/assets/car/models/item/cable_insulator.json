@@ -1,6 +1,6 @@
 {
     "parent": "item/generated",
     "textures": {
-        "layer0": "car:items/cable_insulator"
+        "layer0": "car:item/cable_insulator"
     }
 }

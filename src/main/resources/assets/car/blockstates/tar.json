@@ -1,6 +1,5 @@
 {
     "variants": {
-        "normal": { "model": "car:tar" },
-        "inventory": { "model": "car:tar" }
+        "": { "model": "car:block/tar" }
     }
 }

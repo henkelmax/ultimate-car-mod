@@ -1,17 +1,16 @@
 {
     "variants": {
-        "facing=north,powered=false": { "model": "car:oilmill" },
-        "facing=south,powered=false": { "model": "car:oilmill", "y": 180 },
-        "facing=west,powered=false": { "model": "car:oilmill", "y": 270 },
-        "facing=east,powered=false": { "model": "car:oilmill", "y": 90 },
-        "facing=up,powered=false": { "model": "car:oilmill" },
-        "facing=down,powered=false": { "model": "car:oilmill" },
-        "facing=north,powered=true": { "model": "car:oilmill_powered" },
-        "facing=south,powered=true": { "model": "car:oilmill_powered", "y": 180 },
-        "facing=west,powered=true": { "model": "car:oilmill_powered", "y": 270 },
-        "facing=east,powered=true": { "model": "car:oilmill_powered", "y": 90 },
-        "facing=up,powered=true": { "model": "car:oilmill_powered" },
-        "facing=down,powered=true": { "model": "car:oilmill_powered" },
-        "inventory": { "model": "car:oilmill_powered" }
+        "facing=north,powered=false": { "model": "car:block/oilmill" },
+        "facing=south,powered=false": { "model": "car:block/oilmill", "y": 180 },
+        "facing=west,powered=false": { "model": "car:block/oilmill", "y": 270 },
+        "facing=east,powered=false": { "model": "car:block/oilmill", "y": 90 },
+        "facing=up,powered=false": { "model": "car:block/oilmill" },
+        "facing=down,powered=false": { "model": "car:block/oilmill" },
+        "facing=north,powered=true": { "model": "car:block/oilmill_powered" },
+        "facing=south,powered=true": { "model": "car:block/oilmill_powered", "y": 180 },
+        "facing=west,powered=true": { "model": "car:block/oilmill_powered", "y": 270 },
+        "facing=east,powered=true": { "model": "car:block/oilmill_powered", "y": 90 },
+        "facing=up,powered=true": { "model": "car:block/oilmill_powered" },
+        "facing=down,powered=true": { "model": "car:block/oilmill_powered" }
     }
 }

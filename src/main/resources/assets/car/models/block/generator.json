@@ -1,12 +1,12 @@
 {
     "parent": "block/block",
     "textures": {
-        "0": "blocks/iron_block",
-        "1": "car:blocks/oilmill_side",
-        "2": "blocks/clay",
-        "3": "blocks/hardened_clay_stained_gray",
-        "4": "car:blocks/generator",
-        "particle": "car:blocks/oilmill_side"
+        "0": "block/iron_block",
+        "1": "car:block/oilmill_side",
+        "2": "block/clay",
+        "3": "block/hardened_clay_stained_gray",
+        "4": "car:block/generator",
+        "particle": "car:block/oilmill_side"
     },
     "elements": [
         {

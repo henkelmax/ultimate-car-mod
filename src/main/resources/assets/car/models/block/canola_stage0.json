@@ -1,7 +1,7 @@
 {
     "textures": {
-        "0": "car:blocks/canola_stage0",
-		"particle": "car:blocks/canola_stage0"
+        "0": "car:block/canola_stage0",
+		"particle": "car:block/canola_stage0"
     },
     "elements": [
         {

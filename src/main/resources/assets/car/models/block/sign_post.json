@@ -1,8 +1,8 @@
 {
     "parent": "block/block",
     "textures": {
-        "0": "car:blocks/sign_post",
-        "particle": "car:blocks/sign_post"
+        "0": "car:block/sign_post",
+        "particle": "car:block/sign_post"
     },
     "elements": [
         {

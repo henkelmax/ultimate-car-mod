@@ -1,6 +1,6 @@
 {
     "parent": "item/generated",
     "textures": {
-        "layer0": "car:items/big_spruce_body"
+        "layer0": "car:item/big_spruce_body"
     }
 }

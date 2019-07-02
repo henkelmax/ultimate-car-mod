@@ -1,6 +1,6 @@
 {
     "parent": "item/generated",
     "textures": {
-        "layer0": "car:items/engine_piston"
+        "layer0": "car:item/engine_piston"
     }
 }

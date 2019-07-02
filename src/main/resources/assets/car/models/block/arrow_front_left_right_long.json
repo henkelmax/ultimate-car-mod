@@ -1,8 +1,8 @@
 {
     "ambientocclusion": false,
     "textures": {
-        "particle": "car:blocks/arrow_front_left_right_long",
-        "texture": "car:blocks/arrow_front_left_right_long"
+        "particle": "car:block/arrow_front_left_right_long",
+        "texture": "car:block/arrow_front_left_right_long"
     },
     "elements": [
         {   "from": [ 0, 0, 0 ],

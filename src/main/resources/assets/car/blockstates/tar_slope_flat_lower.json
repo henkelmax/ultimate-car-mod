@@ -1,8 +1,8 @@
 {
     "variants": {
-        "facing=north": { "model": "car:tar_slope_flat_lower" },
-        "facing=south": { "model": "car:tar_slope_flat_lower", "y": 180},
-        "facing=west":  { "model": "car:tar_slope_flat_lower", "y": 270 },
-        "facing=east":  { "model": "car:tar_slope_flat_lower", "y": 90 }
+        "facing=north": { "model": "car:block/tar_slope_flat_lower" },
+        "facing=south": { "model": "car:block/tar_slope_flat_lower", "y": 180},
+        "facing=west":  { "model": "car:block/tar_slope_flat_lower", "y": 270 },
+        "facing=east":  { "model": "car:block/tar_slope_flat_lower", "y": 90 }
     }
 }
