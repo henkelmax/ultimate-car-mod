@@ -71,7 +71,7 @@ public class BlockFluidExtractor extends Block implements ITileEntityProvider, I
         if (!(te instanceof TileEntityFluidExtractor)) {
             return false;
         }
-        TileEntityFluidExtractor fluidExtractor= (TileEntityFluidExtractor) te;
+        TileEntityFluidExtractor fluidExtractor = (TileEntityFluidExtractor) te;
         if (player instanceof ServerPlayerEntity) {
             TileEntityContainerProvider.openGui((ServerPlayerEntity) player, fluidExtractor, (i, playerInventory, playerEntity) -> new ContainerFluidExtractor(i, fluidExtractor, playerInventory));
         }
@@ -81,14 +81,23 @@ public class BlockFluidExtractor extends Block implements ITileEntityProvider, I
     @Nullable
     @Override
     public BlockState getStateForPlacement(BlockItemUseContext context) {
-        return this.getDefaultState()
-                .with(UP, BlockFluidPipe.isConnectedTo(context.getWorld(), context.getPos(), Direction.UP))
-                .with(DOWN, BlockFluidPipe.isConnectedTo(context.getWorld(), context.getPos(), Direction.DOWN))
-                .with(NORTH, BlockFluidPipe.isConnectedTo(context.getWorld(), context.getPos(), Direction.NORTH))
-                .with(SOUTH, BlockFluidPipe.isConnectedTo(context.getWorld(), context.getPos(), Direction.SOUTH))
-                .with(EAST, BlockFluidPipe.isConnectedTo(context.getWorld(), context.getPos(), Direction.EAST))
-                .with(WEST, BlockFluidPipe.isConnectedTo(context.getWorld(), context.getPos(), Direction.WEST))
-                .with(FACING, context.getFace().getOpposite());
+        return getState(context.getWorld(), context.getPos()).with(FACING, context.getFace().getOpposite());
+    }
+
+    private BlockState getState(World world, BlockPos pos) {
+        return getDefaultState()
+                .with(UP, BlockFluidPipe.isConnectedTo(world, pos, Direction.UP))
+                .with(DOWN, BlockFluidPipe.isConnectedTo(world, pos, Direction.DOWN))
+                .with(NORTH, BlockFluidPipe.isConnectedTo(world, pos, Direction.NORTH))
+                .with(SOUTH, BlockFluidPipe.isConnectedTo(world, pos, Direction.SOUTH))
+                .with(EAST, BlockFluidPipe.isConnectedTo(world, pos, Direction.EAST))
+                .with(WEST, BlockFluidPipe.isConnectedTo(world, pos, Direction.WEST));
+    }
+
+    @Override
+    public void neighborChanged(BlockState state, World world, BlockPos pos, Block block, BlockPos pos1, boolean b) {
+        super.neighborChanged(state, world, pos, block, pos1, b);
+        world.setBlockState(pos, getState(world, pos).with(FACING, world.getBlockState(pos).get(FACING)));
     }
 
     @Override

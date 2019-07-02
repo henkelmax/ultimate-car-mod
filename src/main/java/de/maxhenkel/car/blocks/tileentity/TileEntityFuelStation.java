@@ -628,6 +628,10 @@ public class TileEntityFuelStation extends TileEntityBase implements ITickableTi
         return tradeAmount;
     }
 
+    public void setTradeAmount(int tradeAmount) {
+        this.tradeAmount = tradeAmount;
+    }
+
     public int getFuelAmount() {
         if (storage != null) {
             return storage.amount;

@@ -29,9 +29,7 @@ public class MessageFuelStationAdminAmount implements Message<MessageFuelStation
         TileEntity te = context.getSender().world.getTileEntity(new BlockPos(posX, posY, posZ));
 
         if (te instanceof TileEntityFuelStation) {
-            //TODO fields
-            //((TileEntityFuelStation) te).setField(2, message.amount);
-
+            ((TileEntityFuelStation) te).setTradeAmount(amount);
         }
     }
 

@@ -47,6 +47,7 @@ public class GuiFuelStationAdmin extends GuiBase<ContainerFuelStationAdmin> {
         textField.setDisabledTextColour(-1);
         textField.setEnableBackgroundDrawing(false);
         textField.setMaxStringLength(20);
+        textField.setText(String.valueOf(fuelStation.getTradeAmount()));
         textField.func_212954_a(this::onTextChanged);
         children.add(textField);
         setFocused(textField);
@@ -63,12 +64,11 @@ public class GuiFuelStationAdmin extends GuiBase<ContainerFuelStationAdmin> {
     public void onTextChanged(String text) {
         if (textField.isFocused()) {
             if (!text.isEmpty()) {
-                int i = 0;
                 try {
-                    i = Integer.parseInt(text);
+                    int i = Integer.parseInt(text);
+                    Main.SIMPLE_CHANNEL.sendToServer(new MessageFuelStationAdminAmount(fuelStation.getPos(), i));
                 } catch (Exception e) {
                 }
-                Main.SIMPLE_CHANNEL.sendToServer(new MessageFuelStationAdminAmount(fuelStation.getPos(), i));
             }
         }
     }

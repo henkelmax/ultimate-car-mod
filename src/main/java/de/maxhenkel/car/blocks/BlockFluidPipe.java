@@ -23,6 +23,7 @@ import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IEnviromentBlockReader;
+import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 
@@ -57,13 +58,23 @@ public class BlockFluidPipe extends Block implements IItemBlock {
     @Nullable
     @Override
     public BlockState getStateForPlacement(BlockItemUseContext context) {
-        return this.getDefaultState()
-                .with(UP, isConnectedTo(context.getWorld(), context.getPos(), Direction.UP))
-                .with(DOWN, isConnectedTo(context.getWorld(), context.getPos(), Direction.DOWN))
-                .with(NORTH, isConnectedTo(context.getWorld(), context.getPos(), Direction.NORTH))
-                .with(SOUTH, isConnectedTo(context.getWorld(), context.getPos(), Direction.SOUTH))
-                .with(EAST, isConnectedTo(context.getWorld(), context.getPos(), Direction.EAST))
-                .with(WEST, isConnectedTo(context.getWorld(), context.getPos(), Direction.WEST));
+        return getState(context.getWorld(), context.getPos());
+    }
+
+    private BlockState getState(World world, BlockPos pos) {
+        return getDefaultState()
+                .with(UP, isConnectedTo(world, pos, Direction.UP))
+                .with(DOWN, isConnectedTo(world, pos, Direction.DOWN))
+                .with(NORTH, isConnectedTo(world, pos, Direction.NORTH))
+                .with(SOUTH, isConnectedTo(world, pos, Direction.SOUTH))
+                .with(EAST, isConnectedTo(world, pos, Direction.EAST))
+                .with(WEST, isConnectedTo(world, pos, Direction.WEST));
+    }
+
+    @Override
+    public void neighborChanged(BlockState state, World world, BlockPos pos, Block block, BlockPos pos1, boolean b) {
+        super.neighborChanged(state, world, pos, block, pos1, b);
+        world.setBlockState(pos, getState(world, pos));
     }
 
     @Override
