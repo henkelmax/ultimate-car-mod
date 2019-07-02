@@ -36,6 +36,10 @@ public class KeyEvents {
 
         PlayerEntity player = minecraft.player;
 
+        if (player == null) {
+            return;
+        }
+
         Entity riding = player.getRidingEntity();
 
         if (!(riding instanceof EntityCarBatteryBase)) {
