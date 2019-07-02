@@ -45,7 +45,7 @@ public class GuiFuelStationAdmin extends GuiBase<ContainerFuelStationAdmin> {
         textField.setText(String.valueOf(fuelStation.getTradeAmount()));
 
         children.add(textField);
-        func_212928_a(textField);
+        setFocused(textField);
     }
 
     @Override

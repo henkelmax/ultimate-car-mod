@@ -20,6 +20,10 @@ public class ContainerFluidExtractor extends ContainerBase {
         addInvSlots();
     }
 
+    public TileEntityFluidExtractor getTile() {
+        return tile;
+    }
+
     @Override
     public int getInvOffset() {
         return -27;

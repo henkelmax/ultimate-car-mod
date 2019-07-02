@@ -4,9 +4,11 @@ import java.util.Map;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
-import de.maxhenkel.car.Main;
 import de.maxhenkel.car.ModCreativeTabs;
 import de.maxhenkel.car.blocks.tileentity.TileEntityFuelStation;
+import de.maxhenkel.car.gui.ContainerFuelStation;
+import de.maxhenkel.car.gui.ContainerFuelStationAdmin;
+import de.maxhenkel.car.gui.TileEntityContainerProvider;
 import de.maxhenkel.tools.BlockTools;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -15,6 +17,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.BlockItemUseContext;
@@ -23,7 +26,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.shapes.ISelectionContext;
@@ -60,15 +62,16 @@ public class BlockFuelStation extends BlockOrientableHorizontal {
     public boolean onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
         TileEntity te = worldIn.getTileEntity(pos);
 
-        if (te == null || !(te instanceof TileEntityFuelStation)) {
+        if (!(te instanceof TileEntityFuelStation)) {
             return false;
         }
 
-        TileEntityFuelStation station= (TileEntityFuelStation) te;
+
+        TileEntityFuelStation station = (TileEntityFuelStation) te;
 
         ItemStack stack = player.getHeldItem(handIn);
 
-        if(station.isOwner(player)||!station.hasTrade()){
+        if (station.isOwner(player) || !station.hasTrade()) {
             if (stack != null) {
                 FluidStack fluidStack = FluidUtil.getFluidContained(stack).orElse(null);
 
@@ -89,13 +92,16 @@ public class BlockFuelStation extends BlockOrientableHorizontal {
             }
         }
 
+
         if (!player.isSneaking()) {
-            //TODO gui
-            //player.openGui(Main.instance(), GuiHandler.GUI_FUELSTATION, worldIn, pos.getX(), pos.getY(), pos.getZ());
+            if (player instanceof ServerPlayerEntity) {
+                TileEntityContainerProvider.openGui((ServerPlayerEntity) player, station, (i, playerInventory, playerEntity) -> new ContainerFuelStation(i, station, playerInventory));
+            }
             return true;
-        } else if(station.isOwner(player)){
-            //TODO gui
-            //player.openGui(Main.instance(), GuiHandler.GUI_FUELSTATION_ADMIN, worldIn, pos.getX(), pos.getY(), pos.getZ());
+        } else if (station.isOwner(player)) {
+            if (player instanceof ServerPlayerEntity) {
+                TileEntityContainerProvider.openGui((ServerPlayerEntity) player, station, (i, playerInventory, playerEntity) -> new ContainerFuelStationAdmin(i, station, playerInventory));
+            }
             return true;
         }
         return false;
@@ -111,9 +117,9 @@ public class BlockFuelStation extends BlockOrientableHorizontal {
         return false;
     }
 
-    public static VoxelShape SHAPE_NORTH_SOUTH= Block.makeCuboidShape(2D, 0D, 5D, 14D, 31D, 11D);
-    public static VoxelShape SHAPE_NEAST_WEST= Block.makeCuboidShape(5D, 0D, 2D, 11D, 31D, 14D);
-    public static VoxelShape SHAPE_SLAB= Block.makeCuboidShape(0D, 0D, 0D, 16D, 8D, 16D);
+    public static VoxelShape SHAPE_NORTH_SOUTH = Block.makeCuboidShape(2D, 0D, 5D, 14D, 31D, 11D);
+    public static VoxelShape SHAPE_NEAST_WEST = Block.makeCuboidShape(5D, 0D, 2D, 11D, 31D, 14D);
+    public static VoxelShape SHAPE_SLAB = Block.makeCuboidShape(0D, 0D, 0D, 16D, 8D, 16D);
 
     private static final Map<Direction, VoxelShape> SHAPES = Maps.newEnumMap(ImmutableMap.of(
             Direction.NORTH,
@@ -152,7 +158,7 @@ public class BlockFuelStation extends BlockOrientableHorizontal {
         TileEntity te = worldIn.getTileEntity(pos);
 
         if (te != null && te instanceof TileEntityFuelStation && placer instanceof PlayerEntity) {
-            TileEntityFuelStation station= (TileEntityFuelStation) te;
+            TileEntityFuelStation station = (TileEntityFuelStation) te;
             station.setOwner((PlayerEntity) placer);
         }
 
@@ -171,11 +177,11 @@ public class BlockFuelStation extends BlockOrientableHorizontal {
         dropItems(worldIn, pos);
     }
 
-    public static void dropItems(World worldIn, BlockPos pos){
+    public static void dropItems(World worldIn, BlockPos pos) {
         TileEntity te = worldIn.getTileEntity(pos);
 
         if (te != null && te instanceof TileEntityFuelStation) {
-            TileEntityFuelStation station= (TileEntityFuelStation) te;
+            TileEntityFuelStation station = (TileEntityFuelStation) te;
             InventoryHelper.dropInventoryItems(worldIn, pos, station.getInventory());
             InventoryHelper.dropInventoryItems(worldIn, pos, station.getTradingInventory());
         }

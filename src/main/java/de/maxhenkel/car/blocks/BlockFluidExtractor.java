@@ -3,12 +3,15 @@ package de.maxhenkel.car.blocks;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.ModCreativeTabs;
 import de.maxhenkel.car.blocks.tileentity.TileEntityFluidExtractor;
+import de.maxhenkel.car.gui.ContainerFluidExtractor;
+import de.maxhenkel.car.gui.TileEntityContainerProvider;
 import de.maxhenkel.tools.BlockTools;
 import de.maxhenkel.tools.IItemBlock;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.Item;
@@ -61,13 +64,18 @@ public class BlockFluidExtractor extends Block implements ITileEntityProvider, I
 
     @Override
     public boolean onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
-        if (!player.isSneaking()) {
-            //TODO GUI
-            //playerIn.openGui(Main.instance(), GuiHandler.GUI_FLUID_EXTRACTOR, worldIn, pos.getX(), pos.getY(), pos.getZ());
-            return true;
+        if (player.isSneaking()) {
+            return false;
         }
-
-        return false;
+        TileEntity te = worldIn.getTileEntity(pos);
+        if (!(te instanceof TileEntityFluidExtractor)) {
+            return false;
+        }
+        TileEntityFluidExtractor fluidExtractor= (TileEntityFluidExtractor) te;
+        if (player instanceof ServerPlayerEntity) {
+            TileEntityContainerProvider.openGui((ServerPlayerEntity) player, fluidExtractor, (i, playerInventory, playerEntity) -> new ContainerFluidExtractor(i, fluidExtractor, playerInventory));
+        }
+        return true;
     }
 
     @Nullable

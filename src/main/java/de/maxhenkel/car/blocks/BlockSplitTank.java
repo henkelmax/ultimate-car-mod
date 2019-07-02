@@ -3,11 +3,14 @@ package de.maxhenkel.car.blocks;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.ModCreativeTabs;
 import de.maxhenkel.car.blocks.tileentity.TileEntitySplitTank;
+import de.maxhenkel.car.gui.ContainerSplitTank;
+import de.maxhenkel.car.gui.TileEntityContainerProvider;
 import de.maxhenkel.tools.IItemBlock;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.BlockItem;
@@ -77,8 +80,15 @@ public class BlockSplitTank extends Block implements ITileEntityProvider, IItemB
         }
 
         if (!player.isSneaking()) {
-            //TODO GUI
-            //player.openGui(Main.instance(), GuiHandler.GUI_SPLITTANK, worldIn, pos.getX(), pos.getY(), pos.getZ());
+            TileEntity te = worldIn.getTileEntity(pos);
+
+            if (!(te instanceof TileEntitySplitTank)) {
+                return false;
+            }
+            TileEntitySplitTank splitTank = (TileEntitySplitTank) te;
+            if (player instanceof ServerPlayerEntity) {
+                TileEntityContainerProvider.openGui((ServerPlayerEntity) player, splitTank, (i, playerInventory, playerEntity) -> new ContainerSplitTank(i, splitTank, playerInventory));
+            }
             return true;
         }
 

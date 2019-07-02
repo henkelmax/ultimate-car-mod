@@ -3,12 +3,15 @@ package de.maxhenkel.car.blocks;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.ModCreativeTabs;
 import de.maxhenkel.car.blocks.tileentity.TileEntityCarWorkshop;
+import de.maxhenkel.car.gui.ContainerCarWorkshopCrafting;
+import de.maxhenkel.car.gui.TileEntityContainerProvider;
 import de.maxhenkel.tools.IItemBlock;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.BlockItemUseContext;
@@ -52,8 +55,9 @@ public class BlockCarWorkshop extends Block implements ITileEntityProvider, IIte
         if (!workshop.areBlocksAround()) {
             return false;
         }
-        //TODO gui
-        //playerIn.openGui(Main.MODID, GuiHandler.GUI_CAR_WORKSHOP_CRAFTING, worldIn, pos.getX(), pos.getY(), pos.getZ());
+        if (player instanceof ServerPlayerEntity) {
+            TileEntityContainerProvider.openGui((ServerPlayerEntity) player, workshop, (i, playerInventory, playerEntity) -> new ContainerCarWorkshopCrafting(i, workshop, playerInventory));
+        }
 
         return true;
     }

@@ -5,11 +5,14 @@ import com.google.common.collect.Maps;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.ModCreativeTabs;
 import de.maxhenkel.car.blocks.tileentity.TileEntitySign;
+import de.maxhenkel.car.gui.ContainerSign;
+import de.maxhenkel.car.gui.TileEntityContainerProvider;
 import de.maxhenkel.tools.IItemBlock;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.Item;
@@ -52,8 +55,15 @@ public class BlockSign extends Block implements ITileEntityProvider, IItemBlock 
 
     @Override
     public boolean onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
-        //TODO GUI
-        //playerIn.openGui(Main.MODID, GuiHandler.GUI_SIGN, worldIn, pos.getX(), pos.getY(), pos.getZ());
+        TileEntity te = worldIn.getTileEntity(pos);
+
+        if (!(te instanceof TileEntitySign)) {
+            return false;
+        }
+        TileEntitySign sign = (TileEntitySign) te;
+        if (player instanceof ServerPlayerEntity) {
+            TileEntityContainerProvider.openGui((ServerPlayerEntity) player, sign, (i, playerInventory, playerEntity) -> new ContainerSign(i, sign));
+        }
         return true;
     }
 

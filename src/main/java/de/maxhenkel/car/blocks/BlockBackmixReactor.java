@@ -1,6 +1,8 @@
 package de.maxhenkel.car.blocks;
 
 import de.maxhenkel.car.blocks.tileentity.TileEntityBackmixReactor;
+import de.maxhenkel.car.gui.ContainerBackmixReactor;
+import de.maxhenkel.car.gui.TileEntityContainerProvider;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -19,7 +21,7 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 
 import javax.annotation.Nullable;
 
-public class BlockBackmixReactor extends BlockGui {
+public class BlockBackmixReactor extends BlockGui<TileEntityBackmixReactor> {
 
     protected BlockBackmixReactor() {
         super("backmix_reactor", Material.IRON, SoundType.METAL, 3F, 3F);
@@ -53,9 +55,10 @@ public class BlockBackmixReactor extends BlockGui {
     }
 
     @Override
-    public void openGui(BlockState state, World worldIn, BlockPos pos, ServerPlayerEntity player, Hand handIn, TileEntity tileEntity) {
-        //TODO gui
+    public void openGui(BlockState state, World worldIn, BlockPos pos, ServerPlayerEntity player, Hand handIn, TileEntityBackmixReactor tileEntity) {
+        TileEntityContainerProvider.openGui(player, tileEntity, (i, playerInventory, playerEntity) -> new ContainerBackmixReactor(i, tileEntity, playerInventory));
     }
+
 
     @Nullable
     @Override

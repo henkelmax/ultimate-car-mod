@@ -21,7 +21,7 @@ public class GuiFluidExtractor extends GuiBase<ContainerFluidExtractor> {
     public GuiFluidExtractor(ContainerFluidExtractor container, PlayerInventory player, ITextComponent title) {
         super(GUI_TEXTURE, container, player, title);
         this.playerInv = player;
-        this.tile = tile;
+        this.tile = container.getTile();
 
         xSize = 176;
         ySize = 139;

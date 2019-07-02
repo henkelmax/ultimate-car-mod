@@ -1,6 +1,8 @@
 package de.maxhenkel.car.blocks;
 
 import de.maxhenkel.car.blocks.tileentity.TileEntityOilMill;
+import de.maxhenkel.car.gui.ContainerOilMill;
+import de.maxhenkel.car.gui.TileEntityContainerProvider;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -19,7 +21,7 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 
 import javax.annotation.Nullable;
 
-public class BlockOilMill extends BlockGui {
+public class BlockOilMill extends BlockGui<TileEntityOilMill> {
 
     protected BlockOilMill() {
         super("oilmill", Material.IRON, SoundType.STONE, 3F, 3F);
@@ -53,8 +55,8 @@ public class BlockOilMill extends BlockGui {
     }
 
     @Override
-    public void openGui(BlockState state, World worldIn, BlockPos pos, ServerPlayerEntity player, Hand handIn, TileEntity tileEntity) {
-        //TODO gui
+    public void openGui(BlockState state, World worldIn, BlockPos pos, ServerPlayerEntity player, Hand handIn, TileEntityOilMill tileEntity) {
+        TileEntityContainerProvider.openGui(player, tileEntity, (i, playerInventory, playerEntity) -> new ContainerOilMill(i, tileEntity, playerInventory));
     }
 
     @Nullable
