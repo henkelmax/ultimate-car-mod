@@ -81,23 +81,25 @@ public class BlockFluidExtractor extends Block implements ITileEntityProvider, I
     @Nullable
     @Override
     public BlockState getStateForPlacement(BlockItemUseContext context) {
-        return getState(context.getWorld(), context.getPos()).with(FACING, context.getFace().getOpposite());
+        Direction facing = context.getFace().getOpposite();
+        return getState(context.getWorld(), context.getPos(), facing).with(FACING, facing);
     }
 
-    private BlockState getState(World world, BlockPos pos) {
+    private BlockState getState(World world, BlockPos pos, Direction except) {
         return getDefaultState()
-                .with(UP, BlockFluidPipe.isConnectedTo(world, pos, Direction.UP))
-                .with(DOWN, BlockFluidPipe.isConnectedTo(world, pos, Direction.DOWN))
-                .with(NORTH, BlockFluidPipe.isConnectedTo(world, pos, Direction.NORTH))
-                .with(SOUTH, BlockFluidPipe.isConnectedTo(world, pos, Direction.SOUTH))
-                .with(EAST, BlockFluidPipe.isConnectedTo(world, pos, Direction.EAST))
-                .with(WEST, BlockFluidPipe.isConnectedTo(world, pos, Direction.WEST));
+                .with(UP, except.equals(Direction.UP) ? false : BlockFluidPipe.isConnectedTo(world, pos, Direction.UP))
+                .with(DOWN, except.equals(Direction.DOWN) ? false : BlockFluidPipe.isConnectedTo(world, pos, Direction.DOWN))
+                .with(NORTH, except.equals(Direction.NORTH) ? false : BlockFluidPipe.isConnectedTo(world, pos, Direction.NORTH))
+                .with(SOUTH, except.equals(Direction.SOUTH) ? false : BlockFluidPipe.isConnectedTo(world, pos, Direction.SOUTH))
+                .with(EAST, except.equals(Direction.EAST) ? false : BlockFluidPipe.isConnectedTo(world, pos, Direction.EAST))
+                .with(WEST, except.equals(Direction.WEST) ? false : BlockFluidPipe.isConnectedTo(world, pos, Direction.WEST));
     }
 
     @Override
     public void neighborChanged(BlockState state, World world, BlockPos pos, Block block, BlockPos pos1, boolean b) {
         super.neighborChanged(state, world, pos, block, pos1, b);
-        world.setBlockState(pos, getState(world, pos).with(FACING, world.getBlockState(pos).get(FACING)));
+        Direction facing = world.getBlockState(pos).get(FACING);
+        world.setBlockState(pos, getState(world, pos, facing).with(FACING, facing));
     }
 
     @Override
@@ -105,42 +107,62 @@ public class BlockFluidExtractor extends Block implements ITileEntityProvider, I
         builder.add(FACING, UP, DOWN, NORTH, SOUTH, EAST, WEST);
     }
 
-    //TODO fix shapes (copy from fluidpipe
-    public static final VoxelShape SHAPE_NORTH = Block.makeCuboidShape(6D, 6D, 6D, 10D, 10D, 10D);
-    public static final VoxelShape SHAPE_SOUTH = Block.makeCuboidShape(6D, 6D, 6D, 10D, 10D, 10D);
-    public static final VoxelShape SHAPE_EAST = Block.makeCuboidShape(6D, 6D, 6D, 10D, 10D, 10D);
-    public static final VoxelShape SHAPE_WEST = Block.makeCuboidShape(6D, 6D, 6D, 10D, 10D, 10D);
-    public static final VoxelShape SHAPE_UP = Block.makeCuboidShape(6D, 6D, 6D, 10D, 10D, 10D);
-    public static final VoxelShape SHAPE_DOWN = Block.makeCuboidShape(6D, 6D, 6D, 10D, 10D, 10D);
-    public static final VoxelShape SHAPE_BASE = Block.makeCuboidShape(6D, 6D, 6D, 10D, 10D, 10D);
+    public static final VoxelShape SHAPE_NORTH = Block.makeCuboidShape(6D, 6D, 6D, 10D, 10D, 0D);
+    public static final VoxelShape SHAPE_SOUTH = Block.makeCuboidShape(6D, 6D, 10D, 10D, 10D, 16D);
+    public static final VoxelShape SHAPE_EAST = Block.makeCuboidShape(10D, 6D, 6D, 16D, 10D, 10D);
+    public static final VoxelShape SHAPE_WEST = Block.makeCuboidShape(6D, 6D, 6D, 0D, 10D, 10D);
+    public static final VoxelShape SHAPE_UP = Block.makeCuboidShape(6D, 10D, 6D, 10D, 16D, 10D);
+    public static final VoxelShape SHAPE_DOWN = Block.makeCuboidShape(6D, 6D, 6D, 10D, 0D, 10D);
+    public static final VoxelShape SHAPE_CORE = Block.makeCuboidShape(6D, 6D, 6D, 10D, 10D, 10D);
+    public static final VoxelShape SHAPE_EXTRACTOR_NORTH = Block.makeCuboidShape(1D, 1D, 0D, 15D, 15D, 1D);
+    public static final VoxelShape SHAPE_EXTRACTOR_SOUTH = Block.makeCuboidShape(1D, 1D, 15D, 15D, 15D, 16D);
+    public static final VoxelShape SHAPE_EXTRACTOR_EAST = Block.makeCuboidShape(15D, 1D, 1D, 16D, 15D, 15D);
+    public static final VoxelShape SHAPE_EXTRACTOR_WEST = Block.makeCuboidShape(0D, 1D, 1D, 1D, 15D, 15D);
+    public static final VoxelShape SHAPE_EXTRACTOR_UP = Block.makeCuboidShape(1D, 15D, 1D, 15D, 16D, 15D);
+    public static final VoxelShape SHAPE_EXTRACTOR_DOWN = Block.makeCuboidShape(1D, 0D, 1D, 15D, 1D, 15D);
 
     @Override
     public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-        VoxelShape shape = SHAPE_BASE;
-        if (state.get(UP)) {
-            shape = BlockTools.combine(shape, SHAPE_UP);
-        }
-
-        if (state.get(DOWN)) {
-            shape = BlockTools.combine(shape, SHAPE_DOWN);
-        }
-
-        if (state.get(SOUTH)) {
-            shape = BlockTools.combine(shape, SHAPE_SOUTH);
-        }
+        VoxelShape shape = SHAPE_CORE;
 
         if (state.get(NORTH)) {
             shape = BlockTools.combine(shape, SHAPE_NORTH);
         }
-
+        if (state.get(SOUTH)) {
+            shape = BlockTools.combine(shape, SHAPE_SOUTH);
+        }
         if (state.get(EAST)) {
             shape = BlockTools.combine(shape, SHAPE_EAST);
         }
-
         if (state.get(WEST)) {
             shape = BlockTools.combine(shape, SHAPE_WEST);
         }
-
+        if (state.get(UP)) {
+            shape = BlockTools.combine(shape, SHAPE_UP);
+        }
+        if (state.get(DOWN)) {
+            shape = BlockTools.combine(shape, SHAPE_DOWN);
+        }
+        switch (state.get(FACING)) {
+            case NORTH:
+                shape = BlockTools.combine(shape, SHAPE_EXTRACTOR_NORTH, SHAPE_NORTH);
+                break;
+            case SOUTH:
+                shape = BlockTools.combine(shape, SHAPE_EXTRACTOR_SOUTH, SHAPE_SOUTH);
+                break;
+            case EAST:
+                shape = BlockTools.combine(shape, SHAPE_EXTRACTOR_EAST, SHAPE_EAST);
+                break;
+            case WEST:
+                shape = BlockTools.combine(shape, SHAPE_EXTRACTOR_WEST, SHAPE_WEST);
+                break;
+            case UP:
+                shape = BlockTools.combine(shape, SHAPE_EXTRACTOR_UP, SHAPE_UP);
+                break;
+            case DOWN:
+                shape = BlockTools.combine(shape, SHAPE_EXTRACTOR_DOWN, SHAPE_DOWN);
+                break;
+        }
         return shape;
     }
 

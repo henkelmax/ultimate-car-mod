@@ -68,7 +68,7 @@ public class BlockGenerator extends BlockGui<TileEntityGenerator> {
 
     @Override
     public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-        return Block.makeCuboidShape(0D, 0D, 0D, 16D, 14D, 16D);
+        return Block.makeCuboidShape(0D, 0D, 0D, 16D, 13D, 16D);
     }
 
     @Override

@@ -84,14 +84,13 @@ public class BlockCable extends Block implements ITileEntityProvider, IItemBlock
         builder.add(UP, DOWN, NORTH, SOUTH, EAST, WEST);
     }
 
-    //TODO fix shapes
-    public static final VoxelShape SHAPE_NORTH = Block.makeCuboidShape(6D, 6D, 6D, 10D, 10D, 10D);
-    public static final VoxelShape SHAPE_SOUTH = Block.makeCuboidShape(6D, 6D, 6D, 10D, 10D, 10D);
-    public static final VoxelShape SHAPE_EAST = Block.makeCuboidShape(6D, 6D, 6D, 10D, 10D, 10D);
-    public static final VoxelShape SHAPE_WEST = Block.makeCuboidShape(6D, 6D, 6D, 10D, 10D, 10D);
-    public static final VoxelShape SHAPE_UP = Block.makeCuboidShape(6D, 6D, 6D, 10D, 10D, 10D);
-    public static final VoxelShape SHAPE_DOWN = Block.makeCuboidShape(6D, 6D, 6D, 10D, 10D, 10D);
-    public static final VoxelShape SHAPE_CORE = Block.makeCuboidShape(6D, 6D, 6D, 10D, 10D, 10D);
+    public static final VoxelShape SHAPE_NORTH = Block.makeCuboidShape(6.5D, 6.5D, 6.5D, 9.5D, 9.5D, 0D);
+    public static final VoxelShape SHAPE_SOUTH = Block.makeCuboidShape(6.5D, 6.5D, 9.5D, 9.5D, 9.5D, 16D);
+    public static final VoxelShape SHAPE_EAST = Block.makeCuboidShape(9.5D, 6.5D, 6.5D, 16D, 9.5D, 9.5D);
+    public static final VoxelShape SHAPE_WEST = Block.makeCuboidShape(6.5D, 6.5D, 6.5D, 0D, 9.5D, 9.5D);
+    public static final VoxelShape SHAPE_UP = Block.makeCuboidShape(6.5D, 9.5D, 6.5D, 9.5D, 16D, 9.5D);
+    public static final VoxelShape SHAPE_DOWN = Block.makeCuboidShape(6.5D, 6.5D, 6.5D, 9.5D, 0D, 9.5D);
+    public static final VoxelShape SHAPE_CORE = Block.makeCuboidShape(6.5D, 6.5D, 6.5D, 9.5D, 9.5D, 9.5D);
 
     @Override
     public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {

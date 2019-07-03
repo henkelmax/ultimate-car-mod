@@ -82,13 +82,12 @@ public class BlockFluidPipe extends Block implements IItemBlock {
         builder.add(UP, DOWN, NORTH, SOUTH, EAST, WEST);
     }
 
-    //TODO fix shapes
-    public static final VoxelShape SHAPE_NORTH = Block.makeCuboidShape(6D, 6D, 6D, 10D, 10D, 10D);
-    public static final VoxelShape SHAPE_SOUTH = Block.makeCuboidShape(6D, 6D, 6D, 10D, 10D, 10D);
-    public static final VoxelShape SHAPE_EAST = Block.makeCuboidShape(6D, 6D, 6D, 10D, 10D, 10D);
-    public static final VoxelShape SHAPE_WEST = Block.makeCuboidShape(6D, 6D, 6D, 10D, 10D, 10D);
-    public static final VoxelShape SHAPE_UP = Block.makeCuboidShape(6D, 6D, 6D, 10D, 10D, 10D);
-    public static final VoxelShape SHAPE_DOWN = Block.makeCuboidShape(6D, 6D, 6D, 10D, 10D, 10D);
+    public static final VoxelShape SHAPE_NORTH = Block.makeCuboidShape(6D, 6D, 6D, 10D, 10D, 0D);
+    public static final VoxelShape SHAPE_SOUTH = Block.makeCuboidShape(6D, 6D, 10D, 10D, 10D, 16D);
+    public static final VoxelShape SHAPE_EAST = Block.makeCuboidShape(10D, 6D, 6D, 16D, 10D, 10D);
+    public static final VoxelShape SHAPE_WEST = Block.makeCuboidShape(6D, 6D, 6D, 0D, 10D, 10D);
+    public static final VoxelShape SHAPE_UP = Block.makeCuboidShape(6D, 10D, 6D, 10D, 16D, 10D);
+    public static final VoxelShape SHAPE_DOWN = Block.makeCuboidShape(6D, 6D, 6D, 10D, 0D, 10D);
     public static final VoxelShape SHAPE_CORE = Block.makeCuboidShape(6D, 6D, 6D, 10D, 10D, 10D);
 
     @Override
