@@ -40,12 +40,11 @@ public class GuiFuelStationAdmin extends GuiBase<ContainerFuelStationAdmin> {
         super.init();
 
         minecraft.keyboardListener.enableRepeatEvents(true);
-        textField = new TextFieldWidget(font, guiLeft + 54, guiTop + 26, 100, 8, new TranslationTextComponent("fuelstation.admin.amount_text_field").getFormattedText());
+        textField = new TextFieldWidget(font, guiLeft + 54, guiTop + 22, 100, 16, new TranslationTextComponent("fuelstation.admin.amount_text_field").getFormattedText());
         textField.setCanLoseFocus(false);
         textField.changeFocus(true);
         textField.setTextColor(-1);
         textField.setDisabledTextColour(-1);
-        textField.setEnableBackgroundDrawing(false);
         textField.setMaxStringLength(20);
         textField.setText(String.valueOf(fuelStation.getTradeAmount()));
         textField.func_212954_a(this::onTextChanged);
@@ -53,12 +52,12 @@ public class GuiFuelStationAdmin extends GuiBase<ContainerFuelStationAdmin> {
         setFocused(textField);
     }
 
-    public void render(int x, int y, float t) {
-        super.render(x, y, t);
+    public void render(int mouseX, int mouseY, float partialTicks) {
+        super.render(mouseX, mouseY, partialTicks);
         GlStateManager.disableLighting();
         GlStateManager.disableBlend();
-        textField.render(x, y, t);
-        renderHoveredToolTip(x, y);
+        textField.render(mouseX, mouseY, partialTicks);
+        renderHoveredToolTip(mouseX, mouseY);
     }
 
     public void onTextChanged(String text) {
@@ -87,14 +86,13 @@ public class GuiFuelStationAdmin extends GuiBase<ContainerFuelStationAdmin> {
     }
 
     @Override
-    protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
-        super.drawGuiContainerBackgroundLayer(partialTicks, mouseX, mouseY);
+    protected void drawGuiContainerForegroundLayer(int x, int y) {
+        super.drawGuiContainerForegroundLayer(x, y);
 
-        // text
         drawCenteredString(font, new TranslationTextComponent("gui.fuelstation").getFormattedText(),
-                width / 2, guiTop + 5, TITLE_COLOR);
+                xSize / 2, 5, TITLE_COLOR);
 
-        font.drawString(inventoryPlayer.getDisplayName().getFormattedText(), guiLeft + 8, guiTop + ySize - 93, FONT_COLOR);
+        font.drawString(inventoryPlayer.getDisplayName().getFormattedText(), 8, ySize - 93, FONT_COLOR);
     }
 
     @Override

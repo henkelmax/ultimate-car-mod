@@ -1,5 +1,6 @@
 package de.maxhenkel.car.gui;
 
+import com.mojang.blaze3d.platform.GlStateManager;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.blocks.tileentity.TileEntitySign;
 import de.maxhenkel.car.net.MessageEditSign;
@@ -44,8 +45,7 @@ public class GuiSign extends GuiBase<ContainerSign> {
     @Override
     protected void init() {
         super.init();
-
-        //Keyboard.enableRepeatEvents(true);
+        minecraft.keyboardListener.enableRepeatEvents(true);
 
         this.guiLeft = (this.width - this.xSize) / 2;
         this.guiTop = (this.height - this.ySize) / 2;
@@ -84,6 +84,8 @@ public class GuiSign extends GuiBase<ContainerSign> {
         text2 = initTextField(1, 20);
         text3 = initTextField(2, 40);
         text4 = initTextField(3, 60);
+
+        setFocused(text1);
     }
 
     private TextFieldWidget initTextField(int id, int height) {
@@ -94,13 +96,25 @@ public class GuiSign extends GuiBase<ContainerSign> {
         field.setMaxStringLength(20);
         field.setText(text[id]);
         children.add(field);
-        func_212928_a(field);
         return field;
     }
 
     @Override
-    protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-        super.drawGuiContainerForegroundLayer(mouseX, mouseY);
+    public void render(int mouseX, int mouseY, float partialTicks) {
+        super.render(mouseX, mouseY, partialTicks);
+
+        GlStateManager.disableLighting();
+        GlStateManager.disableBlend();
+        text1.render(mouseX, mouseY, partialTicks);
+        text2.render(mouseX, mouseY, partialTicks);
+        text3.render(mouseX, mouseY, partialTicks);
+        text4.render(mouseX, mouseY, partialTicks);
+        renderHoveredToolTip(mouseX, mouseY);
+    }
+
+    @Override
+    protected void drawGuiContainerForegroundLayer(int x, int y) {
+        super.drawGuiContainerForegroundLayer(x, y);
 
         String s;
 
@@ -114,9 +128,9 @@ public class GuiSign extends GuiBase<ContainerSign> {
     }
 
     @Override
-    public void onClose() {
-        super.onClose();
-        //Keyboard.enableRepeatEvents(false);
+    public void removed() {
+        super.removed();
+        minecraft.keyboardListener.enableRepeatEvents(false);
     }
 
     private void save() {
@@ -131,6 +145,19 @@ public class GuiSign extends GuiBase<ContainerSign> {
             text[6] = text3.getText();
             text[7] = text4.getText();
         }
+    }
+
+    @Override
+    public void resize(Minecraft mc, int x, int y) {
+        String txt1 = text1.getText();
+        String txt2 = text2.getText();
+        String txt3 = text3.getText();
+        String txt4 = text4.getText();
+        init(mc, x, y);
+        text1.setText(txt1);
+        text2.setText(txt2);
+        text3.setText(txt3);
+        text4.setText(txt4);
     }
 
     @Override
