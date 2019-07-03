@@ -2,6 +2,7 @@ package de.maxhenkel.car.entity.car.base;
 
 import java.util.List;
 import javax.annotation.Nullable;
+
 import de.maxhenkel.car.Config;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -30,15 +31,18 @@ public abstract class EntityVehicleBase extends Entity {
 
     protected float deltaRotation;
 
+    protected AxisAlignedBB boundingBox;
+
     public EntityVehicleBase(EntityType type, World worldIn) {
         super(type, worldIn);
         this.preventEntitySpawning = true;
         this.stepHeight = 0.6F;
+
+        recalculateBoundingBox();
     }
 
     @Override
     public void tick() {
-
         if (!world.isRemote) {
             this.prevPosX = this.posX;
             this.prevPosY = this.posY;
@@ -49,13 +53,21 @@ public abstract class EntityVehicleBase extends Entity {
 
         super.tick();
         this.tickLerp();
+
+        recalculateBoundingBox();
     }
 
-    public double getCarWidth(){
+    public void recalculateBoundingBox() {
+        double width = getCarWidth();
+        double height = getCarHeight();
+        boundingBox = new AxisAlignedBB(posX - width / 2D, posY, posZ - width / 2D, posX + width / 2D, posY + height, posZ + width / 2D);
+    }
+
+    public double getCarWidth() {
         return 1.3D;
     }
 
-    public double getCarHeight(){
+    public double getCarHeight() {
         return 1.6D;
     }
 
@@ -161,7 +173,7 @@ public abstract class EntityVehicleBase extends Entity {
         if (passengers.size() > 0) {
             int i = passengers.indexOf(passenger);
 
-            Vec3d offset=getPlayerOffsets()[i];
+            Vec3d offset = getPlayerOffsets()[i];
             front = offset.x;
             side = offset.z;
             height = offset.y;
@@ -203,6 +215,16 @@ public abstract class EntityVehicleBase extends Entity {
     @Override
     public AxisAlignedBB getCollisionBoundingBox() {
         return this.getBoundingBox();
+    }
+
+    @Override
+    public AxisAlignedBB getBoundingBox() {
+        return boundingBox;
+    }
+
+    @Override
+    public void setBoundingBox(AxisAlignedBB boundingBox) {
+        this.boundingBox = boundingBox;
     }
 
     /**

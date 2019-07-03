@@ -27,12 +27,21 @@ import java.util.List;
 
 public class EntityGenericCar extends EntityCarLicensePlateBase {
 
+    private List<Part> parts;
+
     public EntityGenericCar(EntityType type, World worldIn) {
         super(type, worldIn);
     }
 
     public EntityGenericCar(World worldIn) {
         this(Main.CAR_ENTITY_TYPE, worldIn);
+    }
+
+    private List<Part> getParts() {
+        if (parts == null) {
+            parts = new ArrayList<>();
+        }
+        return parts;
     }
 
     @Override
@@ -266,10 +275,8 @@ public class EntityGenericCar extends EntityCarLicensePlateBase {
         this.dataManager.register(PARTS, null);
     }
 
-    private List<Part> parts = new ArrayList<>();
-
     public <T extends Part> T getPartByClass(Class<T> clazz) {
-        for (Part part : parts) {
+        for (Part part : getParts()) {
             if (clazz.isInstance(part)) {
                 return (T) part;
             }
@@ -336,11 +343,11 @@ public class EntityGenericCar extends EntityCarLicensePlateBase {
     }
 
     public List<Part> getModelParts() {
-        return Collections.unmodifiableList(parts);
+        return Collections.unmodifiableList(getParts());
     }
 
     public void initParts() {
-        parts.clear();
+        getParts().clear();
 
         for (int i = 0; i < partInventory.getSizeInventory(); i++) {
             ItemStack stack = partInventory.getStackInSlot(i);
@@ -357,7 +364,7 @@ public class EntityGenericCar extends EntityCarLicensePlateBase {
                 continue;
             }
 
-            parts.add(part);
+            getParts().add(part);
         }
 
         checkInitializing();
@@ -412,7 +419,7 @@ public class EntityGenericCar extends EntityCarLicensePlateBase {
         modelInstances.clear();
 
         boolean addedWheels = false;
-        for (Part part : parts) {
+        for (Part part : getParts()) {
             if (part instanceof PartModel) {
                 if (part instanceof PartWheelBase) {
                     if (!addedWheels) {
