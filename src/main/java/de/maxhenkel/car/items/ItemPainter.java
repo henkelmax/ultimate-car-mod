@@ -4,14 +4,23 @@ import de.maxhenkel.car.Main;
 import de.maxhenkel.car.ModCreativeTabs;
 import de.maxhenkel.car.blocks.BlockPaint;
 import de.maxhenkel.car.blocks.ModBlocks;
+import de.maxhenkel.car.gui.ContainerPainter;
 import de.maxhenkel.car.gui.SlotPainter;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
 import net.minecraft.util.*;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.network.NetworkHooks;
+
+import javax.annotation.Nullable;
 
 public class ItemPainter extends Item {
 
@@ -35,14 +44,22 @@ public class ItemPainter extends Item {
     @Override
     public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
         if (playerIn.isSneaking()) {
-            int id;
-            if (isYellow) {
-                //id = GuiHandler.GUI_PAINTER_YELLOW;
-            } else {
-                // id = GuiHandler.GUI_PAINTER;
+            if (playerIn instanceof ServerPlayerEntity) {
+                NetworkHooks.openGui((ServerPlayerEntity) playerIn, new INamedContainerProvider() {
+                    @Override
+                    public ITextComponent getDisplayName() {
+                        return ItemPainter.this.getDisplayName(playerIn.getHeldItem(handIn));
+                    }
+
+                    @Nullable
+                    @Override
+                    public Container createMenu(int i, PlayerInventory playerInventory, PlayerEntity playerEntity) {
+                        return new ContainerPainter(i, playerInventory, isYellow);
+                    }
+                }, packetBuffer -> {
+                    packetBuffer.writeBoolean(isYellow);
+                });
             }
-            // TODO GUI
-            //playerIn.openGui(Main.instance(), id, worldIn, playerIn.getPosition().getX(), playerIn.getPosition().getY(), playerIn.getPosition().getZ());
         }
         return super.onItemRightClick(worldIn, playerIn, handIn);
     }

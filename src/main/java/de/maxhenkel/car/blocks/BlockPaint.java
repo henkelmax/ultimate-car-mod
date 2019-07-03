@@ -1,7 +1,6 @@
 package de.maxhenkel.car.blocks;
 
 import de.maxhenkel.car.Main;
-import de.maxhenkel.car.ModCreativeTabs;
 import de.maxhenkel.tools.IItemBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
@@ -9,7 +8,6 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
-import net.minecraft.block.material.PushReaction;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.Item;
@@ -31,23 +29,17 @@ public class BlockPaint extends Block implements IItemBlock {
 
     public static final DirectionProperty FACING = DirectionProperty.create("facing", Direction.Plane.HORIZONTAL);
 
-    private boolean isYellow;
-
-    //TODO connect with fences usw
-    //TODO check no silk harvest / drops
     public BlockPaint(EnumPaintType type, boolean isYellow) {
-        super(Properties.create(
-                new Material(MaterialColor.AIR, false, true, false, false, true, false, false, PushReaction.DESTROY))
+        super(Properties.create(new Material.Builder(MaterialColor.AIR).build())
                 .hardnessAndResistance(2F).sound(SoundType.STONE));
         setRegistryName(new ResourceLocation(Main.MODID, type.name + (isYellow ? "_yellow" : "")));
-        this.isYellow = isYellow;
 
         setDefaultState(stateContainer.getBaseState().with(FACING, Direction.NORTH));
     }
 
     @Override
     public Item toItem() {
-        return new BlockItem(this, new Item.Properties().group(ModCreativeTabs.TAB_CAR)) {
+        return new BlockItem(this, new Item.Properties()) {
             @Override
             protected boolean canPlace(BlockItemUseContext context, BlockState state) {
                 if (!canPlaceBlockAt(context.getWorld(), context.getPos())) {
@@ -70,15 +62,16 @@ public class BlockPaint extends Block implements IItemBlock {
         builder.add(FACING);
     }
 
+    private static final VoxelShape SHAPE = Block.makeCuboidShape(0D, 0D, 0D, 16D, 0.25D, 16D);
 
     @Override
     public VoxelShape getRenderShape(BlockState state, IBlockReader worldIn, BlockPos pos) {
-        return Block.makeCuboidShape(0D, 0D, 0D, 16D, 0.25D, 16D);
+        return SHAPE;
     }
 
     @Override
     public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-        return VoxelShapes.empty();
+        return SHAPE;
     }
 
     @Override

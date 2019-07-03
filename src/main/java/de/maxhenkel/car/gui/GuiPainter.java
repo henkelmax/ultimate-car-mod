@@ -9,7 +9,6 @@ import net.minecraft.util.text.TranslationTextComponent;
 public class GuiPainter extends GuiBase<ContainerPainter> {
 
     private static final ResourceLocation PAINTER_GUI_TEXTURE = new ResourceLocation(Main.MODID, "textures/gui/gui_painter.png");
-    private static final int fontColor = 4210752;
 
     public GuiPainter(ContainerPainter containerPainter, PlayerInventory playerInventory, ITextComponent title) {
         super(PAINTER_GUI_TEXTURE, containerPainter, playerInventory, title);
@@ -20,7 +19,7 @@ public class GuiPainter extends GuiBase<ContainerPainter> {
     @Override
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
         super.drawGuiContainerForegroundLayer(mouseX, mouseY);
-        font.drawString(new TranslationTextComponent("gui.painter").getFormattedText(), 8, 6, fontColor);
+        font.drawString(new TranslationTextComponent("gui.painter").getFormattedText(), 8, 6, FONT_COLOR);
     }
 
     @Override

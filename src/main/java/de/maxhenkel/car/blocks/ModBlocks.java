@@ -2,21 +2,15 @@ package de.maxhenkel.car.blocks;
 
 import de.maxhenkel.car.blocks.BlockPaint.EnumPaintType;
 import de.maxhenkel.car.blocks.liquid.BlockBioDiesel;
-import de.maxhenkel.car.blocks.liquid.BlockCanolaMethanolMix;
-import de.maxhenkel.car.blocks.liquid.BlockCanolaOil;
-import de.maxhenkel.car.blocks.liquid.BlockGlycerin;
-import de.maxhenkel.car.blocks.liquid.BlockMethanol;
-import de.maxhenkel.car.items.ModItems;
 import de.maxhenkel.tools.IItemBlock;
 import de.maxhenkel.tools.NoRegister;
 import de.maxhenkel.tools.OnlyBlock;
 import de.maxhenkel.tools.ReflectionHelper;
 import net.minecraft.block.Block;
-import net.minecraft.item.Item;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class ModBlocks {
@@ -86,9 +80,11 @@ public class ModBlocks {
             }
         }
 
+        blocks.addAll(Arrays.asList(PAINTS));
+        blocks.addAll(Arrays.asList(YELLOW_PAINTS));
+
         return blocks;
     }
-
 
 
     public static List<Block> getAll() {
@@ -106,6 +102,9 @@ public class ModBlocks {
                 e.printStackTrace();
             }
         }
+
+        blocks.addAll(Arrays.asList(PAINTS));
+        blocks.addAll(Arrays.asList(YELLOW_PAINTS));
 
         return blocks;
     }

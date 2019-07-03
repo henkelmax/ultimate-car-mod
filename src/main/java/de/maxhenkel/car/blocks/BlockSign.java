@@ -7,6 +7,7 @@ import de.maxhenkel.car.ModCreativeTabs;
 import de.maxhenkel.car.blocks.tileentity.TileEntitySign;
 import de.maxhenkel.car.gui.ContainerSign;
 import de.maxhenkel.car.gui.TileEntityContainerProvider;
+import de.maxhenkel.tools.BlockTools;
 import de.maxhenkel.tools.IItemBlock;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
@@ -22,7 +23,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.shapes.ISelectionContext;
@@ -37,9 +37,6 @@ import java.util.Map;
 public class BlockSign extends Block implements ITileEntityProvider, IItemBlock {
 
     public static final DirectionProperty FACING = DirectionProperty.create("facing", Direction.Plane.HORIZONTAL);
-
-    public static final AxisAlignedBB AABB_NORTH_SOUTH = new AxisAlignedBB(0, 3D / 16D, 7.5D / 16D, 1, 13D / 16D, 8.5D / 16D);
-    public static final AxisAlignedBB AABB_EAST_WEST = new AxisAlignedBB(7.5D / 16D, 3D / 16D, 0, 8.5D / 16D, 13D / 16D, 1);
 
     public BlockSign() {
         super(Properties.create(Material.IRON, MaterialColor.IRON).hardnessAndResistance(20F).sound(SoundType.METAL));
@@ -69,16 +66,17 @@ public class BlockSign extends Block implements ITileEntityProvider, IItemBlock 
 
     private static final VoxelShape SHAPE_NORTH_SOUTH = Block.makeCuboidShape(0D, 3D, 7.5D, 16D, 13D, 8.5D);
     private static final VoxelShape SHAPE_EAST_WEST = Block.makeCuboidShape(7.5D, 3D, 0D, 8.5D, 13D, 16D);
+    private static final VoxelShape SHAPE_POST = Block.makeCuboidShape(7.5D, 0D, 7.5D, 8.5D, 3D, 8.5D);
 
     private static final Map<Direction, VoxelShape> SHAPES = Maps.newEnumMap(ImmutableMap.of(
             Direction.NORTH,
-            SHAPE_NORTH_SOUTH,
+            BlockTools.combine(SHAPE_NORTH_SOUTH, SHAPE_POST),
             Direction.SOUTH,
-            SHAPE_NORTH_SOUTH,
+            BlockTools.combine(SHAPE_NORTH_SOUTH, SHAPE_POST),
             Direction.EAST,
-            SHAPE_EAST_WEST,
+            BlockTools.combine(SHAPE_EAST_WEST, SHAPE_POST),
             Direction.WEST,
-            SHAPE_EAST_WEST
+            BlockTools.combine(SHAPE_EAST_WEST, SHAPE_POST)
     ));
 
     @Override

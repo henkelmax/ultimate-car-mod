@@ -14,22 +14,6 @@ public class InventoryPainter implements IInventory {
         this.isYellow = isYellow;
     }
 
-	/*
-	@Override
-	public String getName() {
-		return "gui.painter";
-	}
-
-	@Override
-	public boolean hasCustomName() {
-		return false;
-	}
-
-	@Override
-	public ITextComponent getDisplayName() {
-		return new TextComponentTranslation(getName());
-	}*/
-
     @Override
     public int getSizeInventory() {
         return BlockPaint.EnumPaintType.values().length;
@@ -96,20 +80,7 @@ public class InventoryPainter implements IInventory {
     public boolean isItemValidForSlot(int index, ItemStack stack) {
         return false;
     }
-/*
-	@Override
-	public int getField(int id) {
-		return 0;
-	}
 
-	@Override
-	public void setField(int id, int value) {
-	}
-
-	@Override
-	public int getFieldCount() {
-		return 0;
-	}*/
 
     @Override
     public void clear() {

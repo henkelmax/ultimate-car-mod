@@ -23,8 +23,12 @@ import java.util.Random;
 //TODO check growth rate
 public class BlockCanolaCrop extends CropsBlock {
     public static final IntegerProperty CANOLA_AGE = BlockStateProperties.AGE_0_3;
-    //TODO check sizes
-    private static final VoxelShape[] SHAPE = new VoxelShape[]{Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 2.0D, 16.0D), Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 4.0D, 16.0D), Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 6.0D, 16.0D), Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 8.0D, 16.0D)};
+
+    private static final VoxelShape[] SHAPE = new VoxelShape[]{
+            Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 2.0D, 16.0D),
+            Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 4.0D, 16.0D),
+            Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 9.0D, 16.0D),
+            Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 13.0D, 16.0D)};
 
     public BlockCanolaCrop() {
         super(Properties.create(Material.PLANTS));
