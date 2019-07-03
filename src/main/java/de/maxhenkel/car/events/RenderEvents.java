@@ -15,15 +15,9 @@ import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.client.event.RenderTooltipEvent;
-import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 public class RenderEvents {
-
-    @SubscribeEvent
-    public void stitchEventPre(TextureStitchEvent.Pre event) {
-        //event.getMap().registerSprite(new ResourceLocation(Main.MODID, "textures/entity/watch.png"));
-    }
 
     @SubscribeEvent
     public void onRender(RenderGameOverlayEvent evt) {

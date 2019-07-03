@@ -110,6 +110,22 @@ public class FluidStackWrapper extends FluidStack {
         }
     }
 
+    public static ResourceLocation getTexture(Fluid fluid){
+        if (fluid == ModFluids.BIO_DIESEL) {
+            return new ResourceLocation(Main.MODID, "textures/block/bio_diesel_still.png");
+        } else if (fluid == ModFluids.CANOLA_METHANOL_MIX) {
+            return new ResourceLocation(Main.MODID, "textures/block/canola_methanol_mix_still.png");
+        } else if (fluid == ModFluids.CANOLA_OIL) {
+            return new ResourceLocation(Main.MODID, "textures/block/canola_oil_still.png");
+        } else if (fluid == ModFluids.GLYCERIN) {
+            return new ResourceLocation(Main.MODID, "textures/block/glycerin_still.png");
+        } else if (fluid == ModFluids.METHANOL) {
+            return new ResourceLocation(Main.MODID, "textures/block/methanol_still.png");
+        } else {
+            return null;
+        }
+    }
+
     @Override
     public CompoundNBT writeToNBT(CompoundNBT nbt) {
         nbt.putString("FluidName", getName(getFluid()));
