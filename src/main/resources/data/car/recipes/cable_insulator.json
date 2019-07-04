@@ -1,0 +1,15 @@
+{
+  "type": "crafting_shaped",
+  "pattern": [
+    "WWW"
+  ],
+  "key": {
+    "W": {
+      "tag": "minecraft:wool"
+    }
+  },
+  "result": {
+    "item": "car:cable_insulator",
+    "count": 16
+  }
+}

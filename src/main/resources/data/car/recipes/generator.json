@@ -1,0 +1,26 @@
+{
+  "type": "crafting_shaped",
+  "pattern": [
+    "ICI",
+    "IEI",
+    "ITI"
+  ],
+  "key": {
+    "I": {
+      "item": "minecraft:iron_ingot"
+    },
+    "T": {
+      "item": "car:tank"
+    },
+    "E": {
+      "item": "car:engine_3_cylinder"
+    },
+    "C": {
+      "item": "minecraft:redstone"
+    }
+  },
+  "result": {
+    "item": "car:generator",
+    "count": 1
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "type": "crafting_shaped",
+  "pattern": [
+    " W ",
+    "WIW",
+    " W "
+  ],
+  "key": {
+    "W": {
+      "tag": "minecraft:wool"
+    },
+    "I": {
+      "item": "minecraft:iron_ingot"
+    }
+  },
+  "result": {
+    "item": "car:wheel",
+    "count": 1
+  }
+}

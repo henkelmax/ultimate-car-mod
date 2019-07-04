@@ -1,0 +1,17 @@
+{
+  "type": "crafting_shaped",
+  "pattern": [
+    "X ",
+    "XX",
+    "TT"
+  ],
+  "key": {
+    "X": {
+      "item": "car:asphalt"
+    }
+  },
+  "result": {
+    "item": "car:asphalt_slope_flat_upper",
+    "count": 4
+  }
+}

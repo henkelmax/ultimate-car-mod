@@ -1,0 +1,23 @@
+{
+  "type": "crafting_shaped",
+  "pattern": [
+    "ICI",
+    "ITI",
+    "III"
+  ],
+  "key": {
+    "I": {
+      "item": "minecraft:iron_ingot"
+    },
+    "T": {
+      "item": "car:tank"
+    },
+    "C": {
+      "item": "minecraft:redstone"
+    }
+  },
+  "result": {
+    "item": "car:backmix_reactor",
+    "count": 1
+  }
+}

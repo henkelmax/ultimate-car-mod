@@ -1,0 +1,20 @@
+{
+  "type": "crafting_shaped",
+  "pattern": [
+    "III",
+    "ISI",
+    "III"
+  ],
+  "key": {
+    "I": {
+      "item": "minecraft:iron_ingot"
+    },
+    "S": {
+      "item": "car:iron_stick"
+    }
+  },
+  "result": {
+    "item": "car:license_plate",
+    "count": 4
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "type": "crafting_shaped",
+  "pattern": [
+    "IBI",
+    "ICI",
+    "STS"
+  ],
+  "key": {
+    "I": {
+      "item": "minecraft:iron_ingot"
+    },
+    "B": {
+      "item": "minecraft:iron_block"
+    },
+    "C": {
+      "item": "minecraft:redstone"
+    },
+    "T": {
+      "item": "car:tank"
+    },
+    "S": {
+      "item": "minecraft:smooth_stone_slab"
+    }
+  },
+  "result": {
+    "item": "car:fuelstation",
+    "count": 1
+  }
+}

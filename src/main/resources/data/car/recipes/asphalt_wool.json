@@ -1,0 +1,20 @@
+{
+  "type": "crafting_shaped",
+  "pattern": [
+    "XXX",
+    "XWX",
+    "XXX"
+  ],
+  "key": {
+    "X": {
+      "item": "minecraft:cobblestone"
+    },
+    "W": {
+      "item": "minecraft:black_wool"
+    }
+  },
+  "result": {
+    "item": "car:asphalt",
+    "count": 1
+  }
+}

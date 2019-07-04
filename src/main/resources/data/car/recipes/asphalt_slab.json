@@ -1,0 +1,15 @@
+{
+  "type": "crafting_shaped",
+  "pattern": [
+    "XXX"
+  ],
+  "key": {
+    "X": {
+      "item": "car:asphalt"
+    }
+  },
+  "result": {
+    "item": "car:asphalt_slab",
+    "count": 6
+  }
+}

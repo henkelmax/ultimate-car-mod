@@ -1,0 +1,20 @@
+{
+  "type": "crafting_shaped",
+  "pattern": [
+    "III",
+    "III",
+    " S "
+  ],
+  "key": {
+    "I": {
+      "item": "minecraft:iron_ingot"
+    },
+    "S": {
+      "item": "car:iron_stick"
+    }
+  },
+  "result": {
+    "item": "car:sign",
+    "count": 3
+  }
+}
