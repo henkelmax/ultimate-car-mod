@@ -52,6 +52,7 @@ public class GuiFuelStationAdmin extends GuiBase<ContainerFuelStationAdmin> {
         setFocused(textField);
     }
 
+    @Override
     public void render(int mouseX, int mouseY, float partialTicks) {
         super.render(mouseX, mouseY, partialTicks);
         GlStateManager.disableLighting();
@@ -83,6 +84,15 @@ public class GuiFuelStationAdmin extends GuiBase<ContainerFuelStationAdmin> {
         String text = textField.getText();
         init(mc, x, y);
         textField.setText(text);
+    }
+
+    @Override
+    public boolean keyPressed(int key, int a, int b) {
+        if (key == 256) {
+            this.minecraft.player.closeScreen();
+        }
+
+        return !textField.keyPressed(key, a, b) && !textField.func_212955_f() ? super.keyPressed(key, a, b) : true;
     }
 
     @Override

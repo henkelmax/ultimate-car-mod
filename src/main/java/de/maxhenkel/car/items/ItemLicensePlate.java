@@ -1,9 +1,12 @@
 package de.maxhenkel.car.items;
 
-import de.maxhenkel.car.Main;
-import de.maxhenkel.car.gui.GuiHandler;
+import de.maxhenkel.car.gui.ContainerLicensePlate;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ActionResult;
@@ -12,6 +15,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.network.NetworkHooks;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -36,8 +40,20 @@ public class ItemLicensePlate extends ItemCraftingComponent {
     @Override
     public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
         ItemStack stack = playerIn.getHeldItem(handIn);
-        // TODO GUI
-        // playerIn.openGui(Main.MODID, GuiHandler.GUI_NUMBER_PLATE, worldIn, (int) playerIn.posX, (int) playerIn.posY, (int) playerIn.posZ);
+        if (playerIn instanceof ServerPlayerEntity) {
+            NetworkHooks.openGui((ServerPlayerEntity) playerIn, new INamedContainerProvider() {
+                @Override
+                public ITextComponent getDisplayName() {
+                    return ItemLicensePlate.this.getDisplayName(playerIn.getHeldItem(handIn));
+                }
+
+                @Nullable
+                @Override
+                public Container createMenu(int i, PlayerInventory playerInventory, PlayerEntity playerEntity) {
+                    return new ContainerLicensePlate(i, playerIn.getHeldItem(handIn));
+                }
+            });
+        }
         return new ActionResult(ActionResultType.SUCCESS, stack);
     }
 

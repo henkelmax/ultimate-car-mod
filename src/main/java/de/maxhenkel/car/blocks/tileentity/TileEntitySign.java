@@ -42,8 +42,8 @@ public class TileEntitySign extends TileEntityBase{
 		return text[i];
 	}
 	
-	public String[] getText() {
-		return text.clone();
+	public String[] getSignText() {
+		return text;
 	}
 
 	public void setText(int i, String s) {

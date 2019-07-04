@@ -15,12 +15,12 @@ public class PartRegistry {
     public static final Part ENGINE_3_CYLINDER = new PartEngine3Cylinder();
     public static final Part ENGINE_6_CYLINDER = new PartEngine6Cylinder();
 
-    public static final Part OAK_LICENSE_PLATE_HOLDER = new PartLicensePlateHolder(new ResourceLocation("textures/block/planks_oak.png"));
-    public static final Part ACACIA_LICENSE_PLATE_HOLDER = new PartLicensePlateHolder(new ResourceLocation("textures/block/planks_acacia.png"));
-    public static final Part DARK_OAK_LICENSE_PLATE_HOLDER = new PartLicensePlateHolder(new ResourceLocation("textures/block/planks_big_oak.png"));
-    public static final Part BIRCH_LICENSE_PLATE_HOLDER = new PartLicensePlateHolder(new ResourceLocation("textures/block/planks_birch.png"));
-    public static final Part JUNGLE_LICENSE_PLATE_HOLDER = new PartLicensePlateHolder(new ResourceLocation("textures/block/planks_jungle.png"));
-    public static final Part SPRUCE_LICENSE_PLATE_HOLDER = new PartLicensePlateHolder(new ResourceLocation("textures/block/planks_spruce.png"));
+    public static final Part OAK_LICENSE_PLATE_HOLDER = new PartLicensePlateHolder(new ResourceLocation("textures/block/oak_planks.png"));
+    public static final Part ACACIA_LICENSE_PLATE_HOLDER = new PartLicensePlateHolder(new ResourceLocation("textures/block/acacia_planks.png"));
+    public static final Part DARK_OAK_LICENSE_PLATE_HOLDER = new PartLicensePlateHolder(new ResourceLocation("textures/block/dark_oak_planks.png"));
+    public static final Part BIRCH_LICENSE_PLATE_HOLDER = new PartLicensePlateHolder(new ResourceLocation("textures/block/birch_planks.png"));
+    public static final Part JUNGLE_LICENSE_PLATE_HOLDER = new PartLicensePlateHolder(new ResourceLocation("textures/block/jungle_planks_.png"));
+    public static final Part SPRUCE_LICENSE_PLATE_HOLDER = new PartLicensePlateHolder(new ResourceLocation("textures/block/spruce_planks.png"));
 
     public static final Part IRON_LICENSE_PLATE_HOLDER = new PartLicensePlateHolder(new ResourceLocation("textures/block/iron_block.png"));
     public static final Part DIAMOND_LICENSE_PLATE_HOLDER = new PartLicensePlateHolder(new ResourceLocation("textures/block/diamond_block.png"));
@@ -127,12 +127,12 @@ public class PartRegistry {
     public static final Part WHITE_TANK_CONTAINER = new PartTankContainer(new ResourceLocation(Main.MODID, "textures/entity/tank_container_white.png"));
     public static final Part YELLOW_TANK_CONTAINER = new PartTankContainer(new ResourceLocation(Main.MODID, "textures/entity/tank_container_yellow.png"));
 
-    public static final Part OAK_BUMPER = new PartBumper(new ResourceLocation("textures/block/planks_oak.png"));
-    public static final Part ACACIA_BUMPER = new PartBumper(new ResourceLocation("textures/block/planks_acacia.png"));
-    public static final Part DARK_OAK_BUMPER = new PartBumper(new ResourceLocation("textures/block/planks_big_oak.png"));
-    public static final Part BIRCH_BUMPER = new PartBumper(new ResourceLocation("textures/block/planks_birch.png"));
-    public static final Part JUNGLE_BUMPER = new PartBumper(new ResourceLocation("textures/block/planks_jungle.png"));
-    public static final Part SPRUCE_BUMPER = new PartBumper(new ResourceLocation("textures/block/planks_spruce.png"));
+    public static final Part OAK_BUMPER = new PartBumper(new ResourceLocation("textures/block/oak_planks.png"));
+    public static final Part ACACIA_BUMPER = new PartBumper(new ResourceLocation("textures/block/acacia_planks.png"));
+    public static final Part DARK_OAK_BUMPER = new PartBumper(new ResourceLocation("textures/block/dark_oak_planks.png"));
+    public static final Part BIRCH_BUMPER = new PartBumper(new ResourceLocation("textures/block/birch_planks.png"));
+    public static final Part JUNGLE_BUMPER = new PartBumper(new ResourceLocation("textures/block/jungle_planks.png"));
+    public static final Part SPRUCE_BUMPER = new PartBumper(new ResourceLocation("textures/block/spruce_planks.png"));
 
     public static final Part SMALL_TANK = new PartTank(500);
     public static final Part MEDIUM_TANK = new PartTank(1000);

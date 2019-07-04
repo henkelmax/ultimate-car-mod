@@ -1,15 +1,15 @@
 package de.maxhenkel.car.entity.model.obj;
 
-import de.maxhenkel.tools.QuaternionWrapper;
+import de.maxhenkel.tools.Rotation;
 import net.minecraft.util.math.Vec3d;
 
 public class OBJModelOptions {
 
     private Vec3d offset;
-    private QuaternionWrapper rotation;
+    private Rotation rotation;
     private float speedRotationFactor;
 
-    public OBJModelOptions(Vec3d offset, QuaternionWrapper rotation, float speedRotationFactor) {
+    public OBJModelOptions(Vec3d offset, Rotation rotation, float speedRotationFactor) {
         this.offset = offset;
         this.rotation = rotation;
         this.speedRotationFactor = speedRotationFactor;
@@ -36,11 +36,11 @@ public class OBJModelOptions {
         return this;
     }
 
-    public QuaternionWrapper getRotation() {
+    public Rotation getRotation() {
         return rotation;
     }
 
-    public OBJModelOptions setRotation(QuaternionWrapper rotation) {
+    public OBJModelOptions setRotation(Rotation rotation) {
         this.rotation = rotation;
         return this;
     }

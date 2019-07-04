@@ -65,7 +65,7 @@ public abstract class TileEntityBase extends TileEntity implements INameable {
 
     @Override
     public ITextComponent getName() {
-        return name != null ? name : getDisplayName();
+        return name != null ? name : getTranslatedName();
     }
 
     @Override

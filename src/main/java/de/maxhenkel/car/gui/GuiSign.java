@@ -39,7 +39,7 @@ public class GuiSign extends GuiBase<ContainerSign> {
         this.sign = containerSign.getSign();
         this.xSize = 176;
         this.ySize = 142;
-        this.text = sign.getText();
+        this.text = sign.getSignText();
     }
 
     @Override
@@ -131,6 +131,15 @@ public class GuiSign extends GuiBase<ContainerSign> {
     public void removed() {
         super.removed();
         minecraft.keyboardListener.enableRepeatEvents(false);
+    }
+
+    @Override
+    public boolean keyPressed(int key, int a, int b) {
+        if (key == 256) {
+            minecraft.player.closeScreen();
+        }
+
+        return true;
     }
 
     private void save() {

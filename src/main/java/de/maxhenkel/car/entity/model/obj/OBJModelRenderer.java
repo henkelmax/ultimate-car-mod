@@ -9,6 +9,7 @@ import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
+import org.lwjgl.opengl.GL11;
 
 import java.util.List;
 
@@ -37,11 +38,6 @@ public abstract class OBJModelRenderer<T extends EntityGenericCar> extends Entit
 
         GlStateManager.pushMatrix();
 
-        /*if (this.renderOutlines) {
-            GlStateManager.enableColorMaterial();
-            GlStateManager.enableOutlineMode(this.getTeamColor(entity));
-        }*/
-
         entity.updateWheelRotation(partialTicks);
         //Render parts
         for (int i = 0; i < models.size(); i++) {
@@ -57,8 +53,7 @@ public abstract class OBJModelRenderer<T extends EntityGenericCar> extends Entit
             GlStateManager.rotatef(-90F, 1F, 0F, 0F);
 
             if (models.get(i).getOptions().getRotation() != null) {
-                Quaternion q = models.get(i).getOptions().getRotation().getQuaternion();
-                GlStateManager.rotated(q.getW(), q.getX(), q.getY(), q.getZ());
+                models.get(i).getOptions().getRotation().applyGLRotation();
             }
 
             if (models.get(i).getOptions().getSpeedRotationFactor() > 0F) {
@@ -69,11 +64,6 @@ public abstract class OBJModelRenderer<T extends EntityGenericCar> extends Entit
             GlStateManager.enableCull();
             GlStateManager.popMatrix();
         }
-
-       /* if (this.renderOutlines) {
-            GlStateManager.disableOutlineMode();
-            GlStateManager.disableColorMaterial();
-        }*/
 
         GlStateManager.popMatrix();
 

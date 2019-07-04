@@ -1,5 +1,6 @@
 package de.maxhenkel.car.gui;
 
+import com.mojang.blaze3d.platform.GlStateManager;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.items.ItemLicensePlate;
 import de.maxhenkel.car.net.MessageEditLicensePlate;
@@ -23,10 +24,10 @@ public class GuiLicensePlate extends GuiBase<ContainerLicensePlate> {
     private ContainerLicensePlate containerLicensePlate;
     private PlayerEntity player;
 
-    protected Button buttonSubmit;
-    protected Button buttonCancel;
+    private Button buttonSubmit;
+    private Button buttonCancel;
 
-    protected TextFieldWidget textField;
+    private TextFieldWidget textField;
 
     public GuiLicensePlate(ContainerLicensePlate containerLicensePlate, PlayerInventory playerInventory, ITextComponent title) {
         super(GUI_TEXTURE, containerLicensePlate, playerInventory, title);
@@ -40,7 +41,8 @@ public class GuiLicensePlate extends GuiBase<ContainerLicensePlate> {
     protected void init() {
         super.init();
 
-        //Keyboard.enableRepeatEvents(true);  //TODO
+        minecraft.keyboardListener.enableRepeatEvents(true);
+
         this.buttonSubmit = addButton(new Button(guiLeft + 20, guiTop + ySize - 25, 50, 20,
                 new TranslationTextComponent("button.submit").getFormattedText(), button -> {
             Main.SIMPLE_CHANNEL.sendToServer(new MessageEditLicensePlate(player, textField.getText()));
@@ -60,26 +62,45 @@ public class GuiLicensePlate extends GuiBase<ContainerLicensePlate> {
         textField.setText(ItemLicensePlate.getText(containerLicensePlate.getLicensePlate()));
 
         children.add(textField);
-        func_212928_a(textField);
+        setFocused(textField);
+    }
+
+    public void render(int mouseX, int mouseY, float partialTicks) {
+        super.render(mouseX, mouseY, partialTicks);
+        GlStateManager.disableLighting();
+        GlStateManager.disableBlend();
+        textField.render(mouseX, mouseY, partialTicks);
+        renderHoveredToolTip(mouseX, mouseY);
+    }
+
+    @Override
+    public void resize(Minecraft mc, int x, int y) {
+        String text = textField.getText();
+        init(mc, x, y);
+        textField.setText(text);
+    }
+
+    @Override
+    public boolean keyPressed(int key, int a, int b) {
+        if (key == 256) {
+            this.minecraft.player.closeScreen();
+        }
+
+        return !textField.keyPressed(key, a, b) && !textField.func_212955_f() ? super.keyPressed(key, a, b) : true;
     }
 
     @Override
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
         super.drawGuiContainerForegroundLayer(mouseX, mouseY);
+
+        drawCenteredString(font, containerLicensePlate.getLicensePlate().getDisplayName().getFormattedText(),
+                xSize / 2, 5, TITLE_COLOR);
     }
 
     @Override
-    public void onClose() {
-        super.onClose();
-        //Keyboard.enableRepeatEvents(false); //TODO
-    }
-
-    @Override
-    protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
-        super.drawGuiContainerBackgroundLayer(partialTicks, mouseX, mouseY);
-
-        drawCenteredString(font, new TranslationTextComponent("gui.license_plate").getFormattedText(),
-                width / 2, guiTop + 5, TITLE_COLOR);
+    public void removed() {
+        super.removed();
+        minecraft.keyboardListener.enableRepeatEvents(false);
     }
 
     @Override
