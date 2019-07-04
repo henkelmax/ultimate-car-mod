@@ -1,0 +1,5 @@
+{
+    "variants": {
+        "": { "model": "car:block/asphalt" }
+    }
+}

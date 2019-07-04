@@ -1,0 +1,17 @@
+{
+  "type": "crafting_shaped",
+  "pattern": [
+    "   ",
+    "C  ",
+    "CCC"
+  ],
+  "key": {
+    "C": {
+      "item": "minecraft:magenta_concrete"
+    }
+  },
+  "result": {
+    "item": "car:magenta_sport_body",
+    "count": 1
+  }
+}

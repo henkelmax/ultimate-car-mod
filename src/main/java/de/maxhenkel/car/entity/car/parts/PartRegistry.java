@@ -54,7 +54,7 @@ public class PartRegistry {
     public static final Part PINK_SPORT_BODY = new PartBodySport(new ResourceLocation(Main.MODID, "textures/entity/car_sport_pink.png"));
     public static final Part PURPLE_SPORT_BODY = new PartBodySport(new ResourceLocation(Main.MODID, "textures/entity/car_sport_purple.png"));
     public static final Part RED_SPORT_BODY = new PartBodySport(new ResourceLocation(Main.MODID, "textures/entity/car_sport_red.png"));
-    public static final Part SILVER_SPORT_BODY = new PartBodySport(new ResourceLocation(Main.MODID, "textures/entity/car_sport_silver.png"));
+    public static final Part LIGHT_GRAY_SPORT_BODY = new PartBodySport(new ResourceLocation(Main.MODID, "textures/entity/car_sport_light_gray.png"));
     public static final Part WHITE_SPORT_BODY = new PartBodySport(new ResourceLocation(Main.MODID, "textures/entity/car_sport_white.png"));
     public static final Part YELLOW_SPORT_BODY = new PartBodySport(new ResourceLocation(Main.MODID, "textures/entity/car_sport_yellow.png"));
 
@@ -71,7 +71,7 @@ public class PartRegistry {
     public static final Part PINK_TRANSPORTER_BODY = new PartBodyTransporter(new ResourceLocation(Main.MODID, "textures/entity/car_transporter_pink.png"));
     public static final Part PURPLE_TRANSPORTER_BODY = new PartBodyTransporter(new ResourceLocation(Main.MODID, "textures/entity/car_transporter_purple.png"));
     public static final Part RED_TRANSPORTER_BODY = new PartBodyTransporter(new ResourceLocation(Main.MODID, "textures/entity/car_transporter_red.png"));
-    public static final Part SILVER_TRANSPORTER_BODY = new PartBodyTransporter(new ResourceLocation(Main.MODID, "textures/entity/car_transporter_silver.png"));
+    public static final Part LIGHT_GRAY_TRANSPORTER_BODY = new PartBodyTransporter(new ResourceLocation(Main.MODID, "textures/entity/car_transporter_light_gray.png"));
     public static final Part WHITE_TRANSPORTER_BODY = new PartBodyTransporter(new ResourceLocation(Main.MODID, "textures/entity/car_transporter_white.png"));
     public static final Part YELLOW_TRANSPORTER_BODY = new PartBodyTransporter(new ResourceLocation(Main.MODID, "textures/entity/car_transporter_yellow.png"));
 
@@ -88,7 +88,7 @@ public class PartRegistry {
     public static final Part PINK_SUV_BODY = new PartBodySUV(new ResourceLocation(Main.MODID, "textures/entity/car_suv_pink.png"));
     public static final Part PURPLE_SUV_BODY = new PartBodySUV(new ResourceLocation(Main.MODID, "textures/entity/car_suv_purple.png"));
     public static final Part RED_SUV_BODY = new PartBodySUV(new ResourceLocation(Main.MODID, "textures/entity/car_suv_red.png"));
-    public static final Part SILVER_SUV_BODY = new PartBodySUV(new ResourceLocation(Main.MODID, "textures/entity/car_suv_silver.png"));
+    public static final Part LIGHT_GRAY_SUV_BODY = new PartBodySUV(new ResourceLocation(Main.MODID, "textures/entity/car_suv_light_gray.png"));
     public static final Part WHITE_SUV_BODY = new PartBodySUV(new ResourceLocation(Main.MODID, "textures/entity/car_suv_white.png"));
     public static final Part YELLOW_SUV_BODY = new PartBodySUV(new ResourceLocation(Main.MODID, "textures/entity/car_suv_yellow.png"));
 
@@ -106,7 +106,7 @@ public class PartRegistry {
     public static final Part PINK_CONTAINER = new PartContainer(new ResourceLocation(Main.MODID, "textures/entity/car_transporter_pink.png"));
     public static final Part PURPLE_CONTAINER = new PartContainer(new ResourceLocation(Main.MODID, "textures/entity/car_transporter_purple.png"));
     public static final Part RED_CONTAINER = new PartContainer(new ResourceLocation(Main.MODID, "textures/entity/car_transporter_red.png"));
-    public static final Part SILVER_CONTAINER = new PartContainer(new ResourceLocation(Main.MODID, "textures/entity/car_transporter_silver.png"));
+    public static final Part LIGHT_GRAY_CONTAINER = new PartContainer(new ResourceLocation(Main.MODID, "textures/entity/car_transporter_light_gray.png"));
     public static final Part WHITE_CONTAINER = new PartContainer(new ResourceLocation(Main.MODID, "textures/entity/car_transporter_white.png"));
     public static final Part YELLOW_CONTAINER = new PartContainer(new ResourceLocation(Main.MODID, "textures/entity/car_transporter_yellow.png"));
 
@@ -123,7 +123,7 @@ public class PartRegistry {
     public static final Part PINK_TANK_CONTAINER = new PartTankContainer(new ResourceLocation(Main.MODID, "textures/entity/tank_container_pink.png"));
     public static final Part PURPLE_TANK_CONTAINER = new PartTankContainer(new ResourceLocation(Main.MODID, "textures/entity/tank_container_purple.png"));
     public static final Part RED_TANK_CONTAINER = new PartTankContainer(new ResourceLocation(Main.MODID, "textures/entity/tank_container_red.png"));
-    public static final Part SILVER_TANK_CONTAINER = new PartTankContainer(new ResourceLocation(Main.MODID, "textures/entity/tank_container_silver.png"));
+    public static final Part LIGHT_GRAY_TANK_CONTAINER = new PartTankContainer(new ResourceLocation(Main.MODID, "textures/entity/tank_container_light_gray.png"));
     public static final Part WHITE_TANK_CONTAINER = new PartTankContainer(new ResourceLocation(Main.MODID, "textures/entity/tank_container_white.png"));
     public static final Part YELLOW_TANK_CONTAINER = new PartTankContainer(new ResourceLocation(Main.MODID, "textures/entity/tank_container_yellow.png"));
 

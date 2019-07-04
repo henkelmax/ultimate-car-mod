@@ -1,0 +1,20 @@
+{
+  "type": "crafting_shaped",
+  "pattern": [
+    "   ",
+    "WIW",
+    "WWW"
+  ],
+  "key": {
+    "W": {
+      "item": "minecraft:diamond"
+    },
+    "I": {
+      "item": "car:iron_stick"
+    }
+  },
+  "result": {
+    "item": "car:diamond_license_plate_holder",
+    "count": 1
+  }
+}

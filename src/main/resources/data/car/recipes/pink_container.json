@@ -1,0 +1,23 @@
+{
+  "type": "crafting_shaped",
+  "pattern": [
+    "CIC",
+    "IHI",
+    "CIC"
+  ],
+  "key": {
+    "C": {
+      "item": "minecraft:pink_concrete"
+    },
+    "H": {
+      "item": "minecraft:chest"
+    },
+    "I": {
+      "item": "minecraft:iron_ingot"
+    }
+  },
+  "result": {
+    "item": "car:pink_container",
+    "count": 1
+  }
+}

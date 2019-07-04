@@ -1,8 +1,0 @@
-{
-    "parent": "block/slab",
-    "textures": {
-        "side": "car:block/tar",
-        "bottom": "car:block/tar",
-        "top": "car:block/tar"
-    }
-}

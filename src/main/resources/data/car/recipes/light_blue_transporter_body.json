@@ -1,0 +1,17 @@
+{
+  "type": "crafting_shaped",
+  "pattern": [
+    "CC ",
+    "CC ",
+    "CCC"
+  ],
+  "key": {
+    "C": {
+      "item": "minecraft:light_blue_concrete"
+    }
+  },
+  "result": {
+    "item": "car:light_blue_transporter_body",
+    "count": 1
+  }
+}

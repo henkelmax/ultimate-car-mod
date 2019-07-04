@@ -1,0 +1,17 @@
+{
+  "type": "crafting_shaped",
+  "pattern": [
+    "   ",
+    "C  ",
+    "CCC"
+  ],
+  "key": {
+    "C": {
+      "item": "minecraft:lime_concrete"
+    }
+  },
+  "result": {
+    "item": "car:lime_sport_body",
+    "count": 1
+  }
+}

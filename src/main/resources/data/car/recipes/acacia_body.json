@@ -1,0 +1,17 @@
+{
+  "type": "crafting_shaped",
+  "pattern": [
+    "   ",
+    "WW ",
+    "WWW"
+  ],
+  "key": {
+    "W": {
+      "item": "minecraft:acacia_planks"
+    }
+  },
+  "result": {
+    "item": "car:acacia_body",
+    "count": 1
+  }
+}

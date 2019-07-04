@@ -74,13 +74,13 @@ public class ModItems {
     public static final ItemCarPart PINK_TRANSPORTER_BODY = new ItemCarPart("pink_transporter_body", PartRegistry.PINK_TRANSPORTER_BODY);
     public static final ItemCarPart PURPLE_TRANSPORTER_BODY = new ItemCarPart("purple_transporter_body", PartRegistry.PURPLE_TRANSPORTER_BODY);
     public static final ItemCarPart RED_TRANSPORTER_BODY = new ItemCarPart("red_transporter_body", PartRegistry.RED_TRANSPORTER_BODY);
-    public static final ItemCarPart SILVER_TRANSPORTER_BODY = new ItemCarPart("silver_transporter_body", PartRegistry.SILVER_TRANSPORTER_BODY);
+    public static final ItemCarPart LIGHT_GRAY_TRANSPORTER_BODY = new ItemCarPart("light_gray_transporter_body", PartRegistry.LIGHT_GRAY_TRANSPORTER_BODY);
     public static final ItemCarPart WHITE_TRANSPORTER_BODY = new ItemCarPart("white_transporter_body", PartRegistry.WHITE_TRANSPORTER_BODY);
     public static final ItemCarPart YELLOW_TRANSPORTER_BODY = new ItemCarPart("yellow_transporter_body", PartRegistry.YELLOW_TRANSPORTER_BODY);
 
     public static final ItemCarPart[] TRANSPORTER_BODIES = new ItemCarPart[]{
             WHITE_TRANSPORTER_BODY, ORANGE_TRANSPORTER_BODY, MAGENTA_TRANSPORTER_BODY, LIGHT_BLUE_TRANSPORTER_BODY, YELLOW_TRANSPORTER_BODY,
-            LIME_TRANSPORTER_BODY, PINK_TRANSPORTER_BODY, GRAY_TRANSPORTER_BODY, SILVER_TRANSPORTER_BODY, CYAN_TRANSPORTER_BODY,
+            LIME_TRANSPORTER_BODY, PINK_TRANSPORTER_BODY, GRAY_TRANSPORTER_BODY, LIGHT_GRAY_TRANSPORTER_BODY, CYAN_TRANSPORTER_BODY,
             PURPLE_TRANSPORTER_BODY, BLUE_TRANSPORTER_BODY, BROWN_TRANSPORTER_BODY, GREEN_TRANSPORTER_BODY, RED_TRANSPORTER_BODY, BLACK_TRANSPORTER_BODY
     };
 
@@ -97,13 +97,13 @@ public class ModItems {
     public static final ItemCarPart PINK_SUV_BODY = new ItemCarPart("pink_suv_body", PartRegistry.PINK_SUV_BODY);
     public static final ItemCarPart PURPLE_SUV_BODY = new ItemCarPart("purple_suv_body", PartRegistry.PURPLE_SUV_BODY);
     public static final ItemCarPart RED_SUV_BODY = new ItemCarPart("red_suv_body", PartRegistry.RED_SUV_BODY);
-    public static final ItemCarPart SILVER_SUV_BODY = new ItemCarPart("silver_suv_body", PartRegistry.SILVER_SUV_BODY);
+    public static final ItemCarPart LIGHT_GRAY_SUV_BODY = new ItemCarPart("light_gray_suv_body", PartRegistry.LIGHT_GRAY_SUV_BODY);
     public static final ItemCarPart WHITE_SUV_BODY = new ItemCarPart("white_suv_body", PartRegistry.WHITE_SUV_BODY);
     public static final ItemCarPart YELLOW_SUV_BODY = new ItemCarPart("yellow_suv_body", PartRegistry.YELLOW_SUV_BODY);
 
     public static final ItemCarPart[] SUV_BODIES = new ItemCarPart[]{
             WHITE_SUV_BODY, ORANGE_SUV_BODY, MAGENTA_SUV_BODY, LIGHT_BLUE_SUV_BODY, YELLOW_SUV_BODY,
-            LIME_SUV_BODY, PINK_SUV_BODY, GRAY_SUV_BODY, SILVER_SUV_BODY, CYAN_SUV_BODY,
+            LIME_SUV_BODY, PINK_SUV_BODY, GRAY_SUV_BODY, LIGHT_GRAY_SUV_BODY, CYAN_SUV_BODY,
             PURPLE_SUV_BODY, BLUE_SUV_BODY, BROWN_SUV_BODY, GREEN_SUV_BODY, RED_SUV_BODY, BLACK_SUV_BODY
     };
 
@@ -120,13 +120,13 @@ public class ModItems {
     public static final ItemCarPart PINK_SPORT_BODY = new ItemCarPart("pink_sport_body", PartRegistry.PINK_SPORT_BODY);
     public static final ItemCarPart PURPLE_SPORT_BODY = new ItemCarPart("purple_sport_body", PartRegistry.PURPLE_SPORT_BODY);
     public static final ItemCarPart RED_SPORT_BODY = new ItemCarPart("red_sport_body", PartRegistry.RED_SPORT_BODY);
-    public static final ItemCarPart SILVER_SPORT_BODY = new ItemCarPart("silver_sport_body", PartRegistry.SILVER_SPORT_BODY);
+    public static final ItemCarPart LIGHT_GRAY_SPORT_BODY = new ItemCarPart("light_gray_sport_body", PartRegistry.LIGHT_GRAY_SPORT_BODY);
     public static final ItemCarPart WHITE_SPORT_BODY = new ItemCarPart("white_sport_body", PartRegistry.WHITE_SPORT_BODY);
     public static final ItemCarPart YELLOW_SPORT_BODY = new ItemCarPart("yellow_sport_body", PartRegistry.YELLOW_SPORT_BODY);
 
     public static final ItemCarPart[] SPORT_BODIES = new ItemCarPart[]{
             WHITE_SPORT_BODY, ORANGE_SPORT_BODY, MAGENTA_SPORT_BODY, LIGHT_BLUE_SPORT_BODY, YELLOW_SPORT_BODY,
-            LIME_SPORT_BODY, PINK_SPORT_BODY, GRAY_SPORT_BODY, SILVER_SPORT_BODY, CYAN_SPORT_BODY,
+            LIME_SPORT_BODY, PINK_SPORT_BODY, GRAY_SPORT_BODY, LIGHT_GRAY_SPORT_BODY, CYAN_SPORT_BODY,
             PURPLE_SPORT_BODY, BLUE_SPORT_BODY, BROWN_SPORT_BODY, GREEN_SPORT_BODY, RED_SPORT_BODY, BLACK_SPORT_BODY
     };
 
@@ -143,13 +143,13 @@ public class ModItems {
     public static final ItemCarPart PINK_CONTAINER = new ItemCarPart("pink_container", PartRegistry.PINK_CONTAINER);
     public static final ItemCarPart PURPLE_CONTAINER = new ItemCarPart("purple_container", PartRegistry.PURPLE_CONTAINER);
     public static final ItemCarPart RED_CONTAINER = new ItemCarPart("red_container", PartRegistry.RED_CONTAINER);
-    public static final ItemCarPart SILVER_CONTAINER = new ItemCarPart("silver_container", PartRegistry.SILVER_CONTAINER);
+    public static final ItemCarPart LIGHT_GRAY_CONTAINER = new ItemCarPart("light_gray_container", PartRegistry.LIGHT_GRAY_CONTAINER);
     public static final ItemCarPart WHITE_CONTAINER = new ItemCarPart("white_container", PartRegistry.WHITE_CONTAINER);
     public static final ItemCarPart YELLOW_CONTAINER = new ItemCarPart("yellow_container", PartRegistry.YELLOW_CONTAINER);
 
     public static final ItemCarPart[] CONTAINERS = new ItemCarPart[]{
             WHITE_CONTAINER, ORANGE_CONTAINER, MAGENTA_CONTAINER, LIGHT_BLUE_CONTAINER, YELLOW_CONTAINER,
-            LIME_CONTAINER, PINK_CONTAINER, GRAY_CONTAINER, SILVER_CONTAINER, CYAN_CONTAINER,
+            LIME_CONTAINER, PINK_CONTAINER, GRAY_CONTAINER, LIGHT_GRAY_CONTAINER, CYAN_CONTAINER,
             PURPLE_CONTAINER, BLUE_CONTAINER, BROWN_CONTAINER, GREEN_CONTAINER, RED_CONTAINER, BLACK_CONTAINER
     };
 
@@ -166,13 +166,13 @@ public class ModItems {
     public static final ItemCarPart PINK_TANK_CONTAINER = new ItemCarPart("pink_tank_container", PartRegistry.PINK_TANK_CONTAINER);
     public static final ItemCarPart PURPLE_TANK_CONTAINER = new ItemCarPart("purple_tank_container", PartRegistry.PURPLE_TANK_CONTAINER);
     public static final ItemCarPart RED_TANK_CONTAINER = new ItemCarPart("red_tank_container", PartRegistry.RED_TANK_CONTAINER);
-    public static final ItemCarPart SILVER_TANK_CONTAINER = new ItemCarPart("silver_tank_container", PartRegistry.SILVER_TANK_CONTAINER);
+    public static final ItemCarPart LIGHT_GRAY_TANK_CONTAINER = new ItemCarPart("light_gray_tank_container", PartRegistry.LIGHT_GRAY_TANK_CONTAINER);
     public static final ItemCarPart WHITE_TANK_CONTAINER = new ItemCarPart("white_tank_container", PartRegistry.WHITE_TANK_CONTAINER);
     public static final ItemCarPart YELLOW_TANK_CONTAINER = new ItemCarPart("yellow_tank_container", PartRegistry.YELLOW_TANK_CONTAINER);
 
     public static final ItemCarPart[] TANK_CONTAINERS = new ItemCarPart[]{
             WHITE_TANK_CONTAINER, ORANGE_TANK_CONTAINER, MAGENTA_TANK_CONTAINER, LIGHT_BLUE_TANK_CONTAINER, YELLOW_TANK_CONTAINER,
-            LIME_TANK_CONTAINER, PINK_TANK_CONTAINER, GRAY_TANK_CONTAINER, SILVER_TANK_CONTAINER, CYAN_TANK_CONTAINER,
+            LIME_TANK_CONTAINER, PINK_TANK_CONTAINER, GRAY_TANK_CONTAINER, LIGHT_GRAY_TANK_CONTAINER, CYAN_TANK_CONTAINER,
             PURPLE_TANK_CONTAINER, BLUE_TANK_CONTAINER, BROWN_TANK_CONTAINER, GREEN_TANK_CONTAINER, RED_TANK_CONTAINER, BLACK_TANK_CONTAINER
     };
 

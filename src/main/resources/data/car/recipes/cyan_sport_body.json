@@ -1,0 +1,17 @@
+{
+  "type": "crafting_shaped",
+  "pattern": [
+    "   ",
+    "C  ",
+    "CCC"
+  ],
+  "key": {
+    "C": {
+      "item": "minecraft:cyan_concrete"
+    }
+  },
+  "result": {
+    "item": "car:cyan_sport_body",
+    "count": 1
+  }
+}

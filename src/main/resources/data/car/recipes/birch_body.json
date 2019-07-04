@@ -1,0 +1,17 @@
+{
+  "type": "crafting_shaped",
+  "pattern": [
+    "   ",
+    "WW ",
+    "WWW"
+  ],
+  "key": {
+    "W": {
+      "item": "minecraft:birch_planks"
+    }
+  },
+  "result": {
+    "item": "car:birch_body",
+    "count": 1
+  }
+}

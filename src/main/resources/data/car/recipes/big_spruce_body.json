@@ -1,0 +1,17 @@
+{
+  "type": "crafting_shaped",
+  "pattern": [
+    "WW ",
+    "WW ",
+    "WWW"
+  ],
+  "key": {
+    "W": {
+      "item": "minecraft:spruce_planks"
+    }
+  },
+  "result": {
+    "item": "car:big_spruce_body",
+    "count": 1
+  }
+}

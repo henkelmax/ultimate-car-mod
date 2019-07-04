@@ -12,7 +12,7 @@ public class ModCreativeTabs {
 
         @Override
         public ItemStack createIcon() {
-            return new ItemStack(ModBlocks.TAR);
+            return new ItemStack(ModBlocks.ASPHALT);
         }
 		/*@Override
 		public void displayAllRelevantItems(NonNullList<ItemStack> list) {

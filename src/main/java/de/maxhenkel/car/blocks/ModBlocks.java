@@ -15,11 +15,11 @@ import java.util.List;
 
 public class ModBlocks {
 
-    public static final BlockTar TAR = new BlockTar();
-    public static final BlockTarSlope TAR_SLOPE = new BlockTarSlope();
-    public static final BlockTarSlopeFlat TAR_SLOPE_FLAT_UPPER = new BlockTarSlopeFlat(true);
-    public static final BlockTarSlopeFlat TAR_SLOPE_FLAT_LOWER = new BlockTarSlopeFlat(false);
-    public static final BlockTarSlab TAR_SLAB = new BlockTarSlab();
+    public static final BlockAsphalt ASPHALT = new BlockAsphalt();
+    public static final BlockAsphaltSlope ASPHALT_SLOPE = new BlockAsphaltSlope();
+    public static final BlockAsphaltSlopeFlat ASPHALT_SLOPE_FLAT_UPPER = new BlockAsphaltSlopeFlat(true);
+    public static final BlockAsphaltSlopeFlat ASPHALT_SLOPE_FLAT_LOWER = new BlockAsphaltSlopeFlat(false);
+    public static final BlockAsphaltSlab ASPHALT_SLAB = new BlockAsphaltSlab();
     public static final BlockFuelStation FUEL_STATION = new BlockFuelStation();
     @OnlyBlock
     public static final BlockFuelStationTop FUEL_STATION_TOP = new BlockFuelStationTop();

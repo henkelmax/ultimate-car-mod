@@ -1,0 +1,17 @@
+{
+  "type": "crafting_shaped",
+  "pattern": [
+    "   ",
+    "WW ",
+    "WWW"
+  ],
+  "key": {
+    "W": {
+      "item": "minecraft:jungle_planks"
+    }
+  },
+  "result": {
+    "item": "car:jungle_body",
+    "count": 1
+  }
+}
