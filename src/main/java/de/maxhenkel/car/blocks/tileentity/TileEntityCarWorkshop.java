@@ -403,7 +403,7 @@ public class TileEntityCarWorkshop extends TileEntityBase implements IInventory 
     }
 
     @Override
-    public ITextComponent getDisplayName() {
+    public ITextComponent getTranslatedName() {
         return new TranslationTextComponent("block.car.car_workshop.name");
     }
 

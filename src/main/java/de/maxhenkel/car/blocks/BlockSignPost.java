@@ -19,7 +19,7 @@ import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IEnviromentBlockReader;
 
-public class BlockSignPost extends Block implements IItemBlock {
+public class BlockSignPost extends BlockBase implements IItemBlock {
 
 	public static final AxisAlignedBB AABB = new AxisAlignedBB(7.5/16D, 0D, 7.5D/16D, 8.5/16D, 1D, 8.5D/16D);
 	

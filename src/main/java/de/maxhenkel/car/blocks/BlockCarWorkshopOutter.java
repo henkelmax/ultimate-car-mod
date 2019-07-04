@@ -27,7 +27,7 @@ import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 
-public class BlockCarWorkshopOutter extends Block implements IItemBlock {
+public class BlockCarWorkshopOutter extends BlockBase implements IItemBlock {
 
     public static final IntegerProperty POSITION = IntegerProperty.create("position", 0, 8);
 

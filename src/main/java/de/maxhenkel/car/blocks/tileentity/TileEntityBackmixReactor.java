@@ -440,7 +440,7 @@ public class TileEntityBackmixReactor extends TileEntityBase implements ITickabl
 	}
 
 	@Override
-	public ITextComponent getDisplayName() {
+	public ITextComponent getTranslatedName() {
 		return new TranslationTextComponent("block.car.backmix_reactor");
 	}
 

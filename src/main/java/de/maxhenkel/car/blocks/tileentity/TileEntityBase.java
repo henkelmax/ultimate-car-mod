@@ -8,12 +8,16 @@ import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.IIntArray;
+import net.minecraft.util.INameable;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.ServerWorld;
 import net.minecraftforge.fml.network.NetworkDirection;
 
-public abstract class TileEntityBase extends TileEntity {
+import javax.annotation.Nullable;
 
+public abstract class TileEntityBase extends TileEntity implements INameable {
+
+    private ITextComponent name;
     private CompoundNBT compoundLast;
 
     public TileEntityBase(TileEntityType<?> tileEntityTypeIn) {
@@ -53,7 +57,38 @@ public abstract class TileEntityBase extends TileEntity {
         return this.write(new CompoundNBT());
     }
 
-    public abstract ITextComponent getDisplayName();
+    public abstract ITextComponent getTranslatedName();
+
+    public void setCustomName(ITextComponent name) {
+        this.name = name;
+    }
+
+    @Override
+    public ITextComponent getName() {
+        return name != null ? name : getDisplayName();
+    }
+
+    @Override
+    @Nullable
+    public ITextComponent getCustomName() {
+        return name;
+    }
 
     public abstract IIntArray getFields();
+
+    @Override
+    public CompoundNBT write(CompoundNBT compound) {
+        if (name != null) {
+            compound.putString("CustomName", ITextComponent.Serializer.toJson(name));
+        }
+        return super.write(compound);
+    }
+
+    @Override
+    public void read(CompoundNBT compound) {
+        if (compound.contains("CustomName")) {
+            name = ITextComponent.Serializer.fromJson(compound.getString("CustomName"));
+        }
+        super.read(compound);
+    }
 }

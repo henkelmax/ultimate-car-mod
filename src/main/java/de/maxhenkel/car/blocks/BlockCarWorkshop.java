@@ -29,7 +29,7 @@ import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 
-public class BlockCarWorkshop extends Block implements ITileEntityProvider, IItemBlock {
+public class BlockCarWorkshop extends BlockBase implements ITileEntityProvider, IItemBlock {
 
     public static final BooleanProperty VALID = BooleanProperty.create("valid");
 

@@ -394,7 +394,7 @@ public class TileEntitySplitTank extends TileEntityBase implements ITickableTile
     }
 
     @Override
-    public ITextComponent getDisplayName() {
+    public ITextComponent getTranslatedName() {
         return new TranslationTextComponent("block.car.split_tank");
     }
 

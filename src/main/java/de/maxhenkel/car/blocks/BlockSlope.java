@@ -19,7 +19,7 @@ import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nullable;
 
-public class BlockSlope extends Block implements IItemBlock {
+public class BlockSlope extends BlockBase implements IItemBlock {
 
     public static final DirectionProperty FACING = DirectionProperty.create("facing", Direction.Plane.HORIZONTAL);
 

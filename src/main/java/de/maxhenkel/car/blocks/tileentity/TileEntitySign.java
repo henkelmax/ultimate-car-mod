@@ -65,7 +65,7 @@ public class TileEntitySign extends TileEntityBase{
 	}
 
 	@Override
-	public ITextComponent getDisplayName() {
+	public ITextComponent getTranslatedName() {
 		return new TranslationTextComponent("block.car.sign");
 	}
 

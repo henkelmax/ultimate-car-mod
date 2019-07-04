@@ -34,7 +34,7 @@ import net.minecraft.world.World;
 import javax.annotation.Nullable;
 import java.util.Map;
 
-public class BlockSign extends Block implements ITileEntityProvider, IItemBlock {
+public class BlockSign extends BlockBase implements ITileEntityProvider, IItemBlock {
 
     public static final DirectionProperty FACING = DirectionProperty.create("facing", Direction.Plane.HORIZONTAL);
 

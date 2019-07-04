@@ -26,7 +26,7 @@ import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 
-public abstract class BlockGui<T extends TileEntity> extends Block implements ITileEntityProvider, IItemBlock {
+public abstract class BlockGui<T extends TileEntity> extends BlockBase implements ITileEntityProvider, IItemBlock {
 
     public static final BooleanProperty POWERED = BooleanProperty.create("powered");
     public static final DirectionProperty FACING = DirectionProperty.create("facing", Direction.Plane.HORIZONTAL);

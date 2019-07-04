@@ -161,7 +161,7 @@ public class TileEntityCable extends TileEntityBase implements ITickableTileEnti
     }
 
     @Override
-    public ITextComponent getDisplayName() {
+    public ITextComponent getTranslatedName() {
         return new TranslationTextComponent("block.car.cable");
     }
 

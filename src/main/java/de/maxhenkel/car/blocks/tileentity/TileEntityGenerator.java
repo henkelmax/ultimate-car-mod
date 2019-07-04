@@ -155,7 +155,7 @@ public class TileEntityGenerator extends TileEntityBase implements ITickableTile
     }
 
 	@Override
-	public ITextComponent getDisplayName() {
+	public ITextComponent getTranslatedName() {
 		return new TranslationTextComponent("block.car.generator");
 	}
 

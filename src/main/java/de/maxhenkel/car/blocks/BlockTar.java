@@ -11,7 +11,7 @@ import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 
-public class BlockTar extends Block implements IItemBlock {
+public class BlockTar extends BlockBase implements IItemBlock {
 
 	public BlockTar() {
 		super(Properties.create(Material.ROCK, MaterialColor.OBSIDIAN).hardnessAndResistance(2.2F, 20F).sound(SoundType.STONE));

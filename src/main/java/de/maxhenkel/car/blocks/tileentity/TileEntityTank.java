@@ -325,7 +325,7 @@ public class TileEntityTank extends TileEntityBase implements IFluidHandler, ITi
     }
 
     @Override
-    public ITextComponent getDisplayName() {
+    public ITextComponent getTranslatedName() {
         return new TranslationTextComponent("block.car.tank");
     }
 

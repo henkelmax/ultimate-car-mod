@@ -97,7 +97,7 @@ public class TileEntityDynamo extends TileEntityBase implements IEnergyStorage, 
     }
 
     @Override
-    public ITextComponent getDisplayName() {
+    public ITextComponent getTranslatedName() {
         return new TranslationTextComponent("block.car.dynamo");
     }
 

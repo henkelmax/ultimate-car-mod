@@ -32,7 +32,7 @@ import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 
-public class BlockFluidExtractor extends Block implements ITileEntityProvider, IItemBlock {
+public class BlockFluidExtractor extends BlockBase implements ITileEntityProvider, IItemBlock {
 
     public static final DirectionProperty FACING = DirectionProperty.create("facing", Direction.values());
     public static final BooleanProperty DOWN = BooleanProperty.create("down");

@@ -29,7 +29,7 @@ import net.minecraftforge.energy.IEnergyStorage;
 
 import javax.annotation.Nullable;
 
-public class BlockCable extends Block implements ITileEntityProvider, IItemBlock {
+public class BlockCable extends BlockBase implements ITileEntityProvider, IItemBlock {
 
     public static final BooleanProperty DOWN = BooleanProperty.create("down");
     public static final BooleanProperty UP = BooleanProperty.create("up");

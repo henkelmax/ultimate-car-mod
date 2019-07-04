@@ -22,58 +22,6 @@ public class BlockTarSlopeFlat extends BlockSlope {
         this.isUpper = isUpper;
     }
 
-    //TODO fix shapes
-	/*private void lower(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox,
-			List<AxisAlignedBB> collidingBoxes, EnumFacing facing){
-		if(facing.equals(EnumFacing.NORTH)){
-			addCollisionBoxToList(pos, entityBox, collidingBoxes, new AxisAlignedBB(0, 0, 		0, 1, 0.125F, 	1));
-			addCollisionBoxToList(pos, entityBox, collidingBoxes, new AxisAlignedBB(0, 0.125F, 	0, 1, 0.25F, 	0.75F));
-			addCollisionBoxToList(pos, entityBox, collidingBoxes, new AxisAlignedBB(0, 0.25F, 	0, 1, 0.375F, 	0.5F));
-			addCollisionBoxToList(pos, entityBox, collidingBoxes, new AxisAlignedBB(0, 0.375F, 	0, 1, 0.5F, 	0.25F));
-		}else if(facing.equals(EnumFacing.SOUTH)){
-			addCollisionBoxToList(pos, entityBox, collidingBoxes, new AxisAlignedBB(0, 0, 		0.25F, 	1, 0.125F, 	1));
-			addCollisionBoxToList(pos, entityBox, collidingBoxes, new AxisAlignedBB(0, 0.125F, 	0.5F, 	1, 0.25F, 	1));
-			addCollisionBoxToList(pos, entityBox, collidingBoxes, new AxisAlignedBB(0, 0.25F, 	0.75F, 	1, 0.375F, 	1));
-			addCollisionBoxToList(pos, entityBox, collidingBoxes, new AxisAlignedBB(0, 0.375F, 	1, 		1, 0.5F, 	1));
-		}else if(facing.equals(EnumFacing.EAST)){
-			addCollisionBoxToList(pos, entityBox, collidingBoxes, new AxisAlignedBB(0.25F, 	0, 			0, 1, 0.125F,	1));
-			addCollisionBoxToList(pos, entityBox, collidingBoxes, new AxisAlignedBB(0.5F, 	0.125F, 	0, 1, 0.25F, 	1));
-			addCollisionBoxToList(pos, entityBox, collidingBoxes, new AxisAlignedBB(0.75F, 	0.25F, 		0, 1, 0.375F, 	1));
-			addCollisionBoxToList(pos, entityBox, collidingBoxes, new AxisAlignedBB(1, 		0.375F, 	0, 1, 0.5F, 	1));
-		}else if(facing.equals(EnumFacing.WEST)){
-			addCollisionBoxToList(pos, entityBox, collidingBoxes, new AxisAlignedBB(0, 0, 		0, 1, 		0.125F, 	1));
-			addCollisionBoxToList(pos, entityBox, collidingBoxes, new AxisAlignedBB(0, 0.125F, 	0, 0.75F, 	0.25F, 		1));
-			addCollisionBoxToList(pos, entityBox, collidingBoxes, new AxisAlignedBB(0, 0.25F, 	0, 0.5F, 	0.375F, 	1));
-			addCollisionBoxToList(pos, entityBox, collidingBoxes, new AxisAlignedBB(0, 0.375F, 	0, 0.25F, 	0.5F, 		1));
-		}
-	}
-	
-	private void upper(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox,
-			List<AxisAlignedBB> collidingBoxes, EnumFacing facing){
-		if(facing.equals(EnumFacing.NORTH)){
-			addCollisionBoxToList(pos, entityBox, collidingBoxes, new AxisAlignedBB(0, 0.5F, 	0, 1, 0.625F, 	1));
-			addCollisionBoxToList(pos, entityBox, collidingBoxes, new AxisAlignedBB(0, 0.625F, 	0, 1, 0.75F, 	0.75F));
-			addCollisionBoxToList(pos, entityBox, collidingBoxes, new AxisAlignedBB(0, 0.75F, 	0, 1, 0.875F, 	0.5F));
-			addCollisionBoxToList(pos, entityBox, collidingBoxes, new AxisAlignedBB(0, 0.875F, 	0, 1, 1, 		0.25F));
-		}else if(facing.equals(EnumFacing.SOUTH)){
-			addCollisionBoxToList(pos, entityBox, collidingBoxes, new AxisAlignedBB(0, 0.5F, 	0.25F, 	1, 0.625F, 	1));
-			addCollisionBoxToList(pos, entityBox, collidingBoxes, new AxisAlignedBB(0, 0.625F, 	0.5F, 	1, 0.75F, 	1));
-			addCollisionBoxToList(pos, entityBox, collidingBoxes, new AxisAlignedBB(0, 0.75F, 	0.75F, 	1, 0.875F, 	1));
-			addCollisionBoxToList(pos, entityBox, collidingBoxes, new AxisAlignedBB(0, 0.875F, 	1, 		1, 1, 		1));
-		}else if(facing.equals(EnumFacing.EAST)){
-			addCollisionBoxToList(pos, entityBox, collidingBoxes, new AxisAlignedBB(0.25F, 	0.5F, 		0, 1, 0.625F,	1));
-			addCollisionBoxToList(pos, entityBox, collidingBoxes, new AxisAlignedBB(0.5F, 	0.625F, 	0, 1, 0.75F, 	1));
-			addCollisionBoxToList(pos, entityBox, collidingBoxes, new AxisAlignedBB(0.75F, 	0.75F, 		0, 1, 0.875F, 	1));
-			addCollisionBoxToList(pos, entityBox, collidingBoxes, new AxisAlignedBB(1, 		0.875F, 	0, 1, 1, 		1));
-		}else if(facing.equals(EnumFacing.WEST)){
-			addCollisionBoxToList(pos, entityBox, collidingBoxes, new AxisAlignedBB(0, 0.5F, 		0, 1, 	0.625F, 	1));
-			addCollisionBoxToList(pos, entityBox, collidingBoxes, new AxisAlignedBB(0, 0.625F, 	0, 0.75F, 	0.75F, 		1));
-			addCollisionBoxToList(pos, entityBox, collidingBoxes, new AxisAlignedBB(0, 0.75F, 	0, 0.5F, 	0.875F, 	1));
-			addCollisionBoxToList(pos, entityBox, collidingBoxes, new AxisAlignedBB(0, 0.875F, 	0, 0.25F, 	1, 			1));
-		}
-	}*/
-
-
     @Override
     public VoxelShape getShape(BlockState state, IBlockReader reader, BlockPos pos, ISelectionContext context) {
         if (isUpper) {

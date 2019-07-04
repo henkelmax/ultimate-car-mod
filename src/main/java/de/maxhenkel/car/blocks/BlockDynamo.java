@@ -15,7 +15,7 @@ import net.minecraft.world.IBlockReader;
 
 import javax.annotation.Nullable;
 
-public class BlockDynamo extends Block implements ITileEntityProvider, IItemBlock {
+public class BlockDynamo extends BlockBase implements ITileEntityProvider, IItemBlock {
 
     protected BlockDynamo() {
         super(Properties.create(Material.IRON, MaterialColor.OBSIDIAN).hardnessAndResistance(3F).sound(SoundType.METAL));

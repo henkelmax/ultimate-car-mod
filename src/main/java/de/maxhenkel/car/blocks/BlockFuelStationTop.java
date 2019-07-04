@@ -11,6 +11,7 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.PushReaction;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.fluid.IFluidState;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
@@ -32,7 +33,7 @@ import net.minecraft.world.World;
 import javax.annotation.Nullable;
 import java.util.Map;
 
-public class BlockFuelStationTop extends Block {
+public class BlockFuelStationTop extends BlockBase {
 
     public static final DirectionProperty FACING = DirectionProperty.create("facing", Direction.Plane.HORIZONTAL);
 
@@ -125,19 +126,12 @@ public class BlockFuelStationTop extends Block {
     }
 
     @Override
-    public void harvestBlock(World worldIn, PlayerEntity player, BlockPos pos, BlockState state, @Nullable TileEntity te, ItemStack stack) {
-        super.harvestBlock(worldIn, player, pos, state, te, stack);
-
-        if (player.abilities.isCreativeMode) {
-            return;
+    public boolean removedByPlayer(BlockState state, World world, BlockPos pos, PlayerEntity player, boolean willHarvest, IFluidState fluid) {
+        BlockState stateDown = world.getBlockState(pos.down());
+        if (stateDown != null && stateDown.getBlock() != null && stateDown.getBlock().equals(ModBlocks.FUEL_STATION) && !player.abilities.isCreativeMode) {
+            ModBlocks.FUEL_STATION.harvestBlock(world, player, pos.down(), world.getBlockState(pos.down()), world.getTileEntity(pos.down()), player.getHeldItemMainhand());
         }
-
-        BlockState stateDown = worldIn.getBlockState(pos.down());
-        if (stateDown != null && stateDown.getBlock() != null && stateDown.getBlock().equals(ModBlocks.FUEL_STATION)) {
-            //TODO check if it works
-            //ModBlocks.SPLIT_TANK.dropBlockAsItem(worldIn, pos.down(), stateDown, 0);
-            InventoryHelper.spawnItemStack(worldIn, pos.down().getX() + 0.5D, pos.down().getY() + 0.5D, pos.down().getZ() + 0.5D, new ItemStack(ModBlocks.FUEL_STATION.toItem()));
-        }
+        return super.removedByPlayer(state, world, pos, player, willHarvest, fluid);
     }
 
     @Override

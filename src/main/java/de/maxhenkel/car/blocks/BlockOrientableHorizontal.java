@@ -16,7 +16,7 @@ import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nullable;
 
-public abstract class BlockOrientableHorizontal extends Block implements ITileEntityProvider, IItemBlock {
+public abstract class BlockOrientableHorizontal extends BlockBase implements ITileEntityProvider, IItemBlock {
 
     public static final DirectionProperty FACING = DirectionProperty.create("facing", Direction.Plane.HORIZONTAL);
 

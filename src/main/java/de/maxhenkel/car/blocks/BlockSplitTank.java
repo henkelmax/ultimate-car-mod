@@ -35,7 +35,7 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 
 import javax.annotation.Nullable;
 
-public class BlockSplitTank extends Block implements ITileEntityProvider, IItemBlock {
+public class BlockSplitTank extends BlockBase implements ITileEntityProvider, IItemBlock {
 
     protected BlockSplitTank() {
         super(Properties.create(Material.IRON).hardnessAndResistance(3F).sound(SoundType.STONE));

@@ -27,7 +27,7 @@ import net.minecraft.world.IEnviromentBlockReader;
 import javax.annotation.Nullable;
 import java.util.Map;
 
-public class BlockCrashBarrier extends Block implements IItemBlock {
+public class BlockCrashBarrier extends BlockBase implements IItemBlock {
 
     public static final DirectionProperty FACING = DirectionProperty.create("facing", Direction.Plane.HORIZONTAL);
 

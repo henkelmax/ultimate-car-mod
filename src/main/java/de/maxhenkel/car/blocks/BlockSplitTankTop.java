@@ -27,7 +27,7 @@ import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 
-public class BlockSplitTankTop extends Block {
+public class BlockSplitTankTop extends BlockBase {
 
     public BlockSplitTankTop() {
         super(Properties.create(Material.IRON).hardnessAndResistance(3F).sound(SoundType.STONE));

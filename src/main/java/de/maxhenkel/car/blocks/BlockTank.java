@@ -1,9 +1,7 @@
 package de.maxhenkel.car.blocks;
 
-import java.util.Collections;
 import java.util.List;
 
-import de.maxhenkel.car.Config;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.ModCreativeTabs;
 import de.maxhenkel.car.blocks.tileentity.TileEntityTank;
@@ -30,7 +28,6 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IEnviromentBlockReader;
 import net.minecraft.world.World;
-import net.minecraft.world.storage.loot.LootContext;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fluids.FluidActionResult;
@@ -42,7 +39,7 @@ import net.minecraftforge.items.wrapper.InvWrapper;
 
 import javax.annotation.Nullable;
 
-public class BlockTank extends Block implements ITileEntityProvider, IItemBlock {
+public class BlockTank extends BlockBase implements ITileEntityProvider, IItemBlock {
 
     protected BlockTank() {
         super(Block.Properties.create(Material.GLASS).hardnessAndResistance(0.5F).sound(SoundType.GLASS));
@@ -52,43 +49,6 @@ public class BlockTank extends Block implements ITileEntityProvider, IItemBlock 
     @Override
     public Item toItem() {
         return new BlockItem(this, new Item.Properties().group(ModCreativeTabs.TAB_CAR)).setRegistryName(this.getRegistryName());
-    }
-
-    @Override
-    public void harvestBlock(World worldIn, PlayerEntity player, BlockPos pos, BlockState state, @Nullable TileEntity te, ItemStack s) {
-        super.harvestBlock(worldIn, player, pos, state, te, s);
-
-        if (player.abilities.isCreativeMode || !Config.pickUpTank) {
-            return;
-        }
-
-        ItemStack stack = new ItemStack(this);
-
-        if (!(te instanceof TileEntityTank)) {
-            spawnAsEntity(worldIn, pos, stack);
-            return;
-        }
-
-        TileEntityTank tank = (TileEntityTank) te;
-
-        FluidStack fluid = tank.getFluid();
-
-        if (fluid == null) {
-            spawnAsEntity(worldIn, pos, stack);
-            return;
-        }
-
-        CompoundNBT compound = new CompoundNBT();
-
-        CompoundNBT comp = new CompoundNBT();
-
-        fluid.writeToNBT(comp);
-
-        compound.put("fluid", comp);
-
-        stack.setTag(compound);
-
-        spawnAsEntity(worldIn, pos, stack);
     }
 
     @Override
@@ -103,16 +63,6 @@ public class BlockTank extends Block implements ITileEntityProvider, IItemBlock 
             }
         }
         super.addInformation(stack, worldIn, tooltip, flagIn);
-    }
-
-    //TODO check / compatibility with loot tables
-    @Override
-    public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
-        if (!Config.pickUpTank) {
-            return super.getDrops(state, builder);
-        } else {
-            return Collections.emptyList();
-        }
     }
 
     @Override

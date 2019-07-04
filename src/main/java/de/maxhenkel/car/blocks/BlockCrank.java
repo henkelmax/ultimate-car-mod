@@ -26,7 +26,7 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IEnviromentBlockReader;
 import net.minecraft.world.World;
 
-public class BlockCrank extends Block implements IItemBlock {
+public class BlockCrank extends BlockBase implements IItemBlock {
 
     public static final IntegerProperty CRANK_POS = IntegerProperty.create("rotation", 0, 7);
 

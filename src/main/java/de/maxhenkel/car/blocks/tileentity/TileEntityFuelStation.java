@@ -105,7 +105,7 @@ public class TileEntityFuelStation extends TileEntityBase implements ITickableTi
     };
 
     @Override
-    public ITextComponent getDisplayName() {
+    public ITextComponent getTranslatedName() {
         return new TranslationTextComponent("block.car.fuel_station");
     }
 

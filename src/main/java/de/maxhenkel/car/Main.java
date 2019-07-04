@@ -15,6 +15,7 @@ import de.maxhenkel.car.events.RenderEvents;
 import de.maxhenkel.car.gui.*;
 import de.maxhenkel.car.items.ItemLicensePlate;
 import de.maxhenkel.car.items.ModItems;
+import de.maxhenkel.car.loottable.CopyFluid;
 import de.maxhenkel.car.net.*;
 import de.maxhenkel.car.sounds.ModSounds;
 import de.maxhenkel.tools.EntityTools;
@@ -33,6 +34,7 @@ import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.world.storage.loot.functions.LootFunctionManager;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
@@ -112,11 +114,7 @@ public class Main {
         MinecraftForge.EVENT_BUS.register(new CapabilityEvents());
         MinecraftForge.EVENT_BUS.register(new PlayerEvents());
 
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityFuelStation.class, new TileentitySpecialRendererFuelStation());
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySplitTank.class, new TileEntitySpecialRendererSplitTank());
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTank.class, new TileEntitySpecialRendererTank());
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySign.class, new TileEntitySpecialRendererSign());
-
+        LootFunctionManager.registerFunction(new CopyFluid.Serializer());
 
         SIMPLE_CHANNEL = NetworkRegistry.newSimpleChannel(new ResourceLocation(Main.MODID, "default"), () -> "1.0.0", s -> true, s -> true);
         SIMPLE_CHANNEL.registerMessage(0, MessageControlCar.class, (msg, buf) -> msg.toBytes(buf), (buf) -> new MessageControlCar().fromBytes(buf), (msg, fun) -> msg.executeServerSide(fun.get()));
@@ -150,6 +148,11 @@ public class Main {
     @SubscribeEvent
     @OnlyIn(Dist.CLIENT)
     public void clientSetup(FMLClientSetupEvent event) {
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityFuelStation.class, new TileentitySpecialRendererFuelStation());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySplitTank.class, new TileEntitySpecialRendererSplitTank());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTank.class, new TileEntitySpecialRendererTank());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySign.class, new TileEntitySpecialRendererSign());
+
         ScreenManager.IScreenFactory factory1 = (ScreenManager.IScreenFactory<ContainerBackmixReactor, GuiBackmixReactor>) (container, playerInventory, name) -> new GuiBackmixReactor(container, playerInventory, name);
         ScreenManager.registerFactory(Main.BACKMIX_REACTOR_CONTAINER_TYPE, factory1);
 

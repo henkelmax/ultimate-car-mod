@@ -49,7 +49,7 @@ public class TileEntityBlastFurnace extends TileEntityEnergyFluidProducer {
     }
 
     @Override
-    public ITextComponent getDisplayName() {
+    public ITextComponent getTranslatedName() {
         return new TranslationTextComponent("block.car.blastfurnace");
     }
 }
