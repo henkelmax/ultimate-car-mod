@@ -8,10 +8,7 @@ import de.maxhenkel.car.blocks.tileentity.render.TileEntitySpecialRendererTank;
 import de.maxhenkel.car.blocks.tileentity.render.TileentitySpecialRendererFuelStation;
 import de.maxhenkel.car.entity.car.base.EntityGenericCar;
 import de.maxhenkel.car.entity.model.GenericCarModel;
-import de.maxhenkel.car.events.CapabilityEvents;
-import de.maxhenkel.car.events.KeyEvents;
-import de.maxhenkel.car.events.PlayerEvents;
-import de.maxhenkel.car.events.RenderEvents;
+import de.maxhenkel.car.events.*;
 import de.maxhenkel.car.gui.*;
 import de.maxhenkel.car.items.ItemLicensePlate;
 import de.maxhenkel.car.items.ModItems;
@@ -102,6 +99,7 @@ public class Main {
     public void commonSetup(FMLCommonSetupEvent event) {
         MinecraftForge.EVENT_BUS.register(this);
         MinecraftForge.EVENT_BUS.register(new CapabilityEvents());
+        MinecraftForge.EVENT_BUS.register(new BlockEvents());
 
 
         LootFunctionManager.registerFunction(new CopyFluid.Serializer());
