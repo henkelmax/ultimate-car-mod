@@ -17,14 +17,14 @@ public class TileEntityBlastFurnace extends TileEntityEnergyFluidProducer {
 
     public TileEntityBlastFurnace() {
         super(Main.BLAST_FURNACE_TILE_ENTITY_TYPE);
-        this.maxStorage = Config.blastFurnaceEnergyStorage;
+        this.maxStorage = Config.blastFurnaceEnergyStorage.get();
         this.storedEnergy = 0;
         this.timeToGenerate = 0;
-        this.generatingTime = Config.blastFurnaceGeneratingTime;
-        this.maxMillibuckets = Config.blastFurnaceFluidStorage;
+        this.generatingTime = Config.blastFurnaceGeneratingTime.get();
+        this.maxMillibuckets = Config.blastFurnaceFluidStorage.get();
         this.currentMillibuckets = 0;
-        this.energyUsage = Config.blastFurnaceEnergyUsage;
-        this.millibucketsPerUse = Config.blastFurnaceFluidGeneration;
+        this.energyUsage = Config.blastFurnaceEnergyUsage.get();
+        this.millibucketsPerUse = Config.blastFurnaceFluidGeneration.get();
     }
 
     @Override

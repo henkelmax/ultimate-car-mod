@@ -30,12 +30,9 @@ import javax.annotation.Nullable;
 
 public class ItemCanister extends Item {
 
-    private static int maxFuel;
-
     public ItemCanister() {
         super(new Item.Properties().maxStackSize(1).group(ModCreativeTabs.TAB_CAR));
         setRegistryName(new ResourceLocation(Main.MODID, "canister"));
-        maxFuel = Config.canisterMaxFuel;
     }
 
     @Override
@@ -121,10 +118,10 @@ public class ItemCanister extends Item {
             fluid = FluidStackWrapper.loadFluidStackFromNBT(comp.getCompound("fuel"));
         }
 
-        int maxAmount = maxFuel;
+        int maxAmount = Config.canisterMaxFuel.get();
 
         if (fluid != null) {
-            maxAmount = maxFuel - fluid.amount;
+            maxAmount = Config.canisterMaxFuel.get() - fluid.amount;
         }
 
         if (maxAmount <= 0) {

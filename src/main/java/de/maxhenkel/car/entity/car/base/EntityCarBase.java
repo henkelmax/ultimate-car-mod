@@ -99,6 +99,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
             updateSounds();
         }
 
+        updateWheelRotation();
     }
 
     public void centerCar() {
@@ -124,7 +125,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 
     @Override
     public AxisAlignedBB getCollisionBox(Entity entityIn) {
-        if (Config.damageEntities) {
+        if (Config.damageEntities.get()) {
             if (entityIn.getBoundingBox().intersects(getCollisionBoundingBox())) {
                 float speed = getSpeed();
                 if (speed > 0.35F) {
@@ -212,7 +213,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 
         float modifier = 1F;
 
-        if (Config.carGroundSpeed) {
+        if (Config.carGroundSpeed.get()) {
             modifier = getModifier();
         }
 
@@ -392,13 +393,16 @@ public abstract class EntityCarBase extends EntityVehicleBase {
         return (getSpeed() * 20 * 60 * 60) / 1000;
     }
 
-    public float updateWheelRotation(float delta) {
-        wheelRotation += delta * getSpeed();
-        return wheelRotation;
+    public float getWheelRotationAmount() {
+        return 75F * getSpeed(); //TODO default value
     }
 
-    public float getWheelRotation(float factor) {
-        return wheelRotation * factor;
+    public void updateWheelRotation() {
+        wheelRotation += getWheelRotationAmount();
+    }
+
+    public float getWheelRotation(float partialTicks) {
+        return wheelRotation + getWheelRotationAmount() * partialTicks;
     }
 
     public void openCarGUI(PlayerEntity player) {
@@ -503,20 +507,25 @@ public abstract class EntityCarBase extends EntityVehicleBase {
         compound.putBoolean("started", isStarted());
     }
 
-    public void playStopSound() {
-        ModSounds.playSound(getStopSound(), world, getPosition(), null, SoundCategory.NEUTRAL, Config.carVolume);
+    protected float getVolume() {
+        return Config.carVolume.get().floatValue();
     }
 
+    public void playStopSound() {
+        ModSounds.playSound(getStopSound(), world, getPosition(), null, SoundCategory.NEUTRAL, getVolume());
+    }
+
+    @OnlyIn(Dist.CLIENT)
     public void playFailSound() {
-        ModSounds.playSound(getFailSound(), world, getPosition(), null, SoundCategory.NEUTRAL, Config.carVolume);
+        ModSounds.playSound(getFailSound(), world, getPosition(), null, SoundCategory.NEUTRAL, getVolume());
     }
 
     public void playCrashSound() {
-        ModSounds.playSound(getCrashSound(), world, getPosition(), null, SoundCategory.NEUTRAL, Config.carVolume);
+        ModSounds.playSound(getCrashSound(), world, getPosition(), null, SoundCategory.NEUTRAL, getVolume());
     }
 
     public void playHornSound() {
-        ModSounds.playSound(getHornSound(), world, getPosition(), null, SoundCategory.NEUTRAL, Config.carVolume);
+        ModSounds.playSound(getHornSound(), world, getPosition(), null, SoundCategory.NEUTRAL, getVolume());
     }
 
     public abstract SoundEvent getStopSound();
@@ -568,12 +577,12 @@ public abstract class EntityCarBase extends EntityVehicleBase {
                 if (car.getBatteryLevel() < 10) {
                     return;
                 }
-                if (Config.useBattery) {
+                if (Config.useBattery.get()) {
                     car.setBatteryLevel(car.getBatteryLevel() - 10);
                 }
             }
             playHornSound();
-            if (Config.hornFlee) {
+            if (Config.hornFlee.get()) {
                 double radius = 15;
                 List<LivingEntity> list = world.getEntitiesWithinAABB(LivingEntity.class, new AxisAlignedBB(posX - radius, posY - radius, posZ - radius, posX + radius, posY + radius, posZ + radius));
                 for (LivingEntity ent : list) {

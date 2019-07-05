@@ -36,7 +36,7 @@ public class TileEntityFluidExtractor extends TileEntityBase implements ITickabl
 
     public TileEntityFluidExtractor() {
         super(Main.FLUID_EXTRACTOR_TILE_ENTITY_TYPE);
-        this.drainSpeed = Config.fluidExtractorDrainSpeed;
+        this.drainSpeed = Config.fluidExtractorDrainSpeed.get();
         filter = null;
     }
 

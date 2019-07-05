@@ -43,24 +43,24 @@ public class TileEntityBackmixReactor extends TileEntityBase implements ITickabl
 
 	public TileEntityBackmixReactor() {
 		super(Main.BACKMIX_REACTOR_TILE_ENTITY_TYPE);
-		this.maxStorage = Config.backmixReactorEnergyStorage;
+		this.maxStorage = Config.backmixReactorEnergyStorage.get();
 		this.storedEnergy = 0;
-		this.energyUsage = Config.backmixReactorEnergyUsage;
+		this.energyUsage = Config.backmixReactorEnergyUsage.get();
 
-		this.maxMethanol = Config.backmixReactorFluidStorage;
-		this.maxCanola = Config.backmixReactorFluidStorage;
-		this.maxMix = Config.backmixReactorFluidStorage;
+		this.maxMethanol = Config.backmixReactorFluidStorage.get();
+		this.maxCanola = Config.backmixReactorFluidStorage.get();
+		this.maxMix = Config.backmixReactorFluidStorage.get();
 
 		this.currentCanola = 0;
 		this.currentMethanol = 0;
 		this.currentMix = 0;
 
-		this.generatingTime = Config.backmixReactorGeneratingTime;
+		this.generatingTime = Config.backmixReactorGeneratingTime.get();
 		this.timeToGenerate = 0;
 
-		this.mixGeneration = Config.backmixReactorMixGeneration;
-		this.methanolUsage = Config.backmixReactorMethanolUsage;
-		this.canolaUsage = Config.backmixReactorCanolaUsage;
+		this.mixGeneration = Config.backmixReactorMixGeneration.get();
+		this.methanolUsage = Config.backmixReactorMethanolUsage.get();
+		this.canolaUsage = Config.backmixReactorCanolaUsage.get();
 	}
 
 	public final IIntArray FIELDS = new IIntArray() {

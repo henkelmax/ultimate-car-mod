@@ -35,7 +35,7 @@ public class PartModel extends Part{
 
     public List<OBJModelInstance> getInstances(EntityGenericCar car) {
         List<OBJModelInstance> list=new ArrayList<>();
-        list.add(new OBJModelInstance(model, new OBJModelOptions(offset, rotation, 0F)));
+        list.add(new OBJModelInstance(model, new OBJModelOptions(offset, rotation)));
         onPartAdd(list);
         return list;
     }

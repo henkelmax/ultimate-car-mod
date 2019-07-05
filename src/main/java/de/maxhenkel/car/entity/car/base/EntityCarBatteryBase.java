@@ -179,7 +179,7 @@ public abstract class EntityCarBatteryBase extends EntityCarTemperatureBase {
     }
 
     public int getBatteryUsage() {
-        if (!Config.useBattery) {
+        if (!Config.useBattery.get()) {
             return 0;
         }
 
@@ -320,6 +320,6 @@ public abstract class EntityCarBatteryBase extends EntityCarTemperatureBase {
 
     @Override
     public void playFailSound() {
-        ModSounds.playSound(getFailSound(), world, getPosition(), null, SoundCategory.NEUTRAL, Config.carVolume, getBatterySoundPitchLevel());
+        ModSounds.playSound(getFailSound(), world, getPosition(), null, SoundCategory.NEUTRAL, getVolume(), getBatterySoundPitchLevel());
     }
 }

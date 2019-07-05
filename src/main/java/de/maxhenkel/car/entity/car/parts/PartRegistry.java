@@ -1,6 +1,5 @@
 package de.maxhenkel.car.entity.car.parts;
 
-import de.maxhenkel.car.Config;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.entity.car.base.EntityGenericCar;
 import de.maxhenkel.car.entity.model.obj.OBJModel;
@@ -141,14 +140,14 @@ public class PartRegistry {
     public static final Part WHEEL = new PartWheel(new OBJModel(
             new ResourceLocation(Main.MODID, "models/entity/wheel.obj"),
             new ResourceLocation(Main.MODID, "textures/entity/wheel.png")),
-            75F,
-            Config.carStepHeight
+            120F,
+            0.5F
     );
 
     public static final Part BIG_WHEEL = new PartWheelBig(new OBJModel(
             new ResourceLocation(Main.MODID, "models/entity/big_wheel.obj"),
             new ResourceLocation(Main.MODID, "textures/entity/big_wheel.png")),
-            70F,
+            105F,
             1F
     );
 

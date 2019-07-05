@@ -19,14 +19,14 @@ public class TileEntityOilMill extends TileEntityEnergyFluidProducer {
 
     public TileEntityOilMill() {
         super(Main.OIL_MILL_TILE_ENTITY_TYPE);
-        this.maxStorage = Config.oilMillEnergyStorage;
+        this.maxStorage = Config.oilMillEnergyStorage.get();
         this.storedEnergy = 0;
         this.timeToGenerate = 0;
-        this.generatingTime = Config.oilMillGeneratingTime;
-        this.maxMillibuckets = Config.oilMillFluidStorage;
+        this.generatingTime = Config.oilMillGeneratingTime.get();
+        this.maxMillibuckets = Config.oilMillFluidStorage.get();
         this.currentMillibuckets = 0;
-        this.energyUsage = Config.oilMillEnergyUsage;
-        this.millibucketsPerUse = Config.oilMillFluidGeneration;
+        this.energyUsage = Config.oilMillEnergyUsage.get();
+        this.millibucketsPerUse = Config.oilMillFluidGeneration.get();
     }
 
     @Override

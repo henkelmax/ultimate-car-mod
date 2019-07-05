@@ -27,7 +27,7 @@ public class PartBumper extends PartModel {
         }
 
         List<OBJModelInstance> list = new ArrayList<>();
-        list.add(new OBJModelInstance(model, new OBJModelOptions(chassis.getBumperOffset(), rotation, 0F)));
+        list.add(new OBJModelInstance(model, new OBJModelOptions(chassis.getBumperOffset(), rotation)));
         onPartAdd(list);
         return list;
     }

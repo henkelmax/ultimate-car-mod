@@ -20,8 +20,8 @@ public class TileEntityDynamo extends TileEntityBase implements IEnergyStorage, 
 
     public TileEntityDynamo() {
         super(Main.DYNAMO_TILE_ENTITY_TYPE);
-        this.maxStorage = Config.dynamoEnergyStorage;
-        this.generation = Config.dynamoEnergyGeneration;
+        this.maxStorage = Config.dynamoEnergyStorage.get();
+        this.generation = Config.dynamoEnergyGeneration.get();
         this.storedEnergy = 0;
 
     }

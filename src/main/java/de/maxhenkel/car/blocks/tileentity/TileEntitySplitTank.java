@@ -40,20 +40,20 @@ public class TileEntitySplitTank extends TileEntityBase implements ITickableTile
         super(Main.SPLIT_TANK_TILE_ENTITY_TYPE);
         this.inventory = new Inventory(0);
         this.currentMix = 0;
-        this.maxMix = Config.splitTankFluidStorage;
+        this.maxMix = Config.splitTankFluidStorage.get();
 
         this.currentBioDiesel = 0;
-        this.maxBioDiesel = Config.splitTankFluidStorage;
+        this.maxBioDiesel = Config.splitTankFluidStorage.get();
 
         this.currentGlycerin = 0;
-        this.maxGlycerin = Config.splitTankFluidStorage;
+        this.maxGlycerin = Config.splitTankFluidStorage.get();
 
-        this.generatingTime = Config.splitTankGeneratingTime;
+        this.generatingTime = Config.splitTankGeneratingTime.get();
         this.timeToGenerate = 0;
 
-        this.mixUsage = Config.splitTankMixUsage;
-        this.glycerinGeneration = Config.splitTankGlycerinGeneration;
-        this.bioDieselGeneration = Config.splitTankBioDieselGeneration;
+        this.mixUsage = Config.splitTankMixUsage.get();
+        this.glycerinGeneration = Config.splitTankGlycerinGeneration.get();
+        this.bioDieselGeneration = Config.splitTankBioDieselGeneration.get();
     }
 
     public final IIntArray FIELDS = new IIntArray() {
@@ -87,6 +87,7 @@ public class TileEntitySplitTank extends TileEntityBase implements ITickableTile
                     break;
             }
         }
+
         public int size() {
             return 4;
         }

@@ -77,11 +77,11 @@ public abstract class EntityCarLockBase extends EntityCarInventoryBase {
     }
 
     public void playLockSound() {
-        ModSounds.playSound(getLockSound(), world, getPosition(), null, SoundCategory.NEUTRAL, Config.carVolume);
+        ModSounds.playSound(getLockSound(), world, getPosition(), null, SoundCategory.NEUTRAL, getVolume());
     }
 
     public void playUnLockSound() {
-        ModSounds.playSound(getUnLockSound(), world, getPosition(), null, SoundCategory.NEUTRAL, Config.carVolume);
+        ModSounds.playSound(getUnLockSound(), world, getPosition(), null, SoundCategory.NEUTRAL, getVolume());
     }
 
     public SoundEvent getLockSound() {

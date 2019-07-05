@@ -7,24 +7,28 @@ public class OBJModelOptions {
 
     private Vec3d offset;
     private Rotation rotation;
-    private float speedRotationFactor;
+    private RenderListener onRender;
 
-    public OBJModelOptions(Vec3d offset, Rotation rotation, float speedRotationFactor) {
+    public OBJModelOptions(Vec3d offset, Rotation rotation, RenderListener onRender) {
         this.offset = offset;
         this.rotation = rotation;
-        this.speedRotationFactor = speedRotationFactor;
+        this.onRender=onRender;
     }
 
-    public OBJModelOptions(Vec3d offset, float speedRotationFactor) {
-        this(offset, null, speedRotationFactor);
+    public OBJModelOptions(Vec3d offset, Rotation rotation) {
+        this(offset, rotation, null);
     }
 
     public OBJModelOptions(Vec3d offset) {
-        this(offset, null, 0F);
+        this(offset, null, null);
+    }
+
+    public OBJModelOptions(Vec3d offset, RenderListener onRender) {
+        this(offset, null, onRender);
     }
 
     public OBJModelOptions() {
-        this(new Vec3d(0D, 0D, 0D), null, 0F);
+        this(new Vec3d(0D, 0D, 0D), null, null);
     }
 
     public Vec3d getOffset() {
@@ -45,12 +49,11 @@ public class OBJModelOptions {
         return this;
     }
 
-    public float getSpeedRotationFactor() {
-        return speedRotationFactor;
+    public RenderListener getOnRender() {
+        return onRender;
     }
 
-    public OBJModelOptions setSpeedRotationFactor(float speedRotationFactor) {
-        this.speedRotationFactor = speedRotationFactor;
-        return this;
+    public static interface RenderListener{
+        public void onRender(float partialTicks);
     }
 }

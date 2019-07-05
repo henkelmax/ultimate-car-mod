@@ -28,7 +28,7 @@ public class TileEntityCable extends TileEntityBase implements ITickableTileEnti
     }
 
     public TileEntityCable() {
-        this(Config.cableTransferRate);
+        this(Config.cableTransferRate.get());
     }
 
     @Override

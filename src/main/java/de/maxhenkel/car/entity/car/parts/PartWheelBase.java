@@ -1,5 +1,6 @@
 package de.maxhenkel.car.entity.car.parts;
 
+import com.mojang.blaze3d.platform.GlStateManager;
 import de.maxhenkel.car.entity.car.base.EntityGenericCar;
 import de.maxhenkel.car.entity.model.obj.OBJModel;
 import de.maxhenkel.car.entity.model.obj.OBJModelInstance;
@@ -19,19 +20,23 @@ public class PartWheelBase extends PartModel {
     public PartWheelBase(OBJModel model, float rotationModifier, float stepHeight) {
         super(model);
         this.rotationModifier = rotationModifier;
-        this.stepHeight=stepHeight;
+        this.stepHeight = stepHeight;
     }
 
-    public float getStepHeight(){
+    public float getStepHeight() {
         return stepHeight;
+    }
+
+    public float getRotationModifier() {
+        return rotationModifier;
     }
 
     @Override
     public boolean validate(List<Part> parts, List<ITextComponent> messages) {
-        for(Part part:parts){
-            if(part instanceof PartBody){
-                PartBody body= (PartBody) part;
-                if(!body.canFitWheel(this)){
+        for (Part part : parts) {
+            if (part instanceof PartBody) {
+                PartBody body = (PartBody) part;
+                if (!body.canFitWheel(this)) {
                     messages.add(new TranslationTextComponent("message.parts.wrong_wheel_type"));
                     return false;
                 }
@@ -53,7 +58,7 @@ public class PartWheelBase extends PartModel {
             }
         }
 
-        List<PartWheelBase> wheels=new ArrayList<>();
+        List<PartWheelBase> wheels = new ArrayList<>();
 
         for (Part part : car.getModelParts()) {
             if (part instanceof PartWheelBase) {
@@ -61,8 +66,10 @@ public class PartWheelBase extends PartModel {
             }
         }
 
-        for (int i=0; i<wheelOffsets.length&&i<wheels.size(); i++) {
-            list.add(new OBJModelInstance(wheels.get(i).model, new OBJModelOptions(wheelOffsets[i], rotationModifier)));
+        for (int i = 0; i < wheelOffsets.length && i < wheels.size(); i++) {
+            list.add(new OBJModelInstance(wheels.get(i).model, new OBJModelOptions(wheelOffsets[i], null, (partialTicks) -> {
+                GlStateManager.rotatef(-car.getWheelRotation(partialTicks), 1F, 0F, 0F);
+            })));
         }
 
         return list;

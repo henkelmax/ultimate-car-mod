@@ -1,69 +1,65 @@
 package de.maxhenkel.car;
 
-import net.minecraft.block.Block;
 import net.minecraftforge.common.ForgeConfigSpec;
 import org.apache.commons.lang3.tuple.Pair;
 
 public class Config {
 
-    public static int backmixReactorEnergyStorage = 10000;
-    public static int backmixReactorEnergyUsage = 10;
-    public static int backmixReactorFluidStorage = 3000;
-    public static int backmixReactorGeneratingTime = 200;
-    public static int backmixReactorMixGeneration = 100;
-    public static int backmixReactorMethanolUsage = 50;
-    public static int backmixReactorCanolaUsage = 50;
+    public static ForgeConfigSpec.IntValue backmixReactorEnergyStorage;
+    public static ForgeConfigSpec.IntValue backmixReactorEnergyUsage;
+    public static ForgeConfigSpec.IntValue backmixReactorFluidStorage;
+    public static ForgeConfigSpec.IntValue backmixReactorGeneratingTime;
+    public static ForgeConfigSpec.IntValue backmixReactorMixGeneration;
+    public static ForgeConfigSpec.IntValue backmixReactorMethanolUsage;
+    public static ForgeConfigSpec.IntValue backmixReactorCanolaUsage;
 
-    public static int blastFurnaceEnergyStorage = 10000;
-    public static int blastFurnaceGeneratingTime = 200;
-    public static int blastFurnaceFluidStorage = 3000;
-    public static int blastFurnaceEnergyUsage = 10;
-    public static int blastFurnaceFluidGeneration = 100;
+    public static ForgeConfigSpec.IntValue blastFurnaceEnergyStorage;
+    public static ForgeConfigSpec.IntValue blastFurnaceGeneratingTime;
+    public static ForgeConfigSpec.IntValue blastFurnaceFluidStorage;
+    public static ForgeConfigSpec.IntValue blastFurnaceEnergyUsage;
+    public static ForgeConfigSpec.IntValue blastFurnaceFluidGeneration;
 
-    public static int oilMillEnergyStorage = 10000;
-    public static int oilMillGeneratingTime = 200;
-    public static int oilMillFluidStorage = 3000;
-    public static int oilMillEnergyUsage = 10;
-    public static int oilMillFluidGeneration = 100;
+    public static ForgeConfigSpec.IntValue oilMillEnergyStorage;
+    public static ForgeConfigSpec.IntValue oilMillGeneratingTime;
+    public static ForgeConfigSpec.IntValue oilMillFluidStorage;
+    public static ForgeConfigSpec.IntValue oilMillEnergyUsage;
+    public static ForgeConfigSpec.IntValue oilMillFluidGeneration;
 
-    public static int cableTransferRate = 256;
+    public static ForgeConfigSpec.IntValue cableTransferRate;
 
-    public static int dynamoEnergyStorage = 1000;
-    public static int dynamoEnergyGeneration = 25;
+    public static ForgeConfigSpec.IntValue dynamoEnergyStorage;
+    public static ForgeConfigSpec.IntValue dynamoEnergyGeneration;
 
-    public static int fluidExtractorDrainSpeed = 25;
+    public static ForgeConfigSpec.IntValue fluidExtractorDrainSpeed;
 
-    public static int fuelStationTransferRate = 5;
+    public static ForgeConfigSpec.IntValue fuelStationTransferRate;
 
-    public static int generatorEnergyStorage = 30000;
-    public static int generatorFluidStorage = 3000;
+    public static ForgeConfigSpec.IntValue generatorEnergyStorage;
+    public static ForgeConfigSpec.IntValue generatorFluidStorage;
 
-    public static int splitTankFluidStorage = 3000;
-    public static int splitTankGeneratingTime = 800;
-    public static int splitTankMixUsage = 100;
-    public static int splitTankGlycerinGeneration = 10;
-    public static int splitTankBioDieselGeneration = 100;
+    public static ForgeConfigSpec.IntValue splitTankFluidStorage;
+    public static ForgeConfigSpec.IntValue splitTankGeneratingTime;
+    public static ForgeConfigSpec.IntValue splitTankMixUsage;
+    public static ForgeConfigSpec.IntValue splitTankGlycerinGeneration;
+    public static ForgeConfigSpec.IntValue splitTankBioDieselGeneration;
 
-    public static boolean pickUpTank;
+    public static ForgeConfigSpec.DoubleValue repairKitRepairAmount;
 
-    public static float repairKitRepairAmount = 5F;
+    public static ForgeConfigSpec.IntValue canisterMaxFuel;
 
-    public static int canisterMaxFuel = 100;
+    public static ForgeConfigSpec.DoubleValue carVolume;
 
-    public static float carVolume = 0.1F;
+    public static ForgeConfigSpec.BooleanValue thirdPersonEnter;
+    public static ForgeConfigSpec.BooleanValue carGroundSpeed;
 
-    public static boolean thirdPersonEnter = true;
-    public static boolean carGroundSpeed = false;
-    public static Block[] carDriveBlocks = new Block[0];
-    private static String[] carDriveBlocksStr = new String[0];
-    public static float carStepHeight;
-    public static boolean collideWithEntities = false;
-    public static boolean damageEntities = true;
-    public static boolean hornFlee = true;
-    public static boolean useBattery = true;
-    public static boolean tempInFarenheit = false;
+    //public static Block[] carDriveBlocks = new Block[0];
+    //private static String[] carDriveBlocksStr = new String[0];
 
-    public static boolean canolaSeedDrop = true;
+    public static ForgeConfigSpec.BooleanValue collideWithEntities;
+    public static ForgeConfigSpec.BooleanValue damageEntities;
+    public static ForgeConfigSpec.BooleanValue hornFlee;
+    public static ForgeConfigSpec.BooleanValue useBattery;
+    public static ForgeConfigSpec.BooleanValue tempInFarenheit;
 
     public static float engine6CylinderFuelEfficiency = 0.25F;
     public static float engine3CylinderFuelEfficiency = 0.6F;
@@ -96,6 +92,40 @@ public class Config {
     public static float bodyTransporterFuelEfficiency = 0.6F;
     public static float bodyTransporterAcceleration = 0.8F;
     public static float bodyTransporterMaxSpeed = 0.765F;
+
+    /*
+    public static ForgeConfigSpec.DoubleValue engine6CylinderFuelEfficiency;// = 0.25F;
+    public static ForgeConfigSpec.DoubleValue engine3CylinderFuelEfficiency;// = 0.6F;
+
+    public static ForgeConfigSpec.DoubleValue engine6CylinderAcceleration;// = 0.04F;
+    public static ForgeConfigSpec.DoubleValue engine3CylinderAcceleration;// = 0.032F;
+
+    public static ForgeConfigSpec.DoubleValue engine6CylinderMaxSpeed;// = 0.65F;
+    public static ForgeConfigSpec.DoubleValue engine3CylinderMaxSpeed;// = 0.5F;
+
+    public static ForgeConfigSpec.DoubleValue engine6CylinderMaxReverseSpeed;// = 0.2F;
+    public static ForgeConfigSpec.DoubleValue engine3CylinderMaxReverseSpeed;// = 0.2F;
+
+    public static ForgeConfigSpec.DoubleValue bodyBigWoodFuelEfficiency;// = 0.7F;
+    public static ForgeConfigSpec.DoubleValue bodyBigWoodAcceleration;// = 0.95F;
+    public static ForgeConfigSpec.DoubleValue bodyBigWoodMaxSpeed;// = 0.85F;
+
+    public static ForgeConfigSpec.DoubleValue bodyWoodFuelEfficiency;// = 0.8F;
+    public static ForgeConfigSpec.DoubleValue bodyWoodAcceleration;// = 1F;
+    public static ForgeConfigSpec.DoubleValue bodyWoodMaxSpeed;// = 0.9F;
+
+    public static ForgeConfigSpec.DoubleValue bodySportFuelEfficiency;// = 0.9F;
+    public static ForgeConfigSpec.DoubleValue bodySportAcceleration;// = 1F;
+    public static ForgeConfigSpec.DoubleValue bodySportMaxSpeed;// = 1F;
+
+    public static ForgeConfigSpec.DoubleValue bodySUVFuelEfficiency;// = 0.6F;
+    public static ForgeConfigSpec.DoubleValue bodySUVAcceleration;// = 0.8F;
+    public static ForgeConfigSpec.DoubleValue bodySUVMaxSpeed;// = 0.7F;
+
+    public static ForgeConfigSpec.DoubleValue bodyTransporterFuelEfficiency;// = 0.6F;
+    public static ForgeConfigSpec.DoubleValue bodyTransporterAcceleration;// = 0.8F;
+    public static ForgeConfigSpec.DoubleValue bodyTransporterMaxSpeed;// = 0.765F;
+    */
 
     public static final ServerConfig SERVER;
     public static final ForgeConfigSpec SERVER_SPEC;
@@ -113,351 +143,91 @@ public class Config {
         CLIENT = specPairClient.getLeft();
     }
 
-    public static void loadServer() {
-
-    }
-
-    public static void loadClient() {
-
-    }
-
     public static class ServerConfig {
 
-
         public ServerConfig(ForgeConfigSpec.Builder builder) {
+            backmixReactorEnergyStorage = builder.defineInRange("machines.backmix_reactor.energy_storage", 10000, 100, (int) Short.MAX_VALUE);
+            backmixReactorEnergyUsage = builder.defineInRange("machines.backmix_reactor.energy_usage", 10, 1, (int) Short.MAX_VALUE);
+            backmixReactorFluidStorage = builder.defineInRange("machines.backmix_reactor.fluid_storage", 3000, 1000, (int) Short.MAX_VALUE);
+            backmixReactorGeneratingTime = builder.defineInRange("machines.backmix_reactor.generating_time", 200, 10, (int) Short.MAX_VALUE);
+            backmixReactorMixGeneration = builder.defineInRange("machines.backmix_reactor.mix_generation", 100, 1, (int) Short.MAX_VALUE);
+            backmixReactorMethanolUsage = builder.defineInRange("machines.backmix_reactor.methanol_usage", 50, 1, (int) Short.MAX_VALUE);
+            backmixReactorCanolaUsage = builder.defineInRange("machines.backmix_reactor.canola_usage", 50, 1, (int) Short.MAX_VALUE);
 
+            blastFurnaceEnergyStorage = builder.defineInRange("machines.blast_furnace.energy_storage", 10000, 1000, (int) Short.MAX_VALUE);
+            blastFurnaceGeneratingTime = builder.defineInRange("machines.blast_furnace.generating_time", 200, 10, (int) Short.MAX_VALUE);
+            blastFurnaceFluidStorage = builder.defineInRange("machines.blast_furnace.fluid_storage", 3000, 1000, (int) Short.MAX_VALUE);
+            blastFurnaceEnergyUsage = builder.defineInRange("machines.blast_furnace.energy_usage", 10, 1, (int) Short.MAX_VALUE);
+            blastFurnaceFluidGeneration = builder.defineInRange("machines.blast_furnace.fluid_generation", 100, 1, (int) Short.MAX_VALUE);
+
+            oilMillEnergyStorage = builder.defineInRange("machines.oil_mill.energy_storage", 10000, 1000, (int) Short.MAX_VALUE);
+            oilMillGeneratingTime = builder.defineInRange("machines.oil_mill.generating_time", 200, 10, (int) Short.MAX_VALUE);
+            oilMillFluidStorage = builder.defineInRange("machines.oil_mill.fluid_storage", 3000, 1000, (int) Short.MAX_VALUE);
+            oilMillEnergyUsage = builder.defineInRange("machines.oil_mill.energy_usage", 10, 1, (int) Short.MAX_VALUE);
+            oilMillFluidGeneration = builder.defineInRange("machines.oil_mill.fluid_generation", 100, 1, (int) Short.MAX_VALUE);
+
+            cableTransferRate = builder.defineInRange("machines.cable.transfer_rate", 256, 64, (int) Short.MAX_VALUE);
+
+            dynamoEnergyStorage = builder.defineInRange("machines.dynamo.energy_storage", 1000, 100, (int) Short.MAX_VALUE);
+            dynamoEnergyGeneration = builder.defineInRange("machines.dynamo.energy_generation", 25, 1, (int) Short.MAX_VALUE);
+
+            fluidExtractorDrainSpeed = builder.defineInRange("machines.fluid_extractor.drain_speed", 25, 5, (int) Short.MAX_VALUE);
+
+            fuelStationTransferRate = builder.defineInRange("machines.fuel_station.transfer_rate", 5, 1, (int) Short.MAX_VALUE);
+
+            generatorEnergyStorage = builder.defineInRange("machines.generator.energy_storage", 30000, 1000, (int) Short.MAX_VALUE);
+            generatorFluidStorage = builder.defineInRange("machines.generator.fluid_storage", 3000, 1000, (int) Short.MAX_VALUE);
+
+            splitTankFluidStorage = builder.defineInRange("machines.split_tank.fluid_storage", 3000, 1000, (int) Short.MAX_VALUE);
+            splitTankGeneratingTime = builder.defineInRange("machines.split_tank.generating_time", 800, 10, (int) Short.MAX_VALUE);
+            splitTankMixUsage = builder.defineInRange("machines.split_tank.mix_usage", 100, 1, (int) Short.MAX_VALUE);
+            splitTankGlycerinGeneration = builder.defineInRange("machines.split_tank.glycerin_generation", 10, 1, (int) Short.MAX_VALUE);
+            splitTankBioDieselGeneration = builder.defineInRange("machines.split_tank.bio_diesel_generation", 100, 1, (int) Short.MAX_VALUE);
+
+            repairKitRepairAmount = builder.defineInRange("items.repair_kit.repair_amount", 5F, 0.1F, 100F);
+
+            canisterMaxFuel = builder.defineInRange("items.canister.max_fuel", 100, 1, 1000);
+
+            carVolume = builder.defineInRange("car.car_volume", 0.1F, 0F, 1F);
+
+            collideWithEntities = builder.comment("Whether the cars should collide with other entities (except cars)").define("car.collide_with_entities", false);
+            damageEntities = builder.comment("Whether the cars should damage other entities on collision").define("car.damage_entities", true);
+            hornFlee = builder.comment("Whether animals flee from the car when the horn is activted").define("car.horn_flee", true);
+            useBattery = builder.comment("True if starting the car should use battery").define("car.use_battery", true);
+
+            carGroundSpeed = builder.comment("Whether the cars drive slower on non road blocks").define("car.road_blocks_enabled", false);
+            /*engine6CylinderFuelEfficiency = builder.defineInRange("car_parts.car_6_cylinder_fuel_efficiency", 0.25F, 0.001F, 10F);
+            engine3CylinderFuelEfficiency = builder.defineInRange("car_parts.car_3_cylinder_fuel_efficiency", 0.6F, 0.001F, 10F);
+            engine6CylinderAcceleration = builder.defineInRange("car_parts.car_6_cylinder_acceleration", 0.04F, 0.001F, 10F);
+            engine3CylinderAcceleration = builder.defineInRange("car_parts.car_3_cylinder_acceleration", 0.032F, 0.001F, 10F);
+            engine6CylinderMaxSpeed = builder.defineInRange("car_parts.car_6_cylinder_max_speed", 0.65F, 0.001F, 10F);
+            engine3CylinderMaxSpeed = builder.defineInRange("car_parts.car_3_cylinder_max_speed", 0.5F, 0.001F, 10F);
+            engine6CylinderMaxReverseSpeed = builder.defineInRange("car_parts.car_6_cylinder_max_reverse_speed", 0.2F, 0.001F, 10F);
+            engine3CylinderMaxReverseSpeed = builder.defineInRange("car_parts.car_3_cylinder_max_reverse_speed", 0.2F, 0.001F, 10F);
+            bodyBigWoodFuelEfficiency = builder.defineInRange("car_parts.", 0.7F, 0.001F, 10F);
+            bodyBigWoodAcceleration = builder.defineInRange("car_parts.car_body_big_wood_acceleration", 0.95F, 0.001F, 10F);
+            bodyBigWoodMaxSpeed = builder.defineInRange("car_parts.car_body_big_wood_max_speed", 0.85F, 0.001F, 10F);
+            bodyWoodFuelEfficiency = builder.defineInRange("car_parts.car_body_wood_fuel_efficiency", 0.8F, 0.001F, 10F);
+            bodyWoodAcceleration = builder.defineInRange("car_parts.car_body_wood_acceleration", 1F, 0.001F, 10F);
+            bodyWoodMaxSpeed = builder.defineInRange("car_parts.car_body_wood_max_speed", 0.9F, 0.001F, 10F);
+            bodySportFuelEfficiency = builder.defineInRange("car_parts.car_body_sport_fuel_efficiency", 0.9F, 0.001F, 10F);
+            bodySportAcceleration = builder.defineInRange("car_parts.car_body_sport_acceleration", 1F, 0.001F, 10F);
+            bodySportMaxSpeed = builder.defineInRange("car_parts.car_body_sport_max_speed", 1F, 0.001F, 10F);
+            bodySUVFuelEfficiency = builder.defineInRange("car_parts.car_body_suv_fuel_efficiency", 0.6F, 0.001F, 10F);
+            bodySUVAcceleration = builder.defineInRange("car_parts.car_body_suv_acceleration", 0.8F, 0.001F, 10F);
+            bodySUVMaxSpeed = builder.defineInRange("car_parts.car_body_suv_max_speed", 0.7F, 0.001F, 10F);
+            bodyTransporterFuelEfficiency = builder.defineInRange("car_parts.car_body_transporter_fuel_efficiency", 0.6F, 0.001F, 10F);
+            bodyTransporterAcceleration = builder.defineInRange("car_parts.car_body_transporter_acceleration", 0.8F, 0.001F, 10F);
+            bodyTransporterMaxSpeed = builder.defineInRange("car_parts.car_body_transporter_max_speed", 0.765F, 0.001F, 10F);
+            */
         }
     }
 
     public static class ClientConfig {
-
-
         public ClientConfig(ForgeConfigSpec.Builder builder) {
-
+            thirdPersonEnter = builder.define("car.third_person_when_enter_car", true);
+            tempInFarenheit = builder.comment("True if the car temperature should be displayed in farenheit").define("car.temp_farenheit", false);
         }
     }
-
-/*
-    public static File configFolder;
-    public static Configuration config;
-
-    public static int backmixReactorEnergyStorage = 10000;
-    public static int backmixReactorEnergyUsage = 10;
-    public static int backmixReactorFluidStorage = 3000;
-    public static int backmixReactorGeneratingTime = 200;
-    public static int backmixReactorMixGeneration = 100;
-    public static int backmixReactorMethanolUsage = 50;
-    public static int backmixReactorCanolaUsage = 50;
-
-    public static int blastFurnaceEnergyStorage = 10000;
-    public static int blastFurnaceGeneratingTime = 200;
-    public static int blastFurnaceFluidStorage = 3000;
-    public static int blastFurnaceEnergyUsage = 10;
-    public static int blastFurnaceFluidGeneration = 100;
-
-    public static int oilMillEnergyStorage = 10000;
-    public static int oilMillGeneratingTime = 200;
-    public static int oilMillFluidStorage = 3000;
-    public static int oilMillEnergyUsage = 10;
-    public static int oilMillFluidGeneration = 100;
-
-    public static int cableTransferRate = 256;
-
-    public static int dynamoEnergyStorage = 1000;
-    public static int dynamoEnergyGeneration = 25;
-
-    public static int fluidExtractorDrainSpeed = 25;
-
-    public static int fuelStationTransferRate = 5;
-
-    public static int generatorEnergyStorage = 30000;
-    public static int generatorFluidStorage = 3000;
-
-    public static int splitTankFluidStorage = 3000;
-    public static int splitTankGeneratingTime = 800;
-    public static int splitTankMixUsage = 100;
-    public static int splitTankGlycerinGeneration = 10;
-    public static int splitTankBioDieselGeneration = 100;
-
-    public static boolean pickUpTank;
-
-    public static float repairKitRepairAmount = 5F;
-
-    public static int canisterMaxFuel = 100;
-
-    public static float carVolume = 0.1F;
-
-    public static boolean thirdPersonEnter = true;
-    public static boolean carGroundSpeed = false;
-    public static Block[] carDriveBlocks = new Block[0];
-    private static String[] carDriveBlocksStr = new String[0];
-    public static float carStepHeight;
-    public static boolean collideWithEntities = false;
-    public static boolean damageEntities = true;
-    public static boolean hornFlee = true;
-    public static boolean useBattery = true;
-    public static boolean tempInFarenheit = false;
-
-    public static boolean canolaSeedDrop = true;
-
-    public static float engine6CylinderFuelEfficiency = 0.25F;
-    public static float engine3CylinderFuelEfficiency = 0.6F;
-
-    public static float engine6CylinderAcceleration = 0.04F;
-    public static float engine3CylinderAcceleration = 0.032F;
-
-    public static float engine6CylinderMaxSpeed = 0.65F;
-    public static float engine3CylinderMaxSpeed = 0.5F;
-
-    public static float engine6CylinderMaxReverseSpeed = 0.2F;
-    public static float engine3CylinderMaxReverseSpeed = 0.2F;
-
-    public static float bodyBigWoodFuelEfficiency = 0.7F;
-    public static float bodyBigWoodAcceleration = 0.95F;
-    public static float bodyBigWoodMaxSpeed = 0.85F;
-
-    public static float bodyWoodFuelEfficiency = 0.8F;
-    public static float bodyWoodAcceleration = 1F;
-    public static float bodyWoodMaxSpeed = 0.9F;
-
-    public static float bodySportFuelEfficiency = 0.9F;
-    public static float bodySportAcceleration = 1F;
-    public static float bodySportMaxSpeed = 1F;
-
-    public static float bodySUVFuelEfficiency = 0.6F;
-    public static float bodySUVAcceleration = 0.8F;
-    public static float bodySUVMaxSpeed = 0.7F;
-
-    public static float bodyTransporterFuelEfficiency = 0.6F;
-    public static float bodyTransporterAcceleration = 0.8F;
-    public static float bodyTransporterMaxSpeed = 0.765F;
-
-
-    public static void init(File configFolder) {
-        Config.configFolder = configFolder;
-        Config.config = new Configuration(new File(configFolder, "main.cfg"));
-
-        initMain();
-    }
-
-    public static void postInit() {
-        if (configFolder == null) {
-            return;
-        }
-        initGenerator();
-        initFuelStation();
-        initCar();
-
-        postInitMain();
-    }
-
-    private static void initGenerator() {
-        JsonConfig cfg = new JsonConfig(new File(configFolder, "generator.json"));
-        JSONArray arr = new JSONArray();
-        arr.put(new JSONObject().put("fluid", new FluidSelector(ModFluids.BIO_DIESEL).toString()).put("energy", 500));
-        JSONArray fluids = cfg.getJsonArray("generator_fluids", arr);
-
-        for (int i = 0; i < fluids.length(); i++) {
-            JSONObject obj = fluids.getJSONObject(i);
-            if (obj == null) {
-                continue;
-            }
-
-            FluidSelector sel = FluidSelector.fromString(obj.getString("fluid"));
-            int amount = obj.getInt("energy");
-            if (sel == null || amount <= 0) {
-                continue;
-            }
-
-            GeneratorRecipe.REGISTRY.register(sel.toString(), new GeneratorRecipe(sel, amount));
-        }
-
-    }
-
-    private static void initCar() {
-        JsonConfig cfg = new JsonConfig(new File(configFolder, "car.json"));
-
-        JSONArray arr = new JSONArray();
-        arr.put(new JSONObject().put("fluid", ModFluids.BIO_DIESEL.getName()).put("efficiency", 1.0F));
-        JSONArray fluids = cfg.getJsonArray("valid_fluids", arr);
-
-        for (int j = 0; j < fluids.length(); j++) {
-            JSONObject jo = fluids.getJSONObject(j);
-            FluidSelector sel = FluidSelector.fromString(jo.getString("fluid"));
-            float efficiency = (float) jo.getDouble("efficiency");
-            if (sel == null || efficiency <= 0.0) {
-                continue;
-            }
-
-            CarFluidRegistry.REGISTRY.register(sel.getFluid().getName(), new CarFluidRegistry(sel, efficiency));
-        }
-    }
-
-
-    private static void initFuelStation() {
-        JsonConfig cfg = new JsonConfig(new File(configFolder, "fuel_station.json"));
-        JSONArray arr = new JSONArray();
-        arr.put(ModFluids.BIO_DIESEL.getName());
-        JSONArray fluids = cfg.getJsonArray("valid_fluids", arr);
-
-        for (int i = 0; i < fluids.length(); i++) {
-            String str = fluids.getString(i);
-            if (str == null) {
-                continue;
-            }
-
-            FluidSelector sel = FluidSelector.fromString(str);
-            if (sel == null) {
-                continue;
-            }
-
-            FuelStationFluid.REGISTRY.register(sel.toString(), new FuelStationFluid(sel));
-        }
-
-    }
-
-    private static void initMain() {
-        backmixReactorEnergyStorage = config.getInt("backmix_reactor_energy_storage", "machines.backmix_reactor", 10000, 100, Short.MAX_VALUE, "");
-        backmixReactorEnergyUsage = config.getInt("backmix_reactor_energy_usage", "machines.backmix_reactor", 10, 1, Short.MAX_VALUE, "");
-        backmixReactorFluidStorage = config.getInt("backmix_reactor_fluid_storage", "machines.backmix_reactor", 3000, 1000, Short.MAX_VALUE, "");
-        backmixReactorGeneratingTime = config.getInt("backmix_reactor_generating_time", "machines.backmix_reactor", 200, 10, Short.MAX_VALUE, "");
-        backmixReactorMixGeneration = config.getInt("backmix_reactor_mix_generation", "machines.backmix_reactor", 100, 1, Short.MAX_VALUE, "");
-        backmixReactorMethanolUsage = config.getInt("backmix_reactor_methanol_usage", "machines.backmix_reactor", 50, 1, Short.MAX_VALUE, "");
-        backmixReactorCanolaUsage = config.getInt("backmix_reactor_canola_usage", "machines.backmix_reactor", 50, 1, Short.MAX_VALUE, "");
-
-        blastFurnaceEnergyStorage = config.getInt("blast_furnace_energy_storage", "machines.blast_furnace", 10000, 1000, Short.MAX_VALUE, "");
-        blastFurnaceGeneratingTime = config.getInt("blast_furnace_generating_time", "machines.blast_furnace", 200, 10, Short.MAX_VALUE, "");
-        blastFurnaceFluidStorage = config.getInt("blast_furnace_fluid_storage", "machines.blast_furnace", 3000, 1000, Short.MAX_VALUE, "");
-        blastFurnaceEnergyUsage = config.getInt("blast_furnace_energy_usage", "machines.blast_furnace", 10, 1, Short.MAX_VALUE, "");
-        blastFurnaceFluidGeneration = config.getInt("blast_furnace_fluid_generation", "machines.blast_furnace", 100, 1, Short.MAX_VALUE, "");
-
-        oilMillEnergyStorage = config.getInt("oil_mill_energy_storage", "machines.oil_mill", 10000, 1000, Short.MAX_VALUE, "");
-        oilMillGeneratingTime = config.getInt("oil_mill_generating_time", "machines.oil_mill", 200, 10, Short.MAX_VALUE, "");
-        oilMillFluidStorage = config.getInt("oil_mill_fluid_storage", "machines.oil_mill", 3000, 1000, Short.MAX_VALUE, "");
-        oilMillEnergyUsage = config.getInt("oil_mill_energy_usage", "machines.oil_mill", 10, 1, Short.MAX_VALUE, "");
-        oilMillFluidGeneration = config.getInt("oil_mill_fluid_generation", "machines.oil_mill", 100, 1, Short.MAX_VALUE, "");
-
-        cableTransferRate = config.getInt("cable_transfer_rate", "machines.cable", 256, 64, Short.MAX_VALUE, "");
-
-        dynamoEnergyStorage = config.getInt("dynamo_energy_storage", "machines.dynamo", 1000, 100, Short.MAX_VALUE, "");
-        dynamoEnergyGeneration = config.getInt("dynamo_energy_generation", "machines.dynamo", 25, 1, Short.MAX_VALUE, "");
-
-        fluidExtractorDrainSpeed = config.getInt("fluid_extractor_drain_speed", "machines.fluid_extractor", 25, 5, Short.MAX_VALUE, "");
-
-        //Fuel Station
-        fuelStationTransferRate = config.getInt("fuel_station_transfer_rate", "machines.fuel_station", 5, 1, Short.MAX_VALUE, "");
-
-        //Generator
-        generatorEnergyStorage = config.getInt("generator_energy_storage", "machines.generator", 30000, 1000, Short.MAX_VALUE, "");
-        generatorFluidStorage = config.getInt("generator_fluid_storage", "machines.generator", 3000, 1000, Short.MAX_VALUE, "");
-
-        //Split Tank
-        splitTankFluidStorage = config.getInt("split_tank_fluid_storage", "machines.split_tank", 3000, 1000, Short.MAX_VALUE, "");
-        splitTankGeneratingTime = config.getInt("split_tank_generating_time", "machines.split_tank", 800, 10, Short.MAX_VALUE, "");
-        splitTankMixUsage = config.getInt("split_tank_mix_usage", "machines.split_tank", 100, 1, Short.MAX_VALUE, "");
-        splitTankGlycerinGeneration = config.getInt("split_tank_glycerin_generation", "machines.split_tank", 10, 1, Short.MAX_VALUE, "");
-        splitTankBioDieselGeneration = config.getInt("split_tank_bio_diesel_generation", "machines.split_tank", 100, 1, Short.MAX_VALUE, "");
-
-        //Tank
-        pickUpTank = config.getBoolean("pick_up_tank", "machines.tank", true, "If tanks keep their fluids when broken");
-
-        //Repair kit
-        repairKitRepairAmount = config.getFloat("repair_kit_repair_amount", "items.repair_kit", 5F, 0.1F, 100F, "");
-
-        //Canister
-        canisterMaxFuel = config.getInt("canister_max_fuel", "items.canister", 100, 1, 1000, "");
-
-        //Car
-        carVolume = config.getFloat("car_volume", "car", 0.1F, 0F, 1F, "");
-        thirdPersonEnter = config.getBoolean("third_person_when_enter_car", "car", true, "");
-        carStepHeight = config.getFloat("car_step_height", "car", 0.6F, 0.1F, 1F, "The height a car can drive up");
-        collideWithEntities = config.getBoolean("collide_with_entities", "car", false, "Whether the cars should collide with other entities (except cars)");
-        damageEntities = config.getBoolean("damage_entities", "car", true, "Whether the cars should damage other entities on collision");
-        hornFlee = config.getBoolean("horn_flee", "car", true, "Whether animals flee from the car when the horn is activted");
-        useBattery = config.getBoolean("use_battery", "car", true, "True if starting the car should use battery");
-        tempInFarenheit = config.getBoolean("temp_farenheit", "car", false, "True if the car temperature should be displayed in farenheit");
-
-        carGroundSpeed = config.getBoolean("road_blocks_enabled", "car", false, "Whether the cars drive slower on non road blocks");
-        String[] def = new String[]{
-                "car:tar",
-                "car:tar_slab",
-                "car:tar_slope_flat_upper",
-                "car:tar_slope_flat_lower",
-                "car:tar_slope"
-        };
-        String[] blocks = config.getStringList("road_blocks", "car", def, "A list of blocks the car can drive faster on (only if 'road_blocks_enabled' is set to true)");
-
-        if (blocks == null) {
-            blocks = def;
-        }
-        carDriveBlocksStr = blocks;
-
-        canolaSeedDrop = config.getBoolean("canola_seed_drop", "drops", true, "");
-
-        engine6CylinderFuelEfficiency = config.getFloat("car_6_cylinder_fuel_efficiency", "car_parts", engine6CylinderFuelEfficiency, 0.001F, 10F, "");
-        engine3CylinderFuelEfficiency = config.getFloat("car_3_cylinder_fuel_efficiency", "car_parts", engine3CylinderFuelEfficiency, 0.001F, 10F, "");
-        engine6CylinderAcceleration = config.getFloat("car_6_cylinder_acceleration", "car_parts", engine6CylinderAcceleration, 0.001F, 10F, "");
-        engine3CylinderAcceleration = config.getFloat("car_3_cylinder_acceleration", "car_parts", engine3CylinderAcceleration, 0.001F, 10F, "");
-        engine6CylinderMaxSpeed = config.getFloat("car_6_cylinder_max_speed", "car_parts", engine6CylinderMaxSpeed, 0.001F, 10F, "");
-        engine3CylinderMaxSpeed = config.getFloat("car_3_cylinder_max_speed", "car_parts", engine3CylinderMaxSpeed, 0.001F, 10F, "");
-        engine6CylinderMaxReverseSpeed = config.getFloat("car_6_cylinder_max_reverse_speed", "car_parts", engine6CylinderMaxReverseSpeed, 0.001F, 10F, "");
-        engine3CylinderMaxReverseSpeed = config.getFloat("car_3_cylinder_max_reverse_speed", "car_parts", engine3CylinderMaxReverseSpeed, 0.001F, 10F, "");
-        bodyBigWoodFuelEfficiency = config.getFloat("car_body_big_wood_fuel_efficiency", "car_parts", bodyBigWoodFuelEfficiency, 0.001F, 10F, "");
-        bodyBigWoodAcceleration = config.getFloat("car_body_big_wood_acceleration", "car_parts", bodyBigWoodAcceleration, 0.001F, 10F, "");
-        bodyBigWoodMaxSpeed = config.getFloat("car_body_big_wood_max_speed", "car_parts", bodyBigWoodMaxSpeed, 0.001F, 10F, "");
-        bodyWoodFuelEfficiency = config.getFloat("car_body_wood_fuel_efficiency", "car_parts", bodyWoodFuelEfficiency, 0.001F, 10F, "");
-        bodyWoodAcceleration = config.getFloat("car_body_wood_acceleration", "car_parts", bodyWoodAcceleration, 0.001F, 10F, "");
-        bodyWoodMaxSpeed = config.getFloat("car_body_wood_max_speed", "car_parts", bodyWoodMaxSpeed, 0.001F, 10F, "");
-        bodySportFuelEfficiency = config.getFloat("car_body_sport_fuel_efficiency", "car_parts", bodySportFuelEfficiency, 0.001F, 10F, "");
-        bodySportAcceleration = config.getFloat("car_body_sport_acceleration", "car_parts", bodySportAcceleration, 0.001F, 10F, "");
-        bodySportMaxSpeed = config.getFloat("car_body_sport_max_speed", "car_parts", bodySportMaxSpeed, 0.001F, 10F, "");
-        bodySUVFuelEfficiency = config.getFloat("car_body_suv_fuel_efficiency", "car_parts", bodySUVFuelEfficiency, 0.001F, 10F, "");
-        bodySUVAcceleration = config.getFloat("car_body_suv_acceleration", "car_parts", bodySUVAcceleration, 0.001F, 10F, "");
-        bodySUVMaxSpeed = config.getFloat("car_body_suv_max_speed", "car_parts", bodySUVMaxSpeed, 0.001F, 10F, "");
-        bodyTransporterFuelEfficiency = config.getFloat("car_body_transporter_fuel_efficiency", "car_parts", bodyTransporterFuelEfficiency, 0.001F, 10F, "");
-        bodyTransporterAcceleration = config.getFloat("car_body_transporter_acceleration", "car_parts", bodyTransporterAcceleration, 0.001F, 10F, "");
-        bodyTransporterMaxSpeed = config.getFloat("car_body_transporter_max_speed", "car_parts", bodyTransporterMaxSpeed, 0.001F, 10F, "");
-
-        config.save();
-    }
-
-    public static void postInitMain() {
-        List<Block> blockList = new ArrayList<>();
-        for (String s : carDriveBlocksStr) {
-            Block b = getBlock(s);
-            if (b != null) {
-                blockList.add(b);
-            }
-        }
-
-        carDriveBlocks = blockList.toArray(new Block[0]);
-    }
-
-    public static Block getBlock(String name) {
-        try {
-            String[] split = name.split(":");
-            if (split.length == 2) {
-                Block b = Block.REGISTRY.getObject(new ResourceLocation(split[0], split[1]));
-                if (b.equals(Blocks.AIR)) {
-                    return null;
-                } else {
-                    return b;
-                }
-            } else {
-                return null;
-            }
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
-    public static boolean isDrivable(Block block) {
-        for (Block b : carDriveBlocks) {
-            if (b.equals(block)) {
-                return true;
-            }
-        }
-        return false;
-    }*/
 
 }

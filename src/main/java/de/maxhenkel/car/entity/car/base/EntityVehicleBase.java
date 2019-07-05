@@ -200,7 +200,7 @@ public abstract class EntityVehicleBase extends Entity {
     @Nullable
     @Override
     public AxisAlignedBB getCollisionBox(Entity entityIn) {
-        if (!Config.collideWithEntities) {
+        if (!Config.collideWithEntities.get()) {
             if (!(entityIn instanceof EntityVehicleBase)) {
                 return null;
             }

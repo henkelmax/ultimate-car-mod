@@ -79,7 +79,6 @@ public class Main {
         FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(IRecipeSerializer.class, this::registerRecipes);
         //FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(Fluid.class, this::registerFluids);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::commonSetup);
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::configEvent);
 
         ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, Config.SERVER_SPEC);
         ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, Config.CLIENT_SPEC);
@@ -100,19 +99,10 @@ public class Main {
     }
 
     @SubscribeEvent
-    public void configEvent(ModConfig.ModConfigEvent event) {
-        if (event.getConfig().getType() == ModConfig.Type.SERVER) {
-            Config.loadServer();
-        } else if (event.getConfig().getType() == ModConfig.Type.CLIENT) {
-            Config.loadClient();
-        }
-    }
-
-    @SubscribeEvent
     public void commonSetup(FMLCommonSetupEvent event) {
         MinecraftForge.EVENT_BUS.register(this);
         MinecraftForge.EVENT_BUS.register(new CapabilityEvents());
-        MinecraftForge.EVENT_BUS.register(new PlayerEvents());
+
 
         LootFunctionManager.registerFunction(new CopyFluid.Serializer());
 
@@ -225,6 +215,7 @@ public class Main {
 
         MinecraftForge.EVENT_BUS.register(new RenderEvents());
         MinecraftForge.EVENT_BUS.register(new KeyEvents());
+        MinecraftForge.EVENT_BUS.register(new PlayerEvents());
     }
 
     @SubscribeEvent

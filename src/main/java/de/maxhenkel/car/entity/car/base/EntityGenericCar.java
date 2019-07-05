@@ -45,6 +45,15 @@ public class EntityGenericCar extends EntityCarLicensePlateBase {
     }
 
     @Override
+    public float getWheelRotationAmount() {
+        PartWheelBase wheel = getPartByClass(PartWheelBase.class);
+        if (wheel == null) {
+            return super.getWheelRotationAmount();
+        }
+        return wheel.getRotationModifier() * getSpeed();
+    }
+
+    @Override
     public int getFluidInventorySize() {
         PartTankContainer tank = getPartByClass(PartTankContainer.class);
         if (tank == null) {

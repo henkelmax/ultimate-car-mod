@@ -34,7 +34,7 @@ public class PartLicensePlateHolder extends PartModel {
         }
 
         List<OBJModelInstance> list = new ArrayList<>();
-        list.add(new OBJModelInstance(model, new OBJModelOptions(chassis.getNumberPlateOffset(), rotation, 0F)));
+        list.add(new OBJModelInstance(model, new OBJModelOptions(chassis.getNumberPlateOffset(), rotation)));
         onPartAdd(list);
         return list;
     }

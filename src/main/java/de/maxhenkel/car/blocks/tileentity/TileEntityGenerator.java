@@ -39,9 +39,9 @@ public class TileEntityGenerator extends TileEntityBase implements ITickableTile
     public TileEntityGenerator() {
         super(Main.GENERATOR_TILE_ENTITY_TYPE);
         this.inventory = new Inventory(0);
-        this.maxStorage = Config.generatorEnergyStorage;
+        this.maxStorage = Config.generatorEnergyStorage.get();
         this.storedEnergy = 0;
-        this.maxMillibuckets = Config.generatorFluidStorage;
+        this.maxMillibuckets = Config.generatorFluidStorage.get();
         this.currentMillibuckets = 0;
     }
 

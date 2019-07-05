@@ -35,7 +35,7 @@ public class SlotRepairKit extends Slot {
 
             ItemTools.decrItemStack(stack, null);
 
-            float damage = car.getDamage() - Config.repairKitRepairAmount;
+            float damage = car.getDamage() - Config.repairKitRepairAmount.get().floatValue();
             if (damage >= 0) {
                 car.setDamage(damage);
             }

@@ -89,7 +89,7 @@ public class GuiCar extends GuiBase<ContainerCar> {
     }
 
     public String getTempString() {
-        if (Config.tempInFarenheit) {
+        if (Config.tempInFarenheit.get()) {
             return new TranslationTextComponent("gui.car_temperature_farenheit", String.valueOf(getTemperatureFarenheit())).getFormattedText();
         } else {
             return new TranslationTextComponent("gui.car_temperature_celsius", String.valueOf(getTemperatureCelsius())).getFormattedText();

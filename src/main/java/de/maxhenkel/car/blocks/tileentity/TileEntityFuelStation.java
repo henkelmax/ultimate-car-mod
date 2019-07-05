@@ -60,7 +60,7 @@ public class TileEntityFuelStation extends TileEntityBase implements ITickableTi
 
     public TileEntityFuelStation() {
         super(Main.FUEL_STATION_TILE_ENTITY_TYPE);
-        this.transferRate = Config.fuelStationTransferRate;
+        this.transferRate = Config.fuelStationTransferRate.get();
         this.fuelCounter = 0;
         this.inventory = new Inventory(27);
         this.trading = new Inventory(2);

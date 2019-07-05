@@ -46,7 +46,7 @@ public class PlayerEvents {
 	}
 
 	private void setThirdPerson(boolean third) {
-		if (!Config.thirdPersonEnter) {
+		if (!Config.thirdPersonEnter.get()) {
 			return;
 		}
 

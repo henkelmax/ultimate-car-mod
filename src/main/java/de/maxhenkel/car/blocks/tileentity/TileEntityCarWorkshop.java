@@ -401,7 +401,7 @@ public class TileEntityCarWorkshop extends TileEntityBase implements IInventory 
 
     @Override
     public ITextComponent getTranslatedName() {
-        return ModBlocks.CAR_WORKSHOP.getNameTextComponent();
+        return new TranslationTextComponent(ModBlocks.CAR_WORKSHOP.getTranslationKey());
     }
 
     @Override

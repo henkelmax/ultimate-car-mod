@@ -4,12 +4,10 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import de.maxhenkel.car.entity.car.base.EntityCarLicensePlateBase;
 import de.maxhenkel.car.entity.car.base.EntityGenericCar;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.Quaternion;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
-import org.lwjgl.opengl.GL11;
 
 import java.util.List;
 
@@ -38,7 +36,6 @@ public abstract class OBJModelRenderer<T extends EntityGenericCar> extends Entit
 
         GlStateManager.pushMatrix();
 
-        entity.updateWheelRotation(partialTicks);
         //Render parts
         for (int i = 0; i < models.size(); i++) {
             Minecraft.getInstance().getTextureManager().bindTexture(models.get(i).getModel().getTexture());
@@ -56,8 +53,8 @@ public abstract class OBJModelRenderer<T extends EntityGenericCar> extends Entit
                 models.get(i).getOptions().getRotation().applyGLRotation();
             }
 
-            if (models.get(i).getOptions().getSpeedRotationFactor() > 0F) {
-                GlStateManager.rotatef(-entity.getWheelRotation(models.get(i).getOptions().getSpeedRotationFactor()), 1F, 0F, 0F);
+            if (models.get(i).getOptions().getOnRender()!=null) {
+                models.get(i).getOptions().getOnRender().onRender(partialTicks);
             }
 
             OBJRenderer.renderObj(models.get(i).getModel().getModel());
