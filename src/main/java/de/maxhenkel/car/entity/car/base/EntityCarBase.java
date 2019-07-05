@@ -515,7 +515,6 @@ public abstract class EntityCarBase extends EntityVehicleBase {
         ModSounds.playSound(getStopSound(), world, getPosition(), null, SoundCategory.NEUTRAL, getVolume());
     }
 
-    @OnlyIn(Dist.CLIENT)
     public void playFailSound() {
         ModSounds.playSound(getFailSound(), world, getPosition(), null, SoundCategory.NEUTRAL, getVolume());
     }

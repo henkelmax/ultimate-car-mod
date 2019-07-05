@@ -37,7 +37,7 @@ public class BlockCrashBarrier extends BlockBase implements IItemBlock {
     public static final VoxelShape SHAPE_WEST = Block.makeCuboidShape(15D, 0D, 0D, 13D, 16D, 16D);
 
     public BlockCrashBarrier() {
-        super(Properties.create(Material.IRON, MaterialColor.IRON).hardnessAndResistance(2F).sound(SoundType.ANVIL));
+        super(Properties.create(Material.IRON, MaterialColor.IRON).hardnessAndResistance(2F).sound(SoundType.LANTERN));
         setRegistryName(new ResourceLocation(Main.MODID, "crash_barrier"));
 
         setDefaultState(stateContainer.getBaseState().with(FACING, Direction.NORTH));
