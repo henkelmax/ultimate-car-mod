@@ -15,7 +15,7 @@ public class ModItems {
     public static final ItemPainter PAINTER_YELLOW = new ItemPainter(true);
     public static final ItemCanolaSeed CANOLA_SEEDS = new ItemCanolaSeed();
     public static final ItemCanola CANOLA = new ItemCanola();
-    public static final ItemRapeCake RAPECAKE = new ItemRapeCake();
+    public static final ItemCanolaCake CANOLA_CAKE = new ItemCanolaCake();
     public static final ItemCraftingComponent IRON_STICK = new ItemCraftingComponent("iron_stick");
     public static final ItemCraftingComponent ENGINE_PISTON = new ItemCraftingComponent("engine_piston");
     public static final ItemCanister CANISTER = new ItemCanister();
