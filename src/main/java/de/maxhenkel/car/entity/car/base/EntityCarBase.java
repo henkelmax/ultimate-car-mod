@@ -292,14 +292,11 @@ public abstract class EntityCarBase extends EntityVehicleBase {
         BlockPos pos = getPosition().down();
         BlockState state = world.getBlockState(pos);
 
-        Block b = state.getBlock();
-
-        //TODO make helper
-        if (b.equals(Blocks.AIR) || b.equals(Blocks.CAVE_AIR) || b.equals(Blocks.VOID_AIR)) {
+        if (state.isAir()) {
             return 1;
         }
 
-        //TODO config
+        //TODO add grount types to config
         if (true/*Config.isDrivable(b)*/) {
             return 1F;
         } else {
@@ -394,7 +391,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
     }
 
     public float getWheelRotationAmount() {
-        return 75F * getSpeed(); //TODO default value
+        return 120F * getSpeed();
     }
 
     public void updateWheelRotation() {
@@ -599,7 +596,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
         fleeDir = fleeDir.normalize();
         Vec3d fleePos = new Vec3d(vecEntity.x + fleeDir.x * fleeDistance, vecEntity.y + fleeDir.y * fleeDistance, vecEntity.z + fleeDir.z * fleeDistance);
 
-        //TODO implement
+        //TODO implement fleeing
         //entity.getNavigator().tryMoveToXYZ(fleePos.x, fleePos.y, fleePos.z, 2.5);
     }
 

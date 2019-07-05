@@ -70,13 +70,13 @@ public class GuiSign extends GuiBase<ContainerSign> {
                 text2.setText(text[1]);
                 text3.setText(text[2]);
                 text4.setText(text[3]);
-                buttonSwitch.setMessage(new TranslationTextComponent("button.back").getFormattedText()); //TODO check
+                buttonSwitch.setMessage(new TranslationTextComponent("button.back").getFormattedText());
             } else {
                 text1.setText(text[4]);
                 text2.setText(text[5]);
                 text3.setText(text[6]);
                 text4.setText(text[7]);
-                buttonSwitch.setMessage(new TranslationTextComponent("button.front").getFormattedText()); //TODO check
+                buttonSwitch.setMessage(new TranslationTextComponent("button.front").getFormattedText());
             }
         }));
 
@@ -89,7 +89,7 @@ public class GuiSign extends GuiBase<ContainerSign> {
     }
 
     private TextFieldWidget initTextField(int id, int height) {
-        TextFieldWidget field = new TextFieldWidget(font, guiLeft + 54, guiTop + 30 + height, 114, 16, ""); //TODO name
+        TextFieldWidget field = new TextFieldWidget(font, guiLeft + 54, guiTop + 30 + height, 114, 16, "");
         field.setTextColor(-1);
         field.setDisabledTextColour(-1);
         field.setEnableBackgroundDrawing(true);

@@ -33,9 +33,7 @@ public class TileEntityOilMill extends TileEntityEnergyFluidProducer {
 
     @Override
     public boolean isValidItem(ItemStack stack) {
-        //return ItemTools.matchesOredict(stack, "cropCanola");//TODO oredict
-        //return stack.getItem().getTags().contains(new ResourceLocation("minecraft", "log"));//TODO check if it works
-        return stack.getItem() instanceof ItemCanola; //TODO make tag
+        return stack.getItem() instanceof ItemCanola;
     }
 
     @Override

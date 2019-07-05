@@ -54,7 +54,7 @@ public class GuiLicensePlate extends GuiBase<ContainerLicensePlate> {
             Minecraft.getInstance().displayGuiScreen(null);
         }));
 
-        textField = new TextFieldWidget(font, guiLeft + 30, guiTop + 30, 116, 16, ""); //TODO name
+        textField = new TextFieldWidget(font, guiLeft + 30, guiTop + 30, 116, 16, "");
         textField.setTextColor(-1);
         textField.setDisabledTextColour(-1);
         textField.setEnableBackgroundDrawing(true);

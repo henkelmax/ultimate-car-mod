@@ -299,7 +299,7 @@ public class TileEntityTank extends TileEntityBase implements IFluidHandler, ITi
             }
 
             if (tank.fluid == null || fluid == null) {
-                return true;//Check TODO
+                return true;
             }
 
             if (tank.fluid.getFluid().equals(fluid.getFluid())) {

@@ -65,7 +65,6 @@ public class Main {
         FluidRegistry.enableUniversalBucket();
     }
 
-    //TODO add grass seed
     public Main() {
         FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(Item.class, this::registerItems);
         FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(Block.class, this::registerBlocks);

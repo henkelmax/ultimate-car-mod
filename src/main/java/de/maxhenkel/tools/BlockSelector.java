@@ -77,15 +77,6 @@ public class BlockSelector implements Selector<BlockState>{
 			return false;
 		}
 
-		//TODO metadata
-		/*if(meta<0){
-			return true;
-		}
-
-		if(meta!=block.getMetaFromState(state)){
-			return false;
-		}*/
-
 		return true;
 	}
 }

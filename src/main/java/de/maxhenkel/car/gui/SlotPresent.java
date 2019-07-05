@@ -34,20 +34,13 @@ public class SlotPresent extends Slot {
 
     @Override
     public int getSlotStackLimit() {
-        return 0;//TODO maybe fix
+        return 0;
     }
 
     @Override
     public ItemStack decrStackSize(int amount) {
         return ItemStack.EMPTY;
     }
-
-
-    /*
-    @Override
-    public boolean isHere(IInventory inv, int slotIn) {
-        return false;
-    }*/
 
     @Override
     public boolean isItemValid(ItemStack stack) {

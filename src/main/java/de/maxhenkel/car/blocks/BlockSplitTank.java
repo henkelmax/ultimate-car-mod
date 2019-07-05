@@ -161,7 +161,7 @@ public class BlockSplitTank extends BlockBase implements ITileEntityProvider, II
         super.onReplaced(state, worldIn, pos, newState, isMoving);
 
         BlockState stateUp = worldIn.getBlockState(pos.up());
-        if (stateUp.getBlock().equals(ModBlocks.SPLIT_TANK_TOP)) {
+        if (stateUp != null && stateUp.getBlock() != null && stateUp.getBlock().equals(ModBlocks.SPLIT_TANK_TOP)) {
             worldIn.destroyBlock(pos.up(), false);
         }
     }

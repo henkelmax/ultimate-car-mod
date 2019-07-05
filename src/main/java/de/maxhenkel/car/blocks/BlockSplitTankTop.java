@@ -8,9 +8,8 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.PushReaction;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.InventoryHelper;
+import net.minecraft.fluid.IFluidState;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
@@ -20,12 +19,9 @@ import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IEnviromentBlockReader;
 import net.minecraft.world.World;
-
-import javax.annotation.Nullable;
 
 public class BlockSplitTankTop extends BlockBase {
 
@@ -65,24 +61,11 @@ public class BlockSplitTankTop extends BlockBase {
         return PushReaction.BLOCK;
     }
 
-    @Override
-    public VoxelShape getCollisionShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-        return VoxelShapes.empty();
-    }
-
-    @Override
-    public VoxelShape getRenderShape(BlockState state, IBlockReader worldIn, BlockPos pos) {
-        return Block.makeCuboidShape(0D, -16D, 0D, 16D, 8D, 16D);
-    }
-
-    @Override
-    public VoxelShape getRaytraceShape(BlockState state, IBlockReader worldIn, BlockPos pos) {
-        return VoxelShapes.empty();
-    }
+    private static final VoxelShape SHAPE = Block.makeCuboidShape(0D, -16D, 0D, 16D, 8D, 16D);
 
     @Override
     public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-        return VoxelShapes.empty();
+        return SHAPE;
     }
 
     @Override
@@ -96,28 +79,20 @@ public class BlockSplitTankTop extends BlockBase {
             super.onReplaced(state, worldIn, pos, newState, isMoving);
 
             BlockState stateDown = worldIn.getBlockState(pos.down());
-            if (stateDown != null &&stateDown.getBlock().equals(ModBlocks.SPLIT_TANK)) {
+            if (stateDown != null && stateDown.getBlock().equals(ModBlocks.SPLIT_TANK)) {
                 worldIn.destroyBlock(pos.down(), false);
             }
         }
-
         super.onReplaced(state, worldIn, pos, newState, isMoving);
     }
 
     @Override
-    public void harvestBlock(World worldIn, PlayerEntity player, BlockPos pos, BlockState state, @Nullable TileEntity te, ItemStack stack) {
-        super.harvestBlock(worldIn, player, pos, state, te, stack);
-
-        if (player.abilities.isCreativeMode) {
-            return;
+    public boolean removedByPlayer(BlockState state, World world, BlockPos pos, PlayerEntity player, boolean willHarvest, IFluidState fluid) {
+        BlockState stateDown = world.getBlockState(pos.down());
+        if (stateDown != null && stateDown.getBlock() != null && stateDown.getBlock().equals(ModBlocks.SPLIT_TANK) && !player.abilities.isCreativeMode) {
+            ModBlocks.SPLIT_TANK.harvestBlock(world, player, pos.down(), world.getBlockState(pos.down()), world.getTileEntity(pos.down()), player.getHeldItemMainhand());
         }
-
-        BlockState stateDown = worldIn.getBlockState(pos.down());
-        if (stateDown != null && stateDown.getBlock() != null && stateDown.getBlock().equals(ModBlocks.SPLIT_TANK)) {
-            //TODO check if it works
-            //ModBlocks.SPLIT_TANK.dropBlockAsItem(worldIn, pos.down(), stateDown, 0);
-            InventoryHelper.spawnItemStack(worldIn, pos.down().getX()+0.5D, pos.down().getY()+0.5D, pos.down().getZ()+0.5D, new ItemStack(ModBlocks.SPLIT_TANK.toItem()));
-        }
+        return super.removedByPlayer(state, world, pos, player, willHarvest, fluid);
     }
 
     @Override

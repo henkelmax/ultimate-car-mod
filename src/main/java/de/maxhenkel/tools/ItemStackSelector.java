@@ -80,15 +80,6 @@ public class ItemStackSelector implements Selector<ItemStack>{
 			return false;
 		}
 
-		//TODO meta
-		/*if(meta<0){
-			return true;
-		}
-		
-		if(meta!=stack.getMetadata()){
-			return false;
-		}*/
-		
 		return true;
 	}
 	

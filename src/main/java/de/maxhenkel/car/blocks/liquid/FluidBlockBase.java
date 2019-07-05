@@ -38,26 +38,22 @@ public abstract class FluidBlockBase extends Block implements IFluidBlock {
 
     @Override
     public int place(World world, BlockPos pos, @Nonnull FluidStack fluidStack, boolean doPlace) {
-        //TODO implement
         return 0;
     }
 
     @Nullable
     @Override
     public FluidStack drain(World world, BlockPos pos, boolean doDrain) {
-        //TODO implement
         return null;
     }
 
     @Override
     public boolean canDrain(World world, BlockPos pos) {
-        //TODO implement
         return false;
     }
 
     @Override
     public float getFilledPercentage(World world, BlockPos pos) {
-        //TODO implement
         return 0;
     }
 }

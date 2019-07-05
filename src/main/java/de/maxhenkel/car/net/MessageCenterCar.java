@@ -64,11 +64,8 @@ public class MessageCenterCar implements Message<MessageCenterCar> {
             car.centerCar();
         }
 
-        //TODO check if multiple instances
         MessageCenterCar msg = new MessageCenterCar(uuid);
         context.getSender().getServerWorld().getPlayers(player -> player.getDistance(car) <= 128F).forEach(player -> Main.SIMPLE_CHANNEL.sendTo(msg, player.connection.netManager, NetworkDirection.PLAY_TO_CLIENT));
-
-        //CommonProxy.simpleNetworkWrapper.sendToAllAround(, new NetworkRegistry.TargetPoint(car.dimension, car.posX, car.posY, car.posZ, 128));
     }
 
     @Override

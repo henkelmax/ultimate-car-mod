@@ -78,7 +78,7 @@ public class TileEntityCable extends TileEntityBase implements ITickableTileEnti
         int split = energy / receivers.size();
 
         if (split <= 0) {
-            return; //TODO handle
+            return; //TODO handle splitting if there is not enough energy to split over all connections
         }
 
         int received = 0;

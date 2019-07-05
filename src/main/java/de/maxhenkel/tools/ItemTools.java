@@ -35,25 +35,9 @@ public class ItemTools {
 	}
 
 	public static boolean matchesOredict(ItemStack stack, String name) {
+		//TODO implement oredict
 		return false;
-		//TODO oredict
-		//return contains(OreDictionary.getOres(name), stack);
 	}
-
-	public static boolean areItemsEqualWithEmpty(ItemStack stack1, ItemStack stack2) {
-		if (isStackEmpty(stack1) && isStackEmpty(stack2)) {
-			return true;
-		}
-
-		return areItemsEqual(stack1, stack2);
-	}
-
-	/*public static boolean areItemsEqual(ItemStack stack1, ItemStack stack2) {
-		if (stack1 == null || stack2 == null) {
-			return false;
-		}
-		return ItemStack.areItemsEqual(stack1, stack2);
-	}*/
 
 	public static boolean areItemsEqual(ItemStack stack1, ItemStack stack2) {
 		if (stack1 == null || stack2 == null) {
@@ -65,9 +49,8 @@ public class ItemTools {
 		}
 
 		if (stack1.getItem() == stack2.getItem()) {
-
-			return stack1.getDamage() == -1//OreDictionary.WILDCARD_VALUE // TODO fix
-					|| stack2.getDamage() == -1//OreDictionary.WILDCARD_VALUE // TODO fix
+			return stack1.getDamage() == -1 // OreDictionary.WILDCARD_VALUE // TODO implement oredict
+					|| stack2.getDamage() == -1 // OreDictionary.WILDCARD_VALUE // TODO implement oredict
 					|| stack1.getDamage() == stack2.getDamage();
 		}
 
@@ -124,12 +107,6 @@ public class ItemTools {
 	public static ItemStack incrItemStack(ItemStack stack, PlayerEntity player) {
 		return itemStackAmount(1, stack, player);
 	}
-
-	//TODO implement
-	/*public static ItemStack damageStack(ItemStack stack, int amount, LivingEntity entity) {
-		stack.damageItem(amount, entity);
-		return stack;
-	}*/
 
 	public static void removeStackFromSlot(IInventory inventory, int index) {
 		inventory.setInventorySlotContents(index, ItemStack.EMPTY);

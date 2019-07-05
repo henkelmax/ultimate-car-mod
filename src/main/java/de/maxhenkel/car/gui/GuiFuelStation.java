@@ -126,7 +126,6 @@ public class GuiFuelStation extends GuiBase<ContainerFuelStation> {
         }
 
         if (car.getFluid() == null) {
-            //TODO
             return;
         } else {
             String typeText = new TranslationTextComponent("fuelstation.car_fuel_type", INFO_COLOR + car.getFluid().getLocalizedName(new FluidStackWrapper(car.getFluid(), 1))).getFormattedText();

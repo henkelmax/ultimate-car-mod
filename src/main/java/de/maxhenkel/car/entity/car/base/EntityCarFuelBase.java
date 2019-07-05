@@ -136,12 +136,11 @@ public abstract class EntityCarFuelBase extends EntityCarDamageBase implements I
 
     @Nullable
     public Fluid getFluid() {
-        //TODO fluid
         String fuelType = getFuelType();
         if (fuelType == null || fuelType.isEmpty()) {
             return null;
         }
-        return null;//FluidRegistry.getFluid(fuelType);//TODO
+        return FluidStackWrapper.byName(fuelType);
     }
 
     public int getFuelAmount() {
@@ -155,20 +154,7 @@ public abstract class EntityCarFuelBase extends EntityCarDamageBase implements I
         return getEfficiency(fluid) > 0F;
     }
 
-    public abstract float getEfficiency(@Nullable Fluid fluid);/*{
-		if(fluid==null){
-			return 1D;
-		}
-		for(CarFluidRegistry cf:CarFluidRegistry.REGISTRY){
-			if(!cf.getCarID().equals(getID())) {
-				continue;
-			}
-			if(cf.getInput().validate(fluid)){
-				return cf.getEfficiency();
-			}
-		}
-		return 0D;
-	}*/
+    public abstract float getEfficiency(@Nullable Fluid fluid);
 
     @Override
     protected void writeAdditional(CompoundNBT compound) {
