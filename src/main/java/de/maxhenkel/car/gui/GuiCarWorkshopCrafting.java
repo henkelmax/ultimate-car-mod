@@ -3,7 +3,7 @@ package de.maxhenkel.car.gui;
 import com.mojang.blaze3d.platform.GlStateManager;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.entity.car.base.EntityGenericCar;
-import de.maxhenkel.car.net.MessageOpenRepairGui;
+import de.maxhenkel.car.net.MessageOpenCarWorkshopGui;
 import de.maxhenkel.tools.MathTools;
 import de.maxhenkel.car.blocks.tileentity.TileEntityCarWorkshop;
 import de.maxhenkel.car.entity.car.base.EntityCarBase;
@@ -44,7 +44,7 @@ public class GuiCarWorkshopCrafting extends GuiBase<ContainerCarWorkshopCrafting
         super.init();
 
         buttonRepair = addButton(new Button(guiLeft + 105, guiTop + 72, 60, 20, new TranslationTextComponent("button.repair_car").getFormattedText(), button -> {
-            Main.SIMPLE_CHANNEL.sendToServer(new MessageOpenRepairGui(tile.getPos(), player));
+            Main.SIMPLE_CHANNEL.sendToServer(new MessageOpenCarWorkshopGui(tile.getPos(), player, true));
         }));
 
         buttonSpawn = addButton(new Button(guiLeft + 105, guiTop + 106, 60, 20, new TranslationTextComponent("button.spawn_car").getFormattedText(), button -> {

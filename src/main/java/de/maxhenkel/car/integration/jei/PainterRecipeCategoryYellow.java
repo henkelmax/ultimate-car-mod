@@ -2,6 +2,7 @@ package de.maxhenkel.car.integration.jei;
 
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.items.ModItems;
+import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.ingredient.IGuiItemStackGroup;
@@ -10,9 +11,8 @@ import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.TranslationTextComponent;
 
-public class PainterRecipeCategoryYellow implements IRecipeCategory<PainterRecipeWrapperYellow> {
+public class PainterRecipeCategoryYellow implements IRecipeCategory<PainterRecipe> {
 
     private IGuiHelper helper;
 
@@ -28,17 +28,19 @@ public class PainterRecipeCategoryYellow implements IRecipeCategory<PainterRecip
 
     @Override
     public IDrawable getIcon() {
-        return null;
+        return helper.createDrawableIngredient(new ItemStack(ModItems.PAINTER_YELLOW));
     }
 
-    @Override
-    public void setIngredients(PainterRecipeWrapperYellow painterRecipeWrapperYellow, IIngredients iIngredients) {
 
+    @Override
+    public void setIngredients(PainterRecipe recipe, IIngredients iIngredients) {
+        iIngredients.setInput(VanillaTypes.ITEM, new ItemStack(recipe.getInput()));
+        iIngredients.setOutput(VanillaTypes.ITEM, new ItemStack(recipe.getOutput()));
     }
 
     @Override
     public String getTitle() {
-        return new TranslationTextComponent("item.car.painter_yellow").getFormattedText();
+        return ModItems.PAINTER.getName().getFormattedText();
     }
 
     @Override
@@ -47,21 +49,19 @@ public class PainterRecipeCategoryYellow implements IRecipeCategory<PainterRecip
     }
 
     @Override
-    public Class<? extends PainterRecipeWrapperYellow> getRecipeClass() {
-        return PainterRecipeWrapperYellow.class;
+    public Class<? extends PainterRecipe> getRecipeClass() {
+        return PainterRecipe.class;
     }
 
     @Override
-    public void setRecipe(IRecipeLayout layout, PainterRecipeWrapperYellow wrapper, IIngredients ingredients) {
+    public void setRecipe(IRecipeLayout layout, PainterRecipe wrapper, IIngredients ingredients) {
         IGuiItemStackGroup group = layout.getItemStacks();
 
         group.init(0, true, 0, 18);
-        group.set(0, new ItemStack(ModItems.PAINTER_YELLOW));
-
+        group.set(0, new ItemStack(wrapper.getInput()));
 
         group.init(1, true, 58, 18);
-       // group.set(1, new ItemStack(wrapper.getPaint())); //TODO
+        group.set(1, new ItemStack(wrapper.getOutput()));
 
     }
-
 }

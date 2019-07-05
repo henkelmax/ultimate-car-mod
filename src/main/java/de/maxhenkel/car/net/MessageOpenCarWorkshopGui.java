@@ -3,6 +3,7 @@ package de.maxhenkel.car.net;
 import java.util.UUID;
 
 import de.maxhenkel.car.blocks.tileentity.TileEntityCarWorkshop;
+import de.maxhenkel.car.gui.ContainerCarWorkshopCrafting;
 import de.maxhenkel.car.gui.ContainerCarWorkshopRepair;
 import de.maxhenkel.car.gui.TileEntityContainerProvider;
 import net.minecraft.entity.player.PlayerEntity;
@@ -11,18 +12,20 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.network.NetworkEvent;
 
-public class MessageOpenRepairGui implements Message<MessageOpenRepairGui> {
+public class MessageOpenCarWorkshopGui implements Message<MessageOpenCarWorkshopGui> {
 
     private BlockPos pos;
     private UUID uuid;
+    private boolean repair;
 
-    public MessageOpenRepairGui() {
+    public MessageOpenCarWorkshopGui() {
         this.uuid = new UUID(0, 0);
     }
 
-    public MessageOpenRepairGui(BlockPos pos, PlayerEntity player) {
+    public MessageOpenCarWorkshopGui(BlockPos pos, PlayerEntity player, boolean reapir) {
         this.pos = pos;
         this.uuid = player.getUniqueID();
+        this.repair = reapir;
     }
 
     @Override
@@ -38,7 +41,11 @@ public class MessageOpenRepairGui implements Message<MessageOpenRepairGui> {
             return;
         }
         TileEntityCarWorkshop carWorkshop = (TileEntityCarWorkshop) te;
-        TileEntityContainerProvider.openGui(context.getSender(), carWorkshop, (i, playerInventory, playerEntity) -> new ContainerCarWorkshopRepair(i, carWorkshop, playerInventory));
+        if(repair){
+            TileEntityContainerProvider.openGui(context.getSender(), carWorkshop, (i, playerInventory, playerEntity) -> new ContainerCarWorkshopRepair(i, carWorkshop, playerInventory));
+        }else{
+            TileEntityContainerProvider.openGui(context.getSender(), carWorkshop, (i, playerInventory, playerEntity) -> new ContainerCarWorkshopCrafting(i, carWorkshop, playerInventory));
+        }
     }
 
     @Override
@@ -47,9 +54,10 @@ public class MessageOpenRepairGui implements Message<MessageOpenRepairGui> {
     }
 
     @Override
-    public MessageOpenRepairGui fromBytes(PacketBuffer buf) {
+    public MessageOpenCarWorkshopGui fromBytes(PacketBuffer buf) {
         this.pos = buf.readBlockPos();
         this.uuid = buf.readUniqueId();
+        this.repair=buf.readBoolean();
 
         return this;
     }
@@ -58,5 +66,6 @@ public class MessageOpenRepairGui implements Message<MessageOpenRepairGui> {
     public void toBytes(PacketBuffer buf) {
         buf.writeBlockPos(pos);
         buf.writeUniqueId(uuid);
+        buf.writeBoolean(repair);
     }
 }

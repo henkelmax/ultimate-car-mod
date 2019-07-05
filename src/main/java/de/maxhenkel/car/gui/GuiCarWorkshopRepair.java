@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import de.maxhenkel.car.Main;
+import de.maxhenkel.car.net.MessageOpenCarWorkshopGui;
 import de.maxhenkel.tools.MathTools;
 import de.maxhenkel.car.blocks.tileentity.TileEntityCarWorkshop;
 import de.maxhenkel.car.entity.car.base.EntityCarBase;
@@ -54,8 +55,7 @@ public class GuiCarWorkshopRepair extends GuiBase<ContainerCarWorkshopRepair> {
 
         this.buttonBack = addButton(new Button(guiLeft + 7, guiTop + 105, 60, 20, new TranslationTextComponent("button.back").getFormattedText(), button -> {
             if (tile.getWorld().isRemote) {
-                //TODO gui
-                //Main.SIMPLE_CHANNEL.sendToServer(new MessageOpenGui(tile.getPos(), GuiHandler.GUI_CAR_WORKSHOP_CRAFTING, player).open(player));
+                Main.SIMPLE_CHANNEL.sendToServer(new MessageOpenCarWorkshopGui(tile.getPos(), player, false));
             }
         }));
         this.buttonBack.active = true;

@@ -125,7 +125,7 @@ public class Main {
         SIMPLE_CHANNEL.registerMessage(5, MessagePlaySoundLoop.class, (msg, buf) -> msg.toBytes(buf), (buf) -> new MessagePlaySoundLoop().fromBytes(buf), (msg, fun) -> msg.executeClientSide(fun.get()));
         SIMPLE_CHANNEL.registerMessage(6, MessageSyncTileEntity.class, (msg, buf) -> msg.toBytes(buf), (buf) -> new MessageSyncTileEntity().fromBytes(buf), (msg, fun) -> msg.executeClientSide(fun.get()));
         SIMPLE_CHANNEL.registerMessage(7, MessageSpawnCar.class, (msg, buf) -> msg.toBytes(buf), (buf) -> new MessageSpawnCar().fromBytes(buf), (msg, fun) -> msg.executeServerSide(fun.get()));
-        SIMPLE_CHANNEL.registerMessage(8, MessageOpenRepairGui.class, (msg, buf) -> msg.toBytes(buf), (buf) -> new MessageOpenRepairGui().fromBytes(buf), (msg, fun) -> msg.executeServerSide(fun.get()));
+        SIMPLE_CHANNEL.registerMessage(8, MessageOpenCarWorkshopGui.class, (msg, buf) -> msg.toBytes(buf), (buf) -> new MessageOpenCarWorkshopGui().fromBytes(buf), (msg, fun) -> msg.executeServerSide(fun.get()));
         SIMPLE_CHANNEL.registerMessage(9, MessageRepairCar.class, (msg, buf) -> msg.toBytes(buf), (buf) -> new MessageRepairCar().fromBytes(buf), (msg, fun) -> msg.executeServerSide(fun.get()));
         SIMPLE_CHANNEL.registerMessage(10, MessageCarHorn.class, (msg, buf) -> msg.toBytes(buf), (buf) -> new MessageCarHorn().fromBytes(buf), (msg, fun) -> msg.executeServerSide(fun.get()));
         SIMPLE_CHANNEL.registerMessage(11, MessageEditSign.class, (msg, buf) -> msg.toBytes(buf), (buf) -> new MessageEditSign().fromBytes(buf), (msg, fun) -> msg.executeServerSide(fun.get()));

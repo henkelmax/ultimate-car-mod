@@ -200,7 +200,7 @@ public class EntityGenericCar extends EntityCarLicensePlateBase {
 
     @Override
     public ITextComponent getCarName() {
-        return new TranslationTextComponent("entity.car.name");
+        return new TranslationTextComponent("entity.car.car");
     }
 
     public SoundEvent getStopSound() {

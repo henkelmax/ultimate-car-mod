@@ -5,7 +5,6 @@ import java.util.List;
 
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.entity.car.base.EntityGenericCar;
-import de.maxhenkel.car.entity.car.parts.Part;
 import de.maxhenkel.car.entity.car.parts.PartRegistry;
 import de.maxhenkel.car.items.ICarPart;
 import de.maxhenkel.car.items.ItemKey;
@@ -21,7 +20,6 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.IIntArray;
 import net.minecraft.util.IntArray;
@@ -30,6 +28,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.World;
 
 public class TileEntityCarWorkshop extends TileEntityBase implements IInventory {
 
@@ -43,7 +42,6 @@ public class TileEntityCarWorkshop extends TileEntityBase implements IInventory 
         this.craftingMatrix = new Inventory(15);
         this.repairInventory = new Inventory(3);
         this.messages = new ArrayList<>();
-        //updateRecipe();
     }
 
     public Inventory getRepairInventory() {
@@ -213,6 +211,25 @@ public class TileEntityCarWorkshop extends TileEntityBase implements IInventory 
     }
 
     public void updateRecipe() {
+        List<ItemStack> items = new ArrayList<>();
+
+        for (int i = 0; i < craftingMatrix.getSizeInventory(); i++) {
+            ItemStack stack = craftingMatrix.getStackInSlot(i);
+            if (!stack.isEmpty() && stack.getItem() instanceof ICarPart) {
+                if (((ICarPart) stack.getItem()).getPart(stack) != null) {
+                    items.add(stack);
+                }
+            }
+        }
+
+        List<ITextComponent> messages = new ArrayList<>();
+
+        currentCraftingCar = createCar(world, items, messages);
+
+        this.messages = messages;
+    }
+
+    public static EntityGenericCar createCar(World world, List<ItemStack> partStacks, List<ITextComponent> messages) {
         EntityGenericCar car = new EntityGenericCar(world);
 
         //Put keys in inventory
@@ -221,25 +238,6 @@ public class TileEntityCarWorkshop extends TileEntityBase implements IInventory 
 
         car.setIsSpawned(false);
 
-        List<ItemStack> partStacks = new ArrayList<>();
-
-        for (int i = 0; i < craftingMatrix.getSizeInventory(); i++) {
-            ItemStack stack = craftingMatrix.getStackInSlot(i);
-
-            if (!(stack.getItem() instanceof ICarPart)) {
-                continue;
-            }
-
-            ICarPart itemCarPart = (ICarPart) stack.getItem();
-
-            Part part = itemCarPart.getPart(stack);
-
-            if (part == null) {
-                continue;
-            }
-
-            partStacks.add(stack);
-        }
 
         for (int i = 0; i < partStacks.size(); i++) {
             car.getPartInventory().setInventorySlotContents(i, partStacks.get(i).copy().split(1));
@@ -247,21 +245,20 @@ public class TileEntityCarWorkshop extends TileEntityBase implements IInventory 
 
         car.initParts();
 
-        List<ITextComponent> messages = new ArrayList<>();
-
         boolean showable = PartRegistry.isValid(car, messages);
 
-        this.messages = messages;
-
         if (!showable) {
-            this.currentCraftingCar = null;
-            return;
+            return null;
         }
 
         car.tryInitPartsAndModel();
         car.setPartSerializer();
 
-        this.currentCraftingCar = car;
+        return car;
+    }
+
+    public static EntityGenericCar createCar(World world, List<ItemStack> partStacks) {
+        return createCar(world, partStacks, new ArrayList<>());
     }
 
     public void removeCraftItems() {
@@ -404,7 +401,7 @@ public class TileEntityCarWorkshop extends TileEntityBase implements IInventory 
 
     @Override
     public ITextComponent getTranslatedName() {
-        return new TranslationTextComponent("block.car.car_workshop.name");
+        return ModBlocks.CAR_WORKSHOP.getNameTextComponent();
     }
 
     @Override
