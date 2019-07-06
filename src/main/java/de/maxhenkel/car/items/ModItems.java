@@ -2,7 +2,7 @@ package de.maxhenkel.car.items;
 
 import de.maxhenkel.car.entity.car.parts.PartRegistry;
 import de.maxhenkel.tools.NoRegister;
-import de.maxhenkel.tools.ReflectionHelper;
+import de.maxhenkel.tools.ReflectionTools;
 import net.minecraft.item.Item;
 
 import java.lang.reflect.Field;
@@ -211,7 +211,7 @@ public class ModItems {
     public static List<Item> getAll() {
         List<Item> items = new ArrayList<>();
         for (Field field : ModItems.class.getFields()) {
-            if (ReflectionHelper.hasAnnotation(field, NoRegister.class)) {
+            if (ReflectionTools.hasAnnotation(field, NoRegister.class)) {
                 continue;
             }
             try {

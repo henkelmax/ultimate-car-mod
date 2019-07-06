@@ -2,7 +2,7 @@ package de.maxhenkel.car.blocks.tileentity;
 
 import de.maxhenkel.car.Config;
 import de.maxhenkel.car.Main;
-import de.maxhenkel.tools.EnergyUtil;
+import de.maxhenkel.tools.EnergyTools;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.util.Direction;
@@ -29,13 +29,13 @@ public class TileEntityDynamo extends TileEntityBase implements IEnergyStorage, 
     @Override
     public void tick() {
         for (Direction side : Direction.values()) {
-            IEnergyStorage storage = EnergyUtil.getEnergyStorageOffset(world, pos, side);
+            IEnergyStorage storage = EnergyTools.getEnergyStorageOffset(world, pos, side);
 
             if (storage == null) {
                 continue;
             }
 
-            EnergyUtil.pushEnergy(this, storage, storedEnergy, side.getOpposite(), side);
+            EnergyTools.pushEnergy(this, storage, storedEnergy, side.getOpposite(), side);
         }
     }
 

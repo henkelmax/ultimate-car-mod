@@ -1,6 +1,5 @@
 package de.maxhenkel.tools;
 
-import java.util.List;
 import javax.annotation.Nullable;
 
 import net.minecraft.tileentity.TileEntity;
@@ -31,16 +30,6 @@ public class FluidUtils {
             return null;
         }
         return te.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, side.getOpposite()).orElse(null);
-    }
-
-    public static boolean containsFluid(List<FluidSelector> list, Fluid fluid) {
-        for (FluidSelector sel : list) {
-            if (sel.isValid(fluid)) {
-                return true;
-            }
-        }
-
-        return false;
     }
 
     @Nullable

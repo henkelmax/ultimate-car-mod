@@ -12,11 +12,6 @@ import net.minecraftforge.fml.network.PacketDistributor;
 
 public class MathTools {
 
-    public static QuaternionWrapper rotate(float angle, float x, float y, float z) {
-        return new QuaternionWrapper(x * (float) Math.sin(Math.toRadians(angle) / 2F), y * (float) Math.sin(Math.toRadians(angle) / 2F), z * (float) Math.sin(Math.toRadians(angle) / 2F), (float) Math.cos(Math.toRadians(angle) / 2F));
-        //new Quaternion().setFromMatrix(new Matrix4f().rotate((float) Math.PI / 2, new Vector3f(0F, 0F, 1F)))
-    }
-
     public static boolean isInBounds(float number, float bound, float tolerance) {
         if (number > bound - tolerance && number < bound + tolerance) {
             return true;

@@ -1,7 +1,7 @@
 package de.maxhenkel.car.blocks.tileentity;
 
 import de.maxhenkel.car.Main;
-import de.maxhenkel.tools.EnergyUtil;
+import de.maxhenkel.tools.EnergyTools;
 import de.maxhenkel.tools.BlockPosList;
 import de.maxhenkel.car.Config;
 import de.maxhenkel.car.blocks.ModBlocks;
@@ -42,7 +42,7 @@ public class TileEntityCable extends TileEntityBase implements ITickableTileEnti
         List<IEnergyStorage> providers = new ArrayList<>();
 
         for (Direction facing : Direction.values()) {
-            IEnergyStorage provider = EnergyUtil.getEnergyStorageOffset(world, pos, facing);
+            IEnergyStorage provider = EnergyTools.getEnergyStorageOffset(world, pos, facing);
 
             if (provider == null || provider instanceof TileEntityCable) {
                 continue;
@@ -112,7 +112,7 @@ public class TileEntityCable extends TileEntityBase implements ITickableTileEnti
                 continue;
             }
 
-            IEnergyStorage storage = EnergyUtil.getEnergyStorageOffset(world, pos, side);
+            IEnergyStorage storage = EnergyTools.getEnergyStorageOffset(world, pos, side);
 
             if (storage == null || storage.equals(this)) {
                 continue;

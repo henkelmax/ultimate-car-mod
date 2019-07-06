@@ -8,8 +8,8 @@ import de.maxhenkel.car.Main;
 import de.maxhenkel.car.blocks.BlockFuelStation;
 import de.maxhenkel.car.blocks.ModBlocks;
 import de.maxhenkel.car.entity.car.base.EntityCarFuelBase;
+import de.maxhenkel.car.fluids.ModFluids;
 import de.maxhenkel.car.net.MessageStartFuel;
-import de.maxhenkel.car.registries.FuelStationFluid;
 import de.maxhenkel.car.sounds.ModSounds;
 import de.maxhenkel.car.sounds.SoundLoopTileentity;
 import de.maxhenkel.car.sounds.SoundLoopTileentity.ISoundLoopable;
@@ -99,6 +99,7 @@ public class TileEntityFuelStation extends TileEntityBase implements ITickableTi
                     break;
             }
         }
+
         public int size() {
             return 3;
         }
@@ -212,9 +213,9 @@ public class TileEntityFuelStation extends TileEntityBase implements ITickableTi
             return false;
         }
 
-        /*if (tradeTemplate.getItemDamage() != tradingStack.getItemDamage()) {
+        if (tradeTemplate.getDamage() != tradingStack.getDamage()) {
             return false;
-        }*/
+        }
 
         if (tradingStack.getCount() < tradeTemplate.getCount()) {
             return false;
@@ -241,10 +242,10 @@ public class TileEntityFuelStation extends TileEntityBase implements ITickableTi
     }
 
     public boolean isValidFluid(Fluid f) {
-        for (FuelStationFluid recipe : FuelStationFluid.REGISTRY) {
-            if (recipe.getInput().isValid(f)) {
-                return true;
-            }
+
+        //TODO configurable fluids if fluid system is implemented
+        if (ModFluids.BIO_DIESEL.equals(f)) {
+            return true;
         }
 
         return false;

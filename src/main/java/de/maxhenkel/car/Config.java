@@ -36,6 +36,7 @@ public class Config {
 
     public static ForgeConfigSpec.IntValue generatorEnergyStorage;
     public static ForgeConfigSpec.IntValue generatorFluidStorage;
+    public static ForgeConfigSpec.IntValue generatorEnergyGeneration;
 
     public static ForgeConfigSpec.IntValue splitTankFluidStorage;
     public static ForgeConfigSpec.IntValue splitTankGeneratingTime;
@@ -177,6 +178,7 @@ public class Config {
 
             generatorEnergyStorage = builder.defineInRange("machines.generator.energy_storage", 30000, 1000, (int) Short.MAX_VALUE);
             generatorFluidStorage = builder.defineInRange("machines.generator.fluid_storage", 3000, 1000, (int) Short.MAX_VALUE);
+            generatorEnergyGeneration = builder.defineInRange("machines.generator.energy_generation", 500, 1, (int) Short.MAX_VALUE);
 
             splitTankFluidStorage = builder.defineInRange("machines.split_tank.fluid_storage", 3000, 1000, (int) Short.MAX_VALUE);
             splitTankGeneratingTime = builder.defineInRange("machines.split_tank.generating_time", 800, 10, (int) Short.MAX_VALUE);

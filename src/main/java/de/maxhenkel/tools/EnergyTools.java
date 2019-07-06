@@ -9,7 +9,7 @@ import net.minecraftforge.energy.IEnergyStorage;
 
 import javax.annotation.Nullable;
 
-public class EnergyUtil {
+public class EnergyTools {
 
     public static void pushEnergy(IEnergyStorage provider, IEnergyStorage receiver, int maxAmount, Direction extractSide, Direction pushSide) {
         int energySim = provider.extractEnergy(maxAmount, true);

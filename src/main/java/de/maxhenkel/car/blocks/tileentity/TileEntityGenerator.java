@@ -4,8 +4,8 @@ import de.maxhenkel.car.Config;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.blocks.BlockGui;
 import de.maxhenkel.car.blocks.ModBlocks;
-import de.maxhenkel.tools.EnergyUtil;
-import de.maxhenkel.car.registries.GeneratorRecipe;
+import de.maxhenkel.car.fluids.ModFluids;
+import de.maxhenkel.tools.EnergyTools;
 import de.maxhenkel.tools.FluidStackWrapper;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
@@ -31,6 +31,7 @@ public class TileEntityGenerator extends TileEntityBase implements ITickableTile
 
     public final int maxMillibuckets;
     protected int currentMillibuckets;
+    protected final int energyGeneration;
 
     protected Fluid currentFluid;
 
@@ -43,6 +44,7 @@ public class TileEntityGenerator extends TileEntityBase implements ITickableTile
         this.storedEnergy = 0;
         this.maxMillibuckets = Config.generatorFluidStorage.get();
         this.currentMillibuckets = 0;
+        this.energyGeneration = Config.generatorEnergyGeneration.get();
     }
 
     public final IIntArray FIELDS = new IIntArray() {
@@ -66,6 +68,7 @@ public class TileEntityGenerator extends TileEntityBase implements ITickableTile
                     break;
             }
         }
+
         public int size() {
             return 2;
         }
@@ -85,9 +88,9 @@ public class TileEntityGenerator extends TileEntityBase implements ITickableTile
         }
 
         if (currentFluid != null && currentMillibuckets > 0
-                && (storedEnergy + getCurrentGenerationFactor()) <= maxStorage) {
+                && (storedEnergy + energyGeneration) <= maxStorage) {
             currentMillibuckets--;
-            storedEnergy += getCurrentGenerationFactor();
+            storedEnergy += energyGeneration;
 
             if (currentMillibuckets <= 0) {
                 currentMillibuckets = 0;
@@ -108,37 +111,23 @@ public class TileEntityGenerator extends TileEntityBase implements ITickableTile
         markDirty();
     }
 
-    public int getCurrentGenerationFactor(Fluid f) {
-        for (GeneratorRecipe recipe : GeneratorRecipe.REGISTRY) {
-            if (recipe.getInput().isValid(f)) {
-                return recipe.getEnergy();
-            }
-        }
-
-        return 0;
-    }
-
-    public int getCurrentGenerationFactor() {
-        return getCurrentGenerationFactor(currentFluid);
-    }
-
     public boolean isValidFuel(Fluid f) {
-        return getCurrentGenerationFactor(f) > 0;
+        return ModFluids.BIO_DIESEL.equals(f);
     }
 
     private void handlePushEnergy() {
         for (Direction side : Direction.values()) {
-            IEnergyStorage storage = EnergyUtil.getEnergyStorageOffset(world, pos, side);
+            IEnergyStorage storage = EnergyTools.getEnergyStorageOffset(world, pos, side);
             if (storage == null) {
                 continue;
             }
 
-            EnergyUtil.pushEnergy(this, storage, storedEnergy, side.getOpposite(), side);
+            EnergyTools.pushEnergy(this, storage, storedEnergy, side.getOpposite(), side);
         }
     }
 
     public boolean isEnabled() {
-        int fuelGen = getCurrentGenerationFactor();
+        int fuelGen = energyGeneration;
         if (currentMillibuckets > 0 && storedEnergy + fuelGen < maxStorage) {
             return true;
         }
@@ -154,10 +143,10 @@ public class TileEntityGenerator extends TileEntityBase implements ITickableTile
         }
     }
 
-	@Override
-	public ITextComponent getTranslatedName() {
-		return new TranslationTextComponent("block.car.generator");
-	}
+    @Override
+    public ITextComponent getTranslatedName() {
+        return new TranslationTextComponent("block.car.generator");
+    }
 
 
     @Override

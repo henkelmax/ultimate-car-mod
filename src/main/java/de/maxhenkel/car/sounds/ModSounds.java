@@ -1,9 +1,8 @@
 package de.maxhenkel.car.sounds;
 
 import de.maxhenkel.car.Main;
-import de.maxhenkel.car.blocks.ModBlocks;
 import de.maxhenkel.tools.NoRegister;
-import de.maxhenkel.tools.ReflectionHelper;
+import de.maxhenkel.tools.ReflectionTools;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.TickableSound;
 import net.minecraft.entity.player.PlayerEntity;
@@ -43,7 +42,7 @@ public class ModSounds {
     public static List<SoundEvent> getAll() {
         List<SoundEvent> sounds = new ArrayList<>();
         for (Field field : ModSounds.class.getFields()) {
-            if (ReflectionHelper.hasAnnotation(field, NoRegister.class)) {
+            if (ReflectionTools.hasAnnotation(field, NoRegister.class)) {
                 continue;
             }
             try {

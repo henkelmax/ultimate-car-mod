@@ -5,7 +5,7 @@ import de.maxhenkel.car.blocks.liquid.BlockBioDiesel;
 import de.maxhenkel.tools.IItemBlock;
 import de.maxhenkel.tools.NoRegister;
 import de.maxhenkel.tools.OnlyBlock;
-import de.maxhenkel.tools.ReflectionHelper;
+import de.maxhenkel.tools.ReflectionTools;
 import net.minecraft.block.Block;
 
 import java.lang.reflect.Field;
@@ -67,7 +67,7 @@ public class ModBlocks {
     public static List<IItemBlock> getBlocksWithItems() {
         List<IItemBlock> blocks = new ArrayList<>();
         for (Field field : ModBlocks.class.getFields()) {
-            if (ReflectionHelper.hasAnnotation(field, NoRegister.class) || ReflectionHelper.hasAnnotation(field, OnlyBlock.class)) {
+            if (ReflectionTools.hasAnnotation(field, NoRegister.class) || ReflectionTools.hasAnnotation(field, OnlyBlock.class)) {
                 continue;
             }
             try {
@@ -90,7 +90,7 @@ public class ModBlocks {
     public static List<Block> getAll() {
         List<Block> blocks = new ArrayList<>();
         for (Field field : ModBlocks.class.getFields()) {
-            if (ReflectionHelper.hasAnnotation(field, NoRegister.class)) {
+            if (ReflectionTools.hasAnnotation(field, NoRegister.class)) {
                 continue;
             }
             try {

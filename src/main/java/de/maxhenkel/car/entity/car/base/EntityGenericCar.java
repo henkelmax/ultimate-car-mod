@@ -4,8 +4,8 @@ import de.maxhenkel.car.DataSerializerItemList;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.entity.car.parts.*;
 import de.maxhenkel.car.entity.model.obj.OBJModelInstance;
+import de.maxhenkel.car.fluids.ModFluids;
 import de.maxhenkel.car.items.ICarPart;
-import de.maxhenkel.car.registries.CarFluidRegistry;
 import de.maxhenkel.car.sounds.ModSounds;
 import net.minecraft.entity.EntityType;
 import net.minecraft.inventory.Inventory;
@@ -146,13 +146,11 @@ public class EntityGenericCar extends EntityCarLicensePlateBase {
             return 0F;
         }
 
-        float fluidEfficiency = 1F;
+        float fluidEfficiency = 0F;
 
-        if (fluid != null) {
-            CarFluidRegistry entry = CarFluidRegistry.REGISTRY.getEntry(fluid.getName());
-            if (entry != null) {
-                fluidEfficiency = entry.getEfficiency();
-            }
+        //TODO configurable fluids if fluid system is implemented
+        if (fluid == null || ModFluids.BIO_DIESEL.equals(fluid)) {
+            fluidEfficiency = 1;
         }
 
         return chassis.getFuelEfficiency() * engine.getFuelEfficiency() * fluidEfficiency;

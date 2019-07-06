@@ -2,7 +2,6 @@ package de.maxhenkel.tools;
 
 import java.util.List;
 
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -11,8 +10,6 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 
 public class ItemTools {
-
-	public static final ItemStack EMPTY = ItemStack.EMPTY;
 
 	public static boolean isStackEmpty(ItemStack stack) {
 		if (stack == null) {
