@@ -12,10 +12,7 @@ import de.maxhenkel.car.sounds.SoundLoopIdle;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.ISound;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.MoverType;
+import net.minecraft.entity.*;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
@@ -101,9 +98,6 @@ public abstract class EntityCarBase extends EntityVehicleBase {
     }
 
     public void centerCar() {
-		/*if(world.isRemote){
-			CommonProxy.simpleNetworkWrapper.sendToServer(new MessageCenterCar(getDriver()));
-		}*/
         Direction facing = getHorizontalFacing();
         switch (facing) {
             case SOUTH:
@@ -265,13 +259,6 @@ public abstract class EntityCarBase extends EntityVehicleBase {
             rotationYaw += 360F;
             prevRotationYaw = delta + rotationYaw;
         }
-        /*if (rotationYaw > 180) {
-            rotationYaw %= 360F;
-            //prevRotationYaw = rotationYaw;
-        } else if (rotationYaw <= -180) {
-            rotationYaw %= 360;
-            //prevRotationYaw = rotationYaw;
-        }*/
 
         if (collidedHorizontally) {
             if (world.isRemote && !collidedLastTick) {
@@ -294,7 +281,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
             return 1;
         }
 
-        //TODO add grount types to config
+        //TODO add ground types to config
         if (true/*Config.isDrivable(b)*/) {
             return 1F;
         } else {
@@ -578,15 +565,15 @@ public abstract class EntityCarBase extends EntityVehicleBase {
             playHornSound();
             if (Config.hornFlee.get()) {
                 double radius = 15;
-                List<LivingEntity> list = world.getEntitiesWithinAABB(LivingEntity.class, new AxisAlignedBB(posX - radius, posY - radius, posZ - radius, posX + radius, posY + radius, posZ + radius));
-                for (LivingEntity ent : list) {
+                List<MobEntity> list = world.getEntitiesWithinAABB(MobEntity.class, new AxisAlignedBB(posX - radius, posY - radius, posZ - radius, posX + radius, posY + radius, posZ + radius));
+                for (MobEntity ent : list) {
                     fleeEntity(ent);
                 }
             }
         }
     }
 
-    public void fleeEntity(LivingEntity entity) {
+    public void fleeEntity(MobEntity entity) {
         double fleeDistance = 10;
         Vec3d vecCar = new Vec3d(posX, posY, posZ);
         Vec3d vecEntity = new Vec3d(entity.posX, entity.posY, entity.posZ);
@@ -594,8 +581,6 @@ public abstract class EntityCarBase extends EntityVehicleBase {
         fleeDir = fleeDir.normalize();
         Vec3d fleePos = new Vec3d(vecEntity.x + fleeDir.x * fleeDistance, vecEntity.y + fleeDir.y * fleeDistance, vecEntity.z + fleeDir.z * fleeDistance);
 
-        //TODO implement fleeing
-        //entity.getNavigator().tryMoveToXYZ(fleePos.x, fleePos.y, fleePos.z, 2.5);
+        entity.getNavigator().tryMoveToXYZ(fleePos.x, fleePos.y, fleePos.z, 2.5);
     }
-
 }
