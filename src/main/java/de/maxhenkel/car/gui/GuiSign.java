@@ -139,7 +139,14 @@ public class GuiSign extends GuiBase<ContainerSign> {
             minecraft.player.closeScreen();
         }
 
-        return true;
+        return text1.keyPressed(key, a, b) ||
+                text1.func_212955_f() ||
+                text2.keyPressed(key, a, b) ||
+                text2.func_212955_f() ||
+                text3.keyPressed(key, a, b) ||
+                text3.func_212955_f() ||
+                text4.keyPressed(key, a, b) ||
+                text4.func_212955_f() || super.keyPressed(key, a, b);
     }
 
     private void save() {
