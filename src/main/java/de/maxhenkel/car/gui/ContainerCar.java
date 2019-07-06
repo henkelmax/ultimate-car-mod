@@ -21,11 +21,11 @@ public class ContainerCar extends ContainerBase {
             }
         }
 
-        addSlot(new SlotFuel(car, 0, 98, 66));
+        addSlot(new SlotFuel(car, 0, 98, 66, playerInv.player));
 
-        addSlot(new SlotBattery(car, 0, 116, 66));
+        addSlot(new SlotBattery(car, 0, 116, 66, playerInv.player));
 
-        addSlot(new SlotRepairKit(car, 0, 134, 66));
+        addSlot(new SlotRepairKit(car, 0, 134, 66, playerInv.player));
 
         addInvSlots();
     }

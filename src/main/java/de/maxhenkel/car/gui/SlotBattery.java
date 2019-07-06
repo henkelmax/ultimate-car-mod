@@ -11,10 +11,12 @@ import net.minecraft.item.ItemStack;
 public class SlotBattery extends Slot {
 
     private EntityCarBatteryBase car;
+    private PlayerEntity player;
 
-    public SlotBattery(EntityCarBatteryBase car, int index, int xPosition, int yPosition) {
+    public SlotBattery(EntityCarBatteryBase car, int index, int xPosition, int yPosition, PlayerEntity player) {
         super(new Inventory(1), index, xPosition, yPosition);
         this.car = car;
+        this.player = player;
     }
 
     @Override
@@ -36,13 +38,6 @@ public class SlotBattery extends Slot {
         stack.setDamage(stack.getMaxDamage() - (energy - fill));
 
         car.setBatteryLevel(car.getBatteryLevel() + fill);
-
-        PlayerEntity player = car.getDriver();
-
-        if (player == null) {
-            InventoryHelper.spawnItemStack(car.world, car.posX, car.posY, car.posZ, stack);
-            return;
-        }
 
         if (!player.inventory.addItemStackToInventory(stack)) {
             InventoryHelper.spawnItemStack(car.world, car.posX, car.posY, car.posZ, stack);

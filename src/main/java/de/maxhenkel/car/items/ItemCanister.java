@@ -43,7 +43,7 @@ public class ItemCanister extends Item {
 
         BlockState state = context.getWorld().getBlockState(context.getPos());
 
-        TileEntity te = null;
+        TileEntity te;
 
         if (state.getBlock().equals(ModBlocks.FUEL_STATION_TOP)) {
             te = context.getWorld().getTileEntity(context.getPos().down());

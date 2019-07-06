@@ -15,10 +15,12 @@ import net.minecraft.util.SoundEvents;
 public class SlotFuel extends Slot {
 
     private EntityCarFuelBase car;
+    private PlayerEntity player;
 
-    public SlotFuel(EntityCarFuelBase car, int index, int xPosition, int yPosition) {
+    public SlotFuel(EntityCarFuelBase car, int index, int xPosition, int yPosition, PlayerEntity player) {
         super(new Inventory(1), index, xPosition, yPosition);
         this.car = car;
+        this.player = player;
     }
 
     @Override
@@ -35,13 +37,6 @@ public class SlotFuel extends Slot {
 
         if (success) {
             ModSounds.playSound(SoundEvents.BLOCK_BREWING_STAND_BREW, car.world, car.getPosition(), null, SoundCategory.NEUTRAL);
-        }
-
-        PlayerEntity player = car.getDriver();
-
-        if (player == null) {
-            InventoryHelper.spawnItemStack(car.world, car.posX, car.posY, car.posZ, stack);
-            return;
         }
 
         if (!player.inventory.addItemStackToInventory(stack)) {
