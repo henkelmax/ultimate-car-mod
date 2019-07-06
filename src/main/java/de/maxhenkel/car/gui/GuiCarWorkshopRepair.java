@@ -3,15 +3,14 @@ package de.maxhenkel.car.gui;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.mojang.blaze3d.platform.GlStateManager;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.net.MessageOpenCarWorkshopGui;
+import de.maxhenkel.tools.EntityTools;
 import de.maxhenkel.tools.MathTools;
 import de.maxhenkel.car.blocks.tileentity.TileEntityCarWorkshop;
 import de.maxhenkel.car.entity.car.base.EntityCarBase;
 import de.maxhenkel.car.entity.car.base.EntityCarDamageBase;
 import de.maxhenkel.car.net.MessageRepairCar;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -28,15 +27,17 @@ public class GuiCarWorkshopRepair extends GuiBase<ContainerCarWorkshopRepair> {
 
     private PlayerEntity player;
     private TileEntityCarWorkshop tile;
-    private float rotoation;
 
     private Button buttonBack;
     private Button buttonRepair;
+
+    private EntityTools.CarRenderer carRenderer;
 
     public GuiCarWorkshopRepair(ContainerCarWorkshopRepair container, PlayerInventory playerInventory, ITextComponent title) {
         super(GUI_TEXTURE, container, playerInventory, title);
         this.player = container.getPlayer();
         this.tile = container.getTile();
+        this.carRenderer = new EntityTools.CarRenderer();
 
         xSize = 176;
         ySize = 222;
@@ -98,15 +99,14 @@ public class GuiCarWorkshopRepair extends GuiBase<ContainerCarWorkshopRepair> {
 
     }
 
-    private void drawCar(EntityCarBase car) {
-        GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-        MathTools.drawCarOnScreen(xSize / 2, 55, 23, rotoation, car);
-        float parts = Minecraft.getInstance().getRenderPartialTicks();
-        rotoation += parts / 4;
-        if (!(rotoation < 360)) {
-            rotoation = 0F;
-        }
+    @Override
+    public void tick() {
+        super.tick();
+        carRenderer.tick();
+    }
 
+    private void drawCar(EntityCarBase car) {
+        carRenderer.render(car, xSize / 2, 55, 23);
     }
 
     public double getDamagePercent(EntityCarDamageBase car) {

@@ -2,7 +2,6 @@ package de.maxhenkel.car.entity.car.base;
 
 import java.util.UUID;
 
-import de.maxhenkel.car.Config;
 import de.maxhenkel.tools.ItemTools;
 import de.maxhenkel.car.items.ItemKey;
 import de.maxhenkel.car.items.ModItems;
@@ -32,6 +31,7 @@ public abstract class EntityCarLockBase extends EntityCarInventoryBase {
     @Override
     public boolean canPlayerEnterCar(PlayerEntity player) {
         if (isLocked()) {
+            player.sendStatusMessage(new TranslationTextComponent("message.car_locked"), true);
             return false;
         }
         return super.canPlayerEnterCar(player);
@@ -107,7 +107,7 @@ public abstract class EntityCarLockBase extends EntityCarInventoryBase {
     @Override
     public boolean processInitialInteract(PlayerEntity player, Hand hand) {
         ItemStack stack = player.getHeldItem(hand);
-        if (player.isSneaking() && player.abilities.isCreativeMode && !ItemTools.isStackEmpty(stack)
+        if (!isLocked() && player.isSneaking() && player.abilities.isCreativeMode && !ItemTools.isStackEmpty(stack)
                 && stack.getItem().equals(ModItems.KEY)) {
             UUID uuid = ItemKey.getCar(stack);
             if (uuid == null) {

@@ -119,7 +119,7 @@ public abstract class EntityCarDamageBase extends EntityCarBatteryBase {
             return false;
         }
 
-        if (getDamage() >= 90 && amount > 2) {
+        if (getDamage() >= 90F && amount > 0F) {
             destroyCar(player, true);
         }
 
@@ -133,18 +133,9 @@ public abstract class EntityCarDamageBase extends EntityCarBatteryBase {
     @Override
     public boolean canStartCarEngine(PlayerEntity player) {
         boolean b = true;
-        if (getDamage() >= 100) {
+        if (getDamage() >= 100F) {
             return false;
-        }/* else if (getDamage() >= 95) {
-			b = rand.nextInt(5) == 0;
-		} else if (getDamage() >= 90) {
-			b = rand.nextBoolean();
-		} else if (getDamage() >= 80) {
-			b = rand.nextInt(5) != 0;
-		} else if (getDamage() >= 50) {
-			b = rand.nextInt(15)!=0;
-		}*/
-        // TODO implenent car not starting when damaged
+        }
         return super.canStartCarEngine(player) && b;
     }
 

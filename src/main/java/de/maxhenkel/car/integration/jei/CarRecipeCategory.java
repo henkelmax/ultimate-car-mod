@@ -1,9 +1,8 @@
 package de.maxhenkel.car.integration.jei;
 
-import com.mojang.blaze3d.platform.GlStateManager;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.blocks.ModBlocks;
-import de.maxhenkel.tools.MathTools;
+import de.maxhenkel.tools.EntityTools;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.gui.drawable.IDrawable;
@@ -11,7 +10,6 @@ import mezz.jei.api.gui.ingredient.IGuiItemStackGroup;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.category.IRecipeCategory;
-import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
@@ -77,17 +75,10 @@ public class CarRecipeCategory implements IRecipeCategory<CarRecipe> {
         }
     }
 
-    private float rotoation;
+    private EntityTools.SimulatedCarRenderer renderer = new EntityTools.SimulatedCarRenderer();
 
     @Override
     public void draw(CarRecipe recipe, double mouseX, double mouseY) {
-        GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-        MathTools.drawCarOnScreen(RECIPE_WIDTH - 30, RECIPE_HEIGHT - 54 / 4, 18, rotoation, recipe.getCar());
-
-        float parts = Minecraft.getInstance().getRenderPartialTicks();
-        rotoation += parts / 4F;
-        if (!(rotoation < 360F)) {
-            rotoation = 0F;
-        }
+        renderer.render(recipe.getCar(), RECIPE_WIDTH - 30, RECIPE_HEIGHT - 54 / 4, 18);
     }
 }

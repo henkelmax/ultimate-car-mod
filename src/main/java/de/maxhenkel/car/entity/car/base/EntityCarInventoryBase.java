@@ -154,7 +154,9 @@ public abstract class EntityCarInventoryBase extends EntityCarFuelBase implement
 
         InventoryHelper.dropInventoryItems(world, this, this);
         InventoryHelper.dropInventoryItems(world, this, externalInventory);
-        InventoryHelper.dropInventoryItems(world, this, partInventory);
+        if (dropParts) {
+            InventoryHelper.dropInventoryItems(world, this, partInventory);
+        }
     }
 
     @Override

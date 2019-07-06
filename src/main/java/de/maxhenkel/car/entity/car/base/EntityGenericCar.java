@@ -27,6 +27,8 @@ import java.util.List;
 
 public class EntityGenericCar extends EntityCarLicensePlateBase {
 
+    private static final DataParameter<ItemStack[]> PARTS = EntityDataManager.createKey(EntityGenericCar.class, DataSerializerItemList.ITEM_LIST);
+
     private List<Part> parts;
 
     public EntityGenericCar(EntityType type, World worldIn) {
@@ -274,8 +276,6 @@ public class EntityGenericCar extends EntityCarLicensePlateBase {
         return engine.getHornSound();
     }
 
-    private static final DataParameter<ItemStack[]> PARTS = EntityDataManager.createKey(EntityGenericCar.class, DataSerializerItemList.ITEM_LIST);
-
     @Override
     protected void registerData() {
         super.registerData();
@@ -379,9 +379,6 @@ public class EntityGenericCar extends EntityCarLicensePlateBase {
 
     private void checkInitializing() {
         PartBody body = getPartByClass(PartBody.class);
-        /*if (body != null) {
-            setSize(body.getWidth(), body.getHeight());
-        }*/
 
         if (body instanceof PartBodyTransporter) {
             PartContainer container = getPartByClass(PartContainer.class);

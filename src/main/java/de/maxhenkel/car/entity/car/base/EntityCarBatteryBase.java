@@ -36,6 +36,8 @@ public abstract class EntityCarBatteryBase extends EntityCarTemperatureBase {
     //Client side
     private int timeSinceStarted;
 
+    private int timeToStart;
+
     public EntityCarBatteryBase(EntityType type, World worldIn) {
         super(type, worldIn);
     }
@@ -62,7 +64,6 @@ public abstract class EntityCarBatteryBase extends EntityCarTemperatureBase {
                 setBatteryLevel(getBatteryLevel() - getBatteryUsage());
             }
 
-            //System.out.println(getBatteryLevel());
             setStartingTime(getStartingTime() + 1);
             if (getBatteryLevel() <= 0) {
                 setStarting(false, true);//??
@@ -73,8 +74,15 @@ public abstract class EntityCarBatteryBase extends EntityCarTemperatureBase {
 
         int time = getStartingTime();
 
-        if (time > 0 /*prevent always calling gettimetostart*/ && time > getTimeToStart()) {
-            startCarEngine();
+        if (time > 0) { // prevent always calling gettimetostart
+            if (timeToStart <= 0) {
+                timeToStart = getTimeToStart();
+            }
+
+            if (time > getTimeToStart()) {
+                startCarEngine();
+                timeToStart = 0;
+            }
         }
 
         if (isStarted()) {
@@ -87,10 +95,7 @@ public abstract class EntityCarBatteryBase extends EntityCarTemperatureBase {
                 chargingRate = 1;
             }
 
-            int tempRate = (int) (speedPerc * 10F);
-
             if (ticksExisted % 20 == 0) {
-                //System.out.println("Battery: " + getBatteryLevel() + " chargingRate: " + chargingRate + " temp: " + getTemperature() + " baseUsage: " + getBatteryUsage() + " carStopped: " + carStopped+ " carStarted: " + carStarted);
                 setBatteryLevel(getBatteryLevel() + chargingRate);
             }
         }
@@ -154,28 +159,28 @@ public abstract class EntityCarBatteryBase extends EntityCarTemperatureBase {
     }
 
     public int getTimeToStart() {
-        int baseTime = rand.nextInt(20) + 10;
+        int time = rand.nextInt(10) + 5;
 
         float temp = getTemperature();
         if (temp < 0F) {
-            baseTime += 30;
+            time += 40;
         } else if (temp < 10F) {
-            baseTime += 25;
+            time += 35;
         } else if (temp < 30F) {
-            baseTime += 20;
+            time += 10;
         } else if (temp < 60F) {
-            baseTime += 15;
+            time += 5;
         }
 
         float batteryPerc = getBatteryPercentage();
 
-        if (batteryPerc < 0.5) {
-            baseTime += 25;
-        } else if (batteryPerc < 0.75) {
-            baseTime += 15;
+        if (batteryPerc < 0.5F) {
+            time += 20 + rand.nextInt(10);
+        } else if (batteryPerc < 0.75F) {
+            time += 10 + rand.nextInt(10);
         }
 
-        return baseTime;
+        return time;
     }
 
     public int getBatteryUsage() {

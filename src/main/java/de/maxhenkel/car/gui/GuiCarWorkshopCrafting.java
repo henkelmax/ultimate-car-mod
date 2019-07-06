@@ -4,11 +4,10 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.entity.car.base.EntityGenericCar;
 import de.maxhenkel.car.net.MessageOpenCarWorkshopGui;
-import de.maxhenkel.tools.MathTools;
+import de.maxhenkel.tools.EntityTools;
 import de.maxhenkel.car.blocks.tileentity.TileEntityCarWorkshop;
 import de.maxhenkel.car.entity.car.base.EntityCarBase;
 import de.maxhenkel.car.net.MessageSpawnCar;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -25,15 +24,17 @@ public class GuiCarWorkshopCrafting extends GuiBase<ContainerCarWorkshopCrafting
 
     private TileEntityCarWorkshop tile;
     private PlayerEntity player;
-    private float rotoation;
 
     private Button buttonSpawn;
     private Button buttonRepair;
+
+    private EntityTools.CarRenderer carRenderer;
 
     public GuiCarWorkshopCrafting(ContainerCarWorkshopCrafting container, PlayerInventory playerInventory, ITextComponent title) {
         super(GUI_TEXTURE, container, playerInventory, title);
         this.player = playerInventory.player;
         this.tile = container.getTile();
+        this.carRenderer = new EntityTools.CarRenderer();
 
         xSize = 176;
         ySize = 222;
@@ -86,13 +87,14 @@ public class GuiCarWorkshopCrafting extends GuiBase<ContainerCarWorkshopCrafting
         }
     }
 
+    @Override
+    public void tick() {
+        super.tick();
+        carRenderer.tick();
+    }
+
     private void drawCar(EntityCarBase car) {
-        MathTools.drawCarOnScreen(xSize / 2, 55, 23, rotoation, car);
-        float parts = Minecraft.getInstance().getRenderPartialTicks();
-        rotoation += parts / 4;
-        if (!(rotoation < 360)) {
-            rotoation = 0F;
-        }
+        carRenderer.render(car, xSize / 2, 55, 23);
     }
 
     @Override
