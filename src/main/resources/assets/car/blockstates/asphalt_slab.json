@@ -1,5 +1,7 @@
 {
     "variants": {
-        "": { "model": "car:block/asphalt_slab" }
+        "type=bottom": { "model": "car:block/asphalt_slab" },
+        "type=top": { "model": "car:block/asphalt_slab_top" },
+        "type=double": { "model": "car:block/asphalt" }
     }
 }
