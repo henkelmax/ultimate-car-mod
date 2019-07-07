@@ -41,7 +41,7 @@ public abstract class EntityCarDamageBase extends EntityCarBatteryBase {
             return;
         }
 
-        int amount = 0;
+        int amount;
         int damage = (int) getDamage();
 
         if (damage < 70) {

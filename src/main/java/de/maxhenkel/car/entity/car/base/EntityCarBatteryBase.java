@@ -106,9 +106,9 @@ public abstract class EntityCarBatteryBase extends EntityCarTemperatureBase {
             return;
         }
         Vec3d lookVec = getLookVec().normalize();
-        double offX = lookVec.x * -1;
+        double offX = lookVec.x * -1D;
         double offY = lookVec.y;
-        double offZ = lookVec.z * -1;
+        double offZ = lookVec.z * -1D;
 
         //Engine started smoke should only come 1 second after start and only if the engine is colder than 50°C
         if (timeSinceStarted > 0 && timeSinceStarted < 20 && getTemperature() < 50F) {
@@ -149,9 +149,10 @@ public abstract class EntityCarBatteryBase extends EntityCarTemperatureBase {
 
     private void spawnParticle(IParticleData particleTypes, double offX, double offY, double offZ, double speedX, double speedZ, double random) {
         world.addParticle(particleTypes,
-                posX + offX + (rand.nextDouble() * random),
-                posY + (rand.nextDouble() * random) + getCarHeight() / 8F,
-                posZ + offZ + (rand.nextDouble() * random), speedX, 0.0D, speedZ);
+                posX + offX + (rand.nextDouble() * random - random / 2D),
+                posY + offY + (rand.nextDouble() * random - random / 2D) + getCarHeight() / 8F,
+                posZ + offZ + (rand.nextDouble() * random - random / 2D),
+                speedX, 0.0D, speedZ);
     }
 
     private void spawnParticle(IParticleData particleTypes, double offX, double offY, double offZ, double speedX, double speedZ) {

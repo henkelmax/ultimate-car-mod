@@ -184,7 +184,6 @@ public class TileEntityTank extends TileEntityBase implements IFluidHandler, ITi
 
             if (doFill) {
                 fluid = new FluidStackWrapper(resource.getFluid(), amount);
-                // synchronize();
                 markDirty();
             }
 
@@ -194,7 +193,6 @@ public class TileEntityTank extends TileEntityBase implements IFluidHandler, ITi
 
             if (doFill) {
                 fluid.amount += amount;
-                // synchronize();
                 markDirty();
             }
 
@@ -220,7 +218,6 @@ public class TileEntityTank extends TileEntityBase implements IFluidHandler, ITi
                 if (fluid.amount <= 0) {
                     fluid = null;
                 }
-                // synchronize();
                 markDirty();
             }
 
@@ -245,7 +242,6 @@ public class TileEntityTank extends TileEntityBase implements IFluidHandler, ITi
             if (fluid.amount <= 0) {
                 fluid = null;
             }
-            // synchronize();
             markDirty();
         }
 
@@ -256,12 +252,19 @@ public class TileEntityTank extends TileEntityBase implements IFluidHandler, ITi
         this.fluid = fluid;
     }
 
-    /* **********************RENDERING************************ */
 
-    //@SideOnly(Side.CLIENT)
+    @Override
+    public ITextComponent getTranslatedName() {
+        return new TranslationTextComponent("block.car.tank");
+    }
+
+    @Override
+    public IIntArray getFields() {
+        return new IntArray(0);
+    }
+
     private boolean[] sides = new boolean[Direction.values().length];
 
-    //@SideOnly(Side.CLIENT)
     private boolean[] sidesFluid = new boolean[Direction.values().length];
 
     @OnlyIn(Dist.CLIENT)
@@ -322,15 +325,5 @@ public class TileEntityTank extends TileEntityBase implements IFluidHandler, ITi
     @OnlyIn(Dist.CLIENT)
     public boolean isFluidConnected(Direction facing) {
         return sidesFluid[facing.getIndex()];
-    }
-
-    @Override
-    public ITextComponent getTranslatedName() {
-        return new TranslationTextComponent("block.car.tank");
-    }
-
-    @Override
-    public IIntArray getFields() {
-        return new IntArray(0);
     }
 }
