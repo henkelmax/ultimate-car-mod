@@ -1,14 +1,10 @@
 package de.maxhenkel.car.net;
 
 import de.maxhenkel.car.Main;
-import de.maxhenkel.car.entity.car.base.EntityCarBase;
 import de.maxhenkel.car.entity.car.base.EntityCarBatteryBase;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketBuffer;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.network.NetworkDirection;
 import net.minecraftforge.fml.network.NetworkEvent;
 
@@ -30,22 +26,6 @@ public class MessageCenterCar implements Message<MessageCenterCar> {
         this.uuid = uuid;
     }
 
-    @OnlyIn(Dist.CLIENT)
-    public void centerClient() {
-        PlayerEntity player = Minecraft.getInstance().player;
-        PlayerEntity ridingPlayer = player.world.getPlayerByUuid(uuid);
-        Entity riding = ridingPlayer.getRidingEntity();
-
-        if (!(riding instanceof EntityCarBase)) {
-            return;
-        }
-
-        EntityCarBase car = (EntityCarBase) riding;
-        if (ridingPlayer.equals(car.getDriver())) {
-            car.centerCar();
-        }
-    }
-
     @Override
     public void executeServerSide(NetworkEvent.Context context) {
         if (!context.getSender().getUniqueID().equals(uuid)) {
@@ -64,13 +44,13 @@ public class MessageCenterCar implements Message<MessageCenterCar> {
             car.centerCar();
         }
 
-        MessageCenterCar msg = new MessageCenterCar(uuid);
+        MessageCenterCarClient msg = new MessageCenterCarClient(uuid);
         context.getSender().getServerWorld().getPlayers(player -> player.getDistance(car) <= 128F).forEach(player -> Main.SIMPLE_CHANNEL.sendTo(msg, player.connection.netManager, NetworkDirection.PLAY_TO_CLIENT));
     }
 
     @Override
     public void executeClientSide(NetworkEvent.Context context) {
-        centerClient();
+
     }
 
     @Override

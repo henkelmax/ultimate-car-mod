@@ -51,13 +51,11 @@ public class KeyEvents {
             if (Main.START_KEY.isKeyDown()) {
                 if (!wasStartPressed) {
                     Main.SIMPLE_CHANNEL.sendToServer(new MessageStarting(true, false, player));
-                    //car.setStarting(true, false);
                     wasStartPressed = true;
                 }
             } else {
                 if (wasStartPressed) {
                     Main.SIMPLE_CHANNEL.sendToServer(new MessageStarting(false, true, player));
-                    // car.setStarting(false, true);
                 }
                 wasStartPressed = false;
             }
@@ -73,7 +71,6 @@ public class KeyEvents {
 
             if (Main.CENTER_KEY.isKeyDown()) {
                 if (!wasCenterPressed) {
-                    //car.centerCar();
                     Main.SIMPLE_CHANNEL.sendToServer(new MessageCenterCar(player));
                     player.sendStatusMessage(new TranslationTextComponent("message.center_car"), true);
                     wasCenterPressed = true;

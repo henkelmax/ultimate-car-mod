@@ -118,7 +118,7 @@ public class Main {
         SIMPLE_CHANNEL.registerMessage(11, MessageEditSign.class, (msg, buf) -> msg.toBytes(buf), (buf) -> new MessageEditSign().fromBytes(buf), (msg, fun) -> msg.executeServerSide(fun.get()));
         SIMPLE_CHANNEL.registerMessage(12, MessageFuelStationAdminAmount.class, (msg, buf) -> msg.toBytes(buf), (buf) -> new MessageFuelStationAdminAmount().fromBytes(buf), (msg, fun) -> msg.executeServerSide(fun.get()));
         SIMPLE_CHANNEL.registerMessage(13, MessageCenterCar.class, (msg, buf) -> msg.toBytes(buf), (buf) -> new MessageCenterCar().fromBytes(buf), (msg, fun) -> msg.executeServerSide(fun.get()));
-        SIMPLE_CHANNEL.registerMessage(14, MessageCenterCar.class, (msg, buf) -> msg.toBytes(buf), (buf) -> new MessageCenterCar().fromBytes(buf), (msg, fun) -> msg.executeClientSide(fun.get()));
+        SIMPLE_CHANNEL.registerMessage(14, MessageCenterCarClient.class, (msg, buf) -> msg.toBytes(buf), (buf) -> new MessageCenterCarClient().fromBytes(buf), (msg, fun) -> msg.executeClientSide(fun.get()));
         SIMPLE_CHANNEL.registerMessage(15, MessageEditLicensePlate.class, (msg, buf) -> msg.toBytes(buf), (buf) -> new MessageEditLicensePlate().fromBytes(buf), (msg, fun) -> msg.executeServerSide(fun.get()));
     }
 
