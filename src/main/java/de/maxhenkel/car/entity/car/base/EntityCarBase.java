@@ -489,24 +489,20 @@ public abstract class EntityCarBase extends EntityVehicleBase {
         compound.putBoolean("started", isStarted());
     }
 
-    protected float getVolume() {
-        return Config.carVolume.get().floatValue();
-    }
-
     public void playStopSound() {
-        ModSounds.playSound(getStopSound(), world, getPosition(), null, SoundCategory.NEUTRAL, getVolume());
+        ModSounds.playSound(getStopSound(), world, getPosition(), null, SoundCategory.NEUTRAL, 1F);
     }
 
     public void playFailSound() {
-        ModSounds.playSound(getFailSound(), world, getPosition(), null, SoundCategory.NEUTRAL, getVolume());
+        ModSounds.playSound(getFailSound(), world, getPosition(), null, SoundCategory.NEUTRAL, 1F);
     }
 
     public void playCrashSound() {
-        ModSounds.playSound(getCrashSound(), world, getPosition(), null, SoundCategory.NEUTRAL, getVolume());
+        ModSounds.playSound(getCrashSound(), world, getPosition(), null, SoundCategory.NEUTRAL, 1F);
     }
 
     public void playHornSound() {
-        ModSounds.playSound(getHornSound(), world, getPosition(), null, SoundCategory.NEUTRAL, getVolume());
+        ModSounds.playSound(getHornSound(), world, getPosition(), null, SoundCategory.NEUTRAL, 1F);
     }
 
     public abstract SoundEvent getStopSound();

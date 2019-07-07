@@ -82,6 +82,26 @@ public class ModSounds {
         playSound(evt, world, pos, entity, category, 0.15F);
     }
 
+    public static boolean isCarSoundCategory(SoundEvent event) {
+        return event.equals(ENGINE_STOP) ||
+                event.equals(ENGINE_STARTING) ||
+                event.equals(ENGINE_START) ||
+                event.equals(ENGINE_IDLE) ||
+                event.equals(ENGINE_HIGH) ||
+                event.equals(ENGINE_FAIL) ||
+                event.equals(SPORT_ENGINE_STOP) ||
+                event.equals(SPORT_ENGINE_STARTING) ||
+                event.equals(SPORT_ENGINE_START) ||
+                event.equals(SPORT_ENGINE_IDLE) ||
+                event.equals(SPORT_ENGINE_HIGH) ||
+                event.equals(SPORT_ENGINE_FAIL) ||
+                event.equals(CAR_CRASH) ||
+                event.equals(CAR_HORN) ||
+                event.equals(CAR_LOCK) ||
+                event.equals(CAR_UNLOCK);
+
+    }
+
     @OnlyIn(Dist.CLIENT)
     public static void playSoundLoop(TickableSound loop, World world) {
         if (world.isRemote) {

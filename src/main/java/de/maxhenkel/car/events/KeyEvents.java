@@ -6,11 +6,14 @@ import de.maxhenkel.car.net.MessageCenterCar;
 import de.maxhenkel.car.net.MessageStarting;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 
+@OnlyIn(Dist.CLIENT)
 public class KeyEvents {
 
 

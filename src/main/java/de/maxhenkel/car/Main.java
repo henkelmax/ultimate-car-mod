@@ -211,6 +211,7 @@ public class Main {
         ClientRegistry.registerKeyBinding(CENTER_KEY);
 
         MinecraftForge.EVENT_BUS.register(new RenderEvents());
+        MinecraftForge.EVENT_BUS.register(new SoundEvents());
         MinecraftForge.EVENT_BUS.register(new KeyEvents());
         MinecraftForge.EVENT_BUS.register(new PlayerEvents());
     }

@@ -190,8 +190,6 @@ public class Config {
 
             canisterMaxFuel = builder.defineInRange("items.canister.max_fuel", 100, 1, 1000);
 
-            carVolume = builder.defineInRange("car.car_volume", 0.1F, 0F, 1F);
-
             collideWithEntities = builder.comment("Whether the cars should collide with other entities (except cars)").define("car.collide_with_entities", false);
             damageEntities = builder.comment("Whether the cars should damage other entities on collision").define("car.damage_entities", true);
             hornFlee = builder.comment("Whether animals flee from the car when the horn is activted").define("car.horn_flee", true);
@@ -229,6 +227,7 @@ public class Config {
         public ClientConfig(ForgeConfigSpec.Builder builder) {
             thirdPersonEnter = builder.define("car.third_person_when_enter_car", true);
             tempInFarenheit = builder.comment("True if the car temperature should be displayed in farenheit").define("car.temp_farenheit", false);
+            carVolume = builder.defineInRange("car.car_volume", 0.25F, 0F, 1F);
         }
     }
 

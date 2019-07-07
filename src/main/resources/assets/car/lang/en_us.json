@@ -337,6 +337,8 @@
 
     "entity.car.car": "Car",
 
+    "soundCategory.car": "Cars",
+
     "description.canister": "Sneak + right-click a Fuel Station to fill the Canister with Fuel. Place it in the fuel slot of your car to restore some fuel. It should only be used to be able to get to the next Fuel Station.",
     "description.car_workshop_outter": "The Car Workshop Part is used to build the Car Workshop. For more information look at the Car Workshop Block.",
     "description.car_workshop": "With the Car Workshop you can spawn and repair Cars. It is built with a Car Workshop in the center surrounded with 8 Car Workshop Parts.",
