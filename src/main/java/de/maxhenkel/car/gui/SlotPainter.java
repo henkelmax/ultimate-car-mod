@@ -46,13 +46,7 @@ public class SlotPainter extends Slot {
         compound.putInt("index", index);
     }
 
-    public static int getPainterID(PlayerEntity player) {
-        ItemStack stack = getPainterStack(player);
-
-        if (stack == null) {
-            return 0;
-        }
-
+    public static int getPainterID(ItemStack stack) {
         if (!stack.hasTag()) {
             return 0;
         }

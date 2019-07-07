@@ -9,6 +9,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 
@@ -23,8 +24,7 @@ public class ItemRepairKit extends Item {
 
     @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        tooltip.add(new TranslationTextComponent("tooltip.repair_kit_1"));
-        tooltip.add(new TranslationTextComponent("tooltip.repair_kit_2"));
+        tooltip.add(new TranslationTextComponent("tooltip.repair_kit").applyTextStyle(TextFormatting.GRAY));
         super.addInformation(stack, worldIn, tooltip, flagIn);
     }
 

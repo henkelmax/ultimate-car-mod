@@ -21,6 +21,8 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
@@ -105,8 +107,8 @@ public class ItemCanister extends Item {
     }
 
     private void addInfo(String fluid, int amount, List<ITextComponent> tooltip) {
-        tooltip.add(new TranslationTextComponent("canister.fluid", fluid));
-        tooltip.add(new TranslationTextComponent("canister.amount", amount));
+        tooltip.add(new TranslationTextComponent("canister.fluid", new StringTextComponent(fluid).applyTextStyle(TextFormatting.DARK_GRAY)).applyTextStyle(TextFormatting.GRAY));
+        tooltip.add(new TranslationTextComponent("canister.amount", new StringTextComponent(String.valueOf(amount)).applyTextStyle(TextFormatting.DARK_GRAY)).applyTextStyle(TextFormatting.GRAY));
     }
 
     public static boolean fillCanister(ItemStack canister, IFluidHandler handler) {

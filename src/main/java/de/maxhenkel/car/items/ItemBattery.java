@@ -11,6 +11,8 @@ import net.minecraft.item.ItemUseContext;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.energy.IEnergyStorage;
@@ -29,8 +31,8 @@ public class ItemBattery extends Item {
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         int damage = getMaxDamage(stack) - getDamage(stack);
 
-        tooltip.add(new TranslationTextComponent("tooltip.battery_energy", damage));
-        tooltip.add(new TranslationTextComponent("tooltip.battery", damage));
+        tooltip.add(new TranslationTextComponent("tooltip.battery_energy", new StringTextComponent(String.valueOf(damage)).applyTextStyle(TextFormatting.DARK_GRAY)).applyTextStyle(TextFormatting.GRAY));
+        tooltip.add(new TranslationTextComponent("tooltip.battery").applyTextStyle(TextFormatting.GRAY));
 
         super.addInformation(stack, worldIn, tooltip, flagIn);
     }

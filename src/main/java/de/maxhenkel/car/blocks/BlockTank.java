@@ -24,6 +24,8 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IEnviromentBlockReader;
@@ -58,8 +60,8 @@ public class BlockTank extends BlockBase implements ITileEntityProvider, IItemBl
             FluidStack fluidStack = FluidStackWrapper.loadFluidStackFromNBT(fluidComp);
 
             if (fluidStack != null) {
-                tooltip.add(new TranslationTextComponent("tooltip.fluid", fluidStack.getLocalizedName()));
-                tooltip.add(new TranslationTextComponent("tooltip.amount", fluidStack.amount));
+                tooltip.add(new TranslationTextComponent("tooltip.fluid", new TranslationTextComponent(fluidStack.getUnlocalizedName()).applyTextStyle(TextFormatting.DARK_GRAY)).applyTextStyle(TextFormatting.GRAY));
+                tooltip.add(new TranslationTextComponent("tooltip.amount", new StringTextComponent(String.valueOf(fluidStack.amount)).applyTextStyle(TextFormatting.DARK_GRAY)).applyTextStyle(TextFormatting.GRAY));
             }
         }
         super.addInformation(stack, worldIn, tooltip, flagIn);
