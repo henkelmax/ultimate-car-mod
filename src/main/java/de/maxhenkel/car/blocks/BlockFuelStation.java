@@ -119,7 +119,7 @@ public class BlockFuelStation extends BlockOrientableHorizontal {
 
     public static VoxelShape SHAPE_NORTH_SOUTH = Block.makeCuboidShape(2D, 0D, 5D, 14D, 31D, 11D);
     public static VoxelShape SHAPE_NEAST_WEST = Block.makeCuboidShape(5D, 0D, 2D, 11D, 31D, 14D);
-    public static VoxelShape SHAPE_SLAB = Block.makeCuboidShape(0D, 0D, 0D, 16D, 8D, 16D);
+    public static VoxelShape SHAPE_SLAB = Block.makeCuboidShape(0D, 0D, 0D, 16D, 8.01D, 16D);
 
     private static final Map<Direction, VoxelShape> SHAPES = Maps.newEnumMap(ImmutableMap.of(
             Direction.NORTH,
