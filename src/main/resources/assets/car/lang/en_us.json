@@ -65,6 +65,7 @@
     "block.car.fluid_pipe": "Fluid Pipe",
     "block.car.crank": "Crank",
     "block.car.dynamo": "Dynamo",
+    "block.car.sign": "Sign",
     "block.car.sign_post": "Sign Post",
     "block.car.arrow_front_left_right_long": "Long Arrow Left Right",
     "block.car.arrow_long": "Long Arrow",
