@@ -22,7 +22,7 @@ public abstract class ContainerBase extends Container {
         this.tileInventory = tileInventory;
 
         if (tileInventory instanceof TileEntityBase) {
-            func_216961_a(((TileEntityBase) tileInventory).getFields());
+            trackIntArray(((TileEntityBase) tileInventory).getFields());
         }
 
     }

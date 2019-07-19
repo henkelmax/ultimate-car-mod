@@ -187,7 +187,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
         if (sound == null) {
             return false;
         }
-        return Minecraft.getInstance().getSoundHandler().func_215294_c(sound);
+        return Minecraft.getInstance().getSoundHandler().isPlaying(sound);
     }
 
     public void destroyCar(PlayerEntity player, boolean dropParts) {

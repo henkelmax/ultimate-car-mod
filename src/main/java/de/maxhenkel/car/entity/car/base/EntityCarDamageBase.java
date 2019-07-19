@@ -89,6 +89,7 @@ public abstract class EntityCarDamageBase extends EntityCarBatteryBase {
     /**
      * Called when the entity is attacked.
      */
+    @Override
     public boolean attackEntityFrom(DamageSource source, float amount) {
         if (this.isInvulnerable()) {
             return false;

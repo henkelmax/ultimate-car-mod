@@ -3,9 +3,6 @@ package de.maxhenkel.car.gui;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.blocks.tileentity.TileEntityGenerator;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.Inventory;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIntArray;
 import net.minecraft.util.IntArray;
 
@@ -19,7 +16,7 @@ public class ContainerGenerator extends ContainerBase {
 
         addInvSlots();
 
-        func_216961_a(fields);
+        trackIntArray(fields);
     }
 
     public ContainerGenerator(int id, TileEntityGenerator generator, PlayerInventory playerInv){
