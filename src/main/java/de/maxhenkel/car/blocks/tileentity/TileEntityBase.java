@@ -10,7 +10,7 @@ import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.IIntArray;
 import net.minecraft.util.INameable;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.world.ServerWorld;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.fml.network.NetworkDirection;
 
 import javax.annotation.Nullable;
