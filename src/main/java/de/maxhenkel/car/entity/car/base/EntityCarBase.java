@@ -23,7 +23,6 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -476,8 +475,6 @@ public abstract class EntityCarBase extends EntityVehicleBase {
     public boolean isRight() {
         return this.dataManager.get(RIGHT);
     }
-
-    public abstract ITextComponent getCarName();
 
     @Override
     public void readAdditional(CompoundNBT compound) {

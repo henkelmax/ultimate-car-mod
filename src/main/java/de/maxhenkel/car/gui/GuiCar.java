@@ -32,7 +32,7 @@ public class GuiCar extends GuiBase<ContainerCar> {
         super.drawGuiContainerForegroundLayer(mouseX, mouseY);
 
         //Titles
-        font.drawString(car.getCarName().getFormattedText(), 7, 87, fontColor);
+        font.drawString(car.getDisplayName().getFormattedText(), 7, 87, fontColor);
         font.drawString(playerInv.getDisplayName().getFormattedText(), 8, this.ySize - 96 + 2, fontColor);
 
         font.drawString(getFuelString(), 7, 9, fontColor);

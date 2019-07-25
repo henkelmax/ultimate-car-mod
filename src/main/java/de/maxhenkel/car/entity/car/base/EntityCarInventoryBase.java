@@ -2,7 +2,6 @@ package de.maxhenkel.car.entity.car.base;
 
 import de.maxhenkel.car.gui.ContainerCar;
 import de.maxhenkel.car.gui.ContainerCarInventory;
-import de.maxhenkel.car.gui.TileEntityContainerProvider;
 import de.maxhenkel.tools.FluidStackWrapper;
 import de.maxhenkel.tools.ItemTools;
 import de.maxhenkel.car.items.ItemCanister;
@@ -92,7 +91,7 @@ public abstract class EntityCarInventoryBase extends EntityCarFuelBase implement
                     NetworkHooks.openGui((ServerPlayerEntity) player, new INamedContainerProvider() {
                         @Override
                         public ITextComponent getDisplayName() {
-                            return getCarName();
+                            return getDisplayName();
                         }
 
                         @Nullable
@@ -166,7 +165,7 @@ public abstract class EntityCarInventoryBase extends EntityCarFuelBase implement
             NetworkHooks.openGui((ServerPlayerEntity) player, new INamedContainerProvider() {
                 @Override
                 public ITextComponent getDisplayName() {
-                    return getCarName();
+                    return getDisplayName();
                 }
 
                 @Nullable

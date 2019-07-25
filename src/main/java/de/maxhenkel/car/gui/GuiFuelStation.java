@@ -8,8 +8,8 @@ import de.maxhenkel.car.Main;
 import de.maxhenkel.tools.FluidStackWrapper;
 import de.maxhenkel.tools.ItemTools;
 import de.maxhenkel.car.blocks.tileentity.TileEntityFuelStation;
-import de.maxhenkel.car.entity.car.base.EntityCarFuelBase;
 import net.minecraft.client.gui.widget.button.Button;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -17,6 +17,8 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidTankProperties;
 
 public class GuiFuelStation extends GuiBase<ContainerFuelStation> {
 
@@ -71,10 +73,14 @@ public class GuiFuelStation extends GuiBase<ContainerFuelStation> {
                 width / 2, guiTop + 5, TITLE_COLOR);
 
         // Car name
-        EntityCarFuelBase car = fuelStation.getCarInFront();
+        IFluidHandler fluidHandler = fuelStation.getFluidHandlerInFront();
 
-        drawCarName(car);
-        drawCarFuel(car);
+        if (fluidHandler instanceof Entity) {
+            drawCarName((Entity) fluidHandler);
+        }
+
+
+        drawCarFuel(fluidHandler);
         drawRefueled();
         drawBuffer();
 
@@ -101,34 +107,37 @@ public class GuiFuelStation extends GuiBase<ContainerFuelStation> {
         }
     }
 
-    private void drawCarName(EntityCarFuelBase car) {
+    private void drawCarName(Entity entity) {
         String carText;
-        if (car == null) {
+        if (entity == null) {
             carText = new TranslationTextComponent("fuelstation.nocar").getFormattedText();
         } else {
             carText = new TranslationTextComponent("fuelstation.carinfo",
-                    INFO_COLOR + car.getCarName().getFormattedText()).getFormattedText();
+                    INFO_COLOR + entity.getDisplayName().getFormattedText()).getFormattedText();
         }
 
         font.drawString(carText, guiLeft + 63, guiTop + 20, FONT_COLOR);
     }
 
-    private void drawCarFuel(EntityCarFuelBase car) {
-        if (car == null) {
+    private void drawCarFuel(IFluidHandler handler) {
+        if (handler == null || handler.getTankProperties().length < 1) {
             String empty = new TranslationTextComponent("fuelstation.fuel_empty").getFormattedText();
             font.drawString(empty, guiLeft + 63, guiTop + 30, FONT_COLOR);
             return;
         } else {
+            IFluidTankProperties properties = handler.getTankProperties()[0];
             String fuelText = new TranslationTextComponent("fuelstation.car_fuel_amount",
-                    INFO_COLOR + String.valueOf(car.getFuelAmount()),
-                    INFO_COLOR + String.valueOf(car.getMaxFuel())).getFormattedText();
+                    INFO_COLOR + String.valueOf(properties.getContents().amount),
+                    INFO_COLOR + String.valueOf(properties.getCapacity())).getFormattedText();
             font.drawString(fuelText, guiLeft + 63, guiTop + 30, FONT_COLOR);
         }
 
-        if (car.getFluid() == null) {
+        FluidStack contents = handler.getTankProperties()[0].getContents();
+
+        if (contents == null) {
             return;
         } else {
-            String typeText = new TranslationTextComponent("fuelstation.car_fuel_type", INFO_COLOR + car.getFluid().getLocalizedName(new FluidStackWrapper(car.getFluid(), 1))).getFormattedText();
+            String typeText = new TranslationTextComponent("fuelstation.car_fuel_type", INFO_COLOR + contents.getFluid().getLocalizedName(new FluidStackWrapper(contents.getFluid(), 1))).getFormattedText();
             font.drawString(typeText, guiLeft + 63, guiTop + 40, FONT_COLOR);
         }
     }

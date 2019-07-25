@@ -1,6 +1,5 @@
 package de.maxhenkel.car.gui;
 
-import de.maxhenkel.car.Main;
 import de.maxhenkel.car.entity.car.base.EntityCarInventoryBase;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
@@ -25,7 +24,7 @@ public class GuiCarInventory extends GuiBase<ContainerCarInventory> {
     @Override
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
         super.drawGuiContainerForegroundLayer(mouseX, mouseY);
-        font.drawString(car.getCarName().getFormattedText(), 8, 6, FONT_COLOR);
+        font.drawString(car.getDisplayName().getFormattedText(), 8, 6, FONT_COLOR);
         font.drawString(playerInventory.getDisplayName().getFormattedText(), 8, ySize - 96 + 3, FONT_COLOR);
     }
 

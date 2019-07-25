@@ -1,7 +1,7 @@
 package de.maxhenkel.car.events;
 
 import de.maxhenkel.car.Main;
-import de.maxhenkel.car.blocks.tileentity.TileEntityBase;
+import net.minecraft.entity.Entity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
@@ -22,13 +22,52 @@ public class CapabilityEvents {
 
     @SubscribeEvent
     public void capabilityAttach(AttachCapabilitiesEvent<TileEntity> event) {
-        if (!(event.getObject() instanceof TileEntityBase)) {
+        if (!(event.getObject() instanceof TileEntity)) {
+            return;
+        }
+        if (!((TileEntity) event.getObject()).getType().getRegistryName().getNamespace().equals(Main.MODID)) {
             return;
         }
         if (event.getObject() instanceof IFluidHandler) {
             IFluidHandler handler = (IFluidHandler) event.getObject();
             event.addCapability(new ResourceLocation(Main.MODID, "fluid"), new ICapabilityProvider() {
 
+                @Nonnull
+                @Override
+                public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
+                    if (cap.equals(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)) {
+                        return LazyOptional.of(() -> (T) handler);
+                    }
+                    return LazyOptional.empty();
+                }
+            });
+        }
+        if (event.getObject() instanceof IEnergyStorage) {
+            IEnergyStorage handler = (IEnergyStorage) event.getObject();
+            event.addCapability(new ResourceLocation(Main.MODID, "energy"), new ICapabilityProvider() {
+                @Nonnull
+                @Override
+                public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
+                    if (cap.equals(CapabilityEnergy.ENERGY)) {
+                        return LazyOptional.of(() -> (T) handler);
+                    }
+                    return LazyOptional.empty();
+                }
+            });
+        }
+    }
+
+    @SubscribeEvent
+    public void capabilityAttach2(AttachCapabilitiesEvent<Entity> event) {
+        if (!(event.getObject() instanceof Entity)) {
+            return;
+        }
+        if (!((Entity) event.getObject()).getType().getRegistryName().getNamespace().equals(Main.MODID)) {
+            return;
+        }
+        if (event.getObject() instanceof IFluidHandler) {
+            IFluidHandler handler = (IFluidHandler) event.getObject();
+            event.addCapability(new ResourceLocation(Main.MODID, "fluid"), new ICapabilityProvider() {
                 @Nonnull
                 @Override
                 public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {

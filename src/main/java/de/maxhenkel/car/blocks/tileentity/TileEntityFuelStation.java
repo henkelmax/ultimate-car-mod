@@ -7,7 +7,6 @@ import de.maxhenkel.car.Config;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.blocks.BlockFuelStation;
 import de.maxhenkel.car.blocks.ModBlocks;
-import de.maxhenkel.car.entity.car.base.EntityCarFuelBase;
 import de.maxhenkel.car.fluids.ModFluids;
 import de.maxhenkel.car.net.MessageStartFuel;
 import de.maxhenkel.car.sounds.ModSounds;
@@ -16,6 +15,7 @@ import de.maxhenkel.car.sounds.SoundLoopTileentity.ISoundLoopable;
 import de.maxhenkel.tools.FluidStackWrapper;
 import de.maxhenkel.tools.ItemTools;
 import net.minecraft.block.BlockState;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.IInventory;
@@ -35,6 +35,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
 
@@ -130,9 +131,9 @@ public class TileEntityFuelStation extends TileEntityBase implements ITickableTi
             fixTop();
         }
 
-        EntityCarFuelBase car = getCarInFront();
+        IFluidHandler handler = getFluidHandlerInFront();
 
-        if (car == null) {
+        if (handler == null) {
             if (fuelCounter > 0 || isFueling) {
                 fuelCounter = 0;
                 isFueling = false;
@@ -150,7 +151,7 @@ public class TileEntityFuelStation extends TileEntityBase implements ITickableTi
             return;
         }
 
-        FluidStack s = FluidUtil.tryFluidTransfer(car, this, transferRate, false);
+        FluidStack s = FluidUtil.tryFluidTransfer(handler, this, transferRate, false);
         int amountCarCanTake = 0;
         if (s != null) {
             amountCarCanTake = s.amount;
@@ -174,7 +175,7 @@ public class TileEntityFuelStation extends TileEntityBase implements ITickableTi
             }
         }
 
-        FluidStack result = FluidUtil.tryFluidTransfer(car, this, Math.min(transferRate, freeAmountLeft), true);
+        FluidStack result = FluidUtil.tryFluidTransfer(handler, this, Math.min(transferRate, freeAmountLeft), true);
 
         if (result != null) {
             fuelCounter += result.amount;
@@ -348,7 +349,7 @@ public class TileEntityFuelStation extends TileEntityBase implements ITickableTi
     }
 
     public void setFueling(boolean isFueling) {
-        if (getCarInFront() == null) {
+        if (getFluidHandlerInFront() == null) {
             return;
         }
 
@@ -362,8 +363,8 @@ public class TileEntityFuelStation extends TileEntityBase implements ITickableTi
     }
 
     public String getRenderText() {
-        EntityCarFuelBase car = getCarInFront();
-        if (car == null) {
+        IFluidHandler fluidHandler = getFluidHandlerInFront();
+        if (fluidHandler == null) {
             return new TranslationTextComponent("fuelstation.no_car").getFormattedText();
         } else if (fuelCounter <= 0) {
             return new TranslationTextComponent("fuelstation.ready").getFormattedText();
@@ -373,7 +374,7 @@ public class TileEntityFuelStation extends TileEntityBase implements ITickableTi
         }
     }
 
-    public EntityCarFuelBase getCarInFront() {
+    public IFluidHandler getFluidHandlerInFront() {
         BlockState ownState = world.getBlockState(getPos());
 
         if (!ownState.getBlock().equals(ModBlocks.FUEL_STATION)) {
@@ -384,23 +385,24 @@ public class TileEntityFuelStation extends TileEntityBase implements ITickableTi
 
         BlockPos start = getPos().offset(facing);
 
-        AxisAlignedBB aabb = new AxisAlignedBB(start.getX(), start.getY(), start.getZ(), start.getX() + 1,
-                start.getY() + 1, start.getZ() + 1);
+        AxisAlignedBB aabb = new AxisAlignedBB(start.getX(), start.getY(), start.getZ(), start.getX() + 1D,
+                start.getY() + 2D, start.getZ() + 1D);
 
-        List<EntityCarFuelBase> cars = world.getEntitiesWithinAABB(EntityCarFuelBase.class, aabb);
-        if (cars.isEmpty()) {
+        List<Entity> entities = world.getEntitiesWithinAABB(Entity.class, aabb);
+
+        if (entities.isEmpty()) {
             return null;
         }
 
-        return cars.get(0);
+        return entities.get(0).getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY).orElse(null);
     }
 
-    public boolean canCarBeFueled() {
-        EntityCarFuelBase car = getCarInFront();
-        if (car == null) {
+    public boolean canEntityBeFueled() {
+        IFluidHandler handler = getFluidHandlerInFront();
+        if (handler == null) {
             return false;
         }
-        FluidStack result = FluidUtil.tryFluidTransfer(car, this, transferRate, false);
+        FluidStack result = FluidUtil.tryFluidTransfer(handler, this, transferRate, false);
         if (result == null || result.amount <= 0) {
             return false;
         }
@@ -553,7 +555,7 @@ public class TileEntityFuelStation extends TileEntityBase implements ITickableTi
             return false;
         }
 
-        return canCarBeFueled();
+        return canEntityBeFueled();
     }
 
     @OnlyIn(Dist.CLIENT)

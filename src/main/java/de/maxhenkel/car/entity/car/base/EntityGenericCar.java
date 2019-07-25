@@ -15,8 +15,6 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
 
@@ -205,11 +203,6 @@ public class EntityGenericCar extends EntityCarLicensePlateBase {
     @Override
     public boolean doesEnterThirdPerson() {
         return true;
-    }
-
-    @Override
-    public ITextComponent getCarName() {
-        return new TranslationTextComponent("entity.car.car");
     }
 
     public SoundEvent getStopSound() {
