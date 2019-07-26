@@ -91,7 +91,7 @@ public abstract class EntityCarInventoryBase extends EntityCarFuelBase implement
                     NetworkHooks.openGui((ServerPlayerEntity) player, new INamedContainerProvider() {
                         @Override
                         public ITextComponent getDisplayName() {
-                            return getDisplayName();
+                            return EntityCarInventoryBase.this.getDisplayName();
                         }
 
                         @Nullable
@@ -165,7 +165,7 @@ public abstract class EntityCarInventoryBase extends EntityCarFuelBase implement
             NetworkHooks.openGui((ServerPlayerEntity) player, new INamedContainerProvider() {
                 @Override
                 public ITextComponent getDisplayName() {
-                    return getDisplayName();
+                    return EntityCarInventoryBase.this.getDisplayName();
                 }
 
                 @Nullable

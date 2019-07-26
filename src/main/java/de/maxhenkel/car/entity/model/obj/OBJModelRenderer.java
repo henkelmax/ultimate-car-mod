@@ -4,6 +4,7 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import de.maxhenkel.car.entity.car.base.EntityCarLicensePlateBase;
 import de.maxhenkel.car.entity.car.base.EntityGenericCar;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.util.ResourceLocation;
@@ -35,6 +36,8 @@ public abstract class OBJModelRenderer<T extends EntityGenericCar> extends Entit
         setupRotation(entity, entityYaw);
 
         GlStateManager.pushMatrix();
+        GlStateManager.enableLighting();
+        RenderHelper.disableStandardItemLighting();
 
         //Render parts
         for (int i = 0; i < models.size(); i++) {
@@ -53,7 +56,7 @@ public abstract class OBJModelRenderer<T extends EntityGenericCar> extends Entit
                 models.get(i).getOptions().getRotation().applyGLRotation();
             }
 
-            if (models.get(i).getOptions().getOnRender()!=null) {
+            if (models.get(i).getOptions().getOnRender() != null) {
                 models.get(i).getOptions().getOnRender().onRender(partialTicks);
             }
 
@@ -62,6 +65,7 @@ public abstract class OBJModelRenderer<T extends EntityGenericCar> extends Entit
             GlStateManager.popMatrix();
         }
 
+        GlStateManager.disableLighting();
         GlStateManager.popMatrix();
 
         if (entity instanceof EntityCarLicensePlateBase) {

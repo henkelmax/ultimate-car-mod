@@ -1,8 +1,5 @@
 package de.maxhenkel.car.blocks.tileentity;
 
-import java.util.List;
-import java.util.UUID;
-
 import de.maxhenkel.car.Config;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.blocks.BlockFuelStation;
@@ -38,6 +35,9 @@ import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
+
+import java.util.List;
+import java.util.UUID;
 
 public class TileEntityFuelStation extends TileEntityBase implements ITickableTileEntity, IFluidHandler, ISoundLoopable, IInventory {
 
@@ -386,7 +386,7 @@ public class TileEntityFuelStation extends TileEntityBase implements ITickableTi
         BlockPos start = getPos().offset(facing);
 
         AxisAlignedBB aabb = new AxisAlignedBB(start.getX(), start.getY(), start.getZ(), start.getX() + 1D,
-                start.getY() + 2D, start.getZ() + 1D);
+                start.getY() + 2.5D, start.getZ() + 1D).expand(facing.getXOffset(), 0D, facing.getZOffset());
 
         List<Entity> entities = world.getEntitiesWithinAABB(Entity.class, aabb);
 
