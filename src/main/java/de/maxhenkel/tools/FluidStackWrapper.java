@@ -14,8 +14,6 @@ import java.lang.reflect.Field;
 
 public class FluidStackWrapper extends FluidStack {
 
-    private Fluid fluid;
-
     public FluidStackWrapper(Fluid fluid, int amount) {
         super(fluid, amount);
         setFluid(fluid);
@@ -23,7 +21,7 @@ public class FluidStackWrapper extends FluidStack {
 
     public FluidStackWrapper(FluidStack stack, int amount) {
         super(stack, amount);
-        setFluid(fluid);
+        setFluid(stack.getFluid());
     }
 
     public FluidStackWrapper(Fluid fluid, int amount, CompoundNBT nbt) {
@@ -110,7 +108,7 @@ public class FluidStackWrapper extends FluidStack {
         }
     }
 
-    public static ResourceLocation getTexture(Fluid fluid){
+    public static ResourceLocation getTexture(Fluid fluid) {
         if (fluid == ModFluids.BIO_DIESEL) {
             return new ResourceLocation(Main.MODID, "textures/block/bio_diesel_still.png");
         } else if (fluid == ModFluids.CANOLA_METHANOL_MIX) {
