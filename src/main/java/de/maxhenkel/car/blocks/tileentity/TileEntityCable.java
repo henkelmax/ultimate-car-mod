@@ -33,11 +33,6 @@ public class TileEntityCable extends TileEntityBase implements ITickableTileEnti
 
     @Override
     public void tick() {
-
-        if (world.isRemote) {
-            return;
-        }
-
         int energy = 0;
         List<IEnergyStorage> providers = new ArrayList<>();
 
