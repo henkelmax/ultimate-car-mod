@@ -80,4 +80,9 @@ public class BlockCanolaCrop extends CropsBlock {
     public VoxelShape getRaytraceShape(BlockState p_199600_1_, IBlockReader p_199600_2_, BlockPos p_199600_3_) {
         return VoxelShapes.empty();
     }
+
+    @Override
+    public boolean ticksRandomly(BlockState state) {
+        return true;
+    }
 }
