@@ -109,8 +109,7 @@ public class BlockPaint extends BlockBase implements IItemBlock {
     }
 
     public static boolean canPlaceBlockAt(World worldIn, BlockPos pos) {
-        BlockState state = worldIn.getBlockState(pos.down());
-        return state.getBlock().isNormalCube(state, worldIn, pos.down());
+        return func_220064_c(worldIn, pos.down());
     }
 
     @Override
