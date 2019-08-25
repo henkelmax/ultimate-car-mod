@@ -26,7 +26,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.item.crafting.SpecialRecipeSerializer;
-import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
@@ -50,6 +49,7 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.network.IContainerFactory;
 import net.minecraftforge.fml.network.NetworkRegistry;
 import net.minecraftforge.fml.network.simple.SimpleChannel;
+import net.minecraftforge.registries.DataSerializerEntry;
 import org.lwjgl.glfw.GLFW;
 
 @Mod(Main.MODID)
@@ -73,14 +73,12 @@ public class Main {
         FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(ContainerType.class, this::registerContainers);
         FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(TileEntityType.class, this::registerTileEntities);
         FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(IRecipeSerializer.class, this::registerRecipes);
+        FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(DataSerializerEntry.class, this::registerSerializers);
         //FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(Fluid.class, this::registerFluids);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::commonSetup);
 
         ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, Config.SERVER_SPEC);
         ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, Config.CLIENT_SPEC);
-
-        DataSerializers.registerSerializer(DataSerializerStringList.STRING_LIST);
-        DataSerializers.registerSerializer(DataSerializerItemList.ITEM_LIST);
 
         DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
             clientStart();
@@ -429,6 +427,16 @@ public class Main {
         CRAFTING_SPECIAL_KEY = new SpecialRecipeSerializer<>(ReciepeKey::new);
         CRAFTING_SPECIAL_KEY.setRegistryName(new ResourceLocation(MODID, "crafting_special_key"));
         event.getRegistry().register(CRAFTING_SPECIAL_KEY);
+    }
+
+    @SubscribeEvent
+    public void registerSerializers(RegistryEvent.Register<DataSerializerEntry> event) {
+        DataSerializerEntry dataSerializerEntryItemList = new DataSerializerEntry(DataSerializerItemList.ITEM_LIST);
+        dataSerializerEntryItemList.setRegistryName(new ResourceLocation(MODID, "serializer_item_list"));
+        event.getRegistry().register(dataSerializerEntryItemList);
+        DataSerializerEntry dataSerializerEntryStringList = new DataSerializerEntry(DataSerializerStringList.STRING_LIST);
+        dataSerializerEntryStringList.setRegistryName(new ResourceLocation(MODID, "serializer_string_list"));
+        event.getRegistry().register(dataSerializerEntryStringList);
     }
 
     /*@SubscribeEvent
