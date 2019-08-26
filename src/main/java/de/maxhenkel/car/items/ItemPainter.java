@@ -103,6 +103,7 @@ public class ItemPainter extends Item {
         context.getWorld().setBlockState(context.getPos().up(), state);
 
         stack1.damageItem(1, context.getPlayer(), playerEntity -> {
+            playerEntity.sendBreakAnimation(context.getHand());
         });
 
         return ActionResultType.SUCCESS;
