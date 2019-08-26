@@ -31,7 +31,8 @@ public class BlockCanolaCrop extends CropsBlock {
             Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 13.0D, 16.0D)};
 
     public BlockCanolaCrop() {
-        super(Properties.create(Material.PLANTS).sound(SoundType.PLANT));
+        super(Properties.create(Material.PLANTS).doesNotBlockMovement().tickRandomly().hardnessAndResistance(0F).sound(SoundType.CROP));
+
         setRegistryName(new ResourceLocation(Main.MODID, "canola"));
     }
 
@@ -68,21 +69,16 @@ public class BlockCanolaCrop extends CropsBlock {
 
     @Override
     public VoxelShape getShape(BlockState state, IBlockReader reader, BlockPos pos, ISelectionContext context) {
-        return SHAPE[state.get(this.getAgeProperty())];
+        return SHAPE[state.get(getAgeProperty())];
     }
 
     @Override
-    public VoxelShape getCollisionShape(BlockState p_220071_1_, IBlockReader p_220071_2_, BlockPos p_220071_3_, ISelectionContext p_220071_4_) {
+    public VoxelShape getCollisionShape(BlockState state, IBlockReader reader, BlockPos pos, ISelectionContext selectionContext) {
         return VoxelShapes.empty();
     }
 
     @Override
-    public VoxelShape getRaytraceShape(BlockState p_199600_1_, IBlockReader p_199600_2_, BlockPos p_199600_3_) {
+    public VoxelShape getRaytraceShape(BlockState state, IBlockReader reader, BlockPos pos) {
         return VoxelShapes.empty();
-    }
-
-    @Override
-    public boolean ticksRandomly(BlockState state) {
-        return true;
     }
 }
