@@ -32,7 +32,7 @@ public class BlockCrashBarrier extends BlockBase implements IItemBlock {
     public static final DirectionProperty FACING = DirectionProperty.create("facing", Direction.Plane.HORIZONTAL);
 
     public static final VoxelShape SHAPE_NORTH = Block.makeCuboidShape(0D, 0D, 15D, 16D, 16D, 13D);
-    public static final VoxelShape SHAPE_SOUTH = Block.makeCuboidShape(0D, 0D, 1D, 16D, 16D, 13D);
+    public static final VoxelShape SHAPE_SOUTH = Block.makeCuboidShape(0D, 0D, 1D, 16D, 16D, 3D);
     public static final VoxelShape SHAPE_EAST = Block.makeCuboidShape(3D, 0D, 0D, 1D, 16D, 16D);
     public static final VoxelShape SHAPE_WEST = Block.makeCuboidShape(15D, 0D, 0D, 13D, 16D, 16D);
 
