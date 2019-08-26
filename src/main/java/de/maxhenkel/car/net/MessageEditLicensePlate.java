@@ -55,19 +55,14 @@ public class MessageEditLicensePlate implements Message<MessageEditLicensePlate>
 
     @Override
     public MessageEditLicensePlate fromBytes(PacketBuffer buf) {
-        long l1 = buf.readLong();
-        long l2 = buf.readLong();
-        this.uuid = new UUID(l1, l2);
-
-        text = buf.readString();
-
+        uuid = buf.readUniqueId();
+        text = buf.readString(128);
         return this;
     }
 
     @Override
     public void toBytes(PacketBuffer buf) {
-        buf.writeLong(uuid.getMostSignificantBits());
-        buf.writeLong(uuid.getLeastSignificantBits());
+        buf.writeUniqueId(uuid);
         buf.writeString(text);
     }
 }
