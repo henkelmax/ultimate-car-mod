@@ -434,9 +434,6 @@ public class Main {
         DataSerializerEntry dataSerializerEntryItemList = new DataSerializerEntry(DataSerializerItemList.ITEM_LIST);
         dataSerializerEntryItemList.setRegistryName(new ResourceLocation(MODID, "serializer_item_list"));
         event.getRegistry().register(dataSerializerEntryItemList);
-        DataSerializerEntry dataSerializerEntryStringList = new DataSerializerEntry(DataSerializerStringList.STRING_LIST);
-        dataSerializerEntryStringList.setRegistryName(new ResourceLocation(MODID, "serializer_string_list"));
-        event.getRegistry().register(dataSerializerEntryStringList);
     }
 
     /*@SubscribeEvent

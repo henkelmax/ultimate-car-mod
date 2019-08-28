@@ -21,7 +21,7 @@ import javax.annotation.Nullable;
 public class CapabilityEvents {
 
     @SubscribeEvent
-    public void capabilityAttach(AttachCapabilitiesEvent<TileEntity> event) {
+    public void capabilityAttachTileEntity(AttachCapabilitiesEvent<TileEntity> event) {
         if (!(event.getObject() instanceof TileEntity)) {
             return;
         }
@@ -58,7 +58,7 @@ public class CapabilityEvents {
     }
 
     @SubscribeEvent
-    public void capabilityAttach2(AttachCapabilitiesEvent<Entity> event) {
+    public void capabilityAttachEntity(AttachCapabilitiesEvent<Entity> event) {
         if (!(event.getObject() instanceof Entity)) {
             return;
         }

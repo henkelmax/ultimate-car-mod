@@ -99,20 +99,20 @@ public class RenderEvents {
 
     @SubscribeEvent
     public void renderPlayerPre(RenderPlayerEvent.Pre event) {
-        PlayerEntity player = event.getEntityPlayer();
+        PlayerEntity player = event.getPlayer();
         if (player.getRidingEntity() instanceof EntityCarBase) {
-            EntityCarBase car = (EntityCarBase) event.getEntityPlayer().getRidingEntity();
+            EntityCarBase car = (EntityCarBase) event.getPlayer().getRidingEntity();
             GlStateManager.pushMatrix();
             GlStateManager.translated(event.getX(), event.getY(), event.getZ());
             GlStateManager.scalef(EntityVehicleBase.SCALE_FACTOR, EntityVehicleBase.SCALE_FACTOR, EntityVehicleBase.SCALE_FACTOR);
-            GlStateManager.translatef(0F, (event.getEntityPlayer().getHeight() - (event.getEntityPlayer().getHeight() * EntityVehicleBase.SCALE_FACTOR)) / 1.5F + (float) car.getPlayerYOffset(), 0F);
+            GlStateManager.translatef(0F, (event.getPlayer().getHeight() - (event.getPlayer().getHeight() * EntityVehicleBase.SCALE_FACTOR)) / 1.5F + (float) car.getPlayerYOffset(), 0F);
             GlStateManager.translated(-event.getX(), -event.getY(), -event.getZ());
         }
     }
 
     @SubscribeEvent
     public void renderPlayerPost(RenderPlayerEvent.Post event) {
-        if (event.getEntityPlayer().getRidingEntity() instanceof EntityCarBase) {
+        if (event.getPlayer().getRidingEntity() instanceof EntityCarBase) {
             GlStateManager.popMatrix();
         }
     }
