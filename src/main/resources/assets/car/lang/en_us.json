@@ -357,5 +357,5 @@
     "description.tank_container": "Adds the ability to store fluids inside your transporter",
     "description.license_plate": "You can set the name by right-clicking this item. To apply it to the car sneak and right-click the car with it. The car has to have a License Plate Holder to do this.",
 
-    "death.attack.hit_car": "%s was run over by a car."
+    "death.attack.hit_car": "%s was run over by a car"
 }
