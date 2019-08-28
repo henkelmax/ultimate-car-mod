@@ -14,7 +14,7 @@ public class BlockEvents {
     private static ResourceLocation GRASS_LOOT_TABLE = new ResourceLocation(Main.MODID, "blocks/grass");
 
     @SubscribeEvent
-    public void capabilityAttach(BlockEvent.BreakEvent event) {
+    public void breakEvent(BlockEvent.BreakEvent event) {
         if (!event.getState().getBlock().equals(Blocks.GRASS)) {
             return;
         }

@@ -116,7 +116,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 
     @Override
     public AxisAlignedBB getCollisionBox(Entity entityIn) {
-        if (Config.damageEntities.get()) {
+        if (Config.damageEntities.get() && entityIn instanceof LivingEntity) {
             if (entityIn.getBoundingBox().intersects(getCollisionBoundingBox())) {
                 float speed = getSpeed();
                 if (speed > 0.35F) {
@@ -276,7 +276,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
         BlockPos pos = getPosition().down();
         BlockState state = world.getBlockState(pos);
 
-        if (state.isAir()) {
+        if (state.isAir(world, pos)) {
             return 1;
         }
 
@@ -521,7 +521,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
     @OnlyIn(Dist.CLIENT)
     public void checkIdleLoop() {
         if (!isSoundPlaying(idleLoop)) {
-            idleLoop = new SoundLoopIdle(world, this, getIdleSound(), SoundCategory.NEUTRAL);
+            idleLoop = new SoundLoopIdle(this, getIdleSound(), SoundCategory.NEUTRAL);
             ModSounds.playSoundLoop(idleLoop, world);
         }
     }
@@ -529,7 +529,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
     @OnlyIn(Dist.CLIENT)
     public void checkHighLoop() {
         if (!isSoundPlaying(highLoop)) {
-            highLoop = new SoundLoopHigh(world, this, getHighSound(), SoundCategory.NEUTRAL);
+            highLoop = new SoundLoopHigh(this, getHighSound(), SoundCategory.NEUTRAL);
             ModSounds.playSoundLoop(highLoop, world);
         }
     }
@@ -537,7 +537,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
     @OnlyIn(Dist.CLIENT)
     public void checkStartLoop() {
         if (!isSoundPlaying(startLoop)) {
-            startLoop = new SoundLoopStart(world, this, getStartSound(), SoundCategory.NEUTRAL);
+            startLoop = new SoundLoopStart(this, getStartSound(), SoundCategory.NEUTRAL);
             ModSounds.playSoundLoop(startLoop, world);
         }
     }

@@ -4,29 +4,28 @@ import de.maxhenkel.car.entity.car.base.EntityCarBase;
 import de.maxhenkel.car.entity.car.base.EntityCarBatteryBase;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
-import net.minecraft.world.World;
 
 public class SoundLoopStarting extends SoundLoopCar {
 
-	public SoundLoopStarting(World world, EntityCarBase car, SoundEvent event, SoundCategory category) {
-		super(world, car, event, category);
-		this.repeat=true;
-	}
+    public SoundLoopStarting(EntityCarBase car, SoundEvent event, SoundCategory category) {
+        super(car, event, category);
+        this.repeat = true;
+    }
 
     @Override
     public void tick() {
-        if(car instanceof EntityCarBatteryBase){
-            pitch=((EntityCarBatteryBase) car).getBatterySoundPitchLevel();
+        if (car instanceof EntityCarBatteryBase) {
+            pitch = ((EntityCarBatteryBase) car).getBatterySoundPitchLevel();
         }
         super.tick();
     }
 
     @Override
-	public boolean shouldStopSound() {
-        if(!(car instanceof EntityCarBatteryBase)){
+    public boolean shouldStopSound() {
+        if (!(car instanceof EntityCarBatteryBase)) {
             return true;
         }
-		return !((EntityCarBatteryBase)car).isStarting();
-	}
+        return !((EntityCarBatteryBase) car).isStarting();
+    }
 
 }

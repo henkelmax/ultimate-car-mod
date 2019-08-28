@@ -7,63 +7,53 @@ import net.minecraft.client.audio.TickableSound;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
-import net.minecraft.world.World;
 
 public abstract class SoundLoopCar extends TickableSound {
 
-    protected World world;
     protected EntityCarBase car;
 
-    public SoundLoopCar(World world, EntityCarBase car, SoundEvent event, SoundCategory category) {
+    public SoundLoopCar(EntityCarBase car, SoundEvent event, SoundCategory category) {
         super(event, category);
-        this.world = world;
         this.car = car;
         this.repeat = true;
         this.repeatDelay = 0;
-        this.updatePos();
         this.volume = Config.carVolume.get().floatValue();
         this.pitch = 1.0F;
+        this.priority = true;
+        this.global = false;
+        this.attenuationType = AttenuationType.LINEAR;
+        this.updatePos();
     }
 
     public void updatePos() {
-        this.x = car.getPosition().getX();
-        this.y = car.getPosition().getY();
-        this.z = car.getPosition().getZ();
+        this.x = (float) car.posX;
+        this.y = (float) car.posY;
+        this.z = (float) car.posZ;
     }
 
     @Override
     public void tick() {
         if (donePlaying) {
-            onFinishPlaying();
             return;
         }
 
         if (!car.isAlive()) {
-            this.donePlaying = true;
-            this.repeat = false;
+            donePlaying = true;
             return;
         }
 
-        if (world.isRemote) {
-            ClientPlayerEntity player = Minecraft.getInstance().player;
-            if (player == null || !player.isAlive()) {
-                this.donePlaying = true;
-                this.repeat = false;
-                return;
-            }
+        ClientPlayerEntity player = Minecraft.getInstance().player;
+        if (player == null || !player.isAlive()) {
+            donePlaying = true;
+            return;
         }
 
         if (shouldStopSound()) {
-            this.donePlaying = true;
-            this.repeat = false;
+            donePlaying = true;
             return;
         }
 
         updatePos();
-    }
-
-    public void onFinishPlaying() {
-
     }
 
     public void setDonePlaying() {

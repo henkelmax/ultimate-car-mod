@@ -319,7 +319,7 @@ public abstract class EntityCarBatteryBase extends EntityCarTemperatureBase {
     @OnlyIn(Dist.CLIENT)
     public void checkStartingLoop() {
         if (!isSoundPlaying(startingLoop)) {
-            startingLoop = new SoundLoopStarting(world, this, getStartingSound(), SoundCategory.NEUTRAL);
+            startingLoop = new SoundLoopStarting(this, getStartingSound(), SoundCategory.NEUTRAL);
             ModSounds.playSoundLoop(startingLoop, world);
         }
     }

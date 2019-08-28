@@ -16,7 +16,6 @@ import net.minecraft.entity.Entity;
 @OnlyIn(Dist.CLIENT)
 public class KeyEvents {
 
-
     private boolean wasStartPressed;
     private boolean wasGuiPressed;
     private boolean wasHornPressed;
@@ -28,10 +27,6 @@ public class KeyEvents {
 
     @SubscribeEvent
     public void onKeyInput(InputEvent.KeyInputEvent event) {
-        if (event.isCanceled()) {
-            return;
-        }
-
         Minecraft minecraft = Minecraft.getInstance();
 
         PlayerEntity player = minecraft.player;
