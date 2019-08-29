@@ -2,6 +2,7 @@ package de.maxhenkel.car.entity.car.base;
 
 import de.maxhenkel.car.gui.ContainerCar;
 import de.maxhenkel.car.gui.ContainerCarInventory;
+import de.maxhenkel.tools.FluidUtils;
 import de.maxhenkel.tools.ItemTools;
 import de.maxhenkel.car.items.ItemCanister;
 import de.maxhenkel.car.sounds.ModSounds;
@@ -67,9 +68,9 @@ public abstract class EntityCarInventoryBase extends EntityCarFuelBase implement
                 if (getFluidInventorySize() > 0) {
                     IFluidHandler handler = FluidUtil.getFluidHandler(stack).orElse(null);
                     if (handler != null) {
-                        FluidStack fluidStack = FluidUtil.getFluidContained(stack).orElse(null);
+                        FluidStack fluidStack = FluidUtil.getFluidContained(stack).orElse(FluidStack.EMPTY);
 
-                        if (fluidStack != null) {
+                        if (!FluidUtils.isEmpty(fluidStack)) {
                             if (handleEmpty(stack, getInventoryFluidHandler(), player, hand)) {
                                 return true;
                             }
@@ -204,7 +205,7 @@ public abstract class EntityCarInventoryBase extends EntityCarFuelBase implement
 
         ItemTools.saveInventory(compound, "parts", partInventory);
 
-        if (fluidInventory != null) {
+        if (!FluidUtils.isEmpty(fluidInventory)) {
             compound.put("fluid_inventory", fluidInventory.writeToNBT(new CompoundNBT()));
         }
     }
@@ -237,7 +238,7 @@ public abstract class EntityCarInventoryBase extends EntityCarFuelBase implement
 
         @Override
         public int fill(FluidStack resource, FluidAction action) {
-            if (fluidInventory == null) {
+            if (FluidUtils.isEmpty(fluidInventory)) {
                 int amount = Math.min(resource.getAmount(), getFluidInventorySize());
 
                 if (action.execute()) {
@@ -260,7 +261,7 @@ public abstract class EntityCarInventoryBase extends EntityCarFuelBase implement
         @Nonnull
         @Override
         public FluidStack drain(FluidStack resource, FluidAction action) {
-            if (fluidInventory == null) {
+            if (FluidUtils.isEmpty(fluidInventory)) {
                 return FluidStack.EMPTY;
             }
 
@@ -272,7 +273,7 @@ public abstract class EntityCarInventoryBase extends EntityCarFuelBase implement
                 if (action.execute()) {
                     fluidInventory.setAmount(fluidInventory.getAmount() - amount);
                     if (fluidInventory.getAmount() <= 0) {
-                        fluidInventory = null;
+                        fluidInventory = FluidStack.EMPTY;
                     }
                 }
 
@@ -285,7 +286,7 @@ public abstract class EntityCarInventoryBase extends EntityCarFuelBase implement
         @Nonnull
         @Override
         public FluidStack drain(int maxDrain, FluidAction action) {
-            if (fluidInventory == null) {
+            if (FluidUtils.isEmpty(fluidInventory)) {
                 return FluidStack.EMPTY;
             }
 
@@ -296,7 +297,7 @@ public abstract class EntityCarInventoryBase extends EntityCarFuelBase implement
             if (action.execute()) {
                 fluidInventory.setAmount(fluidInventory.getAmount() - amount);
                 if (fluidInventory.getAmount() <= 0) {
-                    fluidInventory = null;
+                    fluidInventory = FluidStack.EMPTY;
                 }
             }
 
