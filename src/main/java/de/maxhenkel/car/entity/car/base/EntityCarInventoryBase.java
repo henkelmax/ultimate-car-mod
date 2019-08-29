@@ -2,7 +2,6 @@ package de.maxhenkel.car.entity.car.base;
 
 import de.maxhenkel.car.gui.ContainerCar;
 import de.maxhenkel.car.gui.ContainerCarInventory;
-import de.maxhenkel.tools.FluidStackWrapper;
 import de.maxhenkel.tools.ItemTools;
 import de.maxhenkel.car.items.ItemCanister;
 import de.maxhenkel.car.sounds.ModSounds;
@@ -10,6 +9,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.fluid.Fluid;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.InventoryHelper;
@@ -22,16 +22,15 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.World;
-import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidActionResult;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public abstract class EntityCarInventoryBase extends EntityCarFuelBase implements IInventory {
@@ -48,7 +47,7 @@ public abstract class EntityCarInventoryBase extends EntityCarFuelBase implement
         this.internalInventory = new Inventory(27);
         this.externalInventory = new Inventory(0);
         this.partInventory = new Inventory(15);
-        this.fluidInventory = null;
+        this.fluidInventory = FluidStack.EMPTY;
     }
 
     @Override
@@ -190,7 +189,7 @@ public abstract class EntityCarInventoryBase extends EntityCarFuelBase implement
         ItemTools.readInventory(compound, "parts", partInventory);
 
         if (compound.contains("fluid_inventory")) {
-            fluidInventory = FluidStackWrapper.loadFluidStackFromNBT(compound.getCompound("fluid_inventory"));
+            fluidInventory = FluidStack.loadFluidStackFromNBT(compound.getCompound("fluid_inventory"));
         }
     }
 
@@ -216,58 +215,41 @@ public abstract class EntityCarInventoryBase extends EntityCarFuelBase implement
 
     private IFluidHandler inventoryFluidHandler = new IFluidHandler() {
         @Override
-        public IFluidTankProperties[] getTankProperties() {
-            return new IFluidTankProperties[]{
-                    new IFluidTankProperties() {
-                        @Nullable
-                        @Override
-                        public FluidStack getContents() {
-                            return fluidInventory;
-                        }
+        public int getTanks() {
+            return 1;
+        }
 
-                        @Override
-                        public int getCapacity() {
-                            return getFluidInventorySize();
-                        }
-
-                        @Override
-                        public boolean canFill() {
-                            return true;
-                        }
-
-                        @Override
-                        public boolean canDrain() {
-                            return true;
-                        }
-
-                        @Override
-                        public boolean canFillFluidType(FluidStack fluidStack) {
-                            return true;
-                        }
-
-                        @Override
-                        public boolean canDrainFluidType(FluidStack fluidStack) {
-                            return true;
-                        }
-                    }
-            };
+        @Nonnull
+        @Override
+        public FluidStack getFluidInTank(int tank) {
+            return fluidInventory;
         }
 
         @Override
-        public int fill(FluidStack resource, boolean doFill) {
-            if (fluidInventory == null) {
-                int amount = Math.min(resource.amount, getFluidInventorySize());
+        public int getTankCapacity(int tank) {
+            return getFluidInventorySize();
+        }
 
-                if (doFill) {
-                    fluidInventory = new FluidStackWrapper(resource.getFluid(), amount);
+        @Override
+        public boolean isFluidValid(int tank, @Nonnull FluidStack stack) {
+            return true;
+        }
+
+        @Override
+        public int fill(FluidStack resource, FluidAction action) {
+            if (fluidInventory == null) {
+                int amount = Math.min(resource.getAmount(), getFluidInventorySize());
+
+                if (action.execute()) {
+                    fluidInventory = new FluidStack(resource.getFluid(), amount);
                 }
 
                 return amount;
             } else if (resource.getFluid().equals(fluidInventory.getFluid())) {
-                int amount = Math.min(resource.amount, getFluidInventorySize() - fluidInventory.amount);
+                int amount = Math.min(resource.getAmount(), getFluidInventorySize() - fluidInventory.getAmount());
 
-                if (doFill) {
-                    fluidInventory.amount += amount;
+                if (action.execute()) {
+                    fluidInventory.setAmount(fluidInventory.getAmount() + amount);
                 }
 
                 return amount;
@@ -275,50 +257,50 @@ public abstract class EntityCarInventoryBase extends EntityCarFuelBase implement
             return 0;
         }
 
-        @Nullable
+        @Nonnull
         @Override
-        public FluidStack drain(FluidStack resource, boolean doDrain) {
+        public FluidStack drain(FluidStack resource, FluidAction action) {
             if (fluidInventory == null) {
-                return null;
+                return FluidStack.EMPTY;
             }
 
             if (fluidInventory.getFluid().equals(resource.getFluid())) {
-                int amount = Math.min(resource.amount, fluidInventory.amount);
+                int amount = Math.min(resource.getAmount(), fluidInventory.getAmount());
 
                 Fluid f = fluidInventory.getFluid();
 
-                if (doDrain) {
-                    fluidInventory.amount -= amount;
-                    if (fluidInventory.amount <= 0) {
+                if (action.execute()) {
+                    fluidInventory.setAmount(fluidInventory.getAmount() - amount);
+                    if (fluidInventory.getAmount() <= 0) {
                         fluidInventory = null;
                     }
                 }
 
-                return new FluidStackWrapper(f, amount);
+                return new FluidStack(f, amount);
             }
 
-            return null;
+            return FluidStack.EMPTY;
         }
 
-        @Nullable
+        @Nonnull
         @Override
-        public FluidStack drain(int maxDrain, boolean doDrain) {
+        public FluidStack drain(int maxDrain, FluidAction action) {
             if (fluidInventory == null) {
-                return null;
+                return FluidStack.EMPTY;
             }
 
-            int amount = Math.min(maxDrain, fluidInventory.amount);
+            int amount = Math.min(maxDrain, fluidInventory.getAmount());
 
             Fluid f = fluidInventory.getFluid();
 
-            if (doDrain) {
-                fluidInventory.amount -= amount;
-                if (fluidInventory.amount <= 0) {
+            if (action.execute()) {
+                fluidInventory.setAmount(fluidInventory.getAmount() - amount);
+                if (fluidInventory.getAmount() <= 0) {
                     fluidInventory = null;
                 }
             }
 
-            return new FluidStackWrapper(f, amount);
+            return new FluidStack(f, amount);
         }
     };
 

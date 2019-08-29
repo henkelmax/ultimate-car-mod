@@ -1,7 +1,19 @@
 package de.maxhenkel.car;
 
+import de.maxhenkel.car.blocks.ModBlocks;
+import de.maxhenkel.car.fluids.ModFluids;
+import net.minecraft.block.Block;
+import net.minecraft.fluid.Fluid;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.ForgeConfigSpec;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.apache.commons.lang3.tuple.Pair;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class Config {
 
@@ -33,6 +45,7 @@ public class Config {
     public static ForgeConfigSpec.IntValue fluidExtractorDrainSpeed;
 
     public static ForgeConfigSpec.IntValue fuelStationTransferRate;
+    public static ForgeConfigSpec.ConfigValue<List<? extends String>> fuelStationValidFuels;
 
     public static ForgeConfigSpec.IntValue generatorEnergyStorage;
     public static ForgeConfigSpec.IntValue generatorFluidStorage;
@@ -52,9 +65,8 @@ public class Config {
 
     public static ForgeConfigSpec.BooleanValue thirdPersonEnter;
     public static ForgeConfigSpec.BooleanValue carGroundSpeed;
-
-    //public static Block[] carDriveBlocks = new Block[0];
-    //private static String[] carDriveBlocksStr = new String[0];
+    public static ForgeConfigSpec.ConfigValue<List<? extends String>> carDriveBlocks;
+    public static ForgeConfigSpec.ConfigValue<List<? extends String>> carValidFuels;
 
     public static ForgeConfigSpec.BooleanValue collideWithEntities;
     public static ForgeConfigSpec.BooleanValue damageEntities;
@@ -128,6 +140,10 @@ public class Config {
     public static ForgeConfigSpec.DoubleValue bodyTransporterMaxSpeed;// = 0.765F;
     */
 
+    public static List<Fluid> fuelStationValidFuelList = new ArrayList<>();
+    public static List<Block> carDriveBlockList = new ArrayList<>();
+    public static List<Fluid> carValidFuelList = new ArrayList<>();
+
     public static final ServerConfig SERVER;
     public static final ForgeConfigSpec SERVER_SPEC;
 
@@ -142,6 +158,16 @@ public class Config {
         Pair<ClientConfig, ForgeConfigSpec> specPairClient = new ForgeConfigSpec.Builder().configure(ClientConfig::new);
         CLIENT_SPEC = specPairClient.getRight();
         CLIENT = specPairClient.getLeft();
+    }
+
+    public static void loadServer() {
+        fuelStationValidFuelList = fuelStationValidFuels.get().stream().map(ResourceLocation::new).map(ForgeRegistries.FLUIDS::getValue).filter(Objects::nonNull).collect(Collectors.toList());
+        carDriveBlockList = carDriveBlocks.get().stream().map(ResourceLocation::new).map(ForgeRegistries.BLOCKS::getValue).filter(Objects::nonNull).collect(Collectors.toList());
+        carValidFuelList = carValidFuels.get().stream().map(ResourceLocation::new).map(ForgeRegistries.FLUIDS::getValue).filter(Objects::nonNull).collect(Collectors.toList());
+    }
+
+    public static void loadClient() {
+
     }
 
     public static class ServerConfig {
@@ -175,6 +201,7 @@ public class Config {
             fluidExtractorDrainSpeed = builder.defineInRange("machines.fluid_extractor.drain_speed", 25, 5, (int) Short.MAX_VALUE);
 
             fuelStationTransferRate = builder.defineInRange("machines.fuel_station.transfer_rate", 5, 1, (int) Short.MAX_VALUE);
+            fuelStationValidFuels = builder.defineList("machines.fuel_station.valid_fuels", Arrays.asList(ModFluids.BIO_DIESEL.getRegistryName().toString()), Objects::nonNull);
 
             generatorEnergyStorage = builder.defineInRange("machines.generator.energy_storage", 30000, 1000, (int) Short.MAX_VALUE);
             generatorFluidStorage = builder.defineInRange("machines.generator.fluid_storage", 3000, 1000, (int) Short.MAX_VALUE);
@@ -196,6 +223,16 @@ public class Config {
             useBattery = builder.comment("True if starting the car should use battery").define("car.use_battery", true);
 
             carGroundSpeed = builder.comment("Whether the cars drive slower on non road blocks").define("car.road_blocks_enabled", false);
+            carDriveBlocks = builder.defineList("car.road_blocks.blocks", Arrays.asList(
+                    ModBlocks.ASPHALT.getRegistryName().toString(),
+                    ModBlocks.ASPHALT_SLAB.getRegistryName().toString(),
+                    ModBlocks.ASPHALT_SLOPE.getRegistryName().toString(),
+                    ModBlocks.ASPHALT_SLOPE_FLAT_LOWER.getRegistryName().toString(),
+                    ModBlocks.ASPHALT_SLOPE_FLAT_UPPER.getRegistryName().toString()
+            ), Objects::nonNull);
+            carValidFuels = builder.defineList("car.valid_fuels", Arrays.asList(ModFluids.BIO_DIESEL.getRegistryName().toString()), Objects::nonNull);
+
+
             /*engine6CylinderFuelEfficiency = builder.defineInRange("car_parts.car_6_cylinder_fuel_efficiency", 0.25F, 0.001F, 10F);
             engine3CylinderFuelEfficiency = builder.defineInRange("car_parts.car_3_cylinder_fuel_efficiency", 0.6F, 0.001F, 10F);
             engine6CylinderAcceleration = builder.defineInRange("car_parts.car_6_cylinder_acceleration", 0.04F, 0.001F, 10F);

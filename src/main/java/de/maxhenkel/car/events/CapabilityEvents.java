@@ -22,10 +22,7 @@ public class CapabilityEvents {
 
     @SubscribeEvent
     public void capabilityAttachTileEntity(AttachCapabilitiesEvent<TileEntity> event) {
-        if (!(event.getObject() instanceof TileEntity)) {
-            return;
-        }
-        if (!((TileEntity) event.getObject()).getType().getRegistryName().getNamespace().equals(Main.MODID)) {
+        if (!event.getObject().getType().getRegistryName().getNamespace().equals(Main.MODID)) {
             return;
         }
         if (event.getObject() instanceof IFluidHandler) {
@@ -59,10 +56,7 @@ public class CapabilityEvents {
 
     @SubscribeEvent
     public void capabilityAttachEntity(AttachCapabilitiesEvent<Entity> event) {
-        if (!(event.getObject() instanceof Entity)) {
-            return;
-        }
-        if (!((Entity) event.getObject()).getType().getRegistryName().getNamespace().equals(Main.MODID)) {
+        if (!event.getObject().getType().getRegistryName().getNamespace().equals(Main.MODID)) {
             return;
         }
         if (event.getObject() instanceof IFluidHandler) {
@@ -92,5 +86,4 @@ public class CapabilityEvents {
             });
         }
     }
-
 }

@@ -1,13 +1,14 @@
 package de.maxhenkel.car.entity.car.base;
 
+import de.maxhenkel.car.Config;
 import de.maxhenkel.car.DataSerializerItemList;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.entity.car.parts.*;
 import de.maxhenkel.car.entity.model.obj.OBJModelInstance;
-import de.maxhenkel.car.fluids.ModFluids;
 import de.maxhenkel.car.items.ICarPart;
 import de.maxhenkel.car.sounds.ModSounds;
 import net.minecraft.entity.EntityType;
+import net.minecraft.fluid.Fluid;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
@@ -16,7 +17,6 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.minecraftforge.fluids.Fluid;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -148,8 +148,7 @@ public class EntityGenericCar extends EntityCarLicensePlateBase {
 
         float fluidEfficiency = 0F;
 
-        //TODO configurable fluids if fluid system is implemented
-        if (fluid == null || ModFluids.BIO_DIESEL.equals(fluid)) {
+        if (fluid == null || Config.carValidFuelList.contains(fluid)) {
             fluidEfficiency = 1;
         }
 

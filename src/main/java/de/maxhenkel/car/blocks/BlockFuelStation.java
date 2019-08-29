@@ -10,6 +10,7 @@ import de.maxhenkel.car.gui.ContainerFuelStation;
 import de.maxhenkel.car.gui.ContainerFuelStationAdmin;
 import de.maxhenkel.car.gui.TileEntityContainerProvider;
 import de.maxhenkel.tools.BlockTools;
+import de.maxhenkel.tools.FluidUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
@@ -73,9 +74,9 @@ public class BlockFuelStation extends BlockOrientableHorizontal {
 
         if (station.isOwner(player) || !station.hasTrade()) {
             if (stack != null) {
-                FluidStack fluidStack = FluidUtil.getFluidContained(stack).orElse(null);
+                FluidStack fluidStack = FluidUtil.getFluidContained(stack).orElse(FluidStack.EMPTY);
 
-                if (fluidStack != null) {
+                if (!FluidUtils.isEmpty(fluidStack)) {
                     boolean success = BlockTank.handleEmpty(stack, worldIn, pos, player, handIn);
                     if (success) {
                         return true;

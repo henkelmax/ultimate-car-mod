@@ -6,9 +6,9 @@ import de.maxhenkel.car.blocks.BlockGui;
 import de.maxhenkel.car.blocks.ModBlocks;
 import de.maxhenkel.car.fluids.ModFluids;
 import de.maxhenkel.tools.EnergyTools;
-import de.maxhenkel.tools.FluidStackWrapper;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.fluid.Fluid;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
@@ -19,10 +19,10 @@ import net.minecraft.util.IIntArray;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.energy.IEnergyStorage;
-import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidTankProperties;
+
+import javax.annotation.Nonnull;
 
 public class TileEntityGenerator extends TileEntityBase implements ITickableTileEntity, IFluidHandler, IEnergyStorage, IInventory {
 
@@ -153,7 +153,7 @@ public class TileEntityGenerator extends TileEntityBase implements ITickableTile
     public CompoundNBT write(CompoundNBT compound) {
         compound.putInt("stored_energy", storedEnergy);
         if (currentFluid != null) {
-            FluidStack stack = new FluidStackWrapper(currentFluid, currentMillibuckets);
+            FluidStack stack = new FluidStack(currentFluid, currentMillibuckets);
             CompoundNBT comp = new CompoundNBT();
             stack.writeToNBT(comp);
             compound.put("fluid", comp);
@@ -167,84 +167,12 @@ public class TileEntityGenerator extends TileEntityBase implements ITickableTile
         storedEnergy = compound.getInt("stored_energy");
 
         if (compound.contains("fluid")) {
-            FluidStack stack = FluidStackWrapper.loadFluidStackFromNBT(compound.getCompound("fluid"));
+            FluidStack stack = FluidStack.loadFluidStackFromNBT(compound.getCompound("fluid"));
             currentFluid = stack.getFluid();
-            currentMillibuckets = stack.amount;
+            currentMillibuckets = stack.getAmount();
         }
 
         super.read(compound);
-    }
-
-    @Override
-    public IFluidTankProperties[] getTankProperties() {
-        return new IFluidTankProperties[]{new IFluidTankProperties() {
-
-            @Override
-            public FluidStack getContents() {
-                if (currentFluid == null) {
-                    return null;
-                }
-                return new FluidStackWrapper(currentFluid, currentMillibuckets);
-            }
-
-            @Override
-            public int getCapacity() {
-                return maxMillibuckets;
-            }
-
-            @Override
-            public boolean canFillFluidType(FluidStack fluidStack) {
-                if (isValidFuel(fluidStack.getFluid())
-                        && (currentFluid == null || currentFluid.equals(fluidStack.getFluid()))) {
-                    return true;
-                }
-                return false;
-            }
-
-            @Override
-            public boolean canFill() {
-                return true;
-            }
-
-            @Override
-            public boolean canDrainFluidType(FluidStack fluidStack) {
-                return false;
-            }
-
-            @Override
-            public boolean canDrain() {
-                return false;
-            }
-        }};
-    }
-
-    @Override
-    public int fill(FluidStack resource, boolean doFill) {
-
-        if ((currentFluid == null && isValidFuel(resource.getFluid()))
-                || resource.getFluid().equals(currentFluid)) {
-            int amount = Math.min(maxMillibuckets - currentMillibuckets, resource.amount);
-            if (doFill) {
-                currentMillibuckets += amount;
-                if (currentFluid == null) {
-                    currentFluid = resource.getFluid();
-                }
-                markDirty();
-            }
-            return amount;
-        }
-
-        return 0;
-    }
-
-    @Override
-    public FluidStack drain(FluidStack resource, boolean doDrain) {
-        return null;
-    }
-
-    @Override
-    public FluidStack drain(int maxDrain, boolean doDrain) {
-        return null;
     }
 
     @Override
@@ -356,5 +284,62 @@ public class TileEntityGenerator extends TileEntityBase implements ITickableTile
     @Override
     public IIntArray getFields() {
         return FIELDS;
+    }
+
+    @Override
+    public int getTanks() {
+        return 1;
+    }
+
+    @Nonnull
+    @Override
+    public FluidStack getFluidInTank(int tank) {
+        if (currentFluid == null) {
+            return FluidStack.EMPTY;
+        }
+        return new FluidStack(currentFluid, currentMillibuckets);
+    }
+
+    @Override
+    public int getTankCapacity(int tank) {
+        return maxMillibuckets;
+    }
+
+    @Override
+    public boolean isFluidValid(int tank, @Nonnull FluidStack stack) {
+        if (isValidFuel(stack.getFluid()) && (currentFluid == null || currentFluid.equals(stack.getFluid()))) {
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public int fill(FluidStack resource, FluidAction action) {
+        if ((currentFluid == null && isValidFuel(resource.getFluid()))
+                || resource.getFluid().equals(currentFluid)) {
+            int amount = Math.min(maxMillibuckets - currentMillibuckets, resource.getAmount());
+            if (action.execute()) {
+                currentMillibuckets += amount;
+                if (currentFluid == null) {
+                    currentFluid = resource.getFluid();
+                }
+                markDirty();
+            }
+            return amount;
+        }
+
+        return 0;
+    }
+
+    @Nonnull
+    @Override
+    public FluidStack drain(FluidStack resource, FluidAction action) {
+        return FluidStack.EMPTY;
+    }
+
+    @Nonnull
+    @Override
+    public FluidStack drain(int maxDrain, FluidAction action) {
+        return FluidStack.EMPTY;
     }
 }

@@ -1,9 +1,12 @@
 package de.maxhenkel.car.items;
 
+import de.maxhenkel.car.Main;
 import de.maxhenkel.car.entity.car.parts.PartRegistry;
+import de.maxhenkel.car.fluids.ModFluids;
 import de.maxhenkel.tools.NoRegister;
 import de.maxhenkel.tools.ReflectionTools;
 import net.minecraft.item.Item;
+import net.minecraft.util.ResourceLocation;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -28,7 +31,6 @@ public class ModItems {
     public static final ItemBattery BATTERY = new ItemBattery();
 
     public static final ItemLicensePlate LICENSE_PLATE = new ItemLicensePlate("license_plate");
-
     /**
      * ---- CAR PARTS ----
      **/
@@ -207,6 +209,13 @@ public class ModItems {
     public static final ItemCarPart SMALL_TANK = new ItemCarPart("small_tank", PartRegistry.SMALL_TANK);
     public static final ItemCarPart MEDIUM_TANK = new ItemCarPart("medium_tank", PartRegistry.MEDIUM_TANK);
     public static final ItemCarPart LARGE_TANK = new ItemCarPart("large_tank", PartRegistry.LARGE_TANK);
+
+
+    public static final CarBucketItem CANOLA_OIL_BUCKET = new CarBucketItem(ModFluids.CANOLA_OIL, new ResourceLocation(Main.MODID, "canola_oil_bucket"));
+    public static final CarBucketItem METHANOL_BUCKET = new CarBucketItem(ModFluids.METHANOL, new ResourceLocation(Main.MODID, "methanol_bucket"));
+    public static final CarBucketItem CANOLA_METHANOL_MIX_BUCKET = new CarBucketItem(ModFluids.CANOLA_METHANOL_MIX, new ResourceLocation(Main.MODID, "canola_methanol_mix_bucket"));
+    public static final CarBucketItem GLYCERIN_BUCKET = new CarBucketItem(ModFluids.GLYCERIN, new ResourceLocation(Main.MODID, "glycerin_bucket"));
+    public static final CarBucketItem BIO_DIESEL_BUCKET = new CarBucketItem(ModFluids.BIO_DIESEL, new ResourceLocation(Main.MODID, "bio_diesel_bucket"));
 
     public static List<Item> getAll() {
         List<Item> items = new ArrayList<>();

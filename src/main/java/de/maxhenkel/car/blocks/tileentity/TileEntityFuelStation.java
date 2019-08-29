@@ -4,17 +4,16 @@ import de.maxhenkel.car.Config;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.blocks.BlockFuelStation;
 import de.maxhenkel.car.blocks.ModBlocks;
-import de.maxhenkel.car.fluids.ModFluids;
 import de.maxhenkel.car.net.MessageStartFuel;
 import de.maxhenkel.car.sounds.ModSounds;
 import de.maxhenkel.car.sounds.SoundLoopTileentity;
 import de.maxhenkel.car.sounds.SoundLoopTileentity.ISoundLoopable;
-import de.maxhenkel.tools.FluidStackWrapper;
 import de.maxhenkel.tools.ItemTools;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.fluid.Fluid;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
@@ -29,13 +28,12 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidTankProperties;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 import java.util.UUID;
 
@@ -75,7 +73,7 @@ public class TileEntityFuelStation extends TileEntityBase implements ITickableTi
                     return fuelCounter;
                 case 1:
                     if (storage != null) {
-                        return storage.amount;
+                        return storage.getAmount();
                     }
                     return 0;
                 case 2:
@@ -91,7 +89,7 @@ public class TileEntityFuelStation extends TileEntityBase implements ITickableTi
                     break;
                 case 1:
                     if (storage != null) {
-                        storage.amount = value;
+                        storage.setAmount(value);
                     }
                     break;
                 case 2:
@@ -154,7 +152,7 @@ public class TileEntityFuelStation extends TileEntityBase implements ITickableTi
         FluidStack s = FluidUtil.tryFluidTransfer(handler, this, transferRate, false);
         int amountCarCanTake = 0;
         if (s != null) {
-            amountCarCanTake = s.amount;
+            amountCarCanTake = s.getAmount();
         }
 
         if (amountCarCanTake <= 0) {
@@ -178,8 +176,8 @@ public class TileEntityFuelStation extends TileEntityBase implements ITickableTi
         FluidStack result = FluidUtil.tryFluidTransfer(handler, this, Math.min(transferRate, freeAmountLeft), true);
 
         if (result != null) {
-            fuelCounter += result.amount;
-            freeAmountLeft -= result.amount;
+            fuelCounter += result.getAmount();
+            freeAmountLeft -= result.getAmount();
             synchronize(100);
 
             markDirty();
@@ -243,13 +241,7 @@ public class TileEntityFuelStation extends TileEntityBase implements ITickableTi
     }
 
     public boolean isValidFluid(Fluid f) {
-
-        //TODO configurable fluids if fluid system is implemented
-        if (ModFluids.BIO_DIESEL.equals(f)) {
-            return true;
-        }
-
-        return false;
+        return Config.fuelStationValidFuelList.contains(f);
     }
 
     public void setOwner(UUID owner) {
@@ -310,7 +302,7 @@ public class TileEntityFuelStation extends TileEntityBase implements ITickableTi
 
         if (compound.contains("fluid")) {
             CompoundNBT comp = compound.getCompound("fluid");
-            storage = FluidStackWrapper.loadFluidStackFromNBT(comp);
+            storage = FluidStack.loadFluidStackFromNBT(comp);
         }
 
         ItemTools.readInventory(compound, "inventory", inventory);
@@ -403,7 +395,7 @@ public class TileEntityFuelStation extends TileEntityBase implements ITickableTi
             return false;
         }
         FluidStack result = FluidUtil.tryFluidTransfer(handler, this, transferRate, false);
-        if (result == null || result.amount <= 0) {
+        if (result == null || result.getAmount() <= 0) {
             return false;
         }
         return true;
@@ -425,122 +417,6 @@ public class TileEntityFuelStation extends TileEntityBase implements ITickableTi
         }
 
         return state.get(BlockFuelStation.FACING);
-    }
-
-    @Override
-    public IFluidTankProperties[] getTankProperties() {
-        return new IFluidTankProperties[]{new IFluidTankProperties() {
-
-            @Override
-            public FluidStack getContents() {
-                return storage;
-            }
-
-            @Override
-            public int getCapacity() {
-                return maxStorageAmount;
-            }
-
-            @Override
-            public boolean canFillFluidType(FluidStack fluidStack) {
-                return isValidFluid(fluidStack.getFluid());
-            }
-
-            @Override
-            public boolean canFill() {
-                return true;
-            }
-
-            @Override
-            public boolean canDrainFluidType(FluidStack fluidStack) {
-                return true;
-            }
-
-            @Override
-            public boolean canDrain() {
-                return true;
-            }
-        }};
-    }
-
-    @Override
-    public int fill(FluidStack resource, boolean doFill) {
-        if (!isValidFluid(resource.getFluid())) {
-            return 0;
-        }
-
-        if (storage == null) {
-            int amount = Math.min(resource.amount, maxStorageAmount);
-
-            if (doFill) {
-                storage = new FluidStackWrapper(resource.getFluid(), amount);
-                synchronize();
-                markDirty();
-            }
-
-            return amount;
-        } else if (resource.getFluid().equals(storage.getFluid())) {
-            int amount = Math.min(resource.amount, maxStorageAmount - storage.amount);
-
-            if (doFill) {
-                storage.amount += amount;
-                markDirty();
-            }
-
-            return amount;
-        }
-        return 0;
-    }
-
-    @Override
-    public FluidStack drain(FluidStack resource, boolean doDrain) {
-
-        if (storage == null) {
-            return null;
-        }
-
-        if (storage.getFluid().equals(resource.getFluid())) {
-            int amount = Math.min(resource.amount, storage.amount);
-
-            Fluid f = storage.getFluid();
-
-            if (doDrain) {
-                storage.amount -= amount;
-                if (storage.amount <= 0) {
-                    storage = null;
-                    synchronize();
-                }
-
-                markDirty();
-            }
-
-            return new FluidStackWrapper(f, amount);
-        }
-
-        return null;
-    }
-
-    @Override
-    public FluidStack drain(int maxDrain, boolean doDrain) {
-        if (storage == null) {
-            return null;
-        }
-
-        int amount = Math.min(maxDrain, storage.amount);
-
-        Fluid f = storage.getFluid();
-
-        if (doDrain) {
-            storage.amount -= amount;
-            if (storage.amount <= 0) {
-                storage = null;
-                synchronize();
-            }
-
-            markDirty();
-        }
-
-        return new FluidStackWrapper(f, amount);
     }
 
     public void sendStartFuelPacket(boolean start) {
@@ -638,7 +514,7 @@ public class TileEntityFuelStation extends TileEntityBase implements ITickableTi
 
     public int getFuelAmount() {
         if (storage != null) {
-            return storage.amount;
+            return storage.getAmount();
         }
         return 0;
     }
@@ -646,5 +522,107 @@ public class TileEntityFuelStation extends TileEntityBase implements ITickableTi
     @Override
     public IIntArray getFields() {
         return FIELDS;
+    }
+
+    @Override
+    public int getTanks() {
+        return 1;
+    }
+
+    @Nonnull
+    @Override
+    public FluidStack getFluidInTank(int tank) {
+        return storage;
+    }
+
+    @Override
+    public int getTankCapacity(int tank) {
+        return maxStorageAmount;
+    }
+
+    @Override
+    public boolean isFluidValid(int tank, @Nonnull FluidStack stack) {
+        return isValidFluid(stack.getFluid());
+    }
+
+    @Override
+    public int fill(FluidStack resource, FluidAction action) {
+        if (!isValidFluid(resource.getFluid())) {
+            return 0;
+        }
+
+        if (storage == null) {
+            int amount = Math.min(resource.getAmount(), maxStorageAmount);
+
+            if (action.execute()) {
+                storage = new FluidStack(resource.getFluid(), amount);
+                synchronize();
+                markDirty();
+            }
+
+            return amount;
+        } else if (resource.getFluid().equals(storage.getFluid())) {
+            int amount = Math.min(resource.getAmount(), maxStorageAmount - storage.getAmount());
+
+            if (action.execute()) {
+                storage.setAmount(storage.getAmount() + amount);
+                markDirty();
+            }
+
+            return amount;
+        }
+        return 0;
+    }
+
+    @Nonnull
+    @Override
+    public FluidStack drain(FluidStack resource, FluidAction action) {
+        if (storage == null) {
+            return FluidStack.EMPTY;
+        }
+
+        if (storage.getFluid().equals(resource.getFluid())) {
+            int amount = Math.min(resource.getAmount(), storage.getAmount());
+
+            Fluid f = storage.getFluid();
+
+            if (action.execute()) {
+                storage.setAmount(storage.getAmount() - amount);
+                if (storage.getAmount() <= 0) {
+                    storage = null;
+                    synchronize();
+                }
+
+                markDirty();
+            }
+
+            return new FluidStack(f, amount);
+        }
+
+        return FluidStack.EMPTY;
+    }
+
+    @Nonnull
+    @Override
+    public FluidStack drain(int maxDrain, FluidAction action) {
+        if (storage == null) {
+            return FluidStack.EMPTY;
+        }
+
+        int amount = Math.min(maxDrain, storage.getAmount());
+
+        Fluid f = storage.getFluid();
+
+        if (action.execute()) {
+            storage.setAmount(storage.getAmount() - amount);
+            if (storage.getAmount() <= 0) {
+                storage = null;
+                synchronize();
+            }
+
+            markDirty();
+        }
+
+        return new FluidStack(f, amount);
     }
 }

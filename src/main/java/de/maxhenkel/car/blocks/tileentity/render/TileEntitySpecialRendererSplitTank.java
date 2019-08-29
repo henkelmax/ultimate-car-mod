@@ -1,8 +1,11 @@
 package de.maxhenkel.car.blocks.tileentity.render;
 
 import com.mojang.blaze3d.platform.GlStateManager;
-import de.maxhenkel.tools.FluidStackWrapper;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.texture.AtlasTexture;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
+import net.minecraftforge.fluids.FluidStack;
 import org.lwjgl.opengl.GL11;
 
 import de.maxhenkel.car.blocks.tileentity.TileEntitySplitTank;
@@ -10,13 +13,15 @@ import de.maxhenkel.car.fluids.ModFluids;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraftforge.fluids.Fluid;
 
 public class TileEntitySpecialRendererSplitTank extends TileEntityRenderer<TileEntitySplitTank> {
 
+    private static final FluidStack BIO_DIESEL_STACK = new FluidStack(ModFluids.BIO_DIESEL, 1);
+    private static final FluidStack GLYCERIN_STACK = new FluidStack(ModFluids.GLYCERIN, 1);
+
     @Override
     public void render(TileEntitySplitTank te, double x, double y, double z, float partialTicks, int destroyStage) {
-        //bindTexture(AtlasTexture.LOCATION_BLOCKS_TEXTURE);
+        bindTexture(AtlasTexture.LOCATION_BLOCKS_TEXTURE);
 
         GlStateManager.pushMatrix();
         GlStateManager.translated(x, y, z);
@@ -25,18 +30,17 @@ public class TileEntitySpecialRendererSplitTank extends TileEntityRenderer<TileE
         float glycerin = te.getGlycerinPerc() / 2F;
 
         if (bioDiesel > 0) {
-            renderFluid(ModFluids.BIO_DIESEL, bioDiesel, 1F / 16F);
+            renderFluid(BIO_DIESEL_STACK, bioDiesel, 1F / 16F);
         }
 
         if (glycerin > 0) {
-            renderFluid(ModFluids.GLYCERIN, glycerin, bioDiesel + 1F / 16F);
+            renderFluid(GLYCERIN_STACK, glycerin, bioDiesel + 1F / 16F);
         }
 
         GlStateManager.popMatrix();
     }
 
-    public void renderFluid(Fluid fluid, float amount, float yStart) {
-        bindTexture(FluidStackWrapper.getTexture(fluid));
+    public void renderFluid(FluidStack fluid, float amount, float yStart) {
 
         GlStateManager.pushMatrix();
         GlStateManager.scalef(0.98F, 0.98F, 0.98F);
@@ -45,18 +49,13 @@ public class TileEntitySpecialRendererSplitTank extends TileEntityRenderer<TileE
         GlStateManager.enableBlend();
         GlStateManager.enableAlphaTest();
         GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-		
-		/*TextureAtlasSprite texture = Minecraft.getInstance().getTextureMap().getAtlasSprite(fluid.getStill().toString());
-		
-		final double uMin = texture.getMinU();
-		final double uMax = texture.getMaxU();
-		final double vMin = texture.getMinV();
-		final double vMax = texture.getMaxV();*/
 
-        double uMin = 0D;
-        double uMax = 1D;
-        double vMin = 0D;
-        double vMax = 1D / 32D;
+        TextureAtlasSprite texture = Minecraft.getInstance().getTextureMap().getAtlasSprite(fluid.getFluid().getAttributes().getStill(fluid).toString());
+
+        final double uMin = texture.getMinU();
+        final double uMax = texture.getMaxU();
+        final double vMin = texture.getMinV();
+        final double vMax = texture.getMaxV();
 
         final double vHeight = vMax - vMin;
 
@@ -111,6 +110,5 @@ public class TileEntitySpecialRendererSplitTank extends TileEntityRenderer<TileE
 
         GlStateManager.popMatrix();
     }
-
 
 }

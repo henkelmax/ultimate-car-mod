@@ -1,7 +1,9 @@
 package de.maxhenkel.car.blocks.tileentity.render;
 
 import com.mojang.blaze3d.platform.GlStateManager;
-import de.maxhenkel.tools.FluidStackWrapper;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.texture.AtlasTexture;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.util.Direction;
 import org.lwjgl.opengl.GL11;
@@ -11,7 +13,6 @@ import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
 public class TileEntitySpecialRendererTank extends TileEntityRenderer<TileEntityTank> {
@@ -33,7 +34,7 @@ public class TileEntitySpecialRendererTank extends TileEntityRenderer<TileEntity
         FluidStack stack = te.getFluid();
         if (amount > 0 && stack != null) {
 
-            renderFluid(te, stack.getFluid(), amount, 0.0D);
+            renderFluid(te, stack, amount, 0.0D);
         }
 
         bindTexture(LOCATION_TANK);
@@ -46,22 +47,16 @@ public class TileEntitySpecialRendererTank extends TileEntityRenderer<TileEntity
         GlStateManager.popMatrix();
     }
 
-    public void renderFluid(TileEntityTank tank, Fluid fluid, double amount, double yStart) {
-        //bindTexture(AtlasTexture.LOCATION_BLOCKS_TEXTURE);
-        bindTexture(FluidStackWrapper.getTexture(fluid));
+    public void renderFluid(TileEntityTank tank, FluidStack fluid, double amount, double yStart) {
+        bindTexture(AtlasTexture.LOCATION_BLOCKS_TEXTURE);
 
         GlStateManager.pushMatrix();
-		/*TextureAtlasSprite texture = Minecraft.getInstance().getTextureMap().getAtlasSprite(fluid.getStill().toString());
-
-		double uMin = texture.getMinU();
-		double uMax = texture.getMaxU();
-		double vMin = texture.getMinV();
-		double vMax = texture.getMaxV();*/
-
-        double uMin = 0D;
-        double uMax = 1D;
-        double vMin = 0D;
-        double vMax = 1D / 32D;
+        TextureAtlasSprite texture = Minecraft.getInstance().getTextureMap().getAtlasSprite(fluid.getFluid().getAttributes().getStill(fluid).toString());
+        // TODO color
+        double uMin = texture.getMinU();
+        double uMax = texture.getMaxU();
+        double vMin = texture.getMinV();
+        double vMax = texture.getMaxV();
 
         double vHeight = vMax - vMin;
 

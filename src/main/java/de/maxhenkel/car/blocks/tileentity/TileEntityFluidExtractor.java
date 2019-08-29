@@ -7,11 +7,11 @@ import javax.annotation.Nullable;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.tools.BlockPosList;
 import de.maxhenkel.car.Config;
-import de.maxhenkel.tools.FluidStackWrapper;
 import de.maxhenkel.tools.FluidUtils;
 import de.maxhenkel.car.blocks.BlockFluidExtractor;
 import de.maxhenkel.car.blocks.ModBlocks;
 import net.minecraft.block.BlockState;
+import net.minecraft.fluid.Fluid;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.ITickableTileEntity;
@@ -21,7 +21,6 @@ import net.minecraft.util.IntArray;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.IFluidHandler;
@@ -48,7 +47,7 @@ public class TileEntityFluidExtractor extends TileEntityBase implements ITickabl
 
         FluidStack stack = FluidUtil.getFluidContained(filter).orElse(null);
 
-        if (stack == null || stack.amount <= 0) {
+        if (stack == null || stack.getAmount() <= 0) {
             return null;
         }
 
@@ -68,12 +67,12 @@ public class TileEntityFluidExtractor extends TileEntityBase implements ITickabl
 
         FluidStack drainSimulated;
         if (getFilterFluid() == null) {
-            drainSimulated = extractHandler.drain(drainSpeed, false);
+            drainSimulated = extractHandler.drain(drainSpeed, IFluidHandler.FluidAction.SIMULATE);
         } else {
-            drainSimulated = extractHandler.drain(new FluidStackWrapper(getFilterFluid(), drainSpeed), false);
+            drainSimulated = extractHandler.drain(new FluidStack(getFilterFluid(), drainSpeed), IFluidHandler.FluidAction.SIMULATE);
         }
 
-        if (drainSimulated == null || drainSimulated.amount <= 0) {
+        if (drainSimulated == null || drainSimulated.getAmount() <= 0) {
             return;
         }
 
@@ -84,7 +83,7 @@ public class TileEntityFluidExtractor extends TileEntityBase implements ITickabl
         List<IFluidHandler> fillHandlers = new LinkedList<>();
 
         for (IFluidHandler handler : handlers) {
-            int amount = handler.fill(drainSimulated, false);
+            int amount = handler.fill(drainSimulated, IFluidHandler.FluidAction.SIMULATE);
             if (amount > 0) {
                 fillHandlers.add(handler);
             }

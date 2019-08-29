@@ -9,6 +9,7 @@ import de.maxhenkel.car.blocks.tileentity.render.TileentitySpecialRendererFuelSt
 import de.maxhenkel.car.entity.car.base.EntityGenericCar;
 import de.maxhenkel.car.entity.model.GenericCarModel;
 import de.maxhenkel.car.events.*;
+import de.maxhenkel.car.fluids.ModFluids;
 import de.maxhenkel.car.gui.*;
 import de.maxhenkel.car.items.ItemLicensePlate;
 import de.maxhenkel.car.items.ModItems;
@@ -21,6 +22,7 @@ import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
+import net.minecraft.fluid.Fluid;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -33,10 +35,10 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.world.storage.loot.functions.LootFunctionManager;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
@@ -52,6 +54,8 @@ import net.minecraftforge.fml.network.simple.SimpleChannel;
 import net.minecraftforge.registries.DataSerializerEntry;
 import org.lwjgl.glfw.GLFW;
 
+import java.util.Arrays;
+
 @Mod(Main.MODID)
 public class Main {
 
@@ -60,10 +64,6 @@ public class Main {
     public static SimpleChannel SIMPLE_CHANNEL;
 
     public static EntityType CAR_ENTITY_TYPE;
-
-    static {
-        FluidRegistry.enableUniversalBucket();
-    }
 
     public Main() {
         FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(Item.class, this::registerItems);
@@ -74,8 +74,10 @@ public class Main {
         FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(TileEntityType.class, this::registerTileEntities);
         FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(IRecipeSerializer.class, this::registerRecipes);
         FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(DataSerializerEntry.class, this::registerSerializers);
-        //FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(Fluid.class, this::registerFluids);
+        FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(Fluid.class, this::registerFluids);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::commonSetup);
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::stitch);
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::configEvent);
 
         ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, Config.SERVER_SPEC);
         ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, Config.CLIENT_SPEC);
@@ -83,6 +85,23 @@ public class Main {
         DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
             clientStart();
         });
+    }
+
+    @SubscribeEvent
+    public void stitch(TextureStitchEvent.Pre event) {
+        Arrays.stream(ModFluids.STILL_FLUIDS).forEach(flowingFluid -> {
+            event.addSprite(flowingFluid.getAttributes().getStillTexture());
+            event.addSprite(flowingFluid.getAttributes().getFlowingTexture());
+        });
+    }
+
+    @SubscribeEvent
+    public void configEvent(ModConfig.ModConfigEvent event) {
+        if (event.getConfig().getType() == ModConfig.Type.SERVER) {
+            Config.loadServer();
+        } else if (event.getConfig().getType() == ModConfig.Type.CLIENT) {
+            Config.loadClient();
+        }
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -436,11 +455,20 @@ public class Main {
         event.getRegistry().register(dataSerializerEntryItemList);
     }
 
-    /*@SubscribeEvent
+    @SubscribeEvent
     public void registerFluids(RegistryEvent.Register<Fluid> event) {
         event.getRegistry().registerAll(
-                ModFluids.CANOLA_OIL
+                ModFluids.CANOLA_OIL,
+                ModFluids.CANOLA_OIL_FLOWING,
+                ModFluids.METHANOL,
+                ModFluids.METHANOL_FLOWING,
+                ModFluids.CANOLA_METHANOL_MIX,
+                ModFluids.CANOLA_METHANOL_MIX_FLOWING,
+                ModFluids.GLYCERIN,
+                ModFluids.GLYCERIN_FLOWING,
+                ModFluids.BIO_DIESEL,
+                ModFluids.BIO_DIESEL_FLOWING
         );
-    }*/
+    }
 
 }

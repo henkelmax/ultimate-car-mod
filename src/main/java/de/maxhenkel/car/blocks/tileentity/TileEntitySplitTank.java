@@ -3,7 +3,6 @@ package de.maxhenkel.car.blocks.tileentity;
 import de.maxhenkel.car.Config;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.fluids.ModFluids;
-import de.maxhenkel.tools.FluidStackWrapper;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Inventory;
@@ -15,7 +14,8 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidTankProperties;
+
+import javax.annotation.Nonnull;
 
 public class TileEntitySplitTank extends TileEntityBase implements ITickableTileEntity, IFluidHandler, IInventory {
 
@@ -161,164 +161,6 @@ public class TileEntitySplitTank extends TileEntityBase implements ITickableTile
     }
 
     @Override
-    public IFluidTankProperties[] getTankProperties() {
-        return new IFluidTankProperties[]{new IFluidTankProperties() {
-
-            @Override
-            public FluidStack getContents() {
-                return new FluidStackWrapper(ModFluids.CANOLA_METHANOL_MIX, currentMix);
-            }
-
-            @Override
-            public int getCapacity() {
-                return maxMix;
-            }
-
-            @Override
-            public boolean canFillFluidType(FluidStack fluidStack) {
-                return fluidStack.getFluid().equals(ModFluids.CANOLA_METHANOL_MIX);
-            }
-
-            @Override
-            public boolean canFill() {
-                return true;
-            }
-
-            @Override
-            public boolean canDrainFluidType(FluidStack fluidStack) {
-                return false;
-            }
-
-            @Override
-            public boolean canDrain() {
-                return false;
-            }
-        }, new IFluidTankProperties() {
-
-            @Override
-            public FluidStack getContents() {
-                return new FluidStackWrapper(ModFluids.BIO_DIESEL, currentBioDiesel);
-            }
-
-            @Override
-            public int getCapacity() {
-                return maxBioDiesel;
-            }
-
-            @Override
-            public boolean canFillFluidType(FluidStack fluidStack) {
-                return false;
-            }
-
-            @Override
-            public boolean canFill() {
-                return false;
-            }
-
-            @Override
-            public boolean canDrainFluidType(FluidStack fluidStack) {
-                return fluidStack.getFluid().equals(ModFluids.BIO_DIESEL);
-            }
-
-            @Override
-            public boolean canDrain() {
-                return true;
-            }
-        }, new IFluidTankProperties() {
-
-            @Override
-            public FluidStack getContents() {
-                return new FluidStackWrapper(ModFluids.GLYCERIN, currentGlycerin);
-            }
-
-            @Override
-            public int getCapacity() {
-                return maxGlycerin;
-            }
-
-            @Override
-            public boolean canFillFluidType(FluidStack fluidStack) {
-                return false;
-            }
-
-            @Override
-            public boolean canFill() {
-                return false;
-            }
-
-            @Override
-            public boolean canDrainFluidType(FluidStack fluidStack) {
-                return fluidStack.getFluid().equals(ModFluids.GLYCERIN);
-            }
-
-            @Override
-            public boolean canDrain() {
-                return true;
-            }
-        }};
-    }
-
-    @Override
-    public int fill(FluidStack resource, boolean doFill) {
-        if (resource.getFluid().equals(ModFluids.CANOLA_METHANOL_MIX)) {
-            int amount = Math.min(maxMix - currentMix, resource.amount);
-            if (doFill) {
-                currentMix += amount;
-                markDirty();
-            }
-            return amount;
-        }
-
-        return 0;
-    }
-
-    @Override
-    public FluidStack drain(FluidStack resource, boolean doDrain) {
-        if (resource.getFluid().equals(ModFluids.GLYCERIN)) {
-            int amount = Math.min(resource.amount, currentGlycerin);
-
-            if (doDrain) {
-                currentGlycerin -= amount;
-                markDirty();
-            }
-
-            return new FluidStackWrapper(ModFluids.GLYCERIN, amount);
-        } else if (resource.getFluid().equals(ModFluids.BIO_DIESEL)) {
-            int amount = Math.min(resource.amount, currentBioDiesel);
-
-            if (doDrain) {
-                currentBioDiesel -= amount;
-                markDirty();
-            }
-            return new FluidStackWrapper(ModFluids.BIO_DIESEL, amount);
-        }
-
-        return null;
-    }
-
-    @Override
-    public FluidStack drain(int maxDrain, boolean doDrain) {
-        if (currentGlycerin > currentBioDiesel) {
-            int amount = Math.min(maxDrain, currentGlycerin);
-
-            if (doDrain) {
-                currentGlycerin -= amount;
-                markDirty();
-            }
-
-            return new FluidStackWrapper(ModFluids.GLYCERIN, amount);
-        } else {
-            int amount = Math.min(maxDrain, currentBioDiesel);
-
-            if (doDrain) {
-                currentBioDiesel -= amount;
-                markDirty();
-            }
-            return new FluidStackWrapper(ModFluids.BIO_DIESEL, amount);
-        }
-    }
-
-    @Override
     public int getSizeInventory() {
         return inventory.getSizeInventory();
     }
@@ -402,5 +244,106 @@ public class TileEntitySplitTank extends TileEntityBase implements ITickableTile
     @Override
     public IIntArray getFields() {
         return FIELDS;
+    }
+
+    @Override
+    public int getTanks() {
+        return 3;
+    }
+
+    @Nonnull
+    @Override
+    public FluidStack getFluidInTank(int tank) {
+        if (tank == 0) {
+            return new FluidStack(ModFluids.CANOLA_METHANOL_MIX, currentMix);
+        } else if (tank == 1) {
+            return new FluidStack(ModFluids.BIO_DIESEL, currentBioDiesel);
+        } else {
+            return new FluidStack(ModFluids.GLYCERIN, currentGlycerin);
+        }
+    }
+
+    @Override
+    public int getTankCapacity(int tank) {
+        if (tank == 0) {
+            return maxMix;
+        } else if (tank == 1) {
+            return maxBioDiesel;
+        } else {
+            return maxGlycerin;
+        }
+    }
+
+    @Override
+    public boolean isFluidValid(int tank, @Nonnull FluidStack stack) {
+        if (tank == 0) {
+            return stack.getFluid().equals(ModFluids.CANOLA_METHANOL_MIX);
+        } else if (tank == 1) {
+            return stack.getFluid().equals(ModFluids.BIO_DIESEL);
+        } else {
+            return stack.getFluid().equals(ModFluids.GLYCERIN);
+        }
+    }
+
+    @Override
+    public int fill(FluidStack resource, FluidAction action) {
+        if (resource.getFluid().equals(ModFluids.CANOLA_METHANOL_MIX)) {
+            int amount = Math.min(maxMix - currentMix, resource.getAmount());
+            if (action.execute()) {
+                currentMix += amount;
+                markDirty();
+            }
+            return amount;
+        }
+
+        return 0;
+    }
+
+    @Nonnull
+    @Override
+    public FluidStack drain(FluidStack resource, FluidAction action) {
+        if (resource.getFluid().equals(ModFluids.GLYCERIN)) {
+            int amount = Math.min(resource.getAmount(), currentGlycerin);
+
+            if (action.execute()) {
+                currentGlycerin -= amount;
+                markDirty();
+            }
+
+            return new FluidStack(ModFluids.GLYCERIN, amount);
+        } else if (resource.getFluid().equals(ModFluids.BIO_DIESEL)) {
+            int amount = Math.min(resource.getAmount(), currentBioDiesel);
+
+            if (action.execute()) {
+                currentBioDiesel -= amount;
+                markDirty();
+            }
+            return new FluidStack(ModFluids.BIO_DIESEL, amount);
+        }
+
+        return FluidStack.EMPTY;
+    }
+
+    @Nonnull
+    @Override
+    public FluidStack drain(int maxDrain, FluidAction action) {
+        if (currentGlycerin > currentBioDiesel) {
+            int amount = Math.min(maxDrain, currentGlycerin);
+
+            if (action.execute()) {
+                currentGlycerin -= amount;
+                markDirty();
+            }
+
+            return new FluidStack(ModFluids.GLYCERIN, amount);
+        } else {
+            int amount = Math.min(maxDrain, currentBioDiesel);
+
+            if (action.execute()) {
+                currentBioDiesel -= amount;
+                markDirty();
+            }
+            return new FluidStack(ModFluids.BIO_DIESEL, amount);
+        }
     }
 }

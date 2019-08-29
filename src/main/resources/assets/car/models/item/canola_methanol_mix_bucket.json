@@ -1,0 +1,6 @@
+{
+    "parent": "item/generated",
+    "textures": {
+        "layer0": "car:item/canola_methanol_mix_bucket"
+    }
+}

@@ -7,10 +7,10 @@ import de.maxhenkel.car.blocks.ModBlocks;
 import de.maxhenkel.car.fluids.ModFluids;
 import de.maxhenkel.car.items.ItemCanola;
 import de.maxhenkel.car.items.ModItems;
+import net.minecraft.fluid.Fluid;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraftforge.fluids.Fluid;
 
 public class TileEntityOilMill extends TileEntityEnergyFluidProducer {
 

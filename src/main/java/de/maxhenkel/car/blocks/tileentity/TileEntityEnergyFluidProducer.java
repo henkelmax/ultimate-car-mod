@@ -1,10 +1,10 @@
 package de.maxhenkel.car.blocks.tileentity;
 
-import de.maxhenkel.tools.FluidStackWrapper;
 import de.maxhenkel.tools.ItemTools;
 import de.maxhenkel.car.blocks.BlockGui;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.fluid.Fluid;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
@@ -14,10 +14,10 @@ import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.IIntArray;
 import net.minecraftforge.energy.IEnergyStorage;
-import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidTankProperties;
+
+import javax.annotation.Nonnull;
 
 public abstract class TileEntityEnergyFluidProducer extends TileEntityBase implements IEnergyStorage, ISidedInventory, ITickableTileEntity, IFluidHandler {
 
@@ -312,71 +312,6 @@ public abstract class TileEntityEnergyFluidProducer extends TileEntityBase imple
     public abstract Fluid getProducingFluid();
 
     @Override
-    public IFluidTankProperties[] getTankProperties() {
-        return new IFluidTankProperties[]{new IFluidTankProperties() {
-
-            @Override
-            public FluidStack getContents() {
-                return new FluidStackWrapper(getProducingFluid(), currentMillibuckets);
-            }
-
-            @Override
-            public int getCapacity() {
-                return maxMillibuckets;
-            }
-
-            @Override
-            public boolean canFillFluidType(FluidStack fluidStack) {
-                return false;
-            }
-
-            @Override
-            public boolean canFill() {
-                return false;
-            }
-
-            @Override
-            public boolean canDrainFluidType(FluidStack fluidStack) {
-                return fluidStack.getFluid().equals(getProducingFluid());
-            }
-
-            @Override
-            public boolean canDrain() {
-                return true;
-            }
-        }};
-    }
-
-    @Override
-    public int fill(FluidStack resource, boolean doFill) {
-        return 0;
-    }
-
-    @Override
-    public FluidStack drain(FluidStack resource, boolean doDrain) {
-        int amount = Math.min(resource.amount, currentMillibuckets);
-
-        if (doDrain) {
-            currentMillibuckets -= amount;
-            markDirty();
-        }
-
-        return new FluidStackWrapper(getProducingFluid(), amount);
-    }
-
-    @Override
-    public FluidStack drain(int maxDrain, boolean doDrain) {
-        int amount = Math.min(maxDrain, currentMillibuckets);
-
-        if (doDrain) {
-            currentMillibuckets -= amount;
-            markDirty();
-        }
-
-        return new FluidStackWrapper(getProducingFluid(), amount);
-    }
-
-    @Override
     public int receiveEnergy(int maxReceive, boolean simulate) {
         int energyNeeded = maxStorage - storedEnergy;
 
@@ -416,5 +351,57 @@ public abstract class TileEntityEnergyFluidProducer extends TileEntityBase imple
     @Override
     public IIntArray getFields() {
         return FIELDS;
+    }
+
+    @Override
+    public int getTanks() {
+        return 1;
+    }
+
+    @Nonnull
+    @Override
+    public FluidStack getFluidInTank(int tank) {
+        return new FluidStack(getProducingFluid(), currentMillibuckets);
+    }
+
+    @Override
+    public int getTankCapacity(int tank) {
+        return maxMillibuckets;
+    }
+
+    @Override
+    public boolean isFluidValid(int tank, @Nonnull FluidStack stack) {
+        return stack.getFluid().equals(getProducingFluid());
+    }
+
+    @Override
+    public int fill(FluidStack resource, FluidAction action) {
+        return 0;
+    }
+
+    @Nonnull
+    @Override
+    public FluidStack drain(FluidStack resource, FluidAction action) {
+        int amount = Math.min(resource.getAmount(), currentMillibuckets);
+
+        if (action.execute()) {
+            currentMillibuckets -= amount;
+            markDirty();
+        }
+
+        return new FluidStack(getProducingFluid(), amount);
+    }
+
+    @Nonnull
+    @Override
+    public FluidStack drain(int maxDrain, FluidAction action) {
+        int amount = Math.min(maxDrain, currentMillibuckets);
+
+        if (action.execute()) {
+            currentMillibuckets -= amount;
+            markDirty();
+        }
+
+        return new FluidStack(getProducingFluid(), amount);
     }
 }

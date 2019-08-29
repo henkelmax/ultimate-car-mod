@@ -280,8 +280,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
             return 1;
         }
 
-        //TODO add ground types to config
-        if (true/*Config.isDrivable(b)*/) {
+        if (Config.carDriveBlockList.contains(state.getBlock())) {
             return 1F;
         } else {
             return 0.5F;

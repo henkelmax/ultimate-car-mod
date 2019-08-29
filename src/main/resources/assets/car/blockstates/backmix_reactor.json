@@ -4,13 +4,9 @@
         "facing=south,powered=false": { "model": "car:block/backmix_reactor", "y": 180 },
         "facing=west,powered=false": { "model": "car:block/backmix_reactor", "y": 270 },
         "facing=east,powered=false": { "model": "car:block/backmix_reactor", "y": 90 },
-        "facing=up,powered=false": { "model": "car:block/backmix_reactor" },
-        "facing=down,powered=false": { "model": "car:block/backmix_reactor" },
         "facing=north,powered=true": { "model": "car:block/backmix_reactor_powered" },
         "facing=south,powered=true": { "model": "car:block/backmix_reactor_powered", "y": 180 },
         "facing=west,powered=true": { "model": "car:block/backmix_reactor_powered", "y": 270 },
-        "facing=east,powered=true": { "model": "car:block/backmix_reactor_powered", "y": 90 },
-        "facing=up,powered=true": { "model": "car:block/backmix_reactor_powered" },
-        "facing=down,powered=true": { "model": "car:block/backmix_reactor_powered" }
+        "facing=east,powered=true": { "model": "car:block/backmix_reactor_powered", "y": 90 }
     }
 }

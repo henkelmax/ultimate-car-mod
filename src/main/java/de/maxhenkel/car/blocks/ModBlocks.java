@@ -1,12 +1,14 @@
 package de.maxhenkel.car.blocks;
 
 import de.maxhenkel.car.blocks.BlockPaint.EnumPaintType;
-import de.maxhenkel.car.blocks.liquid.BlockBioDiesel;
+import de.maxhenkel.car.blocks.liquid.CarFluidBlock;
+import de.maxhenkel.car.fluids.ModFluids;
 import de.maxhenkel.tools.IItemBlock;
 import de.maxhenkel.tools.NoRegister;
 import de.maxhenkel.tools.OnlyBlock;
 import de.maxhenkel.tools.ReflectionTools;
 import net.minecraft.block.Block;
+import net.minecraft.block.FlowingFluidBlock;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -27,12 +29,7 @@ public class ModBlocks {
     public static final BlockCanolaCrop CANOLA_CROP = new BlockCanolaCrop();
     public static final BlockOilMill OIL_MILL = new BlockOilMill();
     public static final BlockBlastFurnace BLAST_FURNACE = new BlockBlastFurnace();
-    //public static final BlockCanolaOil CANOLA_OIL = new BlockCanolaOil();
-    //public static final BlockMethanol METHANOL = new BlockMethanol();
     public static final BlockBackmixReactor BACKMIX_REACTOR = new BlockBackmixReactor();
-    //public static final BlockCanolaMethanolMix CANOLA_METHANOL_MIX = new BlockCanolaMethanolMix();
-    //public static final BlockGlycerin GLYCERIN = new BlockGlycerin();
-    public static final BlockBioDiesel BIO_DIESEL = new BlockBioDiesel();
     public static final BlockGenerator GENERATOR = new BlockGenerator();
     public static final BlockSplitTank SPLIT_TANK = new BlockSplitTank();
     @OnlyBlock
@@ -48,6 +45,12 @@ public class ModBlocks {
     public static final BlockCrank CRANK = new BlockCrank();
     public static final BlockSign SIGN = new BlockSign();
     public static final BlockSignPost SIGN_POST = new BlockSignPost();
+
+    public static final FlowingFluidBlock BIO_DIESEL = new CarFluidBlock(ModFluids.BIO_DIESEL);
+    public static final FlowingFluidBlock CANOLA_METHANOL_MIX = new CarFluidBlock(ModFluids.CANOLA_METHANOL_MIX);
+    public static final FlowingFluidBlock CANOLA_OIL = new CarFluidBlock(ModFluids.CANOLA_OIL);
+    public static final FlowingFluidBlock GLYCERIN = new CarFluidBlock(ModFluids.GLYCERIN);
+    public static final FlowingFluidBlock METHANOL = new CarFluidBlock(ModFluids.METHANOL);
 
     public static final BlockPaint[] PAINTS;
     public static final BlockPaint[] YELLOW_PAINTS;

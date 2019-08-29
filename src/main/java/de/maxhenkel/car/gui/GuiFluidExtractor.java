@@ -2,12 +2,13 @@ package de.maxhenkel.car.gui;
 
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.blocks.tileentity.TileEntityFluidExtractor;
-import de.maxhenkel.tools.FluidStackWrapper;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.fluid.Fluid;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
 public class GuiFluidExtractor extends GuiBase<ContainerFluidExtractor> {
@@ -41,15 +42,17 @@ public class GuiFluidExtractor extends GuiBase<ContainerFluidExtractor> {
     }
 
     private void drawFilter() {
-        String name = "-";
+        ITextComponent name;
 
         Fluid f = tile.getFilterFluid();
 
-        if (f != null) {
-            name = f.getLocalizedName(new FluidStackWrapper(f, 1));
+        if (f == null) {
+            name = new StringTextComponent("-");
+        } else {
+            name = new FluidStack(f, 1).getDisplayName();
         }
 
-        font.drawString(new TranslationTextComponent("filter.fluid", name).getFormattedText(), 46, 28, fontColor);
+        font.drawString(new TranslationTextComponent("filter.fluid", name.applyTextStyle(TextFormatting.WHITE)).getFormattedText(), 46, 28, fontColor);
     }
 
 }

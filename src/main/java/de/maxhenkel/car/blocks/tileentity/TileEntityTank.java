@@ -1,7 +1,7 @@
 package de.maxhenkel.car.blocks.tileentity;
 
 import de.maxhenkel.car.Main;
-import de.maxhenkel.tools.FluidStackWrapper;
+import net.minecraft.fluid.Fluid;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
@@ -12,12 +12,11 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidTankProperties;
 
+import javax.annotation.Nonnull;
 import java.util.Iterator;
 
 public class TileEntityTank extends TileEntityBase implements IFluidHandler, ITickableTileEntity {
@@ -69,7 +68,7 @@ public class TileEntityTank extends TileEntityBase implements IFluidHandler, ITi
         FluidStack other = otherTank.getFluid();
 
         if (other == null) {
-            otherTank.setFluid(new FluidStackWrapper(fluid.getFluid(), 0));
+            otherTank.setFluid(new FluidStack(fluid.getFluid(), 0));
             other = otherTank.getFluid();
         }
 
@@ -77,7 +76,7 @@ public class TileEntityTank extends TileEntityBase implements IFluidHandler, ITi
             return;
         }
 
-        int dif = other.amount - fluid.amount;
+        int dif = other.getAmount() - fluid.getAmount();
 
         if (dif >= -2) {
             return;
@@ -101,7 +100,7 @@ public class TileEntityTank extends TileEntityBase implements IFluidHandler, ITi
             return;
         }
 
-        if (fluid != null && fluid.amount <= 0) {
+        if (fluid != null && fluid.getAmount() <= 0) {
             fluid = null;
         }
     }
@@ -111,7 +110,7 @@ public class TileEntityTank extends TileEntityBase implements IFluidHandler, ITi
             return 0F;
         }
 
-        return ((float) fluid.amount) / ((float) CAPACITY);
+        return ((float) fluid.getAmount()) / ((float) CAPACITY);
     }
 
     public FluidStack getFluid() {
@@ -120,7 +119,7 @@ public class TileEntityTank extends TileEntityBase implements IFluidHandler, ITi
 
     @Override
     public CompoundNBT write(CompoundNBT compound) {
-        if (fluid != null && fluid.amount > 0) {
+        if (fluid != null && fluid.getAmount() > 0) {
             CompoundNBT comp = new CompoundNBT();
 
             fluid.writeToNBT(comp);
@@ -134,119 +133,13 @@ public class TileEntityTank extends TileEntityBase implements IFluidHandler, ITi
     public void read(CompoundNBT compound) {
         if (compound.contains("fluid")) {
             CompoundNBT comp = compound.getCompound("fluid");
-            fluid = FluidStackWrapper.loadFluidStackFromNBT(comp);
+            fluid = FluidStack.loadFluidStackFromNBT(comp);
         } else {
             fluid = null;
         }
         super.read(compound);
     }
 
-    @Override
-    public IFluidTankProperties[] getTankProperties() {
-        return new IFluidTankProperties[]{new IFluidTankProperties() {
-
-            @Override
-            public FluidStack getContents() {
-                return fluid;
-            }
-
-            @Override
-            public int getCapacity() {
-                return CAPACITY;
-            }
-
-            @Override
-            public boolean canFillFluidType(FluidStack fluidStack) {
-                return true;
-            }
-
-            @Override
-            public boolean canFill() {
-                return true;
-            }
-
-            @Override
-            public boolean canDrainFluidType(FluidStack fluidStack) {
-                return true;
-            }
-
-            @Override
-            public boolean canDrain() {
-                return true;
-            }
-        }};
-    }
-
-    @Override
-    public int fill(FluidStack resource, boolean doFill) {
-        if (fluid == null) {
-            int amount = Math.min(resource.amount, CAPACITY);
-
-            if (doFill) {
-                fluid = new FluidStackWrapper(resource.getFluid(), amount);
-                markDirty();
-            }
-
-            return amount;
-        } else if (resource.getFluid().equals(fluid.getFluid())) {
-            int amount = Math.min(resource.amount, CAPACITY - fluid.amount);
-
-            if (doFill) {
-                fluid.amount += amount;
-                markDirty();
-            }
-
-            return amount;
-        }
-        return 0;
-    }
-
-    @Override
-    public FluidStack drain(FluidStack resource, boolean doDrain) {
-
-        if (fluid == null) {
-            return null;
-        }
-
-        if (fluid.getFluid().equals(resource.getFluid())) {
-            int amount = Math.min(resource.amount, fluid.amount);
-
-            Fluid f = fluid.getFluid();
-
-            if (doDrain) {
-                fluid.amount -= amount;
-                if (fluid.amount <= 0) {
-                    fluid = null;
-                }
-                markDirty();
-            }
-
-            return new FluidStackWrapper(f, amount);
-        }
-
-        return null;
-    }
-
-    @Override
-    public FluidStack drain(int maxDrain, boolean doDrain) {
-        if (fluid == null) {
-            return null;
-        }
-
-        int amount = Math.min(maxDrain, fluid.amount);
-
-        Fluid f = fluid.getFluid();
-
-        if (doDrain) {
-            fluid.amount -= amount;
-            if (fluid.amount <= 0) {
-                fluid = null;
-            }
-            markDirty();
-        }
-
-        return new FluidStackWrapper(f, amount);
-    }
 
     public void setFluid(FluidStack fluid) {
         this.fluid = fluid;
@@ -280,7 +173,7 @@ public class TileEntityTank extends TileEntityBase implements IFluidHandler, ITi
         TileEntity te = world.getTileEntity(pos.offset(facing));
         if (te instanceof TileEntityTank) {
             TileEntityTank tank = (TileEntityTank) te;
-            if (tank.fluid == null || fluid == null || tank.fluid.amount == 0 || fluid.amount == 0) {
+            if (tank.fluid == null || fluid == null || tank.fluid.getAmount() == 0 || fluid.getAmount() == 0) {
                 return false;
             }
 
@@ -325,5 +218,98 @@ public class TileEntityTank extends TileEntityBase implements IFluidHandler, ITi
     @OnlyIn(Dist.CLIENT)
     public boolean isFluidConnected(Direction facing) {
         return sidesFluid[facing.getIndex()];
+    }
+
+    @Override
+    public int getTanks() {
+        return 1;
+    }
+
+    @Nonnull
+    @Override
+    public FluidStack getFluidInTank(int tank) {
+        return fluid;
+    }
+
+    @Override
+    public int getTankCapacity(int tank) {
+        return CAPACITY;
+    }
+
+    @Override
+    public boolean isFluidValid(int tank, @Nonnull FluidStack stack) {
+        return true;
+    }
+
+    @Override
+    public int fill(FluidStack resource, FluidAction action) {
+        if (fluid == null) {
+            int amount = Math.min(resource.getAmount(), CAPACITY);
+
+            if (action.execute()) {
+                fluid = new FluidStack(resource.getFluid(), amount);
+                markDirty();
+            }
+
+            return amount;
+        } else if (resource.getFluid().equals(fluid.getFluid())) {
+            int amount = Math.min(resource.getAmount(), CAPACITY - fluid.getAmount());
+
+            if (action.execute()) {
+                fluid.setAmount(fluid.getAmount() + amount);
+                markDirty();
+            }
+
+            return amount;
+        }
+        return 0;
+    }
+
+    @Nonnull
+    @Override
+    public FluidStack drain(FluidStack resource, FluidAction action) {
+        if (fluid == null) {
+            return FluidStack.EMPTY;
+        }
+
+        if (fluid.getFluid().equals(resource.getFluid())) {
+            int amount = Math.min(resource.getAmount(), fluid.getAmount());
+
+            Fluid f = fluid.getFluid();
+
+            if (action.execute()) {
+                fluid.setAmount(fluid.getAmount() - amount);
+                if (fluid.getAmount() <= 0) {
+                    fluid = null;
+                }
+                markDirty();
+            }
+
+            return new FluidStack(f, amount);
+        }
+
+        return FluidStack.EMPTY;
+    }
+
+    @Nonnull
+    @Override
+    public FluidStack drain(int maxDrain, FluidAction action) {
+        if (fluid == null) {
+            return FluidStack.EMPTY;
+        }
+
+        int amount = Math.min(maxDrain, fluid.getAmount());
+
+        Fluid f = fluid.getFluid();
+
+        if (action.execute()) {
+            fluid.setAmount(fluid.getAmount() - amount);
+            if (fluid.getAmount() <= 0) {
+                fluid = null;
+            }
+            markDirty();
+        }
+
+        return new FluidStack(f, amount);
     }
 }

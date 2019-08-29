@@ -1,15 +1,5 @@
 {
-    "forge_marker": 1,
-    "defaults": {
-        "model": "forge:fluid"
-    },
     "variants": {
-        "canola_oil": [
-            {
-                "custom": {
-                    "fluid": "canola_oil"
-                }
-            }
-        ]
+        "": { "model": "car:block/canola_oil" }
     }
 }

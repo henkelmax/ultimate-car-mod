@@ -8,7 +8,6 @@ import de.maxhenkel.car.ModCreativeTabs;
 import de.maxhenkel.car.blocks.ModBlocks;
 import de.maxhenkel.car.blocks.tileentity.TileEntityFuelStation;
 import de.maxhenkel.car.sounds.ModSounds;
-import de.maxhenkel.tools.FluidStackWrapper;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.Item;
@@ -86,14 +85,14 @@ public class ItemCanister extends Item {
             if (comp.contains("fuel")) {
                 CompoundNBT fuel = comp.getCompound("fuel");
 
-                FluidStack fluidStack = FluidStackWrapper.loadFluidStackFromNBT(fuel);
+                FluidStack fluidStack = FluidStack.loadFluidStackFromNBT(fuel);
                 if (fluidStack == null) {
                     addInfo("-", 0, tooltip);
                     super.addInformation(stack, worldIn, tooltip, flagIn);
                     return;
                 }
 
-                addInfo(fluidStack.getLocalizedName(), fluidStack.amount, tooltip);
+                addInfo(fluidStack.getDisplayName().getFormattedText(), fluidStack.getAmount(), tooltip);
                 super.addInformation(stack, worldIn, tooltip, flagIn);
                 return;
             }
@@ -117,13 +116,13 @@ public class ItemCanister extends Item {
         FluidStack fluid = null;
 
         if (comp.contains("fuel")) {
-            fluid = FluidStackWrapper.loadFluidStackFromNBT(comp.getCompound("fuel"));
+            fluid = FluidStack.loadFluidStackFromNBT(comp.getCompound("fuel"));
         }
 
         int maxAmount = Config.canisterMaxFuel.get();
 
         if (fluid != null) {
-            maxAmount = Config.canisterMaxFuel.get() - fluid.amount;
+            maxAmount = Config.canisterMaxFuel.get() - fluid.getAmount();
         }
 
         if (maxAmount <= 0) {
@@ -131,13 +130,13 @@ public class ItemCanister extends Item {
         }
 
         if (fluid != null) {
-            FluidStack resultSim = handler.drain(maxAmount, false);
+            FluidStack resultSim = handler.drain(maxAmount, IFluidHandler.FluidAction.SIMULATE);
             if (resultSim == null || !resultSim.getFluid().equals(fluid.getFluid())) {
                 return false;
             }
         }
 
-        FluidStack result = handler.drain(maxAmount, true);
+        FluidStack result = handler.drain(maxAmount, IFluidHandler.FluidAction.EXECUTE);
 
         if (result == null) {
             return false;
@@ -149,7 +148,7 @@ public class ItemCanister extends Item {
         }
 
         if (result.getFluid().equals(fluid.getFluid())) {
-            fluid.amount += result.amount;
+            fluid.setAmount(fluid.getAmount() + result.getAmount());
             comp.put("fuel", fluid.writeToNBT(new CompoundNBT()));
         }
         return true;
@@ -168,17 +167,17 @@ public class ItemCanister extends Item {
 
         CompoundNBT fluid = comp.getCompound("fuel");
 
-        FluidStack stack = FluidStackWrapper.loadFluidStackFromNBT(fluid);
+        FluidStack stack = FluidStack.loadFluidStackFromNBT(fluid);
 
         if (stack == null) {
             return false;
         }
 
-        int fueledAmount = handler.fill(stack, true);
+        int fueledAmount = handler.fill(stack, IFluidHandler.FluidAction.EXECUTE);
 
-        stack.amount -= fueledAmount;
+        stack.setAmount(stack.getAmount() - fueledAmount);
 
-        if (stack.amount <= 0) {
+        if (stack.getAmount() <= 0) {
             comp.put("fuel", new CompoundNBT());
             return true;
         }

@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ModSounds {
+
     public static SoundEvent ENGINE_STOP = registerSound("engine_stop");
     public static SoundEvent ENGINE_STARTING = registerSound("engine_starting");
     public static SoundEvent ENGINE_START = registerSound("engine_start");
@@ -83,6 +84,9 @@ public class ModSounds {
     }
 
     public static boolean isCarSoundCategory(SoundEvent event) {
+        if (event == null) {
+            return false;
+        }
         return event.equals(ENGINE_STOP) ||
                 event.equals(ENGINE_STARTING) ||
                 event.equals(ENGINE_START) ||

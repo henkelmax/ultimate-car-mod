@@ -5,7 +5,7 @@ import java.util.List;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.ModCreativeTabs;
 import de.maxhenkel.car.blocks.tileentity.TileEntityTank;
-import de.maxhenkel.tools.FluidStackWrapper;
+import de.maxhenkel.tools.FluidUtils;
 import de.maxhenkel.tools.IItemBlock;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
@@ -57,11 +57,11 @@ public class BlockTank extends BlockBase implements ITileEntityProvider, IItemBl
     public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         if (stack.hasTag() && stack.getTag().contains("fluid")) {
             CompoundNBT fluidComp = stack.getTag().getCompound("fluid");
-            FluidStack fluidStack = FluidStackWrapper.loadFluidStackFromNBT(fluidComp);
+            FluidStack fluidStack = FluidStack.loadFluidStackFromNBT(fluidComp);
 
             if (fluidStack != null) {
-                tooltip.add(new TranslationTextComponent("tooltip.fluid", new TranslationTextComponent(fluidStack.getUnlocalizedName()).applyTextStyle(TextFormatting.DARK_GRAY)).applyTextStyle(TextFormatting.GRAY));
-                tooltip.add(new TranslationTextComponent("tooltip.amount", new StringTextComponent(String.valueOf(fluidStack.amount)).applyTextStyle(TextFormatting.DARK_GRAY)).applyTextStyle(TextFormatting.GRAY));
+                tooltip.add(new TranslationTextComponent("tooltip.fluid", fluidStack.getDisplayName().applyTextStyle(TextFormatting.DARK_GRAY)).applyTextStyle(TextFormatting.GRAY));
+                tooltip.add(new TranslationTextComponent("tooltip.amount", new StringTextComponent(String.valueOf(fluidStack.getAmount())).applyTextStyle(TextFormatting.DARK_GRAY)).applyTextStyle(TextFormatting.GRAY));
             }
         }
         super.addInformation(stack, worldIn, tooltip, flagIn);
@@ -91,7 +91,7 @@ public class BlockTank extends BlockBase implements ITileEntityProvider, IItemBl
 
         TileEntityTank tank = (TileEntityTank) te;
 
-        FluidStack fluidStack = FluidStackWrapper.loadFluidStackFromNBT(fluidTag);
+        FluidStack fluidStack = FluidStack.loadFluidStackFromNBT(fluidTag);
 
         tank.setFluid(fluidStack);
         tank.synchronize();
@@ -99,23 +99,7 @@ public class BlockTank extends BlockBase implements ITileEntityProvider, IItemBl
 
     @Override
     public boolean onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
-        ItemStack stack = player.getHeldItem(handIn);
-
-        if (stack == null) {
-            return false;
-        }
-
-        FluidStack fluidStack = FluidUtil.getFluidContained(stack).orElse(null);
-
-        if (fluidStack != null) {
-            handleEmpty(stack, worldIn, pos, player, handIn);
-            return true;
-        }
-
-        IFluidHandler handler = FluidUtil.getFluidHandler(stack).orElse(null);
-
-        if (handler != null) {
-            handleFill(stack, worldIn, pos, player, handIn);
+        if (FluidUtils.tryFluidInteraction(player, handIn, worldIn, pos)) {
             return true;
         }
 
@@ -154,8 +138,7 @@ public class BlockTank extends BlockBase implements ITileEntityProvider, IItemBl
 
         IItemHandler inv = new InvWrapper(playerIn.inventory);
 
-        FluidActionResult result = FluidUtil.tryFillContainerAndStow(stack, blockHandler, inv, Integer.MAX_VALUE,
-                playerIn, true);
+        FluidActionResult result = FluidUtil.tryFillContainerAndStow(stack, blockHandler, inv, Integer.MAX_VALUE, playerIn, true);
 
         if (result.isSuccess()) {
             playerIn.setHeldItem(hand, result.result);
