@@ -8,6 +8,7 @@ import de.maxhenkel.car.net.MessageStartFuel;
 import de.maxhenkel.car.sounds.ModSounds;
 import de.maxhenkel.car.sounds.SoundLoopTileentity;
 import de.maxhenkel.car.sounds.SoundLoopTileentity.ISoundLoopable;
+import de.maxhenkel.tools.FluidUtils;
 import de.maxhenkel.tools.ItemTools;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
@@ -64,6 +65,7 @@ public class TileEntityFuelStation extends TileEntityBase implements ITickableTi
         this.inventory = new Inventory(27);
         this.trading = new Inventory(2);
         this.owner = new UUID(0L, 0L);
+        this.storage = FluidStack.EMPTY;
     }
 
     public final IIntArray FIELDS = new IIntArray() {
@@ -72,7 +74,7 @@ public class TileEntityFuelStation extends TileEntityBase implements ITickableTi
                 case 0:
                     return fuelCounter;
                 case 1:
-                    if (storage != null) {
+                    if (!FluidUtils.isEmpty(storage)) {
                         return storage.getAmount();
                     }
                     return 0;
@@ -88,7 +90,7 @@ public class TileEntityFuelStation extends TileEntityBase implements ITickableTi
                     fuelCounter = value;
                     break;
                 case 1:
-                    if (storage != null) {
+                    if (!FluidUtils.isEmpty(storage)) {
                         storage.setAmount(value);
                     }
                     break;
@@ -145,13 +147,13 @@ public class TileEntityFuelStation extends TileEntityBase implements ITickableTi
             return;
         }
 
-        if (storage == null) {
+        if (FluidUtils.isEmpty(storage)) {
             return;
         }
 
         FluidStack s = FluidUtil.tryFluidTransfer(handler, this, transferRate, false);
         int amountCarCanTake = 0;
-        if (s != null) {
+        if (!FluidUtils.isEmpty(s)) {
             amountCarCanTake = s.getAmount();
         }
 
@@ -175,7 +177,7 @@ public class TileEntityFuelStation extends TileEntityBase implements ITickableTi
 
         FluidStack result = FluidUtil.tryFluidTransfer(handler, this, Math.min(transferRate, freeAmountLeft), true);
 
-        if (result != null) {
+        if (!FluidUtils.isEmpty(result)) {
             fuelCounter += result.getAmount();
             freeAmountLeft -= result.getAmount();
             synchronize(100);
@@ -277,7 +279,7 @@ public class TileEntityFuelStation extends TileEntityBase implements ITickableTi
     public CompoundNBT write(CompoundNBT compound) {
         compound.putInt("counter", fuelCounter);
 
-        if (storage != null) {
+        if (!FluidUtils.isEmpty(storage)) {
             CompoundNBT comp = new CompoundNBT();
             storage.writeToNBT(comp);
             compound.put("fluid", comp);
@@ -395,7 +397,7 @@ public class TileEntityFuelStation extends TileEntityBase implements ITickableTi
             return false;
         }
         FluidStack result = FluidUtil.tryFluidTransfer(handler, this, transferRate, false);
-        if (result == null || result.getAmount() <= 0) {
+        if (FluidUtils.isEmpty(result) || result.getAmount() <= 0) {
             return false;
         }
         return true;
@@ -513,7 +515,7 @@ public class TileEntityFuelStation extends TileEntityBase implements ITickableTi
     }
 
     public int getFuelAmount() {
-        if (storage != null) {
+        if (!FluidUtils.isEmpty(storage)) {
             return storage.getAmount();
         }
         return 0;
@@ -551,7 +553,7 @@ public class TileEntityFuelStation extends TileEntityBase implements ITickableTi
             return 0;
         }
 
-        if (storage == null) {
+        if (FluidUtils.isEmpty(storage)) {
             int amount = Math.min(resource.getAmount(), maxStorageAmount);
 
             if (action.execute()) {
@@ -577,7 +579,7 @@ public class TileEntityFuelStation extends TileEntityBase implements ITickableTi
     @Nonnull
     @Override
     public FluidStack drain(FluidStack resource, FluidAction action) {
-        if (storage == null) {
+        if (FluidUtils.isEmpty(storage)) {
             return FluidStack.EMPTY;
         }
 
@@ -589,7 +591,7 @@ public class TileEntityFuelStation extends TileEntityBase implements ITickableTi
             if (action.execute()) {
                 storage.setAmount(storage.getAmount() - amount);
                 if (storage.getAmount() <= 0) {
-                    storage = null;
+                    storage = FluidStack.EMPTY;
                     synchronize();
                 }
 
@@ -605,7 +607,7 @@ public class TileEntityFuelStation extends TileEntityBase implements ITickableTi
     @Nonnull
     @Override
     public FluidStack drain(int maxDrain, FluidAction action) {
-        if (storage == null) {
+        if (FluidUtils.isEmpty(storage)) {
             return FluidStack.EMPTY;
         }
 
@@ -616,7 +618,7 @@ public class TileEntityFuelStation extends TileEntityBase implements ITickableTi
         if (action.execute()) {
             storage.setAmount(storage.getAmount() - amount);
             if (storage.getAmount() <= 0) {
-                storage = null;
+                storage = FluidStack.EMPTY;
                 synchronize();
             }
 

@@ -165,8 +165,6 @@ public abstract class EntityCarFuelBase extends EntityCarDamageBase implements I
         setFuelAmount(compound.getInt("fuel"));
         if (compound.contains("fuel_type")) {
             setFuelType(compound.getString("fuel_type"));
-        } else {
-            setFuelType(ModFluids.BIO_DIESEL.getRegistryName().toString());
         }
     }
 

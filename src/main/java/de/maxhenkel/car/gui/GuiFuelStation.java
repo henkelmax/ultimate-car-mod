@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.maxhenkel.car.Main;
+import de.maxhenkel.tools.FluidUtils;
 import de.maxhenkel.tools.ItemTools;
 import de.maxhenkel.car.blocks.tileentity.TileEntityFuelStation;
 import net.minecraft.client.gui.widget.button.Button;
@@ -130,7 +131,7 @@ public class GuiFuelStation extends GuiBase<ContainerFuelStation> {
         ).getFormattedText();
         font.drawString(fuelText, guiLeft + 63, guiTop + 30, FONT_COLOR);
 
-        if (tank.isEmpty()) {
+        if (FluidUtils.isEmpty(tank)) {
             return;
         } else {
             String typeText = new TranslationTextComponent("fuelstation.car_fuel_type", tank.getDisplayName().applyTextStyle(TextFormatting.WHITE)).getFormattedText();
@@ -148,7 +149,7 @@ public class GuiFuelStation extends GuiBase<ContainerFuelStation> {
     private void drawBuffer() {
         FluidStack stack = fuelStation.getStorage();
 
-        if (stack == null) {
+        if (FluidUtils.isEmpty(stack)) {
 
             String bufferText = new TranslationTextComponent("fuelstation.fuel_empty").getFormattedText();
 
