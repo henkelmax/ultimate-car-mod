@@ -76,17 +76,18 @@ public class Main {
         FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(DataSerializerEntry.class, this::registerSerializers);
         FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(Fluid.class, this::registerFluids);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::commonSetup);
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::stitch);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::configEvent);
 
         ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, Config.SERVER_SPEC);
         ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, Config.CLIENT_SPEC);
 
         DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
+            FMLJavaModLoadingContext.get().getModEventBus().addListener(this::stitch);
             clientStart();
         });
     }
 
+    @OnlyIn(Dist.CLIENT)
     @SubscribeEvent
     public void stitch(TextureStitchEvent.Pre event) {
         Arrays.stream(ModFluids.STILL_FLUIDS).forEach(flowingFluid -> {

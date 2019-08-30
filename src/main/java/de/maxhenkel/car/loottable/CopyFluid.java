@@ -4,6 +4,7 @@ import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.blocks.tileentity.TileEntityTank;
+import de.maxhenkel.tools.FluidUtils;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
@@ -29,7 +30,7 @@ public class CopyFluid extends LootFunction {
         TileEntityTank tank = (TileEntityTank) tileEntity;
         FluidStack fluid = tank.getFluid();
 
-        if (fluid == null) {
+        if (FluidUtils.isEmpty(fluid)) {
             return stack;
         }
 

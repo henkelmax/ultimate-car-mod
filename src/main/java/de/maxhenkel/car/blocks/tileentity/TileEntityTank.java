@@ -1,6 +1,7 @@
 package de.maxhenkel.car.blocks.tileentity;
 
 import de.maxhenkel.car.Main;
+import de.maxhenkel.tools.FluidUtils;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.ITickableTileEntity;
@@ -26,7 +27,7 @@ public class TileEntityTank extends TileEntityBase implements IFluidHandler, ITi
 
     public TileEntityTank() {
         super(Main.TANK_TILE_ENTITY_TYPE);
-        this.fluid = null;
+        this.fluid = FluidStack.EMPTY;
     }
 
 
@@ -40,7 +41,7 @@ public class TileEntityTank extends TileEntityBase implements IFluidHandler, ITi
             updateClientSide();
         }
 
-        if (fluid == null) {
+        if (FluidUtils.isEmpty(fluid)) {
             return;
         }
 
@@ -49,7 +50,7 @@ public class TileEntityTank extends TileEntityBase implements IFluidHandler, ITi
         Iterator<Direction> i = Direction.Plane.HORIZONTAL.iterator();
         while (i.hasNext()) {
             Direction facing = i.next();
-            if (fluid == null) {
+            if (FluidUtils.isEmpty(fluid)) {
                 return;
             }
             checkSide(facing);
@@ -67,12 +68,7 @@ public class TileEntityTank extends TileEntityBase implements IFluidHandler, ITi
 
         FluidStack other = otherTank.getFluid();
 
-        if (other == null) {
-            otherTank.setFluid(new FluidStack(fluid.getFluid(), 0));
-            other = otherTank.getFluid();
-        }
-
-        if (!other.getFluid().equals(fluid.getFluid())) {
+        if (!(other.getFluid().equals(fluid.getFluid()) || FluidUtils.isEmpty(other))) {
             return;
         }
 
@@ -96,17 +92,17 @@ public class TileEntityTank extends TileEntityBase implements IFluidHandler, ITi
 
         FluidStack stack = FluidUtil.tryFluidTransfer(otherTank, this, Integer.MAX_VALUE, true);
 
-        if (stack == null) {
+        if (FluidUtils.isEmpty(stack)) {
             return;
         }
 
-        if (fluid != null && fluid.getAmount() <= 0) {
-            fluid = null;
+        if (!FluidUtils.isEmpty(fluid) && fluid.getAmount() <= 0) {
+            fluid = FluidStack.EMPTY;
         }
     }
 
     public float getFillPercent() {
-        if (fluid == null) {
+        if (FluidUtils.isEmpty(fluid)) {
             return 0F;
         }
 
@@ -119,7 +115,7 @@ public class TileEntityTank extends TileEntityBase implements IFluidHandler, ITi
 
     @Override
     public CompoundNBT write(CompoundNBT compound) {
-        if (fluid != null && fluid.getAmount() > 0) {
+        if (!FluidUtils.isEmpty(fluid) && fluid.getAmount() > 0) {
             CompoundNBT comp = new CompoundNBT();
 
             fluid.writeToNBT(comp);
@@ -135,7 +131,7 @@ public class TileEntityTank extends TileEntityBase implements IFluidHandler, ITi
             CompoundNBT comp = compound.getCompound("fluid");
             fluid = FluidStack.loadFluidStackFromNBT(comp);
         } else {
-            fluid = null;
+            fluid = FluidStack.EMPTY;
         }
         super.read(compound);
     }
@@ -173,7 +169,7 @@ public class TileEntityTank extends TileEntityBase implements IFluidHandler, ITi
         TileEntity te = world.getTileEntity(pos.offset(facing));
         if (te instanceof TileEntityTank) {
             TileEntityTank tank = (TileEntityTank) te;
-            if (tank.fluid == null || fluid == null || tank.fluid.getAmount() == 0 || fluid.getAmount() == 0) {
+            if (FluidUtils.isEmpty(tank.fluid) || FluidUtils.isEmpty(fluid) || tank.fluid.getAmount() <= 0 || fluid.getAmount() <= 0) {
                 return false;
             }
 
@@ -190,11 +186,11 @@ public class TileEntityTank extends TileEntityBase implements IFluidHandler, ITi
         TileEntity te = world.getTileEntity(pos.offset(facing));
         if (te instanceof TileEntityTank) {
             TileEntityTank tank = (TileEntityTank) te;
-            if (tank.fluid == null && fluid == null) {
+            if (FluidUtils.isEmpty(tank.fluid) && FluidUtils.isEmpty(fluid)) {
                 return true;
             }
 
-            if (tank.fluid == null || fluid == null) {
+            if (FluidUtils.isEmpty(tank.fluid) || FluidUtils.isEmpty(fluid)) {
                 return true;
             }
 
@@ -243,7 +239,7 @@ public class TileEntityTank extends TileEntityBase implements IFluidHandler, ITi
 
     @Override
     public int fill(FluidStack resource, FluidAction action) {
-        if (fluid == null) {
+        if (FluidUtils.isEmpty(fluid)) {
             int amount = Math.min(resource.getAmount(), CAPACITY);
 
             if (action.execute()) {
@@ -268,7 +264,7 @@ public class TileEntityTank extends TileEntityBase implements IFluidHandler, ITi
     @Nonnull
     @Override
     public FluidStack drain(FluidStack resource, FluidAction action) {
-        if (fluid == null) {
+        if (FluidUtils.isEmpty(fluid)) {
             return FluidStack.EMPTY;
         }
 
@@ -280,7 +276,7 @@ public class TileEntityTank extends TileEntityBase implements IFluidHandler, ITi
             if (action.execute()) {
                 fluid.setAmount(fluid.getAmount() - amount);
                 if (fluid.getAmount() <= 0) {
-                    fluid = null;
+                    fluid = FluidStack.EMPTY;
                 }
                 markDirty();
             }
@@ -294,7 +290,7 @@ public class TileEntityTank extends TileEntityBase implements IFluidHandler, ITi
     @Nonnull
     @Override
     public FluidStack drain(int maxDrain, FluidAction action) {
-        if (fluid == null) {
+        if (FluidUtils.isEmpty(fluid)) {
             return FluidStack.EMPTY;
         }
 
@@ -305,7 +301,7 @@ public class TileEntityTank extends TileEntityBase implements IFluidHandler, ITi
         if (action.execute()) {
             fluid.setAmount(fluid.getAmount() - amount);
             if (fluid.getAmount() <= 0) {
-                fluid = null;
+                fluid = FluidStack.EMPTY;
             }
             markDirty();
         }
