@@ -187,17 +187,17 @@ public class TileEntityBackmixReactor extends TileEntityBase implements ITickabl
 
     @Override
     public ItemStack getStackInSlot(int index) {
-        return null;
+        return ItemStack.EMPTY;
     }
 
     @Override
     public ItemStack decrStackSize(int index, int count) {
-        return null;
+        return ItemStack.EMPTY;
     }
 
     @Override
     public ItemStack removeStackFromSlot(int index) {
-        return null;
+        return ItemStack.EMPTY;
     }
 
     @Override
