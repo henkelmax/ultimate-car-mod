@@ -3,6 +3,7 @@ package de.maxhenkel.car.fluids;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FlowingFluidBlock;
+import net.minecraft.entity.Entity;
 import net.minecraft.fluid.FlowingFluid;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.IFluidState;
@@ -18,6 +19,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
+import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidAttributes;
 
 public abstract class CarFluid extends FlowingFluid {
@@ -28,6 +30,8 @@ public abstract class CarFluid extends FlowingFluid {
         attributes = FluidAttributes.builder(registryName.getPath(), still, flowing).sound(SoundEvents.ITEM_BUCKET_FILL).build();
         setRegistryName(registryName);
     }
+
+    public abstract void applyEffects(Entity entity, BlockState state, World worldIn, BlockPos pos);
 
     @Override
     protected FluidAttributes createAttributes(Fluid fluid) {

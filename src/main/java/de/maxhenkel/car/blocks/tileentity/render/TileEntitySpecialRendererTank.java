@@ -1,19 +1,22 @@
 package de.maxhenkel.car.blocks.tileentity.render;
 
 import com.mojang.blaze3d.platform.GlStateManager;
+import de.maxhenkel.car.Main;
+import de.maxhenkel.car.blocks.tileentity.TileEntityTank;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
-import net.minecraft.util.Direction;
-import org.lwjgl.opengl.GL11;
-import de.maxhenkel.car.Main;
-import de.maxhenkel.car.blocks.tileentity.TileEntityTank;
-import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.fluid.Fluids;
+import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.biome.BiomeColors;
+import net.minecraft.world.biome.Biomes;
 import net.minecraftforge.fluids.FluidStack;
+import org.lwjgl.opengl.GL11;
 
 public class TileEntitySpecialRendererTank extends TileEntityRenderer<TileEntityTank> {
 
@@ -52,7 +55,7 @@ public class TileEntitySpecialRendererTank extends TileEntityRenderer<TileEntity
 
         GlStateManager.pushMatrix();
         TextureAtlasSprite texture = Minecraft.getInstance().getTextureMap().getAtlasSprite(fluid.getFluid().getAttributes().getStill(fluid).toString());
-        // TODO color
+
         double uMin = texture.getMinU();
         double uMax = texture.getMaxU();
         double vMin = texture.getMinV();
@@ -60,59 +63,74 @@ public class TileEntitySpecialRendererTank extends TileEntityRenderer<TileEntity
 
         double vHeight = vMax - vMin;
 
+        int i = fluid.getFluid().getAttributes().getColor();
+        if (i < 0) {
+            if (fluid.getFluid().equals(Fluids.LAVA)) {
+                i = 0xFFFFFF;
+            } else if (tank.hasWorld()) {
+                i = BiomeColors.getWaterColor(tank.getWorld(), tank.getPos());
+            } else {
+                i = Biomes.PLAINS.getWaterColor();
+            }
+        }
+
+        float red = (float) (i >> 16 & 255) / 255F;
+        float green = (float) (i >> 8 & 255) / 255F;
+        float blue = (float) (i & 255) / 255F;
+
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder buffer = tessellator.getBuffer();
 
-        buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+        buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
 
         float s = 0.0F;
 
         if (!tank.isFluidConnected(Direction.NORTH)) {
             // North
-            buffer.pos(1D - s, yStart, 0D + s).tex(uMax, vMin).endVertex();
-            buffer.pos(0D + s, yStart, 0D + s).tex(uMin, vMin).endVertex();
-            buffer.pos(0D + s, yStart + amount - s * 2D, 0D + s).tex(uMin, vMin + vHeight * amount).endVertex();
-            buffer.pos(1D - s, yStart + amount - s * 2D, 0D + s).tex(uMax, vMin + vHeight * amount).endVertex();
+            buffer.pos(1D - s, yStart, 0D + s).tex(uMax, vMin).color(red, green, blue, 1F).endVertex();
+            buffer.pos(0D + s, yStart, 0D + s).tex(uMin, vMin).color(red, green, blue, 1F).endVertex();
+            buffer.pos(0D + s, yStart + amount - s * 2D, 0D + s).tex(uMin, vMin + vHeight * amount).color(red, green, blue, 1F).endVertex();
+            buffer.pos(1D - s, yStart + amount - s * 2D, 0D + s).tex(uMax, vMin + vHeight * amount).color(red, green, blue, 1F).endVertex();
         }
 
         if (!tank.isFluidConnected(Direction.SOUTH)) {
             // South
-            buffer.pos(1D - s, yStart, 1D - s).tex(uMin, vMin).endVertex();
-            buffer.pos(1D - s, yStart + amount - s * 2D, 1D - s).tex(uMin, vMin + vHeight * amount).endVertex();
-            buffer.pos(0D + s, yStart + amount - s * 2D, 1D - s).tex(uMax, vMin + vHeight * amount).endVertex();
-            buffer.pos(0D + s, yStart, 1D - s).tex(uMax, vMin).endVertex();
+            buffer.pos(1D - s, yStart, 1D - s).tex(uMin, vMin).color(red, green, blue, 1F).endVertex();
+            buffer.pos(1D - s, yStart + amount - s * 2D, 1D - s).tex(uMin, vMin + vHeight * amount).color(red, green, blue, 1F).endVertex();
+            buffer.pos(0D + s, yStart + amount - s * 2D, 1D - s).tex(uMax, vMin + vHeight * amount).color(red, green, blue, 1F).endVertex();
+            buffer.pos(0D + s, yStart, 1D - s).tex(uMax, vMin).color(red, green, blue, 1F).endVertex();
         }
 
         if (!tank.isFluidConnected(Direction.EAST)) {
             // East
-            buffer.pos(1D - s, yStart, 0D + s).tex(uMin, vMin).endVertex();
-            buffer.pos(1D - s, yStart + amount - s * 2D, 0D + s).tex(uMin, vMin + vHeight * amount).endVertex();
-            buffer.pos(1D - s, yStart + amount - s * 2D, 1D - s).tex(uMax, vMin + vHeight * amount).endVertex();
-            buffer.pos(1D - s, yStart, 1D - s).tex(uMax, vMin).endVertex();
+            buffer.pos(1D - s, yStart, 0D + s).tex(uMin, vMin).color(red, green, blue, 1F).endVertex();
+            buffer.pos(1D - s, yStart + amount - s * 2D, 0D + s).tex(uMin, vMin + vHeight * amount).color(red, green, blue, 1F).endVertex();
+            buffer.pos(1D - s, yStart + amount - s * 2D, 1D - s).tex(uMax, vMin + vHeight * amount).color(red, green, blue, 1F).endVertex();
+            buffer.pos(1D - s, yStart, 1D - s).tex(uMax, vMin).color(red, green, blue, 1F).endVertex();
         }
 
         if (!tank.isFluidConnected(Direction.WEST)) {
             // West
-            buffer.pos(0D + s, yStart, 1D - s).tex(uMin, vMin).endVertex();
-            buffer.pos(0D + s, yStart + amount - s * 2D, 1D - s).tex(uMin, vMin + vHeight * amount).endVertex();
-            buffer.pos(0D + s, yStart + amount - s * 2D, 0D + s).tex(uMax, vMin + vHeight * amount).endVertex();
-            buffer.pos(0D + s, yStart, 0D + s).tex(uMax, vMin).endVertex();
+            buffer.pos(0D + s, yStart, 1D - s).tex(uMin, vMin).color(red, green, blue, 1F).endVertex();
+            buffer.pos(0D + s, yStart + amount - s * 2D, 1D - s).tex(uMin, vMin + vHeight * amount).color(red, green, blue, 1F).endVertex();
+            buffer.pos(0D + s, yStart + amount - s * 2D, 0D + s).tex(uMax, vMin + vHeight * amount).color(red, green, blue, 1F).endVertex();
+            buffer.pos(0D + s, yStart, 0D + s).tex(uMax, vMin).color(red, green, blue, 1F).endVertex();
         }
 
         if (!tank.isFluidConnected(Direction.DOWN)) {
             // Down
-            buffer.pos(1D - s, yStart, 0D + s).tex(uMax, vMin).endVertex();
-            buffer.pos(1D - s, yStart, 1D - s).tex(uMin, vMin).endVertex();
-            buffer.pos(0D + s, yStart, 1D - s).tex(uMin, vMax).endVertex();
-            buffer.pos(0D + s, yStart, 0D + s).tex(uMax, vMax).endVertex();
+            buffer.pos(1D - s, yStart, 0D + s).tex(uMax, vMin).color(red, green, blue, 1F).endVertex();
+            buffer.pos(1D - s, yStart, 1D - s).tex(uMin, vMin).color(red, green, blue, 1F).endVertex();
+            buffer.pos(0D + s, yStart, 1D - s).tex(uMin, vMax).color(red, green, blue, 1F).endVertex();
+            buffer.pos(0D + s, yStart, 0D + s).tex(uMax, vMax).color(red, green, blue, 1F).endVertex();
         }
 
         if (!tank.isFluidConnected(Direction.UP)) {
             // Up
-            buffer.pos(0D + s, yStart + amount - s * 2D, 0D + s).tex(uMax, vMax).endVertex();
-            buffer.pos(0D + s, yStart + amount - s * 2D, 1D - s).tex(uMin, vMax).endVertex();
-            buffer.pos(1D - s, yStart + amount - s * 2D, 1D - s).tex(uMin, vMin).endVertex();
-            buffer.pos(1D - s, yStart + amount - s * 2D, 0D + s).tex(uMax, vMin).endVertex();
+            buffer.pos(0D + s, yStart + amount - s * 2D, 0D + s).tex(uMax, vMax).color(red, green, blue, 1F).endVertex();
+            buffer.pos(0D + s, yStart + amount - s * 2D, 1D - s).tex(uMin, vMax).color(red, green, blue, 1F).endVertex();
+            buffer.pos(1D - s, yStart + amount - s * 2D, 1D - s).tex(uMin, vMin).color(red, green, blue, 1F).endVertex();
+            buffer.pos(1D - s, yStart + amount - s * 2D, 0D + s).tex(uMax, vMin).color(red, green, blue, 1F).endVertex();
         }
 
         tessellator.draw();

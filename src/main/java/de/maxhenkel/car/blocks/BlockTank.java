@@ -99,7 +99,10 @@ public class BlockTank extends BlockBase implements ITileEntityProvider, IItemBl
 
     @Override
     public boolean onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
-        if (FluidUtils.tryFluidInteraction(player, handIn, worldIn, pos)) {
+        ItemStack stack = player.getHeldItem(handIn);
+
+        if (FluidUtil.getFluidContained(stack).orElse(null) != null) {
+            FluidUtils.tryFluidInteraction(player, handIn, worldIn, pos);
             return true;
         }
 

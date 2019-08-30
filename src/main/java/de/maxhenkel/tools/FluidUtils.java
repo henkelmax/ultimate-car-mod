@@ -71,24 +71,21 @@ public class FluidUtils {
     public static boolean tryFluidInteraction(PlayerEntity player, Hand hand, World world, BlockPos pos) {
         ItemStack stack = player.getHeldItem(hand);
 
-        if (stack != null) {
-            FluidStack fluidStack = FluidUtil.getFluidContained(stack).orElse(FluidStack.EMPTY);
+        FluidStack fluidStack = FluidUtil.getFluidContained(stack).orElse(FluidStack.EMPTY);
 
-            if (!FluidUtils.isEmpty(fluidStack)) {
-                boolean success = BlockTank.handleEmpty(stack, world, pos, player, hand);
-                if (success) {
-                    return true;
-                }
+        if (!FluidUtils.isEmpty(fluidStack)) {
+            boolean success = BlockTank.handleEmpty(stack, world, pos, player, hand);
+            if (success) {
+                return true;
             }
-            IFluidHandler handler = FluidUtil.getFluidHandler(stack).orElse(null);
+        }
+        IFluidHandler handler = FluidUtil.getFluidHandler(stack).orElse(null);
 
-            if (handler != null) {
-                boolean success1 = BlockTank.handleFill(stack, world, pos, player, hand);
-                if (success1) {
-                    return true;
-                }
+        if (handler != null) {
+            boolean success1 = BlockTank.handleFill(stack, world, pos, player, hand);
+            if (success1) {
+                return true;
             }
-
         }
         return false;
     }
