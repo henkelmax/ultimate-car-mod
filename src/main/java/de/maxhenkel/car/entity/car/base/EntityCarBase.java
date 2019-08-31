@@ -273,7 +273,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
     }
 
     public float getModifier() {
-        BlockPos pos = getPosition().down();
+        BlockPos pos = new BlockPos(posX, posY - 0.1D, posZ);
         BlockState state = world.getBlockState(pos);
 
         if (state.isAir(world, pos)) {
