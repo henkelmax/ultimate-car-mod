@@ -16,12 +16,16 @@ import de.maxhenkel.car.items.ModItems;
 import de.maxhenkel.car.loottable.CopyFluid;
 import de.maxhenkel.car.net.*;
 import de.maxhenkel.car.sounds.ModSounds;
+import de.maxhenkel.car.villagers.ModPointsOfInterests;
+import de.maxhenkel.car.villagers.ModVillagerProfessions;
+import de.maxhenkel.car.villagers.VillagerEvents;
 import de.maxhenkel.tools.EntityTools;
 import net.minecraft.block.Block;
 import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.merchant.villager.VillagerProfession;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.Item;
@@ -32,6 +36,7 @@ import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.village.PointOfInterestType;
 import net.minecraft.world.storage.loot.functions.LootFunctionManager;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -44,6 +49,7 @@ import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -54,6 +60,7 @@ import net.minecraftforge.fml.network.simple.SimpleChannel;
 import net.minecraftforge.registries.DataSerializerEntry;
 import org.lwjgl.glfw.GLFW;
 
+import java.lang.reflect.Method;
 import java.util.Arrays;
 
 @Mod(Main.MODID)
@@ -75,6 +82,8 @@ public class Main {
         FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(IRecipeSerializer.class, this::registerRecipes);
         FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(DataSerializerEntry.class, this::registerSerializers);
         FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(Fluid.class, this::registerFluids);
+        FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(PointOfInterestType.class, this::registerPointsOfInterest);
+        FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(VillagerProfession.class, this::registerVillagerProfessions);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::commonSetup);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::configEvent);
 
@@ -117,6 +126,7 @@ public class Main {
         MinecraftForge.EVENT_BUS.register(this);
         MinecraftForge.EVENT_BUS.register(new CapabilityEvents());
         MinecraftForge.EVENT_BUS.register(new BlockEvents());
+        MinecraftForge.EVENT_BUS.register(new VillagerEvents());
 
 
         LootFunctionManager.registerFunction(new CopyFluid.Serializer());
@@ -469,6 +479,28 @@ public class Main {
                 ModFluids.GLYCERIN_FLOWING,
                 ModFluids.BIO_DIESEL,
                 ModFluids.BIO_DIESEL_FLOWING
+        );
+    }
+
+    @SubscribeEvent
+    public void registerPointsOfInterest(RegistryEvent.Register<PointOfInterestType> event) {
+        event.getRegistry().registerAll(
+                ModPointsOfInterests.POINT_OF_INTEREST_TYPE_GAS_STATION_ATTENDANT
+        );
+
+        try {
+            Method register = ObfuscationReflectionHelper.findMethod(PointOfInterestType.class, "func_221052_a", PointOfInterestType.class);
+            register.invoke(null, ModPointsOfInterests.POINT_OF_INTEREST_TYPE_GAS_STATION_ATTENDANT);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    @SubscribeEvent
+    public void registerVillagerProfessions(RegistryEvent.Register<VillagerProfession> event) {
+        event.getRegistry().registerAll(
+                ModVillagerProfessions.VILLAGER_PROFESSION_GAS_STATION_ATTENDANT
         );
     }
 

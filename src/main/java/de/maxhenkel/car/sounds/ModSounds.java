@@ -20,25 +20,26 @@ import java.util.List;
 
 public class ModSounds {
 
-    public static SoundEvent ENGINE_STOP = registerSound("engine_stop");
-    public static SoundEvent ENGINE_STARTING = registerSound("engine_starting");
-    public static SoundEvent ENGINE_START = registerSound("engine_start");
-    public static SoundEvent ENGINE_IDLE = registerSound("engine_idle");
-    public static SoundEvent ENGINE_HIGH = registerSound("engine_high");
-    public static SoundEvent ENGINE_FAIL = registerSound("engine_fail");
-    public static SoundEvent SPORT_ENGINE_STOP = registerSound("sport_engine_stop");
-    public static SoundEvent SPORT_ENGINE_STARTING = registerSound("sport_engine_starting");
-    public static SoundEvent SPORT_ENGINE_START = registerSound("sport_engine_start");
-    public static SoundEvent SPORT_ENGINE_IDLE = registerSound("sport_engine_idle");
-    public static SoundEvent SPORT_ENGINE_HIGH = registerSound("sport_engine_high");
-    public static SoundEvent SPORT_ENGINE_FAIL = registerSound("sport_engine_fail");
-    public static SoundEvent CAR_CRASH = registerSound("car_crash");
-    public static SoundEvent GAS_STATION = registerSound("gas_station");
-    public static SoundEvent GENERATOR = registerSound("generator");
-    public static SoundEvent CAR_HORN = registerSound("car_horn");
-    public static SoundEvent CAR_LOCK = registerSound("car_lock");
-    public static SoundEvent CAR_UNLOCK = registerSound("car_unlock");
-    public static SoundEvent RATCHET = registerSound("ratchet");
+    public static SoundEvent ENGINE_STOP = addSound("engine_stop");
+    public static SoundEvent ENGINE_STARTING = addSound("engine_starting");
+    public static SoundEvent ENGINE_START = addSound("engine_start");
+    public static SoundEvent ENGINE_IDLE = addSound("engine_idle");
+    public static SoundEvent ENGINE_HIGH = addSound("engine_high");
+    public static SoundEvent ENGINE_FAIL = addSound("engine_fail");
+    public static SoundEvent SPORT_ENGINE_STOP = addSound("sport_engine_stop");
+    public static SoundEvent SPORT_ENGINE_STARTING = addSound("sport_engine_starting");
+    public static SoundEvent SPORT_ENGINE_START = addSound("sport_engine_start");
+    public static SoundEvent SPORT_ENGINE_IDLE = addSound("sport_engine_idle");
+    public static SoundEvent SPORT_ENGINE_HIGH = addSound("sport_engine_high");
+    public static SoundEvent SPORT_ENGINE_FAIL = addSound("sport_engine_fail");
+    public static SoundEvent CAR_CRASH = addSound("car_crash");
+    public static SoundEvent GAS_STATION = addSound("gas_station");
+    public static SoundEvent GENERATOR = addSound("generator");
+    public static SoundEvent CAR_HORN = addSound("car_horn");
+    public static SoundEvent CAR_LOCK = addSound("car_lock");
+    public static SoundEvent CAR_UNLOCK = addSound("car_unlock");
+    public static SoundEvent RATCHET = addSound("ratchet");
+    public static SoundEvent GAS_STATION_ATTENDANT = addSound("gas_station_attendant");
 
     public static List<SoundEvent> getAll() {
         List<SoundEvent> sounds = new ArrayList<>();
@@ -59,7 +60,7 @@ public class ModSounds {
         return sounds;
     }
 
-    public static SoundEvent registerSound(String soundName) {
+    public static SoundEvent addSound(String soundName) {
         SoundEvent event = new SoundEvent(new ResourceLocation(Main.MODID, soundName));
         event.setRegistryName(new ResourceLocation(Main.MODID, soundName));
         return event;

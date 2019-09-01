@@ -14,11 +14,17 @@ import net.minecraft.potion.Effects;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.FluidAttributes;
 
 public class FluidGlycerin extends CarFluid.Source {
 
     public FluidGlycerin() {
         super(new ResourceLocation(Main.MODID, "glycerin"), new ResourceLocation(Main.MODID, "block/glycerin_still"), new ResourceLocation(Main.MODID, "block/glycerin_flowing"));
+    }
+
+    @Override
+    protected FluidAttributes.Builder build() {
+        return super.build().density(5000).viscosity(100);
     }
 
     @Override

@@ -24,11 +24,19 @@ import net.minecraftforge.fluids.FluidAttributes;
 
 public abstract class CarFluid extends FlowingFluid {
 
-    private FluidAttributes attributes;
+    protected FluidAttributes attributes;
+    private ResourceLocation still;
+    private ResourceLocation flowing;
 
     public CarFluid(ResourceLocation registryName, ResourceLocation still, ResourceLocation flowing) {
-        attributes = FluidAttributes.builder(registryName.getPath(), still, flowing).sound(SoundEvents.ITEM_BUCKET_FILL).build();
+        this.still = still;
+        this.flowing = flowing;
         setRegistryName(registryName);
+        attributes = build().build();
+    }
+
+    protected FluidAttributes.Builder build() {
+        return FluidAttributes.builder(getRegistryName().getPath(), still, flowing).sound(SoundEvents.ITEM_BUCKET_FILL);
     }
 
     public abstract void applyEffects(Entity entity, BlockState state, World worldIn, BlockPos pos);

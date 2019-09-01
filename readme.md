@@ -96,3 +96,6 @@ Creative Commons Attribution License
 Link: http://www.freesound.org/people/qubodup/sounds/147243/
 License: https://creativecommons.org/licenses/by/3.0/legalcode
 Changes were made.
+
+Gas Station Attendant:
+https://freesound.org/people/XiiiSamples/sounds/382268/

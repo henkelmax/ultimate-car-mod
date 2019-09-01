@@ -360,6 +360,7 @@
     "filter.fluid": "Fluid Filter: %s",
 
     "entity.car.car": "Car",
+    "entity.minecraft.villager.car.gas_station_attendant": "Gas Station Attendant",
 
     "soundCategory.car": "Cars",
 

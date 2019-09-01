@@ -17,5 +17,6 @@
     "car_horn": {"category": "master","sounds": [{"name": "car:car_horn","stream": false}]},
     "car_lock": {"category": "master","sounds": [{"name": "car:car_lock","stream": false}]},
     "car_unlock": {"category": "master","sounds": [{"name": "car:car_unlock","stream": false}]},
-    "ratchet": {"category": "master","sounds": [{"name": "car:ratchet_1","stream": false},{"name": "car:ratchet_2","stream": false},{"name": "car:ratchet_3","stream": false}]}
+    "ratchet": {"category": "master","sounds": [{"name": "car:ratchet_1","stream": false},{"name": "car:ratchet_2","stream": false},{"name": "car:ratchet_3","stream": false}]},
+    "gas_station_attendant": {"category": "master","sounds": [{"name": "car:gas_station_attendant_1","stream": false},{"name": "car:gas_station_attendant_2","stream": false},{"name": "car:gas_station_attendant_3","stream": false}]}
 }
