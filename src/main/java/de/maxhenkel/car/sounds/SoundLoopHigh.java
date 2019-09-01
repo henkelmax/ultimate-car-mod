@@ -12,7 +12,7 @@ public class SoundLoopHigh extends SoundLoopCar {
 
     @Override
     public void tick() {
-        pitch = Math.abs(car.getSpeed()) / car.getMaxSpeed();
+        pitch = car.getPitch();
         super.tick();
     }
 

@@ -37,6 +37,7 @@ public class ModItems {
 
     public static final ItemCarPart ENGINE_3_CYLINDER = new ItemCarPart("engine_3_cylinder", PartRegistry.ENGINE_3_CYLINDER);
     public static final ItemCarPart ENGINE_6_CYLINDER = new ItemCarPart("engine_6_cylinder", PartRegistry.ENGINE_6_CYLINDER);
+    public static final ItemCarPart ENGINE_TRUCK = new ItemCarPart("engine_truck", PartRegistry.ENGINE_TRUCK);
 
     public static final ItemCarPart WHEEL = new ItemCarPart("wheel", PartRegistry.WHEEL);
     public static final ItemCarPart BIG_WHEEL = new ItemCarPart("big_wheel", PartRegistry.BIG_WHEEL);

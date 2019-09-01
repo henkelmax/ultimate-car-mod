@@ -32,6 +32,12 @@ public class ModSounds {
     public static SoundEvent SPORT_ENGINE_IDLE = addSound("sport_engine_idle");
     public static SoundEvent SPORT_ENGINE_HIGH = addSound("sport_engine_high");
     public static SoundEvent SPORT_ENGINE_FAIL = addSound("sport_engine_fail");
+    public static SoundEvent TRUCK_ENGINE_STOP = addSound("truck_engine_stop");
+    public static SoundEvent TRUCK_ENGINE_STARTING = addSound("truck_engine_starting");
+    public static SoundEvent TRUCK_ENGINE_START = addSound("truck_engine_start");
+    public static SoundEvent TRUCK_ENGINE_IDLE = addSound("truck_engine_idle");
+    public static SoundEvent TRUCK_ENGINE_HIGH = addSound("truck_engine_high");
+    public static SoundEvent TRUCK_ENGINE_FAIL = addSound("truck_engine_fail");
     public static SoundEvent CAR_CRASH = addSound("car_crash");
     public static SoundEvent GAS_STATION = addSound("gas_station");
     public static SoundEvent GENERATOR = addSound("generator");

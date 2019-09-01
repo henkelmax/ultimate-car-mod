@@ -13,6 +13,7 @@ public class PartRegistry {
 
     public static final Part ENGINE_3_CYLINDER = new PartEngine3Cylinder();
     public static final Part ENGINE_6_CYLINDER = new PartEngine6Cylinder();
+    public static final Part ENGINE_TRUCK = new PartEngineTruck();
 
     public static final Part OAK_LICENSE_PLATE_HOLDER = new PartLicensePlateHolder(new ResourceLocation("textures/block/oak_planks.png"));
     public static final Part ACACIA_LICENSE_PLATE_HOLDER = new PartLicensePlateHolder(new ResourceLocation("textures/block/acacia_planks.png"));

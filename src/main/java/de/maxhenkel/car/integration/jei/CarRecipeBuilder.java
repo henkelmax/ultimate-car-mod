@@ -85,7 +85,7 @@ public class CarRecipeBuilder {
     }
 
     private static List<ItemStack> getAllEngines() {
-        return Arrays.asList(new ItemStack(ModItems.ENGINE_3_CYLINDER), new ItemStack(ModItems.ENGINE_6_CYLINDER));
+        return Arrays.asList(new ItemStack(ModItems.ENGINE_3_CYLINDER), new ItemStack(ModItems.ENGINE_6_CYLINDER), new ItemStack(ModItems.ENGINE_TRUCK));
     }
 
     private static List<ItemStack> getAllTanks() {

@@ -161,6 +161,15 @@ public class EntityGenericCar extends EntityCarLicensePlateBase {
     }
 
     @Override
+    public float getPitch() {
+        PartEngine engine = getPartByClass(PartEngine.class);
+        if (engine instanceof PartEngineTruck) {
+            return 1F + 0.35F * Math.abs(getSpeed()) / getMaxSpeed();
+        }
+        return Math.abs(getSpeed()) / getMaxSpeed();
+    }
+
+    @Override
     public double getPlayerYOffset() {
         return 0.2D;
     }

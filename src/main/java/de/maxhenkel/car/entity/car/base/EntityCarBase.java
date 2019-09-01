@@ -75,6 +75,8 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 
     public abstract float getRotationModifier();
 
+    public abstract float getPitch();
+
     @Override
     public void tick() {
         super.tick();

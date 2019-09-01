@@ -75,16 +75,20 @@ public class Config {
     public static ForgeConfigSpec.BooleanValue tempInFarenheit;
 
     public static float engine6CylinderFuelEfficiency = 0.25F;
-    public static float engine3CylinderFuelEfficiency = 0.6F;
+    public static float engine3CylinderFuelEfficiency = 0.5F;
+    public static float engineTruckFuelEfficiency = 0.7F;
 
     public static float engine6CylinderAcceleration = 0.04F;
-    public static float engine3CylinderAcceleration = 0.032F;
+    public static float engine3CylinderAcceleration = 0.035F;
+    public static float engineTruckAcceleration = 0.032F;
 
-    public static float engine6CylinderMaxSpeed = 0.65F;
-    public static float engine3CylinderMaxSpeed = 0.5F;
+    public static float engine6CylinderMaxSpeed = 0.75F;
+    public static float engine3CylinderMaxSpeed = 0.65F;
+    public static float engineTruckMaxSpeed = 0.6F;
 
     public static float engine6CylinderMaxReverseSpeed = 0.2F;
     public static float engine3CylinderMaxReverseSpeed = 0.2F;
+    public static float engineTruckMaxReverseSpeed = 0.15F;
 
     public static float bodyBigWoodFuelEfficiency = 0.7F;
     public static float bodyBigWoodAcceleration = 0.95F;
