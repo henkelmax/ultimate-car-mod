@@ -13,7 +13,7 @@ public class MessageCarGui implements Message<MessageCarGui> {
     private UUID uuid;
 
     public MessageCarGui() {
-        this.uuid = new UUID(0, 0);
+
     }
 
     public MessageCarGui(PlayerEntity player) {

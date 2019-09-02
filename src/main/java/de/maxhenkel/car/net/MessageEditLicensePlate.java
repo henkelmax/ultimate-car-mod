@@ -15,8 +15,7 @@ public class MessageEditLicensePlate implements Message<MessageEditLicensePlate>
     private String text;
 
     public MessageEditLicensePlate() {
-        this.uuid = new UUID(0, 0);
-        this.text = "";
+
     }
 
     public MessageEditLicensePlate(PlayerEntity player, String text) {

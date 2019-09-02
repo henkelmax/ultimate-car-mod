@@ -12,9 +12,7 @@ import net.minecraftforge.fml.network.NetworkEvent;
 
 public class MessageSyncTileEntity implements Message<MessageSyncTileEntity> {
 
-    private int posX;
-    private int posY;
-    private int posZ;
+    private BlockPos pos;
     private CompoundNBT tag;
 
     public MessageSyncTileEntity() {
@@ -22,9 +20,7 @@ public class MessageSyncTileEntity implements Message<MessageSyncTileEntity> {
     }
 
     public MessageSyncTileEntity(BlockPos pos, CompoundNBT tileTag) {
-        this.posX = pos.getX();
-        this.posY = pos.getY();
-        this.posZ = pos.getZ();
+        this.pos = pos;
         this.tag = tileTag;
     }
 
@@ -46,7 +42,7 @@ public class MessageSyncTileEntity implements Message<MessageSyncTileEntity> {
             return;
         }
 
-        TileEntity te = player.world.getTileEntity(new BlockPos(posX, posY, posZ));
+        TileEntity te = player.world.getTileEntity(pos);
 
         if (te != null) {
             te.read(tag);
@@ -55,19 +51,14 @@ public class MessageSyncTileEntity implements Message<MessageSyncTileEntity> {
 
     @Override
     public MessageSyncTileEntity fromBytes(PacketBuffer buf) {
-        this.posX = buf.readInt();
-        this.posY = buf.readInt();
-        this.posZ = buf.readInt();
+        this.pos = buf.readBlockPos();
         this.tag = buf.readCompoundTag();
-
         return this;
     }
 
     @Override
     public void toBytes(PacketBuffer buf) {
-        buf.writeInt(posX);
-        buf.writeInt(posY);
-        buf.writeInt(posZ);
+        buf.writeBlockPos(pos);
         buf.writeCompoundTag(tag);
     }
 }

@@ -13,8 +13,7 @@ public class MessageCrash implements Message<MessageCrash> {
     private UUID uuid;
 
     public MessageCrash() {
-        this.speed = 0;
-        this.uuid = new UUID(0, 0);
+
     }
 
     public MessageCrash(float speed, EntityCarBase car) {
@@ -47,18 +46,13 @@ public class MessageCrash implements Message<MessageCrash> {
     @Override
     public MessageCrash fromBytes(PacketBuffer buf) {
         this.speed = buf.readFloat();
-
-        long l1 = buf.readLong();
-        long l2 = buf.readLong();
-        this.uuid = new UUID(l1, l2);
-
+        this.uuid = buf.readUniqueId();
         return this;
     }
 
     @Override
     public void toBytes(PacketBuffer buf) {
         buf.writeFloat(speed);
-        buf.writeLong(uuid.getMostSignificantBits());
-        buf.writeLong(uuid.getLeastSignificantBits());
+        buf.writeUniqueId(uuid);
     }
 }

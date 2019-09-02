@@ -8,9 +8,7 @@ import net.minecraftforge.fml.network.NetworkEvent;
 
 public class MessageEditSign implements Message<MessageEditSign> {
 
-    private int posX;
-    private int posY;
-    private int posZ;
+    private BlockPos pos;
     private String[] text;
 
     public MessageEditSign() {
@@ -18,15 +16,13 @@ public class MessageEditSign implements Message<MessageEditSign> {
     }
 
     public MessageEditSign(BlockPos pos, String[] text) {
-        this.posX = pos.getX();
-        this.posY = pos.getY();
-        this.posZ = pos.getZ();
+        this.pos = pos;
         this.text = text;
     }
 
     @Override
     public void executeServerSide(NetworkEvent.Context context) {
-        TileEntity te = context.getSender().world.getTileEntity(new BlockPos(posX, posY, posZ));
+        TileEntity te = context.getSender().world.getTileEntity(pos);
 
         if (te instanceof TileEntitySign) {
             ((TileEntitySign) te).setText(text);
@@ -40,9 +36,7 @@ public class MessageEditSign implements Message<MessageEditSign> {
 
     @Override
     public MessageEditSign fromBytes(PacketBuffer buf) {
-        this.posX = buf.readInt();
-        this.posY = buf.readInt();
-        this.posZ = buf.readInt();
+        this.pos = buf.readBlockPos();
         this.text = new String[8];
         for (int i = 0; i < text.length; i++) {
             this.text[i] = buf.readString();
@@ -53,9 +47,7 @@ public class MessageEditSign implements Message<MessageEditSign> {
 
     @Override
     public void toBytes(PacketBuffer buf) {
-        buf.writeInt(posX);
-        buf.writeInt(posY);
-        buf.writeInt(posZ);
+        buf.writeBlockPos(pos);
         for (int i = 0; i < text.length; i++) {
             buf.writeString(text[i]);
         }

@@ -10,6 +10,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.network.NetworkEvent;
 
+@Deprecated
 public class MessagePlaySoundLoop implements Message<MessagePlaySoundLoop> {
 
     private int posX;

@@ -11,19 +11,15 @@ import net.minecraftforge.fml.network.NetworkEvent;
 
 public class MessageRepairCar implements Message<MessageRepairCar> {
 
-    private int posX;
-    private int posY;
-    private int posZ;
+    private BlockPos pos;
     private UUID uuid;
 
     public MessageRepairCar() {
-        this.uuid = new UUID(0, 0);
+
     }
 
     public MessageRepairCar(BlockPos pos, PlayerEntity player) {
-        this.posX = pos.getX();
-        this.posY = pos.getY();
-        this.posZ = pos.getZ();
+        this.pos = pos;
         this.uuid = player.getUniqueID();
     }
 
@@ -34,7 +30,7 @@ public class MessageRepairCar implements Message<MessageRepairCar> {
             return;
         }
 
-        TileEntity te = context.getSender().world.getTileEntity(new BlockPos(posX, posY, posZ));
+        TileEntity te = context.getSender().world.getTileEntity(pos);
 
         if (te instanceof TileEntityCarWorkshop) {
             ((TileEntityCarWorkshop) te).repairCar(context.getSender());
@@ -48,24 +44,14 @@ public class MessageRepairCar implements Message<MessageRepairCar> {
 
     @Override
     public MessageRepairCar fromBytes(PacketBuffer buf) {
-        this.posX = buf.readInt();
-        this.posY = buf.readInt();
-        this.posZ = buf.readInt();
-
-        long l1 = buf.readLong();
-        long l2 = buf.readLong();
-        this.uuid = new UUID(l1, l2);
-
+        pos = buf.readBlockPos();
+        uuid = buf.readUniqueId();
         return this;
     }
 
     @Override
     public void toBytes(PacketBuffer buf) {
-        buf.writeInt(posX);
-        buf.writeInt(posY);
-        buf.writeInt(posZ);
-
-        buf.writeLong(uuid.getMostSignificantBits());
-        buf.writeLong(uuid.getLeastSignificantBits());
+        buf.writeBlockPos(pos);
+        buf.writeUniqueId(uuid);
     }
 }

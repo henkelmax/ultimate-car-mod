@@ -15,15 +15,11 @@ public class MessageCenterCar implements Message<MessageCenterCar> {
     private UUID uuid;
 
     public MessageCenterCar() {
-        this.uuid = new UUID(0, 0);
+
     }
 
     public MessageCenterCar(PlayerEntity player) {
         this.uuid = player.getUniqueID();
-    }
-
-    public MessageCenterCar(UUID uuid) {
-        this.uuid = uuid;
     }
 
     @Override
@@ -55,16 +51,12 @@ public class MessageCenterCar implements Message<MessageCenterCar> {
 
     @Override
     public MessageCenterCar fromBytes(PacketBuffer buf) {
-        long l1 = buf.readLong();
-        long l2 = buf.readLong();
-        this.uuid = new UUID(l1, l2);
-
+        this.uuid = buf.readUniqueId();
         return this;
     }
 
     @Override
     public void toBytes(PacketBuffer buf) {
-        buf.writeLong(uuid.getMostSignificantBits());
-        buf.writeLong(uuid.getLeastSignificantBits());
+        buf.writeUniqueId(uuid);
     }
 }

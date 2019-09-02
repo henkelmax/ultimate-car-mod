@@ -8,9 +8,7 @@ import net.minecraftforge.fml.network.NetworkEvent;
 
 public class MessageFuelStationAdminAmount implements Message<MessageFuelStationAdminAmount> {
 
-    private int posX;
-    private int posY;
-    private int posZ;
+    private BlockPos pos;
     private int amount;
 
     public MessageFuelStationAdminAmount() {
@@ -18,15 +16,13 @@ public class MessageFuelStationAdminAmount implements Message<MessageFuelStation
     }
 
     public MessageFuelStationAdminAmount(BlockPos pos, int amount) {
-        this.posX = pos.getX();
-        this.posY = pos.getY();
-        this.posZ = pos.getZ();
+        this.pos = pos;
         this.amount = amount;
     }
 
     @Override
     public void executeServerSide(NetworkEvent.Context context) {
-        TileEntity te = context.getSender().world.getTileEntity(new BlockPos(posX, posY, posZ));
+        TileEntity te = context.getSender().world.getTileEntity(pos);
 
         if (te instanceof TileEntityFuelStation) {
             ((TileEntityFuelStation) te).setTradeAmount(amount);
@@ -40,9 +36,7 @@ public class MessageFuelStationAdminAmount implements Message<MessageFuelStation
 
     @Override
     public MessageFuelStationAdminAmount fromBytes(PacketBuffer buf) {
-        this.posX = buf.readInt();
-        this.posY = buf.readInt();
-        this.posZ = buf.readInt();
+        this.pos = buf.readBlockPos();
         this.amount = buf.readInt();
 
         return this;
@@ -50,9 +44,7 @@ public class MessageFuelStationAdminAmount implements Message<MessageFuelStation
 
     @Override
     public void toBytes(PacketBuffer buf) {
-        buf.writeInt(posX);
-        buf.writeInt(posY);
-        buf.writeInt(posZ);
+        buf.writeBlockPos(pos);
         buf.writeInt(amount);
     }
 }

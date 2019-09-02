@@ -19,7 +19,7 @@ public class MessageOpenCarWorkshopGui implements Message<MessageOpenCarWorkshop
     private boolean repair;
 
     public MessageOpenCarWorkshopGui() {
-        this.uuid = new UUID(0, 0);
+
     }
 
     public MessageOpenCarWorkshopGui(BlockPos pos, PlayerEntity player, boolean reapir) {

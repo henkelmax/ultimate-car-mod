@@ -8,22 +8,18 @@ import net.minecraftforge.fml.network.NetworkEvent;
 
 public class MessageSpawnCar implements Message<MessageSpawnCar> {
 
-    private int posX;
-    private int posY;
-    private int posZ;
+    private BlockPos pos;
 
     public MessageSpawnCar() {
     }
 
     public MessageSpawnCar(BlockPos pos) {
-        this.posX = pos.getX();
-        this.posY = pos.getY();
-        this.posZ = pos.getZ();
+        this.pos = pos;
     }
 
     @Override
     public void executeServerSide(NetworkEvent.Context context) {
-        TileEntity te = context.getSender().world.getTileEntity(new BlockPos(posX, posY, posZ));
+        TileEntity te = context.getSender().world.getTileEntity(pos);
 
         if (te instanceof TileEntityCarWorkshop) {
             ((TileEntityCarWorkshop) te).spawnCar(context.getSender());
@@ -37,17 +33,12 @@ public class MessageSpawnCar implements Message<MessageSpawnCar> {
 
     @Override
     public MessageSpawnCar fromBytes(PacketBuffer buf) {
-        this.posX = buf.readInt();
-        this.posY = buf.readInt();
-        this.posZ = buf.readInt();
-
+        this.pos = buf.readBlockPos();
         return this;
     }
 
     @Override
     public void toBytes(PacketBuffer buf) {
-        buf.writeInt(posX);
-        buf.writeInt(posY);
-        buf.writeInt(posZ);
+        buf.writeBlockPos(pos);
     }
 }

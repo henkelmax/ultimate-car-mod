@@ -9,24 +9,20 @@ import net.minecraftforge.fml.network.NetworkEvent;
 public class MessageStartFuel implements Message<MessageStartFuel> {
 
     private boolean start;
-    private int posX;
-    private int posY;
-    private int posZ;
+    private BlockPos pos;
 
     public MessageStartFuel() {
     }
 
     public MessageStartFuel(BlockPos pos, boolean start) {
-        posX = pos.getX();
-        posY = pos.getY();
-        posZ = pos.getZ();
+        this.pos = pos;
         this.start = start;
     }
 
 
     @Override
     public void executeServerSide(NetworkEvent.Context context) {
-        TileEntity te = context.getSender().world.getTileEntity(new BlockPos(posX, posY, posZ));
+        TileEntity te = context.getSender().world.getTileEntity(pos);
 
         if (te instanceof TileEntityFuelStation) {
             TileEntityFuelStation tank = (TileEntityFuelStation) te;
@@ -43,18 +39,13 @@ public class MessageStartFuel implements Message<MessageStartFuel> {
     @Override
     public MessageStartFuel fromBytes(PacketBuffer buf) {
         this.start = buf.readBoolean();
-        this.posX = buf.readInt();
-        this.posY = buf.readInt();
-        this.posZ = buf.readInt();
-
+        this.pos = buf.readBlockPos();
         return this;
     }
 
     @Override
     public void toBytes(PacketBuffer buf) {
         buf.writeBoolean(start);
-        buf.writeInt(posX);
-        buf.writeInt(posY);
-        buf.writeInt(posZ);
+        buf.writeBlockPos(pos);
     }
 }

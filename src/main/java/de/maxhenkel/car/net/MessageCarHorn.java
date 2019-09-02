@@ -14,8 +14,7 @@ public class MessageCarHorn implements Message<MessageCarHorn> {
     private UUID uuid;
 
     public MessageCarHorn() {
-        this.pressed = false;
-        this.uuid = new UUID(0, 0);
+
     }
 
     public MessageCarHorn(boolean pressed, PlayerEntity player) {
@@ -55,19 +54,13 @@ public class MessageCarHorn implements Message<MessageCarHorn> {
     @Override
     public MessageCarHorn fromBytes(PacketBuffer buf) {
         this.pressed = buf.readBoolean();
-
-        long l1 = buf.readLong();
-        long l2 = buf.readLong();
-        this.uuid = new UUID(l1, l2);
-
+        this.uuid = buf.readUniqueId();
         return this;
     }
 
     @Override
     public void toBytes(PacketBuffer buf) {
         buf.writeBoolean(pressed);
-
-        buf.writeLong(uuid.getMostSignificantBits());
-        buf.writeLong(uuid.getLeastSignificantBits());
+        buf.writeUniqueId(uuid);
     }
 }

@@ -15,8 +15,7 @@ public class MessageStarting implements Message<MessageStarting> {
     private UUID uuid;
 
     public MessageStarting() {
-        this.start = true;
-        this.uuid = new UUID(0, 0);
+
     }
 
     public MessageStarting(boolean start, boolean playSound, PlayerEntity player) {
@@ -54,9 +53,7 @@ public class MessageStarting implements Message<MessageStarting> {
         this.start = buf.readBoolean();
         this.playSound = buf.readBoolean();
 
-        long l1 = buf.readLong();
-        long l2 = buf.readLong();
-        this.uuid = new UUID(l1, l2);
+        this.uuid = buf.readUniqueId();
 
         return this;
     }
@@ -66,7 +63,6 @@ public class MessageStarting implements Message<MessageStarting> {
         buf.writeBoolean(start);
         buf.writeBoolean(playSound);
 
-        buf.writeLong(uuid.getMostSignificantBits());
-        buf.writeLong(uuid.getLeastSignificantBits());
+        buf.writeUniqueId(uuid);
     }
 }
