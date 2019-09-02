@@ -1,7 +1,7 @@
 package de.maxhenkel.car.blocks;
 
 import de.maxhenkel.car.Main;
-import de.maxhenkel.car.ModCreativeTabs;
+import de.maxhenkel.car.ModItemGroups;
 import de.maxhenkel.car.blocks.tileentity.TileEntityFluidExtractor;
 import de.maxhenkel.car.gui.ContainerFluidExtractor;
 import de.maxhenkel.car.gui.TileEntityContainerProvider;
@@ -59,7 +59,7 @@ public class BlockFluidExtractor extends BlockBase implements ITileEntityProvide
 
     @Override
     public Item toItem() {
-        return new BlockItem(this, new Item.Properties().group(ModCreativeTabs.TAB_CAR)).setRegistryName(this.getRegistryName());
+        return new BlockItem(this, new Item.Properties().group(ModItemGroups.TAB_CAR)).setRegistryName(this.getRegistryName());
     }
 
     @Override

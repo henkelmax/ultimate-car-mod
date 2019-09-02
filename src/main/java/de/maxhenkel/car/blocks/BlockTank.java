@@ -3,7 +3,7 @@ package de.maxhenkel.car.blocks;
 import java.util.List;
 
 import de.maxhenkel.car.Main;
-import de.maxhenkel.car.ModCreativeTabs;
+import de.maxhenkel.car.ModItemGroups;
 import de.maxhenkel.car.blocks.tileentity.TileEntityTank;
 import de.maxhenkel.tools.FluidUtils;
 import de.maxhenkel.tools.IItemBlock;
@@ -50,7 +50,7 @@ public class BlockTank extends BlockBase implements ITileEntityProvider, IItemBl
 
     @Override
     public Item toItem() {
-        return new BlockItem(this, new Item.Properties().group(ModCreativeTabs.TAB_CAR).maxStackSize(1)).setRegistryName(this.getRegistryName());
+        return new BlockItem(this, new Item.Properties().group(ModItemGroups.TAB_CAR).maxStackSize(1)).setRegistryName(this.getRegistryName());
     }
 
     @Override

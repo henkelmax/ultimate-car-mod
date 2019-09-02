@@ -1,7 +1,7 @@
 package de.maxhenkel.car.entity.car.base;
 
 import de.maxhenkel.car.Config;
-import de.maxhenkel.car.DataSerializerItemList;
+import de.maxhenkel.car.dataserializers.DataSerializerItemList;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.entity.car.parts.*;
 import de.maxhenkel.car.entity.model.obj.OBJModelInstance;

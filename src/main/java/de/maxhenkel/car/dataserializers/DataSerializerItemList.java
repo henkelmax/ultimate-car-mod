@@ -1,4 +1,4 @@
-package de.maxhenkel.car;
+package de.maxhenkel.car.dataserializers;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;

@@ -1,7 +1,7 @@
 package de.maxhenkel.car.items;
 
 import de.maxhenkel.car.Main;
-import de.maxhenkel.car.ModCreativeTabs;
+import de.maxhenkel.car.ModItemGroups;
 import de.maxhenkel.car.blocks.ModBlocks;
 import de.maxhenkel.tools.EnergyTools;
 import net.minecraft.client.util.ITooltipFlag;
@@ -23,7 +23,7 @@ import java.util.List;
 public class ItemBattery extends Item {
 
     public ItemBattery() {
-        super(new Item.Properties().maxStackSize(1).group(ModCreativeTabs.TAB_CAR).maxDamage(500));
+        super(new Item.Properties().maxStackSize(1).group(ModItemGroups.TAB_CAR).maxDamage(500));
         setRegistryName(new ResourceLocation(Main.MODID, "battery"));
     }
 

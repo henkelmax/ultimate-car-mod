@@ -3,7 +3,7 @@ package de.maxhenkel.car.blocks;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import de.maxhenkel.car.Main;
-import de.maxhenkel.car.ModCreativeTabs;
+import de.maxhenkel.car.ModItemGroups;
 import de.maxhenkel.car.blocks.tileentity.TileEntitySign;
 import de.maxhenkel.car.gui.ContainerSign;
 import de.maxhenkel.car.gui.TileEntityContainerProvider;
@@ -47,7 +47,7 @@ public class BlockSign extends BlockBase implements ITileEntityProvider, IItemBl
 
     @Override
     public Item toItem() {
-        return new BlockItem(this, new Item.Properties().group(ModCreativeTabs.TAB_CAR)).setRegistryName(this.getRegistryName());
+        return new BlockItem(this, new Item.Properties().group(ModItemGroups.TAB_CAR)).setRegistryName(this.getRegistryName());
     }
 
     @Override

@@ -1,7 +1,7 @@
 package de.maxhenkel.car.items;
 
 import de.maxhenkel.car.Main;
-import de.maxhenkel.car.ModCreativeTabs;
+import de.maxhenkel.car.ModItemGroups;
 import de.maxhenkel.car.blocks.BlockPaint;
 import de.maxhenkel.car.blocks.ModBlocks;
 import de.maxhenkel.car.gui.ContainerPainter;
@@ -31,7 +31,7 @@ public class ItemPainter extends Item {
     private boolean isYellow;
 
     public ItemPainter(boolean isYellow) {
-        super(new Item.Properties().maxStackSize(1).maxDamage(1024).group(ModCreativeTabs.TAB_CAR));
+        super(new Item.Properties().maxStackSize(1).maxDamage(1024).group(ModItemGroups.TAB_CAR));
         setRegistryName(new ResourceLocation(Main.MODID, "painter" + (isYellow ? "_yellow" : "")));
         this.isYellow = isYellow;
 

@@ -1,6 +1,6 @@
 package de.maxhenkel.car.items;
 
-import de.maxhenkel.car.ModCreativeTabs;
+import de.maxhenkel.car.ModItemGroups;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.item.BucketItem;
 import net.minecraft.item.Item;
@@ -16,7 +16,7 @@ import javax.annotation.Nullable;
 public class CarBucketItem extends BucketItem {
 
     public CarBucketItem(Fluid containedFluidIn, ResourceLocation registryName) {
-        super(containedFluidIn, new Item.Properties().containerItem(Items.BUCKET).maxStackSize(1).group(ModCreativeTabs.TAB_CAR));
+        super(containedFluidIn, new Item.Properties().containerItem(Items.BUCKET).maxStackSize(1).group(ModItemGroups.TAB_CAR));
         setRegistryName(registryName);
     }
 

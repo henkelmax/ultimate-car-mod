@@ -1,7 +1,7 @@
 package de.maxhenkel.car.blocks;
 
 import de.maxhenkel.car.Main;
-import de.maxhenkel.car.ModCreativeTabs;
+import de.maxhenkel.car.ModItemGroups;
 import de.maxhenkel.tools.BlockTools;
 import de.maxhenkel.tools.FluidUtils;
 import de.maxhenkel.tools.IItemBlock;
@@ -52,7 +52,7 @@ public class BlockFluidPipe extends BlockBase implements IItemBlock {
 
     @Override
     public Item toItem() {
-        return new BlockItem(this, new Item.Properties().group(ModCreativeTabs.TAB_CAR)).setRegistryName(this.getRegistryName());
+        return new BlockItem(this, new Item.Properties().group(ModItemGroups.TAB_CAR)).setRegistryName(this.getRegistryName());
     }
 
     @Nullable

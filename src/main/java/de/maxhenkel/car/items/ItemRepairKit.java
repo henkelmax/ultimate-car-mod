@@ -3,7 +3,7 @@ package de.maxhenkel.car.items;
 import java.util.List;
 
 import de.maxhenkel.car.Main;
-import de.maxhenkel.car.ModCreativeTabs;
+import de.maxhenkel.car.ModItemGroups;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -18,7 +18,7 @@ import javax.annotation.Nullable;
 public class ItemRepairKit extends Item {
 
     public ItemRepairKit() {
-        super(new Item.Properties().maxStackSize(1).group(ModCreativeTabs.TAB_CAR));
+        super(new Item.Properties().maxStackSize(1).group(ModItemGroups.TAB_CAR));
         setRegistryName(new ResourceLocation(Main.MODID, "repair_kit"));
     }
 

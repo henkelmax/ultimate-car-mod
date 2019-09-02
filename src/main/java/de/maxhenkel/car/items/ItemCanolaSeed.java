@@ -1,7 +1,7 @@
 package de.maxhenkel.car.items;
 
 import de.maxhenkel.car.Main;
-import de.maxhenkel.car.ModCreativeTabs;
+import de.maxhenkel.car.ModItemGroups;
 import de.maxhenkel.car.blocks.ModBlocks;
 import net.minecraft.block.BlockState;
 import net.minecraft.item.BlockNamedItem;
@@ -15,7 +15,7 @@ import net.minecraftforge.common.PlantType;
 public class ItemCanolaSeed extends BlockNamedItem implements IPlantable {
 
     public ItemCanolaSeed() {
-        super(ModBlocks.CANOLA_CROP, new Item.Properties().group(ModCreativeTabs.TAB_CAR));
+        super(ModBlocks.CANOLA_CROP, new Item.Properties().group(ModItemGroups.TAB_CAR));
         setRegistryName(new ResourceLocation(Main.MODID, "canola_seeds"));
     }
 

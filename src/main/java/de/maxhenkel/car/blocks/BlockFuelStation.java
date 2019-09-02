@@ -4,7 +4,7 @@ import java.util.Map;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
-import de.maxhenkel.car.ModCreativeTabs;
+import de.maxhenkel.car.ModItemGroups;
 import de.maxhenkel.car.blocks.tileentity.TileEntityFuelStation;
 import de.maxhenkel.car.gui.ContainerFuelStation;
 import de.maxhenkel.car.gui.ContainerFuelStationAdmin;
@@ -48,7 +48,7 @@ public class BlockFuelStation extends BlockOrientableHorizontal {
 
     @Override
     public Item toItem() {
-        return new BlockItem(this, new Item.Properties().group(ModCreativeTabs.TAB_CAR)) {
+        return new BlockItem(this, new Item.Properties().group(ModItemGroups.TAB_CAR)) {
             @Override
             protected boolean canPlace(BlockItemUseContext context, BlockState state) {
                 if (!context.getWorld().isAirBlock(context.getPos().up())) {

@@ -4,7 +4,7 @@ import java.util.List;
 
 import de.maxhenkel.car.Config;
 import de.maxhenkel.car.Main;
-import de.maxhenkel.car.ModCreativeTabs;
+import de.maxhenkel.car.ModItemGroups;
 import de.maxhenkel.car.blocks.ModBlocks;
 import de.maxhenkel.car.blocks.tileentity.TileEntityFuelStation;
 import de.maxhenkel.car.sounds.ModSounds;
@@ -32,7 +32,7 @@ import javax.annotation.Nullable;
 public class ItemCanister extends Item {
 
     public ItemCanister() {
-        super(new Item.Properties().maxStackSize(1).group(ModCreativeTabs.TAB_CAR));
+        super(new Item.Properties().maxStackSize(1).group(ModItemGroups.TAB_CAR));
         setRegistryName(new ResourceLocation(Main.MODID, "canister"));
     }
 

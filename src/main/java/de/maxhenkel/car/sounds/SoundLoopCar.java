@@ -18,7 +18,7 @@ public abstract class SoundLoopCar extends TickableSound {
         this.repeat = true;
         this.repeatDelay = 0;
         this.volume = Config.carVolume.get().floatValue();
-        this.pitch = 1.0F;
+        this.pitch = 1F;
         this.priority = true;
         this.global = false;
         this.attenuationType = AttenuationType.LINEAR;

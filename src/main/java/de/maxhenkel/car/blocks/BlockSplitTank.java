@@ -1,7 +1,7 @@
 package de.maxhenkel.car.blocks;
 
 import de.maxhenkel.car.Main;
-import de.maxhenkel.car.ModCreativeTabs;
+import de.maxhenkel.car.ModItemGroups;
 import de.maxhenkel.car.blocks.tileentity.TileEntitySplitTank;
 import de.maxhenkel.car.gui.ContainerSplitTank;
 import de.maxhenkel.car.gui.TileEntityContainerProvider;
@@ -42,7 +42,7 @@ public class BlockSplitTank extends BlockBase implements ITileEntityProvider, II
 
     @Override
     public Item toItem() {
-        return new BlockItem(this, new Item.Properties().group(ModCreativeTabs.TAB_CAR)) {
+        return new BlockItem(this, new Item.Properties().group(ModItemGroups.TAB_CAR)) {
             @Override
             protected boolean canPlace(BlockItemUseContext context, BlockState state) {
                 if (!context.getWorld().isAirBlock(context.getPos().up())) {

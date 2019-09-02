@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.UUID;
 
 import de.maxhenkel.car.Main;
-import de.maxhenkel.car.ModCreativeTabs;
+import de.maxhenkel.car.ModItemGroups;
 import de.maxhenkel.car.PredicateUUID;
 import de.maxhenkel.car.entity.car.base.EntityCarLockBase;
 import net.minecraft.entity.player.PlayerEntity;
@@ -22,7 +22,7 @@ import net.minecraft.world.World;
 public class ItemKey extends Item {
 
     public ItemKey() {
-        super(new Item.Properties().maxStackSize(1).group(ModCreativeTabs.TAB_CAR));
+        super(new Item.Properties().maxStackSize(1).group(ModItemGroups.TAB_CAR));
         setRegistryName(new ResourceLocation(Main.MODID, "key"));
     }
 
