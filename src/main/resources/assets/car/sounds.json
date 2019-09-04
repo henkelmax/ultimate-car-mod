@@ -1,28 +1,106 @@
 {
-    "engine_idle": {"category": "master","sounds": [{"name": "car:engine_idle","stream": false}]},
-    "engine_start": {"category": "master","sounds": [{"name": "car:engine_start","stream": false}]},
-    "engine_starting": {"category": "master","sounds": [{"name": "car:engine_starting","stream": false}]},
-    "engine_stop": {"category": "master","sounds": [{"name": "car:engine_stop","stream": false}]},
-    "engine_high": {"category": "master","sounds": [{"name": "car:engine_high","stream": false}]},
-    "engine_fail": {"category": "master","sounds": [{"name": "car:engine_fail","stream": false}]},
-    "car_crash": {"category": "master","sounds": [{"name": "car:car_crash","stream": false}]},
-    "gas_station": {"category": "master","sounds": [{"name": "car:gas_station","stream": false}]},
-    "generator": {"category": "master","sounds": [{"name": "car:generator","stream": false}]},
-    "sport_engine_idle": {"category": "master","sounds": [{"name": "car:sport_engine_idle","stream": false}]},
-    "sport_engine_start": {"category": "master","sounds": [{"name": "car:sport_engine_start","stream": false}]},
-    "sport_engine_starting": {"category": "master","sounds": [{"name": "car:sport_engine_starting","stream": false}]},
-    "sport_engine_stop": {"category": "master","sounds": [{"name": "car:sport_engine_stop","stream": false}]},
-    "sport_engine_high": {"category": "master","sounds": [{"name": "car:sport_engine_high","stream": false}]},
-    "sport_engine_fail": {"category": "master","sounds": [{"name": "car:sport_engine_fail","stream": false}]},
-    "truck_engine_idle": {"category": "master","sounds": [{"name": "car:truck_engine_idle","stream": false}]},
-    "truck_engine_start": {"category": "master","sounds": [{"name": "car:truck_engine_start","stream": false}]},
-    "truck_engine_starting": {"category": "master","sounds": [{"name": "car:truck_engine_starting","stream": false}]},
-    "truck_engine_stop": {"category": "master","sounds": [{"name": "car:truck_engine_stop","stream": false}]},
-    "truck_engine_high": {"category": "master","sounds": [{"name": "car:truck_engine_high","stream": false}]},
-    "truck_engine_fail": {"category": "master","sounds": [{"name": "car:truck_engine_fail","stream": false}]},
-    "car_horn": {"category": "master","sounds": [{"name": "car:car_horn","stream": false}]},
-    "car_lock": {"category": "master","sounds": [{"name": "car:car_lock","stream": false}]},
-    "car_unlock": {"category": "master","sounds": [{"name": "car:car_unlock","stream": false}]},
-    "ratchet": {"category": "master","sounds": [{"name": "car:ratchet_1","stream": false},{"name": "car:ratchet_2","stream": false},{"name": "car:ratchet_3","stream": false}]},
-    "gas_station_attendant": {"category": "master","sounds": [{"name": "car:gas_station_attendant_1","stream": false},{"name": "car:gas_station_attendant_2","stream": false},{"name": "car:gas_station_attendant_3","stream": false}]}
+    "engine_idle": {
+        "subtitle": "sound.car.engine_idle",
+        "sounds": [ "car:engine_idle" ]
+    },
+    "engine_start": {
+        "subtitle": "sound.car.engine_start",
+        "sounds": [ "car:engine_start" ]
+    },
+    "engine_starting": {
+        "subtitle": "sound.car.engine_starting",
+        "sounds": [ "car:engine_starting" ]
+    },
+    "engine_stop": {
+        "subtitle": "sound.car.engine_stop",
+        "sounds": [ "car:engine_stop" ]
+    },
+    "engine_high": {
+        "subtitle": "sound.car.engine_high",
+        "sounds": [ "car:engine_high" ]
+    },
+    "engine_fail": {
+        "subtitle": "sound.car.engine_fail",
+        "sounds": [ "car:engine_fail" ]
+    },
+    "car_crash": {
+        "subtitle": "sound.car.car_crash",
+        "sounds": [ "car:car_crash" ]
+    },
+    "gas_station": {
+        "subtitle": "sound.car.gas_station",
+        "sounds": [ "car:gas_station" ]
+    },
+    "generator": {
+        "subtitle": "sound.car.generator",
+        "sounds": [ "car:generator" ]
+    },
+    "sport_engine_idle": {
+        "subtitle": "sound.car.sport_engine_idle",
+        "sounds": [ "car:sport_engine_idle" ]
+    },
+    "sport_engine_start": {
+        "subtitle": "sound.car.sport_engine_start",
+        "sounds": [ "car:sport_engine_start" ]
+    },
+    "sport_engine_starting": {
+        "subtitle": "sound.car.sport_engine_starting",
+        "sounds": [ "car:sport_engine_starting" ]
+    },
+    "sport_engine_stop": {
+        "subtitle": "sound.car.sport_engine_stop",
+        "sounds": [ "car:sport_engine_stop" ]
+    },
+    "sport_engine_high": {
+        "subtitle": "sound.car.sport_engine_high",
+        "sounds": [ "car:sport_engine_high" ]
+    },
+    "sport_engine_fail": {
+        "subtitle": "sound.car.sport_engine_fail",
+        "sounds": [ "car:sport_engine_fail" ]
+    },
+    "truck_engine_idle": {
+        "subtitle": "sound.car.truck_engine_idle",
+        "sounds": [ "car:truck_engine_idle" ]
+    },
+    "truck_engine_start": {
+        "subtitle": "sound.car.truck_engine_start",
+        "sounds": [ "car:truck_engine_start" ]
+    },
+    "truck_engine_starting": {
+        "subtitle": "sound.car.truck_engine_starting",
+        "sounds": [ "car:truck_engine_starting" ]
+    },
+    "truck_engine_stop": {
+        "subtitle": "sound.car.truck_engine_stop",
+        "sounds": [ "car:truck_engine_stop" ]
+    },
+    "truck_engine_high": {
+        "subtitle": "sound.car.truck_engine_high",
+        "sounds": [ "car:truck_engine_high" ]
+    },
+    "truck_engine_fail": {
+        "subtitle": "sound.car.truck_engine_fail",
+        "sounds": [ "car:truck_engine_fail" ]
+    },
+    "car_horn": {
+        "subtitle": "sound.car.car_horn",
+        "sounds": [ "car:car_horn" ]
+    },
+    "car_lock": {
+        "subtitle": "sound.car.car_lock",
+        "sounds": [ "car:car_lock" ]
+    },
+    "car_unlock": {
+        "subtitle": "sound.car.car_unlock",
+        "sounds": [ "car:car_unlock" ]
+    },
+    "ratchet": {
+        "subtitle": "sound.car.ratchet",
+        "sounds": [ "car:ratchet_1", "car:ratchet_2", "car:ratchet_3" ]
+    },
+    "gas_station_attendant": {
+        "subtitle": "sound.car.gas_station_attendant",
+        "sounds": [ "car:gas_station_attendant_1", "car:gas_station_attendant_2", "car:gas_station_attendant_3" ]
+    }
 }

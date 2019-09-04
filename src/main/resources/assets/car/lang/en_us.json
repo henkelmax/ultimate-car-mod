@@ -382,5 +382,32 @@
     "description.tank_container": "Adds the ability to store fluids inside your transporter",
     "description.license_plate": "You can set the name by right-clicking this item. To apply it to the car sneak and right-click the car with it. The car has to have a License Plate Holder to do this.",
 
-    "death.attack.hit_car": "%s was run over by a car"
+    "death.attack.hit_car": "%s was run over by a car",
+
+    "sound.car.engine_idle": "Engine idling",
+    "sound.car.engine_start": "Engine starting",
+    "sound.car.engine_starting": "Engine starting",
+    "sound.car.engine_stop": "Engine turning off",
+    "sound.car.engine_high": "Engine driving",
+    "sound.car.engine_fail": "Engine failing",
+    "sound.car.car_crash": "Car crashing",
+    "sound.car.gas_station": "Gas Station pumping",
+    "sound.car.generator": "Generator running",
+    "sound.car.sport_engine_idle": "Engine idling",
+    "sound.car.sport_engine_start": "Engine starting",
+    "sound.car.sport_engine_starting": "Engine starting",
+    "sound.car.sport_engine_stop": "Engine turning off",
+    "sound.car.sport_engine_high": "Engine driving",
+    "sound.car.sport_engine_fail": "Engine failing",
+    "sound.car.truck_engine_idle": "Engine idling",
+    "sound.car.truck_engine_start": "Engine starting",
+    "sound.car.truck_engine_starting": "Engine starting",
+    "sound.car.truck_engine_stop": "Engine turning off",
+    "sound.car.truck_engine_high": "Engine driving",
+    "sound.car.truck_engine_fail": "Engine failing",
+    "sound.car.car_horn": "Car horn",
+    "sound.car.car_lock": "Car locking",
+    "sound.car.car_unlock": "Car unlocking",
+    "sound.car.ratchet": "Ratchet",
+    "sound.car.gas_station_attendant": "Gas Station Attendant working"
 }
