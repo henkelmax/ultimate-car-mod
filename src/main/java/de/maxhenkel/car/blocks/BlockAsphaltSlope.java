@@ -4,7 +4,7 @@ import java.util.Map;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
-import de.maxhenkel.tools.BlockTools;
+import de.maxhenkel.tools.VoxelShapeTools;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.Direction;
@@ -42,7 +42,7 @@ public class BlockAsphaltSlope extends BlockSlope {
 
     private static final Map<Direction, VoxelShape> SHAPES = Maps.newEnumMap(ImmutableMap.of(
             Direction.NORTH,
-            BlockTools.combine(
+            VoxelShapeTools.combine(
                     Block.makeCuboidShape(0D, 0D, 0D, 16D, 1D, 16D),
                     Block.makeCuboidShape(0D, 1D, 0D, 16D, 2D, 15D),
                     Block.makeCuboidShape(0D, 2D, 0D, 16D, 3D, 14D),
@@ -61,7 +61,7 @@ public class BlockAsphaltSlope extends BlockSlope {
                     Block.makeCuboidShape(0D, 15D, 0D, 16D, 16D, 1D)
             ),
             Direction.SOUTH,
-            BlockTools.combine(
+            VoxelShapeTools.combine(
                     Block.makeCuboidShape(0D, 0D, 0D, 16D, 1D, 16D),
                     Block.makeCuboidShape(0D, 1D, 1D, 16D, 2D, 16D),
                     Block.makeCuboidShape(0D, 2D, 2D, 16D, 3D, 16D),
@@ -80,7 +80,7 @@ public class BlockAsphaltSlope extends BlockSlope {
                     Block.makeCuboidShape(0D, 15D, 15D, 16D, 16D, 16D)
             ),
             Direction.EAST,
-            BlockTools.combine(
+            VoxelShapeTools.combine(
                     Block.makeCuboidShape(0D, 0D, 0D, 16D, 1D, 16D),
                     Block.makeCuboidShape(1D, 1D, 0D, 16D, 2D, 16D),
                     Block.makeCuboidShape(2D, 2D, 0D, 16D, 3D, 16D),
@@ -99,7 +99,7 @@ public class BlockAsphaltSlope extends BlockSlope {
                     Block.makeCuboidShape(15D, 15D, 0D, 16D, 16D, 16D)
             ),
             Direction.WEST,
-            BlockTools.combine(
+            VoxelShapeTools.combine(
                     Block.makeCuboidShape(0D, 0D, 0D, 16D, 1D, 16D),
                     Block.makeCuboidShape(0D, 1D, 0D, 15D, 2D, 16D),
                     Block.makeCuboidShape(0D, 2D, 0D, 14D, 3D, 16D),

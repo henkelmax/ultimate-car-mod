@@ -5,12 +5,15 @@ import de.maxhenkel.car.Main;
 import de.maxhenkel.car.blocks.BlockGui;
 import de.maxhenkel.car.blocks.ModBlocks;
 import de.maxhenkel.car.fluids.ModFluids;
+import de.maxhenkel.tools.ItemTools;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraftforge.common.Tags;
 
 public class TileEntityBlastFurnace extends TileEntityEnergyFluidProducer {
 
@@ -38,7 +41,7 @@ public class TileEntityBlastFurnace extends TileEntityEnergyFluidProducer {
 
     @Override
     public boolean isValidItem(ItemStack stack) {
-        return stack.getItem().getTags().contains(new ResourceLocation("minecraft", "logs"));
+        return ItemTools.matchesTag(stack, BlockTags.LOGS.getId());
     }
 
     @Override

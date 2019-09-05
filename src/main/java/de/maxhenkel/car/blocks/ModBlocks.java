@@ -1,7 +1,7 @@
 package de.maxhenkel.car.blocks;
 
 import de.maxhenkel.car.blocks.BlockPaint.EnumPaintType;
-import de.maxhenkel.car.blocks.liquid.CarFluidBlock;
+import de.maxhenkel.car.blocks.fluid.CarFluidBlock;
 import de.maxhenkel.car.fluids.ModFluids;
 import de.maxhenkel.tools.IItemBlock;
 import de.maxhenkel.tools.NoRegister;

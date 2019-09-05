@@ -202,11 +202,11 @@ public class TileEntityFuelStation extends TileEntityBase implements ITickableTi
         ItemStack tradeTemplate = trading.getStackInSlot(0);
         ItemStack tradingStack = trading.getStackInSlot(1);
 
-        if (ItemTools.isStackEmpty(tradeTemplate)) {
+        if (tradeTemplate.isEmpty()) {
             return true;
         }
 
-        if (ItemTools.isStackEmpty(tradingStack)) {
+        if (tradingStack.isEmpty()) {
             return false;
         }
 
@@ -272,7 +272,7 @@ public class TileEntityFuelStation extends TileEntityBase implements ITickableTi
     }
 
     public boolean hasTrade() {
-        return !ItemTools.isStackEmpty(trading.getStackInSlot(0));
+        return !trading.getStackInSlot(0).isEmpty();
     }
 
     @Override

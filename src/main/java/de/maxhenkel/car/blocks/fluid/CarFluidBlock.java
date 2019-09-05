@@ -1,4 +1,4 @@
-package de.maxhenkel.car.blocks.liquid;
+package de.maxhenkel.car.blocks.fluid;
 
 import de.maxhenkel.car.fluids.CarFluid;
 import net.minecraft.block.Block;

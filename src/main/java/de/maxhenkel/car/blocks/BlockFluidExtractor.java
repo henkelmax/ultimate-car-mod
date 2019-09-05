@@ -5,7 +5,7 @@ import de.maxhenkel.car.ModItemGroups;
 import de.maxhenkel.car.blocks.tileentity.TileEntityFluidExtractor;
 import de.maxhenkel.car.gui.ContainerFluidExtractor;
 import de.maxhenkel.car.gui.TileEntityContainerProvider;
-import de.maxhenkel.tools.BlockTools;
+import de.maxhenkel.tools.VoxelShapeTools;
 import de.maxhenkel.tools.IItemBlock;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
@@ -126,41 +126,41 @@ public class BlockFluidExtractor extends BlockBase implements ITileEntityProvide
         VoxelShape shape = SHAPE_CORE;
 
         if (state.get(NORTH)) {
-            shape = BlockTools.combine(shape, SHAPE_NORTH);
+            shape = VoxelShapeTools.combine(shape, SHAPE_NORTH);
         }
         if (state.get(SOUTH)) {
-            shape = BlockTools.combine(shape, SHAPE_SOUTH);
+            shape = VoxelShapeTools.combine(shape, SHAPE_SOUTH);
         }
         if (state.get(EAST)) {
-            shape = BlockTools.combine(shape, SHAPE_EAST);
+            shape = VoxelShapeTools.combine(shape, SHAPE_EAST);
         }
         if (state.get(WEST)) {
-            shape = BlockTools.combine(shape, SHAPE_WEST);
+            shape = VoxelShapeTools.combine(shape, SHAPE_WEST);
         }
         if (state.get(UP)) {
-            shape = BlockTools.combine(shape, SHAPE_UP);
+            shape = VoxelShapeTools.combine(shape, SHAPE_UP);
         }
         if (state.get(DOWN)) {
-            shape = BlockTools.combine(shape, SHAPE_DOWN);
+            shape = VoxelShapeTools.combine(shape, SHAPE_DOWN);
         }
         switch (state.get(FACING)) {
             case NORTH:
-                shape = BlockTools.combine(shape, SHAPE_EXTRACTOR_NORTH, SHAPE_NORTH);
+                shape = VoxelShapeTools.combine(shape, SHAPE_EXTRACTOR_NORTH, SHAPE_NORTH);
                 break;
             case SOUTH:
-                shape = BlockTools.combine(shape, SHAPE_EXTRACTOR_SOUTH, SHAPE_SOUTH);
+                shape = VoxelShapeTools.combine(shape, SHAPE_EXTRACTOR_SOUTH, SHAPE_SOUTH);
                 break;
             case EAST:
-                shape = BlockTools.combine(shape, SHAPE_EXTRACTOR_EAST, SHAPE_EAST);
+                shape = VoxelShapeTools.combine(shape, SHAPE_EXTRACTOR_EAST, SHAPE_EAST);
                 break;
             case WEST:
-                shape = BlockTools.combine(shape, SHAPE_EXTRACTOR_WEST, SHAPE_WEST);
+                shape = VoxelShapeTools.combine(shape, SHAPE_EXTRACTOR_WEST, SHAPE_WEST);
                 break;
             case UP:
-                shape = BlockTools.combine(shape, SHAPE_EXTRACTOR_UP, SHAPE_UP);
+                shape = VoxelShapeTools.combine(shape, SHAPE_EXTRACTOR_UP, SHAPE_UP);
                 break;
             case DOWN:
-                shape = BlockTools.combine(shape, SHAPE_EXTRACTOR_DOWN, SHAPE_DOWN);
+                shape = VoxelShapeTools.combine(shape, SHAPE_EXTRACTOR_DOWN, SHAPE_DOWN);
                 break;
         }
         return shape;

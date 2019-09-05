@@ -7,7 +7,7 @@ import de.maxhenkel.car.ModItemGroups;
 import de.maxhenkel.car.blocks.tileentity.TileEntitySign;
 import de.maxhenkel.car.gui.ContainerSign;
 import de.maxhenkel.car.gui.TileEntityContainerProvider;
-import de.maxhenkel.tools.BlockTools;
+import de.maxhenkel.tools.VoxelShapeTools;
 import de.maxhenkel.tools.IItemBlock;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
@@ -70,13 +70,13 @@ public class BlockSign extends BlockBase implements ITileEntityProvider, IItemBl
 
     private static final Map<Direction, VoxelShape> SHAPES = Maps.newEnumMap(ImmutableMap.of(
             Direction.NORTH,
-            BlockTools.combine(SHAPE_NORTH_SOUTH, SHAPE_POST),
+            VoxelShapeTools.combine(SHAPE_NORTH_SOUTH, SHAPE_POST),
             Direction.SOUTH,
-            BlockTools.combine(SHAPE_NORTH_SOUTH, SHAPE_POST),
+            VoxelShapeTools.combine(SHAPE_NORTH_SOUTH, SHAPE_POST),
             Direction.EAST,
-            BlockTools.combine(SHAPE_EAST_WEST, SHAPE_POST),
+            VoxelShapeTools.combine(SHAPE_EAST_WEST, SHAPE_POST),
             Direction.WEST,
-            BlockTools.combine(SHAPE_EAST_WEST, SHAPE_POST)
+            VoxelShapeTools.combine(SHAPE_EAST_WEST, SHAPE_POST)
     ));
 
     @Override

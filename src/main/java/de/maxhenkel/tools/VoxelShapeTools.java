@@ -3,7 +3,7 @@ package de.maxhenkel.tools;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 
-public class BlockTools {
+public class VoxelShapeTools {
 
     public static VoxelShape combine(VoxelShape... shapes) {
         if (shapes.length <= 0) {

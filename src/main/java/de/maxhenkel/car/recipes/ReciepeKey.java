@@ -38,7 +38,7 @@ public class ReciepeKey extends SpecialRecipe {
         for (int i = 0; i < inv.getSizeInventory(); i++) {
             ItemStack stack = inv.getStackInSlot(i);
 
-            if (ItemTools.isStackEmpty(stack)) {
+            if (stack.isEmpty()) {
                 continue;
             }
 
@@ -64,7 +64,7 @@ public class ReciepeKey extends SpecialRecipe {
         for (int i = 0; i < inv.getSizeInventory(); i++) {
             ItemStack stack = inv.getStackInSlot(i);
 
-            if (ItemTools.isStackEmpty(stack)) {
+            if (stack.isEmpty()) {
                 continue;
             }
 

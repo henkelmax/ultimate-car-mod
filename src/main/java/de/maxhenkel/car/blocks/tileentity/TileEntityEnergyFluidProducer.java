@@ -100,7 +100,7 @@ public abstract class TileEntityEnergyFluidProducer extends TileEntityBase imple
             timeToGenerate--;
 
             if (timeToGenerate == 0) {
-                if (ItemTools.isStackEmpty(output)) {
+                if (output.isEmpty()) {
                     inventory.setInventorySlotContents(1, getOutputItem());
                 } else if (output.getCount() < output.getMaxStackSize()) {
                     if (ItemStack.areItemsEqual(output, getOutputItem())) {
@@ -114,9 +114,9 @@ public abstract class TileEntityEnergyFluidProducer extends TileEntityBase imple
                 }
             }
         } else if (storedEnergy >= energyUsage) {
-            if (!ItemTools.isStackEmpty(input)) {
+            if (!input.isEmpty()) {
                 if (isValidItem(input)) {
-                    if (ItemTools.isStackEmpty(output) || output.getCount() < output.getMaxStackSize()) {
+                    if (output.isEmpty() || output.getCount() < output.getMaxStackSize()) {
                         if (currentMillibuckets + millibucketsPerUse <= maxMillibuckets) {
                             ItemTools.decrItemStack(input, null);
                             if (input.getCount() <= 0) {
@@ -133,9 +133,8 @@ public abstract class TileEntityEnergyFluidProducer extends TileEntityBase imple
 
     public boolean isEnabled() {
         if (storedEnergy >= energyUsage && currentMillibuckets + millibucketsPerUse <= maxMillibuckets) {
-            if (!ItemTools.isStackEmpty(inventory.getStackInSlot(0)) || (timeToGenerate > 0 && storedEnergy > 0)) {
-                if (ItemTools.isStackEmpty(inventory.getStackInSlot(1))
-                        || inventory.getStackInSlot(1).getCount() < inventory.getStackInSlot(1).getMaxStackSize()) {
+            if (!inventory.getStackInSlot(0).isEmpty() || (timeToGenerate > 0 && storedEnergy > 0)) {
+                if (inventory.getStackInSlot(1).isEmpty() || inventory.getStackInSlot(1).getCount() < inventory.getStackInSlot(1).getMaxStackSize()) {
                     return true;
                 }
             }

@@ -1,148 +1,132 @@
 package de.maxhenkel.tools;
 
-import java.util.List;
-
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
+import net.minecraft.util.ResourceLocation;
+
+import java.util.List;
 
 public class ItemTools {
 
-	public static boolean isStackEmpty(ItemStack stack) {
-		if (stack == null) {
-			return true;
-		}
+    public static boolean matchesTag(ItemStack stack, ResourceLocation tag) {
+        return stack.getItem().getTags().contains(tag);
+    }
 
-		if (stack.equals(ItemStack.EMPTY)) {
-			return true;
-		}
+    /**
+     * Compares two stacks except NBT data
+     *
+     * @param stack1
+     * @param stack2
+     * @return if the two stacks are equal
+     */
+    public static boolean areItemsEqual(ItemStack stack1, ItemStack stack2) {
+        if (stack1 == null || stack2 == null) {
+            return false;
+        }
 
-		if (stack.getItem().equals(Items.AIR)) {
-			return true;
-		}
+        if (stack1.getItem() == null || stack2.getItem() == null) {
+            return false;
+        }
 
-		if (stack.getCount() <= 0) {
-			return true;
-		}
+        if (stack1.getItem() == stack2.getItem()) {
+            return stack1.getDamage() == stack2.getDamage();
+        }
 
-		return false;
-	}
+        return false;
+    }
 
-	public static boolean matchesOredict(ItemStack stack, String name) {
-		//TODO implement oredict
-		return false;
-	}
+    /**
+     * Checks if the list contains the provided item
+     * Doesn't comapre NBT data
+     *
+     * @param list
+     * @param item
+     * @return
+     */
+    public static boolean contains(List<ItemStack> list, ItemStack item) {
+        return list.stream().anyMatch(stack -> areItemsEqual(stack, item));
+    }
 
-	public static boolean areItemsEqual(ItemStack stack1, ItemStack stack2) {
-		if (stack1 == null || stack2 == null) {
-			return false;
-		}
+    /**
+     * Changes the Itemstack amount. If a player is provided and the player is in
+     * Creative Mode, the stack wont be changed
+     *
+     * @param amount The amount to change
+     * @param stack  The Item Stack
+     * @param player The player. Can be null
+     * @return The Itemstack with the changed amount
+     */
+    public static ItemStack itemStackAmount(int amount, ItemStack stack, PlayerEntity player) {
+        if (stack == null || stack.isEmpty()) {
+            return ItemStack.EMPTY;
+        }
 
-		if (stack1.getItem() == null || stack2.getItem() == null) {
-			return false;
-		}
+        if (player != null && player.abilities.isCreativeMode) {
+            return stack;
+        }
 
-		if (stack1.getItem() == stack2.getItem()) {
-			return stack1.getDamage() == -1 // OreDictionary.WILDCARD_VALUE // TODO implement oredict
-					|| stack2.getDamage() == -1 // OreDictionary.WILDCARD_VALUE // TODO implement oredict
-					|| stack1.getDamage() == stack2.getDamage();
-		}
+        stack.setCount(stack.getCount() + amount);
+        if (stack.getCount() <= 0) {
+            stack.setCount(0);
+            return ItemStack.EMPTY;
+        }
 
-		return false;
-	}
+        if (stack.getCount() > stack.getMaxStackSize()) {
+            stack.setCount(stack.getMaxStackSize());
+        }
 
-	public static boolean contains(List<ItemStack> list, ItemStack item) {
-		for (ItemStack i : list) {
-			if (areItemsEqual(item, i)) {
-				return true;
-			}
-		}
-		return false;
-	}
+        return stack;
+    }
 
-	/**
-	 * Changes the Itemstack amount. If a player is provided and the player is in
-	 * Creative Mode, the stack wont be changed
-	 *
-	 * @param amount
-	 *            The amount to change
-	 * @param stack
-	 *            The Item Stack
-	 * @param player
-	 *            The player. Can be null
-	 * @return The Itemstack with the changed amount
-	 */
-	public static ItemStack itemStackAmount(int amount, ItemStack stack, PlayerEntity player) {
-		if (stack == null) {
-			return ItemStack.EMPTY;
-		}
+    public static ItemStack decrItemStack(ItemStack stack, PlayerEntity player) {
+        return itemStackAmount(-1, stack, player);
+    }
 
-		if (player != null && player.abilities.isCreativeMode) {
-			return stack;
-		}
+    public static ItemStack incrItemStack(ItemStack stack, PlayerEntity player) {
+        return itemStackAmount(1, stack, player);
+    }
 
-		stack.setCount(stack.getCount() + amount);
-		if (stack.getCount() <= 0) {
-			stack.setCount(0);
-			return ItemStack.EMPTY;
-		}
+    public static void removeStackFromSlot(IInventory inventory, int index) {
+        inventory.setInventorySlotContents(index, ItemStack.EMPTY);
+    }
 
-		if (stack.getCount() > stack.getMaxStackSize()) {
-			stack.setCount(stack.getMaxStackSize());
-		}
+    public static void saveInventory(CompoundNBT compound, String name, IInventory inv) {
+        ListNBT nbttaglist = new ListNBT();
 
-		return stack;
-	}
+        for (int i = 0; i < inv.getSizeInventory(); i++) {
+            if (!inv.getStackInSlot(i).isEmpty()) {
+                CompoundNBT nbttagcompound = new CompoundNBT();
+                nbttagcompound.putInt("Slot", i);
+                inv.getStackInSlot(i).write(nbttagcompound);
+                nbttaglist.add(nbttagcompound);
+            }
+        }
 
-	public static ItemStack decrItemStack(ItemStack stack, PlayerEntity player) {
-		return itemStackAmount(-1, stack, player);
-	}
+        compound.put(name, nbttaglist);
+    }
 
-	public static ItemStack incrItemStack(ItemStack stack, PlayerEntity player) {
-		return itemStackAmount(1, stack, player);
-	}
+    public static void readInventory(CompoundNBT compound, String name, IInventory inv) {
+        if (!compound.contains(name)) {
+            return;
+        }
 
-	public static void removeStackFromSlot(IInventory inventory, int index) {
-		inventory.setInventorySlotContents(index, ItemStack.EMPTY);
-	}
+        ListNBT nbttaglist = compound.getList(name, 10);
 
-	public static void saveInventory(CompoundNBT compound, String name, IInventory inv) {
-		ListNBT nbttaglist = new ListNBT();
+        if (nbttaglist == null) {
+            return;
+        }
 
-		for (int i = 0; i < inv.getSizeInventory(); i++) {
-			if (!isStackEmpty(inv.getStackInSlot(i))) {
-				CompoundNBT nbttagcompound = new CompoundNBT();
-				nbttagcompound.putInt("Slot", i);
-				inv.getStackInSlot(i).write(nbttagcompound);
-				nbttaglist.add(nbttagcompound);
-			}
-		}
+        for (int i = 0; i < nbttaglist.size(); i++) {
+            CompoundNBT nbttagcompound = nbttaglist.getCompound(i);
+            int j = nbttagcompound.getInt("Slot");
 
-		compound.put(name, nbttaglist);
-	}
-
-	public static void readInventory(CompoundNBT compound, String name, IInventory inv) {
-		if (!compound.contains(name)) {
-			return;
-		}
-
-		ListNBT nbttaglist = compound.getList(name, 10);
-
-		if (nbttaglist == null) {
-			return;
-		}
-
-		for (int i = 0; i < nbttaglist.size(); i++) {
-			CompoundNBT nbttagcompound = nbttaglist.getCompound(i);
-			int j = nbttagcompound.getInt("Slot");
-
-			if (j >= 0 && j < inv.getSizeInventory()) {
-				inv.setInventorySlotContents(j, ItemStack.read(nbttagcompound));
-			}
-		}
-	}
+            if (j >= 0 && j < inv.getSizeInventory()) {
+                inv.setInventorySlotContents(j, ItemStack.read(nbttagcompound));
+            }
+        }
+    }
 
 }

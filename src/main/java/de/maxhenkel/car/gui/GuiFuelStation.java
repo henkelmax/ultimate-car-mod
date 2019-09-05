@@ -92,7 +92,7 @@ public class GuiFuelStation extends GuiBase<ContainerFuelStation> {
 
         ItemStack stack = fuelStation.getTradingInventory().getStackInSlot(0);
 
-        if (ItemTools.isStackEmpty(stack)) {
+        if (stack.isEmpty()) {
             return;
         }
 

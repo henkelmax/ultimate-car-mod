@@ -2,7 +2,7 @@ package de.maxhenkel.car.blocks;
 
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.ModItemGroups;
-import de.maxhenkel.tools.BlockTools;
+import de.maxhenkel.tools.VoxelShapeTools;
 import de.maxhenkel.tools.FluidUtils;
 import de.maxhenkel.tools.IItemBlock;
 import net.minecraft.block.Block;
@@ -94,27 +94,27 @@ public class BlockFluidPipe extends BlockBase implements IItemBlock {
     public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
         VoxelShape shape = SHAPE_CORE;
         if (state.get(UP)) {
-            shape = BlockTools.combine(shape, SHAPE_UP);
+            shape = VoxelShapeTools.combine(shape, SHAPE_UP);
         }
 
         if (state.get(DOWN)) {
-            shape = BlockTools.combine(shape, SHAPE_DOWN);
+            shape = VoxelShapeTools.combine(shape, SHAPE_DOWN);
         }
 
         if (state.get(SOUTH)) {
-            shape = BlockTools.combine(shape, SHAPE_SOUTH);
+            shape = VoxelShapeTools.combine(shape, SHAPE_SOUTH);
         }
 
         if (state.get(NORTH)) {
-            shape = BlockTools.combine(shape, SHAPE_NORTH);
+            shape = VoxelShapeTools.combine(shape, SHAPE_NORTH);
         }
 
         if (state.get(EAST)) {
-            shape = BlockTools.combine(shape, SHAPE_EAST);
+            shape = VoxelShapeTools.combine(shape, SHAPE_EAST);
         }
 
         if (state.get(WEST)) {
-            shape = BlockTools.combine(shape, SHAPE_WEST);
+            shape = VoxelShapeTools.combine(shape, SHAPE_WEST);
         }
 
         return shape;

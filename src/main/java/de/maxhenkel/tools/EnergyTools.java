@@ -28,6 +28,7 @@ public class EnergyTools {
         if (te == null) {
             return null;
         }
+
         return te.getCapability(CapabilityEnergy.ENERGY, side.getOpposite()).orElse(null);
     }
 

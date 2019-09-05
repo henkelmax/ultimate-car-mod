@@ -264,7 +264,7 @@ public class TileEntityCarWorkshop extends TileEntityBase implements IInventory 
     public void removeCraftItems() {
         for (int i = 0; i < craftingMatrix.getSizeInventory(); i++) {
             ItemStack stack = craftingMatrix.getStackInSlot(i);
-            if (!ItemTools.isStackEmpty(stack)) {
+            if (!stack.isEmpty()) {
                 craftingMatrix.setInventorySlotContents(i, ItemTools.decrItemStack(stack, null));
             }
         }
@@ -381,7 +381,7 @@ public class TileEntityCarWorkshop extends TileEntityBase implements IInventory 
 
     public boolean areRepairItemsInside() {
         for (int i = 0; i < repairInventory.getSizeInventory(); i++) {
-            if (ItemTools.isStackEmpty(repairInventory.getStackInSlot(i))) {
+            if (repairInventory.getStackInSlot(i).isEmpty()) {
                 return false;
             }
         }
@@ -392,7 +392,7 @@ public class TileEntityCarWorkshop extends TileEntityBase implements IInventory 
     public void damageRepairItemsInside(PlayerEntity player) {
         for (int i = 0; i < repairInventory.getSizeInventory(); i++) {
             ItemStack stack = repairInventory.getStackInSlot(i);
-            if (!ItemTools.isStackEmpty(stack)) {
+            if (!stack.isEmpty()) {
                 stack.damageItem(10, player, playerEntity -> {
                 });
             }

@@ -4,7 +4,7 @@ import java.util.Map;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
-import de.maxhenkel.tools.BlockTools;
+import de.maxhenkel.tools.VoxelShapeTools;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.Direction;
@@ -33,7 +33,7 @@ public class BlockAsphaltSlopeFlat extends BlockSlope {
 
     private static final Map<Direction, VoxelShape> LOWER_SHAPES = Maps.newEnumMap(ImmutableMap.of(
             Direction.NORTH,
-            BlockTools.combine(
+            VoxelShapeTools.combine(
                     Block.makeCuboidShape(0D, 0D, 0D, 16D, 1D, 16D),
                     Block.makeCuboidShape(0D, 1D, 0D, 16D, 2D, 14D),
                     Block.makeCuboidShape(0D, 2D, 0D, 16D, 3D, 12D),
@@ -44,7 +44,7 @@ public class BlockAsphaltSlopeFlat extends BlockSlope {
                     Block.makeCuboidShape(0D, 7D, 0D, 16D, 8D, 2D)
             ),
             Direction.SOUTH,
-            BlockTools.combine(
+            VoxelShapeTools.combine(
                     Block.makeCuboidShape(0D, 0D, 0D, 16D, 1D, 16D),
                     Block.makeCuboidShape(0D, 1D, 2D, 16D, 2D, 16D),
                     Block.makeCuboidShape(0D, 2D, 4D, 16D, 3D, 16D),
@@ -55,7 +55,7 @@ public class BlockAsphaltSlopeFlat extends BlockSlope {
                     Block.makeCuboidShape(0D, 7D, 14D, 16D, 8D, 16D)
             ),
             Direction.EAST,
-            BlockTools.combine(
+            VoxelShapeTools.combine(
                     Block.makeCuboidShape(0D, 0D, 0D, 16D, 1D, 16D),
                     Block.makeCuboidShape(2D, 1D, 0D, 16D, 2D, 16D),
                     Block.makeCuboidShape(4D, 2D, 0D, 16D, 3D, 16D),
@@ -66,7 +66,7 @@ public class BlockAsphaltSlopeFlat extends BlockSlope {
                     Block.makeCuboidShape(14D, 7D, 0D, 16D, 8D, 16D)
             ),
             Direction.WEST,
-            BlockTools.combine(
+            VoxelShapeTools.combine(
                     Block.makeCuboidShape(0D, 0D, 0D, 16D, 1D, 16D),
                     Block.makeCuboidShape(0D, 1D, 0D, 14D, 2D, 16D),
                     Block.makeCuboidShape(0D, 2D, 0D, 12D, 3D, 16D),
@@ -79,7 +79,7 @@ public class BlockAsphaltSlopeFlat extends BlockSlope {
     ));
     private static final Map<Direction, VoxelShape> UPPER_SHAPES = Maps.newEnumMap(ImmutableMap.of(
             Direction.NORTH,
-            BlockTools.combine(
+            VoxelShapeTools.combine(
                     Block.makeCuboidShape(0D, 0D, 0D, 16D, 8D, 16D),
                     Block.makeCuboidShape(0D, 8D, 0D, 16D, 9D, 16D),
                     Block.makeCuboidShape(0D, 9D, 0D, 16D, 10D, 14D),
@@ -91,7 +91,7 @@ public class BlockAsphaltSlopeFlat extends BlockSlope {
                     Block.makeCuboidShape(0D, 15D, 0D, 16D, 16D, 2D)
             ),
             Direction.SOUTH,
-            BlockTools.combine(
+            VoxelShapeTools.combine(
                     Block.makeCuboidShape(0D, 0D, 0D, 16D, 8D, 16D),
                     Block.makeCuboidShape(0D, 8D, 0D, 16D, 9D, 16D),
                     Block.makeCuboidShape(0D, 9D, 2D, 16D, 10D, 16D),
@@ -103,7 +103,7 @@ public class BlockAsphaltSlopeFlat extends BlockSlope {
                     Block.makeCuboidShape(0D, 15D, 14D, 16D, 16D, 16D)
             ),
             Direction.EAST,
-            BlockTools.combine(
+            VoxelShapeTools.combine(
                     Block.makeCuboidShape(0D, 0D, 0D, 16D, 8D, 16D),
                     Block.makeCuboidShape(0D, 8D, 0D, 16D, 9D, 16D),
                     Block.makeCuboidShape(2D, 9D, 0D, 16D, 10D, 16D),
@@ -115,7 +115,7 @@ public class BlockAsphaltSlopeFlat extends BlockSlope {
                     Block.makeCuboidShape(14D, 15D, 0D, 16D, 16D, 16D)
             ),
             Direction.WEST,
-            BlockTools.combine(
+            VoxelShapeTools.combine(
                     Block.makeCuboidShape(0D, 0D, 0D, 16D, 8D, 16D),
                     Block.makeCuboidShape(0D, 8D, 0D, 16D, 9D, 16D),
                     Block.makeCuboidShape(0D, 9D, 0D, 14D, 10D, 16D),

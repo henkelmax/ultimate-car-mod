@@ -9,7 +9,7 @@ import de.maxhenkel.car.blocks.tileentity.TileEntityFuelStation;
 import de.maxhenkel.car.gui.ContainerFuelStation;
 import de.maxhenkel.car.gui.ContainerFuelStationAdmin;
 import de.maxhenkel.car.gui.TileEntityContainerProvider;
-import de.maxhenkel.tools.BlockTools;
+import de.maxhenkel.tools.VoxelShapeTools;
 import de.maxhenkel.tools.FluidUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -124,22 +124,22 @@ public class BlockFuelStation extends BlockOrientableHorizontal {
 
     private static final Map<Direction, VoxelShape> SHAPES = Maps.newEnumMap(ImmutableMap.of(
             Direction.NORTH,
-            BlockTools.combine(
+            VoxelShapeTools.combine(
                     SHAPE_NORTH_SOUTH,
                     SHAPE_SLAB
             ),
             Direction.SOUTH,
-            BlockTools.combine(
+            VoxelShapeTools.combine(
                     SHAPE_NORTH_SOUTH,
                     SHAPE_SLAB
             ),
             Direction.EAST,
-            BlockTools.combine(
+            VoxelShapeTools.combine(
                     SHAPE_NEAST_WEST,
                     SHAPE_SLAB
             ),
             Direction.WEST,
-            BlockTools.combine(
+            VoxelShapeTools.combine(
                     SHAPE_NEAST_WEST,
                     SHAPE_SLAB
             )

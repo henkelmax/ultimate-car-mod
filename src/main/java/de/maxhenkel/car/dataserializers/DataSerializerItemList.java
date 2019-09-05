@@ -14,29 +14,29 @@ public class DataSerializerItemList {
         @Override
         public void write(PacketBuffer packetBuffer, ItemStack[] itemStacks) {
 
-            if(itemStacks==null){
+            if (itemStacks == null) {
                 packetBuffer.writeInt(-1);
                 return;
             }
 
             packetBuffer.writeInt(itemStacks.length);
 
-            for(int i=0; i<itemStacks.length; i++){
+            for (int i = 0; i < itemStacks.length; i++) {
                 packetBuffer.writeItemStack(itemStacks[i]);
             }
         }
 
         public ItemStack[] read(PacketBuffer buf) {
-            int length=buf.readInt();
+            int length = buf.readInt();
 
-            if(length<0){
+            if (length < 0) {
                 return null;
             }
 
-            ItemStack[] list=new ItemStack[length];
+            ItemStack[] list = new ItemStack[length];
 
-            for(int i=0; i<length; i++){
-                list[i]=buf.readItemStack();
+            for (int i = 0; i < length; i++) {
+                list[i] = buf.readItemStack();
             }
 
             return list;
@@ -48,7 +48,7 @@ public class DataSerializerItemList {
 
         @Override
         public ItemStack[] copyValue(ItemStack[] itemStacks) {
-            if(itemStacks==null){
+            if (itemStacks == null) {
                 return null;
             }
             return Arrays.copyOf(itemStacks, itemStacks.length);

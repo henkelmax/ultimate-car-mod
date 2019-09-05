@@ -3,7 +3,7 @@ package de.maxhenkel.car.blocks;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import de.maxhenkel.car.Main;
-import de.maxhenkel.tools.BlockTools;
+import de.maxhenkel.tools.VoxelShapeTools;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
@@ -12,12 +12,10 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.material.PushReaction;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.IFluidState;
-import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
@@ -81,22 +79,22 @@ public class BlockFuelStationTop extends BlockBase {
 
     private static final Map<Direction, VoxelShape> SHAPES = Maps.newEnumMap(ImmutableMap.of(
             Direction.NORTH,
-            BlockTools.combine(
+            VoxelShapeTools.combine(
                     SHAPE_NORTH_SOUTH,
                     SHAPE_SLAB
             ),
             Direction.SOUTH,
-            BlockTools.combine(
+            VoxelShapeTools.combine(
                     SHAPE_NORTH_SOUTH,
                     SHAPE_SLAB
             ),
             Direction.EAST,
-            BlockTools.combine(
+            VoxelShapeTools.combine(
                     SHAPE_NEAST_WEST,
                     SHAPE_SLAB
             ),
             Direction.WEST,
-            BlockTools.combine(
+            VoxelShapeTools.combine(
                     SHAPE_NEAST_WEST,
                     SHAPE_SLAB
             )

@@ -16,6 +16,7 @@ import net.minecraft.world.storage.loot.conditions.ILootCondition;
 import net.minecraftforge.fluids.FluidStack;
 
 public class CopyFluid extends LootFunction {
+
     protected CopyFluid(ILootCondition[] conditions) {
         super(conditions);
     }
