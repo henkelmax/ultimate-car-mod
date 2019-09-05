@@ -1,13 +1,16 @@
 package de.maxhenkel.car.entity.car.base;
 
+import de.maxhenkel.car.items.ItemRepairTool;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.Hand;
 import net.minecraft.world.World;
 
 public abstract class EntityCarDamageBase extends EntityCarBatteryBase {
@@ -112,16 +115,14 @@ public abstract class EntityCarDamageBase extends EntityCarBatteryBase {
             return false;
         }
 
-        if (player.abilities.isCreativeMode) {
-            if (player.isSneaking()) {
-                destroyCar(player, false);
-                return true;
-            }
-            return false;
-        }
+        ItemStack stack = player.getHeldItemMainhand();
 
-        if (getDamage() >= 90F && amount > 0F) {
+        if (stack.getItem() instanceof ItemRepairTool) {
             destroyCar(player, true);
+            stack.damageItem(50, player, playerEntity -> {
+                playerEntity.sendBreakAnimation(Hand.MAIN_HAND);
+            });
+            return true;
         }
 
         return false;
