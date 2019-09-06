@@ -44,8 +44,9 @@ The SUV needs big wheels and every other car needs small wheels.
 Note that you have to put each wheel in a seperate slot of the car.
 
 Your vehicle also needs an engine.
-There are two types of engines: A 3 cylinder engine and a 6 cylinder engine.
+There are three types of engines: A 3 cylinder engine, a 6 cylinder engine and a truck engine (1.14+ only).
 The 6 cylinder engine makes your car much faster but also needs more fuel.
+The truck engine is the most fuel efficient engine.
 
 Another required component is the tank.
 There are 3 different types of tanks: Small, medium and large.
@@ -55,6 +56,7 @@ These components are the essentials to build a car.
 The following parts are optional.
 
 With the license plate holder, you are able to mount a license plate with custom text to your car.
+A license plate can be written on by right-clicking it.
 
 The bumper can be added to all wooden cars, but is only cosmetical.
 
@@ -86,7 +88,7 @@ The starting time of your car is dependent on multiple factors.
 
 ### Fuel
 
-When you spawn your car on the workshop, it will have 10% of fuel.
+When you spawn your car on the workshop, it will have 100 millibuckets of fuel.
 So you can drive to the next fuel station.
 You can also refuel your car with a canister.
 
@@ -99,8 +101,13 @@ If you have run out of fuel, you can push your car by sneaking against it.
 
 You can repair your car in the car workshop or with a repair kit.
 The repair kit will repair 5% of damage, by putting it into the slot with the repair kit icon.
+
+`1.10.X - 1.12.X`
 Be aware that if your car has 95% or more damage, the car will get destroyed if a player (that is not in creative mode) hits the car.
 If you want to destroy a car in creative mode, just sneak + hit the car.
+
+`1.14+`
+You can destroy your car by holding a Hammer/Screw Driver/Wrench in your hand and hitting it twice within half a second.
 
 Your car can get damage if you drive against other cars or blocks.
 It can also get damage by being in contact with water or lava.

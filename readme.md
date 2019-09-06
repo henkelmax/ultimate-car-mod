@@ -18,7 +18,7 @@ options to design your own streets and be creative!
 
 ## Features
 
-- More than **36,000** different cars
+- More than **54,000** different cars
 - Realistic fuel production
 - Road construction
 - Highly configurable
@@ -92,16 +92,27 @@ options to design your own streets and be creative!
 #### Credits
 
 3 Cylinder Engine Sounds by: qubodup
+
 Creative Commons Attribution License
+
 Link: http://www.freesound.org/people/qubodup/sounds/147243/
+
 License: https://creativecommons.org/licenses/by/3.0/legalcode
+
 Changes were made.
+
 
 TruckEngine Sounds by: willybilly1984
+
 Creative Commons Attribution License
+
 Link: https://freesound.org/people/willybilly1984/sounds/345336/
+
 License: https://creativecommons.org/licenses/by/3.0/
+
 Changes were made.
 
+
 Gas Station Attendant Sounds by: XiiiSamples
+
 https://freesound.org/people/XiiiSamples/sounds/382268/
