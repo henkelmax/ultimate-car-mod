@@ -89,9 +89,8 @@ public abstract class EntityCarDamageBase extends EntityCarBatteryBase {
         }
     }
 
-    /**
-     * Called when the entity is attacked.
-     */
+    private long lastDamage;
+
     @Override
     public boolean attackEntityFrom(DamageSource source, float amount) {
         if (this.isInvulnerable()) {
@@ -115,13 +114,20 @@ public abstract class EntityCarDamageBase extends EntityCarBatteryBase {
             return false;
         }
 
+
         ItemStack stack = player.getHeldItemMainhand();
 
         if (stack.getItem() instanceof ItemRepairTool) {
-            destroyCar(player, true);
-            stack.damageItem(50, player, playerEntity -> {
-                playerEntity.sendBreakAnimation(Hand.MAIN_HAND);
-            });
+            long time = player.world.getGameTime();
+            if (time - lastDamage < 10L) {
+                destroyCar(player, true);
+                stack.damageItem(50, player, playerEntity -> {
+                    playerEntity.sendBreakAnimation(Hand.MAIN_HAND);
+                });
+            } else {
+                lastDamage = time;
+            }
+
             return true;
         }
 
