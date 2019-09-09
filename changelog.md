@@ -1,6 +1,1 @@
-- Updated to 1.14.4
-- Made cars modular
-- Added SUV
-- Added Truck engine
-- Added gas station attendant villager profession
-- Added WAILA integration
+- Fixed Fuel Station model
