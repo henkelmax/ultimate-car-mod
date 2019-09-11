@@ -46,11 +46,11 @@ public class ModBlocks {
     public static final BlockSign SIGN = new BlockSign();
     public static final BlockSignPost SIGN_POST = new BlockSignPost();
 
-    public static final FlowingFluidBlock BIO_DIESEL = new CarFluidBlock(ModFluids.BIO_DIESEL);
-    public static final FlowingFluidBlock CANOLA_METHANOL_MIX = new CarFluidBlock(ModFluids.CANOLA_METHANOL_MIX);
-    public static final FlowingFluidBlock CANOLA_OIL = new CarFluidBlock(ModFluids.CANOLA_OIL);
-    public static final FlowingFluidBlock GLYCERIN = new CarFluidBlock(ModFluids.GLYCERIN);
-    public static final FlowingFluidBlock METHANOL = new CarFluidBlock(ModFluids.METHANOL);
+    public static final FlowingFluidBlock BIO_DIESEL = new CarFluidBlock(() -> ModFluids.BIO_DIESEL);
+    public static final FlowingFluidBlock CANOLA_METHANOL_MIX = new CarFluidBlock(() -> ModFluids.CANOLA_METHANOL_MIX);
+    public static final FlowingFluidBlock CANOLA_OIL = new CarFluidBlock(() -> ModFluids.CANOLA_OIL);
+    public static final FlowingFluidBlock GLYCERIN = new CarFluidBlock(() -> ModFluids.GLYCERIN);
+    public static final FlowingFluidBlock METHANOL = new CarFluidBlock(() -> ModFluids.METHANOL);
 
     public static final BlockPaint[] PAINTS;
     public static final BlockPaint[] YELLOW_PAINTS;

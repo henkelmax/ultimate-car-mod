@@ -10,18 +10,14 @@ import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.fluid.Fluids;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.biome.BiomeColors;
-import net.minecraft.world.biome.Biomes;
 import net.minecraftforge.fluids.FluidStack;
 import org.lwjgl.opengl.GL11;
 
 public class TileEntitySpecialRendererTank extends TileEntityRenderer<TileEntityTank> {
 
-    public static final ResourceLocation LOCATION_TANK = new ResourceLocation(Main.MODID,
-            "textures/block/tank_line.png");
+    public static final ResourceLocation LOCATION_TANK = new ResourceLocation(Main.MODID, "textures/block/tank_line.png");
 
     @Override
     public void render(TileEntityTank te, double x, double y, double z, float partialTicks, int destroyStage) {
@@ -36,7 +32,6 @@ public class TileEntitySpecialRendererTank extends TileEntityRenderer<TileEntity
         double amount = te.getFillPercent();
         FluidStack stack = te.getFluid();
         if (amount > 0 && stack != null) {
-
             renderFluid(te, stack, amount, 0.0D);
         }
 
@@ -63,15 +58,9 @@ public class TileEntitySpecialRendererTank extends TileEntityRenderer<TileEntity
 
         double vHeight = vMax - vMin;
 
-        int i = fluid.getFluid().getAttributes().getColor();
-        if (i < 0) {
-            if (fluid.getFluid().equals(Fluids.LAVA)) {
-                i = 0xFFFFFF;
-            } else if (tank.hasWorld()) {
-                i = BiomeColors.getWaterColor(tank.getWorld(), tank.getPos());
-            } else {
-                i = Biomes.PLAINS.getWaterColor();
-            }
+        int i = 0xFFFFFF;
+        if (tank.hasWorld()) {
+            i = fluid.getFluid().getAttributes().getColor(tank.getWorld(), tank.getPos());
         }
 
         float red = (float) (i >> 16 & 255) / 255F;

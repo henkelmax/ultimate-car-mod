@@ -42,7 +42,6 @@ import net.minecraft.village.PointOfInterestType;
 import net.minecraft.world.storage.loot.functions.LootFunctionManager;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -63,7 +62,6 @@ import net.minecraftforge.registries.DataSerializerEntry;
 import org.lwjgl.glfw.GLFW;
 
 import java.lang.reflect.Method;
-import java.util.Arrays;
 
 @Mod(Main.MODID)
 public class Main {
@@ -93,17 +91,7 @@ public class Main {
         ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, Config.CLIENT_SPEC);
 
         DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
-            FMLJavaModLoadingContext.get().getModEventBus().addListener(this::stitch);
             clientStart();
-        });
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    @SubscribeEvent
-    public void stitch(TextureStitchEvent.Pre event) {
-        Arrays.stream(ModFluids.STILL_FLUIDS).forEach(flowingFluid -> {
-            event.addSprite(flowingFluid.getAttributes().getStillTexture());
-            event.addSprite(flowingFluid.getAttributes().getFlowingTexture());
         });
     }
 
