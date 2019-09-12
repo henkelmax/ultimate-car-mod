@@ -187,4 +187,9 @@ public class BlockTank extends BlockBase implements ITileEntityProvider, IItemBl
     public TileEntity createNewTileEntity(IBlockReader worldIn) {
         return new TileEntityTank();
     }
+
+    @Override
+    public boolean hasCustomBreakingProgress(BlockState state) {
+        return true;
+    }
 }

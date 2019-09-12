@@ -21,6 +21,11 @@ public class TileEntitySpecialRendererTank extends TileEntityRenderer<TileEntity
 
     @Override
     public void render(TileEntityTank te, double x, double y, double z, float partialTicks, int destroyStage) {
+        if (destroyStage >= 0) {
+            renderDestroyStages(te, x, y, z, partialTicks, destroyStage);
+            return;
+        }
+
         GlStateManager.pushMatrix();
         GlStateManager.translated(x, y, z);
 
@@ -41,6 +46,62 @@ public class TileEntitySpecialRendererTank extends TileEntityRenderer<TileEntity
         GlStateManager.enableLighting();
         GlStateManager.disableBlend();
         GlStateManager.disableAlphaTest();
+
+        GlStateManager.popMatrix();
+    }
+
+    public void renderDestroyStages(TileEntityTank te, double x, double y, double z, float partialTicks, int destroyStage) {
+        GlStateManager.pushMatrix();
+        GlStateManager.translated(x, y, z);
+        GlStateManager.disableLighting();
+
+        bindTexture(DESTROY_STAGES[destroyStage]);
+
+        Tessellator tessellator = Tessellator.getInstance();
+        BufferBuilder buffer = tessellator.getBuffer();
+
+        buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+
+        // North
+        buffer.pos(1D, 0D, 0D).tex(1D, 0D).endVertex();
+        buffer.pos(0D, 0D, 0D).tex(0D, 0D).endVertex();
+        buffer.pos(0D, 1D, 0D).tex(0D, 1D).endVertex();
+        buffer.pos(1D, 1D, 0D).tex(1D, 1D).endVertex();
+
+
+        // South
+        buffer.pos(1D, 0D, 1D).tex(0D, 0D).endVertex();
+        buffer.pos(1D, 1D, 1D).tex(0D, 1D).endVertex();
+        buffer.pos(0D, 1D, 1D).tex(1D, 1D).endVertex();
+        buffer.pos(0D, 0D, 1D).tex(1D, 0D).endVertex();
+
+        // East
+        buffer.pos(1D, 0D, 0D).tex(0D, 0D).endVertex();
+        buffer.pos(1D, 1D, 0D).tex(0D, 1D).endVertex();
+        buffer.pos(1D, 1D, 1D).tex(1D, 1D).endVertex();
+        buffer.pos(1D, 0D, 1D).tex(1D, 0D).endVertex();
+
+        // West
+        buffer.pos(0D, 0D, 1D).tex(0D, 0D).endVertex();
+        buffer.pos(0D, 1D, 1D).tex(0D, 1D).endVertex();
+        buffer.pos(0D, 1D, 0D).tex(1D, 1D).endVertex();
+        buffer.pos(0D, 0D, 0D).tex(1D, 0D).endVertex();
+
+        // Down
+        buffer.pos(1D, 0D, 0D).tex(1D, 0D).endVertex();
+        buffer.pos(1D, 0D, 1D).tex(0D, 0D).endVertex();
+        buffer.pos(0D, 0D, 1D).tex(0D, 1D).endVertex();
+        buffer.pos(0D, 0D, 0D).tex(1D, 1D).endVertex();
+
+        // Up
+        buffer.pos(0D, 1D, 0D).tex(1D, 1D).endVertex();
+        buffer.pos(0D, 1D, 1D).tex(0D, 1D).endVertex();
+        buffer.pos(1D, 1D, 1D).tex(0D, 0D).endVertex();
+        buffer.pos(1D, 1D, 0D).tex(1D, 0D).endVertex();
+
+        tessellator.draw();
+
+        GlStateManager.enableLighting();
 
         GlStateManager.popMatrix();
     }

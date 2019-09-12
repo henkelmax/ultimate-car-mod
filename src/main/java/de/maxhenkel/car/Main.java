@@ -158,28 +158,28 @@ public class Main {
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTank.class, new TileEntitySpecialRendererTank());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySign.class, new TileEntitySpecialRendererSign());
 
-        ScreenManager.IScreenFactory factory1 = (ScreenManager.IScreenFactory<ContainerBackmixReactor, GuiBackmixReactor>) (container, playerInventory, name) -> new GuiBackmixReactor(container, playerInventory, name);
+        ScreenManager.IScreenFactory factory1 = (ScreenManager.IScreenFactory<ContainerBackmixReactor, GuiBackmixReactor>) GuiBackmixReactor::new;
         ScreenManager.registerFactory(Main.BACKMIX_REACTOR_CONTAINER_TYPE, factory1);
 
-        ScreenManager.IScreenFactory factory2 = (ScreenManager.IScreenFactory<ContainerBlastFurnace, GuiBlastFurnace>) (container, playerInventory, name) -> new GuiBlastFurnace(container, playerInventory, name);
+        ScreenManager.IScreenFactory factory2 = (ScreenManager.IScreenFactory<ContainerBlastFurnace, GuiBlastFurnace>) GuiBlastFurnace::new;
         ScreenManager.registerFactory(Main.BLAST_FURNACE_CONTAINER_TYPE, factory2);
 
-        ScreenManager.IScreenFactory factory3 = (ScreenManager.IScreenFactory<ContainerCar, GuiCar>) (container, playerInventory, name) -> new GuiCar(container, playerInventory, name);
+        ScreenManager.IScreenFactory factory3 = (ScreenManager.IScreenFactory<ContainerCar, GuiCar>) GuiCar::new;
         ScreenManager.registerFactory(Main.CAR_CONTAINER_TYPE, factory3);
 
-        ScreenManager.IScreenFactory factory15 = (ScreenManager.IScreenFactory<ContainerCarInventory, GuiCarInventory>) (container, playerInventory, name) -> new GuiCarInventory(container, playerInventory, name);
+        ScreenManager.IScreenFactory factory15 = (ScreenManager.IScreenFactory<ContainerCarInventory, GuiCarInventory>) GuiCarInventory::new;
         ScreenManager.registerFactory(Main.CAR_INVENTORY_CONTAINER_TYPE, factory15);
 
-        ScreenManager.IScreenFactory factory4 = (ScreenManager.IScreenFactory<ContainerCarWorkshopCrafting, GuiCarWorkshopCrafting>) (container, playerInventory, name) -> new GuiCarWorkshopCrafting(container, playerInventory, name);
+        ScreenManager.IScreenFactory factory4 = (ScreenManager.IScreenFactory<ContainerCarWorkshopCrafting, GuiCarWorkshopCrafting>) GuiCarWorkshopCrafting::new;
         ScreenManager.registerFactory(Main.CAR_WORKSHOP_CRAFTING_CONTAINER_TYPE, factory4);
 
-        ScreenManager.IScreenFactory factory5 = (ScreenManager.IScreenFactory<ContainerCarWorkshopRepair, GuiCarWorkshopRepair>) (container, playerInventory, name) -> new GuiCarWorkshopRepair(container, playerInventory, name);
+        ScreenManager.IScreenFactory factory5 = (ScreenManager.IScreenFactory<ContainerCarWorkshopRepair, GuiCarWorkshopRepair>) GuiCarWorkshopRepair::new;
         ScreenManager.registerFactory(Main.CAR_WORKSHOP_REPAIR_CONTAINER_TYPE, factory5);
 
-        ScreenManager.IScreenFactory factory6 = (ScreenManager.IScreenFactory<ContainerFluidExtractor, GuiFluidExtractor>) (container, playerInventory, name) -> new GuiFluidExtractor(container, playerInventory, name);
+        ScreenManager.IScreenFactory factory6 = (ScreenManager.IScreenFactory<ContainerFluidExtractor, GuiFluidExtractor>) GuiFluidExtractor::new;
         ScreenManager.registerFactory(Main.FLUID_EXTRACTOR_CONTAINER_TYPE, factory6);
 
-        ScreenManager.IScreenFactory factory7 = (ScreenManager.IScreenFactory<ContainerFuelStation, GuiFuelStation>) (container, playerInventory, name) -> new GuiFuelStation(container, playerInventory, name);
+        ScreenManager.IScreenFactory factory7 = (ScreenManager.IScreenFactory<ContainerFuelStation, GuiFuelStation>) GuiFuelStation::new;
         ScreenManager.registerFactory(Main.FUEL_STATION_CONTAINER_TYPE, factory7);
 
         ScreenManager.IScreenFactory factory8 = (ScreenManager.IScreenFactory<ContainerFuelStationAdmin, GuiFuelStationAdmin>) (container, playerInventory, name) -> new GuiFuelStationAdmin(container, playerInventory, name);
