@@ -39,7 +39,7 @@ public class MessageEditSign implements Message<MessageEditSign> {
         this.pos = buf.readBlockPos();
         this.text = new String[8];
         for (int i = 0; i < text.length; i++) {
-            this.text[i] = buf.readString();
+            this.text[i] = buf.readString(20);
         }
 
         return this;
@@ -49,7 +49,7 @@ public class MessageEditSign implements Message<MessageEditSign> {
     public void toBytes(PacketBuffer buf) {
         buf.writeBlockPos(pos);
         for (int i = 0; i < text.length; i++) {
-            buf.writeString(text[i]);
+            buf.writeString(text[i], 20);
         }
     }
 }
