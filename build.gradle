@@ -1,18 +1,27 @@
 buildscript {
     repositories {
+        maven { url = "https://files.minecraftforge.net/maven" }
+        maven { url = 'https://maven.maxhenkel.de/artifactory/public' }
         jcenter()
-        maven { url = "http://files.minecraftforge.net/maven" }
+        mavenCentral()
     }
     dependencies {
         classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
+        classpath group: 'de.maxhenkel.forge-update', name: 'forge-update', version: '1.0.1'
     }
 }
+
+plugins {
+    // https://github.com/matthewprenger/CurseGradle
+    id "com.matthewprenger.cursegradle" version "1.4.0"
+}
+
 apply plugin: 'net.minecraftforge.gradle.forge'
+apply plugin: 'forge-update'
 
-
-version = "1.12.2-1.2.14"
-group= "de.maxhenkel.car"
-archivesBaseName = "car"
+version = mod_version
+group = mod_packagename
+archivesBaseName = mod_id
 
 sourceCompatibility = targetCompatibility = "1.8"
 compileJava {
@@ -20,9 +29,9 @@ compileJava {
 }
 
 minecraft {
-    version = "${forge_version}"
+    version = "${mod_minecraft_version}-${forge_version}"
     runDir = "run"
-    mappings = "${forge_mappings}"
+    mappings = "snapshot_20171003"
 }
 
 dependencies {
@@ -30,29 +39,19 @@ dependencies {
     deobfProvided "mezz.jei:jei_${project.minecraft.version}:${jei_version}:api"
     // at runtime, use the full JEI jar
     runtime "mezz.jei:jei_${project.minecraft.version}:${jei_version}"
-
-	//Craft Tweaker
-	compile files("libs/CraftTweaker2-Dev-Full-1.12-4.0.1.jar")
-
-
-    compile files("libs/Minecraft+Transport+Simulator-1.12.2-11.2.0.jar")
 }
 
-processResources
-{
-    // this will ensure that this task is redone when the versions change.
+processResources {
     inputs.property "version", project.version
     inputs.property "mcversion", project.minecraft.version
 
-    // replace stuff in mcmod.info, nothing else
     from(sourceSets.main.resources.srcDirs) {
         include 'mcmod.info'
-                
-        // replace version and mcversion
-        expand 'version':project.version, 'mcversion':project.minecraft.version
+
+        expand 'mod_id': mod_id, 'mod_version': mod_version, 'mod_vendor': mod_vendor, 'mod_name': mod_name,
+                'mod_minecraft_version': mod_minecraft_version
     }
-        
-    // copy everything else, thats not the mcmod.info
+
     from(sourceSets.main.resources.srcDirs) {
         exclude 'mcmod.info'
     }
@@ -69,4 +68,36 @@ repositories {
         name = "ModMaven"
         url = "modmaven.k-4u.nl"
     }
+}
+
+curseforge {
+    apiKey = System.env.CURSEFORGE_API_KEY != null ? System.env.CURSEFORGE_API_KEY : file('curseforge_api_key.txt').text
+    project {
+        id = curse_id
+        changelogType = 'markdown'
+        changelog = file('changelog.md')
+        releaseType = curse_release_type
+        addGameVersion mod_minecraft_version
+        mainArtifact(jar) {
+            displayName = "[${mod_minecraft_version}] ${mod_name} ${mod_version}"
+        }
+    }
+}
+
+forgeUpdate {
+    def messages = []
+    file('changelog.md').eachLine { String line ->
+        if (line.trim().startsWith('-')) {
+            messages.add(line.replaceFirst('-', '').trim())
+        }
+    }
+
+    serverURL = 'https://update.maxhenkel.de/'
+    apiKey = System.env.FORGE_UPDATE_API_KEY != null ? System.env.FORGE_UPDATE_API_KEY : file('forge_update_api_key.txt').text
+    modID = mod_id
+    gameVersion = mod_minecraft_version
+    modVersion = mod_version
+    updateMessages = messages
+    releaseType = curse_release_type
+    tags = recommended == 'true' ? ['recommended'] : []
 }

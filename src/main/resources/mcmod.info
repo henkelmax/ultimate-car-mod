@@ -1,18 +1,16 @@
 [
 {
-  "modid": "car",
-  "name": "Ultimate Car Mod",
+  "modid": "${mod_id}",
+  "name": "${mod_name}",
   "description": "Ultimate Car Mod",
-  "version": "${version}",
-  "mcversion": "${mcversion}",
-  "url": "https://maxhenkel.de/",
-  "updateUrl": "https://minecraft.curseforge.com/projects/ultimate-car-mod",
-  "authorList": ["Max Henkel"],
+  "version": "${mod_version}",
+  "mcversion": "${mod_minecraft_version}",
+  "url": "https://www.curseforge.com/minecraft/mc-mods/ultimate-car-mod",
+  "updateUrl": "https://www.curseforge.com/minecraft/mc-mods/ultimate-car-mod",
+  "authorList": ["${mod_vendor}"],
   "credits": "",
   "logoFile": "",
   "screenshots": [],
-  "dependencies": [
-	"forge"
-  ]
+  "dependencies": []
 }
 ]
