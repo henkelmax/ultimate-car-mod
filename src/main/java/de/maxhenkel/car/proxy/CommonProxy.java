@@ -1,22 +1,16 @@
 package de.maxhenkel.car.proxy;
 
-import java.io.File;
-import java.lang.reflect.Field;
-import java.util.Map;
 import de.maxhenkel.car.Config;
 import de.maxhenkel.car.DataSerializerItemList;
-import de.maxhenkel.car.DataSerializerStringList;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.entity.car.base.EntityGenericCar;
 import de.maxhenkel.car.events.ConfigEvents;
 import de.maxhenkel.car.gui.GuiHandler;
 import de.maxhenkel.car.net.*;
-import minecrafttransportsimulator.systems.ConfigSystem;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -24,6 +18,8 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.relauncher.Side;
+
+import java.io.File;
 
 public class CommonProxy {
 
@@ -53,7 +49,6 @@ public class CommonProxy {
         CommonProxy.simpleNetworkWrapper.registerMessage(MessageCenterCar.class, MessageCenterCar.class, 15, Side.CLIENT);
         CommonProxy.simpleNetworkWrapper.registerMessage(MessageEditLicensePlate.class, MessageEditLicensePlate.class, 16, Side.SERVER);
 
-        DataSerializers.registerSerializer(DataSerializerStringList.STRING_LIST);
         DataSerializers.registerSerializer(DataSerializerItemList.ITEM_LIST);
 
         try {
@@ -66,8 +61,6 @@ public class CommonProxy {
     }
 
     public void init(FMLInitializationEvent event) {
-        inject();
-
         EntityRegistry.registerModEntity(new ResourceLocation(Main.MODID, "car"), EntityGenericCar.class,
                 "car", 3727, Main.instance(), 64, 1, true);
 
@@ -78,23 +71,6 @@ public class CommonProxy {
 
     public void postinit(FMLPostInitializationEvent event) {
         Config.postInit();
-    }
-
-    public static void inject() {
-        if(!Loader.isModLoaded("mts")){
-            return;
-        }
-        try {
-            ConfigSystem.config.load();
-            double value = ConfigSystem.config.get("fuels", "bio_diesel", 0.0D).getDouble();
-            ConfigSystem.config.save();
-            Field field = ConfigSystem.class.getDeclaredField("fluidValues");
-            field.setAccessible(true);
-            Map<String, Double> map = (Map<String, Double>) field.get(null);
-            map.put("bio_diesel", value);
-        } catch (Throwable e) {
-            e.printStackTrace();
-        }
     }
 
 }
