@@ -447,6 +447,11 @@ public class TileEntityFuelStation extends TileEntityBase implements ITickableTi
     }
 
     @Override
+    public AxisAlignedBB getRenderBoundingBox() {
+        return new AxisAlignedBB(pos, pos.add(1, 2, 1));
+    }
+
+    @Override
     public int getSizeInventory() {
         return 0;
     }
