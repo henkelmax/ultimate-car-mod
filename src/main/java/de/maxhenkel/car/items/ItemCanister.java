@@ -86,7 +86,7 @@ public class ItemCanister extends Item {
                 CompoundNBT fuel = comp.getCompound("fuel");
 
                 FluidStack fluidStack = FluidStack.loadFluidStackFromNBT(fuel);
-                if (fluidStack == null) {
+                if (fluidStack == null || fluidStack.isEmpty()) {
                     addInfo("-", 0, tooltip);
                     super.addInformation(stack, worldIn, tooltip, flagIn);
                     return;
@@ -169,7 +169,7 @@ public class ItemCanister extends Item {
 
         FluidStack stack = FluidStack.loadFluidStackFromNBT(fluid);
 
-        if (stack == null) {
+        if (stack == null || stack.isEmpty()) {
             return false;
         }
 

@@ -1,1 +1,2 @@
-- Fixed crash when editing a sign on servers
+- Update JEI and WAILA
+- Fixed canister crash
