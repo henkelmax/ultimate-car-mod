@@ -1,1 +1,1 @@
-- Fixed fuel station crash
+- Fixed big wood car can only have one passenger

@@ -20,7 +20,8 @@ public class PartBodyBigWood extends PartBodyWoodBase {
                 new Vec3d(-12.5F / 16F, 4F / 16F, -13F / 16F)
         };
         this.playerOffsets = new Vec3d[]{
-                new Vec3d(0D, -0.378D, 0D)
+                new Vec3d(0.2D, -0.378D, 0D),
+                new Vec3d(-0.5D, -0.378D, 0D)
         };
         this.numberPlateOffset = new Vec3d(0D, 7D / 16D, 17D / 16D);
         this.width = 1.625F;
