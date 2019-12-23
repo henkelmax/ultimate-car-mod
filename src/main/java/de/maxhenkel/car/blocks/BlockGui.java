@@ -17,6 +17,7 @@ import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
@@ -32,7 +33,11 @@ public abstract class BlockGui<T extends TileEntity> extends BlockBase implement
     public static final DirectionProperty FACING = DirectionProperty.create("facing", Direction.Plane.HORIZONTAL);
 
     protected BlockGui(String name, Material material, SoundType soundType, float hardness, float resistance) {
-        super(Properties.create(material, MaterialColor.IRON).hardnessAndResistance(hardness, resistance).sound(soundType));
+        this(name, Properties.create(material, MaterialColor.IRON).hardnessAndResistance(hardness, resistance).sound(soundType));
+    }
+
+    protected BlockGui(String name, Block.Properties properties) {
+        super(properties);
         setRegistryName(new ResourceLocation(Main.MODID, name));
         setDefaultState(stateContainer.getBaseState().with(POWERED, false).with(FACING, Direction.NORTH));
     }
@@ -43,10 +48,10 @@ public abstract class BlockGui<T extends TileEntity> extends BlockBase implement
     }
 
     @Override
-    public boolean onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
-        if (!player.isSneaking()) {
+    public ActionResultType func_225533_a_(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
+        if (!player.func_225608_bj_()) {
             if (!(player instanceof ServerPlayerEntity)) {
-                return true;
+                return ActionResultType.SUCCESS;
             }
 
             TileEntity tileEntity = worldIn.getTileEntity(pos);
@@ -57,10 +62,10 @@ public abstract class BlockGui<T extends TileEntity> extends BlockBase implement
             } catch (ClassCastException e) {
 
             }
-            return true;
+            return ActionResultType.SUCCESS;
         }
 
-        return false;
+        return ActionResultType.FAIL;
     }
 
     public abstract void openGui(BlockState state, World worldIn, BlockPos pos, ServerPlayerEntity player, Hand handIn, T tileEntity);

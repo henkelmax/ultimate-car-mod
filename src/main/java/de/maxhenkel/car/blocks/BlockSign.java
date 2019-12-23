@@ -7,8 +7,8 @@ import de.maxhenkel.car.ModItemGroups;
 import de.maxhenkel.car.blocks.tileentity.TileEntitySign;
 import de.maxhenkel.car.gui.ContainerSign;
 import de.maxhenkel.car.gui.TileEntityContainerProvider;
-import de.maxhenkel.tools.VoxelShapeTools;
 import de.maxhenkel.tools.IItemBlock;
+import de.maxhenkel.tools.VoxelShapeTools;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
@@ -20,6 +20,7 @@ import net.minecraft.item.Item;
 import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
@@ -28,7 +29,6 @@ import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IEnviromentBlockReader;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
@@ -51,17 +51,17 @@ public class BlockSign extends BlockBase implements ITileEntityProvider, IItemBl
     }
 
     @Override
-    public boolean onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
+    public ActionResultType func_225533_a_(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
         TileEntity te = worldIn.getTileEntity(pos);
 
         if (!(te instanceof TileEntitySign)) {
-            return false;
+            return ActionResultType.FAIL;
         }
         TileEntitySign sign = (TileEntitySign) te;
         if (player instanceof ServerPlayerEntity) {
             TileEntityContainerProvider.openGui((ServerPlayerEntity) player, sign, (i, playerInventory, playerEntity) -> new ContainerSign(i, sign));
         }
-        return true;
+        return ActionResultType.SUCCESS;
     }
 
     private static final VoxelShape SHAPE_NORTH_SOUTH = Block.makeCuboidShape(0D, 3D, 7.5D, 16D, 13D, 8.5D);
@@ -86,11 +86,6 @@ public class BlockSign extends BlockBase implements ITileEntityProvider, IItemBl
 
     @Override
     public boolean isNormalCube(BlockState state, IBlockReader worldIn, BlockPos pos) {
-        return false;
-    }
-
-    @Override
-    public boolean doesSideBlockRendering(BlockState state, IEnviromentBlockReader world, BlockPos pos, Direction face) {
         return false;
     }
 

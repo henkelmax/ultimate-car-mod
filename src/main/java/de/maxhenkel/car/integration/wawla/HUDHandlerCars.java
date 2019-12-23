@@ -1,5 +1,5 @@
 package de.maxhenkel.car.integration.wawla;
-
+/*
 import de.maxhenkel.car.entity.car.base.EntityGenericCar;
 import de.maxhenkel.tools.MathTools;
 import mcp.mobius.waila.Waila;
@@ -55,4 +55,4 @@ public class HUDHandlerCars implements IEntityComponentProvider {
     public void appendTail(List<ITextComponent> tooltip, IEntityAccessor accessor, IPluginConfig config) {
         tooltip.add(new StringTextComponent(String.format(Waila.CONFIG.get().getFormatting().getModName(), ModIdentification.getModInfo(accessor.getEntity()).getName())));
     }
-}
+}*/

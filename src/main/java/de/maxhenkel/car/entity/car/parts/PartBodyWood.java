@@ -9,8 +9,7 @@ import net.minecraft.util.math.Vec3d;
 public class PartBodyWood extends PartBodyWoodBase {
 
     public PartBodyWood(ResourceLocation texture) {
-        super(new OBJModel(new ResourceLocation(Main.MODID, "models/entity/wood_body.obj"), texture),
-                new Vec3d(0D, 4D / 16D, 0D));
+        super(new OBJModel(new ResourceLocation(Main.MODID, "models/entity/wood_body.obj")), texture, new Vec3d(0D, 4D / 16D, 0D));
 
         this.bumperOffset = new Vec3d(0D, 6D / 16D, -14.5D / 16D);
         this.wheelOffsets = new Vec3d[]{

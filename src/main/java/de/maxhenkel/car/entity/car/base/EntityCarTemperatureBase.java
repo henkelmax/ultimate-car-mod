@@ -32,11 +32,11 @@ public abstract class EntityCarTemperatureBase extends EntityCarBase {
 
         int tempRate = (int) (speedPerc * 10F) + 1;
 
-        if(tempRate>5){
-            tempRate=5;
+        if (tempRate > 5) {
+            tempRate = 5;
         }
 
-        float rate = tempRate * 0.2F + (rand.nextFloat()-0.5F)*0.1F;
+        float rate = tempRate * 0.2F + (rand.nextFloat() - 0.5F) * 0.1F;
 
         float temp = getTemperature();
 
@@ -60,16 +60,16 @@ public abstract class EntityCarTemperatureBase extends EntityCarBase {
         }
         float optimalTemp = getOptimalTemperature();
 
-        if(biomeTemp>45F){
-            optimalTemp=100F;
-        }else if(biomeTemp<=0F){
-            optimalTemp=80F;
+        if (biomeTemp > 45F) {
+            optimalTemp = 100F;
+        } else if (biomeTemp <= 0F) {
+            optimalTemp = 80F;
         }
         return Math.max(biomeTemp, optimalTemp);
     }
 
     public float getBiomeTemperatureCelsius() {
-        return (world.getBiome(getPosition()).getTemperature(getPosition()) - 0.3F) * 30F;
+        return (world.func_226691_t_(getPosition()).getTemperature(getPosition()) - 0.3F) * 30F; //TODO CHECK if is getbiome
     }
 
     public float getTemperature() {

@@ -85,11 +85,11 @@ public abstract class EntityCarBase extends EntityVehicleBase {
             setStarted(false);
         }
 
-        this.updateGravity();
-        this.controlCar();
-        this.checkPush();
+        updateGravity();
+        controlCar();
+        checkPush();
 
-        this.move(MoverType.SELF, getMotion());
+        move(MoverType.SELF, getMotion());
 
         if (world.isRemote) {
             updateSounds();
@@ -141,7 +141,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 
         for (int j = 0; j < list.size(); j++) {
             PlayerEntity player = list.get(j);
-            if (!player.isPassenger(this) && player.isSneaking()) {
+            if (!player.isPassenger(this) && player.func_225608_bj_()) {
                 double motX = calculateMotionX(0.05F, player.rotationYaw);
                 double motZ = calculateMotionZ(0.05F, player.rotationYaw);
                 move(MoverType.PLAYER, new Vec3d(motX, 0, motZ));
@@ -196,7 +196,6 @@ public abstract class EntityCarBase extends EntityVehicleBase {
     }
 
     private void controlCar() {
-
         if (!isBeingRidden()) {
             setForward(false);
             setBackward(false);
@@ -275,7 +274,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
     }
 
     public float getModifier() {
-        BlockPos pos = new BlockPos(posX, posY - 0.1D, posZ);
+        BlockPos pos = new BlockPos(func_226277_ct_(), func_226278_cu_() - 0.1D, func_226281_cx_());
         BlockState state = world.getBlockState(pos);
 
         if (state.isAir(world, pos)) {
@@ -559,7 +558,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
             playHornSound();
             if (Config.hornFlee.get()) {
                 double radius = 15;
-                List<MobEntity> list = world.getEntitiesWithinAABB(MobEntity.class, new AxisAlignedBB(posX - radius, posY - radius, posZ - radius, posX + radius, posY + radius, posZ + radius));
+                List<MobEntity> list = world.getEntitiesWithinAABB(MobEntity.class, new AxisAlignedBB(func_226277_ct_() - radius, func_226278_cu_() - radius, func_226281_cx_() - radius, func_226277_ct_() + radius, func_226278_cu_() + radius, func_226281_cx_() + radius));
                 for (MobEntity ent : list) {
                     fleeEntity(ent);
                 }
@@ -569,8 +568,8 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 
     public void fleeEntity(MobEntity entity) {
         double fleeDistance = 10;
-        Vec3d vecCar = new Vec3d(posX, posY, posZ);
-        Vec3d vecEntity = new Vec3d(entity.posX, entity.posY, entity.posZ);
+        Vec3d vecCar = new Vec3d(func_226277_ct_(), func_226278_cu_(), func_226281_cx_());
+        Vec3d vecEntity = new Vec3d(entity.func_226277_ct_(), entity.func_226278_cu_(), entity.func_226281_cx_());
         Vec3d fleeDir = vecEntity.subtract(vecCar);
         fleeDir = fleeDir.normalize();
         Vec3d fleePos = new Vec3d(vecEntity.x + fleeDir.x * fleeDistance, vecEntity.y + fleeDir.y * fleeDistance, vecEntity.z + fleeDir.z * fleeDistance);

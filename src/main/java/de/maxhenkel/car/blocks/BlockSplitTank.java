@@ -9,6 +9,8 @@ import de.maxhenkel.tools.FluidUtils;
 import de.maxhenkel.tools.IItemBlock;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -19,8 +21,7 @@ import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.util.Direction;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -28,16 +29,18 @@ import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IEnviromentBlockReader;
 import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
 
 public class BlockSplitTank extends BlockBase implements ITileEntityProvider, IItemBlock {
 
     protected BlockSplitTank() {
-        super(Properties.create(Material.IRON).hardnessAndResistance(3F).sound(SoundType.STONE));
+        super(Properties.create(Material.IRON).hardnessAndResistance(3F).sound(SoundType.STONE).func_226896_b_());
         setRegistryName(new ResourceLocation(Main.MODID, "split_tank"));
+        RenderTypeLookup.setRenderLayer(this, RenderType.func_228643_e_());
     }
 
     @Override
@@ -54,25 +57,25 @@ public class BlockSplitTank extends BlockBase implements ITileEntityProvider, II
     }
 
     @Override
-    public boolean onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
+    public ActionResultType func_225533_a_(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
         if (FluidUtils.tryFluidInteraction(player, handIn, worldIn, pos)) {
-            return true;
+            return ActionResultType.SUCCESS;
         }
 
-        if (!player.isSneaking()) {
+        if (!player.func_225608_bj_()) {
             TileEntity te = worldIn.getTileEntity(pos);
 
             if (!(te instanceof TileEntitySplitTank)) {
-                return false;
+                return ActionResultType.FAIL;
             }
             TileEntitySplitTank splitTank = (TileEntitySplitTank) te;
             if (player instanceof ServerPlayerEntity) {
                 TileEntityContainerProvider.openGui((ServerPlayerEntity) player, splitTank, (i, playerInventory, playerEntity) -> new ContainerSplitTank(i, splitTank, playerInventory));
             }
-            return true;
+            return ActionResultType.SUCCESS;
         }
 
-        return false;
+        return ActionResultType.FAIL;
     }
 
     @Override
@@ -106,18 +109,14 @@ public class BlockSplitTank extends BlockBase implements ITileEntityProvider, II
     }
 
     @Override
-    public BlockRenderLayer getRenderLayer() {
-        return BlockRenderLayer.CUTOUT;
-    }
-
-    @Override
-    public boolean canRenderInLayer(BlockState state, BlockRenderLayer layer) {
-        return layer == BlockRenderLayer.CUTOUT || layer == BlockRenderLayer.TRANSLUCENT;
-    }
-
-    @Override
-    public boolean doesSideBlockRendering(BlockState state, IEnviromentBlockReader world, BlockPos pos, Direction face) {
+    public boolean func_229869_c_(BlockState p_229869_1_, IBlockReader p_229869_2_, BlockPos p_229869_3_) {
         return false;
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    @Override
+    public float func_220080_a(BlockState state, IBlockReader worldIn, BlockPos pos) {
+        return 1.0F;
     }
 
     @Override

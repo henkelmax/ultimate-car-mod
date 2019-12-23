@@ -38,7 +38,7 @@ public class ItemCanister extends Item {
 
     @Override
     public ActionResultType onItemUse(ItemUseContext context) {
-        if (!context.getPlayer().isSneaking()) {
+        if (!context.getPlayer().func_225608_bj_()) {
             return super.onItemUse(context);
         }
 

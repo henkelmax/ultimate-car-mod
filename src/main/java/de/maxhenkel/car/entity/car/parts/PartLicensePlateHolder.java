@@ -6,8 +6,10 @@ import de.maxhenkel.car.entity.model.obj.OBJModel;
 import de.maxhenkel.car.entity.model.obj.OBJModelInstance;
 import de.maxhenkel.car.entity.model.obj.OBJModelOptions;
 import de.maxhenkel.tools.Rotation;
+import net.minecraft.client.renderer.Vector3f;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.Vec3d;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +18,7 @@ public class PartLicensePlateHolder extends PartModel {
     protected Vec3d textOffset;
 
     public PartLicensePlateHolder(ResourceLocation texture) {
-        super(new OBJModel(new ResourceLocation(Main.MODID, "models/entity/license_plate.obj"), texture), new Vec3d(0D, 0D, 0D), new Rotation(90F, 0F, 0F, 1F));
+        super(new OBJModel(new ResourceLocation(Main.MODID, "models/entity/license_plate.obj")), texture, new Vec3d(0D, 0D, 0D), new Rotation(90F, Vector3f.field_229183_f_));
         this.textOffset = new Vec3d(0D, -0.5D / 16D, -0.5D / 16D - 0.001D);
 
     }
@@ -34,7 +36,7 @@ public class PartLicensePlateHolder extends PartModel {
         }
 
         List<OBJModelInstance> list = new ArrayList<>();
-        list.add(new OBJModelInstance(model, new OBJModelOptions(chassis.getNumberPlateOffset(), rotation)));
+        list.add(new OBJModelInstance(model, new OBJModelOptions(texture, chassis.getNumberPlateOffset(), rotation)));
         onPartAdd(list);
         return list;
     }

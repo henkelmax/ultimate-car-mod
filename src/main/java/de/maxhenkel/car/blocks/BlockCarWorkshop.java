@@ -20,6 +20,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -45,21 +46,21 @@ public class BlockCarWorkshop extends BlockBase implements ITileEntityProvider, 
     }
 
     @Override
-    public boolean onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
+    public ActionResultType func_225533_a_(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
         TileEntityCarWorkshop workshop = getOwnTileEntity(worldIn, pos);
 
         if (workshop == null) {
-            return false;
+            return ActionResultType.FAIL;
         }
 
         if (!workshop.areBlocksAround()) {
-            return false;
+            return ActionResultType.FAIL;
         }
         if (player instanceof ServerPlayerEntity) {
             TileEntityContainerProvider.openGui((ServerPlayerEntity) player, workshop, (i, playerInventory, playerEntity) -> new ContainerCarWorkshopCrafting(i, workshop, playerInventory));
         }
 
-        return true;
+        return ActionResultType.SUCCESS;
     }
 
     public TileEntityCarWorkshop getOwnTileEntity(World world, BlockPos pos) {

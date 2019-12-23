@@ -16,6 +16,7 @@ import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
@@ -25,7 +26,6 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IEnviromentBlockReader;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
@@ -42,8 +42,8 @@ public class BlockFuelStationTop extends BlockBase {
     }
 
     @Override
-    public boolean onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
-        return ModBlocks.FUEL_STATION.onBlockActivated(worldIn.getBlockState(pos.down()), worldIn, pos.down(), player, handIn, hit);
+    public ActionResultType func_225533_a_(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
+        return ModBlocks.FUEL_STATION.func_225533_a_(worldIn.getBlockState(pos.down()), worldIn, pos.down(), player, handIn, hit);
     }
 
     @Override
@@ -52,15 +52,9 @@ public class BlockFuelStationTop extends BlockBase {
     }
 
     @Override
-    public boolean doesSideBlockRendering(BlockState state, IEnviromentBlockReader world, BlockPos pos, Direction face) {
-        return false;
-    }
-
-    @Override
     public PushReaction getPushReaction(BlockState state) {
         return PushReaction.BLOCK;
     }
-
 
     @Nullable
     @Override

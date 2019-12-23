@@ -1,6 +1,5 @@
 package de.maxhenkel.car.gui;
 
-import com.mojang.blaze3d.platform.GlStateManager;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.blocks.tileentity.TileEntitySign;
 import de.maxhenkel.car.net.MessageEditSign;
@@ -102,9 +101,6 @@ public class GuiSign extends GuiBase<ContainerSign> {
     @Override
     public void render(int mouseX, int mouseY, float partialTicks) {
         super.render(mouseX, mouseY, partialTicks);
-
-        GlStateManager.disableLighting();
-        GlStateManager.disableBlend();
         text1.render(mouseX, mouseY, partialTicks);
         text2.render(mouseX, mouseY, partialTicks);
         text3.render(mouseX, mouseY, partialTicks);

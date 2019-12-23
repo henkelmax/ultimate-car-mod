@@ -10,6 +10,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
@@ -25,12 +26,11 @@ public class BlockBlastFurnace extends BlockGui<TileEntityBlastFurnace> {
     }
 
     @Override
-    public boolean onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
+    public ActionResultType func_225533_a_(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
         if (FluidUtils.tryFluidInteraction(player, handIn, worldIn, pos)) {
-            return true;
+            return ActionResultType.SUCCESS;
         }
-
-        return super.onBlockActivated(state, worldIn, pos, player, handIn, hit);
+        return super.func_225533_a_(state, worldIn, pos, player, handIn, hit);
     }
 
     @Override

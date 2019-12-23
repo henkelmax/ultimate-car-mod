@@ -1,10 +1,11 @@
 package de.maxhenkel.car.entity.car.parts;
 
-import com.mojang.blaze3d.platform.GlStateManager;
 import de.maxhenkel.car.entity.car.base.EntityGenericCar;
 import de.maxhenkel.car.entity.model.obj.OBJModel;
 import de.maxhenkel.car.entity.model.obj.OBJModelInstance;
 import de.maxhenkel.car.entity.model.obj.OBJModelOptions;
+import net.minecraft.client.renderer.Vector3f;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -17,8 +18,8 @@ public class PartWheelBase extends PartModel {
     protected float rotationModifier;
     protected float stepHeight;
 
-    public PartWheelBase(OBJModel model, float rotationModifier, float stepHeight) {
-        super(model);
+    public PartWheelBase(OBJModel model, ResourceLocation texture, float rotationModifier, float stepHeight) {
+        super(model, texture);
         this.rotationModifier = rotationModifier;
         this.stepHeight = stepHeight;
     }
@@ -67,8 +68,8 @@ public class PartWheelBase extends PartModel {
         }
 
         for (int i = 0; i < wheelOffsets.length && i < wheels.size(); i++) {
-            list.add(new OBJModelInstance(wheels.get(i).model, new OBJModelOptions(wheelOffsets[i], null, (partialTicks) -> {
-                GlStateManager.rotatef(-car.getWheelRotation(partialTicks), 1F, 0F, 0F);
+            list.add(new OBJModelInstance(wheels.get(i).model, new OBJModelOptions(wheels.get(i).texture, wheelOffsets[i], null, (matrixStack, partialTicks) -> {
+                matrixStack.func_227863_a_(Vector3f.field_229179_b_.func_229187_a_(-car.getWheelRotation(partialTicks)));
             })));
         }
 

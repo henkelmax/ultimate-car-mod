@@ -9,7 +9,6 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.particles.IParticleData;
-import net.minecraft.particles.ParticleType;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.Vec3d;
@@ -149,9 +148,9 @@ public abstract class EntityCarBatteryBase extends EntityCarTemperatureBase {
 
     private void spawnParticle(IParticleData particleTypes, double offX, double offY, double offZ, double speedX, double speedZ, double random) {
         world.addParticle(particleTypes,
-                posX + offX + (rand.nextDouble() * random - random / 2D),
-                posY + offY + (rand.nextDouble() * random - random / 2D) + getCarHeight() / 8F,
-                posZ + offZ + (rand.nextDouble() * random - random / 2D),
+                func_226277_ct_() + offX + (rand.nextDouble() * random - random / 2D),
+                func_226278_cu_() + offY + (rand.nextDouble() * random - random / 2D) + getCarHeight() / 8F,
+                func_226281_cx_() + offZ + (rand.nextDouble() * random - random / 2D),
                 speedX, 0.0D, speedZ);
     }
 

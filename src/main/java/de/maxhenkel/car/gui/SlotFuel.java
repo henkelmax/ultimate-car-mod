@@ -40,7 +40,7 @@ public class SlotFuel extends Slot {
         }
 
         if (!player.inventory.addItemStackToInventory(stack)) {
-            InventoryHelper.spawnItemStack(car.world, car.posX, car.posY, car.posZ, stack);
+            InventoryHelper.spawnItemStack(car.world, car.func_226277_ct_(), car.func_226278_cu_(), car.func_226281_cx_(), stack);
         }
     }
 

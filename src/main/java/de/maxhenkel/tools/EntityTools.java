@@ -1,11 +1,13 @@
 package de.maxhenkel.tools;
 
-import com.mojang.blaze3d.platform.GLX;
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.systems.RenderSystem;
 import de.maxhenkel.car.entity.car.base.EntityCarBase;
 import de.maxhenkel.car.entity.car.base.EntityGenericCar;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.Quaternion;
+import net.minecraft.client.renderer.Vector3f;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -25,30 +27,29 @@ public class EntityTools {
     @Nullable
     public static EntityGenericCar getCarByUUID(PlayerEntity player, UUID uuid) {
         double distance = 10D;
-        return player.world.getEntitiesWithinAABB(EntityGenericCar.class, new AxisAlignedBB(player.posX - distance, player.posY - distance, player.posZ - distance, player.posX + distance, player.posY + distance, player.posZ + distance), entity -> entity.getUniqueID().equals(uuid)).stream().findAny().orElse(null);
+        return player.world.getEntitiesWithinAABB(EntityGenericCar.class, new AxisAlignedBB(player.func_226277_ct_() - distance, player.func_226278_cu_() - distance, player.func_226281_cx_() - distance, player.func_226277_ct_() + distance, player.func_226278_cu_() + distance, player.func_226281_cx_() + distance), entity -> entity.getUniqueID().equals(uuid)).stream().findAny().orElse(null);
     }
 
-    public static void drawCarOnScreen(int posX, int posY, int scale, float rotation, EntityCarBase ent) {
-        GlStateManager.enableColorMaterial();
-        GlStateManager.pushMatrix();
-        GlStateManager.translatef((float) posX, (float) posY, 50.0F);
-        GlStateManager.scalef((float) (-scale), (float) scale, (float) scale);
-        GlStateManager.rotatef(180.0F, 0.0F, 0.0F, 1.0F);
-        GlStateManager.rotatef(135.0F, 0.0F, 1.0F, 0.0F);
-        RenderHelper.enableStandardItemLighting();
-        GlStateManager.rotatef(rotation, 0.0F, 1.0F, 0.0F);
-        GlStateManager.translatef(0.0F, 0.0F, 0.0F);
-        EntityRendererManager rendermanager = Minecraft.getInstance().getRenderManager();
-        rendermanager.setPlayerViewY(180.0F);
-        rendermanager.setRenderShadow(false);
-        rendermanager.renderEntity(ent, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, false);
-        rendermanager.setRenderShadow(true);
-        GlStateManager.popMatrix();
-        RenderHelper.disableStandardItemLighting();
-        GlStateManager.disableRescaleNormal();
-        GlStateManager.activeTexture(GLX.GL_TEXTURE1);
-        GlStateManager.disableTexture();
-        GlStateManager.activeTexture(GLX.GL_TEXTURE0);
+    public static void drawCarOnScreen(EntityCarBase car, int posX, int posY, int scale, float rotation) {
+        RenderSystem.pushMatrix();
+
+        RenderSystem.translatef((float) posX, (float) posY, 1050.0F);
+        RenderSystem.scalef(1.0F, 1.0F, -1.0F);
+        MatrixStack matrixstack = new MatrixStack();
+        matrixstack.func_227861_a_(0.0D, 0.0D, 1000.0D);
+        matrixstack.func_227862_a_((float) scale, (float) scale, (float) scale);
+
+        matrixstack.func_227863_a_(Vector3f.field_229181_d_.func_229187_a_(135F + rotation));
+
+        Quaternion quaternion = Vector3f.field_229183_f_.func_229187_a_(180.0F);
+        matrixstack.func_227863_a_(quaternion);
+        EntityRendererManager entityrenderermanager = Minecraft.getInstance().getRenderManager();
+        entityrenderermanager.setRenderShadow(false);
+        IRenderTypeBuffer.Impl buffer = Minecraft.getInstance().func_228019_au_().func_228487_b_();
+        entityrenderermanager.func_229084_a_(car, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, matrixstack, buffer, 15728880);
+        buffer.func_228461_a_();
+        entityrenderermanager.setRenderShadow(true);
+        RenderSystem.popMatrix();
     }
 
     public static class CarRenderer {
@@ -73,7 +74,7 @@ public class EntityTools {
         }
 
         public void render(EntityCarBase car, int posX, int posY, int scale) {
-            EntityTools.drawCarOnScreen(posX, posY, scale, rotation + rotationPerTick * minecraft.getRenderPartialTicks(), car);
+            EntityTools.drawCarOnScreen(car, posX, posY, scale, rotation + rotationPerTick * minecraft.getRenderPartialTicks());
         }
     }
 
@@ -95,7 +96,7 @@ public class EntityTools {
             ticker.render(new Renderer() {
                 @Override
                 public void render(float partialTicks) {
-                    EntityTools.drawCarOnScreen(posX, posY, scale, rotation + rotationPerTick * partialTicks, car);
+                    EntityTools.drawCarOnScreen(car, posX, posY, scale, rotation + rotationPerTick * partialTicks);
                 }
 
                 @Override

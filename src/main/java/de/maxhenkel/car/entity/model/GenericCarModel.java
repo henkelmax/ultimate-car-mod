@@ -1,6 +1,6 @@
 package de.maxhenkel.car.entity.model;
 
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import de.maxhenkel.car.entity.car.base.EntityGenericCar;
 import de.maxhenkel.car.entity.model.obj.OBJModelInstance;
 import de.maxhenkel.car.entity.model.obj.OBJModelRenderer;
@@ -21,8 +21,8 @@ public class GenericCarModel extends OBJModelRenderer {
     }
 
     @Override
-    public void translateNumberPlate(EntityGenericCar entity) {
-        Vec3d offset=entity.getLicensePlateOffset();
-        GlStateManager.translated(offset.x, offset.y, offset.z);
+    public void translateLicensePlate(EntityGenericCar entity, MatrixStack matrixStack) {
+        Vec3d offset = entity.getLicensePlateOffset();
+        matrixStack.func_227861_a_(offset.x, offset.y, offset.z);
     }
 }

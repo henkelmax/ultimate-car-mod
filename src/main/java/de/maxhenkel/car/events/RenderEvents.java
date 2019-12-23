@@ -1,10 +1,9 @@
 package de.maxhenkel.car.events;
 
-import com.mojang.blaze3d.platform.GlStateManager;
 import de.maxhenkel.car.entity.car.base.EntityCarBase;
+import de.maxhenkel.car.entity.car.base.EntityCarFuelBase;
 import de.maxhenkel.car.entity.car.base.EntityVehicleBase;
 import de.maxhenkel.tools.MathTools;
-import de.maxhenkel.car.entity.car.base.EntityCarFuelBase;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.AbstractGui;
 import net.minecraft.entity.Entity;
@@ -54,11 +53,11 @@ public class RenderEvents {
 
     public void renderFuelBar(float percent) {
         Minecraft mc = Minecraft.getInstance();
-        int x = mc.mainWindow.getScaledWidth() / 2 - 91;
+        int x = mc.func_228018_at_().getScaledWidth() / 2 - 91;
 
         mc.getTextureManager().bindTexture(AbstractGui.GUI_ICONS_LOCATION);
 
-        int k = mc.mainWindow.getScaledHeight() - 32 + 3;
+        int k = mc.func_228018_at_().getScaledHeight() - 32 + 3;
         mc.ingameGUI.blit(x, k, 0, 64, 182, 5);
 
         int j = (int) (percent * 182.0F);
@@ -72,8 +71,8 @@ public class RenderEvents {
         Minecraft mc = Minecraft.getInstance();
 
         String s = String.valueOf(MathTools.round(Math.abs(speed), 2));
-        int i1 = (mc.mainWindow.getScaledWidth() - mc.ingameGUI.getFontRenderer().getStringWidth(s)) / 2;
-        int j1 = mc.mainWindow.getScaledHeight() - 31 - 4;
+        int i1 = (mc.func_228018_at_().getScaledWidth() - mc.ingameGUI.getFontRenderer().getStringWidth(s)) / 2;
+        int j1 = mc.func_228018_at_().getScaledHeight() - 31 - 4;
         mc.ingameGUI.getFontRenderer().drawString(s, i1 + 1, j1, 0);
         mc.ingameGUI.getFontRenderer().drawString(s, i1 - 1, j1, 0);
         mc.ingameGUI.getFontRenderer().drawString(s, i1, j1 + 1, 0);
@@ -96,24 +95,21 @@ public class RenderEvents {
         event.setCanceled(true);
     }
 
-
     @SubscribeEvent
     public void renderPlayerPre(RenderPlayerEvent.Pre event) {
         PlayerEntity player = event.getPlayer();
         if (player.getRidingEntity() instanceof EntityCarBase) {
             EntityCarBase car = (EntityCarBase) event.getPlayer().getRidingEntity();
-            GlStateManager.pushMatrix();
-            GlStateManager.translated(event.getX(), event.getY(), event.getZ());
-            GlStateManager.scalef(EntityVehicleBase.SCALE_FACTOR, EntityVehicleBase.SCALE_FACTOR, EntityVehicleBase.SCALE_FACTOR);
-            GlStateManager.translatef(0F, (event.getPlayer().getHeight() - (event.getPlayer().getHeight() * EntityVehicleBase.SCALE_FACTOR)) / 1.5F + (float) car.getPlayerYOffset(), 0F);
-            GlStateManager.translated(-event.getX(), -event.getY(), -event.getZ());
+            event.getMatrixStack().func_227860_a_();
+            event.getMatrixStack().func_227862_a_(EntityVehicleBase.SCALE_FACTOR, EntityVehicleBase.SCALE_FACTOR, EntityVehicleBase.SCALE_FACTOR);
+            event.getMatrixStack().func_227861_a_(0D, (event.getPlayer().getHeight() - (event.getPlayer().getHeight() * EntityVehicleBase.SCALE_FACTOR)) / 1.5D + car.getPlayerYOffset(), 0D);
         }
     }
 
     @SubscribeEvent
     public void renderPlayerPost(RenderPlayerEvent.Post event) {
         if (event.getPlayer().getRidingEntity() instanceof EntityCarBase) {
-            GlStateManager.popMatrix();
+            event.getMatrixStack().func_227865_b_();
         }
     }
 

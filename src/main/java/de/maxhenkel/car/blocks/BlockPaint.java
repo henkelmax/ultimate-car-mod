@@ -8,12 +8,13 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.Item;
 import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer;
-import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -31,10 +32,11 @@ public class BlockPaint extends BlockBase implements IItemBlock {
 
     public BlockPaint(EnumPaintType type, boolean isYellow) {
         super(Properties.create(new Material.Builder(MaterialColor.AIR).build())
-                .hardnessAndResistance(2F).sound(SoundType.STONE));
+                .hardnessAndResistance(2F).sound(SoundType.STONE).func_226896_b_());
         setRegistryName(new ResourceLocation(Main.MODID, type.name + (isYellow ? "_yellow" : "")));
 
         setDefaultState(stateContainer.getBaseState().with(FACING, Direction.NORTH));
+        RenderTypeLookup.setRenderLayer(this, RenderType.func_228643_e_());
     }
 
     @Override
@@ -110,11 +112,6 @@ public class BlockPaint extends BlockBase implements IItemBlock {
 
     public static boolean canPlaceBlockAt(World worldIn, BlockPos pos) {
         return func_220064_c(worldIn, pos.down());
-    }
-
-    @Override
-    public BlockRenderLayer getRenderLayer() {
-        return BlockRenderLayer.CUTOUT;
     }
 
     @Override

@@ -1,5 +1,5 @@
 package de.maxhenkel.car.integration.wawla;
-
+/*
 import de.maxhenkel.car.blocks.tileentity.TileEntityFluidExtractor;
 import de.maxhenkel.car.blocks.tileentity.TileEntityGenerator;
 import de.maxhenkel.car.blocks.tileentity.TileEntityTank;
@@ -29,3 +29,4 @@ public class PluginCar implements IWailaPlugin {
     }
 
 }
+*/

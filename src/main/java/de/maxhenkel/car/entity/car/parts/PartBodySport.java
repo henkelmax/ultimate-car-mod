@@ -9,7 +9,7 @@ import net.minecraft.util.math.Vec3d;
 public class PartBodySport extends PartBody {
 
     public PartBodySport(ResourceLocation texture) {
-        super(new OBJModel(new ResourceLocation(Main.MODID, "models/entity/sport_body.obj"), texture),
+        super(new OBJModel(new ResourceLocation(Main.MODID, "models/entity/sport_body.obj")), texture,
                 new Vec3d(0D, 4D / 16D, 0D));
         this.wheelOffsets = new Vec3d[]{
                 new Vec3d(9.5F / 16F, 4F / 16F, 8F / 16F),

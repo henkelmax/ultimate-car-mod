@@ -10,10 +10,6 @@ public class OBJModelInstance {
         this.options = options;
     }
 
-    public OBJModelInstance(OBJModel model) {
-        this(model, new OBJModelOptions());
-    }
-
     public OBJModel getModel() {
         return model;
     }

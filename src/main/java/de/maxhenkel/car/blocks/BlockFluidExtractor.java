@@ -19,6 +19,7 @@ import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
@@ -27,7 +28,6 @@ import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IEnviromentBlockReader;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
@@ -63,19 +63,19 @@ public class BlockFluidExtractor extends BlockBase implements ITileEntityProvide
     }
 
     @Override
-    public boolean onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
-        if (player.isSneaking()) {
-            return false;
+    public ActionResultType func_225533_a_(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
+        if (player.func_225608_bj_()) {
+            return ActionResultType.FAIL;
         }
         TileEntity te = worldIn.getTileEntity(pos);
         if (!(te instanceof TileEntityFluidExtractor)) {
-            return false;
+            return ActionResultType.FAIL;
         }
         TileEntityFluidExtractor fluidExtractor = (TileEntityFluidExtractor) te;
         if (player instanceof ServerPlayerEntity) {
             TileEntityContainerProvider.openGui((ServerPlayerEntity) player, fluidExtractor, (i, playerInventory, playerEntity) -> new ContainerFluidExtractor(i, fluidExtractor, playerInventory));
         }
-        return true;
+        return ActionResultType.SUCCESS;
     }
 
     @Nullable
@@ -166,15 +166,9 @@ public class BlockFluidExtractor extends BlockBase implements ITileEntityProvide
         return shape;
     }
 
-
     @Override
     public BlockRenderType getRenderType(BlockState state) {
         return BlockRenderType.MODEL;
-    }
-
-    @Override
-    public boolean doesSideBlockRendering(BlockState state, IEnviromentBlockReader world, BlockPos pos, Direction face) {
-        return false;
     }
 
     @Override

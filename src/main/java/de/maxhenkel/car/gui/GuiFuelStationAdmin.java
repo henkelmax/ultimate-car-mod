@@ -1,6 +1,5 @@
 package de.maxhenkel.car.gui;
 
-import com.mojang.blaze3d.platform.GlStateManager;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.blocks.tileentity.TileEntityFuelStation;
 import de.maxhenkel.car.net.MessageFuelStationAdminAmount;
@@ -11,12 +10,11 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
-import java.awt.Color;
+import java.awt.*;
 
 public class GuiFuelStationAdmin extends GuiBase<ContainerFuelStationAdmin> {
 
-    private static final ResourceLocation GUI_TEXTURE = new ResourceLocation(Main.MODID,
-            "textures/gui/gui_fuelstation_admin.png");
+    private static final ResourceLocation GUI_TEXTURE = new ResourceLocation(Main.MODID, "textures/gui/gui_fuelstation_admin.png");
 
     private TileEntityFuelStation fuelStation;
     private PlayerInventory inventoryPlayer;
@@ -55,8 +53,6 @@ public class GuiFuelStationAdmin extends GuiBase<ContainerFuelStationAdmin> {
     @Override
     public void render(int mouseX, int mouseY, float partialTicks) {
         super.render(mouseX, mouseY, partialTicks);
-        GlStateManager.disableLighting();
-        GlStateManager.disableBlend();
         textField.render(mouseX, mouseY, partialTicks);
         renderHoveredToolTip(mouseX, mouseY);
     }

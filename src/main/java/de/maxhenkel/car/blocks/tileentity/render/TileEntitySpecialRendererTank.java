@@ -1,123 +1,55 @@
 package de.maxhenkel.car.blocks.tileentity.render;
 
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.blocks.tileentity.TileEntityTank;
+import de.maxhenkel.tools.RenderTools;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.texture.AtlasTexture;
+import net.minecraft.client.renderer.Atlases;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.Vector3f;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
+import net.minecraft.inventory.container.PlayerContainer;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
-import org.lwjgl.opengl.GL11;
 
 public class TileEntitySpecialRendererTank extends TileEntityRenderer<TileEntityTank> {
 
     public static final ResourceLocation LOCATION_TANK = new ResourceLocation(Main.MODID, "textures/block/tank_line.png");
 
+    public TileEntitySpecialRendererTank(TileEntityRendererDispatcher tileEntityRendererDispatcher) {
+        super(tileEntityRendererDispatcher);
+    }
+
     @Override
-    public void render(TileEntityTank te, double x, double y, double z, float partialTicks, int destroyStage) {
-        if (destroyStage >= 0) {
-            renderDestroyStages(te, x, y, z, partialTicks, destroyStage);
-            return;
-        }
-
-        GlStateManager.pushMatrix();
-        GlStateManager.translated(x, y, z);
-
-        GlStateManager.disableLighting();
-        GlStateManager.enableBlend();
-        GlStateManager.enableAlphaTest();
-        GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-
-        double amount = te.getFillPercent();
+    public void func_225616_a_(TileEntityTank te, float partialTicks, MatrixStack matrixStack, IRenderTypeBuffer buffer, int light, int i) {
+        matrixStack.func_227860_a_();
+        float amount = te.getFillPercent();
         FluidStack stack = te.getFluid();
         if (amount > 0 && stack != null) {
-            renderFluid(te, stack, amount, 0.0D);
+            renderFluid(te, stack, amount, 0.0F, matrixStack, buffer, light);
         }
-
-        bindTexture(LOCATION_TANK);
-        renderLines(te);
-
-        GlStateManager.enableLighting();
-        GlStateManager.disableBlend();
-        GlStateManager.disableAlphaTest();
-
-        GlStateManager.popMatrix();
+        renderLines(te, matrixStack, buffer, light);
+        matrixStack.func_227865_b_();
     }
 
-    public void renderDestroyStages(TileEntityTank te, double x, double y, double z, float partialTicks, int destroyStage) {
-        GlStateManager.pushMatrix();
-        GlStateManager.translated(x, y, z);
-        GlStateManager.disableLighting();
+    public void renderFluid(TileEntityTank tank, FluidStack fluid, float amount, float yStart, MatrixStack matrixStack, IRenderTypeBuffer buffer, int light) {
+        matrixStack.func_227860_a_();
+        IVertexBuilder builder = buffer.getBuffer(Atlases.func_228785_j_());
 
-        bindTexture(DESTROY_STAGES[destroyStage]);
+        TextureAtlasSprite texture = Minecraft.getInstance().getModelManager().func_229356_a_(PlayerContainer.field_226615_c_).getSprite(fluid.getFluid().getAttributes().getStillTexture());
 
-        Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder buffer = tessellator.getBuffer();
+        float uMin = texture.getMinU();
+        float uMax = texture.getMaxU();
+        float vMin = texture.getMinV();
+        float vMax = texture.getMaxV();
 
-        buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
-
-        // North
-        buffer.pos(1D, 0D, 0D).tex(1D, 0D).endVertex();
-        buffer.pos(0D, 0D, 0D).tex(0D, 0D).endVertex();
-        buffer.pos(0D, 1D, 0D).tex(0D, 1D).endVertex();
-        buffer.pos(1D, 1D, 0D).tex(1D, 1D).endVertex();
-
-
-        // South
-        buffer.pos(1D, 0D, 1D).tex(0D, 0D).endVertex();
-        buffer.pos(1D, 1D, 1D).tex(0D, 1D).endVertex();
-        buffer.pos(0D, 1D, 1D).tex(1D, 1D).endVertex();
-        buffer.pos(0D, 0D, 1D).tex(1D, 0D).endVertex();
-
-        // East
-        buffer.pos(1D, 0D, 0D).tex(0D, 0D).endVertex();
-        buffer.pos(1D, 1D, 0D).tex(0D, 1D).endVertex();
-        buffer.pos(1D, 1D, 1D).tex(1D, 1D).endVertex();
-        buffer.pos(1D, 0D, 1D).tex(1D, 0D).endVertex();
-
-        // West
-        buffer.pos(0D, 0D, 1D).tex(0D, 0D).endVertex();
-        buffer.pos(0D, 1D, 1D).tex(0D, 1D).endVertex();
-        buffer.pos(0D, 1D, 0D).tex(1D, 1D).endVertex();
-        buffer.pos(0D, 0D, 0D).tex(1D, 0D).endVertex();
-
-        // Down
-        buffer.pos(1D, 0D, 0D).tex(1D, 0D).endVertex();
-        buffer.pos(1D, 0D, 1D).tex(0D, 0D).endVertex();
-        buffer.pos(0D, 0D, 1D).tex(0D, 1D).endVertex();
-        buffer.pos(0D, 0D, 0D).tex(1D, 1D).endVertex();
-
-        // Up
-        buffer.pos(0D, 1D, 0D).tex(1D, 1D).endVertex();
-        buffer.pos(0D, 1D, 1D).tex(0D, 1D).endVertex();
-        buffer.pos(1D, 1D, 1D).tex(0D, 0D).endVertex();
-        buffer.pos(1D, 1D, 0D).tex(1D, 0D).endVertex();
-
-        tessellator.draw();
-
-        GlStateManager.enableLighting();
-
-        GlStateManager.popMatrix();
-    }
-
-    public void renderFluid(TileEntityTank tank, FluidStack fluid, double amount, double yStart) {
-        bindTexture(AtlasTexture.LOCATION_BLOCKS_TEXTURE);
-
-        GlStateManager.pushMatrix();
-        TextureAtlasSprite texture = Minecraft.getInstance().getTextureMap().getAtlasSprite(fluid.getFluid().getAttributes().getStill(fluid).toString());
-
-        double uMin = texture.getMinU();
-        double uMax = texture.getMaxU();
-        double vMin = texture.getMinV();
-        double vMax = texture.getMaxV();
-
-        double vHeight = vMax - vMin;
+        float vHeight = vMax - vMin;
 
         int i = 0xFFFFFF;
         if (tank.hasWorld()) {
@@ -128,180 +60,141 @@ public class TileEntitySpecialRendererTank extends TileEntityRenderer<TileEntity
         float green = (float) (i >> 8 & 255) / 255F;
         float blue = (float) (i & 255) / 255F;
 
-        Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder buffer = tessellator.getBuffer();
-
-        buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
-
         float s = 0.0F;
 
         if (!tank.isFluidConnected(Direction.NORTH)) {
             // North
-            buffer.pos(1D - s, yStart, 0D + s).tex(uMax, vMin).color(red, green, blue, 1F).endVertex();
-            buffer.pos(0D + s, yStart, 0D + s).tex(uMin, vMin).color(red, green, blue, 1F).endVertex();
-            buffer.pos(0D + s, yStart + amount - s * 2D, 0D + s).tex(uMin, vMin + vHeight * amount).color(red, green, blue, 1F).endVertex();
-            buffer.pos(1D - s, yStart + amount - s * 2D, 0D + s).tex(uMax, vMin + vHeight * amount).color(red, green, blue, 1F).endVertex();
+            RenderTools.vertex(builder, matrixStack, 1F - s, yStart, 0F + s, uMax, vMin, red, green, blue, light);
+            RenderTools.vertex(builder, matrixStack, 0F - s, yStart, 0F + s, uMin, vMin, red, green, blue, light);
+            RenderTools.vertex(builder, matrixStack, 0F + s, yStart + amount - s * 2F, 0F + s, uMin, vMin + vHeight * amount, red, green, blue, light);
+            RenderTools.vertex(builder, matrixStack, 1F - s, yStart + amount - s * 2F, 0F + s, uMax, vMin + vHeight * amount, red, green, blue, light);
         }
 
         if (!tank.isFluidConnected(Direction.SOUTH)) {
             // South
-            buffer.pos(1D - s, yStart, 1D - s).tex(uMin, vMin).color(red, green, blue, 1F).endVertex();
-            buffer.pos(1D - s, yStart + amount - s * 2D, 1D - s).tex(uMin, vMin + vHeight * amount).color(red, green, blue, 1F).endVertex();
-            buffer.pos(0D + s, yStart + amount - s * 2D, 1D - s).tex(uMax, vMin + vHeight * amount).color(red, green, blue, 1F).endVertex();
-            buffer.pos(0D + s, yStart, 1D - s).tex(uMax, vMin).color(red, green, blue, 1F).endVertex();
+            RenderTools.vertex(builder, matrixStack, 1F - s, yStart, 1F - s, uMin, vMin, red, green, blue, light);
+            RenderTools.vertex(builder, matrixStack, 1F - s, yStart + amount - s * 2F, 1F - s, uMin, vMin + vHeight * amount, red, green, blue, light);
+            RenderTools.vertex(builder, matrixStack, 0F + s, yStart + amount - s * 2F, 1F - s, uMax, vMin + vHeight * amount, red, green, blue, light);
+            RenderTools.vertex(builder, matrixStack, 0F + s, yStart, 1F - s, uMax, vMin, red, green, blue, light);
         }
 
         if (!tank.isFluidConnected(Direction.EAST)) {
             // East
-            buffer.pos(1D - s, yStart, 0D + s).tex(uMin, vMin).color(red, green, blue, 1F).endVertex();
-            buffer.pos(1D - s, yStart + amount - s * 2D, 0D + s).tex(uMin, vMin + vHeight * amount).color(red, green, blue, 1F).endVertex();
-            buffer.pos(1D - s, yStart + amount - s * 2D, 1D - s).tex(uMax, vMin + vHeight * amount).color(red, green, blue, 1F).endVertex();
-            buffer.pos(1D - s, yStart, 1D - s).tex(uMax, vMin).color(red, green, blue, 1F).endVertex();
+            RenderTools.vertex(builder, matrixStack, 1F - s, yStart, 0F + s, uMin, vMin, red, green, blue, light);
+            RenderTools.vertex(builder, matrixStack, 1F - s, yStart + amount - s * 2F, 0F + s, uMin, vMin + vHeight * amount, red, green, blue, light);
+            RenderTools.vertex(builder, matrixStack, 1F - s, yStart + amount - s * 2F, 1F - s, uMax, vMin + vHeight * amount, red, green, blue, light);
+            RenderTools.vertex(builder, matrixStack, 1F - s, yStart, 1F - s, uMax, vMin, red, green, blue, light);
         }
 
         if (!tank.isFluidConnected(Direction.WEST)) {
             // West
-            buffer.pos(0D + s, yStart, 1D - s).tex(uMin, vMin).color(red, green, blue, 1F).endVertex();
-            buffer.pos(0D + s, yStart + amount - s * 2D, 1D - s).tex(uMin, vMin + vHeight * amount).color(red, green, blue, 1F).endVertex();
-            buffer.pos(0D + s, yStart + amount - s * 2D, 0D + s).tex(uMax, vMin + vHeight * amount).color(red, green, blue, 1F).endVertex();
-            buffer.pos(0D + s, yStart, 0D + s).tex(uMax, vMin).color(red, green, blue, 1F).endVertex();
+            RenderTools.vertex(builder, matrixStack, 0F + s, yStart, 1F - s, uMin, vMin, red, green, blue, light);
+            RenderTools.vertex(builder, matrixStack, 0F + s, yStart + amount - s * 2F, 1F - s, uMin, vMin + vHeight * amount, red, green, blue, light);
+            RenderTools.vertex(builder, matrixStack, 0F + s, yStart + amount - s * 2F, 0F + s, uMax, vMin + vHeight * amount, red, green, blue, light);
+            RenderTools.vertex(builder, matrixStack, 0F + s, yStart, 0F + s, uMax, vMin, red, green, blue, light);
         }
 
         if (!tank.isFluidConnected(Direction.DOWN)) {
             // Down
-            buffer.pos(1D - s, yStart, 0D + s).tex(uMax, vMin).color(red, green, blue, 1F).endVertex();
-            buffer.pos(1D - s, yStart, 1D - s).tex(uMin, vMin).color(red, green, blue, 1F).endVertex();
-            buffer.pos(0D + s, yStart, 1D - s).tex(uMin, vMax).color(red, green, blue, 1F).endVertex();
-            buffer.pos(0D + s, yStart, 0D + s).tex(uMax, vMax).color(red, green, blue, 1F).endVertex();
+            RenderTools.vertex(builder, matrixStack, 1F - s, yStart, 0F + s, uMax, vMin, red, green, blue, light);
+            RenderTools.vertex(builder, matrixStack, 1F - s, yStart, 1F - s, uMin, vMin, red, green, blue, light);
+            RenderTools.vertex(builder, matrixStack, 0F + s, yStart, 1F - s, uMin, vMax, red, green, blue, light);
+            RenderTools.vertex(builder, matrixStack, 0F + s, yStart, 0F + s, uMax, vMax, red, green, blue, light);
         }
 
         if (!tank.isFluidConnected(Direction.UP)) {
             // Up
-            buffer.pos(0D + s, yStart + amount - s * 2D, 0D + s).tex(uMax, vMax).color(red, green, blue, 1F).endVertex();
-            buffer.pos(0D + s, yStart + amount - s * 2D, 1D - s).tex(uMin, vMax).color(red, green, blue, 1F).endVertex();
-            buffer.pos(1D - s, yStart + amount - s * 2D, 1D - s).tex(uMin, vMin).color(red, green, blue, 1F).endVertex();
-            buffer.pos(1D - s, yStart + amount - s * 2D, 0D + s).tex(uMax, vMin).color(red, green, blue, 1F).endVertex();
+            RenderTools.vertex(builder, matrixStack, 0F + s, yStart + amount - s * 2F, 0F + s, uMax, vMax, red, green, blue, light);
+            RenderTools.vertex(builder, matrixStack, 0F + s, yStart + amount - s * 2F, 1F - s, uMin, vMax, red, green, blue, light);
+            RenderTools.vertex(builder, matrixStack, 1F - s, yStart + amount - s * 2F, 1F - s, uMin, vMin, red, green, blue, light);
+            RenderTools.vertex(builder, matrixStack, 1F - s, yStart + amount - s * 2F, 0F + s, uMax, vMin, red, green, blue, light);
         }
 
-        tessellator.draw();
-
-        GlStateManager.popMatrix();
+        matrixStack.func_227865_b_();
     }
 
-    public static void renderLines(TileEntityTank te) {
+    public static void renderLines(TileEntityTank te, MatrixStack matrixStack, IRenderTypeBuffer buffer, int light) {
+        IVertexBuilder builder = buffer.getBuffer(RenderType.func_228638_b_(LOCATION_TANK));
         for (Direction facing : Direction.values()) {
             if (!te.isTankConnectedTo(facing)) {
                 for (EnumDirection direction : EnumDirection.values()) {
                     if (!te.isTankConnectedTo(direction.to(facing))) {
-                        drawLine(facing, direction);
+                        drawLine(facing, direction, matrixStack, buffer, builder, light);
                     }
                 }
             }
         }
     }
 
-    public static void drawLine(Direction side, EnumDirection line) {
-        GlStateManager.pushMatrix();
+    public static void drawLine(Direction side, EnumDirection line, MatrixStack matrixStack, IRenderTypeBuffer buffer, IVertexBuilder builder, int light) {
+        matrixStack.func_227860_a_();
 
-        Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder buffer = tessellator.getBuffer();
+        rotate(side, matrixStack);
 
-        buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
-        rotate(side);
-        // Resize a little bit
-        GlStateManager.scaled(1.01D, 1.01D, 1.01D);
-        GlStateManager.translated(-0.005D, -0.005D, -0.005D);
-        drawSide(line, side, buffer);
-        tessellator.draw();
+        matrixStack.func_227861_a_(-0.0001D, -0.0001D, -0.0001D);
 
-        GlStateManager.popMatrix();
+        drawSide(line, side, matrixStack, buffer, builder, light);
+
+        matrixStack.func_227865_b_();
     }
 
-    public static void rotate(Direction facing) {
-        GlStateManager.translated(0.5D, 0.5D, 0.5D);
+    public static void rotate(Direction facing, MatrixStack matrixStack) {
+        matrixStack.func_227861_a_(0.5D, 0.5D, 0.5D);
 
         switch (facing) {
-            case NORTH:
-                GlStateManager.rotatef(0F, 0F, 1F, 0F);
-                break;
             case SOUTH:
-                GlStateManager.rotatef(180F, 0F, 1F, 0F);
+                matrixStack.func_227863_a_(Vector3f.field_229181_d_.func_229187_a_(180F));
                 break;
             case EAST:
-                GlStateManager.rotatef(270F, 0F, 1F, 0F);
+                matrixStack.func_227863_a_(Vector3f.field_229181_d_.func_229187_a_(270F));
                 break;
             case WEST:
-                GlStateManager.rotatef(90F, 0F, 1F, 0F);
+                matrixStack.func_227863_a_(Vector3f.field_229181_d_.func_229187_a_(90F));
                 break;
             case UP:
-                GlStateManager.rotatef(180F, 0F, 1F, 0F);
-                GlStateManager.rotatef(90F, 1F, 0F, 0F);
+                matrixStack.func_227863_a_(Vector3f.field_229181_d_.func_229187_a_(180F));
+                matrixStack.func_227863_a_(Vector3f.field_229179_b_.func_229187_a_(90F));
                 break;
             case DOWN:
-                GlStateManager.rotatef(180F, 0F, 1F, 0F);
-                GlStateManager.rotatef(270F, 1F, 0F, 0F);
+                matrixStack.func_227863_a_(Vector3f.field_229181_d_.func_229187_a_(180F));
+                matrixStack.func_227863_a_(Vector3f.field_229179_b_.func_229187_a_(270F));
+                break;
+            case NORTH:
+            default:
                 break;
         }
-
-        GlStateManager.translated(-0.5D, -0.5D, -0.5D);
+        matrixStack.func_227861_a_(-0.5D, -0.5D, -0.5D);
     }
 
-    public static void drawSide(EnumDirection line, Direction side, BufferBuilder buffer) {
+    public static void drawSide(EnumDirection line, Direction side, MatrixStack matrixStack, IRenderTypeBuffer buffer, IVertexBuilder builder, int light) {
         switch (line) {
             case UP:
                 // Top
-                buffer.pos(0D, 0D, 0D).tex(1D, 1D).endVertex();
-                buffer.pos(0D, 1D, 0D).tex(1D, 0D).endVertex();
-                buffer.pos(1D, 1D, 0D).tex(0D, 0D).endVertex();
-                buffer.pos(1D, 0D, 0D).tex(0D, 1D).endVertex();
-                /*
-                buffer.pos(0D, 0D, 0D).tex(1D, 1D).endVertex();
-                buffer.pos(1D, 0D, 0D).tex(0D, 1D).endVertex();
-                buffer.pos(1D, 1D, 0D).tex(0D, 0D).endVertex();
-                buffer.pos(0D, 1D, 0D).tex(1D, 0D).endVertex();
-                */
+                RenderTools.vertex(builder, matrixStack, 0F, 0F, 0F, 1F, 1F, light);
+                RenderTools.vertex(builder, matrixStack, 0F, 1F, 0F, 1F, 0F, light);
+                RenderTools.vertex(builder, matrixStack, 1F, 1F, 0F, 0F, 0F, light);
+                RenderTools.vertex(builder, matrixStack, 1F, 0F, 0F, 0F, 1F, light);
                 break;
             case DOWN:
                 // Bottom
-                buffer.pos(0D, 0D, 0D).tex(0D, 0D).endVertex();
-                buffer.pos(0D, 1D, 0D).tex(0D, 1D).endVertex();
-                buffer.pos(1D, 1D, 0D).tex(1D, 1D).endVertex();
-                buffer.pos(1D, 0D, 0D).tex(1D, 0D).endVertex();
-
-                /*
-                buffer.pos(0D, 0D, 0D).tex(0D, 0D).endVertex();
-                buffer.pos(1D, 0D, 0D).tex(1D, 0D).endVertex();
-                buffer.pos(1D, 1D, 0D).tex(1D, 1D).endVertex();
-                buffer.pos(0D, 1D, 0D).tex(0D, 1D).endVertex();
-                 */
+                RenderTools.vertex(builder, matrixStack, 0F, 0F, 0F, 0F, 0F, light);
+                RenderTools.vertex(builder, matrixStack, 0F, 1F, 0F, 0F, 1F, light);
+                RenderTools.vertex(builder, matrixStack, 1F, 1F, 0F, 1F, 1F, light);
+                RenderTools.vertex(builder, matrixStack, 1F, 0F, 0F, 1F, 0F, light);
                 break;
             case RIGHT:
                 // Right
-                buffer.pos(0D, 0D, 0D).tex(1D, 0D).endVertex();
-                buffer.pos(0D, 1D, 0D).tex(0D, 0D).endVertex();
-                buffer.pos(1D, 1D, 0D).tex(0D, 1D).endVertex();
-                buffer.pos(1D, 0D, 0D).tex(1D, 1D).endVertex();
-
-                /*
-                buffer.pos(0D, 0D, 0D).tex(1D, 0D).endVertex();
-                buffer.pos(1D, 0D, 0D).tex(1D, 1D).endVertex();
-                buffer.pos(1D, 1D, 0D).tex(0D, 1D).endVertex();
-                buffer.pos(0D, 1D, 0D).tex(0D, 0D).endVertex();
-                 */
+                RenderTools.vertex(builder, matrixStack, 0F, 0F, 0F, 1F, 0F, light);
+                RenderTools.vertex(builder, matrixStack, 0F, 1F, 0F, 0F, 0F, light);
+                RenderTools.vertex(builder, matrixStack, 1F, 1F, 0F, 0F, 1F, light);
+                RenderTools.vertex(builder, matrixStack, 1F, 0F, 0F, 1F, 1F, light);
                 break;
             case LEFT:
                 // Left
-                buffer.pos(0D, 0D, 0D).tex(0D, 1D).endVertex();
-                buffer.pos(0D, 1D, 0D).tex(1D, 1D).endVertex();
-                buffer.pos(1D, 1D, 0D).tex(1D, 0D).endVertex();
-                buffer.pos(1D, 0D, 0D).tex(0D, 0D).endVertex();
-
-                /*
-                buffer.pos(0D, 0D, 0D).tex(0D, 1D).endVertex();
-                buffer.pos(1D, 0D, 0D).tex(0D, 0D).endVertex();
-                buffer.pos(1D, 1D, 0D).tex(1D, 0D).endVertex();
-                buffer.pos(0D, 1D, 0D).tex(1D, 1D).endVertex();
-                 */
+                RenderTools.vertex(builder, matrixStack, 0F, 0F, 0F, 0F, 1F, light);
+                RenderTools.vertex(builder, matrixStack, 0F, 1F, 0F, 1F, 1F, light);
+                RenderTools.vertex(builder, matrixStack, 1F, 1F, 0F, 1F, 0F, light);
+                RenderTools.vertex(builder, matrixStack, 1F, 0F, 0F, 0F, 0F, light);
                 break;
             default:
                 break;

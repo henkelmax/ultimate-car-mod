@@ -1,22 +1,20 @@
 package de.maxhenkel.car.gui;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.blocks.tileentity.TileEntityBackmixReactor;
-import net.minecraft.client.gui.IHasContainer;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class GuiBackmixReactor extends GuiBase<ContainerBackmixReactor> {
 
-    private static final ResourceLocation GUI_TEXTURE = new ResourceLocation(Main.MODID,
-            "textures/gui/gui_backmix_reactor.png");
+    private static final ResourceLocation GUI_TEXTURE = new ResourceLocation(Main.MODID, "textures/gui/gui_backmix_reactor.png");
     private static final int fontColor = 4210752;
 
     private IInventory playerInv;
@@ -84,7 +82,7 @@ public class GuiBackmixReactor extends GuiBase<ContainerBackmixReactor> {
 
     @Override
     protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
-        GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
         minecraft.getTextureManager().bindTexture(GUI_TEXTURE);
         int i = this.guiLeft;
         int j = this.guiTop;
@@ -201,5 +199,4 @@ public class GuiBackmixReactor extends GuiBase<ContainerBackmixReactor> {
         int time = tile.generatingTime - tile.getTimeToGenerate();
         return ((float) time) / ((float) tile.generatingTime);
     }
-
 }

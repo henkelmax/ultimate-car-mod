@@ -7,7 +7,8 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
 
 public class PartRegistry {
 
@@ -19,7 +20,7 @@ public class PartRegistry {
     public static final Part ACACIA_LICENSE_PLATE_HOLDER = new PartLicensePlateHolder(new ResourceLocation("textures/block/acacia_planks.png"));
     public static final Part DARK_OAK_LICENSE_PLATE_HOLDER = new PartLicensePlateHolder(new ResourceLocation("textures/block/dark_oak_planks.png"));
     public static final Part BIRCH_LICENSE_PLATE_HOLDER = new PartLicensePlateHolder(new ResourceLocation("textures/block/birch_planks.png"));
-    public static final Part JUNGLE_LICENSE_PLATE_HOLDER = new PartLicensePlateHolder(new ResourceLocation("textures/block/jungle_planks_.png"));
+    public static final Part JUNGLE_LICENSE_PLATE_HOLDER = new PartLicensePlateHolder(new ResourceLocation("textures/block/jungle_planks.png"));
     public static final Part SPRUCE_LICENSE_PLATE_HOLDER = new PartLicensePlateHolder(new ResourceLocation("textures/block/spruce_planks.png"));
 
     public static final Part IRON_LICENSE_PLATE_HOLDER = new PartLicensePlateHolder(new ResourceLocation("textures/block/iron_block.png"));
@@ -138,16 +139,16 @@ public class PartRegistry {
     public static final Part MEDIUM_TANK = new PartTank(1000);
     public static final Part LARGE_TANK = new PartTank(1500);
 
-    public static final Part WHEEL = new PartWheel(new OBJModel(
-            new ResourceLocation(Main.MODID, "models/entity/wheel.obj"),
-            new ResourceLocation(Main.MODID, "textures/entity/wheel.png")),
+    public static final Part WHEEL = new PartWheel(
+            new OBJModel(new ResourceLocation(Main.MODID, "models/entity/wheel.obj")),
+            new ResourceLocation(Main.MODID, "textures/entity/wheel.png"),
             120F,
             0.5F
     );
 
-    public static final Part BIG_WHEEL = new PartWheelBig(new OBJModel(
-            new ResourceLocation(Main.MODID, "models/entity/big_wheel.obj"),
-            new ResourceLocation(Main.MODID, "textures/entity/big_wheel.png")),
+    public static final Part BIG_WHEEL = new PartWheelBig(
+            new OBJModel(new ResourceLocation(Main.MODID, "models/entity/big_wheel.obj")),
+            new ResourceLocation(Main.MODID, "textures/entity/big_wheel.png"),
             105F,
             1F
     );

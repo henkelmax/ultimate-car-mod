@@ -18,6 +18,7 @@ import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 
 import java.util.Random;
 
@@ -51,9 +52,9 @@ public class BlockCanolaCrop extends CropsBlock {
     }
 
     @Override
-    public void tick(BlockState state, World worldIn, BlockPos pos, Random random) {
+    public void func_225534_a_(BlockState state, ServerWorld worldIn, BlockPos pos, Random random) {
         if (random.nextInt(3) != 0) {
-            super.tick(state, worldIn, pos, random);
+            super.func_225534_a_(state, worldIn, pos, random);
         }
     }
 

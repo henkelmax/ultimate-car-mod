@@ -19,6 +19,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.state.IntegerProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -44,13 +45,13 @@ public class BlockCarWorkshopOutter extends BlockBase implements IItemBlock {
     }
 
     @Override
-    public boolean onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
+    public ActionResultType func_225533_a_(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
         BlockPos tePos = findCenter(worldIn, pos);
 
         if (tePos == null) {
-            return false;
+            return ActionResultType.FAIL;
         }
-        return ModBlocks.CAR_WORKSHOP.onBlockActivated(worldIn.getBlockState(tePos), worldIn, tePos, player, handIn, hit);
+        return ModBlocks.CAR_WORKSHOP.func_225533_a_(worldIn.getBlockState(tePos), worldIn, tePos, player, handIn, hit);
     }
 
     @Override
@@ -114,7 +115,6 @@ public class BlockCarWorkshopOutter extends BlockBase implements IItemBlock {
     private static boolean isCenter(World world, BlockPos pos) {
         return world.getBlockState(pos).getBlock().equals(ModBlocks.CAR_WORKSHOP);
     }
-
 
     @Nullable
     @Override

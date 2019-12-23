@@ -1,90 +1,74 @@
 package de.maxhenkel.car.blocks.tileentity.render;
 
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import de.maxhenkel.car.blocks.BlockSign;
 import de.maxhenkel.car.blocks.tileentity.TileEntitySign;
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.Vector3f;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
-import net.minecraft.util.Direction;
+import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 
 public class TileEntitySpecialRendererSign extends TileEntityRenderer<TileEntitySign> {
 
-	@Override
-	public void render(TileEntitySign te, double x, double y, double z, float partialTicks, int destroyStage) {
-		if (getFontRenderer() == null) {
-			return;
-		}
+    public TileEntitySpecialRendererSign(TileEntityRendererDispatcher tileEntityRendererDispatcher) {
+        super(tileEntityRendererDispatcher);
+    }
 
-		GlStateManager.pushMatrix();
-		GlStateManager.translated(x + 0.5D, y + 1D, z + 0.5D);
-		GlStateManager.rotatef(180.0F, 1.0F, 0.0F, 0.0F);
-		GlStateManager.rotatef(-getDirection(te.getBlockState().get(BlockSign.FACING)), 0.0F, 1.0F, 0.0F);
-		GlStateManager.depthMask(false);
+    @Override
+    public void func_225616_a_(TileEntitySign te, float partialTicks, MatrixStack matrixStack, IRenderTypeBuffer buffer, int light, int i) {
+        matrixStack.func_227860_a_();
 
-		//----------Front-----------
-		GlStateManager.pushMatrix();
+        matrixStack.func_227861_a_(0.5D, 1D, 0.5D);
+        matrixStack.func_227863_a_(Vector3f.field_229179_b_.func_229187_a_(180F));
+        matrixStack.func_227863_a_(Vector3f.field_229181_d_.func_229187_a_(-te.getBlockState().get(BlockSign.FACING).getHorizontalAngle()));
 
-		GlStateManager.translated(0D, 0.27D, -0.51D/16.0D);
+        //----------Front-----------
+        matrixStack.func_227860_a_();
 
-		drawText(te.getText(0));
-		GlStateManager.translated(0D, 0.116D, 0D);
-		drawText(te.getText(1));
-		GlStateManager.translated(0D, 0.116D, 0D);
-		drawText(te.getText(2));
-		GlStateManager.translated(0D, 0.116D, 0D);
-		drawText(te.getText(3));
+        matrixStack.func_227861_a_(0D, 0.27D, -0.51D / 16D);
+        drawText(te.getText(0), matrixStack, buffer, light);
+        matrixStack.func_227861_a_(0D, 0.116D, 0D);
+        drawText(te.getText(1), matrixStack, buffer, light);
+        matrixStack.func_227861_a_(0D, 0.116D, 0D);
+        drawText(te.getText(2), matrixStack, buffer, light);
+        matrixStack.func_227861_a_(0D, 0.116D, 0D);
+        drawText(te.getText(3), matrixStack, buffer, light);
 
-		GlStateManager.popMatrix();
+        matrixStack.func_227865_b_();
 
-		//----------Back-----------
-		GlStateManager.pushMatrix();
-		GlStateManager.rotatef(180.0F, 0.0F, 1.0F, 0.0F);
+        //----------Back-----------
+        matrixStack.func_227860_a_();
 
-		GlStateManager.translated(0D, 0.27D, -0.51D/16.0D);
+        matrixStack.func_227863_a_(Vector3f.field_229181_d_.func_229187_a_(180F));
+        matrixStack.func_227861_a_(0D, 0.27D, -0.51D / 16D);
+        drawText(te.getText(4), matrixStack, buffer, light);
+        matrixStack.func_227861_a_(0D, 0.116D, 0D);
+        drawText(te.getText(5), matrixStack, buffer, light);
+        matrixStack.func_227861_a_(0D, 0.116D, 0D);
+        drawText(te.getText(6), matrixStack, buffer, light);
+        matrixStack.func_227861_a_(0D, 0.116D, 0D);
+        drawText(te.getText(7), matrixStack, buffer, light);
 
-		drawText(te.getText(4));
-		GlStateManager.translated(0D, 0.116D, 0D);
-		drawText(te.getText(5));
-		GlStateManager.translated(0D, 0.116D, 0D);
-		drawText(te.getText(6));
-		GlStateManager.translated(0D, 0.116D, 0D);
-		drawText(te.getText(7));
+        matrixStack.func_227865_b_();
+        //-------------------------
 
-		GlStateManager.popMatrix();
-		//---------
+        matrixStack.func_227865_b_();
+    }
 
-		GlStateManager.depthMask(true);
+    private void drawText(String txt, MatrixStack matrixStack, IRenderTypeBuffer buffer, int light) {
+        FontRenderer renderer = field_228858_b_.getFontRenderer();
+        matrixStack.func_227860_a_();
 
-		GlStateManager.popMatrix();
-	}
-	
-	private void drawText(String txt) {
-		GlStateManager.pushMatrix();
-		
-		int textWidth = getFontRenderer().getStringWidth(txt);
-		double textScale = 0.008;
+        int textWidth = renderer.getStringWidth(txt);
+        float textScale = 0.008F;
 
-		GlStateManager.translated(-(textScale * textWidth) / 2D, 0D, 0D);
+        matrixStack.func_227861_a_(-(textScale * textWidth) / 2D, 0D, 0D);
+        matrixStack.func_227862_a_(textScale, textScale, textScale);
 
-		GlStateManager.scaled(textScale, textScale, textScale);
-		
-		getFontRenderer().drawString(txt, 0, 0, 0);
-		
-		GlStateManager.popMatrix();
-	}
+        renderer.func_228079_a_(txt, 0F, 0F, 0x0, false, matrixStack.func_227866_c_().func_227870_a_(), buffer, false, 0, light);
 
-	private int getDirection(Direction facing) {
-		switch (facing) {
-			case SOUTH:
-				return 0;
-			case EAST:
-				return 90;
-			case NORTH:
-				return 180;
-			case WEST:
-				return 270;
-			default:
-				return 0;
-		}
-	}
+        matrixStack.func_227865_b_();
+    }
 
 }

@@ -47,7 +47,7 @@ public class ItemPainter extends Item {
 
     @Override
     public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
-        if (playerIn.isSneaking()) {
+        if (playerIn.func_225608_bj_()) {
             if (playerIn instanceof ServerPlayerEntity) {
                 NetworkHooks.openGui((ServerPlayerEntity) playerIn, new INamedContainerProvider() {
                     @Override
@@ -70,7 +70,7 @@ public class ItemPainter extends Item {
 
     @Override
     public ActionResultType onItemUse(ItemUseContext context) {
-        if (context.getPlayer().isSneaking()) {
+        if (context.getPlayer().func_225608_bj_()) {
             return ActionResultType.PASS;
         }
 

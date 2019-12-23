@@ -9,7 +9,7 @@ import net.minecraft.util.math.Vec3d;
 public class PartBodySUV extends PartBody {
 
     public PartBodySUV(ResourceLocation texture) {
-        super(new OBJModel(new ResourceLocation(Main.MODID, "models/entity/suv_body.obj"), texture),
+        super(new OBJModel(new ResourceLocation(Main.MODID, "models/entity/suv_body.obj")), texture,
                 new Vec3d(0D, 4D / 16D, 0D));
         this.wheelOffsets = new Vec3d[]{
                 new Vec3d(11F / 16F, 5F / 16F, 10F / 16F),
@@ -26,8 +26,8 @@ public class PartBodySUV extends PartBody {
         this.minRotationSpeed = 1.1F;
         this.maxRotationSpeed = 5F;
         this.fuelEfficiency = Config.bodySUVFuelEfficiency;
-        this.acceleration =  Config.bodySUVAcceleration;
-        this.maxSpeed =  Config.bodySUVMaxSpeed;
+        this.acceleration = Config.bodySUVAcceleration;
+        this.maxSpeed = Config.bodySUVMaxSpeed;
     }
 
     @Override

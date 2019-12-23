@@ -1,7 +1,5 @@
 package de.maxhenkel.car.blocks;
 
-import java.util.List;
-
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.ModItemGroups;
 import de.maxhenkel.car.blocks.tileentity.TileEntityTank;
@@ -10,6 +8,7 @@ import de.maxhenkel.tools.IItemBlock;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItem;
@@ -17,8 +16,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.util.Direction;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -28,7 +26,6 @@ import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IEnviromentBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -40,11 +37,12 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
 
 import javax.annotation.Nullable;
+import java.util.List;
 
 public class BlockTank extends BlockBase implements ITileEntityProvider, IItemBlock {
 
     protected BlockTank() {
-        super(Block.Properties.create(Material.GLASS).hardnessAndResistance(0.5F).sound(SoundType.GLASS));
+        super(Block.Properties.create(Material.GLASS).hardnessAndResistance(0.5F).sound(SoundType.GLASS).func_226896_b_());
         setRegistryName(new ResourceLocation(Main.MODID, "tank"));
     }
 
@@ -98,15 +96,15 @@ public class BlockTank extends BlockBase implements ITileEntityProvider, IItemBl
     }
 
     @Override
-    public boolean onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
+    public ActionResultType func_225533_a_(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
         ItemStack stack = player.getHeldItem(handIn);
 
         if (FluidUtil.getFluidContained(stack).orElse(null) != null) {
             FluidUtils.tryFluidInteraction(player, handIn, worldIn, pos);
-            return true;
+            return ActionResultType.SUCCESS;
         }
 
-        return false;
+        return ActionResultType.SUCCESS;
     }
 
     public static boolean handleEmpty(ItemStack stack, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand) {
@@ -157,16 +155,6 @@ public class BlockTank extends BlockBase implements ITileEntityProvider, IItemBl
     }
 
     @Override
-    public boolean doesSideBlockRendering(BlockState state, IEnviromentBlockReader world, BlockPos pos, Direction face) {
-        return false;
-    }
-
-    @Override
-    public BlockRenderLayer getRenderLayer() {
-        return BlockRenderLayer.CUTOUT;
-    }
-
-    @Override
     public BlockRenderType getRenderType(BlockState state) {
         return BlockRenderType.INVISIBLE;
     }
@@ -182,14 +170,20 @@ public class BlockTank extends BlockBase implements ITileEntityProvider, IItemBl
         return 1F;
     }
 
+    @Override
+    public boolean func_229869_c_(BlockState p_229869_1_, IBlockReader p_229869_2_, BlockPos p_229869_3_) {
+        return false;
+    }
+
+    @Override
+    public boolean canEntitySpawn(BlockState state, IBlockReader worldIn, BlockPos pos, EntityType<?> type) {
+        return false;
+    }
+
     @Nullable
     @Override
     public TileEntity createNewTileEntity(IBlockReader worldIn) {
         return new TileEntityTank();
     }
 
-    @Override
-    public boolean hasCustomBreakingProgress(BlockState state) {
-        return true;
-    }
 }

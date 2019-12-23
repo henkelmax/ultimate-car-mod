@@ -1,114 +1,98 @@
 package de.maxhenkel.car.blocks.tileentity.render;
 
-import com.mojang.blaze3d.platform.GlStateManager;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.texture.AtlasTexture;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
-import net.minecraftforge.fluids.FluidStack;
-import org.lwjgl.opengl.GL11;
-
+import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
 import de.maxhenkel.car.blocks.tileentity.TileEntitySplitTank;
 import de.maxhenkel.car.fluids.ModFluids;
-import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import de.maxhenkel.tools.RenderTools;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.Atlases;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
+import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
+import net.minecraft.inventory.container.PlayerContainer;
+import net.minecraftforge.fluids.FluidStack;
 
 public class TileEntitySpecialRendererSplitTank extends TileEntityRenderer<TileEntitySplitTank> {
 
     private static final FluidStack BIO_DIESEL_STACK = new FluidStack(ModFluids.BIO_DIESEL, 1);
     private static final FluidStack GLYCERIN_STACK = new FluidStack(ModFluids.GLYCERIN, 1);
 
+    public TileEntitySpecialRendererSplitTank(TileEntityRendererDispatcher tileEntityRendererDispatcher) {
+        super(tileEntityRendererDispatcher);
+    }
+
     @Override
-    public void render(TileEntitySplitTank te, double x, double y, double z, float partialTicks, int destroyStage) {
-        bindTexture(AtlasTexture.LOCATION_BLOCKS_TEXTURE);
-
-        GlStateManager.pushMatrix();
-        GlStateManager.translated(x, y, z);
-
+    public void func_225616_a_(TileEntitySplitTank te, float partialTicks, MatrixStack matrixStack, IRenderTypeBuffer buffer, int light, int i) {
+        matrixStack.func_227860_a_();
         float bioDiesel = te.getBioDieselPerc() / 2F;
         float glycerin = te.getGlycerinPerc() / 2F;
 
         if (bioDiesel > 0) {
-            renderFluid(BIO_DIESEL_STACK, bioDiesel, 1F / 16F);
+            renderFluid(BIO_DIESEL_STACK, bioDiesel, 1F / 16F, matrixStack, buffer, light);
         }
 
         if (glycerin > 0) {
-            renderFluid(GLYCERIN_STACK, glycerin, bioDiesel + 1F / 16F);
+            renderFluid(GLYCERIN_STACK, glycerin, bioDiesel + 1F / 16F, matrixStack, buffer, light);
         }
-
-        GlStateManager.popMatrix();
+        matrixStack.func_227865_b_();
     }
 
-    public void renderFluid(FluidStack fluid, float amount, float yStart) {
+    public void renderFluid(FluidStack fluid, float amount, float yStart, MatrixStack matrixStack, IRenderTypeBuffer buffer, int light) {
+        matrixStack.func_227860_a_();
+        matrixStack.func_227862_a_(0.98F, 0.98F, 0.98F);
+        matrixStack.func_227861_a_(0.01F, 0.01F, 0.01F);
 
-        GlStateManager.pushMatrix();
-        GlStateManager.scalef(0.98F, 0.98F, 0.98F);
-        GlStateManager.translatef(0.01F, 0.01F, 0.01F);
-        GlStateManager.disableLighting();
-        GlStateManager.enableBlend();
-        GlStateManager.enableAlphaTest();
-        GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+        IVertexBuilder builder = buffer.getBuffer(Atlases.func_228785_j_());
+        TextureAtlasSprite texture = Minecraft.getInstance().getModelManager().func_229356_a_(PlayerContainer.field_226615_c_).getSprite(fluid.getFluid().getAttributes().getStillTexture());
 
-        TextureAtlasSprite texture = Minecraft.getInstance().getTextureMap().getAtlasSprite(fluid.getFluid().getAttributes().getStill(fluid).toString());
+        float uMin = texture.getMinU();
+        float uMax = texture.getMaxU();
+        float vMin = texture.getMinV();
+        float vMax = texture.getMaxV();
 
-        final double uMin = texture.getMinU();
-        final double uMax = texture.getMaxU();
-        final double vMin = texture.getMinV();
-        final double vMax = texture.getMaxV();
+        float vHeight = vMax - vMin;
 
-        final double vHeight = vMax - vMin;
-
-        Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder buffer = tessellator.getBuffer();
-
-        buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
-
-        float s = 0.0F;
+        float s = 0F;
 
         // North
-        buffer.pos(1 - s, yStart, 0 + s).tex(uMax, vMin).endVertex();
-        buffer.pos(0 + s, yStart, 0 + s).tex(uMin, vMin).endVertex();
-        buffer.pos(0 + s, yStart + amount - s * 2, 0 + s).tex(uMin, vMin + vHeight * amount).endVertex();
-        buffer.pos(1 - s, yStart + amount - s * 2, 0 + s).tex(uMax, vMin + vHeight * amount).endVertex();
+        RenderTools.vertex(builder, matrixStack, 1F - s, yStart, 0F + s, uMax, vMin, light);
+        RenderTools.vertex(builder, matrixStack, 0F + s, yStart, 0F + s, uMin, vMin, light);
+        RenderTools.vertex(builder, matrixStack, 0F + s, yStart + amount - s * 2F, 0F + s, uMin, vMin + vHeight * amount, light);
+        RenderTools.vertex(builder, matrixStack, 1F - s, yStart + amount - s * 2F, 0F + s, uMax, vMin + vHeight * amount, light);
 
         // South
-        buffer.pos(1 - s, yStart, 1 - s).tex(uMin, vMin).endVertex();
-        buffer.pos(1 - s, yStart + amount - s * 2, 1 - s).tex(uMin, vMin + vHeight * amount).endVertex();
-        buffer.pos(0 + s, yStart + amount - s * 2, 1 - s).tex(uMax, vMin + vHeight * amount).endVertex();
-        buffer.pos(0 + s, yStart, 1 - s).tex(uMax, vMin).endVertex();
+        RenderTools.vertex(builder, matrixStack, 1F - s, yStart, 1F - s, uMin, vMin, light);
+        RenderTools.vertex(builder, matrixStack, 1F - s, yStart + amount - s * 2F, 1F - s, uMin, vMin + vHeight * amount, light);
+        RenderTools.vertex(builder, matrixStack, 0F + s, yStart + amount - s * 2F, 1F - s, uMax, vMin + vHeight * amount, light);
+        RenderTools.vertex(builder, matrixStack, 0F + s, yStart, 1F - s, uMax, vMin, light);
 
         // East
-        buffer.pos(1 - s, yStart, 0 + s).tex(uMin, vMin).endVertex();
-        buffer.pos(1 - s, yStart + amount - s * 2, 0 + s).tex(uMin, vMin + vHeight * amount).endVertex();
-        buffer.pos(1 - s, yStart + amount - s * 2, 1 - s).tex(uMax, vMin + vHeight * amount).endVertex();
-        buffer.pos(1 - s, yStart, 1 - s).tex(uMax, vMin).endVertex();
+        RenderTools.vertex(builder, matrixStack, 1F - s, yStart, 0F + s, uMin, vMin, light);
+        RenderTools.vertex(builder, matrixStack, 1F - s, yStart + amount - s * 2F, 0F + s, uMin, vMin + vHeight * amount, light);
+        RenderTools.vertex(builder, matrixStack, 1F - s, yStart + amount - s * 2F, 1F - s, uMax, vMin + vHeight * amount, light);
+        RenderTools.vertex(builder, matrixStack, 1F - s, yStart, 1F - s, uMax, vMin, light);
 
         // West
-        buffer.pos(0 + s, yStart, 1 - s).tex(uMin, vMin).endVertex();
-        buffer.pos(0 + s, yStart + amount - s * 2, 1 - s).tex(uMin, vMin + vHeight * amount).endVertex();
-        buffer.pos(0 + s, yStart + amount - s * 2, 0 + s).tex(uMax, vMin + vHeight * amount).endVertex();
-        buffer.pos(0 + s, yStart, 0 + s).tex(uMax, vMin).endVertex();
+        RenderTools.vertex(builder, matrixStack, 0F + s, yStart, 1F - s, uMin, vMin, light);
+        RenderTools.vertex(builder, matrixStack, 0F + s, yStart + amount - s * 2F, 1F - s, uMin, vMin + vHeight * amount, light);
+        RenderTools.vertex(builder, matrixStack, 0F + s, yStart + amount - s * 2F, 0F + s, uMax, vMin + vHeight * amount, light);
+        RenderTools.vertex(builder, matrixStack, 0F + s, yStart, 0F + s, uMax, vMin, light);
 
         // Down
-        buffer.pos(1 - s, yStart, 0 + s).tex(uMax, vMin).endVertex();
-        buffer.pos(1 - s, yStart, 1 - s).tex(uMin, vMin).endVertex();
-        buffer.pos(0 + s, yStart, 1 - s).tex(uMin, vMax).endVertex();
-        buffer.pos(0 + s, yStart, 0 + s).tex(uMax, vMax).endVertex();
+        RenderTools.vertex(builder, matrixStack, 1F - s, yStart, 0F + s, uMax, vMin, light);
+        RenderTools.vertex(builder, matrixStack, 1F - s, yStart, 1F - s, uMin, vMin, light);
+        RenderTools.vertex(builder, matrixStack, 0F + s, yStart, 1F - s, uMin, vMax, light);
+        RenderTools.vertex(builder, matrixStack, 0F + s, yStart, 0F + s, uMax, vMax, light);
 
         // Up
-        buffer.pos(0 + s, yStart + amount - s * 2, 0 + s).tex(uMax, vMax).endVertex();
-        buffer.pos(0 + s, yStart + amount - s * 2, 1 - s).tex(uMin, vMax).endVertex();
-        buffer.pos(1 - s, yStart + amount - s * 2, 1 - s).tex(uMin, vMin).endVertex();
-        buffer.pos(1 - s, yStart + amount - s * 2, 0 + s).tex(uMax, vMin).endVertex();
+        RenderTools.vertex(builder, matrixStack, 0F + s, yStart + amount - s * 2F, 0F + s, uMax, vMax, light);
+        RenderTools.vertex(builder, matrixStack, 0F + s, yStart + amount - s * 2F, 1F - s, uMin, vMax, light);
+        RenderTools.vertex(builder, matrixStack, 1F - s, yStart + amount - s * 2F, 1F - s, uMin, vMin, light);
+        RenderTools.vertex(builder, matrixStack, 1F - s, yStart + amount - s * 2F, 0F + s, uMax, vMin, light);
 
-        tessellator.draw();
-
-        GlStateManager.enableLighting();
-        GlStateManager.disableBlend();
-        GlStateManager.disableAlphaTest();
-
-        GlStateManager.popMatrix();
+        matrixStack.func_227865_b_();
     }
 
 }

@@ -205,7 +205,7 @@ public class EntityGenericCar extends EntityCarLicensePlateBase {
         }
         Vec3d offset = chassis.getNumberPlateOffset();
         Vec3d textOffset = numberPlate.getTextOffset();
-        return new Vec3d(offset.x + textOffset.x, -offset.y + textOffset.y, -offset.z + textOffset.z);
+        return new Vec3d(offset.x + textOffset.x, -offset.y + textOffset.y, offset.z - textOffset.z);
     }
 
     @Override

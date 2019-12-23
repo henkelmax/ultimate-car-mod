@@ -20,7 +20,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IEnviromentBlockReader;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraftforge.energy.CapabilityEnergy;
@@ -142,15 +141,9 @@ public class BlockCable extends BlockBase implements ITileEntityProvider, IItemB
     }
 
     @Override
-    public boolean doesSideBlockRendering(BlockState state, IEnviromentBlockReader world, BlockPos pos, Direction face) {
-        return false;
-    }
-
-    @Override
     public boolean isNormalCube(BlockState state, IBlockReader worldIn, BlockPos pos) {
         return false;
     }
-
 
     @Nullable
     @Override

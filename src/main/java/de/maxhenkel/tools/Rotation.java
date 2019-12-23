@@ -1,6 +1,7 @@
 package de.maxhenkel.tools;
 
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.matrix.MatrixStack;
+import net.minecraft.client.renderer.Vector3f;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,35 +10,33 @@ public class Rotation {
 
     private List<AxisRotation> rotations;
 
-    public Rotation(float angle, float x, float y, float z) {
+    public Rotation(float angle, Vector3f axis) {
         this();
-        add(angle, x, y, z);
+        add(angle, axis);
     }
 
     public Rotation() {
         rotations = new ArrayList<>();
     }
 
-    public Rotation add(float angle, float x, float y, float z) {
-        rotations.add(new AxisRotation(angle, x, y, z));
+    public Rotation add(float angle, Vector3f axis) {
+        rotations.add(new AxisRotation(angle, axis));
         return this;
     }
 
     private class AxisRotation {
         private float angle;
-        private float x, y, z;
+        private Vector3f axis;
 
-        public AxisRotation(float angle, float x, float y, float z) {
+        public AxisRotation(float angle, Vector3f axis) {
             this.angle = angle;
-            this.x = x;
-            this.y = y;
-            this.z = z;
+            this.axis = axis;
         }
     }
 
-    public void applyGLRotation() {
+    public void applyRotation(MatrixStack matrixStack) {
         for (AxisRotation rotation : rotations) {
-            GlStateManager.rotatef(rotation.angle, rotation.x, rotation.y, rotation.z);
+            matrixStack.func_227863_a_(rotation.axis.func_229187_a_(rotation.angle));
         }
     }
 

@@ -1,6 +1,7 @@
 package de.maxhenkel.car.entity.car.parts;
 
 import de.maxhenkel.car.entity.model.obj.OBJModel;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -20,8 +21,8 @@ public class PartBody extends PartModel {
     protected float acceleration;
     protected float maxSpeed;
 
-    public PartBody(OBJModel model, Vec3d offset, Vec3d[] wheelOffsets, Vec3d[] playerOffsets, Vec3d numberPlateOffset, float width, float height, float minRotationSpeed, float maxRotationSpeed, float fuelEfficiency, float acceleration, float maxSpeed) {
-        super(model, offset);
+    public PartBody(OBJModel model, ResourceLocation texture, Vec3d offset, Vec3d[] wheelOffsets, Vec3d[] playerOffsets, Vec3d numberPlateOffset, float width, float height, float minRotationSpeed, float maxRotationSpeed, float fuelEfficiency, float acceleration, float maxSpeed) {
+        super(model, texture, offset);
         this.wheelOffsets = wheelOffsets;
         this.playerOffsets = playerOffsets;
         this.numberPlateOffset = numberPlateOffset;
@@ -34,8 +35,8 @@ public class PartBody extends PartModel {
         this.maxSpeed = maxSpeed;
     }
 
-    public PartBody(OBJModel model, Vec3d offset) {
-        super(model, offset);
+    public PartBody(OBJModel model, ResourceLocation texture, Vec3d offset) {
+        super(model, texture, offset);
     }
 
     public Vec3d[] getWheelOffsets() {
@@ -88,10 +89,10 @@ public class PartBody extends PartModel {
 
     @Override
     public boolean validate(List<Part> parts, List<ITextComponent> messages) {
-        int wheelAmount=getAmount(parts, part -> part instanceof PartWheelBase);
-        if ( wheelAmount < getWheelAmount()) {
+        int wheelAmount = getAmount(parts, part -> part instanceof PartWheelBase);
+        if (wheelAmount < getWheelAmount()) {
             messages.add(new TranslationTextComponent("message.parts.too_few_wheels", getWheelAmount()));
-        }else if(wheelAmount > getWheelAmount()){
+        } else if (wheelAmount > getWheelAmount()) {
             messages.add(new TranslationTextComponent("message.parts.too_many_wheels", getWheelAmount()));
         }
 

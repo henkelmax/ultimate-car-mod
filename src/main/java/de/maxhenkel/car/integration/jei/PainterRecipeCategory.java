@@ -1,5 +1,5 @@
 package de.maxhenkel.car.integration.jei;
-
+/*
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.items.ModItems;
 import mezz.jei.api.constants.VanillaTypes;
@@ -65,3 +65,4 @@ public class PainterRecipeCategory implements IRecipeCategory<PainterRecipe> {
 
     }
 }
+*/

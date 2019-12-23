@@ -65,9 +65,9 @@ public abstract class EntityCarDamageBase extends EntityCarBatteryBase {
 
         for (int i = 0; i < amount; i++) {
             this.world.addParticle(ParticleTypes.LARGE_SMOKE,
-                    posX + (rand.nextDouble() - 0.5D) * getCarWidth(),
-                    posY + rand.nextDouble() * getCarHeight(),
-                    posZ + (rand.nextDouble() - 0.5D) * getCarWidth(),
+                    func_226277_ct_() + (rand.nextDouble() - 0.5D) * getCarWidth(),
+                    func_226278_cu_() + rand.nextDouble() * getCarHeight(),
+                    func_226281_cx_() + (rand.nextDouble() - 0.5D) * getCarWidth(),
                     0.0D, 0.0D, 0.0D);
         }
 

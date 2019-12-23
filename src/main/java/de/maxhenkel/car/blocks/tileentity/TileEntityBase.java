@@ -31,7 +31,7 @@ public abstract class TileEntityBase extends TileEntity implements INameable {
                 ServerWorld serverWorld = (ServerWorld) world;
 
                 MessageSyncTileEntity msg = new MessageSyncTileEntity(pos, last);
-                serverWorld.getPlayers(player -> getDistanceSq(player.posX, player.posY, player.posZ) / 2D <= 128D).forEach(player -> Main.SIMPLE_CHANNEL.sendTo(msg, player.connection.netManager, NetworkDirection.PLAY_TO_CLIENT));
+                serverWorld.getPlayers(player -> getDistanceSq(player.func_226277_ct_(), player.func_226278_cu_(), player.func_226281_cx_()) / 2D <= 128D).forEach(player -> Main.SIMPLE_CHANNEL.sendTo(msg, player.connection.netManager, NetworkDirection.PLAY_TO_CLIENT));
 
                 this.compoundLast = last;
             }

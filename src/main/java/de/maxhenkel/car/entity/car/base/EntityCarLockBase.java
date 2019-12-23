@@ -1,8 +1,5 @@
 package de.maxhenkel.car.entity.car.base;
 
-import java.util.UUID;
-
-import de.maxhenkel.tools.ItemTools;
 import de.maxhenkel.car.items.ItemKey;
 import de.maxhenkel.car.items.ModItems;
 import de.maxhenkel.car.sounds.ModSounds;
@@ -18,6 +15,8 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
+
+import java.util.UUID;
 
 public abstract class EntityCarLockBase extends EntityCarInventoryBase {
 
@@ -107,7 +106,7 @@ public abstract class EntityCarLockBase extends EntityCarInventoryBase {
     @Override
     public boolean processInitialInteract(PlayerEntity player, Hand hand) {
         ItemStack stack = player.getHeldItem(hand);
-        if (!isLocked() && player.isSneaking() && player.abilities.isCreativeMode && !stack.isEmpty() && stack.getItem().equals(ModItems.KEY)) {
+        if (!isLocked() && player.func_225608_bj_() && player.abilities.isCreativeMode && !stack.isEmpty() && stack.getItem().equals(ModItems.KEY)) {
             UUID uuid = ItemKey.getCar(stack);
             if (uuid == null) {
                 ItemKey.setCar(stack, getUniqueID());

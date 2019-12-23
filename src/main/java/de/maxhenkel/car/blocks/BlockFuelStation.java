@@ -25,6 +25,7 @@ import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
@@ -32,7 +33,6 @@ import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IEnviromentBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
@@ -60,11 +60,11 @@ public class BlockFuelStation extends BlockOrientableHorizontal {
     }
 
     @Override
-    public boolean onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
+    public ActionResultType func_225533_a_(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
         TileEntity te = worldIn.getTileEntity(pos);
 
         if (!(te instanceof TileEntityFuelStation)) {
-            return false;
+            return ActionResultType.FAIL;
         }
 
 
@@ -79,7 +79,7 @@ public class BlockFuelStation extends BlockOrientableHorizontal {
                 if (!FluidUtils.isEmpty(fluidStack)) {
                     boolean success = BlockTank.handleEmpty(stack, worldIn, pos, player, handIn);
                     if (success) {
-                        return true;
+                        return ActionResultType.SUCCESS;
                     }
                 }
                 IFluidHandler handler = FluidUtil.getFluidHandler(stack).orElse(null);
@@ -87,34 +87,29 @@ public class BlockFuelStation extends BlockOrientableHorizontal {
                 if (handler != null) {
                     boolean success1 = BlockTank.handleFill(stack, worldIn, pos, player, handIn);
                     if (success1) {
-                        return true;
+                        return ActionResultType.SUCCESS;
                     }
                 }
             }
         }
 
 
-        if (!player.isSneaking()) {
+        if (!player.func_225608_bj_()) {
             if (player instanceof ServerPlayerEntity) {
                 TileEntityContainerProvider.openGui((ServerPlayerEntity) player, station, (i, playerInventory, playerEntity) -> new ContainerFuelStation(i, station, playerInventory));
             }
-            return true;
+            return ActionResultType.SUCCESS;
         } else if (station.isOwner(player)) {
             if (player instanceof ServerPlayerEntity) {
                 TileEntityContainerProvider.openGui((ServerPlayerEntity) player, station, (i, playerInventory, playerEntity) -> new ContainerFuelStationAdmin(i, station, playerInventory));
             }
-            return true;
+            return ActionResultType.SUCCESS;
         }
-        return false;
+        return ActionResultType.FAIL;
     }
 
     @Override
     public boolean isNormalCube(BlockState state, IBlockReader worldIn, BlockPos pos) {
-        return false;
-    }
-
-    @Override
-    public boolean doesSideBlockRendering(BlockState state, IEnviromentBlockReader world, BlockPos pos, Direction face) {
         return false;
     }
 
