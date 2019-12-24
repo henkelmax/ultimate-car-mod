@@ -1,5 +1,6 @@
 package de.maxhenkel.car;
 
+import com.google.common.collect.ImmutableSet;
 import de.maxhenkel.car.blocks.ModBlocks;
 import de.maxhenkel.car.blocks.tileentity.*;
 import de.maxhenkel.car.blocks.tileentity.render.TileEntitySpecialRendererSign;
@@ -18,6 +19,7 @@ import de.maxhenkel.car.loottable.CopyFluid;
 import de.maxhenkel.car.net.*;
 import de.maxhenkel.car.recipes.ReciepeKey;
 import de.maxhenkel.car.sounds.ModSounds;
+import de.maxhenkel.car.villagers.VillagerEvents;
 import de.maxhenkel.tools.EntityTools;
 import net.minecraft.block.Block;
 import net.minecraft.client.gui.ScreenManager;
@@ -48,6 +50,7 @@ import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -58,6 +61,10 @@ import net.minecraftforge.fml.network.simple.SimpleChannel;
 import net.minecraftforge.registries.DataSerializerEntry;
 import org.lwjgl.glfw.GLFW;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
+import java.util.Set;
+
 @Mod(Main.MODID)
 public class Main {
 
@@ -66,6 +73,10 @@ public class Main {
     public static SimpleChannel SIMPLE_CHANNEL;
 
     public static EntityType CAR_ENTITY_TYPE;
+
+    public static PointOfInterestType POINT_OF_INTEREST_TYPE_GAS_STATION_ATTENDANT;
+    public static VillagerProfession VILLAGER_PROFESSION_GAS_STATION_ATTENDANT;
+
 
     public Main() {
         FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(Item.class, this::registerItems);
@@ -110,8 +121,7 @@ public class Main {
         MinecraftForge.EVENT_BUS.register(new CapabilityEvents());
         MinecraftForge.EVENT_BUS.register(new BlockEvents());
 
-        //TODO
-        //MinecraftForge.EVENT_BUS.register(new VillagerEvents());
+        MinecraftForge.EVENT_BUS.register(new VillagerEvents());
 
         LootFunctionManager.registerFunction(new CopyFluid.Serializer());
 
@@ -470,26 +480,37 @@ public class Main {
 
     @SubscribeEvent
     public void registerPointsOfInterest(RegistryEvent.Register<PointOfInterestType> event) {
-        //TODO
-        /*event.getRegistry().registerAll(
-                ModPointsOfInterests.POINT_OF_INTEREST_TYPE_GAS_STATION_ATTENDANT
-        );
-
         try {
+            Constructor<PointOfInterestType> constructor = PointOfInterestType.class.getConstructor(String.class, Set.class, int.class, int.class);
+            constructor.setAccessible(true);
+            POINT_OF_INTEREST_TYPE_GAS_STATION_ATTENDANT = constructor.newInstance("gas_station_attendant", ImmutableSet.copyOf(ModBlocks.FUEL_STATION.getStateContainer().getValidStates()), 1, 1);
+
+            POINT_OF_INTEREST_TYPE_GAS_STATION_ATTENDANT.setRegistryName(Main.MODID, "gas_station_attendant");
+            event.getRegistry().registerAll(
+                    POINT_OF_INTEREST_TYPE_GAS_STATION_ATTENDANT
+            );
+
             Method register = ObfuscationReflectionHelper.findMethod(PointOfInterestType.class, "func_221052_a", PointOfInterestType.class);
-            register.invoke(null, ModPointsOfInterests.POINT_OF_INTEREST_TYPE_GAS_STATION_ATTENDANT);
+            register.invoke(null, POINT_OF_INTEREST_TYPE_GAS_STATION_ATTENDANT);
         } catch (Exception e) {
             e.printStackTrace();
-        }*/
-
+        }
     }
 
     @SubscribeEvent
     public void registerVillagerProfessions(RegistryEvent.Register<VillagerProfession> event) {
-        //TODO
-        /*event.getRegistry().registerAll(
-                ModVillagerProfessions.VILLAGER_PROFESSION_GAS_STATION_ATTENDANT
-        );*/
+        try {
+            Constructor<VillagerProfession> constructor = VillagerProfession.class.getConstructor(String.class, PointOfInterestType.class, ImmutableSet.class, ImmutableSet.class, SoundEvent.class);
+            constructor.setAccessible(true);
+            VILLAGER_PROFESSION_GAS_STATION_ATTENDANT = constructor.newInstance("gas_station_attendant", POINT_OF_INTEREST_TYPE_GAS_STATION_ATTENDANT, ImmutableSet.of(/*ModItems.CANOLA, ModItems.CANOLA_SEEDS*/), ImmutableSet.of(/*Blocks.FARMLAND*/), ModSounds.GAS_STATION_ATTENDANT);
+
+            VILLAGER_PROFESSION_GAS_STATION_ATTENDANT.setRegistryName(Main.MODID, "gas_station_attendant");
+            event.getRegistry().registerAll(
+                    VILLAGER_PROFESSION_GAS_STATION_ATTENDANT
+            );
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }
