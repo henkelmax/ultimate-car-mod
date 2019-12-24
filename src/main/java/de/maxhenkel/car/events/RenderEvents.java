@@ -10,6 +10,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
@@ -52,6 +53,7 @@ public class RenderEvents {
     }
 
     public void renderFuelBar(float percent) {
+        percent = MathHelper.clamp(percent, 0F, 1F);
         Minecraft mc = Minecraft.getInstance();
         int x = mc.func_228018_at_().getScaledWidth() / 2 - 91;
 
