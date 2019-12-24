@@ -138,11 +138,11 @@ public class ItemCanister extends Item {
 
         FluidStack result = handler.drain(maxAmount, IFluidHandler.FluidAction.EXECUTE);
 
-        if (result == null) {
+        if (result == null || result.isEmpty()) {
             return false;
         }
 
-        if (fluid == null) {
+        if (fluid == null || fluid.isEmpty()) {
             comp.put("fuel", result.writeToNBT(new CompoundNBT()));
             return true;
         }

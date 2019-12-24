@@ -1,1 +1,2 @@
-- Fixed big wood car can only have one passenger
+- Fixed experience bar rendering issue
+- Fixed canister refueling crash
