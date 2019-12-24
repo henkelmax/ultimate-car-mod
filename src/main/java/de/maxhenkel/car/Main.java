@@ -481,7 +481,7 @@ public class Main {
     @SubscribeEvent
     public void registerPointsOfInterest(RegistryEvent.Register<PointOfInterestType> event) {
         try {
-            Constructor<PointOfInterestType> constructor = PointOfInterestType.class.getConstructor(String.class, Set.class, int.class, int.class);
+            Constructor<PointOfInterestType> constructor = PointOfInterestType.class.getDeclaredConstructor(String.class, Set.class, int.class, int.class);
             constructor.setAccessible(true);
             POINT_OF_INTEREST_TYPE_GAS_STATION_ATTENDANT = constructor.newInstance("gas_station_attendant", ImmutableSet.copyOf(ModBlocks.FUEL_STATION.getStateContainer().getValidStates()), 1, 1);
 
@@ -500,7 +500,7 @@ public class Main {
     @SubscribeEvent
     public void registerVillagerProfessions(RegistryEvent.Register<VillagerProfession> event) {
         try {
-            Constructor<VillagerProfession> constructor = VillagerProfession.class.getConstructor(String.class, PointOfInterestType.class, ImmutableSet.class, ImmutableSet.class, SoundEvent.class);
+            Constructor<VillagerProfession> constructor = VillagerProfession.class.getDeclaredConstructor(String.class, PointOfInterestType.class, ImmutableSet.class, ImmutableSet.class, SoundEvent.class);
             constructor.setAccessible(true);
             VILLAGER_PROFESSION_GAS_STATION_ATTENDANT = constructor.newInstance("gas_station_attendant", POINT_OF_INTEREST_TYPE_GAS_STATION_ATTENDANT, ImmutableSet.of(/*ModItems.CANOLA, ModItems.CANOLA_SEEDS*/), ImmutableSet.of(/*Blocks.FARMLAND*/), ModSounds.GAS_STATION_ATTENDANT);
 
