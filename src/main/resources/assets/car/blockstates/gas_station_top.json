@@ -1,0 +1,8 @@
+{
+    "variants": {
+        "facing=north": { "model": "car:block/gas_station_top", "y": 180 },
+        "facing=south": { "model": "car:block/gas_station_top" },
+        "facing=west":  { "model": "car:block/gas_station_top", "y": 90 },
+        "facing=east":  { "model": "car:block/gas_station_top", "y": 270 }
+    }
+}

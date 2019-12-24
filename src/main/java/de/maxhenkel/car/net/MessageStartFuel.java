@@ -1,6 +1,6 @@
 package de.maxhenkel.car.net;
 
-import de.maxhenkel.car.blocks.tileentity.TileEntityFuelStation;
+import de.maxhenkel.car.blocks.tileentity.TileEntityGasStation;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
@@ -24,8 +24,8 @@ public class MessageStartFuel implements Message<MessageStartFuel> {
     public void executeServerSide(NetworkEvent.Context context) {
         TileEntity te = context.getSender().world.getTileEntity(pos);
 
-        if (te instanceof TileEntityFuelStation) {
-            TileEntityFuelStation tank = (TileEntityFuelStation) te;
+        if (te instanceof TileEntityGasStation) {
+            TileEntityGasStation tank = (TileEntityGasStation) te;
             tank.setFueling(start);
             tank.synchronize();
         }

@@ -6,7 +6,7 @@ import de.maxhenkel.car.blocks.tileentity.*;
 import de.maxhenkel.car.blocks.tileentity.render.TileEntitySpecialRendererSign;
 import de.maxhenkel.car.blocks.tileentity.render.TileEntitySpecialRendererSplitTank;
 import de.maxhenkel.car.blocks.tileentity.render.TileEntitySpecialRendererTank;
-import de.maxhenkel.car.blocks.tileentity.render.TileentitySpecialRendererFuelStation;
+import de.maxhenkel.car.blocks.tileentity.render.TileentitySpecialRendererGasStation;
 import de.maxhenkel.car.dataserializers.DataSerializerItemList;
 import de.maxhenkel.car.entity.car.base.EntityGenericCar;
 import de.maxhenkel.car.entity.model.GenericCarModel;
@@ -138,7 +138,7 @@ public class Main {
         SIMPLE_CHANNEL.registerMessage(9, MessageRepairCar.class, (msg, buf) -> msg.toBytes(buf), (buf) -> new MessageRepairCar().fromBytes(buf), (msg, fun) -> msg.executeServerSide(fun.get()));
         SIMPLE_CHANNEL.registerMessage(10, MessageCarHorn.class, (msg, buf) -> msg.toBytes(buf), (buf) -> new MessageCarHorn().fromBytes(buf), (msg, fun) -> msg.executeServerSide(fun.get()));
         SIMPLE_CHANNEL.registerMessage(11, MessageEditSign.class, (msg, buf) -> msg.toBytes(buf), (buf) -> new MessageEditSign().fromBytes(buf), (msg, fun) -> msg.executeServerSide(fun.get()));
-        SIMPLE_CHANNEL.registerMessage(12, MessageFuelStationAdminAmount.class, (msg, buf) -> msg.toBytes(buf), (buf) -> new MessageFuelStationAdminAmount().fromBytes(buf), (msg, fun) -> msg.executeServerSide(fun.get()));
+        SIMPLE_CHANNEL.registerMessage(12, MessageGasStationAdminAmount.class, (msg, buf) -> msg.toBytes(buf), (buf) -> new MessageGasStationAdminAmount().fromBytes(buf), (msg, fun) -> msg.executeServerSide(fun.get()));
         SIMPLE_CHANNEL.registerMessage(13, MessageCenterCar.class, (msg, buf) -> msg.toBytes(buf), (buf) -> new MessageCenterCar().fromBytes(buf), (msg, fun) -> msg.executeServerSide(fun.get()));
         SIMPLE_CHANNEL.registerMessage(14, MessageCenterCarClient.class, (msg, buf) -> msg.toBytes(buf), (buf) -> new MessageCenterCarClient().fromBytes(buf), (msg, fun) -> msg.executeClientSide(fun.get()));
         SIMPLE_CHANNEL.registerMessage(15, MessageEditLicensePlate.class, (msg, buf) -> msg.toBytes(buf), (buf) -> new MessageEditLicensePlate().fromBytes(buf), (msg, fun) -> msg.executeServerSide(fun.get()));
@@ -157,7 +157,7 @@ public class Main {
     @SubscribeEvent
     @OnlyIn(Dist.CLIENT)
     public void clientSetup(FMLClientSetupEvent event) {
-        ClientRegistry.bindTileEntityRenderer(FUEL_STATION_TILE_ENTITY_TYPE, new TileentitySpecialRendererFuelStation(TileEntityRendererDispatcher.instance));
+        ClientRegistry.bindTileEntityRenderer(FUEL_STATION_TILE_ENTITY_TYPE, new TileentitySpecialRendererGasStation(TileEntityRendererDispatcher.instance));
         ClientRegistry.bindTileEntityRenderer(SPLIT_TANK_TILE_ENTITY_TYPE, new TileEntitySpecialRendererSplitTank(TileEntityRendererDispatcher.instance));
         ClientRegistry.bindTileEntityRenderer(TANK_TILE_ENTITY_TYPE, new TileEntitySpecialRendererTank(TileEntityRendererDispatcher.instance));
         ClientRegistry.bindTileEntityRenderer(SIGN_TILE_ENTITY_TYPE, new TileEntitySpecialRendererSign(TileEntityRendererDispatcher.instance));
@@ -183,10 +183,10 @@ public class Main {
         ScreenManager.IScreenFactory factory6 = (ScreenManager.IScreenFactory<ContainerFluidExtractor, GuiFluidExtractor>) GuiFluidExtractor::new;
         ScreenManager.registerFactory(Main.FLUID_EXTRACTOR_CONTAINER_TYPE, factory6);
 
-        ScreenManager.IScreenFactory factory7 = (ScreenManager.IScreenFactory<ContainerFuelStation, GuiFuelStation>) GuiFuelStation::new;
+        ScreenManager.IScreenFactory factory7 = (ScreenManager.IScreenFactory<ContainerGasStation, GuiGasStation>) GuiGasStation::new;
         ScreenManager.registerFactory(Main.FUEL_STATION_CONTAINER_TYPE, factory7);
 
-        ScreenManager.IScreenFactory factory8 = (ScreenManager.IScreenFactory<ContainerFuelStationAdmin, GuiFuelStationAdmin>) (container, playerInventory, name) -> new GuiFuelStationAdmin(container, playerInventory, name);
+        ScreenManager.IScreenFactory factory8 = (ScreenManager.IScreenFactory<ContainerGasStationAdmin, GuiGasStationAdmin>) (container, playerInventory, name) -> new GuiGasStationAdmin(container, playerInventory, name);
         ScreenManager.registerFactory(Main.FUEL_STATION_ADMIN_CONTAINER_TYPE, factory8);
 
         ScreenManager.IScreenFactory factory9 = (ScreenManager.IScreenFactory<ContainerGenerator, GuiGenerator>) (container, playerInventory, name) -> new GuiGenerator(container, playerInventory, name);
@@ -285,8 +285,8 @@ public class Main {
     public static ContainerType<ContainerCarWorkshopCrafting> CAR_WORKSHOP_CRAFTING_CONTAINER_TYPE;
     public static ContainerType<ContainerCarWorkshopRepair> CAR_WORKSHOP_REPAIR_CONTAINER_TYPE;
     public static ContainerType<ContainerFluidExtractor> FLUID_EXTRACTOR_CONTAINER_TYPE;
-    public static ContainerType<ContainerFuelStation> FUEL_STATION_CONTAINER_TYPE;
-    public static ContainerType<ContainerFuelStationAdmin> FUEL_STATION_ADMIN_CONTAINER_TYPE;
+    public static ContainerType<ContainerGasStation> FUEL_STATION_CONTAINER_TYPE;
+    public static ContainerType<ContainerGasStationAdmin> FUEL_STATION_ADMIN_CONTAINER_TYPE;
     public static ContainerType<ContainerGenerator> GENERATOR_CONTAINER_TYPE;
     public static ContainerType<ContainerLicensePlate> LICENSE_PLATE_CONTAINER_TYPE;
     public static ContainerType<ContainerOilMill> OIL_MILL_CONTAINER_TYPE;
@@ -336,11 +336,11 @@ public class Main {
         FLUID_EXTRACTOR_CONTAINER_TYPE.setRegistryName(new ResourceLocation(Main.MODID, "fluid_extractor"));
         event.getRegistry().register(FLUID_EXTRACTOR_CONTAINER_TYPE);
 
-        FUEL_STATION_CONTAINER_TYPE = new ContainerType<>(new ContainerFactoryTileEntity((ContainerFactoryTileEntity.ContainerCreator<ContainerFuelStation, TileEntityFuelStation>) ContainerFuelStation::new));
+        FUEL_STATION_CONTAINER_TYPE = new ContainerType<>(new ContainerFactoryTileEntity((ContainerFactoryTileEntity.ContainerCreator<ContainerGasStation, TileEntityGasStation>) ContainerGasStation::new));
         FUEL_STATION_CONTAINER_TYPE.setRegistryName(new ResourceLocation(Main.MODID, "fuel_station"));
         event.getRegistry().register(FUEL_STATION_CONTAINER_TYPE);
 
-        FUEL_STATION_ADMIN_CONTAINER_TYPE = new ContainerType<>(new ContainerFactoryTileEntity((ContainerFactoryTileEntity.ContainerCreator<ContainerFuelStationAdmin, TileEntityFuelStation>) ContainerFuelStationAdmin::new));
+        FUEL_STATION_ADMIN_CONTAINER_TYPE = new ContainerType<>(new ContainerFactoryTileEntity((ContainerFactoryTileEntity.ContainerCreator<ContainerGasStationAdmin, TileEntityGasStation>) ContainerGasStationAdmin::new));
         FUEL_STATION_ADMIN_CONTAINER_TYPE.setRegistryName(new ResourceLocation(Main.MODID, "fuel_station_admin"));
         event.getRegistry().register(FUEL_STATION_ADMIN_CONTAINER_TYPE);
 
@@ -441,7 +441,7 @@ public class Main {
         TANK_TILE_ENTITY_TYPE.setRegistryName(new ResourceLocation(MODID, "tank"));
         event.getRegistry().register(TANK_TILE_ENTITY_TYPE);
 
-        FUEL_STATION_TILE_ENTITY_TYPE = TileEntityType.Builder.create(TileEntityFuelStation::new, ModBlocks.FUEL_STATION).build(null);
+        FUEL_STATION_TILE_ENTITY_TYPE = TileEntityType.Builder.create(TileEntityGasStation::new, ModBlocks.FUEL_STATION).build(null);
         FUEL_STATION_TILE_ENTITY_TYPE.setRegistryName(new ResourceLocation(MODID, "fuel_station"));
         event.getRegistry().register(FUEL_STATION_TILE_ENTITY_TYPE);
     }

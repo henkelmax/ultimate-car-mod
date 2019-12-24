@@ -44,8 +44,8 @@ public class Config {
 
     public static ForgeConfigSpec.IntValue fluidExtractorDrainSpeed;
 
-    public static ForgeConfigSpec.IntValue fuelStationTransferRate;
-    public static ForgeConfigSpec.ConfigValue<List<? extends String>> fuelStationValidFuels;
+    public static ForgeConfigSpec.IntValue gasStationTransferRate;
+    public static ForgeConfigSpec.ConfigValue<List<? extends String>> gasStationValidFuels;
 
     public static ForgeConfigSpec.IntValue generatorEnergyStorage;
     public static ForgeConfigSpec.IntValue generatorFluidStorage;
@@ -144,7 +144,7 @@ public class Config {
     public static ForgeConfigSpec.DoubleValue bodyTransporterMaxSpeed;// = 0.765F;
     */
 
-    public static List<Fluid> fuelStationValidFuelList = new ArrayList<>();
+    public static List<Fluid> gasStationValidFuelList = new ArrayList<>();
     public static List<Block> carDriveBlockList = new ArrayList<>();
     public static List<Fluid> carValidFuelList = new ArrayList<>();
 
@@ -165,7 +165,7 @@ public class Config {
     }
 
     public static void loadServer() {
-        fuelStationValidFuelList = fuelStationValidFuels.get().stream().map(ResourceLocation::new).map(ForgeRegistries.FLUIDS::getValue).filter(Objects::nonNull).collect(Collectors.toList());
+        gasStationValidFuelList = gasStationValidFuels.get().stream().map(ResourceLocation::new).map(ForgeRegistries.FLUIDS::getValue).filter(Objects::nonNull).collect(Collectors.toList());
         carDriveBlockList = carDriveBlocks.get().stream().map(ResourceLocation::new).map(ForgeRegistries.BLOCKS::getValue).filter(Objects::nonNull).collect(Collectors.toList());
         carValidFuelList = carValidFuels.get().stream().map(ResourceLocation::new).map(ForgeRegistries.FLUIDS::getValue).filter(Objects::nonNull).collect(Collectors.toList());
     }
@@ -204,8 +204,8 @@ public class Config {
 
             fluidExtractorDrainSpeed = builder.defineInRange("machines.fluid_extractor.drain_speed", 25, 5, (int) Short.MAX_VALUE);
 
-            fuelStationTransferRate = builder.defineInRange("machines.fuel_station.transfer_rate", 5, 1, (int) Short.MAX_VALUE);
-            fuelStationValidFuels = builder.defineList("machines.fuel_station.valid_fuels", Arrays.asList(ModFluids.BIO_DIESEL.getRegistryName().toString()), Objects::nonNull);
+            gasStationTransferRate = builder.defineInRange("machines.gas_station.transfer_rate", 5, 1, (int) Short.MAX_VALUE);
+            gasStationValidFuels = builder.defineList("machines.gas_station.valid_fuels", Arrays.asList(ModFluids.BIO_DIESEL.getRegistryName().toString()), Objects::nonNull);
 
             generatorEnergyStorage = builder.defineInRange("machines.generator.energy_storage", 30000, 1000, (int) Short.MAX_VALUE);
             generatorFluidStorage = builder.defineInRange("machines.generator.fluid_storage", 3000, 1000, (int) Short.MAX_VALUE);

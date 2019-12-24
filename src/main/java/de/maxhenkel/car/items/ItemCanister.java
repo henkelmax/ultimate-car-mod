@@ -6,7 +6,7 @@ import de.maxhenkel.car.Config;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.ModItemGroups;
 import de.maxhenkel.car.blocks.ModBlocks;
-import de.maxhenkel.car.blocks.tileentity.TileEntityFuelStation;
+import de.maxhenkel.car.blocks.tileentity.TileEntityGasStation;
 import de.maxhenkel.car.sounds.ModSounds;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.util.ITooltipFlag;
@@ -56,8 +56,8 @@ public class ItemCanister extends Item {
             return super.onItemUse(context);
         }
 
-        if (te instanceof TileEntityFuelStation) {
-            TileEntityFuelStation fuel = (TileEntityFuelStation) te;
+        if (te instanceof TileEntityGasStation) {
+            TileEntityGasStation fuel = (TileEntityGasStation) te;
             boolean success = fillCanister(context.getPlayer().getHeldItem(context.getHand()), fuel);
             if (success) {
                 ModSounds.playSound(SoundEvents.BLOCK_BREWING_STAND_BREW, context.getWorld(), context.getPos(), null, SoundCategory.BLOCKS);

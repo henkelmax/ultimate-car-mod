@@ -3,12 +3,12 @@
   "textures": {
     "0": "block/smooth_stone_slab_side",
     "1": "block/smooth_stone",
-    "2": "car:block/fuel_station_arms",
-    "3": "car:block/fuel_station_base_north_south",
-    "4": "car:block/fuel_station_base_west_east",
-    "5": "car:block/fuel_station_head",
-    "6": "car:block/fuel_station_base_up_down",
-    "7": "car:block/fuel_station_head_down",
+    "2": "car:block/gas_station_arms",
+    "3": "car:block/gas_station_base_north_south",
+    "4": "car:block/gas_station_base_west_east",
+    "5": "car:block/gas_station_head",
+    "6": "car:block/gas_station_base_up_down",
+    "7": "car:block/gas_station_head_down",
     "particle": "block/stone_slab_top"
   },
   "elements": [
