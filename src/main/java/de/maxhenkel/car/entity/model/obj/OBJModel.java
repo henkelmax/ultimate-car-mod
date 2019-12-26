@@ -11,6 +11,8 @@ import net.minecraft.client.renderer.Vector3f;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.Vec2f;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import org.lwjgl.opengl.GL11;
 
 import java.util.List;
@@ -25,12 +27,14 @@ public class OBJModel {
         this.model = model;
     }
 
+    @OnlyIn(Dist.CLIENT)
     private void load() {
         if (data == null) {
             data = OBJLoader.load(model);
         }
     }
 
+    @OnlyIn(Dist.CLIENT)
     public void render(ResourceLocation texture, MatrixStack matrixStack, IRenderTypeBuffer buffer, int light) {
         load();
         matrixStack.func_227860_a_();
@@ -46,28 +50,23 @@ public class OBJModel {
         matrixStack.func_227865_b_();
     }
 
-    public static RenderType getRenderType(ResourceLocation resourceLocation, boolean culling) {
+    @OnlyIn(Dist.CLIENT)
+    private static RenderType getRenderType(ResourceLocation resourceLocation, boolean culling) {
         RenderType.State state = RenderType.State
                 .func_228694_a_()
                 .func_228724_a_(new RenderState.TextureState(resourceLocation, false, false))
-                .func_228726_a_(field_228510_b_)
-                .func_228716_a_(field_228532_x_)
-                .func_228713_a_(field_228517_i_)
-                .func_228719_a_(field_228528_t_)
-                .func_228722_a_(field_228530_v_)
+                .func_228726_a_(new RenderState.TransparencyState("no_transparency", () -> {
+                    RenderSystem.disableBlend();
+                }, () -> {
+                }))
+                .func_228716_a_(new RenderState.DiffuseLightingState(true))
+                .func_228713_a_(new RenderState.AlphaState(0.003921569F))
+                .func_228719_a_(new RenderState.LightmapState(true))
+                .func_228722_a_(new RenderState.OverlayState(true))
                 .func_228714_a_(new RenderState.CullState(culling))
                 .func_228728_a_(true);
         return RenderType.func_228633_a_("entity_cutout", DefaultVertexFormats.field_227849_i_, GL11.GL_TRIANGLES, 256, true, false, state);
     }
-
-    protected static final RenderState.TransparencyState field_228510_b_ = new RenderState.TransparencyState("no_transparency", () -> {
-        RenderSystem.disableBlend();
-    }, () -> {
-    });
-    protected static final RenderState.DiffuseLightingState field_228532_x_ = new RenderState.DiffuseLightingState(true);
-    protected static final RenderState.LightmapState field_228528_t_ = new RenderState.LightmapState(true);
-    protected static final RenderState.OverlayState field_228530_v_ = new RenderState.OverlayState(true);
-    protected static final RenderState.AlphaState field_228517_i_ = new RenderState.AlphaState(0.003921569F);
 
     static class OBJModelData {
         private List<Vector3f> positions;

@@ -23,6 +23,8 @@ import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.fml.DistExecutor;
 
 import javax.annotation.Nullable;
 
@@ -36,7 +38,9 @@ public class BlockPaint extends BlockBase implements IItemBlock {
         setRegistryName(new ResourceLocation(Main.MODID, type.name + (isYellow ? "_yellow" : "")));
 
         setDefaultState(stateContainer.getBaseState().with(FACING, Direction.NORTH));
-        RenderTypeLookup.setRenderLayer(this, RenderType.func_228643_e_());
+        DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
+            RenderTypeLookup.setRenderLayer(BlockPaint.this, RenderType.func_228643_e_());
+        });
     }
 
     @Override

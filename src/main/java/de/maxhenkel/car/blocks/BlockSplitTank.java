@@ -32,6 +32,7 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fml.DistExecutor;
 
 import javax.annotation.Nullable;
 
@@ -40,7 +41,10 @@ public class BlockSplitTank extends BlockBase implements ITileEntityProvider, II
     protected BlockSplitTank() {
         super(Properties.create(Material.IRON).hardnessAndResistance(3F).sound(SoundType.STONE).func_226896_b_());
         setRegistryName(new ResourceLocation(Main.MODID, "split_tank"));
-        RenderTypeLookup.setRenderLayer(this, RenderType.func_228643_e_());
+
+        DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
+            RenderTypeLookup.setRenderLayer(BlockSplitTank.this, RenderType.func_228643_e_());
+        });
     }
 
     @Override
