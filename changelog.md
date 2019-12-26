@@ -1,1 +1,2 @@
-- Fixed crash on servers
+- Fixed missing texture
+- Fixed invisible car when summoning

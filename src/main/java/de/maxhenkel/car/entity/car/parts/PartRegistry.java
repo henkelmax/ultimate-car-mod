@@ -118,7 +118,7 @@ public class PartRegistry {
     public static final Part GRAY_TANK_CONTAINER = new PartTankContainer(new ResourceLocation(Main.MODID, "textures/entity/tank_container_gray.png"));
     public static final Part GREEN_TANK_CONTAINER = new PartTankContainer(new ResourceLocation(Main.MODID, "textures/entity/tank_container_green.png"));
     public static final Part LIGHT_BLUE_TANK_CONTAINER = new PartTankContainer(new ResourceLocation(Main.MODID, "textures/entity/tank_container_light_blue.png"));
-    public static final Part LIME_TANK_CONTAINER = new PartTankContainer(new ResourceLocation(Main.MODID, "textures/entity/tank_container.png_lime"));
+    public static final Part LIME_TANK_CONTAINER = new PartTankContainer(new ResourceLocation(Main.MODID, "textures/entity/tank_container_lime.png"));
     public static final Part MAGENTA_TANK_CONTAINER = new PartTankContainer(new ResourceLocation(Main.MODID, "textures/entity/tank_container_magenta.png"));
     public static final Part ORANGE_TANK_CONTAINER = new PartTankContainer(new ResourceLocation(Main.MODID, "textures/entity/tank_container_orange.png"));
     public static final Part PINK_TANK_CONTAINER = new PartTankContainer(new ResourceLocation(Main.MODID, "textures/entity/tank_container_pink.png"));
