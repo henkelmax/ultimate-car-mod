@@ -98,13 +98,12 @@ public class BlockTank extends BlockBase implements ITileEntityProvider, IItemBl
     @Override
     public ActionResultType func_225533_a_(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
         ItemStack stack = player.getHeldItem(handIn);
-
-        if (FluidUtil.getFluidContained(stack).orElse(null) != null) {
+        if (!FluidUtil.getFluidContained(stack).orElse(FluidStack.EMPTY).isEmpty()) {
             FluidUtils.tryFluidInteraction(player, handIn, worldIn, pos);
             return ActionResultType.SUCCESS;
         }
 
-        return ActionResultType.SUCCESS;
+        return ActionResultType.FAIL;
     }
 
     public static boolean handleEmpty(ItemStack stack, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand) {
@@ -146,11 +145,6 @@ public class BlockTank extends BlockBase implements ITileEntityProvider, IItemBl
             return true;
         }
 
-        return false;
-    }
-
-    @Override
-    public boolean isNormalCube(BlockState state, IBlockReader worldIn, BlockPos pos) {
         return false;
     }
 

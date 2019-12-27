@@ -40,7 +40,7 @@ public class TileEntitySpecialRendererTank extends TileEntityRenderer<TileEntity
 
     public void renderFluid(TileEntityTank tank, FluidStack fluid, float amount, float yStart, MatrixStack matrixStack, IRenderTypeBuffer buffer, int light) {
         matrixStack.func_227860_a_();
-        IVertexBuilder builder = buffer.getBuffer(Atlases.func_228785_j_());
+        IVertexBuilder builder = buffer.getBuffer(Atlases.func_228784_i_());
 
         TextureAtlasSprite texture = Minecraft.getInstance().getModelManager().func_229356_a_(PlayerContainer.field_226615_c_).getSprite(fluid.getFluid().getAttributes().getStillTexture());
 
@@ -131,7 +131,7 @@ public class TileEntitySpecialRendererTank extends TileEntityRenderer<TileEntity
 
         rotate(side, matrixStack);
 
-        matrixStack.func_227861_a_(-0.0001D, -0.0001D, -0.0001D);
+        matrixStack.func_227861_a_(-0.00025D, -0.00025D, -0.00025D);
 
         drawSide(line, side, matrixStack, buffer, builder, light);
 

@@ -1,1 +1,1 @@
-- Added demo command
+- Fixed tank rendering

@@ -44,7 +44,7 @@ public class TileEntitySpecialRendererSplitTank extends TileEntityRenderer<TileE
         matrixStack.func_227862_a_(0.98F, 0.98F, 0.98F);
         matrixStack.func_227861_a_(0.01F, 0.01F, 0.01F);
 
-        IVertexBuilder builder = buffer.getBuffer(Atlases.func_228785_j_());
+        IVertexBuilder builder = buffer.getBuffer(Atlases.func_228784_i_());
         TextureAtlasSprite texture = Minecraft.getInstance().getModelManager().func_229356_a_(PlayerContainer.field_226615_c_).getSprite(fluid.getFluid().getAttributes().getStillTexture());
 
         float uMin = texture.getMinU();
@@ -79,12 +79,6 @@ public class TileEntitySpecialRendererSplitTank extends TileEntityRenderer<TileE
         RenderTools.vertex(builder, matrixStack, 0F + s, yStart + amount - s * 2F, 1F - s, uMin, vMin + vHeight * amount, light);
         RenderTools.vertex(builder, matrixStack, 0F + s, yStart + amount - s * 2F, 0F + s, uMax, vMin + vHeight * amount, light);
         RenderTools.vertex(builder, matrixStack, 0F + s, yStart, 0F + s, uMax, vMin, light);
-
-        // Down
-        RenderTools.vertex(builder, matrixStack, 1F - s, yStart, 0F + s, uMax, vMin, light);
-        RenderTools.vertex(builder, matrixStack, 1F - s, yStart, 1F - s, uMin, vMin, light);
-        RenderTools.vertex(builder, matrixStack, 0F + s, yStart, 1F - s, uMin, vMax, light);
-        RenderTools.vertex(builder, matrixStack, 0F + s, yStart, 0F + s, uMax, vMax, light);
 
         // Up
         RenderTools.vertex(builder, matrixStack, 0F + s, yStart + amount - s * 2F, 0F + s, uMax, vMax, light);
