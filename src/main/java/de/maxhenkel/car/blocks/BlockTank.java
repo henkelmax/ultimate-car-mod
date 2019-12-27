@@ -98,7 +98,7 @@ public class BlockTank extends BlockBase implements ITileEntityProvider, IItemBl
     @Override
     public ActionResultType func_225533_a_(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
         ItemStack stack = player.getHeldItem(handIn);
-        if (!FluidUtil.getFluidContained(stack).orElse(FluidStack.EMPTY).isEmpty()) {
+        if (FluidUtil.getFluidContained(stack).orElse(null) != null) {
             FluidUtils.tryFluidInteraction(player, handIn, worldIn, pos);
             return ActionResultType.SUCCESS;
         }
