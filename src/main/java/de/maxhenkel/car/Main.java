@@ -7,6 +7,7 @@ import de.maxhenkel.car.blocks.tileentity.render.TileEntitySpecialRendererSign;
 import de.maxhenkel.car.blocks.tileentity.render.TileEntitySpecialRendererSplitTank;
 import de.maxhenkel.car.blocks.tileentity.render.TileEntitySpecialRendererTank;
 import de.maxhenkel.car.blocks.tileentity.render.TileentitySpecialRendererGasStation;
+import de.maxhenkel.car.commands.CommandCarDemo;
 import de.maxhenkel.car.dataserializers.DataSerializerItemList;
 import de.maxhenkel.car.entity.car.base.EntityGenericCar;
 import de.maxhenkel.car.entity.model.GenericCarModel;
@@ -54,6 +55,7 @@ import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.network.IContainerFactory;
 import net.minecraftforge.fml.network.NetworkRegistry;
@@ -92,6 +94,7 @@ public class Main {
         FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(VillagerProfession.class, this::registerVillagerProfessions);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::commonSetup);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::configEvent);
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::serverLoad);
 
         ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, Config.SERVER_SPEC);
         ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, Config.CLIENT_SPEC);
@@ -108,6 +111,11 @@ public class Main {
         } else if (event.getConfig().getType() == ModConfig.Type.CLIENT) {
             Config.loadClient();
         }
+    }
+
+    @SubscribeEvent
+    public void serverLoad(FMLServerStartingEvent event) {
+        CommandCarDemo.register(event.getCommandDispatcher());
     }
 
     @OnlyIn(Dist.CLIENT)

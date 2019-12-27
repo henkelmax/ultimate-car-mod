@@ -1,2 +1,1 @@
-- Fixed missing texture
-- Fixed invisible car when summoning
+- Added demo command
