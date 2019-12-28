@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "X  ",
+    "XXX"
+  ],
+  "key": {
+    "X": {
+      "item": "car:tar"
+    }
+  },
+  "result": {
+    "item": "car:tar_slope_flat_lower",
+    "count": 4
+  }
+}

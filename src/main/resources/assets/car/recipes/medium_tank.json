@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "III",
+    "TTT",
+    "III"
+  ],
+  "key": {
+    "I": {
+      "item": "minecraft:iron_ingot"
+    },
+    "T": {
+      "item": "car:tank"
+    }
+  },
+  "result": {
+    "item": "car:medium_tank",
+    "count": 1
+  }
+}

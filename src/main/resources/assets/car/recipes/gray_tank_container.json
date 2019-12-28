@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "CTC",
+    "TTT",
+    "CTC"
+  ],
+  "key": {
+    "C": {
+      "item": "minecraft:concrete",
+      "data": 7
+    },
+    "T": {
+      "item": "car:tank"
+    }
+  },
+  "result": {
+    "item": "car:gray_tank_container",
+    "count": 1
+  }
+}

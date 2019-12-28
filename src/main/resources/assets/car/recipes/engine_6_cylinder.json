@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "III",
+    "EIE",
+    "III"
+  ],
+  "key": {
+    "I": {
+      "item": "minecraft:iron_ingot"
+    },
+    "E": {
+      "item": "car:engine_3_cylinder"
+    }
+  },
+  "result": {
+    "item": "car:engine_6_cylinder",
+    "count": 1
+  }
+}

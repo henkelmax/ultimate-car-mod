@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "   ",
+    "C  ",
+    "CCC"
+  ],
+  "key": {
+    "C": {
+      "item": "minecraft:concrete",
+      "data": 6
+    }
+  },
+  "result": {
+    "item": "car:pink_sport_body",
+    "count": 1
+  }
+}

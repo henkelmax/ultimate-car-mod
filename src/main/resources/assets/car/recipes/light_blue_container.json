@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "CIC",
+    "IHI",
+    "CIC"
+  ],
+  "key": {
+    "C": {
+      "item": "minecraft:concrete",
+      "data": 3
+    },
+    "H": {
+      "item": "minecraft:chest"
+    },
+    "I": {
+      "item": "minecraft:iron_ingot"
+    }
+  },
+  "result": {
+    "item": "car:light_blue_container",
+    "count": 1
+  }
+}

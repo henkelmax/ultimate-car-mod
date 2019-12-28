@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "III",
+    "SWH",
+    "III"
+  ],
+  "key": {
+    "I": {
+      "item": "minecraft:iron_ingot"
+    },
+    "S": {
+      "item": "car:screw_driver"
+    },
+    "W": {
+      "item": "car:wrench"
+    },
+    "H": {
+      "item": "car:hammer"
+    }
+  },
+  "result": {
+    "item": "car:repair_kit",
+    "count": 1
+  }
+}

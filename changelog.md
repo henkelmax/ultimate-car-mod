@@ -1,4 +1,5 @@
-- Ported mod from 1.14.4
+- Moved recipes to JSON
+- Added oredict to iron stick recipes
 
 **This is a very early version. Expect bugs and unfinished stuff!**
 

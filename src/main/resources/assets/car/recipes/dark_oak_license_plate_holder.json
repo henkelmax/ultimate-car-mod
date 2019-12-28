@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "   ",
+    "WIW",
+    "WWW"
+  ],
+  "key": {
+    "W": {
+      "item": "minecraft:planks",
+      "data": 5
+    },
+    "I": {
+      "item": "car:iron_stick"
+    }
+  },
+  "result": {
+    "item": "car:dark_oak_license_plate_holder",
+    "count": 1
+  }
+}

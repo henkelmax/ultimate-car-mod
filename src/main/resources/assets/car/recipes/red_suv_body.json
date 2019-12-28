@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "CC ",
+    "CCC",
+    "CCC"
+  ],
+  "key": {
+    "C": {
+      "item": "minecraft:concrete",
+      "data": 14
+    }
+  },
+  "result": {
+    "item": "car:red_suv_body",
+    "count": 1
+  }
+}

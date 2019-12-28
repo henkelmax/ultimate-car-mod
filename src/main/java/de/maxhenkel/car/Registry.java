@@ -48,6 +48,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.registries.IForgeRegistry;
 
 @Mod.EventBusSubscriber(modid = Main.MODID)
@@ -83,7 +84,9 @@ public class Registry {
 
     @SubscribeEvent
     public static void registerRecipes(RegistryEvent.Register<IRecipe> event) {
-        Reciepes.registerReciepes();
+        OreDictionary.registerOre("stickIron", new ItemStack(ModItems.IRON_STICK));
+        OreDictionary.registerOre("wrench", new ItemStack(ModItems.WRENCH));
+        OreDictionary.registerOre("cropCanola", new ItemStack(ModItems.CANOLA));
 
         event.getRegistry().register(new ReciepeKey().setRegistryName(new ResourceLocation(Main.MODID, "key")));
     }
