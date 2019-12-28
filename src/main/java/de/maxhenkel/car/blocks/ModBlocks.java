@@ -45,6 +45,7 @@ public class ModBlocks {
     public static final BlockCrank CRANK = new BlockCrank();
     public static final BlockSign SIGN = new BlockSign();
     public static final BlockSignPost SIGN_POST = new BlockSignPost();
+    public static final BlockCarPressurePlate CAR_PRESSURE_PLATE = new BlockCarPressurePlate();
 
     public static final FlowingFluidBlock BIO_DIESEL = new CarFluidBlock(() -> ModFluids.BIO_DIESEL);
     public static final FlowingFluidBlock CANOLA_METHANOL_MIX = new CarFluidBlock(() -> ModFluids.CANOLA_METHANOL_MIX);

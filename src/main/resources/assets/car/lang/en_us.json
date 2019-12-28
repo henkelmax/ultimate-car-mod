@@ -140,6 +140,7 @@
     "block.car.line_double_middle_yellow": "Middle Double Line",
     "block.car.line_double_end": "End Double Line",
     "block.car.line_double_end_yellow": "End Double Line",
+    "block.car.car_pressure_plate": "Car Pressure Plate",
 
     "item.car.painter": "Painter",
     "item.car.painter_yellow": "Yellow Painter",
