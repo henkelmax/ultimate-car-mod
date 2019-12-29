@@ -164,10 +164,10 @@ public class Main {
     @SubscribeEvent
     @OnlyIn(Dist.CLIENT)
     public void clientSetup(FMLClientSetupEvent event) {
-        ClientRegistry.bindTileEntityRenderer(FUEL_STATION_TILE_ENTITY_TYPE, tileEntityRendererDispatcher -> new TileentitySpecialRendererGasStation(tileEntityRendererDispatcher));
-        ClientRegistry.bindTileEntityRenderer(SPLIT_TANK_TILE_ENTITY_TYPE, tileEntityRendererDispatcher -> new TileEntitySpecialRendererSplitTank(tileEntityRendererDispatcher));
-        ClientRegistry.bindTileEntityRenderer(TANK_TILE_ENTITY_TYPE, tileEntityRendererDispatcher -> new TileEntitySpecialRendererTank(tileEntityRendererDispatcher));
-        ClientRegistry.bindTileEntityRenderer(SIGN_TILE_ENTITY_TYPE, tileEntityRendererDispatcher -> new TileEntitySpecialRendererSign(tileEntityRendererDispatcher));
+        ClientRegistry.bindTileEntityRenderer(FUEL_STATION_TILE_ENTITY_TYPE, TileentitySpecialRendererGasStation::new);
+        ClientRegistry.bindTileEntityRenderer(SPLIT_TANK_TILE_ENTITY_TYPE, TileEntitySpecialRendererSplitTank::new);
+        ClientRegistry.bindTileEntityRenderer(TANK_TILE_ENTITY_TYPE, TileEntitySpecialRendererTank::new);
+        ClientRegistry.bindTileEntityRenderer(SIGN_TILE_ENTITY_TYPE, TileEntitySpecialRendererSign::new);
 
         ScreenManager.IScreenFactory factory1 = (ScreenManager.IScreenFactory<ContainerBackmixReactor, GuiBackmixReactor>) GuiBackmixReactor::new;
         ScreenManager.registerFactory(Main.BACKMIX_REACTOR_CONTAINER_TYPE, factory1);
