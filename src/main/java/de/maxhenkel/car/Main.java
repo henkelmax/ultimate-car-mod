@@ -24,7 +24,6 @@ import de.maxhenkel.car.villagers.VillagerEvents;
 import de.maxhenkel.tools.EntityTools;
 import net.minecraft.block.Block;
 import net.minecraft.client.gui.ScreenManager;
-import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
@@ -165,10 +164,10 @@ public class Main {
     @SubscribeEvent
     @OnlyIn(Dist.CLIENT)
     public void clientSetup(FMLClientSetupEvent event) {
-        ClientRegistry.bindTileEntityRenderer(FUEL_STATION_TILE_ENTITY_TYPE, new TileentitySpecialRendererGasStation(TileEntityRendererDispatcher.instance));
-        ClientRegistry.bindTileEntityRenderer(SPLIT_TANK_TILE_ENTITY_TYPE, new TileEntitySpecialRendererSplitTank(TileEntityRendererDispatcher.instance));
-        ClientRegistry.bindTileEntityRenderer(TANK_TILE_ENTITY_TYPE, new TileEntitySpecialRendererTank(TileEntityRendererDispatcher.instance));
-        ClientRegistry.bindTileEntityRenderer(SIGN_TILE_ENTITY_TYPE, new TileEntitySpecialRendererSign(TileEntityRendererDispatcher.instance));
+        ClientRegistry.bindTileEntityRenderer(FUEL_STATION_TILE_ENTITY_TYPE, tileEntityRendererDispatcher -> new TileentitySpecialRendererGasStation(tileEntityRendererDispatcher));
+        ClientRegistry.bindTileEntityRenderer(SPLIT_TANK_TILE_ENTITY_TYPE, tileEntityRendererDispatcher -> new TileEntitySpecialRendererSplitTank(tileEntityRendererDispatcher));
+        ClientRegistry.bindTileEntityRenderer(TANK_TILE_ENTITY_TYPE, tileEntityRendererDispatcher -> new TileEntitySpecialRendererTank(tileEntityRendererDispatcher));
+        ClientRegistry.bindTileEntityRenderer(SIGN_TILE_ENTITY_TYPE, tileEntityRendererDispatcher -> new TileEntitySpecialRendererSign(tileEntityRendererDispatcher));
 
         ScreenManager.IScreenFactory factory1 = (ScreenManager.IScreenFactory<ContainerBackmixReactor, GuiBackmixReactor>) GuiBackmixReactor::new;
         ScreenManager.registerFactory(Main.BACKMIX_REACTOR_CONTAINER_TYPE, factory1);
