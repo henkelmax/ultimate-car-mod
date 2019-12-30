@@ -1,1 +1,1 @@
-- Fixed crash with forge 30.0.17+
+- Fixed sound settings car volume slider

@@ -32,7 +32,7 @@ public class SoundEvents {
         try {
             Field parentField = null;
 
-            for (Field field : sounds.getClass().getDeclaredFields()) {
+            for (Field field : sounds.getClass().getSuperclass().getDeclaredFields()) {
                 if (field.getType().equals(Screen.class)) {
                     parentField = field;
                     break;
