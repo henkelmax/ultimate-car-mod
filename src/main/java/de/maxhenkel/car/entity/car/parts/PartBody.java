@@ -1,6 +1,7 @@
 package de.maxhenkel.car.entity.car.parts;
 
 import de.maxhenkel.car.entity.model.obj.OBJModel;
+import de.maxhenkel.tools.FloatSupplier;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.ITextComponent;
@@ -17,23 +18,9 @@ public class PartBody extends PartModel {
     protected float height;
     protected float minRotationSpeed;
     protected float maxRotationSpeed;
-    protected float fuelEfficiency;
-    protected float acceleration;
-    protected float maxSpeed;
-
-    public PartBody(OBJModel model, ResourceLocation texture, Vec3d offset, Vec3d[] wheelOffsets, Vec3d[] playerOffsets, Vec3d numberPlateOffset, float width, float height, float minRotationSpeed, float maxRotationSpeed, float fuelEfficiency, float acceleration, float maxSpeed) {
-        super(model, texture, offset);
-        this.wheelOffsets = wheelOffsets;
-        this.playerOffsets = playerOffsets;
-        this.numberPlateOffset = numberPlateOffset;
-        this.width = width;
-        this.height = height;
-        this.minRotationSpeed = minRotationSpeed;
-        this.maxRotationSpeed = maxRotationSpeed;
-        this.fuelEfficiency = fuelEfficiency;
-        this.acceleration = acceleration;
-        this.maxSpeed = maxSpeed;
-    }
+    protected FloatSupplier fuelEfficiency;
+    protected FloatSupplier acceleration;
+    protected FloatSupplier maxSpeed;
 
     public PartBody(OBJModel model, ResourceLocation texture, Vec3d offset) {
         super(model, texture, offset);
@@ -72,15 +59,15 @@ public class PartBody extends PartModel {
     }
 
     public float getFuelEfficiency() {
-        return fuelEfficiency;
+        return fuelEfficiency.getAsFloat();
     }
 
     public float getAcceleration() {
-        return acceleration;
+        return acceleration.getAsFloat();
     }
 
     public float getMaxSpeed() {
-        return maxSpeed;
+        return maxSpeed.getAsFloat();
     }
 
     public boolean canFitWheel(PartWheelBase wheel) {

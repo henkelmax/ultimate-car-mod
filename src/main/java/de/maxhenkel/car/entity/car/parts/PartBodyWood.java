@@ -26,8 +26,8 @@ public class PartBodyWood extends PartBodyWoodBase {
         this.height = 1.6F;
         this.minRotationSpeed = 2F;
         this.maxRotationSpeed = 5F;
-        this.fuelEfficiency = Config.bodyWoodFuelEfficiency;
-        this.acceleration = Config.bodyWoodAcceleration;
-        this.maxSpeed = Config.bodyWoodMaxSpeed;
+        this.fuelEfficiency = () -> Config.bodyWoodFuelEfficiency.get().floatValue();
+        this.acceleration = () -> Config.bodyWoodAcceleration.get().floatValue();
+        this.maxSpeed = () -> Config.bodyWoodMaxSpeed.get().floatValue();
     }
 }

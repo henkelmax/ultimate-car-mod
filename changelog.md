@@ -1,1 +1,2 @@
-- Fixed sound settings car volume slider
+- Re-added part configs
+- Added off- and onroad ground speed modifiers

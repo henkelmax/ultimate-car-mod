@@ -25,8 +25,8 @@ public class PartBodySport extends PartBody {
         this.height = 1.2F;
         this.minRotationSpeed = 1.1F;
         this.maxRotationSpeed = 5F;
-        this.fuelEfficiency = Config.bodySportFuelEfficiency;
-        this.acceleration = Config.bodySportAcceleration;
-        this.maxSpeed = Config.bodySportMaxSpeed;
+        this.fuelEfficiency = () -> Config.bodySportFuelEfficiency.get().floatValue();
+        this.acceleration = () -> Config.bodySportAcceleration.get().floatValue();
+        this.maxSpeed = () -> Config.bodySportMaxSpeed.get().floatValue();
     }
 }

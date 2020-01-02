@@ -25,9 +25,9 @@ public class PartBodySUV extends PartBody {
         this.height = 1.4F;
         this.minRotationSpeed = 1.1F;
         this.maxRotationSpeed = 5F;
-        this.fuelEfficiency = Config.bodySUVFuelEfficiency;
-        this.acceleration = Config.bodySUVAcceleration;
-        this.maxSpeed = Config.bodySUVMaxSpeed;
+        this.fuelEfficiency = () -> Config.bodySUVFuelEfficiency.get().floatValue();
+        this.acceleration = () -> Config.bodySUVAcceleration.get().floatValue();
+        this.maxSpeed = () -> Config.bodySUVMaxSpeed.get().floatValue();
     }
 
     @Override

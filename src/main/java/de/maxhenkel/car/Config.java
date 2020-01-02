@@ -64,7 +64,8 @@ public class Config {
     public static ForgeConfigSpec.DoubleValue carVolume;
 
     public static ForgeConfigSpec.BooleanValue thirdPersonEnter;
-    public static ForgeConfigSpec.BooleanValue carGroundSpeed;
+    public static ForgeConfigSpec.DoubleValue carOffroadSpeed;
+    public static ForgeConfigSpec.DoubleValue carOnroadSpeed;
     public static ForgeConfigSpec.ConfigValue<List<? extends String>> carDriveBlocks;
     public static ForgeConfigSpec.ConfigValue<List<? extends String>> carValidFuels;
 
@@ -74,75 +75,41 @@ public class Config {
     public static ForgeConfigSpec.BooleanValue useBattery;
     public static ForgeConfigSpec.BooleanValue tempInFarenheit;
 
-    public static float engine6CylinderFuelEfficiency = 0.25F;
-    public static float engine3CylinderFuelEfficiency = 0.5F;
-    public static float engineTruckFuelEfficiency = 0.7F;
+    public static ForgeConfigSpec.DoubleValue engine6CylinderFuelEfficiency;
+    public static ForgeConfigSpec.DoubleValue engine3CylinderFuelEfficiency;
+    public static ForgeConfigSpec.DoubleValue engineTruckFuelEfficiency;
 
-    public static float engine6CylinderAcceleration = 0.04F;
-    public static float engine3CylinderAcceleration = 0.035F;
-    public static float engineTruckAcceleration = 0.032F;
+    public static ForgeConfigSpec.DoubleValue engine6CylinderAcceleration;
+    public static ForgeConfigSpec.DoubleValue engine3CylinderAcceleration;
+    public static ForgeConfigSpec.DoubleValue engineTruckAcceleration;
 
-    public static float engine6CylinderMaxSpeed = 0.75F;
-    public static float engine3CylinderMaxSpeed = 0.65F;
-    public static float engineTruckMaxSpeed = 0.6F;
+    public static ForgeConfigSpec.DoubleValue engine6CylinderMaxSpeed;
+    public static ForgeConfigSpec.DoubleValue engine3CylinderMaxSpeed;
+    public static ForgeConfigSpec.DoubleValue engineTruckMaxSpeed;
 
-    public static float engine6CylinderMaxReverseSpeed = 0.2F;
-    public static float engine3CylinderMaxReverseSpeed = 0.2F;
-    public static float engineTruckMaxReverseSpeed = 0.15F;
+    public static ForgeConfigSpec.DoubleValue engine6CylinderMaxReverseSpeed;
+    public static ForgeConfigSpec.DoubleValue engine3CylinderMaxReverseSpeed;
+    public static ForgeConfigSpec.DoubleValue engineTruckMaxReverseSpeed;
 
-    public static float bodyBigWoodFuelEfficiency = 0.7F;
-    public static float bodyBigWoodAcceleration = 0.95F;
-    public static float bodyBigWoodMaxSpeed = 0.85F;
+    public static ForgeConfigSpec.DoubleValue bodyBigWoodFuelEfficiency;
+    public static ForgeConfigSpec.DoubleValue bodyBigWoodAcceleration;
+    public static ForgeConfigSpec.DoubleValue bodyBigWoodMaxSpeed;
 
-    public static float bodyWoodFuelEfficiency = 0.8F;
-    public static float bodyWoodAcceleration = 1F;
-    public static float bodyWoodMaxSpeed = 0.9F;
+    public static ForgeConfigSpec.DoubleValue bodyWoodFuelEfficiency;
+    public static ForgeConfigSpec.DoubleValue bodyWoodAcceleration;
+    public static ForgeConfigSpec.DoubleValue bodyWoodMaxSpeed;
 
-    public static float bodySportFuelEfficiency = 0.9F;
-    public static float bodySportAcceleration = 1F;
-    public static float bodySportMaxSpeed = 1F;
+    public static ForgeConfigSpec.DoubleValue bodySportFuelEfficiency;
+    public static ForgeConfigSpec.DoubleValue bodySportAcceleration;
+    public static ForgeConfigSpec.DoubleValue bodySportMaxSpeed;
 
-    public static float bodySUVFuelEfficiency = 0.6F;
-    public static float bodySUVAcceleration = 0.8F;
-    public static float bodySUVMaxSpeed = 0.7F;
+    public static ForgeConfigSpec.DoubleValue bodySUVFuelEfficiency;
+    public static ForgeConfigSpec.DoubleValue bodySUVAcceleration;
+    public static ForgeConfigSpec.DoubleValue bodySUVMaxSpeed;
 
-    public static float bodyTransporterFuelEfficiency = 0.6F;
-    public static float bodyTransporterAcceleration = 0.8F;
-    public static float bodyTransporterMaxSpeed = 0.765F;
-
-    /*
-    public static ForgeConfigSpec.DoubleValue engine6CylinderFuelEfficiency;// = 0.25F;
-    public static ForgeConfigSpec.DoubleValue engine3CylinderFuelEfficiency;// = 0.6F;
-
-    public static ForgeConfigSpec.DoubleValue engine6CylinderAcceleration;// = 0.04F;
-    public static ForgeConfigSpec.DoubleValue engine3CylinderAcceleration;// = 0.032F;
-
-    public static ForgeConfigSpec.DoubleValue engine6CylinderMaxSpeed;// = 0.65F;
-    public static ForgeConfigSpec.DoubleValue engine3CylinderMaxSpeed;// = 0.5F;
-
-    public static ForgeConfigSpec.DoubleValue engine6CylinderMaxReverseSpeed;// = 0.2F;
-    public static ForgeConfigSpec.DoubleValue engine3CylinderMaxReverseSpeed;// = 0.2F;
-
-    public static ForgeConfigSpec.DoubleValue bodyBigWoodFuelEfficiency;// = 0.7F;
-    public static ForgeConfigSpec.DoubleValue bodyBigWoodAcceleration;// = 0.95F;
-    public static ForgeConfigSpec.DoubleValue bodyBigWoodMaxSpeed;// = 0.85F;
-
-    public static ForgeConfigSpec.DoubleValue bodyWoodFuelEfficiency;// = 0.8F;
-    public static ForgeConfigSpec.DoubleValue bodyWoodAcceleration;// = 1F;
-    public static ForgeConfigSpec.DoubleValue bodyWoodMaxSpeed;// = 0.9F;
-
-    public static ForgeConfigSpec.DoubleValue bodySportFuelEfficiency;// = 0.9F;
-    public static ForgeConfigSpec.DoubleValue bodySportAcceleration;// = 1F;
-    public static ForgeConfigSpec.DoubleValue bodySportMaxSpeed;// = 1F;
-
-    public static ForgeConfigSpec.DoubleValue bodySUVFuelEfficiency;// = 0.6F;
-    public static ForgeConfigSpec.DoubleValue bodySUVAcceleration;// = 0.8F;
-    public static ForgeConfigSpec.DoubleValue bodySUVMaxSpeed;// = 0.7F;
-
-    public static ForgeConfigSpec.DoubleValue bodyTransporterFuelEfficiency;// = 0.6F;
-    public static ForgeConfigSpec.DoubleValue bodyTransporterAcceleration;// = 0.8F;
-    public static ForgeConfigSpec.DoubleValue bodyTransporterMaxSpeed;// = 0.765F;
-    */
+    public static ForgeConfigSpec.DoubleValue bodyTransporterFuelEfficiency;
+    public static ForgeConfigSpec.DoubleValue bodyTransporterAcceleration;
+    public static ForgeConfigSpec.DoubleValue bodyTransporterMaxSpeed;
 
     public static List<Fluid> gasStationValidFuelList = new ArrayList<>();
     public static List<Block> carDriveBlockList = new ArrayList<>();
@@ -226,7 +193,8 @@ public class Config {
             hornFlee = builder.comment("Whether animals flee from the car when the horn is activted").define("car.horn_flee", true);
             useBattery = builder.comment("True if starting the car should use battery").define("car.use_battery", true);
 
-            carGroundSpeed = builder.comment("Whether the cars drive slower on non road blocks").define("car.road_blocks_enabled", false);
+            carOffroadSpeed = builder.comment("The speed modifier for cars on non road blocks").defineInRange("car.offroad_speed_modifier", 1D, 0.001D, 10D);
+            carOnroadSpeed = builder.comment("The speed modifier for cars on road blocks").defineInRange("car.onroad_speed_modifier", 1D, 0.001D, 10D);
             carDriveBlocks = builder.defineList("car.road_blocks.blocks", Arrays.asList(
                     ModBlocks.ASPHALT.getRegistryName().toString(),
                     ModBlocks.ASPHALT_SLAB.getRegistryName().toString(),
@@ -237,30 +205,34 @@ public class Config {
             carValidFuels = builder.defineList("car.valid_fuels", Arrays.asList(ModFluids.BIO_DIESEL.getRegistryName().toString()), Objects::nonNull);
 
 
-            /*engine6CylinderFuelEfficiency = builder.defineInRange("car_parts.car_6_cylinder_fuel_efficiency", 0.25F, 0.001F, 10F);
-            engine3CylinderFuelEfficiency = builder.defineInRange("car_parts.car_3_cylinder_fuel_efficiency", 0.6F, 0.001F, 10F);
-            engine6CylinderAcceleration = builder.defineInRange("car_parts.car_6_cylinder_acceleration", 0.04F, 0.001F, 10F);
-            engine3CylinderAcceleration = builder.defineInRange("car_parts.car_3_cylinder_acceleration", 0.032F, 0.001F, 10F);
-            engine6CylinderMaxSpeed = builder.defineInRange("car_parts.car_6_cylinder_max_speed", 0.65F, 0.001F, 10F);
-            engine3CylinderMaxSpeed = builder.defineInRange("car_parts.car_3_cylinder_max_speed", 0.5F, 0.001F, 10F);
-            engine6CylinderMaxReverseSpeed = builder.defineInRange("car_parts.car_6_cylinder_max_reverse_speed", 0.2F, 0.001F, 10F);
-            engine3CylinderMaxReverseSpeed = builder.defineInRange("car_parts.car_3_cylinder_max_reverse_speed", 0.2F, 0.001F, 10F);
-            bodyBigWoodFuelEfficiency = builder.defineInRange("car_parts.", 0.7F, 0.001F, 10F);
-            bodyBigWoodAcceleration = builder.defineInRange("car_parts.car_body_big_wood_acceleration", 0.95F, 0.001F, 10F);
-            bodyBigWoodMaxSpeed = builder.defineInRange("car_parts.car_body_big_wood_max_speed", 0.85F, 0.001F, 10F);
-            bodyWoodFuelEfficiency = builder.defineInRange("car_parts.car_body_wood_fuel_efficiency", 0.8F, 0.001F, 10F);
-            bodyWoodAcceleration = builder.defineInRange("car_parts.car_body_wood_acceleration", 1F, 0.001F, 10F);
-            bodyWoodMaxSpeed = builder.defineInRange("car_parts.car_body_wood_max_speed", 0.9F, 0.001F, 10F);
-            bodySportFuelEfficiency = builder.defineInRange("car_parts.car_body_sport_fuel_efficiency", 0.9F, 0.001F, 10F);
-            bodySportAcceleration = builder.defineInRange("car_parts.car_body_sport_acceleration", 1F, 0.001F, 10F);
-            bodySportMaxSpeed = builder.defineInRange("car_parts.car_body_sport_max_speed", 1F, 0.001F, 10F);
-            bodySUVFuelEfficiency = builder.defineInRange("car_parts.car_body_suv_fuel_efficiency", 0.6F, 0.001F, 10F);
-            bodySUVAcceleration = builder.defineInRange("car_parts.car_body_suv_acceleration", 0.8F, 0.001F, 10F);
-            bodySUVMaxSpeed = builder.defineInRange("car_parts.car_body_suv_max_speed", 0.7F, 0.001F, 10F);
-            bodyTransporterFuelEfficiency = builder.defineInRange("car_parts.car_body_transporter_fuel_efficiency", 0.6F, 0.001F, 10F);
-            bodyTransporterAcceleration = builder.defineInRange("car_parts.car_body_transporter_acceleration", 0.8F, 0.001F, 10F);
-            bodyTransporterMaxSpeed = builder.defineInRange("car_parts.car_body_transporter_max_speed", 0.765F, 0.001F, 10F);
-            */
+            engine6CylinderFuelEfficiency = builder.defineInRange("car.parts.engine_6_cylinder.fuel_efficiency", 0.25D, 0.001D, 10D);
+            engine3CylinderFuelEfficiency = builder.defineInRange("car.parts.engine_3_cylinder.fuel_efficiency", 0.5D, 0.001D, 10D);
+            engineTruckFuelEfficiency = builder.defineInRange("car.parts.engine_truck.fuel_efficiency", 0.7D, 0.001D, 10D);
+            engine6CylinderAcceleration = builder.defineInRange("car.parts.engine_6_cylinder.acceleration", 0.04D, 0.001D, 10D);
+            engine3CylinderAcceleration = builder.defineInRange("car.parts.engine_3_cylinder.acceleration", 0.035D, 0.001D, 10D);
+            engineTruckAcceleration = builder.defineInRange("car.parts.engine_truck.acceleration", 0.032D, 0.001D, 10D);
+            engine6CylinderMaxSpeed = builder.defineInRange("car.parts.engine_6_cylinder.max_speed", 0.75D, 0.001D, 10D);
+            engine3CylinderMaxSpeed = builder.defineInRange("car.parts.engine_3_cylinder.max_speed", 0.65D, 0.001D, 10D);
+            engineTruckMaxSpeed = builder.defineInRange("car.parts.engine_truck.max_speed", 0.6D, 0.001D, 10D);
+            engine6CylinderMaxReverseSpeed = builder.defineInRange("car.parts.engine_6_cylinder.max_reverse_speed", 0.2D, 0.001D, 10D);
+            engine3CylinderMaxReverseSpeed = builder.defineInRange("car.parts.engine_3_cylinder.max_reverse_speed", 0.2D, 0.001D, 10D);
+            engineTruckMaxReverseSpeed = builder.defineInRange("car.parts.engine_truck.max_reverse_speed", 0.15D, 0.001D, 10D);
+
+            bodyBigWoodFuelEfficiency = builder.defineInRange("car.parts.body_big_wood.fuel_efficiency", 0.7D, 0.001D, 10D);
+            bodyBigWoodAcceleration = builder.defineInRange("car.parts.body_big_wood.acceleration", 0.95D, 0.001D, 10D);
+            bodyBigWoodMaxSpeed = builder.defineInRange("car.parts.body_big_wood.max_speed", 0.85D, 0.001D, 10D);
+            bodyWoodFuelEfficiency = builder.defineInRange("car.parts.body_wood.fuel_efficiency", 0.8D, 0.001D, 10D);
+            bodyWoodAcceleration = builder.defineInRange("car.parts.body_wood.acceleration", 1D, 0.001D, 10D);
+            bodyWoodMaxSpeed = builder.defineInRange("car.parts.body_wood.max_speed", 0.9D, 0.001D, 10D);
+            bodySportFuelEfficiency = builder.defineInRange("car.parts.body_sport.fuel_efficiency", 0.9D, 0.001D, 10D);
+            bodySportAcceleration = builder.defineInRange("car.parts.body_sport.acceleration", 1D, 0.001D, 10D);
+            bodySportMaxSpeed = builder.defineInRange("car.parts.body_sport.max_speed", 1D, 0.001D, 10D);
+            bodySUVFuelEfficiency = builder.defineInRange("car.parts.body_suv.fuel_efficiency", 0.6D, 0.001D, 10D);
+            bodySUVAcceleration = builder.defineInRange("car.parts.body_suv.acceleration", 0.8D, 0.001D, 10D);
+            bodySUVMaxSpeed = builder.defineInRange("car.parts.body_suv.max_speed", 0.7D, 0.001D, 10D);
+            bodyTransporterFuelEfficiency = builder.defineInRange("car.parts.body_transporter.fuel_efficiency", 0.6D, 0.001D, 10D);
+            bodyTransporterAcceleration = builder.defineInRange("car.parts.body_transporter.acceleration", 0.8D, 0.001D, 10D);
+            bodyTransporterMaxSpeed = builder.defineInRange("car.parts.body_transporter.max_speed", 0.765D, 0.001D, 10D);
         }
     }
 

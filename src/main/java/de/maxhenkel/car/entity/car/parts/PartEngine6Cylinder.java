@@ -4,10 +4,13 @@ import de.maxhenkel.car.Config;
 import de.maxhenkel.car.sounds.ModSounds;
 import net.minecraft.util.SoundEvent;
 
-public class PartEngine6Cylinder extends PartEngine{
+public class PartEngine6Cylinder extends PartEngine {
 
     public PartEngine6Cylinder() {
-        super(Config.engine6CylinderMaxSpeed, Config.engine6CylinderMaxReverseSpeed, Config.engine6CylinderAcceleration, Config.engine6CylinderFuelEfficiency);
+        this.maxSpeed = () -> Config.engine6CylinderMaxSpeed.get().floatValue();
+        this.maxReverseSpeed = () -> Config.engine6CylinderMaxReverseSpeed.get().floatValue();
+        this.acceleration = () -> Config.engine6CylinderAcceleration.get().floatValue();
+        this.fuelEfficiency = () -> Config.engine6CylinderFuelEfficiency.get().floatValue();
     }
 
     @Override

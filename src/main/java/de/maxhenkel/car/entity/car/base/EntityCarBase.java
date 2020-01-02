@@ -203,11 +203,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
             setRight(false);
         }
 
-        float modifier = 1F;
-
-        if (Config.carGroundSpeed.get()) {
-            modifier = getModifier();
-        }
+        float modifier = getModifier();
 
         float maxSp = getMaxSpeed() * modifier;
         float maxBackSp = getMaxReverseSpeed() * modifier;
@@ -277,14 +273,10 @@ public abstract class EntityCarBase extends EntityVehicleBase {
         BlockPos pos = new BlockPos(func_226277_ct_(), func_226278_cu_() - 0.1D, func_226281_cx_());
         BlockState state = world.getBlockState(pos);
 
-        if (state.isAir(world, pos)) {
-            return 1;
-        }
-
-        if (Config.carDriveBlockList.contains(state.getBlock())) {
-            return 1F;
+        if (state.isAir(world, pos) || Config.carDriveBlockList.contains(state.getBlock())) {
+            return Config.carOnroadSpeed.get().floatValue();
         } else {
-            return 0.5F;
+            return Config.carOffroadSpeed.get().floatValue();
         }
     }
 
@@ -399,12 +391,12 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 
     @Override
     protected void registerData() {
-        this.dataManager.register(STARTED, Boolean.valueOf(false));
-        this.dataManager.register(SPEED, Float.valueOf(0));
-        this.dataManager.register(FORWARD, Boolean.valueOf(false));
-        this.dataManager.register(BACKWARD, Boolean.valueOf(false));
-        this.dataManager.register(LEFT, Boolean.valueOf(false));
-        this.dataManager.register(RIGHT, Boolean.valueOf(false));
+        this.dataManager.register(STARTED, false);
+        this.dataManager.register(SPEED, 0F);
+        this.dataManager.register(FORWARD, false);
+        this.dataManager.register(BACKWARD, false);
+        this.dataManager.register(LEFT, false);
+        this.dataManager.register(RIGHT, false);
     }
 
     public void setSpeed(float speed) {
@@ -431,7 +423,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
             setLeft(false);
             setRight(false);
         }
-        this.dataManager.set(STARTED, Boolean.valueOf(started));
+        this.dataManager.set(STARTED, started);
     }
 
     public boolean isStarted() {
@@ -439,7 +431,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
     }
 
     public void setForward(boolean forward) {
-        this.dataManager.set(FORWARD, Boolean.valueOf(forward));
+        this.dataManager.set(FORWARD, forward);
     }
 
     public boolean isForward() {
@@ -450,7 +442,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
     }
 
     public void setBackward(boolean backward) {
-        this.dataManager.set(BACKWARD, Boolean.valueOf(backward));
+        this.dataManager.set(BACKWARD, backward);
     }
 
     public boolean isBackward() {
@@ -461,7 +453,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
     }
 
     public void setLeft(boolean left) {
-        this.dataManager.set(LEFT, Boolean.valueOf(left));
+        this.dataManager.set(LEFT, left);
     }
 
     public boolean isLeft() {
@@ -469,7 +461,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
     }
 
     public void setRight(boolean right) {
-        this.dataManager.set(RIGHT, Boolean.valueOf(right));
+        this.dataManager.set(RIGHT, right);
     }
 
     public boolean isRight() {

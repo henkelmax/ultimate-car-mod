@@ -7,7 +7,10 @@ import net.minecraft.util.SoundEvent;
 public class PartEngineTruck extends PartEngine {
 
     public PartEngineTruck() {
-        super(Config.engineTruckMaxSpeed, Config.engineTruckMaxReverseSpeed, Config.engineTruckAcceleration, Config.engineTruckFuelEfficiency);
+        this.maxSpeed = () -> Config.engineTruckMaxSpeed.get().floatValue();
+        this.maxReverseSpeed = () -> Config.engineTruckMaxReverseSpeed.get().floatValue();
+        this.acceleration = () -> Config.engineTruckAcceleration.get().floatValue();
+        this.fuelEfficiency = () -> Config.engineTruckFuelEfficiency.get().floatValue();
     }
 
     @Override

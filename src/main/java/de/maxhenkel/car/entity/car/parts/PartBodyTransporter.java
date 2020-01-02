@@ -32,9 +32,9 @@ public class PartBodyTransporter extends PartBody {
         this.height = 1.51F;
         this.minRotationSpeed = 2.0F;
         this.maxRotationSpeed = 5F;
-        this.fuelEfficiency = Config.bodyTransporterFuelEfficiency;
-        this.acceleration = Config.bodyTransporterAcceleration;
-        this.maxSpeed = Config.bodyTransporterMaxSpeed;
+        this.fuelEfficiency = () -> Config.bodyTransporterFuelEfficiency.get().floatValue();
+        this.acceleration = () -> Config.bodyTransporterAcceleration.get().floatValue();
+        this.maxSpeed = () -> Config.bodyTransporterMaxSpeed.get().floatValue();
     }
 
     @Override
