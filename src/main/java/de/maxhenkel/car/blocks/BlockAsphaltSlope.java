@@ -1,7 +1,5 @@
 package de.maxhenkel.car.blocks;
 
-import java.util.Map;
-
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import de.maxhenkel.tools.VoxelShapeTools;
@@ -13,11 +11,12 @@ import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
 
+import java.util.Map;
+
 public class BlockAsphaltSlope extends BlockSlope {
 
     public BlockAsphaltSlope() {
         super("asphalt_slope");
-
     }
 
     @Override

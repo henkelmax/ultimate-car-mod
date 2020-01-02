@@ -12,12 +12,16 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.fluid.Fluids;
+import net.minecraft.fluid.IFluidState;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.Item;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer;
+import net.minecraft.state.properties.BlockStateProperties;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
@@ -28,11 +32,12 @@ import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 
-public class BlockFluidExtractor extends BlockBase implements ITileEntityProvider, IItemBlock {
+public class BlockFluidExtractor extends BlockBase implements ITileEntityProvider, IItemBlock, IWaterLoggable {
 
     public static final DirectionProperty FACING = DirectionProperty.create("facing", Direction.values());
     public static final BooleanProperty DOWN = BooleanProperty.create("down");
@@ -41,6 +46,7 @@ public class BlockFluidExtractor extends BlockBase implements ITileEntityProvide
     public static final BooleanProperty SOUTH = BooleanProperty.create("south");
     public static final BooleanProperty WEST = BooleanProperty.create("west");
     public static final BooleanProperty EAST = BooleanProperty.create("east");
+    public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
     protected BlockFluidExtractor() {
         super(Properties.create(Material.WOOL, MaterialColor.GRAY).hardnessAndResistance(0.5F).sound(SoundType.METAL));
@@ -54,6 +60,7 @@ public class BlockFluidExtractor extends BlockBase implements ITileEntityProvide
                 .with(SOUTH, false)
                 .with(EAST, false)
                 .with(WEST, false)
+                .with(WATERLOGGED, false)
         );
     }
 
@@ -86,13 +93,23 @@ public class BlockFluidExtractor extends BlockBase implements ITileEntityProvide
     }
 
     private BlockState getState(World world, BlockPos pos, Direction except) {
+        IFluidState ifluidstate = world.getFluidState(pos);
         return getDefaultState()
-                .with(UP, except.equals(Direction.UP) ? false : BlockFluidPipe.isConnectedTo(world, pos, Direction.UP))
-                .with(DOWN, except.equals(Direction.DOWN) ? false : BlockFluidPipe.isConnectedTo(world, pos, Direction.DOWN))
-                .with(NORTH, except.equals(Direction.NORTH) ? false : BlockFluidPipe.isConnectedTo(world, pos, Direction.NORTH))
-                .with(SOUTH, except.equals(Direction.SOUTH) ? false : BlockFluidPipe.isConnectedTo(world, pos, Direction.SOUTH))
-                .with(EAST, except.equals(Direction.EAST) ? false : BlockFluidPipe.isConnectedTo(world, pos, Direction.EAST))
-                .with(WEST, except.equals(Direction.WEST) ? false : BlockFluidPipe.isConnectedTo(world, pos, Direction.WEST));
+                .with(UP, !except.equals(Direction.UP) && BlockFluidPipe.isConnectedTo(world, pos, Direction.UP))
+                .with(DOWN, !except.equals(Direction.DOWN) && BlockFluidPipe.isConnectedTo(world, pos, Direction.DOWN))
+                .with(NORTH, !except.equals(Direction.NORTH) && BlockFluidPipe.isConnectedTo(world, pos, Direction.NORTH))
+                .with(SOUTH, !except.equals(Direction.SOUTH) && BlockFluidPipe.isConnectedTo(world, pos, Direction.SOUTH))
+                .with(EAST, !except.equals(Direction.EAST) && BlockFluidPipe.isConnectedTo(world, pos, Direction.EAST))
+                .with(WEST, !except.equals(Direction.WEST) && BlockFluidPipe.isConnectedTo(world, pos, Direction.WEST))
+                .with(WATERLOGGED, ifluidstate.isTagged(FluidTags.WATER) && ifluidstate.getLevel() == 8);
+    }
+
+    @Override
+    public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos) {
+        if (stateIn.get(WATERLOGGED)) {
+            worldIn.getPendingFluidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickRate(worldIn));
+        }
+        return super.updatePostPlacement(stateIn, facing, facingState, worldIn, currentPos, facingPos);
     }
 
     @Override
@@ -104,7 +121,7 @@ public class BlockFluidExtractor extends BlockBase implements ITileEntityProvide
 
     @Override
     protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
-        builder.add(FACING, UP, DOWN, NORTH, SOUTH, EAST, WEST);
+        builder.add(FACING, UP, DOWN, NORTH, SOUTH, EAST, WEST, WATERLOGGED);
     }
 
     public static final VoxelShape SHAPE_NORTH = Block.makeCuboidShape(6D, 6D, 6D, 10D, 10D, 0D);
@@ -164,6 +181,11 @@ public class BlockFluidExtractor extends BlockBase implements ITileEntityProvide
                 break;
         }
         return shape;
+    }
+
+    @Override
+    public IFluidState getFluidState(BlockState state) {
+        return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
     }
 
     @Override

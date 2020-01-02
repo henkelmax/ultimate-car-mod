@@ -1,2 +1,1 @@
-- Re-added part configs
-- Added off- and onroad ground speed modifiers
+- Made blocks waterloggable
