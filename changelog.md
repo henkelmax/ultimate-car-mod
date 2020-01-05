@@ -1,1 +1,1 @@
-- Made blocks waterloggable
+- Fixed crash with latest forge version

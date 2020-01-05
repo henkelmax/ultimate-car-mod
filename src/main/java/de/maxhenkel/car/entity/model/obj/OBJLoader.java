@@ -1,5 +1,6 @@
 package de.maxhenkel.car.entity.model.obj;
 
+import com.google.common.base.Charsets;
 import com.google.common.collect.Lists;
 import joptsimple.internal.Strings;
 import net.minecraft.client.Minecraft;
@@ -8,7 +9,10 @@ import net.minecraft.resources.IResource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.Vec2f;
 
+import javax.annotation.Nullable;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.*;
 
 public class OBJLoader {
@@ -29,7 +33,7 @@ public class OBJLoader {
         }
 
         IResource resource = Minecraft.getInstance().getResourceManager().getResource(model);
-        net.minecraftforge.client.model.obj.OBJLoader.LineReader reader = new net.minecraftforge.client.model.obj.OBJLoader.LineReader(resource);
+        LineReader reader = new LineReader(resource);
 
         List<Vector3f> positions = Lists.newArrayList();
         List<Vec2f> texCoords = Lists.newArrayList();
@@ -85,5 +89,64 @@ public class OBJLoader {
         OBJModel.OBJModelData obj = new OBJModel.OBJModelData(positions, texCoords, normals, faces);
         modelCache.put(model, obj);
         return obj;
+    }
+
+    public static class LineReader implements AutoCloseable {
+        private InputStreamReader lineStream;
+        private BufferedReader lineReader;
+
+        public LineReader(IResource resource) {
+            this.lineStream = new InputStreamReader(resource.getInputStream(), Charsets.UTF_8);
+            this.lineReader = new BufferedReader(lineStream);
+        }
+
+        @Nullable
+        public String[] readAndSplitLine(boolean ignoreEmptyLines) throws IOException {
+            do {
+                String currentLine = lineReader.readLine();
+                if (currentLine == null) {
+                    return null;
+                }
+
+                List<String> lineParts = new ArrayList<>();
+
+                if (currentLine.startsWith("#")) {
+                    currentLine = "";
+                }
+
+                if (currentLine.length() > 0) {
+                    boolean hasContinuation;
+                    do {
+                        hasContinuation = currentLine.endsWith("\\");
+                        String tmp = hasContinuation ? currentLine.substring(0, currentLine.length() - 1) : currentLine;
+
+                        Arrays.stream(tmp.split("[\t ]+")).filter(s -> !Strings.isNullOrEmpty(s)).forEach(lineParts::add);
+
+                        if (hasContinuation) {
+                            currentLine = lineReader.readLine();
+                            if (currentLine == null) {
+                                break;
+                            }
+
+                            if (currentLine.length() == 0 || currentLine.startsWith("#")) {
+                                break;
+                            }
+                        }
+                    } while (hasContinuation);
+                }
+
+                if (lineParts.size() > 0) {
+                    return lineParts.toArray(new String[0]);
+                }
+            } while (ignoreEmptyLines);
+
+            return new String[0];
+        }
+
+        @Override
+        public void close() throws Exception {
+            lineReader.close();
+            lineStream.close();
+        }
     }
 }
