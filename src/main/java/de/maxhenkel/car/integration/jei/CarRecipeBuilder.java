@@ -25,8 +25,13 @@ public class CarRecipeBuilder {
                             recipes.add(new CarRecipe(body, bumper, plate, tank, engine, wheel, wheel, wheel, wheel));
                         }
                     }
+
                     for (ItemStack body : getSUVBodies()) {
                         recipes.add(new CarRecipe(body, plate, tank, engine, largeWheel, largeWheel, largeWheel, largeWheel));
+                    }
+
+                    for (ItemStack body : getSportBodies()) {
+                        recipes.add(new CarRecipe(body, plate, tank, engine, wheel, wheel, wheel, wheel));
                     }
 
                     for (ItemStack container : getAllContainers()) {
@@ -57,6 +62,10 @@ public class CarRecipeBuilder {
 
     public static List<ItemStack> getSUVBodies() {
         return concatItems(ModItems.SUV_BODIES);
+    }
+
+    public static List<ItemStack> getSportBodies() {
+        return concatItems(ModItems.SPORT_BODIES);
     }
 
     public static List<ItemStack> getAllBodies() {

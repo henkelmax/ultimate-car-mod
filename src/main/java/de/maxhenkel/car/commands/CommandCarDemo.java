@@ -31,6 +31,7 @@ public class CommandCarDemo {
         List<ItemStack> transporters = CarRecipeBuilder.getTransporters();
         List<ItemStack> containers = CarRecipeBuilder.getAllContainers();
         List<ItemStack> tankContainers = CarRecipeBuilder.getAllTankContainers();
+        List<ItemStack> sportBodies = CarRecipeBuilder.getSportBodies();
         List<ItemStack> suvBodies = CarRecipeBuilder.getSUVBodies();
         List<ItemStack> bigWoodBodies = CarRecipeBuilder.getAllBigWoodBodies();
         List<ItemStack> woodBodies = CarRecipeBuilder.getAllWoodBodies();
@@ -46,6 +47,14 @@ public class CommandCarDemo {
             double xStart = pos.getX() - bigWoodBodies.size();
             double posX = xStart + i * 3D;
             createCar(world, posX, pos.y, posZ, bigWoodBodies.get(i), wheel, wheel, wheel, wheel, engine, tank);
+        }
+
+        posZ += 3D;
+
+        for (int i = 0; i < sportBodies.size(); i++) {
+            double xStart = pos.getX() - sportBodies.size();
+            double posX = xStart + i * 3D;
+            createCar(world, posX, pos.y, posZ, sportBodies.get(i), largeWheel, largeWheel, largeWheel, largeWheel, engine, tank);
         }
 
         posZ += 3D;

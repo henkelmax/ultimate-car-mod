@@ -1,6 +1,6 @@
 # The Ultimate Car Mod
 
-![cars](https://i.imgur.com/abjWrfE.png)
+![cars](https://i.imgur.com/u6HhpMA.png)
 
 This mod brings cars, road construction and biodiesel production into your minecraft world.
 There are many vehicles with different features to choose from.

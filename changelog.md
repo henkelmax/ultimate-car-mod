@@ -1,1 +1,1 @@
-- Fixed crash with latest forge version
+- Reimplemented JEI integration
