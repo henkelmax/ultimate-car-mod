@@ -1,2 +1,1 @@
-- Fixed experience bar rendering issue
-- Fixed canister refueling crash
+- Fixed crash
