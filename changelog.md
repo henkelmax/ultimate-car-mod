@@ -1,1 +1,1 @@
-- Fixed crash
+- Fixed canister bug
