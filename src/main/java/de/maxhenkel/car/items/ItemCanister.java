@@ -129,11 +129,13 @@ public class ItemCanister extends Item {
             return false;
         }
 
-        if (fluid != null) {
-            FluidStack resultSim = handler.drain(maxAmount, IFluidHandler.FluidAction.SIMULATE);
-            if (resultSim == null || !resultSim.getFluid().equals(fluid.getFluid())) {
-                return false;
-            }
+        FluidStack resultSim = handler.drain(maxAmount, IFluidHandler.FluidAction.SIMULATE);
+        if (resultSim == null || resultSim.getAmount() <= 0) {
+            return false;
+        }
+
+        if (fluid != null && !fluid.isEmpty() && !resultSim.getFluid().equals(fluid.getFluid())) {
+            return false;
         }
 
         FluidStack result = handler.drain(maxAmount, IFluidHandler.FluidAction.EXECUTE);
@@ -142,7 +144,7 @@ public class ItemCanister extends Item {
             return false;
         }
 
-        if (fluid == null || result.isEmpty()) {
+        if (fluid == null || fluid.isEmpty()) {
             comp.put("fuel", result.writeToNBT(new CompoundNBT()));
             return true;
         }

@@ -1,1 +1,1 @@
-- Reimplemented JEI integration
+- Fixed canister bug
