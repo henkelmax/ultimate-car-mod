@@ -1,1 +1,1 @@
-- Fixed canister bug
+- Updated to new textures
