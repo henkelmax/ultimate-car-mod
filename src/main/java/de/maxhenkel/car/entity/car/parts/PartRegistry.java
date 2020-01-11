@@ -93,22 +93,22 @@ public class PartRegistry {
     public static final Part YELLOW_SUV_BODY = new PartBodySUV(new ResourceLocation(Main.MODID, "textures/entity/car_suv_yellow.png"));
 
 
-    public static final Part BLACK_CONTAINER = new PartContainer(new ResourceLocation(Main.MODID, "textures/entity/car_transporter_black.png"));
-    public static final Part BLUE_CONTAINER = new PartContainer(new ResourceLocation(Main.MODID, "textures/entity/car_transporter_blue.png"));
-    public static final Part BROWN_CONTAINER = new PartContainer(new ResourceLocation(Main.MODID, "textures/entity/car_transporter_brown.png"));
-    public static final Part CYAN_CONTAINER = new PartContainer(new ResourceLocation(Main.MODID, "textures/entity/car_transporter_cyan.png"));
-    public static final Part GRAY_CONTAINER = new PartContainer(new ResourceLocation(Main.MODID, "textures/entity/car_transporter_gray.png"));
-    public static final Part GREEN_CONTAINER = new PartContainer(new ResourceLocation(Main.MODID, "textures/entity/car_transporter_green.png"));
-    public static final Part LIGHT_BLUE_CONTAINER = new PartContainer(new ResourceLocation(Main.MODID, "textures/entity/car_transporter_light_blue.png"));
-    public static final Part LIME_CONTAINER = new PartContainer(new ResourceLocation(Main.MODID, "textures/entity/car_transporter_lime.png"));
-    public static final Part MAGENTA_CONTAINER = new PartContainer(new ResourceLocation(Main.MODID, "textures/entity/car_transporter_magenta.png"));
-    public static final Part ORANGE_CONTAINER = new PartContainer(new ResourceLocation(Main.MODID, "textures/entity/car_transporter_orange.png"));
-    public static final Part PINK_CONTAINER = new PartContainer(new ResourceLocation(Main.MODID, "textures/entity/car_transporter_pink.png"));
-    public static final Part PURPLE_CONTAINER = new PartContainer(new ResourceLocation(Main.MODID, "textures/entity/car_transporter_purple.png"));
-    public static final Part RED_CONTAINER = new PartContainer(new ResourceLocation(Main.MODID, "textures/entity/car_transporter_red.png"));
-    public static final Part LIGHT_GRAY_CONTAINER = new PartContainer(new ResourceLocation(Main.MODID, "textures/entity/car_transporter_light_gray.png"));
-    public static final Part WHITE_CONTAINER = new PartContainer(new ResourceLocation(Main.MODID, "textures/entity/car_transporter_white.png"));
-    public static final Part YELLOW_CONTAINER = new PartContainer(new ResourceLocation(Main.MODID, "textures/entity/car_transporter_yellow.png"));
+    public static final Part BLACK_CONTAINER = new PartContainer(new ResourceLocation(Main.MODID, "textures/entity/container_black.png"));
+    public static final Part BLUE_CONTAINER = new PartContainer(new ResourceLocation(Main.MODID, "textures/entity/container_blue.png"));
+    public static final Part BROWN_CONTAINER = new PartContainer(new ResourceLocation(Main.MODID, "textures/entity/container_brown.png"));
+    public static final Part CYAN_CONTAINER = new PartContainer(new ResourceLocation(Main.MODID, "textures/entity/container_cyan.png"));
+    public static final Part GRAY_CONTAINER = new PartContainer(new ResourceLocation(Main.MODID, "textures/entity/container_gray.png"));
+    public static final Part GREEN_CONTAINER = new PartContainer(new ResourceLocation(Main.MODID, "textures/entity/container_green.png"));
+    public static final Part LIGHT_BLUE_CONTAINER = new PartContainer(new ResourceLocation(Main.MODID, "textures/entity/container_light_blue.png"));
+    public static final Part LIME_CONTAINER = new PartContainer(new ResourceLocation(Main.MODID, "textures/entity/container_lime.png"));
+    public static final Part MAGENTA_CONTAINER = new PartContainer(new ResourceLocation(Main.MODID, "textures/entity/container_magenta.png"));
+    public static final Part ORANGE_CONTAINER = new PartContainer(new ResourceLocation(Main.MODID, "textures/entity/container_orange.png"));
+    public static final Part PINK_CONTAINER = new PartContainer(new ResourceLocation(Main.MODID, "textures/entity/container_pink.png"));
+    public static final Part PURPLE_CONTAINER = new PartContainer(new ResourceLocation(Main.MODID, "textures/entity/container_purple.png"));
+    public static final Part RED_CONTAINER = new PartContainer(new ResourceLocation(Main.MODID, "textures/entity/container_red.png"));
+    public static final Part LIGHT_GRAY_CONTAINER = new PartContainer(new ResourceLocation(Main.MODID, "textures/entity/container_light_gray.png"));
+    public static final Part WHITE_CONTAINER = new PartContainer(new ResourceLocation(Main.MODID, "textures/entity/container_white.png"));
+    public static final Part YELLOW_CONTAINER = new PartContainer(new ResourceLocation(Main.MODID, "textures/entity/container_yellow.png"));
 
     public static final Part BLACK_TANK_CONTAINER = new PartTankContainer(new ResourceLocation(Main.MODID, "textures/entity/tank_container_black.png"));
     public static final Part BLUE_TANK_CONTAINER = new PartTankContainer(new ResourceLocation(Main.MODID, "textures/entity/tank_container_blue.png"));
