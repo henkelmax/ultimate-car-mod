@@ -1,2 +1,1 @@
-- Updated car tank textures
-- Updated item textures
+- Fixed wrong textures
