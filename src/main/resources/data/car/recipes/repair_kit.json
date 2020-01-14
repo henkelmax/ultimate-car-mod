@@ -7,7 +7,7 @@
   ],
   "key": {
     "I": {
-      "item": "minecraft:iron_ingot"
+      "tag": "forge:ingots/iron"
     },
     "S": {
       "item": "car:screw_driver"

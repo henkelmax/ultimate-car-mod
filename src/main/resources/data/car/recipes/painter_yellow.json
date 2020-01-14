@@ -7,10 +7,10 @@
   ],
   "key": {
     "S": {
-      "item": "minecraft:stick"
+      "tag": "forge:rods/wooden"
     },
     "B": {
-      "item": "minecraft:yellow_dye"
+      "tag": "forge:dyes/yellow"
     }
   },
   "result": {

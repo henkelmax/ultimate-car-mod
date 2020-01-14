@@ -10,7 +10,7 @@
       "item": "minecraft:birch_planks"
     },
     "I": {
-      "item": "car:iron_stick"
+      "tag": "forge:rods/iron"
     }
   },
   "result": {
