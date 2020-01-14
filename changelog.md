@@ -1,1 +1,1 @@
-- Fixed wrong textures
+- Fixed forge item tags

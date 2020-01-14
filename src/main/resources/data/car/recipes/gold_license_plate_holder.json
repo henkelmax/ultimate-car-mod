@@ -10,7 +10,7 @@
       "item": "minecraft:gold_ingot"
     },
     "I": {
-      "item": "car:iron_stick"
+      "tag": "forge:rods/iron"
     }
   },
   "result": {
