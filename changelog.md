@@ -1,1 +1,1 @@
-- Fixed forge item tags
+- Re-added HWYLA compatibility
