@@ -5,7 +5,10 @@ import de.maxhenkel.car.dataserializers.DataSerializerItemList;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.entity.car.parts.*;
 import de.maxhenkel.car.entity.model.obj.OBJModelInstance;
+import de.maxhenkel.car.integration.jei.CarRecipe;
+import de.maxhenkel.car.integration.jei.CarRecipeBuilder;
 import de.maxhenkel.car.items.ICarPart;
+import de.maxhenkel.car.items.ItemKey;
 import de.maxhenkel.car.sounds.ModSounds;
 import net.minecraft.entity.EntityType;
 import net.minecraft.fluid.Fluid;
@@ -22,6 +25,7 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 public class EntityGenericCar extends EntityCarLicensePlateBase {
 
@@ -317,8 +321,28 @@ public class EntityGenericCar extends EntityCarLicensePlateBase {
     public void readAdditional(CompoundNBT compound) {
         super.readAdditional(compound);
 
+        if (compound.keySet().stream().noneMatch(s -> !s.equals("id"))) {
+            randomizeParts();
+            setInventorySlotContents(0, ItemKey.getKeyForCar(getUniqueID()));
+            setInventorySlotContents(1, ItemKey.getKeyForCar(getUniqueID()));
+            setFuelAmount(100);
+            setBatteryLevel(500);
+            initTemperature();
+        }
+
         setPartSerializer();
         tryInitPartsAndModel();
+    }
+
+    protected void randomizeParts() {
+        List<CarRecipe> allRecipes = CarRecipeBuilder.getAllRecipes();
+        CarRecipe recipe = allRecipes.get(new Random().nextInt(allRecipes.size()));
+        getParts().clear();
+        partInventory.clear();
+        List<ItemStack> inputs = recipe.getInputs();
+        for (int i = 0; i < inputs.size(); i++) {
+            partInventory.setInventorySlotContents(i, inputs.get(i));
+        }
     }
 
     private boolean isInitialized;

@@ -1,1 +1,2 @@
-- Fixed forge item tags
+- Added car demo command
+- Fixed summoning invisible cars
