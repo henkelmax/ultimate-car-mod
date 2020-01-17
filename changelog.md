@@ -1,1 +1,1 @@
-- Re-added HWYLA compatibility
+- Fixed canola crop rendering

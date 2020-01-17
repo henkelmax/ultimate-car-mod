@@ -7,6 +7,8 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.CropsBlock;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.state.IntegerProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.state.properties.BlockStateProperties;
@@ -19,6 +21,8 @@ import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.fml.DistExecutor;
 
 import java.util.Random;
 
@@ -35,6 +39,10 @@ public class BlockCanolaCrop extends CropsBlock {
         super(Properties.create(Material.PLANTS).doesNotBlockMovement().tickRandomly().hardnessAndResistance(0F).sound(SoundType.CROP));
 
         setRegistryName(new ResourceLocation(Main.MODID, "canola"));
+
+        DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
+            RenderTypeLookup.setRenderLayer(BlockCanolaCrop.this, RenderType.func_228643_e_());
+        });
     }
 
     public IntegerProperty getAgeProperty() {
