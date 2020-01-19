@@ -1,13 +1,15 @@
 package de.maxhenkel.car.blocks.tileentity;
 
-import de.maxhenkel.tools.ItemTools;
 import de.maxhenkel.car.blocks.BlockGui;
+import de.maxhenkel.car.recipes.EnergyFluidProducerRecipe;
+import de.maxhenkel.tools.ItemTools;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntityType;
@@ -21,37 +23,33 @@ import javax.annotation.Nonnull;
 
 public abstract class TileEntityEnergyFluidProducer extends TileEntityBase implements IEnergyStorage, ISidedInventory, ITickableTileEntity, IFluidHandler {
 
+    protected IRecipeType<? extends EnergyFluidProducerRecipe> recipeType;
     protected Inventory inventory;
 
-    protected int maxStorage;
+    protected int maxEnergy;
     protected int storedEnergy;
-    protected int energyUsage;
 
-    protected int timeToGenerate;
-    protected int generatingTime;
+    protected int time;
 
-    protected int maxMillibuckets;
-    protected int millibucketsPerUse;
+    protected int fluidAmount;
     protected int currentMillibuckets;
 
-    public TileEntityEnergyFluidProducer(TileEntityType<?> tileEntityTypeIn) {
+    public TileEntityEnergyFluidProducer(TileEntityType<?> tileEntityTypeIn, IRecipeType<? extends EnergyFluidProducerRecipe> recipeType) {
         super(tileEntityTypeIn);
+        this.recipeType = recipeType;
         this.inventory = new Inventory(2);
-        this.maxStorage = 10000;
+        this.maxEnergy = 10000;
         this.storedEnergy = 0;
-        this.timeToGenerate = 0;
-        this.generatingTime = 200;
-        this.maxMillibuckets = 3000;
+        this.time = 0;
+        this.fluidAmount = 3000;
         this.currentMillibuckets = 0;
-        this.energyUsage = 10;
-        this.millibucketsPerUse = 100;
     }
 
     public final IIntArray FIELDS = new IIntArray() {
         public int get(int index) {
             switch (index) {
                 case 0:
-                    return timeToGenerate;
+                    return time;
                 case 1:
                     return storedEnergy;
                 case 2:
@@ -64,7 +62,7 @@ public abstract class TileEntityEnergyFluidProducer extends TileEntityBase imple
         public void set(int index, int value) {
             switch (index) {
                 case 0:
-                    timeToGenerate = value;
+                    time = value;
                     break;
                 case 1:
                     storedEnergy = value;
@@ -80,67 +78,70 @@ public abstract class TileEntityEnergyFluidProducer extends TileEntityBase imple
         }
     };
 
+    public EnergyFluidProducerRecipe getRecipe() {
+        return world.getRecipeManager().getRecipe(recipeType, this, world).orElse(null);
+    }
+
     @Override
     public void tick() {
         if (world.isRemote) {
             return;
         }
 
-        if (isEnabled()) {
-            setBlockEnabled(true);
-        } else {
-            setBlockEnabled(false);
-        }
-
         ItemStack input = inventory.getStackInSlot(0);
         ItemStack output = inventory.getStackInSlot(1);
 
-        if (timeToGenerate > 0 && storedEnergy >= energyUsage) {
-            storedEnergy -= energyUsage;
-            timeToGenerate--;
+        EnergyFluidProducerRecipe recipe = getRecipe();
 
-            if (timeToGenerate == 0) {
-                if (output.isEmpty()) {
-                    inventory.setInventorySlotContents(1, getOutputItem());
-                } else if (output.getCount() < output.getMaxStackSize()) {
-                    if (ItemStack.areItemsEqual(output, getOutputItem())) {
-                        ItemTools.incrItemStack(output, null);
-                        inventory.setInventorySlotContents(1, output);
-                    }
-                }
+        if (recipe == null) {
+            time = 0;
+            markDirty();
+            setBlockEnabled(false);
+            return;
+        }
 
-                if (currentMillibuckets + millibucketsPerUse <= maxMillibuckets) {
-                    currentMillibuckets += millibucketsPerUse;
-                }
+        if (storedEnergy < recipe.getEnergy()) {
+            setBlockEnabled(false);
+            return;
+        }
+
+        if (input.isEmpty()) {
+            time = 0;
+            markDirty();
+            setBlockEnabled(false);
+            return;
+        }
+
+        if (!(output.isEmpty() || (ItemStack.areItemsEqual(output, recipe.getRecipeOutput()) && output.getCount() + recipe.getRecipeOutput().getCount() <= output.getMaxStackSize()))) {
+            time = 0;
+            markDirty();
+            setBlockEnabled(false);
+            return;
+        }
+
+        if (currentMillibuckets + recipe.getFluidAmount() > fluidAmount) {
+            time = 0;
+            markDirty();
+            setBlockEnabled(false);
+            return;
+        }
+
+        time++;
+        storedEnergy -= recipe.getEnergy();
+
+        if (time > recipe.getDuration()) {
+            time = 0;
+
+            if (output.isEmpty()) {
+                inventory.setInventorySlotContents(1, recipe.getRecipeOutput());
+            } else if (output.getCount() < output.getMaxStackSize()) {
+                output.grow(recipe.getRecipeOutput().getCount());
             }
-        } else if (storedEnergy >= energyUsage) {
-            if (!input.isEmpty()) {
-                if (isValidItem(input)) {
-                    if (output.isEmpty() || output.getCount() < output.getMaxStackSize()) {
-                        if (currentMillibuckets + millibucketsPerUse <= maxMillibuckets) {
-                            ItemTools.decrItemStack(input, null);
-                            if (input.getCount() <= 0) {
-                                ItemTools.removeStackFromSlot(inventory, 0);
-                            }
-                            timeToGenerate = generatingTime;
-                        }
-                    }
-                }
-            }
+            currentMillibuckets += recipe.getFluidAmount();
+            input.shrink(1);
         }
         markDirty();
-    }
-
-    public boolean isEnabled() {
-        if (storedEnergy >= energyUsage && currentMillibuckets + millibucketsPerUse <= maxMillibuckets) {
-            if (!inventory.getStackInSlot(0).isEmpty() || (timeToGenerate > 0 && storedEnergy > 0)) {
-                if (inventory.getStackInSlot(1).isEmpty() || inventory.getStackInSlot(1).getCount() < inventory.getStackInSlot(1).getMaxStackSize()) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
+        setBlockEnabled(true);
     }
 
     public abstract BlockGui getOwnBlock();
@@ -152,26 +153,10 @@ public abstract class TileEntityEnergyFluidProducer extends TileEntityBase imple
         }
     }
 
-    public abstract ItemStack getOutputItem();
-
-    public abstract boolean isValidItem(ItemStack stack);
-
-    public float getEnergyPercent() {
-        return ((float) storedEnergy) / ((float) maxStorage);
-    }
-
-    public float getFluidPercent() {
-        return ((float) currentMillibuckets) / ((float) maxMillibuckets);
-    }
-
-    public float getProgress() {
-        return ((float) timeToGenerate) / ((float) generatingTime);
-    }
-
     @Override
     public CompoundNBT write(CompoundNBT compound) {
         compound.putInt("energy_stored", storedEnergy);
-        compound.putInt("time_generated", timeToGenerate);
+        compound.putInt("time", time);
         compound.putInt("fluid_stored", currentMillibuckets);
 
         ItemTools.saveInventory(compound, "slots", inventory);
@@ -182,7 +167,7 @@ public abstract class TileEntityEnergyFluidProducer extends TileEntityBase imple
     @Override
     public void read(CompoundNBT compound) {
         storedEnergy = compound.getInt("energy_stored");
-        timeToGenerate = compound.getInt("time_generated");
+        time = compound.getInt("time");
         currentMillibuckets = compound.getInt("fluid_stored");
 
         ItemTools.readInventory(compound, "slots", inventory);
@@ -276,32 +261,28 @@ public abstract class TileEntityEnergyFluidProducer extends TileEntityBase imple
         return inventory;
     }
 
-    public int getMaxStorage() {
-        return maxStorage;
+    public int getMaxEnergy() {
+        return maxEnergy;
     }
 
     public int getStoredEnergy() {
         return storedEnergy;
     }
 
-    public int getEnergyUsage() {
-        return energyUsage;
-    }
-
     public int getTimeToGenerate() {
-        return timeToGenerate;
+        EnergyFluidProducerRecipe recipe = getRecipe();
+        if (recipe == null) {
+            return 0;
+        }
+        return recipe.getDuration();
     }
 
     public int getGeneratingTime() {
-        return generatingTime;
+        return time;
     }
 
-    public int getMaxMillibuckets() {
-        return maxMillibuckets;
-    }
-
-    public int getMillibucketsPerUse() {
-        return millibucketsPerUse;
+    public int getFluidAmount() {
+        return fluidAmount;
     }
 
     public int getCurrentMillibuckets() {
@@ -312,7 +293,7 @@ public abstract class TileEntityEnergyFluidProducer extends TileEntityBase imple
 
     @Override
     public int receiveEnergy(int maxReceive, boolean simulate) {
-        int energyNeeded = maxStorage - storedEnergy;
+        int energyNeeded = maxEnergy - storedEnergy;
 
         if (!simulate) {
             storedEnergy += Math.min(energyNeeded, maxReceive);
@@ -334,7 +315,7 @@ public abstract class TileEntityEnergyFluidProducer extends TileEntityBase imple
 
     @Override
     public int getMaxEnergyStored() {
-        return maxStorage;
+        return maxEnergy;
     }
 
     @Override
@@ -365,7 +346,7 @@ public abstract class TileEntityEnergyFluidProducer extends TileEntityBase imple
 
     @Override
     public int getTankCapacity(int tank) {
-        return maxMillibuckets;
+        return fluidAmount;
     }
 
     @Override

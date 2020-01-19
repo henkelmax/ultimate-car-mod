@@ -15,11 +15,6 @@ public class GuiOilMill extends GuiEnergyFluidProducer<ContainerOilMill> {
     }
 
     @Override
-    public ResourceLocation getGuiTexture() {
-        return GUI_TEXTURE;
-    }
-
-    @Override
     public String getUnlocalizedTooltipLiquid() {
         return "tooltip.oil";
     }

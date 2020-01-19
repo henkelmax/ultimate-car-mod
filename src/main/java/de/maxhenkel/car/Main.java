@@ -18,7 +18,7 @@ import de.maxhenkel.car.items.ItemLicensePlate;
 import de.maxhenkel.car.items.ModItems;
 import de.maxhenkel.car.loottable.CopyFluid;
 import de.maxhenkel.car.net.*;
-import de.maxhenkel.car.recipes.ReciepeKey;
+import de.maxhenkel.car.recipes.*;
 import de.maxhenkel.car.sounds.ModSounds;
 import de.maxhenkel.car.villagers.VillagerEvents;
 import de.maxhenkel.tools.EntityTools;
@@ -33,11 +33,13 @@ import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipeSerializer;
+import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.item.crafting.SpecialRecipeSerializer;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.registry.Registry;
 import net.minecraft.village.PointOfInterestType;
 import net.minecraft.world.storage.loot.functions.LootFunctionManager;
 import net.minecraftforge.api.distmarker.Dist;
@@ -454,13 +456,42 @@ public class Main {
     }
 
     public static IRecipeSerializer CRAFTING_SPECIAL_KEY;
+    public static IRecipeSerializer CRAFTING_BLAST_FURNACE;
+    public static IRecipeSerializer CRAFTING_OIL_MILL;
 
     @SubscribeEvent
     public void registerRecipes(RegistryEvent.Register<IRecipeSerializer<?>> event) {
         CRAFTING_SPECIAL_KEY = new SpecialRecipeSerializer<>(ReciepeKey::new);
         CRAFTING_SPECIAL_KEY.setRegistryName(new ResourceLocation(MODID, "crafting_special_key"));
         event.getRegistry().register(CRAFTING_SPECIAL_KEY);
+
+        CRAFTING_BLAST_FURNACE = new RecipeSerializerBlastFurnace(BlastFurnaceRecipe::new);
+        CRAFTING_BLAST_FURNACE.setRegistryName(new ResourceLocation(MODID, "blast_furnace"));
+        event.getRegistry().register(CRAFTING_BLAST_FURNACE);
+
+        CRAFTING_OIL_MILL = new RecipeSerializerOilMill(OilMillRecipe::new);
+        CRAFTING_OIL_MILL.setRegistryName(new ResourceLocation(MODID, "oil_mill"));
+        event.getRegistry().register(CRAFTING_OIL_MILL);
     }
+
+    public static IRecipeType<BlastFurnaceRecipe> RECIPE_TYPE_BLAST_FURNACE = Registry.register(Registry.RECIPE_TYPE, new ResourceLocation(Main.MODID, "blast_furnace"), new IRecipeType<BlastFurnaceRecipe>() {
+        @Override
+        public String toString() {
+            return "blast_furnace";
+        }
+    });
+
+    public static IRecipeType<BlastFurnaceRecipe> RECIPE_TYPE_OIL_MILL = Registry.register(Registry.RECIPE_TYPE, new ResourceLocation(Main.MODID, "oil_mill"), new IRecipeType<BlastFurnaceRecipe>() {
+        @Override
+        public String toString() {
+            return "oil_mill";
+        }
+    });
+
+   /* @SubscribeEvent
+    public void registerRecipes(RegistryEvent.Register<IRecipeType> event) {
+
+    }*/
 
     @SubscribeEvent
     public void registerSerializers(RegistryEvent.Register<DataSerializerEntry> event) {

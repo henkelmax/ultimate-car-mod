@@ -3,6 +3,7 @@ package de.maxhenkel.car.gui;
 import de.maxhenkel.car.blocks.tileentity.TileEntityEnergyFluidProducer;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.ContainerType;
+import net.minecraft.inventory.container.Slot;
 
 public abstract class ContainerEnergyFluidProducer extends ContainerBase {
 
@@ -12,7 +13,7 @@ public abstract class ContainerEnergyFluidProducer extends ContainerBase {
         super(containerType, id, tile, playerInv);
         this.tile = tile;
 
-        this.addSlot(new SlotInputEnergyFluidProducer(tileInventory, 0, 56, 34, tile));
+        this.addSlot(new Slot(tileInventory, 0, 56, 34));
         this.addSlot(new SlotResult(tileInventory, 1, 116, 35));
 
         addInvSlots();

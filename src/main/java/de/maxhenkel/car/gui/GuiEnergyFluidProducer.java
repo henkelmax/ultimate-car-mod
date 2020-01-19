@@ -5,7 +5,6 @@ import java.util.List;
 
 import de.maxhenkel.car.blocks.tileentity.TileEntityEnergyFluidProducer;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.container.Container;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -25,8 +24,6 @@ public abstract class GuiEnergyFluidProducer<T extends ContainerEnergyFluidProdu
         xSize = 176;
         ySize = 166;
     }
-
-    public abstract ResourceLocation getGuiTexture();
 
     public String getUnlocalizedTooltipEnergy() {
         return "tooltip.energy";
@@ -83,7 +80,7 @@ public abstract class GuiEnergyFluidProducer<T extends ContainerEnergyFluidProdu
         int targetX = 11;
         int targetY = 8;
 
-        int scHeight = (int) (texH * (1 - perc));
+        int scHeight = (int) (texH * (1F - perc));
         int i = this.guiLeft;
         int j = this.guiTop;
         blit(i + targetX, j + targetY + scHeight, texX, texY + scHeight, texW, texH - scHeight);
@@ -99,7 +96,7 @@ public abstract class GuiEnergyFluidProducer<T extends ContainerEnergyFluidProdu
         int targetX = 148;
         int targetY = 8;
 
-        int scHeight = (int) (texH * (1 - perc));
+        int scHeight = (int) (texH * (1F - perc));
         int i = this.guiLeft;
         int j = this.guiTop;
         blit(i + targetX, j + targetY + scHeight, texX, texY + scHeight, texW, texH - scHeight);
@@ -122,20 +119,18 @@ public abstract class GuiEnergyFluidProducer<T extends ContainerEnergyFluidProdu
     }
 
     public float getEnergy() {
-        return ((float) tile.getStoredEnergy()) / ((float) tile.getMaxStorage());
+        return ((float) tile.getStoredEnergy()) / ((float) tile.getMaxEnergy());
     }
 
     public float getFluid() {
-        return ((float) tile.getCurrentMillibuckets()) / ((float) tile.getMaxMillibuckets());
+        return ((float) tile.getCurrentMillibuckets()) / ((float) tile.getFluidAmount());
     }
 
     public float getProgress() {
         if (tile.getTimeToGenerate() == 0) {
-            return 0;
+            return 0F;
         }
-
-        int time = tile.getGeneratingTime() - tile.getTimeToGenerate();
-        return ((float) time) / ((float) tile.getGeneratingTime());
+        return ((float) tile.getGeneratingTime()) / ((float) tile.getTimeToGenerate());
     }
 
     @Override

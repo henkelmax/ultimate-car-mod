@@ -4,7 +4,6 @@ import de.maxhenkel.car.Main;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
 
 public class GuiBlastFurnace extends GuiEnergyFluidProducer<ContainerBlastFurnace> {
 
@@ -14,11 +13,6 @@ public class GuiBlastFurnace extends GuiEnergyFluidProducer<ContainerBlastFurnac
     public GuiBlastFurnace(ContainerBlastFurnace container, PlayerInventory playerInventory, ITextComponent title) {
         super(GUI_TEXTURE, container, playerInventory, title);
 
-    }
-
-    @Override
-    public ResourceLocation getGuiTexture() {
-        return GUI_TEXTURE;
     }
 
     @Override

@@ -26,16 +26,10 @@ public class Config {
     public static ForgeConfigSpec.IntValue backmixReactorCanolaUsage;
 
     public static ForgeConfigSpec.IntValue blastFurnaceEnergyStorage;
-    public static ForgeConfigSpec.IntValue blastFurnaceGeneratingTime;
     public static ForgeConfigSpec.IntValue blastFurnaceFluidStorage;
-    public static ForgeConfigSpec.IntValue blastFurnaceEnergyUsage;
-    public static ForgeConfigSpec.IntValue blastFurnaceFluidGeneration;
 
     public static ForgeConfigSpec.IntValue oilMillEnergyStorage;
-    public static ForgeConfigSpec.IntValue oilMillGeneratingTime;
     public static ForgeConfigSpec.IntValue oilMillFluidStorage;
-    public static ForgeConfigSpec.IntValue oilMillEnergyUsage;
-    public static ForgeConfigSpec.IntValue oilMillFluidGeneration;
 
     public static ForgeConfigSpec.IntValue cableTransferRate;
 
@@ -153,16 +147,10 @@ public class Config {
             backmixReactorCanolaUsage = builder.defineInRange("machines.backmix_reactor.canola_usage", 50, 1, (int) Short.MAX_VALUE);
 
             blastFurnaceEnergyStorage = builder.defineInRange("machines.blast_furnace.energy_storage", 10000, 1000, (int) Short.MAX_VALUE);
-            blastFurnaceGeneratingTime = builder.defineInRange("machines.blast_furnace.generating_time", 200, 10, (int) Short.MAX_VALUE);
             blastFurnaceFluidStorage = builder.defineInRange("machines.blast_furnace.fluid_storage", 3000, 1000, (int) Short.MAX_VALUE);
-            blastFurnaceEnergyUsage = builder.defineInRange("machines.blast_furnace.energy_usage", 10, 1, (int) Short.MAX_VALUE);
-            blastFurnaceFluidGeneration = builder.defineInRange("machines.blast_furnace.fluid_generation", 100, 1, (int) Short.MAX_VALUE);
 
             oilMillEnergyStorage = builder.defineInRange("machines.oil_mill.energy_storage", 10000, 1000, (int) Short.MAX_VALUE);
-            oilMillGeneratingTime = builder.defineInRange("machines.oil_mill.generating_time", 200, 10, (int) Short.MAX_VALUE);
             oilMillFluidStorage = builder.defineInRange("machines.oil_mill.fluid_storage", 3000, 1000, (int) Short.MAX_VALUE);
-            oilMillEnergyUsage = builder.defineInRange("machines.oil_mill.energy_usage", 10, 1, (int) Short.MAX_VALUE);
-            oilMillFluidGeneration = builder.defineInRange("machines.oil_mill.fluid_generation", 100, 1, (int) Short.MAX_VALUE);
 
             cableTransferRate = builder.defineInRange("machines.cable.transfer_rate", 256, 64, (int) Short.MAX_VALUE);
 
