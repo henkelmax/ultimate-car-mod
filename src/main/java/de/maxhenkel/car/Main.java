@@ -24,6 +24,8 @@ import de.maxhenkel.car.villagers.VillagerEvents;
 import de.maxhenkel.tools.EntityTools;
 import net.minecraft.block.Block;
 import net.minecraft.client.gui.ScreenManager;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
@@ -58,6 +60,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.minecraftforge.fml.network.IContainerFactory;
 import net.minecraftforge.fml.network.NetworkRegistry;
 import net.minecraftforge.fml.network.simple.SimpleChannel;
@@ -265,6 +268,17 @@ public class Main {
         event.getRegistry().registerAll(
                 ModBlocks.getAll().toArray(new Block[0])
         );
+
+        if (FMLEnvironment.dist == Dist.CLIENT) {
+            RenderTypeLookup.setRenderLayer(ModBlocks.CANOLA_CROP, RenderType.func_228643_e_());
+            RenderTypeLookup.setRenderLayer(ModBlocks.SPLIT_TANK, RenderType.func_228643_e_());
+            for (Block block : ModBlocks.PAINTS) {
+                RenderTypeLookup.setRenderLayer(block, RenderType.func_228643_e_());
+            }
+            for (Block block : ModBlocks.YELLOW_PAINTS) {
+                RenderTypeLookup.setRenderLayer(block, RenderType.func_228643_e_());
+            }
+        }
     }
 
     @SubscribeEvent
@@ -514,6 +528,18 @@ public class Main {
                 ModFluids.BIO_DIESEL,
                 ModFluids.BIO_DIESEL_FLOWING
         );
+        if (FMLEnvironment.dist == Dist.CLIENT) {
+            RenderTypeLookup.setRenderLayer(ModFluids.CANOLA_OIL, RenderType.func_228645_f_());
+            RenderTypeLookup.setRenderLayer(ModFluids.CANOLA_OIL_FLOWING, RenderType.func_228645_f_());
+            RenderTypeLookup.setRenderLayer(ModFluids.METHANOL, RenderType.func_228645_f_());
+            RenderTypeLookup.setRenderLayer(ModFluids.METHANOL_FLOWING, RenderType.func_228645_f_());
+            RenderTypeLookup.setRenderLayer(ModFluids.CANOLA_METHANOL_MIX, RenderType.func_228645_f_());
+            RenderTypeLookup.setRenderLayer(ModFluids.CANOLA_METHANOL_MIX_FLOWING, RenderType.func_228645_f_());
+            RenderTypeLookup.setRenderLayer(ModFluids.GLYCERIN, RenderType.func_228645_f_());
+            RenderTypeLookup.setRenderLayer(ModFluids.GLYCERIN_FLOWING, RenderType.func_228645_f_());
+            RenderTypeLookup.setRenderLayer(ModFluids.BIO_DIESEL, RenderType.func_228645_f_());
+            RenderTypeLookup.setRenderLayer(ModFluids.BIO_DIESEL_FLOWING, RenderType.func_228645_f_());
+        }
     }
 
     @SubscribeEvent

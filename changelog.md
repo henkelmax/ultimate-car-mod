@@ -1,1 +1,1 @@
-- Fixed canola crop rendering
+- Updated to 1.15.2

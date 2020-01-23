@@ -9,8 +9,6 @@ import de.maxhenkel.tools.FluidUtils;
 import de.maxhenkel.tools.IItemBlock;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -32,7 +30,6 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.DistExecutor;
 
 import javax.annotation.Nullable;
 
@@ -41,10 +38,6 @@ public class BlockSplitTank extends BlockBase implements ITileEntityProvider, II
     protected BlockSplitTank() {
         super(Properties.create(Material.IRON).hardnessAndResistance(3F).sound(SoundType.STONE).func_226896_b_());
         setRegistryName(new ResourceLocation(Main.MODID, "split_tank"));
-
-        DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
-            RenderTypeLookup.setRenderLayer(BlockSplitTank.this, RenderType.func_228643_e_());
-        });
     }
 
     @Override

@@ -8,8 +8,6 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.Item;
@@ -23,8 +21,6 @@ import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.fml.DistExecutor;
 
 import javax.annotation.Nullable;
 
@@ -38,9 +34,6 @@ public class BlockPaint extends BlockBase implements IItemBlock {
         setRegistryName(new ResourceLocation(Main.MODID, type.name + (isYellow ? "_yellow" : "")));
 
         setDefaultState(stateContainer.getBaseState().with(FACING, Direction.NORTH));
-        DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
-            RenderTypeLookup.setRenderLayer(BlockPaint.this, RenderType.func_228643_e_());
-        });
     }
 
     @Override
