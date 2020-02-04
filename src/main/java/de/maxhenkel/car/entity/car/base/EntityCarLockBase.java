@@ -106,7 +106,7 @@ public abstract class EntityCarLockBase extends EntityCarInventoryBase {
     @Override
     public boolean processInitialInteract(PlayerEntity player, Hand hand) {
         ItemStack stack = player.getHeldItem(hand);
-        if (!isLocked() && player.func_225608_bj_() && player.abilities.isCreativeMode && !stack.isEmpty() && stack.getItem().equals(ModItems.KEY)) {
+        if (!isLocked() && player.isShiftKeyDown() && player.abilities.isCreativeMode && !stack.isEmpty() && stack.getItem().equals(ModItems.KEY)) {
             UUID uuid = ItemKey.getCar(stack);
             if (uuid == null) {
                 ItemKey.setCar(stack, getUniqueID());

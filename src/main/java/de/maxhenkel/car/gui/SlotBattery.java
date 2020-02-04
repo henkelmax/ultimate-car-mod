@@ -40,7 +40,7 @@ public class SlotBattery extends Slot {
         car.setBatteryLevel(car.getBatteryLevel() + fill);
 
         if (!player.inventory.addItemStackToInventory(stack)) {
-            InventoryHelper.spawnItemStack(car.world, car.func_226277_ct_(), car.func_226278_cu_(), car.func_226281_cx_(), stack);
+            InventoryHelper.spawnItemStack(car.world, car.getPosX(), car.getPosY(), car.getPosZ(), stack);
         }
     }
 

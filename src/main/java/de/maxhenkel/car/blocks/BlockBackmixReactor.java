@@ -26,11 +26,11 @@ public class BlockBackmixReactor extends BlockGui<TileEntityBackmixReactor> {
     }
 
     @Override
-    public ActionResultType func_225533_a_(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
+    public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
         if (FluidUtils.tryFluidInteraction(player, handIn, worldIn, pos)) {
             return ActionResultType.SUCCESS;
         }
-        return super.func_225533_a_(state, worldIn, pos, player, handIn, hit);
+        return super.onBlockActivated(state, worldIn, pos, player, handIn, hit);
     }
 
     @Override

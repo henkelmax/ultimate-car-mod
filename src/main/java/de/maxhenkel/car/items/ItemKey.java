@@ -40,7 +40,7 @@ public class ItemKey extends Item {
             return new ActionResult(ActionResultType.SUCCESS, stack);
         }
 
-        List<EntityCarLockBase> cars = worldIn.getEntitiesWithinAABB(EntityCarLockBase.class, new AxisAlignedBB(playerIn.func_226277_ct_() - 25D, playerIn.func_226278_cu_() - 25D, playerIn.func_226281_cx_() - 25D, playerIn.func_226277_ct_() + 25D, playerIn.func_226278_cu_() + 25D, playerIn.func_226281_cx_() + 25D), new PredicateUUID(carUUID));
+        List<EntityCarLockBase> cars = worldIn.getEntitiesWithinAABB(EntityCarLockBase.class, new AxisAlignedBB(playerIn.getPosX() - 25D, playerIn.getPosY() - 25D, playerIn.getPosZ() - 25D, playerIn.getPosX() + 25D, playerIn.getPosY() + 25D, playerIn.getPosZ() + 25D), new PredicateUUID(carUUID));
 
         if (cars.isEmpty()) {
             playerIn.sendStatusMessage(new TranslationTextComponent("message.car_out_of_range"), true);

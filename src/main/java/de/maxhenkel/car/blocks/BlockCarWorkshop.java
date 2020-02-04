@@ -46,7 +46,7 @@ public class BlockCarWorkshop extends BlockBase implements ITileEntityProvider, 
     }
 
     @Override
-    public ActionResultType func_225533_a_(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
+    public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
         TileEntityCarWorkshop workshop = getOwnTileEntity(worldIn, pos);
 
         if (workshop == null) {

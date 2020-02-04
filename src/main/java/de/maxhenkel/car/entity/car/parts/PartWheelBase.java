@@ -69,7 +69,7 @@ public class PartWheelBase extends PartModel {
 
         for (int i = 0; i < wheelOffsets.length && i < wheels.size(); i++) {
             list.add(new OBJModelInstance(wheels.get(i).model, new OBJModelOptions(wheels.get(i).texture, wheelOffsets[i], null, (matrixStack, partialTicks) -> {
-                matrixStack.func_227863_a_(Vector3f.field_229179_b_.func_229187_a_(-car.getWheelRotation(partialTicks)));
+                matrixStack.rotate(Vector3f.XP.rotationDegrees(-car.getWheelRotation(partialTicks)));
             })));
         }
 

@@ -45,7 +45,7 @@ public class GuiGasStationAdmin extends GuiBase<ContainerGasStationAdmin> {
         textField.setDisabledTextColour(-1);
         textField.setMaxStringLength(20);
         textField.setText(String.valueOf(gasStation.getTradeAmount()));
-        textField.func_212954_a(this::onTextChanged);
+        textField.setResponder(this::onTextChanged);
         children.add(textField);
         setFocused(textField);
     }
@@ -88,7 +88,7 @@ public class GuiGasStationAdmin extends GuiBase<ContainerGasStationAdmin> {
             this.minecraft.player.closeScreen();
         }
 
-        return !textField.keyPressed(key, a, b) && !textField.func_212955_f() ? super.keyPressed(key, a, b) : true;
+        return !textField.keyPressed(key, a, b) && !textField.canWrite() ? super.keyPressed(key, a, b) : true;
     }
 
     @Override

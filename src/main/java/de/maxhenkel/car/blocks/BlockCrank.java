@@ -48,7 +48,7 @@ public class BlockCrank extends BlockBase implements IItemBlock {
     }
 
     @Override
-    public ActionResultType func_225533_a_(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
+    public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
         TileEntity te = worldIn.getTileEntity(pos.down());
 
         if (!(te instanceof TileEntityDynamo)) {

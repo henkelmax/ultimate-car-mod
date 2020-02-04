@@ -47,7 +47,7 @@ public class ItemPainter extends Item {
 
     @Override
     public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
-        if (playerIn.func_225608_bj_()) {
+        if (playerIn.isShiftKeyDown()) {
             if (playerIn instanceof ServerPlayerEntity) {
                 NetworkHooks.openGui((ServerPlayerEntity) playerIn, new INamedContainerProvider() {
                     @Override
@@ -70,7 +70,7 @@ public class ItemPainter extends Item {
 
     @Override
     public ActionResultType onItemUse(ItemUseContext context) {
-        if (context.getPlayer().func_225608_bj_()) {
+        if (context.getPlayer().isShiftKeyDown()) {
             return ActionResultType.PASS;
         }
 

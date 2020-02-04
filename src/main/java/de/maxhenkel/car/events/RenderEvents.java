@@ -55,11 +55,11 @@ public class RenderEvents {
     public void renderFuelBar(float percent) {
         percent = MathHelper.clamp(percent, 0F, 1F);
         Minecraft mc = Minecraft.getInstance();
-        int x = mc.func_228018_at_().getScaledWidth() / 2 - 91;
+        int x = mc.getMainWindow().getScaledWidth() / 2 - 91;
 
         mc.getTextureManager().bindTexture(AbstractGui.GUI_ICONS_LOCATION);
 
-        int k = mc.func_228018_at_().getScaledHeight() - 32 + 3;
+        int k = mc.getMainWindow().getScaledHeight() - 32 + 3;
         mc.ingameGUI.blit(x, k, 0, 64, 182, 5);
 
         int j = (int) (percent * 182.0F);
@@ -73,8 +73,8 @@ public class RenderEvents {
         Minecraft mc = Minecraft.getInstance();
 
         String s = String.valueOf(MathTools.round(Math.abs(speed), 2));
-        int i1 = (mc.func_228018_at_().getScaledWidth() - mc.ingameGUI.getFontRenderer().getStringWidth(s)) / 2;
-        int j1 = mc.func_228018_at_().getScaledHeight() - 31 - 4;
+        int i1 = (mc.getMainWindow().getScaledWidth() - mc.ingameGUI.getFontRenderer().getStringWidth(s)) / 2;
+        int j1 = mc.getMainWindow().getScaledHeight() - 31 - 4;
         mc.ingameGUI.getFontRenderer().drawString(s, i1 + 1, j1, 0);
         mc.ingameGUI.getFontRenderer().drawString(s, i1 - 1, j1, 0);
         mc.ingameGUI.getFontRenderer().drawString(s, i1, j1 + 1, 0);
@@ -102,16 +102,16 @@ public class RenderEvents {
         PlayerEntity player = event.getPlayer();
         if (player.getRidingEntity() instanceof EntityCarBase) {
             EntityCarBase car = (EntityCarBase) event.getPlayer().getRidingEntity();
-            event.getMatrixStack().func_227860_a_();
-            event.getMatrixStack().func_227862_a_(EntityVehicleBase.SCALE_FACTOR, EntityVehicleBase.SCALE_FACTOR, EntityVehicleBase.SCALE_FACTOR);
-            event.getMatrixStack().func_227861_a_(0D, (event.getPlayer().getHeight() - (event.getPlayer().getHeight() * EntityVehicleBase.SCALE_FACTOR)) / 1.5D + car.getPlayerYOffset(), 0D);
+            event.getMatrixStack().push();
+            event.getMatrixStack().scale(EntityVehicleBase.SCALE_FACTOR, EntityVehicleBase.SCALE_FACTOR, EntityVehicleBase.SCALE_FACTOR);
+            event.getMatrixStack().translate(0D, (event.getPlayer().getHeight() - (event.getPlayer().getHeight() * EntityVehicleBase.SCALE_FACTOR)) / 1.5D + car.getPlayerYOffset(), 0D);
         }
     }
 
     @SubscribeEvent
     public void renderPlayerPost(RenderPlayerEvent.Post event) {
         if (event.getPlayer().getRidingEntity() instanceof EntityCarBase) {
-            event.getMatrixStack().func_227865_b_();
+            event.getMatrixStack().pop();
         }
     }
 

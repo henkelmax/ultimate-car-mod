@@ -60,7 +60,7 @@ public class BlockGasStation extends BlockOrientableHorizontal {
     }
 
     @Override
-    public ActionResultType func_225533_a_(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
+    public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
         TileEntity te = worldIn.getTileEntity(pos);
 
         if (!(te instanceof TileEntityGasStation)) {
@@ -94,7 +94,7 @@ public class BlockGasStation extends BlockOrientableHorizontal {
         }
 
 
-        if (!player.func_225608_bj_()) {
+        if (!player.isShiftKeyDown()) {
             if (player instanceof ServerPlayerEntity) {
                 TileEntityContainerProvider.openGui((ServerPlayerEntity) player, station, (i, playerInventory, playerEntity) -> new ContainerGasStation(i, station, playerInventory));
             }

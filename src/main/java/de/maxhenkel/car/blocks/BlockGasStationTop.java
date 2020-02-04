@@ -42,8 +42,8 @@ public class BlockGasStationTop extends BlockBase {
     }
 
     @Override
-    public ActionResultType func_225533_a_(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
-        return ModBlocks.FUEL_STATION.func_225533_a_(worldIn.getBlockState(pos.down()), worldIn, pos.down(), player, handIn, hit);
+    public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
+        return ModBlocks.FUEL_STATION.onBlockActivated(worldIn.getBlockState(pos.down()), worldIn, pos.down(), player, handIn, hit);
     }
 
     @Override

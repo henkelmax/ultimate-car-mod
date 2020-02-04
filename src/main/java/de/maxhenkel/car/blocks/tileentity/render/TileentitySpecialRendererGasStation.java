@@ -16,22 +16,22 @@ public class TileentitySpecialRendererGasStation extends TileEntityRenderer<Tile
     }
 
     @Override
-    public void func_225616_a_(TileEntityGasStation target, float partialTicks, MatrixStack matrixStack, IRenderTypeBuffer buffer, int light, int i) {
+    public void render(TileEntityGasStation target, float partialTicks, MatrixStack matrixStack, IRenderTypeBuffer buffer, int light, int i) {
         String name = target.getRenderText();
 
         if (name == null || name.isEmpty()) {
             return;
         }
 
-        matrixStack.func_227860_a_();
-        matrixStack.func_227861_a_(0.5D, 1D, 0.5D);
-        matrixStack.func_227863_a_(Vector3f.field_229179_b_.func_229187_a_(180F));
+        matrixStack.push();
+        matrixStack.translate(0.5D, 1D, 0.5D);
+        matrixStack.rotate(Vector3f.XP.rotationDegrees(180F));
 
         Direction dir = target.getDirection();
 
-        matrixStack.func_227863_a_(Vector3f.field_229181_d_.func_229187_a_(dir.getHorizontalAngle()));
+        matrixStack.rotate(Vector3f.YP.rotationDegrees(dir.getHorizontalAngle()));
 
-        FontRenderer renderer = field_228858_b_.getFontRenderer();
+        FontRenderer renderer = renderDispatcher.getFontRenderer();
 
         if (renderer != null) {
             int textWidth = renderer.getStringWidth(name);
@@ -40,13 +40,13 @@ public class TileentitySpecialRendererGasStation extends TileEntityRenderer<Tile
 
             float posX = -(textScale * textWidth) / 2F;
 
-            matrixStack.func_227861_a_(posX, -0.815D, -0.188D);
+            matrixStack.translate(posX, -0.815D, -0.188D);
 
-            matrixStack.func_227862_a_(textScale, textScale, textScale);
+            matrixStack.scale(textScale, textScale, textScale);
             renderer.drawString(name, 0, 0, 0);
-            renderer.func_228079_a_(name, 0F, 0F, 0x0, false, matrixStack.func_227866_c_().func_227870_a_(), buffer, false, 0, light);
+            renderer.renderString(name, 0F, 0F, 0x0, false, matrixStack.getLast().getPositionMatrix(), buffer, false, 0, light);
         }
-        matrixStack.func_227865_b_();
+        matrixStack.pop();
     }
 
 }

@@ -27,22 +27,22 @@ public class TileEntitySpecialRendererTank extends TileEntityRenderer<TileEntity
     }
 
     @Override
-    public void func_225616_a_(TileEntityTank te, float partialTicks, MatrixStack matrixStack, IRenderTypeBuffer buffer, int light, int i) {
-        matrixStack.func_227860_a_();
+    public void render(TileEntityTank te, float partialTicks, MatrixStack matrixStack, IRenderTypeBuffer buffer, int light, int i) {
+        matrixStack.push();
         float amount = te.getFillPercent();
         FluidStack stack = te.getFluid();
         if (amount > 0 && stack != null) {
             renderFluid(te, stack, amount, 0.0F, matrixStack, buffer, light);
         }
         renderLines(te, matrixStack, buffer, light);
-        matrixStack.func_227865_b_();
+        matrixStack.pop();
     }
 
     public void renderFluid(TileEntityTank tank, FluidStack fluid, float amount, float yStart, MatrixStack matrixStack, IRenderTypeBuffer buffer, int light) {
-        matrixStack.func_227860_a_();
-        IVertexBuilder builder = buffer.getBuffer(Atlases.func_228784_i_());
+        matrixStack.push();
+        IVertexBuilder builder = buffer.getBuffer(Atlases.getTranslucentBlockType());
 
-        TextureAtlasSprite texture = Minecraft.getInstance().getModelManager().func_229356_a_(PlayerContainer.field_226615_c_).getSprite(fluid.getFluid().getAttributes().getStillTexture());
+        TextureAtlasSprite texture = Minecraft.getInstance().getModelManager().getAtlasTexture(PlayerContainer.LOCATION_BLOCKS_TEXTURE).getSprite(fluid.getFluid().getAttributes().getStillTexture());
 
         float uMin = texture.getMinU();
         float uMax = texture.getMaxU();
@@ -110,11 +110,11 @@ public class TileEntitySpecialRendererTank extends TileEntityRenderer<TileEntity
             RenderTools.vertex(builder, matrixStack, 1F - s, yStart + amount - s * 2F, 0F + s, uMax, vMin, red, green, blue, light);
         }
 
-        matrixStack.func_227865_b_();
+        matrixStack.pop();
     }
 
     public static void renderLines(TileEntityTank te, MatrixStack matrixStack, IRenderTypeBuffer buffer, int light) {
-        IVertexBuilder builder = buffer.getBuffer(RenderType.func_228638_b_(LOCATION_TANK));
+        IVertexBuilder builder = buffer.getBuffer(RenderType.entityCutout(LOCATION_TANK));
         for (Direction facing : Direction.values()) {
             if (!te.isTankConnectedTo(facing)) {
                 for (EnumDirection direction : EnumDirection.values()) {
@@ -127,43 +127,43 @@ public class TileEntitySpecialRendererTank extends TileEntityRenderer<TileEntity
     }
 
     public static void drawLine(Direction side, EnumDirection line, MatrixStack matrixStack, IRenderTypeBuffer buffer, IVertexBuilder builder, int light) {
-        matrixStack.func_227860_a_();
+        matrixStack.push();
 
         rotate(side, matrixStack);
 
-        matrixStack.func_227861_a_(-0.00025D, -0.00025D, -0.00025D);
+        matrixStack.translate(-0.00025D, -0.00025D, -0.00025D);
 
         drawSide(line, side, matrixStack, buffer, builder, light);
 
-        matrixStack.func_227865_b_();
+        matrixStack.pop();
     }
 
     public static void rotate(Direction facing, MatrixStack matrixStack) {
-        matrixStack.func_227861_a_(0.5D, 0.5D, 0.5D);
+        matrixStack.translate(0.5D, 0.5D, 0.5D);
 
         switch (facing) {
             case SOUTH:
-                matrixStack.func_227863_a_(Vector3f.field_229181_d_.func_229187_a_(180F));
+                matrixStack.rotate(Vector3f.YP.rotationDegrees(180F));
                 break;
             case EAST:
-                matrixStack.func_227863_a_(Vector3f.field_229181_d_.func_229187_a_(270F));
+                matrixStack.rotate(Vector3f.YP.rotationDegrees(270F));
                 break;
             case WEST:
-                matrixStack.func_227863_a_(Vector3f.field_229181_d_.func_229187_a_(90F));
+                matrixStack.rotate(Vector3f.YP.rotationDegrees(90F));
                 break;
             case UP:
-                matrixStack.func_227863_a_(Vector3f.field_229181_d_.func_229187_a_(180F));
-                matrixStack.func_227863_a_(Vector3f.field_229179_b_.func_229187_a_(90F));
+                matrixStack.rotate(Vector3f.YP.rotationDegrees(180F));
+                matrixStack.rotate(Vector3f.XP.rotationDegrees(90F));
                 break;
             case DOWN:
-                matrixStack.func_227863_a_(Vector3f.field_229181_d_.func_229187_a_(180F));
-                matrixStack.func_227863_a_(Vector3f.field_229179_b_.func_229187_a_(270F));
+                matrixStack.rotate(Vector3f.YP.rotationDegrees(180F));
+                matrixStack.rotate(Vector3f.XP.rotationDegrees(270F));
                 break;
             case NORTH:
             default:
                 break;
         }
-        matrixStack.func_227861_a_(-0.5D, -0.5D, -0.5D);
+        matrixStack.translate(-0.5D, -0.5D, -0.5D);
     }
 
     public static void drawSide(EnumDirection line, Direction side, MatrixStack matrixStack, IRenderTypeBuffer buffer, IVertexBuilder builder, int light) {

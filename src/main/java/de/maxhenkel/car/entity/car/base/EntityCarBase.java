@@ -141,7 +141,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 
         for (int j = 0; j < list.size(); j++) {
             PlayerEntity player = list.get(j);
-            if (!player.isPassenger(this) && player.func_225608_bj_()) {
+            if (!player.isPassenger(this) && player.isShiftKeyDown()) {
                 double motX = calculateMotionX(0.05F, player.rotationYaw);
                 double motZ = calculateMotionZ(0.05F, player.rotationYaw);
                 move(MoverType.PLAYER, new Vec3d(motX, 0, motZ));
@@ -270,7 +270,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
     }
 
     public float getModifier() {
-        BlockPos pos = new BlockPos(func_226277_ct_(), func_226278_cu_() - 0.1D, func_226281_cx_());
+        BlockPos pos = new BlockPos(getPosX(), getPosY() - 0.1D, getPosZ());
         BlockState state = world.getBlockState(pos);
 
         if (state.isAir(world, pos) || Config.carDriveBlockList.contains(state.getBlock())) {
@@ -550,7 +550,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
             playHornSound();
             if (Config.hornFlee.get()) {
                 double radius = 15;
-                List<MobEntity> list = world.getEntitiesWithinAABB(MobEntity.class, new AxisAlignedBB(func_226277_ct_() - radius, func_226278_cu_() - radius, func_226281_cx_() - radius, func_226277_ct_() + radius, func_226278_cu_() + radius, func_226281_cx_() + radius));
+                List<MobEntity> list = world.getEntitiesWithinAABB(MobEntity.class, new AxisAlignedBB(getPosX() - radius, getPosY() - radius, getPosZ() - radius, getPosX() + radius, getPosY() + radius, getPosZ() + radius));
                 for (MobEntity ent : list) {
                     fleeEntity(ent);
                 }
@@ -560,8 +560,8 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 
     public void fleeEntity(MobEntity entity) {
         double fleeDistance = 10;
-        Vec3d vecCar = new Vec3d(func_226277_ct_(), func_226278_cu_(), func_226281_cx_());
-        Vec3d vecEntity = new Vec3d(entity.func_226277_ct_(), entity.func_226278_cu_(), entity.func_226281_cx_());
+        Vec3d vecCar = new Vec3d(getPosX(), getPosY(), getPosZ());
+        Vec3d vecEntity = new Vec3d(entity.getPosX(), entity.getPosY(), entity.getPosZ());
         Vec3d fleeDir = vecEntity.subtract(vecCar);
         fleeDir = fleeDir.normalize();
         Vec3d fleePos = new Vec3d(vecEntity.x + fleeDir.x * fleeDistance, vecEntity.y + fleeDir.y * fleeDistance, vecEntity.z + fleeDir.z * fleeDistance);

@@ -83,7 +83,7 @@ public class GuiLicensePlate extends GuiBase<ContainerLicensePlate> {
             this.minecraft.player.closeScreen();
         }
 
-        return !textField.keyPressed(key, a, b) && !textField.func_212955_f() ? super.keyPressed(key, a, b) : true;
+        return !textField.keyPressed(key, a, b) && !textField.canWrite() ? super.keyPressed(key, a, b) : true;
     }
 
     @Override

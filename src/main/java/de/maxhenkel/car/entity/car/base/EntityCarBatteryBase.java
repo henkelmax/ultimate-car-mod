@@ -148,9 +148,9 @@ public abstract class EntityCarBatteryBase extends EntityCarTemperatureBase {
 
     private void spawnParticle(IParticleData particleTypes, double offX, double offY, double offZ, double speedX, double speedZ, double random) {
         world.addParticle(particleTypes,
-                func_226277_ct_() + offX + (rand.nextDouble() * random - random / 2D),
-                func_226278_cu_() + offY + (rand.nextDouble() * random - random / 2D) + getCarHeight() / 8F,
-                func_226281_cx_() + offZ + (rand.nextDouble() * random - random / 2D),
+                getPosX() + offX + (rand.nextDouble() * random - random / 2D),
+                getPosY() + offY + (rand.nextDouble() * random - random / 2D) + getCarHeight() / 8F,
+                getPosZ() + offZ + (rand.nextDouble() * random - random / 2D),
                 speedX, 0.0D, speedZ);
     }
 

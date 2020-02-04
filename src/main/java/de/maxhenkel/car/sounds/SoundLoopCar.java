@@ -26,9 +26,9 @@ public abstract class SoundLoopCar extends TickableSound {
     }
 
     public void updatePos() {
-        this.x = (float) car.func_226277_ct_();
-        this.y = (float) car.func_226278_cu_();
-        this.z = (float) car.func_226281_cx_();
+        this.x = (float) car.getPosX();
+        this.y = (float) car.getPosY();
+        this.z = (float) car.getPosZ();
     }
 
     @Override

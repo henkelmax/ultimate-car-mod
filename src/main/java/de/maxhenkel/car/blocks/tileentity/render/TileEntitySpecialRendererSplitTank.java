@@ -24,8 +24,8 @@ public class TileEntitySpecialRendererSplitTank extends TileEntityRenderer<TileE
     }
 
     @Override
-    public void func_225616_a_(TileEntitySplitTank te, float partialTicks, MatrixStack matrixStack, IRenderTypeBuffer buffer, int light, int i) {
-        matrixStack.func_227860_a_();
+    public void render(TileEntitySplitTank te, float partialTicks, MatrixStack matrixStack, IRenderTypeBuffer buffer, int light, int i) {
+        matrixStack.push();
         float bioDiesel = te.getBioDieselPerc() / 2F;
         float glycerin = te.getGlycerinPerc() / 2F;
 
@@ -36,16 +36,16 @@ public class TileEntitySpecialRendererSplitTank extends TileEntityRenderer<TileE
         if (glycerin > 0) {
             renderFluid(GLYCERIN_STACK, glycerin, bioDiesel + 1F / 16F, matrixStack, buffer, light);
         }
-        matrixStack.func_227865_b_();
+        matrixStack.pop();
     }
 
     public void renderFluid(FluidStack fluid, float amount, float yStart, MatrixStack matrixStack, IRenderTypeBuffer buffer, int light) {
-        matrixStack.func_227860_a_();
-        matrixStack.func_227862_a_(0.98F, 0.98F, 0.98F);
-        matrixStack.func_227861_a_(0.01F, 0.01F, 0.01F);
+        matrixStack.push();
+        matrixStack.scale(0.98F, 0.98F, 0.98F);
+        matrixStack.translate(0.01F, 0.01F, 0.01F);
 
-        IVertexBuilder builder = buffer.getBuffer(Atlases.func_228784_i_());
-        TextureAtlasSprite texture = Minecraft.getInstance().getModelManager().func_229356_a_(PlayerContainer.field_226615_c_).getSprite(fluid.getFluid().getAttributes().getStillTexture());
+        IVertexBuilder builder = buffer.getBuffer(Atlases.getTranslucentBlockType());
+        TextureAtlasSprite texture = Minecraft.getInstance().getModelManager().getAtlasTexture(PlayerContainer.LOCATION_BLOCKS_TEXTURE).getSprite(fluid.getFluid().getAttributes().getStillTexture());
 
         float uMin = texture.getMinU();
         float uMax = texture.getMaxU();
@@ -86,7 +86,7 @@ public class TileEntitySpecialRendererSplitTank extends TileEntityRenderer<TileE
         RenderTools.vertex(builder, matrixStack, 1F - s, yStart + amount - s * 2F, 1F - s, uMin, vMin, light);
         RenderTools.vertex(builder, matrixStack, 1F - s, yStart + amount - s * 2F, 0F + s, uMax, vMin, light);
 
-        matrixStack.func_227865_b_();
+        matrixStack.pop();
     }
 
 }

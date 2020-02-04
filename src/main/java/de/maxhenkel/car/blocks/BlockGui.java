@@ -48,8 +48,8 @@ public abstract class BlockGui<T extends TileEntity> extends BlockBase implement
     }
 
     @Override
-    public ActionResultType func_225533_a_(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
-        if (!player.func_225608_bj_()) {
+    public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
+        if (!player.isShiftKeyDown()) {
             if (!(player instanceof ServerPlayerEntity)) {
                 return ActionResultType.SUCCESS;
             }

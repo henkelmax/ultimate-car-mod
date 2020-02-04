@@ -42,7 +42,7 @@ import java.util.List;
 public class BlockTank extends BlockBase implements ITileEntityProvider, IItemBlock {
 
     protected BlockTank() {
-        super(Block.Properties.create(Material.GLASS).hardnessAndResistance(0.5F).sound(SoundType.GLASS).func_226896_b_());
+        super(Block.Properties.create(Material.GLASS).hardnessAndResistance(0.5F).sound(SoundType.GLASS).notSolid());
         setRegistryName(new ResourceLocation(Main.MODID, "tank"));
     }
 
@@ -96,7 +96,7 @@ public class BlockTank extends BlockBase implements ITileEntityProvider, IItemBl
     }
 
     @Override
-    public ActionResultType func_225533_a_(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
+    public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
         ItemStack stack = player.getHeldItem(handIn);
         if (FluidUtil.getFluidContained(stack).orElse(null) != null) {
             FluidUtils.tryFluidInteraction(player, handIn, worldIn, pos);
@@ -154,18 +154,18 @@ public class BlockTank extends BlockBase implements ITileEntityProvider, IItemBl
     }
 
     @Override
-    public boolean propagatesSkylightDown(BlockState p_200123_1_, IBlockReader p_200123_2_, BlockPos p_200123_3_) {
+    public boolean propagatesSkylightDown(BlockState state, IBlockReader world, BlockPos pos) {
         return true;
     }
 
     @OnlyIn(Dist.CLIENT)
     @Override
-    public float func_220080_a(BlockState state, IBlockReader reader, BlockPos pos) {
+    public float getAmbientOcclusionLightValue(BlockState state, IBlockReader reader, BlockPos pos) {
         return 1F;
     }
 
     @Override
-    public boolean func_229869_c_(BlockState p_229869_1_, IBlockReader p_229869_2_, BlockPos p_229869_3_) {
+    public boolean causesSuffocation(BlockState state, IBlockReader world, BlockPos pos) {
         return false;
     }
 

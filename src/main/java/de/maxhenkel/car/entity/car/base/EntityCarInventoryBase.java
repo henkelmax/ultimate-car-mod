@@ -53,7 +53,7 @@ public abstract class EntityCarInventoryBase extends EntityCarFuelBase implement
 
     @Override
     public boolean processInitialInteract(PlayerEntity player, Hand hand) {
-        if (canPlayerAccessInventoryExternal(player) && player.func_225608_bj_()) {
+        if (canPlayerAccessInventoryExternal(player) && player.isShiftKeyDown()) {
             //Canister
             ItemStack stack = player.getHeldItem(hand);
             if (!stack.isEmpty()) {

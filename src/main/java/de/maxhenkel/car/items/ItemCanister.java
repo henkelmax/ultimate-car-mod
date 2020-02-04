@@ -38,7 +38,7 @@ public class ItemCanister extends Item {
 
     @Override
     public ActionResultType onItemUse(ItemUseContext context) {
-        if (!context.getPlayer().func_225608_bj_()) {
+        if (!context.getPlayer().isShiftKeyDown()) {
             return super.onItemUse(context);
         }
 

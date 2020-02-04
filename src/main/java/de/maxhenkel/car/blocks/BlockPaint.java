@@ -30,7 +30,7 @@ public class BlockPaint extends BlockBase implements IItemBlock {
 
     public BlockPaint(EnumPaintType type, boolean isYellow) {
         super(Properties.create(new Material.Builder(MaterialColor.AIR).build())
-                .hardnessAndResistance(2F).sound(SoundType.STONE).func_226896_b_());
+                .hardnessAndResistance(2F).sound(SoundType.STONE).notSolid());
         setRegistryName(new ResourceLocation(Main.MODID, type.name + (isYellow ? "_yellow" : "")));
 
         setDefaultState(stateContainer.getBaseState().with(FACING, Direction.NORTH));
@@ -108,7 +108,7 @@ public class BlockPaint extends BlockBase implements IItemBlock {
     }
 
     public static boolean canPlaceBlockAt(World worldIn, BlockPos pos) {
-        return func_220064_c(worldIn, pos.down());
+        return hasSolidSideOnTop(worldIn, pos.down());
     }
 
     @Override

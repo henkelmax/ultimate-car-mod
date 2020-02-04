@@ -16,59 +16,59 @@ public class TileEntitySpecialRendererSign extends TileEntityRenderer<TileEntity
     }
 
     @Override
-    public void func_225616_a_(TileEntitySign te, float partialTicks, MatrixStack matrixStack, IRenderTypeBuffer buffer, int light, int i) {
-        matrixStack.func_227860_a_();
+    public void render(TileEntitySign te, float partialTicks, MatrixStack matrixStack, IRenderTypeBuffer buffer, int light, int i) {
+        matrixStack.push();
 
-        matrixStack.func_227861_a_(0.5D, 1D, 0.5D);
-        matrixStack.func_227863_a_(Vector3f.field_229179_b_.func_229187_a_(180F));
-        matrixStack.func_227863_a_(Vector3f.field_229181_d_.func_229187_a_(-te.getBlockState().get(BlockSign.FACING).getHorizontalAngle()));
+        matrixStack.translate(0.5D, 1D, 0.5D);
+        matrixStack.rotate(Vector3f.XP.rotationDegrees(180F));
+        matrixStack.rotate(Vector3f.YP.rotationDegrees(-te.getBlockState().get(BlockSign.FACING).getHorizontalAngle()));
 
         //----------Front-----------
-        matrixStack.func_227860_a_();
+        matrixStack.push();
 
-        matrixStack.func_227861_a_(0D, 0.27D, -0.51D / 16D);
+        matrixStack.translate(0D, 0.27D, -0.51D / 16D);
         drawText(te.getText(0), matrixStack, buffer, light);
-        matrixStack.func_227861_a_(0D, 0.116D, 0D);
+        matrixStack.translate(0D, 0.116D, 0D);
         drawText(te.getText(1), matrixStack, buffer, light);
-        matrixStack.func_227861_a_(0D, 0.116D, 0D);
+        matrixStack.translate(0D, 0.116D, 0D);
         drawText(te.getText(2), matrixStack, buffer, light);
-        matrixStack.func_227861_a_(0D, 0.116D, 0D);
+        matrixStack.translate(0D, 0.116D, 0D);
         drawText(te.getText(3), matrixStack, buffer, light);
 
-        matrixStack.func_227865_b_();
+        matrixStack.pop();
 
         //----------Back-----------
-        matrixStack.func_227860_a_();
+        matrixStack.push();
 
-        matrixStack.func_227863_a_(Vector3f.field_229181_d_.func_229187_a_(180F));
-        matrixStack.func_227861_a_(0D, 0.27D, -0.51D / 16D);
+        matrixStack.rotate(Vector3f.YP.rotationDegrees(180F));
+        matrixStack.translate(0D, 0.27D, -0.51D / 16D);
         drawText(te.getText(4), matrixStack, buffer, light);
-        matrixStack.func_227861_a_(0D, 0.116D, 0D);
+        matrixStack.translate(0D, 0.116D, 0D);
         drawText(te.getText(5), matrixStack, buffer, light);
-        matrixStack.func_227861_a_(0D, 0.116D, 0D);
+        matrixStack.translate(0D, 0.116D, 0D);
         drawText(te.getText(6), matrixStack, buffer, light);
-        matrixStack.func_227861_a_(0D, 0.116D, 0D);
+        matrixStack.translate(0D, 0.116D, 0D);
         drawText(te.getText(7), matrixStack, buffer, light);
 
-        matrixStack.func_227865_b_();
+        matrixStack.pop();
         //-------------------------
 
-        matrixStack.func_227865_b_();
+        matrixStack.pop();
     }
 
     private void drawText(String txt, MatrixStack matrixStack, IRenderTypeBuffer buffer, int light) {
-        FontRenderer renderer = field_228858_b_.getFontRenderer();
-        matrixStack.func_227860_a_();
+        FontRenderer renderer = renderDispatcher.getFontRenderer();
+        matrixStack.push();
 
         int textWidth = renderer.getStringWidth(txt);
         float textScale = 0.008F;
 
-        matrixStack.func_227861_a_(-(textScale * textWidth) / 2D, 0D, 0D);
-        matrixStack.func_227862_a_(textScale, textScale, textScale);
+        matrixStack.translate(-(textScale * textWidth) / 2D, 0D, 0D);
+        matrixStack.scale(textScale, textScale, textScale);
 
-        renderer.func_228079_a_(txt, 0F, 0F, 0x0, false, matrixStack.func_227866_c_().func_227870_a_(), buffer, false, 0, light);
+        renderer.renderString(txt, 0F, 0F, 0x0, false, matrixStack.getLast().getPositionMatrix(), buffer, false, 0, light);
 
-        matrixStack.func_227865_b_();
+        matrixStack.pop();
     }
 
 }

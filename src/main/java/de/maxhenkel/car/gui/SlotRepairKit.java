@@ -45,7 +45,7 @@ public class SlotRepairKit extends Slot {
         }
 
         if (!player.inventory.addItemStackToInventory(stack)) {
-            InventoryHelper.spawnItemStack(car.world, car.func_226277_ct_(), car.func_226278_cu_(), car.func_226281_cx_(), stack);
+            InventoryHelper.spawnItemStack(car.world, car.getPosX(), car.getPosY(), car.getPosZ(), stack);
         }
     }
 

@@ -43,9 +43,9 @@ public abstract class EntityVehicleBase extends Entity {
     @Override
     public void tick() {
         if (!world.isRemote) {
-            this.prevPosX = func_226277_ct_();
-            this.prevPosY = func_226278_cu_();
-            this.prevPosZ = func_226281_cx_();
+            this.prevPosX = getPosX();
+            this.prevPosY = getPosY();
+            this.prevPosZ = getPosZ();
         }
 
         setPositionNonDirty();
@@ -59,7 +59,7 @@ public abstract class EntityVehicleBase extends Entity {
     public void recalculateBoundingBox() {
         double width = getCarWidth();
         double height = getCarHeight();
-        boundingBox = new AxisAlignedBB(func_226277_ct_() - width / 2D, func_226278_cu_(), func_226281_cx_() - width / 2D, func_226277_ct_() + width / 2D, func_226278_cu_() + height, func_226281_cx_() + width / 2D);
+        boundingBox = new AxisAlignedBB(getPosX() - width / 2D, getPosY(), getPosZ() - width / 2D, getPosX() + width / 2D, getPosY() + height, getPosZ() + width / 2D);
     }
 
     public double getCarWidth() {
@@ -133,7 +133,7 @@ public abstract class EntityVehicleBase extends Entity {
         }
 
         Vec3d vec3d = (new Vec3d(front, height, side)).rotateYaw(-this.rotationYaw * 0.017453292F - ((float) Math.PI / 2F));
-        passenger.setPosition(func_226277_ct_() + vec3d.x, func_226278_cu_() + vec3d.y, func_226281_cx_() + vec3d.z);
+        passenger.setPosition(getPosX() + vec3d.x, getPosY() + vec3d.y, getPosZ() + vec3d.z);
         passenger.rotationYaw += deltaRotation;
         passenger.setRotationYawHead(passenger.getRotationYawHead() + this.deltaRotation);
         applyYawToEntity(passenger);
@@ -205,13 +205,13 @@ public abstract class EntityVehicleBase extends Entity {
     private void tickLerp() {
         if (this.canPassengerSteer()) {
             this.steps = 0;
-            this.func_213312_b(this.func_226277_ct_(), this.func_226278_cu_(), this.func_226281_cx_());
+            this.setPacketCoordinates(this.getPosX(), this.getPosY(), this.getPosZ());
         }
 
         if (this.steps > 0) {
-            double d0 = func_226277_ct_() + (clientX - func_226277_ct_()) / (double) steps;
-            double d1 = func_226278_cu_() + (clientY - func_226278_cu_()) / (double) steps;
-            double d2 = func_226281_cx_() + (clientZ - func_226281_cx_()) / (double) steps;
+            double d0 = getPosX() + (clientX - getPosX()) / (double) steps;
+            double d1 = getPosY() + (clientY - getPosY()) / (double) steps;
+            double d2 = getPosZ() + (clientZ - getPosZ()) / (double) steps;
             double d3 = MathHelper.wrapDegrees(clientYaw - (double) rotationYaw);
             rotationYaw = (float) ((double) rotationYaw + d3 / (double) steps);
             rotationPitch = (float) ((double) rotationPitch + (clientPitch - (double) rotationPitch) / (double) steps);
@@ -245,7 +245,7 @@ public abstract class EntityVehicleBase extends Entity {
 
     @Override
     public boolean processInitialInteract(PlayerEntity player, Hand hand) {
-        if (!player.func_225608_bj_()) {
+        if (!player.isShiftKeyDown()) {
             if (player.getRidingEntity() != this) {
                 if (!world.isRemote) {
                     player.startRiding(this);

@@ -27,7 +27,7 @@ public class EntityTools {
     @Nullable
     public static EntityGenericCar getCarByUUID(PlayerEntity player, UUID uuid) {
         double distance = 10D;
-        return player.world.getEntitiesWithinAABB(EntityGenericCar.class, new AxisAlignedBB(player.func_226277_ct_() - distance, player.func_226278_cu_() - distance, player.func_226281_cx_() - distance, player.func_226277_ct_() + distance, player.func_226278_cu_() + distance, player.func_226281_cx_() + distance), entity -> entity.getUniqueID().equals(uuid)).stream().findAny().orElse(null);
+        return player.world.getEntitiesWithinAABB(EntityGenericCar.class, new AxisAlignedBB(player.getPosX() - distance, player.getPosY() - distance, player.getPosZ() - distance, player.getPosX() + distance, player.getPosY() + distance, player.getPosZ() + distance), entity -> entity.getUniqueID().equals(uuid)).stream().findAny().orElse(null);
     }
 
     public static void drawCarOnScreen(EntityCarBase car, int posX, int posY, int scale, float rotation) {
@@ -36,18 +36,18 @@ public class EntityTools {
         RenderSystem.translatef((float) posX, (float) posY, 1050.0F);
         RenderSystem.scalef(1.0F, 1.0F, -1.0F);
         MatrixStack matrixstack = new MatrixStack();
-        matrixstack.func_227861_a_(0.0D, 0.0D, 1000.0D);
-        matrixstack.func_227862_a_((float) scale, (float) scale, (float) scale);
+        matrixstack.translate(0.0D, 0.0D, 1000.0D);
+        matrixstack.scale((float) scale, (float) scale, (float) scale);
 
-        matrixstack.func_227863_a_(Vector3f.field_229181_d_.func_229187_a_(135F + rotation));
+        matrixstack.rotate(Vector3f.YP.rotationDegrees(135F + rotation));
 
-        Quaternion quaternion = Vector3f.field_229183_f_.func_229187_a_(180.0F);
-        matrixstack.func_227863_a_(quaternion);
+        Quaternion quaternion = Vector3f.ZP.rotationDegrees(180.0F);
+        matrixstack.rotate(quaternion);
         EntityRendererManager entityrenderermanager = Minecraft.getInstance().getRenderManager();
         entityrenderermanager.setRenderShadow(false);
-        IRenderTypeBuffer.Impl buffer = Minecraft.getInstance().func_228019_au_().func_228487_b_();
-        entityrenderermanager.func_229084_a_(car, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, matrixstack, buffer, 15728880);
-        buffer.func_228461_a_();
+        IRenderTypeBuffer.Impl buffer = Minecraft.getInstance().getRenderTypeBuffers().getBufferSource();
+        entityrenderermanager.renderEntityStatic(car, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, matrixstack, buffer, 15728880);
+        buffer.finish();
         entityrenderermanager.setRenderShadow(true);
         RenderSystem.popMatrix();
     }

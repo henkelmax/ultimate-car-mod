@@ -52,9 +52,9 @@ public class BlockCanolaCrop extends CropsBlock {
     }
 
     @Override
-    public void func_225534_a_(BlockState state, ServerWorld worldIn, BlockPos pos, Random random) {
+    public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random random) {
         if (random.nextInt(3) != 0) {
-            super.func_225534_a_(state, worldIn, pos, random);
+            super.tick(state, worldIn, pos, random);
         }
     }
 

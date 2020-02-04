@@ -21,13 +21,13 @@ public class RenderTools {
     }
 
     public static void vertex(IVertexBuilder builder, MatrixStack matrixStack, float posX, float posY, float posZ, float texX, float texY, float norX, float norY, float norZ, float red, float green, float blue, int light) {
-        MatrixStack.Entry entry = matrixStack.func_227866_c_();
-        builder.func_227888_a_(entry.func_227870_a_(), posX, posY, posZ) // Matrix and position?
-                .func_225586_a_((int) (red * 255F), (int) (green * 255F), (int) (blue * 255F), 255) // Color
-                .func_225583_a_(texX, texY) // U V
-                .func_227891_b_(OverlayTexture.field_229196_a_) //Overlay Texture
-                .func_227886_a_(light) // Light
-                .func_227887_a_(entry.func_227872_b_(), norX, norY, norZ) // normal
+        MatrixStack.Entry entry = matrixStack.getLast();
+        builder.pos(entry.getPositionMatrix(), posX, posY, posZ)
+                .color((int) (red * 255F), (int) (green * 255F), (int) (blue * 255F), 255)
+                .tex(texX, texY)
+                .overlay(OverlayTexture.DEFAULT_LIGHT)
+                .lightmap(light)
+                .normal(entry.getNormalMatrix(), norX, norY, norZ)
                 .endVertex();
     }
 

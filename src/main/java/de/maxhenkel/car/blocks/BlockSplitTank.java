@@ -36,7 +36,7 @@ import javax.annotation.Nullable;
 public class BlockSplitTank extends BlockBase implements ITileEntityProvider, IItemBlock {
 
     protected BlockSplitTank() {
-        super(Properties.create(Material.IRON).hardnessAndResistance(3F).sound(SoundType.STONE).func_226896_b_());
+        super(Properties.create(Material.IRON).hardnessAndResistance(3F).sound(SoundType.STONE).notSolid());
         setRegistryName(new ResourceLocation(Main.MODID, "split_tank"));
     }
 
@@ -54,12 +54,12 @@ public class BlockSplitTank extends BlockBase implements ITileEntityProvider, II
     }
 
     @Override
-    public ActionResultType func_225533_a_(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
+    public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
         if (FluidUtils.tryFluidInteraction(player, handIn, worldIn, pos)) {
             return ActionResultType.SUCCESS;
         }
 
-        if (!player.func_225608_bj_()) {
+        if (!player.isShiftKeyDown()) {
             TileEntity te = worldIn.getTileEntity(pos);
 
             if (!(te instanceof TileEntitySplitTank)) {
@@ -106,13 +106,13 @@ public class BlockSplitTank extends BlockBase implements ITileEntityProvider, II
     }
 
     @Override
-    public boolean func_229869_c_(BlockState p_229869_1_, IBlockReader p_229869_2_, BlockPos p_229869_3_) {
+    public boolean causesSuffocation(BlockState state, IBlockReader world, BlockPos pos) {
         return false;
     }
 
     @OnlyIn(Dist.CLIENT)
     @Override
-    public float func_220080_a(BlockState state, IBlockReader worldIn, BlockPos pos) {
+    public float getAmbientOcclusionLightValue(BlockState state, IBlockReader worldIn, BlockPos pos) {
         return 1.0F;
     }
 

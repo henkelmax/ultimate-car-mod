@@ -45,13 +45,13 @@ public class BlockCarWorkshopOutter extends BlockBase implements IItemBlock {
     }
 
     @Override
-    public ActionResultType func_225533_a_(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
+    public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
         BlockPos tePos = findCenter(worldIn, pos);
 
         if (tePos == null) {
             return ActionResultType.FAIL;
         }
-        return ModBlocks.CAR_WORKSHOP.func_225533_a_(worldIn.getBlockState(tePos), worldIn, tePos, player, handIn, hit);
+        return ModBlocks.CAR_WORKSHOP.onBlockActivated(worldIn.getBlockState(tePos), worldIn, tePos, player, handIn, hit);
     }
 
     @Override

@@ -23,6 +23,6 @@ public class GenericCarModel extends OBJModelRenderer {
     @Override
     public void translateLicensePlate(EntityGenericCar entity, MatrixStack matrixStack) {
         Vec3d offset = entity.getLicensePlateOffset();
-        matrixStack.func_227861_a_(offset.x, offset.y, offset.z);
+        matrixStack.translate(offset.x, offset.y, offset.z);
     }
 }
