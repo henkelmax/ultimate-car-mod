@@ -1,2 +1,1 @@
-- Added car demo command
-- Fixed summoning invisible cars
+- Fixed misaligned textures
