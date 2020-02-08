@@ -2,7 +2,7 @@
 
 ![car](https://i.imgur.com/OG5HlNP.png)
 
-![cars](https://i.imgur.com/rBOg0Ft.png)
+![cars](https://i.imgur.com/DLGwVpm.png)
 
 This mod brings cars, road construction and biodiesel production into your minecraft world.
 There are many vehicles with different features to choose from.

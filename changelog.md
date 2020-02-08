@@ -1,1 +1,1 @@
-- Fixed misaligned textures
+- Added cars for the new 1.16 wood types
