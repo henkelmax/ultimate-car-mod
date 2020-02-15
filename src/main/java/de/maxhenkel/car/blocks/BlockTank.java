@@ -5,6 +5,7 @@ import java.util.List;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.ModItemGroups;
 import de.maxhenkel.car.blocks.tileentity.TileEntityTank;
+import de.maxhenkel.car.blocks.tileentity.render.item.TankItemTileEntityRenderer;
 import de.maxhenkel.tools.FluidUtils;
 import de.maxhenkel.tools.IItemBlock;
 import net.minecraft.block.*;
@@ -50,7 +51,7 @@ public class BlockTank extends BlockBase implements ITileEntityProvider, IItemBl
 
     @Override
     public Item toItem() {
-        return new BlockItem(this, new Item.Properties().group(ModItemGroups.TAB_CAR).maxStackSize(1)).setRegistryName(this.getRegistryName());
+        return new BlockItem(this, new Item.Properties().group(ModItemGroups.TAB_CAR).maxStackSize(1).setTEISR(() -> TankItemTileEntityRenderer::new)).setRegistryName(getRegistryName());
     }
 
     @Override
@@ -71,7 +72,21 @@ public class BlockTank extends BlockBase implements ITileEntityProvider, IItemBl
     public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
         super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
 
+        TileEntity te = worldIn.getTileEntity(pos);
+
+        if (!(te instanceof TileEntityTank)) {
+            return;
+        }
+
+        TileEntityTank tank = (TileEntityTank) te;
+
+        applyItemData(stack, tank);
+        tank.synchronize();
+    }
+
+    public static void applyItemData(ItemStack stack, TileEntityTank tank) {
         if (!stack.hasTag()) {
+            tank.setFluid(FluidStack.EMPTY);
             return;
         }
 
@@ -83,18 +98,9 @@ public class BlockTank extends BlockBase implements ITileEntityProvider, IItemBl
 
         CompoundNBT fluidTag = comp.getCompound("fluid");
 
-        TileEntity te = worldIn.getTileEntity(pos);
-
-        if (!(te instanceof TileEntityTank)) {
-            return;
-        }
-
-        TileEntityTank tank = (TileEntityTank) te;
-
         FluidStack fluidStack = FluidStack.loadFluidStackFromNBT(fluidTag);
 
         tank.setFluid(fluidStack);
-        tank.synchronize();
     }
 
     @Override

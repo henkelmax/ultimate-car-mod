@@ -2,6 +2,7 @@ package de.maxhenkel.car.blocks.tileentity;
 
 import de.maxhenkel.car.Main;
 import de.maxhenkel.tools.FluidUtils;
+import net.minecraft.block.BlockState;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.ITickableTileEntity;
@@ -174,12 +175,30 @@ public class TileEntityTank extends TileEntityBase implements IFluidHandler, ITi
             }
 
             if (tank.fluid.getFluid().equals(fluid.getFluid())) {
+                if (facing.equals(Direction.UP)) {
+                    if (fluid.getAmount() >= CAPACITY) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }
                 return true;
             }
         }
+
+        BlockState s = world.getBlockState(pos.offset(facing));
+        if (s.isNormalCube(world, pos.offset(facing))) {
+            if (facing.equals(Direction.UP)) {
+                if (fluid.getAmount() >= CAPACITY) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+            return true;
+        }
         return false;
     }
-
 
     @OnlyIn(Dist.CLIENT)
     private boolean isTankConnectedCalc(Direction facing) {

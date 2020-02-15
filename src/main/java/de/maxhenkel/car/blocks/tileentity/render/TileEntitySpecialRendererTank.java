@@ -119,9 +119,11 @@ public class TileEntitySpecialRendererTank extends TileEntityRenderer<TileEntity
 
         double vHeight = vMax - vMin;
 
-        int i = 0xFFFFFF;
+        int i;
         if (tank.hasWorld()) {
             i = fluid.getFluid().getAttributes().getColor(tank.getWorld(), tank.getPos());
+        } else {
+            i = fluid.getFluid().getAttributes().getColor();
         }
 
         float red = (float) (i >> 16 & 255) / 255F;
