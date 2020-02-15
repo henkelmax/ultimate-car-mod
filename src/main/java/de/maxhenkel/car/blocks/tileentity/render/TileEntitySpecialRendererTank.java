@@ -27,18 +27,18 @@ public class TileEntitySpecialRendererTank extends TileEntityRenderer<TileEntity
     }
 
     @Override
-    public void render(TileEntityTank te, float partialTicks, MatrixStack matrixStack, IRenderTypeBuffer buffer, int light, int i) {
+    public void render(TileEntityTank te, float partialTicks, MatrixStack matrixStack, IRenderTypeBuffer buffer, int light, int overlay) {
         matrixStack.push();
         float amount = te.getFillPercent();
         FluidStack stack = te.getFluid();
         if (amount > 0 && stack != null) {
-            renderFluid(te, stack, amount, 0.0F, matrixStack, buffer, light);
+            renderFluid(te, stack, amount, 0.0F, matrixStack, buffer, light, overlay);
         }
-        renderLines(te, matrixStack, buffer, light);
+        renderLines(te, matrixStack, buffer, light, overlay);
         matrixStack.pop();
     }
 
-    public void renderFluid(TileEntityTank tank, FluidStack fluid, float amount, float yStart, MatrixStack matrixStack, IRenderTypeBuffer buffer, int light) {
+    public void renderFluid(TileEntityTank tank, FluidStack fluid, float amount, float yStart, MatrixStack matrixStack, IRenderTypeBuffer buffer, int light, int overlay) {
         matrixStack.push();
         IVertexBuilder builder = buffer.getBuffer(Atlases.getTranslucentBlockType());
 
@@ -51,89 +51,91 @@ public class TileEntitySpecialRendererTank extends TileEntityRenderer<TileEntity
 
         float vHeight = vMax - vMin;
 
-        int i = 0xFFFFFF;
+        int i;
         if (tank.hasWorld()) {
             i = fluid.getFluid().getAttributes().getColor(tank.getWorld(), tank.getPos());
+        } else {
+            i = fluid.getFluid().getAttributes().getColor();
         }
 
-        float red = (float) (i >> 16 & 255) / 255F;
-        float green = (float) (i >> 8 & 255) / 255F;
-        float blue = (float) (i & 255) / 255F;
+        int red = i >> 16 & 255;
+        int green = i >> 8 & 255;
+        int blue = i & 255;
 
         float s = 0.0F;
 
         if (!tank.isFluidConnected(Direction.NORTH)) {
             // North
-            RenderTools.vertex(builder, matrixStack, 1F - s, yStart, 0F + s, uMax, vMin, red, green, blue, light);
-            RenderTools.vertex(builder, matrixStack, 0F - s, yStart, 0F + s, uMin, vMin, red, green, blue, light);
-            RenderTools.vertex(builder, matrixStack, 0F + s, yStart + amount - s * 2F, 0F + s, uMin, vMin + vHeight * amount, red, green, blue, light);
-            RenderTools.vertex(builder, matrixStack, 1F - s, yStart + amount - s * 2F, 0F + s, uMax, vMin + vHeight * amount, red, green, blue, light);
+            RenderTools.vertex(builder, matrixStack, 1F - s, yStart, 0F + s, uMax, vMin, red, green, blue, light, overlay);
+            RenderTools.vertex(builder, matrixStack, 0F - s, yStart, 0F + s, uMin, vMin, red, green, blue, light, overlay);
+            RenderTools.vertex(builder, matrixStack, 0F + s, yStart + amount - s * 2F, 0F + s, uMin, vMin + vHeight * amount, red, green, blue, light, overlay);
+            RenderTools.vertex(builder, matrixStack, 1F - s, yStart + amount - s * 2F, 0F + s, uMax, vMin + vHeight * amount, red, green, blue, light, overlay);
         }
 
         if (!tank.isFluidConnected(Direction.SOUTH)) {
             // South
-            RenderTools.vertex(builder, matrixStack, 1F - s, yStart, 1F - s, uMin, vMin, red, green, blue, light);
-            RenderTools.vertex(builder, matrixStack, 1F - s, yStart + amount - s * 2F, 1F - s, uMin, vMin + vHeight * amount, red, green, blue, light);
-            RenderTools.vertex(builder, matrixStack, 0F + s, yStart + amount - s * 2F, 1F - s, uMax, vMin + vHeight * amount, red, green, blue, light);
-            RenderTools.vertex(builder, matrixStack, 0F + s, yStart, 1F - s, uMax, vMin, red, green, blue, light);
+            RenderTools.vertex(builder, matrixStack, 1F - s, yStart, 1F - s, uMin, vMin, red, green, blue, light, overlay);
+            RenderTools.vertex(builder, matrixStack, 1F - s, yStart + amount - s * 2F, 1F - s, uMin, vMin + vHeight * amount, red, green, blue, light, overlay);
+            RenderTools.vertex(builder, matrixStack, 0F + s, yStart + amount - s * 2F, 1F - s, uMax, vMin + vHeight * amount, red, green, blue, light, overlay);
+            RenderTools.vertex(builder, matrixStack, 0F + s, yStart, 1F - s, uMax, vMin, red, green, blue, light, overlay);
         }
 
         if (!tank.isFluidConnected(Direction.EAST)) {
             // East
-            RenderTools.vertex(builder, matrixStack, 1F - s, yStart, 0F + s, uMin, vMin, red, green, blue, light);
-            RenderTools.vertex(builder, matrixStack, 1F - s, yStart + amount - s * 2F, 0F + s, uMin, vMin + vHeight * amount, red, green, blue, light);
-            RenderTools.vertex(builder, matrixStack, 1F - s, yStart + amount - s * 2F, 1F - s, uMax, vMin + vHeight * amount, red, green, blue, light);
-            RenderTools.vertex(builder, matrixStack, 1F - s, yStart, 1F - s, uMax, vMin, red, green, blue, light);
+            RenderTools.vertex(builder, matrixStack, 1F - s, yStart, 0F + s, uMin, vMin, red, green, blue, light, overlay);
+            RenderTools.vertex(builder, matrixStack, 1F - s, yStart + amount - s * 2F, 0F + s, uMin, vMin + vHeight * amount, red, green, blue, light, overlay);
+            RenderTools.vertex(builder, matrixStack, 1F - s, yStart + amount - s * 2F, 1F - s, uMax, vMin + vHeight * amount, red, green, blue, light, overlay);
+            RenderTools.vertex(builder, matrixStack, 1F - s, yStart, 1F - s, uMax, vMin, red, green, blue, light, overlay);
         }
 
         if (!tank.isFluidConnected(Direction.WEST)) {
             // West
-            RenderTools.vertex(builder, matrixStack, 0F + s, yStart, 1F - s, uMin, vMin, red, green, blue, light);
-            RenderTools.vertex(builder, matrixStack, 0F + s, yStart + amount - s * 2F, 1F - s, uMin, vMin + vHeight * amount, red, green, blue, light);
-            RenderTools.vertex(builder, matrixStack, 0F + s, yStart + amount - s * 2F, 0F + s, uMax, vMin + vHeight * amount, red, green, blue, light);
-            RenderTools.vertex(builder, matrixStack, 0F + s, yStart, 0F + s, uMax, vMin, red, green, blue, light);
+            RenderTools.vertex(builder, matrixStack, 0F + s, yStart, 1F - s, uMin, vMin, red, green, blue, light, overlay);
+            RenderTools.vertex(builder, matrixStack, 0F + s, yStart + amount - s * 2F, 1F - s, uMin, vMin + vHeight * amount, red, green, blue, light, overlay);
+            RenderTools.vertex(builder, matrixStack, 0F + s, yStart + amount - s * 2F, 0F + s, uMax, vMin + vHeight * amount, red, green, blue, light, overlay);
+            RenderTools.vertex(builder, matrixStack, 0F + s, yStart, 0F + s, uMax, vMin, red, green, blue, light, overlay);
         }
 
         if (!tank.isFluidConnected(Direction.DOWN)) {
             // Down
-            RenderTools.vertex(builder, matrixStack, 1F - s, yStart, 0F + s, uMax, vMin, red, green, blue, light);
-            RenderTools.vertex(builder, matrixStack, 1F - s, yStart, 1F - s, uMin, vMin, red, green, blue, light);
-            RenderTools.vertex(builder, matrixStack, 0F + s, yStart, 1F - s, uMin, vMax, red, green, blue, light);
-            RenderTools.vertex(builder, matrixStack, 0F + s, yStart, 0F + s, uMax, vMax, red, green, blue, light);
+            RenderTools.vertex(builder, matrixStack, 1F - s, yStart, 0F + s, uMax, vMin, red, green, blue, light, overlay);
+            RenderTools.vertex(builder, matrixStack, 1F - s, yStart, 1F - s, uMin, vMin, red, green, blue, light, overlay);
+            RenderTools.vertex(builder, matrixStack, 0F + s, yStart, 1F - s, uMin, vMax, red, green, blue, light, overlay);
+            RenderTools.vertex(builder, matrixStack, 0F + s, yStart, 0F + s, uMax, vMax, red, green, blue, light, overlay);
         }
 
         if (!tank.isFluidConnected(Direction.UP)) {
             // Up
-            RenderTools.vertex(builder, matrixStack, 0F + s, yStart + amount - s * 2F, 0F + s, uMax, vMax, red, green, blue, light);
-            RenderTools.vertex(builder, matrixStack, 0F + s, yStart + amount - s * 2F, 1F - s, uMin, vMax, red, green, blue, light);
-            RenderTools.vertex(builder, matrixStack, 1F - s, yStart + amount - s * 2F, 1F - s, uMin, vMin, red, green, blue, light);
-            RenderTools.vertex(builder, matrixStack, 1F - s, yStart + amount - s * 2F, 0F + s, uMax, vMin, red, green, blue, light);
+            RenderTools.vertex(builder, matrixStack, 0F + s, yStart + amount - s * 2F, 0F + s, uMax, vMax, red, green, blue, light, overlay);
+            RenderTools.vertex(builder, matrixStack, 0F + s, yStart + amount - s * 2F, 1F - s, uMin, vMax, red, green, blue, light, overlay);
+            RenderTools.vertex(builder, matrixStack, 1F - s, yStart + amount - s * 2F, 1F - s, uMin, vMin, red, green, blue, light, overlay);
+            RenderTools.vertex(builder, matrixStack, 1F - s, yStart + amount - s * 2F, 0F + s, uMax, vMin, red, green, blue, light, overlay);
         }
 
         matrixStack.pop();
     }
 
-    public static void renderLines(TileEntityTank te, MatrixStack matrixStack, IRenderTypeBuffer buffer, int light) {
+    public static void renderLines(TileEntityTank te, MatrixStack matrixStack, IRenderTypeBuffer buffer, int light, int overlay) {
         IVertexBuilder builder = buffer.getBuffer(RenderType.entityCutout(LOCATION_TANK));
         for (Direction facing : Direction.values()) {
             if (!te.isTankConnectedTo(facing)) {
                 for (EnumDirection direction : EnumDirection.values()) {
                     if (!te.isTankConnectedTo(direction.to(facing))) {
-                        drawLine(facing, direction, matrixStack, buffer, builder, light);
+                        drawLine(facing, direction, matrixStack, buffer, builder, light, overlay);
                     }
                 }
             }
         }
     }
 
-    public static void drawLine(Direction side, EnumDirection line, MatrixStack matrixStack, IRenderTypeBuffer buffer, IVertexBuilder builder, int light) {
+    public static void drawLine(Direction side, EnumDirection line, MatrixStack matrixStack, IRenderTypeBuffer buffer, IVertexBuilder builder, int light, int overlay) {
         matrixStack.push();
 
         rotate(side, matrixStack);
 
         matrixStack.translate(-0.00025D, -0.00025D, -0.00025D);
 
-        drawSide(line, side, matrixStack, buffer, builder, light);
+        drawSide(line, side, matrixStack, buffer, builder, light, overlay);
 
         matrixStack.pop();
     }
@@ -166,35 +168,35 @@ public class TileEntitySpecialRendererTank extends TileEntityRenderer<TileEntity
         matrixStack.translate(-0.5D, -0.5D, -0.5D);
     }
 
-    public static void drawSide(EnumDirection line, Direction side, MatrixStack matrixStack, IRenderTypeBuffer buffer, IVertexBuilder builder, int light) {
+    public static void drawSide(EnumDirection line, Direction side, MatrixStack matrixStack, IRenderTypeBuffer buffer, IVertexBuilder builder, int light, int overlay) {
         switch (line) {
             case UP:
                 // Top
-                RenderTools.vertex(builder, matrixStack, 0F, 0F, 0F, 1F, 1F, light);
-                RenderTools.vertex(builder, matrixStack, 0F, 1F, 0F, 1F, 0F, light);
-                RenderTools.vertex(builder, matrixStack, 1F, 1F, 0F, 0F, 0F, light);
-                RenderTools.vertex(builder, matrixStack, 1F, 0F, 0F, 0F, 1F, light);
+                RenderTools.vertex(builder, matrixStack, 0F, 0F, 0F, 1F, 1F, light, overlay);
+                RenderTools.vertex(builder, matrixStack, 0F, 1F, 0F, 1F, 0F, light, overlay);
+                RenderTools.vertex(builder, matrixStack, 1F, 1F, 0F, 0F, 0F, light, overlay);
+                RenderTools.vertex(builder, matrixStack, 1F, 0F, 0F, 0F, 1F, light, overlay);
                 break;
             case DOWN:
                 // Bottom
-                RenderTools.vertex(builder, matrixStack, 0F, 0F, 0F, 0F, 0F, light);
-                RenderTools.vertex(builder, matrixStack, 0F, 1F, 0F, 0F, 1F, light);
-                RenderTools.vertex(builder, matrixStack, 1F, 1F, 0F, 1F, 1F, light);
-                RenderTools.vertex(builder, matrixStack, 1F, 0F, 0F, 1F, 0F, light);
+                RenderTools.vertex(builder, matrixStack, 0F, 0F, 0F, 0F, 0F, light, overlay);
+                RenderTools.vertex(builder, matrixStack, 0F, 1F, 0F, 0F, 1F, light, overlay);
+                RenderTools.vertex(builder, matrixStack, 1F, 1F, 0F, 1F, 1F, light, overlay);
+                RenderTools.vertex(builder, matrixStack, 1F, 0F, 0F, 1F, 0F, light, overlay);
                 break;
             case RIGHT:
                 // Right
-                RenderTools.vertex(builder, matrixStack, 0F, 0F, 0F, 1F, 0F, light);
-                RenderTools.vertex(builder, matrixStack, 0F, 1F, 0F, 0F, 0F, light);
-                RenderTools.vertex(builder, matrixStack, 1F, 1F, 0F, 0F, 1F, light);
-                RenderTools.vertex(builder, matrixStack, 1F, 0F, 0F, 1F, 1F, light);
+                RenderTools.vertex(builder, matrixStack, 0F, 0F, 0F, 1F, 0F, light, overlay);
+                RenderTools.vertex(builder, matrixStack, 0F, 1F, 0F, 0F, 0F, light, overlay);
+                RenderTools.vertex(builder, matrixStack, 1F, 1F, 0F, 0F, 1F, light, overlay);
+                RenderTools.vertex(builder, matrixStack, 1F, 0F, 0F, 1F, 1F, light, overlay);
                 break;
             case LEFT:
                 // Left
-                RenderTools.vertex(builder, matrixStack, 0F, 0F, 0F, 0F, 1F, light);
-                RenderTools.vertex(builder, matrixStack, 0F, 1F, 0F, 1F, 1F, light);
-                RenderTools.vertex(builder, matrixStack, 1F, 1F, 0F, 1F, 0F, light);
-                RenderTools.vertex(builder, matrixStack, 1F, 0F, 0F, 0F, 0F, light);
+                RenderTools.vertex(builder, matrixStack, 0F, 0F, 0F, 0F, 1F, light, overlay);
+                RenderTools.vertex(builder, matrixStack, 0F, 1F, 0F, 1F, 1F, light, overlay);
+                RenderTools.vertex(builder, matrixStack, 1F, 1F, 0F, 1F, 0F, light, overlay);
+                RenderTools.vertex(builder, matrixStack, 1F, 0F, 0F, 0F, 0F, light, overlay);
                 break;
             default:
                 break;

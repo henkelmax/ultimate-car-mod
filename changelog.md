@@ -1,1 +1,1 @@
-- Added cars for the new 1.16 wood types
+- Fixed tanks not rendering contained fluids in item form
