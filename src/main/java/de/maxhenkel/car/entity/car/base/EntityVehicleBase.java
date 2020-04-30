@@ -245,7 +245,7 @@ public abstract class EntityVehicleBase extends Entity {
 
     @Override
     public boolean processInitialInteract(PlayerEntity player, Hand hand) {
-        if (!player.isShiftKeyDown()) {
+        if (!player.isSneaking()) {
             if (player.getRidingEntity() != this) {
                 if (!world.isRemote) {
                     player.startRiding(this);

@@ -22,12 +22,12 @@ public class RenderTools {
 
     public static void vertex(IVertexBuilder builder, MatrixStack matrixStack, float posX, float posY, float posZ, float texX, float texY, float norX, float norY, float norZ, int red, int green, int blue, int light, int overlay) {
         MatrixStack.Entry entry = matrixStack.getLast();
-        builder.pos(entry.getPositionMatrix(), posX, posY, posZ)
+        builder.pos(entry.getMatrix(), posX, posY, posZ)
                 .color(red, green, blue, 255)
                 .tex(texX, texY)
                 .overlay(overlay)
                 .lightmap(light)
-                .normal(entry.getNormalMatrix(), norX, norY, norZ)
+                .normal(entry.getNormal(), norX, norY, norZ)
                 .endVertex();
     }
 

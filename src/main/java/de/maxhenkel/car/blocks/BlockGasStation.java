@@ -94,7 +94,7 @@ public class BlockGasStation extends BlockOrientableHorizontal {
         }
 
 
-        if (!player.isShiftKeyDown()) {
+        if (!player.isSneaking()) {
             if (player instanceof ServerPlayerEntity) {
                 TileEntityContainerProvider.openGui((ServerPlayerEntity) player, station, (i, playerInventory, playerEntity) -> new ContainerGasStation(i, station, playerInventory));
             }

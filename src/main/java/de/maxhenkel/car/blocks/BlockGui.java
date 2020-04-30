@@ -49,7 +49,7 @@ public abstract class BlockGui<T extends TileEntity> extends BlockBase implement
 
     @Override
     public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
-        if (!player.isShiftKeyDown()) {
+        if (!player.isSneaking()) {
             if (!(player instanceof ServerPlayerEntity)) {
                 return ActionResultType.SUCCESS;
             }

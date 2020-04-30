@@ -66,7 +66,7 @@ public class TileEntitySpecialRendererSign extends TileEntityRenderer<TileEntity
         matrixStack.translate(-(textScale * textWidth) / 2D, 0D, 0D);
         matrixStack.scale(textScale, textScale, textScale);
 
-        renderer.renderString(txt, 0F, 0F, 0x0, false, matrixStack.getLast().getPositionMatrix(), buffer, false, 0, light);
+        renderer.renderString(txt, 0F, 0F, 0x0, false, matrixStack.getLast().getMatrix(), buffer, false, 0, light);
 
         matrixStack.pop();
     }

@@ -44,9 +44,9 @@ public class OBJModel {
 
         for (int i = 0; i < data.faces.size(); i++) {
             int[][] face = data.faces.get(i);
-            RenderTools.vertex(builder, matrixStack, data.positions.get(face[0][0]), data.texCoords.get(face[0][1]), data.normals.get(face[0][2]), light, OverlayTexture.DEFAULT_LIGHT);
-            RenderTools.vertex(builder, matrixStack, data.positions.get(face[1][0]), data.texCoords.get(face[1][1]), data.normals.get(face[1][2]), light, OverlayTexture.DEFAULT_LIGHT);
-            RenderTools.vertex(builder, matrixStack, data.positions.get(face[2][0]), data.texCoords.get(face[2][1]), data.normals.get(face[2][2]), light, OverlayTexture.DEFAULT_LIGHT);
+            RenderTools.vertex(builder, matrixStack, data.positions.get(face[0][0]), data.texCoords.get(face[0][1]), data.normals.get(face[0][2]), light, OverlayTexture.NO_OVERLAY);
+            RenderTools.vertex(builder, matrixStack, data.positions.get(face[1][0]), data.texCoords.get(face[1][1]), data.normals.get(face[1][2]), light, OverlayTexture.NO_OVERLAY);
+            RenderTools.vertex(builder, matrixStack, data.positions.get(face[2][0]), data.texCoords.get(face[2][1]), data.normals.get(face[2][2]), light, OverlayTexture.NO_OVERLAY);
         }
         matrixStack.pop();
     }
@@ -54,7 +54,7 @@ public class OBJModel {
     @OnlyIn(Dist.CLIENT)
     private static RenderType getRenderType(ResourceLocation resourceLocation, boolean culling) {
         RenderType.State state = RenderType.State
-                .builder()
+                .getBuilder()
                 .texture(new RenderState.TextureState(resourceLocation, false, false))
                 .transparency(new RenderState.TransparencyState("no_transparency", () -> {
                     RenderSystem.disableBlend();
@@ -66,7 +66,7 @@ public class OBJModel {
                 .overlay(new RenderState.OverlayState(true))
                 .cull(new RenderState.CullState(culling))
                 .build(true);
-        return RenderType.get("entity_cutout", DefaultVertexFormats.ITEM, GL11.GL_TRIANGLES, 256, true, false, state);
+        return RenderType.makeType("entity_cutout", DefaultVertexFormats.ENTITY, GL11.GL_TRIANGLES, 256, true, false, state);
     }
 
     static class OBJModelData {

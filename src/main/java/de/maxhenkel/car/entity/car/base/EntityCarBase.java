@@ -141,7 +141,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 
         for (int j = 0; j < list.size(); j++) {
             PlayerEntity player = list.get(j);
-            if (!player.isPassenger(this) && player.isShiftKeyDown()) {
+            if (!player.isPassenger(this) && player.isSneaking()) {
                 double motX = calculateMotionX(0.05F, player.rotationYaw);
                 double motZ = calculateMotionZ(0.05F, player.rotationYaw);
                 move(MoverType.PLAYER, new Vec3d(motX, 0, motZ));

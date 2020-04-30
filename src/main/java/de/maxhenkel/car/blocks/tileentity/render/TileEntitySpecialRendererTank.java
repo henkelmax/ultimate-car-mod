@@ -116,7 +116,7 @@ public class TileEntitySpecialRendererTank extends TileEntityRenderer<TileEntity
     }
 
     public static void renderLines(TileEntityTank te, MatrixStack matrixStack, IRenderTypeBuffer buffer, int light, int overlay) {
-        IVertexBuilder builder = buffer.getBuffer(RenderType.entityCutout(LOCATION_TANK));
+        IVertexBuilder builder = buffer.getBuffer(RenderType.getEntityCutout(LOCATION_TANK));
         for (Direction facing : Direction.values()) {
             if (!te.isTankConnectedTo(facing)) {
                 for (EnumDirection direction : EnumDirection.values()) {

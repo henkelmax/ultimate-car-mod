@@ -59,7 +59,7 @@ public class BlockSplitTank extends BlockBase implements ITileEntityProvider, II
             return ActionResultType.SUCCESS;
         }
 
-        if (!player.isShiftKeyDown()) {
+        if (!player.isSneaking()) {
             TileEntity te = worldIn.getTileEntity(pos);
 
             if (!(te instanceof TileEntitySplitTank)) {

@@ -24,6 +24,6 @@ public class TankItemTileEntityRenderer extends ItemStackTileEntityRenderer {
 
         BlockTank.applyItemData(itemStackIn, tileEntityTank);
 
-        TileEntityRendererDispatcher.instance.renderNullable(tileEntityTank, matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn);
+        TileEntityRendererDispatcher.instance.renderItem(tileEntityTank, matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn);
     }
 }

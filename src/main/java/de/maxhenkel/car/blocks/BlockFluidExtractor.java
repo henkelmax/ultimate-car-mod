@@ -71,7 +71,7 @@ public class BlockFluidExtractor extends BlockBase implements ITileEntityProvide
 
     @Override
     public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
-        if (player.isShiftKeyDown()) {
+        if (player.isSneaking()) {
             return ActionResultType.FAIL;
         }
         TileEntity te = worldIn.getTileEntity(pos);

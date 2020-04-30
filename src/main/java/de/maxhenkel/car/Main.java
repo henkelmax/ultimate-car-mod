@@ -270,13 +270,13 @@ public class Main {
         );
 
         if (FMLEnvironment.dist == Dist.CLIENT) {
-            RenderTypeLookup.setRenderLayer(ModBlocks.CANOLA_CROP, RenderType.cutout());
-            RenderTypeLookup.setRenderLayer(ModBlocks.SPLIT_TANK, RenderType.cutout());
+            RenderTypeLookup.setRenderLayer(ModBlocks.CANOLA_CROP, RenderType.getCutout());
+            RenderTypeLookup.setRenderLayer(ModBlocks.SPLIT_TANK, RenderType.getCutout());
             for (Block block : ModBlocks.PAINTS) {
-                RenderTypeLookup.setRenderLayer(block, RenderType.cutout());
+                RenderTypeLookup.setRenderLayer(block, RenderType.getCutout());
             }
             for (Block block : ModBlocks.YELLOW_PAINTS) {
-                RenderTypeLookup.setRenderLayer(block, RenderType.cutout());
+                RenderTypeLookup.setRenderLayer(block, RenderType.getCutout());
             }
         }
     }
@@ -529,16 +529,16 @@ public class Main {
                 ModFluids.BIO_DIESEL_FLOWING
         );
         if (FMLEnvironment.dist == Dist.CLIENT) {
-            RenderTypeLookup.setRenderLayer(ModFluids.CANOLA_OIL, RenderType.translucent());
-            RenderTypeLookup.setRenderLayer(ModFluids.CANOLA_OIL_FLOWING, RenderType.translucent());
-            RenderTypeLookup.setRenderLayer(ModFluids.METHANOL, RenderType.translucent());
-            RenderTypeLookup.setRenderLayer(ModFluids.METHANOL_FLOWING, RenderType.translucent());
-            RenderTypeLookup.setRenderLayer(ModFluids.CANOLA_METHANOL_MIX, RenderType.translucent());
-            RenderTypeLookup.setRenderLayer(ModFluids.CANOLA_METHANOL_MIX_FLOWING, RenderType.translucent());
-            RenderTypeLookup.setRenderLayer(ModFluids.GLYCERIN, RenderType.translucent());
-            RenderTypeLookup.setRenderLayer(ModFluids.GLYCERIN_FLOWING, RenderType.translucent());
-            RenderTypeLookup.setRenderLayer(ModFluids.BIO_DIESEL, RenderType.translucent());
-            RenderTypeLookup.setRenderLayer(ModFluids.BIO_DIESEL_FLOWING, RenderType.translucent());
+            RenderTypeLookup.setRenderLayer(ModFluids.CANOLA_OIL, RenderType.getTranslucent());
+            RenderTypeLookup.setRenderLayer(ModFluids.CANOLA_OIL_FLOWING, RenderType.getTranslucent());
+            RenderTypeLookup.setRenderLayer(ModFluids.METHANOL, RenderType.getTranslucent());
+            RenderTypeLookup.setRenderLayer(ModFluids.METHANOL_FLOWING, RenderType.getTranslucent());
+            RenderTypeLookup.setRenderLayer(ModFluids.CANOLA_METHANOL_MIX, RenderType.getTranslucent());
+            RenderTypeLookup.setRenderLayer(ModFluids.CANOLA_METHANOL_MIX_FLOWING, RenderType.getTranslucent());
+            RenderTypeLookup.setRenderLayer(ModFluids.GLYCERIN, RenderType.getTranslucent());
+            RenderTypeLookup.setRenderLayer(ModFluids.GLYCERIN_FLOWING, RenderType.getTranslucent());
+            RenderTypeLookup.setRenderLayer(ModFluids.BIO_DIESEL, RenderType.getTranslucent());
+            RenderTypeLookup.setRenderLayer(ModFluids.BIO_DIESEL_FLOWING, RenderType.getTranslucent());
         }
     }
 

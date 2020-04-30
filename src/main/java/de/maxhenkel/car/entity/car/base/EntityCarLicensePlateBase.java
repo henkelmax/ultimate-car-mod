@@ -31,7 +31,7 @@ public abstract class EntityCarLicensePlateBase extends EntityCarLockBase {
 
     @Override
     public boolean processInitialInteract(PlayerEntity player, Hand hand) {
-        if (player.isShiftKeyDown() && !isLocked()) {
+        if (player.isSneaking() && !isLocked()) {
             if (hasLicensePlateHolder()) {
                 ItemStack stack = player.getHeldItem(hand);
                 if (stack.getItem() instanceof ItemLicensePlate) {

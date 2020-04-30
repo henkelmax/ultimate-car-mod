@@ -44,7 +44,7 @@ public class TileentitySpecialRendererGasStation extends TileEntityRenderer<Tile
 
             matrixStack.scale(textScale, textScale, textScale);
             renderer.drawString(name, 0, 0, 0);
-            renderer.renderString(name, 0F, 0F, 0x0, false, matrixStack.getLast().getPositionMatrix(), buffer, false, 0, light);
+            renderer.renderString(name, 0F, 0F, 0x0, false, matrixStack.getLast().getMatrix(), buffer, false, 0, light);
         }
         matrixStack.pop();
     }

@@ -81,7 +81,7 @@ public abstract class OBJModelRenderer<T extends EntityGenericCar> extends Entit
 
         matrixStack.scale(textScale, textScale, textScale);
 
-        Minecraft.getInstance().fontRenderer.renderString(txt, 0F, 0F, 0xFFFFFF, false, matrixStack.getLast().getPositionMatrix(), buffer, false, 0, i);
+        Minecraft.getInstance().fontRenderer.renderString(txt, 0F, 0F, 0xFFFFFF, false, matrixStack.getLast().getMatrix(), buffer, false, 0, i);
 
 
         matrixStack.pop();
