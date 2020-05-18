@@ -16,17 +16,15 @@ import java.util.List;
 
 public class HUDHandlerCars implements IEntityComponentProvider {
 
-    static final ResourceLocation OBJECT_NAME_TAG = new ResourceLocation("waila", "object_name");
-    static final ResourceLocation CONFIG_SHOW_REGISTRY = new ResourceLocation("waila", "show_registry");
-    static final ResourceLocation REGISTRY_NAME_TAG = new ResourceLocation("waila", "registry_name");
-
     static final HUDHandlerCars INSTANCE = new HUDHandlerCars();
 
     @Override
-    public void appendHead(List<ITextComponent> tooltip, IEntityAccessor accessor, IPluginConfig config) {
-        ((ITaggableList<ResourceLocation, ITextComponent>) tooltip).setTag(OBJECT_NAME_TAG, new StringTextComponent(String.format(Waila.CONFIG.get().getFormatting().getEntityName(), accessor.getEntity().getDisplayName().getFormattedText())));
-        if (config.get(CONFIG_SHOW_REGISTRY))
-            ((ITaggableList<ResourceLocation, ITextComponent>) tooltip).setTag(REGISTRY_NAME_TAG, new StringTextComponent(accessor.getEntity().getType().getRegistryName().toString()).setStyle(new Style().setColor(TextFormatting.GRAY)));
+    public void appendHead(List<ITextComponent> tip, IEntityAccessor accessor, IPluginConfig config) {
+        ITaggableList<ResourceLocation, ITextComponent> tooltip = (ITaggableList<ResourceLocation, ITextComponent>) tip;
+        tooltip.setTag(PluginCar.OBJECT_NAME_TAG, new StringTextComponent(String.format(Waila.CONFIG.get().getFormatting().getEntityName(), accessor.getEntity().getDisplayName().getFormattedText())));
+        if (config.get(PluginCar.CONFIG_SHOW_REGISTRY)) {
+            tooltip.setTag(PluginCar.REGISTRY_NAME_TAG, new StringTextComponent(String.format(Waila.CONFIG.get().getFormatting().getRegistryName(), accessor.getEntity().getType().getRegistryName().toString())));
+        }
     }
 
     @Override
