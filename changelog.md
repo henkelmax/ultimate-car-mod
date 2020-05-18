@@ -1,2 +1,4 @@
 - Updated forge version
 - Updated MCP mappings
+- Improved WAILA/WAWLA compatibility
+- Fixed tileentity synchronization bug
