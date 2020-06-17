@@ -37,7 +37,7 @@ public abstract class EnergyFluidProducerRecipe implements IRecipe<IInventory> {
 
     @Override
     public ItemStack getCraftingResult(IInventory inv) {
-        return result;
+        return result.copy();
     }
 
     @Override
@@ -63,7 +63,7 @@ public abstract class EnergyFluidProducerRecipe implements IRecipe<IInventory> {
 
     @Override
     public ItemStack getRecipeOutput() {
-        return result;
+        return result.copy();
     }
 
     @Override

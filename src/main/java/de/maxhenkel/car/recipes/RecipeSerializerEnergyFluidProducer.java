@@ -5,10 +5,10 @@ import com.google.gson.JsonObject;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.item.crafting.ShapedRecipe;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.registry.Registry;
 
 import javax.annotation.Nullable;
 
@@ -24,9 +24,7 @@ public abstract class RecipeSerializerEnergyFluidProducer<T extends EnergyFluidP
     public T read(ResourceLocation recipeId, JsonObject json) {
         String group = JSONUtils.getString(json, "group", "");
         JsonElement jsonelement = JSONUtils.isJsonArray(json, "ingredient") ? JSONUtils.getJsonArray(json, "ingredient") : JSONUtils.getJsonObject(json, "ingredient");
-        String outputID = JSONUtils.getString(json, "result");
-        ResourceLocation resourcelocation = new ResourceLocation(outputID);
-        ItemStack output = new ItemStack(Registry.ITEM.getValue(resourcelocation).orElseThrow(() -> new IllegalStateException("Item " + outputID + " does not exist")));
+        ItemStack output = ShapedRecipe.deserializeItem(JSONUtils.getJsonObject(json, "result"));
         return factory.create(recipeId, group, Ingredient.deserialize(jsonelement), output, JSONUtils.getInt(json, "fluidamount"), JSONUtils.getInt(json, "energy"), JSONUtils.getInt(json, "duration"));
     }
 

@@ -1,4 +1,1 @@
-- Updated forge version
-- Updated MCP mappings
-- Improved WAILA/WAWLA compatibility
-- Fixed tileentity synchronization bug
+- Fixed oil mill and blast furnace don't output items

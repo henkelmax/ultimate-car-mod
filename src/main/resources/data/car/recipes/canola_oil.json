@@ -3,7 +3,9 @@
   "ingredient": {
     "tag": "forge:crops/canola"
   },
-  "result": "car:canola_cake",
+  "result": {
+    "item": "car:canola_cake"
+  },
   "fluidamount": 100,
   "energy": 10,
   "duration": 200

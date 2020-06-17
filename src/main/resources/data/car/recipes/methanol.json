@@ -3,7 +3,9 @@
   "ingredient": {
     "tag": "minecraft:logs"
   },
-  "result": "minecraft:charcoal",
+  "result": {
+    "item": "minecraft:charcoal"
+  },
   "fluidamount": 100,
   "energy": 10,
   "duration": 200

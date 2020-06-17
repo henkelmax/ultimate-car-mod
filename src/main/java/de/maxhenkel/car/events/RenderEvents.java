@@ -62,7 +62,7 @@ public class RenderEvents {
         int k = mc.getMainWindow().getScaledHeight() - 32 + 3;
         mc.ingameGUI.blit(x, k, 0, 64, 182, 5);
 
-        int j = (int) (percent * 182.0F);
+        int j = (int) (percent * 182F);
 
         if (j > 0) {
             mc.ingameGUI.blit(x, k, 0, 69, j, 5);
