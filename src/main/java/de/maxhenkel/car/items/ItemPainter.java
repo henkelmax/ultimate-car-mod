@@ -98,6 +98,10 @@ public class ItemPainter extends Item {
             return ActionResultType.FAIL;
         }
 
+        if (context.getWorld().isRemote) {
+            return ActionResultType.SUCCESS;
+        }
+
         BlockState state = block.getDefaultState().with(BlockPaint.FACING, context.getPlayer().getHorizontalFacing());
 
         context.getWorld().setBlockState(context.getPos().up(), state);

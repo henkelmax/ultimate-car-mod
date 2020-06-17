@@ -1,1 +1,2 @@
-- Fixed oil mill and blast furnace don't output items
+- Fixed painter paint textures
+- Fixed painter async
