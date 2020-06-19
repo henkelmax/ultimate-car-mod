@@ -1,1 +1,2 @@
-- Fixed camera sound description
+- Fixed painter paint textures
+- Fixed painter async
