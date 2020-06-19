@@ -98,13 +98,13 @@ public class ItemPainter extends Item {
             return ActionResultType.FAIL;
         }
 
-        if (context.getWorld().isRemote) {
-            return ActionResultType.SUCCESS;
-        }
-
         BlockState state = block.getDefaultState().with(BlockPaint.FACING, context.getPlayer().getHorizontalFacing());
 
         context.getWorld().setBlockState(context.getPos().up(), state);
+
+        if (context.getWorld().isRemote) {
+            return ActionResultType.SUCCESS;
+        }
 
         stack1.damageItem(1, context.getPlayer(), playerEntity -> {
             playerEntity.sendBreakAnimation(context.getHand());
