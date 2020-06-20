@@ -32,10 +32,6 @@ public class ItemCanolaCake extends Item {
             return super.itemInteractionForEntity(stack, playerIn, target, hand);
         }
 
-        if (stack == null) {
-            return super.itemInteractionForEntity(stack, playerIn, target, hand);
-        }
-
         if (animal.getGrowingAge() == 0 && !animal.isInLove()) {
             ItemTools.decrItemStack(stack, playerIn);
             animal.setInLove(playerIn);

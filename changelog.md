@@ -1,1 +1,1 @@
-- Fixed car volume slider not working correctly
+- Added canola seeds as chicken breeding item
