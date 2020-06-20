@@ -106,6 +106,12 @@ public class ModSounds {
                 event.equals(SPORT_ENGINE_IDLE) ||
                 event.equals(SPORT_ENGINE_HIGH) ||
                 event.equals(SPORT_ENGINE_FAIL) ||
+                event.equals(TRUCK_ENGINE_STOP) ||
+                event.equals(TRUCK_ENGINE_STARTING) ||
+                event.equals(TRUCK_ENGINE_START) ||
+                event.equals(TRUCK_ENGINE_IDLE) ||
+                event.equals(TRUCK_ENGINE_HIGH) ||
+                event.equals(TRUCK_ENGINE_FAIL) ||
                 event.equals(CAR_CRASH) ||
                 event.equals(CAR_HORN) ||
                 event.equals(CAR_LOCK) ||

@@ -479,19 +479,19 @@ public abstract class EntityCarBase extends EntityVehicleBase {
     }
 
     public void playStopSound() {
-        ModSounds.playSound(getStopSound(), world, getPosition(), null, SoundCategory.NEUTRAL, 1F);
+        ModSounds.playSound(getStopSound(), world, getPosition(), null, SoundCategory.MASTER, 1F);
     }
 
     public void playFailSound() {
-        ModSounds.playSound(getFailSound(), world, getPosition(), null, SoundCategory.NEUTRAL, 1F);
+        ModSounds.playSound(getFailSound(), world, getPosition(), null, SoundCategory.MASTER, 1F);
     }
 
     public void playCrashSound() {
-        ModSounds.playSound(getCrashSound(), world, getPosition(), null, SoundCategory.NEUTRAL, 1F);
+        ModSounds.playSound(getCrashSound(), world, getPosition(), null, SoundCategory.MASTER, 1F);
     }
 
     public void playHornSound() {
-        ModSounds.playSound(getHornSound(), world, getPosition(), null, SoundCategory.NEUTRAL, 1F);
+        ModSounds.playSound(getHornSound(), world, getPosition(), null, SoundCategory.MASTER, 1F);
     }
 
     public abstract SoundEvent getStopSound();
@@ -513,7 +513,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
     @OnlyIn(Dist.CLIENT)
     public void checkIdleLoop() {
         if (!isSoundPlaying(idleLoop)) {
-            idleLoop = new SoundLoopIdle(this, getIdleSound(), SoundCategory.NEUTRAL);
+            idleLoop = new SoundLoopIdle(this, getIdleSound(), SoundCategory.MASTER);
             ModSounds.playSoundLoop(idleLoop, world);
         }
     }
@@ -521,7 +521,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
     @OnlyIn(Dist.CLIENT)
     public void checkHighLoop() {
         if (!isSoundPlaying(highLoop)) {
-            highLoop = new SoundLoopHigh(this, getHighSound(), SoundCategory.NEUTRAL);
+            highLoop = new SoundLoopHigh(this, getHighSound(), SoundCategory.MASTER);
             ModSounds.playSoundLoop(highLoop, world);
         }
     }
@@ -529,7 +529,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
     @OnlyIn(Dist.CLIENT)
     public void checkStartLoop() {
         if (!isSoundPlaying(startLoop)) {
-            startLoop = new SoundLoopStart(this, getStartSound(), SoundCategory.NEUTRAL);
+            startLoop = new SoundLoopStart(this, getStartSound(), SoundCategory.MASTER);
             ModSounds.playSoundLoop(startLoop, world);
         }
     }
