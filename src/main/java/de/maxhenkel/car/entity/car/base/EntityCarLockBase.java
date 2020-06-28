@@ -10,6 +10,7 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
@@ -20,8 +21,7 @@ import java.util.UUID;
 
 public abstract class EntityCarLockBase extends EntityCarInventoryBase {
 
-    private static final DataParameter<Boolean> LOCKED = EntityDataManager
-            .<Boolean>createKey(EntityCarInventoryBase.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> LOCKED = EntityDataManager.createKey(EntityCarInventoryBase.class, DataSerializers.BOOLEAN);
 
     public EntityCarLockBase(EntityType type, World worldIn) {
         super(type, worldIn);
@@ -76,11 +76,11 @@ public abstract class EntityCarLockBase extends EntityCarInventoryBase {
     }
 
     public void playLockSound() {
-        ModSounds.playSound(getLockSound(), world, getPosition(), null, SoundCategory.MASTER, 1F);
+        ModSounds.playSound(getLockSound(), world, func_233580_cy_(), null, SoundCategory.MASTER, 1F);
     }
 
     public void playUnLockSound() {
-        ModSounds.playSound(getUnLockSound(), world, getPosition(), null, SoundCategory.MASTER, 1F);
+        ModSounds.playSound(getUnLockSound(), world, func_233580_cy_(), null, SoundCategory.MASTER, 1F);
     }
 
     public SoundEvent getLockSound() {
@@ -104,13 +104,13 @@ public abstract class EntityCarLockBase extends EntityCarInventoryBase {
     }
 
     @Override
-    public boolean processInitialInteract(PlayerEntity player, Hand hand) {
+    public ActionResultType processInitialInteract(PlayerEntity player, Hand hand) {
         ItemStack stack = player.getHeldItem(hand);
         if (!isLocked() && player.isSneaking() && player.abilities.isCreativeMode && !stack.isEmpty() && stack.getItem().equals(ModItems.KEY)) {
             UUID uuid = ItemKey.getCar(stack);
             if (uuid == null) {
                 ItemKey.setCar(stack, getUniqueID());
-                return true;
+                return ActionResultType.CONSUME;
             }
         }
         return super.processInitialInteract(player, hand);

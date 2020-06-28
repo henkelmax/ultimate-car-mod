@@ -11,10 +11,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
@@ -50,7 +47,7 @@ public class ItemKey extends Item {
         EntityCarLockBase car = cars.get(0);
 
         if (car == null) {
-            playerIn.sendMessage(new TranslationTextComponent("message.car_out_of_range"));
+            playerIn.sendMessage(new TranslationTextComponent("message.car_out_of_range"), Util.field_240973_b_);
             return new ActionResult(ActionResultType.SUCCESS, stack);
         }
 
@@ -84,13 +81,7 @@ public class ItemKey extends Item {
             return null;
         }
 
-        UUID uuid = comp.getUniqueId("car");
-
-        if (uuid == null) {
-            return null;
-        }
-
-        return uuid;
+        return comp.getUniqueId("car");
     }
 
     public static ItemStack getKeyForCar(UUID car) {

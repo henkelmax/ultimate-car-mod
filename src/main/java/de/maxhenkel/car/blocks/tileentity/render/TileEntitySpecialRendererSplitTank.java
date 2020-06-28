@@ -44,7 +44,7 @@ public class TileEntitySpecialRendererSplitTank extends TileEntityRenderer<TileE
         matrixStack.scale(0.98F, 0.98F, 0.98F);
         matrixStack.translate(0.01F, 0.01F, 0.01F);
 
-        IVertexBuilder builder = buffer.getBuffer(Atlases.getTranslucentBlockType());
+        IVertexBuilder builder = buffer.getBuffer(Atlases.func_239280_i_());
         TextureAtlasSprite texture = Minecraft.getInstance().getModelManager().getAtlasTexture(PlayerContainer.LOCATION_BLOCKS_TEXTURE).getSprite(fluid.getFluid().getAttributes().getStillTexture());
 
         float uMin = texture.getMinU();

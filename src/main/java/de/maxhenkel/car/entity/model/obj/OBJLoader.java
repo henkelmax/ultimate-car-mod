@@ -4,10 +4,10 @@ import com.google.common.base.Charsets;
 import com.google.common.collect.Lists;
 import joptsimple.internal.Strings;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.Vector3f;
 import net.minecraft.resources.IResource;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.Vec2f;
+import net.minecraft.util.math.vector.Vector2f;
+import net.minecraft.util.math.vector.Vector3f;
 
 import javax.annotation.Nullable;
 import java.io.BufferedReader;
@@ -36,7 +36,7 @@ public class OBJLoader {
         LineReader reader = new LineReader(resource);
 
         List<Vector3f> positions = Lists.newArrayList();
-        List<Vec2f> texCoords = Lists.newArrayList();
+        List<Vector2f> texCoords = Lists.newArrayList();
         List<Vector3f> normals = Lists.newArrayList();
         List<int[][]> faces = Lists.newArrayList();
 
@@ -47,8 +47,8 @@ public class OBJLoader {
                     positions.add(net.minecraftforge.client.model.obj.OBJModel.parseVector4To3(line));
                     break;
                 case "vt":
-                    Vec2f vec2f = net.minecraftforge.client.model.obj.OBJModel.parseVector2(line);
-                    texCoords.add(new Vec2f(vec2f.x, 1F - vec2f.y));
+                    Vector2f vec2f = net.minecraftforge.client.model.obj.OBJModel.parseVector2(line);
+                    texCoords.add(new Vector2f(vec2f.x, 1F - vec2f.y));
                     break;
                 case "vn":
                     normals.add(net.minecraftforge.client.model.obj.OBJModel.parseVector3(line));

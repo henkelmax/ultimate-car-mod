@@ -132,7 +132,7 @@ public class ItemPainter extends Item {
     public void addInformation(ItemStack stack, @Nullable World world, List<ITextComponent> textComponents, ITooltipFlag tooltipFlag) {
         BlockPaint paint = getSelectedPaint(SlotPainter.getPainterID(stack));
         if (paint != null) {
-            textComponents.add(new TranslationTextComponent("tooltip.painter", new TranslationTextComponent(paint.getTranslationKey()).applyTextStyle(TextFormatting.DARK_GRAY)).applyTextStyle(TextFormatting.GRAY));
+            textComponents.add(new TranslationTextComponent("tooltip.painter", new TranslationTextComponent(paint.getTranslationKey()).func_240699_a_(TextFormatting.DARK_GRAY)).func_240699_a_(TextFormatting.GRAY));
         }
         super.addInformation(stack, world, textComponents, tooltipFlag);
     }

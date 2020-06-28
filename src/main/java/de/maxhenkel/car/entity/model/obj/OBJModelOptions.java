@@ -3,31 +3,31 @@ package de.maxhenkel.car.entity.model.obj;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import de.maxhenkel.tools.Rotation;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 
 public class OBJModelOptions {
 
     private ResourceLocation texture;
-    private Vec3d offset;
+    private Vector3d offset;
     private Rotation rotation;
     private RenderListener onRender;
 
-    public OBJModelOptions(ResourceLocation texture, Vec3d offset, Rotation rotation, RenderListener onRender) {
+    public OBJModelOptions(ResourceLocation texture, Vector3d offset, Rotation rotation, RenderListener onRender) {
         this.texture = texture;
         this.offset = offset;
         this.rotation = rotation;
         this.onRender = onRender;
     }
 
-    public OBJModelOptions(ResourceLocation texture, Vec3d offset, Rotation rotation) {
+    public OBJModelOptions(ResourceLocation texture, Vector3d offset, Rotation rotation) {
         this(texture, offset, rotation, null);
     }
 
-    public OBJModelOptions(ResourceLocation texture, Vec3d offset) {
+    public OBJModelOptions(ResourceLocation texture, Vector3d offset) {
         this(texture, offset, null, null);
     }
 
-    public OBJModelOptions(ResourceLocation texture, Vec3d offset, RenderListener onRender) {
+    public OBJModelOptions(ResourceLocation texture, Vector3d offset, RenderListener onRender) {
         this(texture, offset, null, onRender);
     }
 
@@ -39,11 +39,11 @@ public class OBJModelOptions {
         this.texture = texture;
     }
 
-    public Vec3d getOffset() {
+    public Vector3d getOffset() {
         return offset;
     }
 
-    public OBJModelOptions setOffset(Vec3d offset) {
+    public OBJModelOptions setOffset(Vector3d offset) {
         this.offset = offset;
         return this;
     }

@@ -47,11 +47,6 @@ public class BlockGenerator extends BlockGui<TileEntityGenerator> {
         return Block.makeCuboidShape(0D, 0D, 0D, 16D, 13D, 16D);
     }
 
-    @Override
-    public boolean isNormalCube(BlockState state, IBlockReader worldIn, BlockPos pos) {
-        return false;
-    }
-
     @Nullable
     @Override
     public TileEntity createNewTileEntity(IBlockReader worldIn) {

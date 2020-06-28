@@ -1,21 +1,17 @@
 package de.maxhenkel.car.gui;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.blocks.tileentity.TileEntityFluidExtractor;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.util.text.*;
 import net.minecraftforge.fluids.FluidStack;
 
 public class GuiFluidExtractor extends GuiBase<ContainerFluidExtractor> {
 
-    private static final ResourceLocation GUI_TEXTURE = new ResourceLocation(Main.MODID,
-            "textures/gui/gui_fluid_extractor.png");
-    private static final int fontColor = 4210752;
+    private static final ResourceLocation GUI_TEXTURE = new ResourceLocation(Main.MODID, "textures/gui/gui_fluid_extractor.png");
 
     private PlayerInventory playerInv;
     private TileEntityFluidExtractor tile;
@@ -30,29 +26,28 @@ public class GuiFluidExtractor extends GuiBase<ContainerFluidExtractor> {
     }
 
     @Override
-    protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-        super.drawGuiContainerForegroundLayer(mouseX, mouseY);
+    protected void func_230451_b_(MatrixStack matrixStack, int mouseX, int mouseY) {
+        super.func_230451_b_(matrixStack, mouseX, mouseY);
 
         // Title
-        font.drawString(playerInv.getDisplayName().getFormattedText(), 8, this.ySize - 96 + 2,
-                fontColor);
-        font.drawString(tile.getDisplayName().getFormattedText(), 8, 6, fontColor);
+        field_230712_o_.func_238422_b_(matrixStack, playerInv.getDisplayName(), 8, this.ySize - 96 + 2, FONT_COLOR);
+        field_230712_o_.func_238422_b_(matrixStack, tile.getDisplayName(), 8, 6, FONT_COLOR);
 
-        drawFilter();
+        drawFilter(matrixStack);
     }
 
-    private void drawFilter() {
-        ITextComponent name;
+    private void drawFilter(MatrixStack matrixStack) {
+        IFormattableTextComponent name;
 
         Fluid f = tile.getFilterFluid();
 
         if (f == null) {
             name = new StringTextComponent("-");
         } else {
-            name = new FluidStack(f, 1).getDisplayName();
+            name = new StringTextComponent(new FluidStack(f, 1).getDisplayName().getString());
         }
 
-        font.drawString(new TranslationTextComponent("filter.fluid", name.applyTextStyle(TextFormatting.WHITE)).getFormattedText(), 46, 28, fontColor);
+        field_230712_o_.func_238422_b_(matrixStack, new TranslationTextComponent("filter.fluid", name.func_240699_a_(TextFormatting.WHITE)), 46, 28, FONT_COLOR);
     }
 
 }

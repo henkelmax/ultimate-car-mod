@@ -1,5 +1,5 @@
 package de.maxhenkel.car.integration.waila;
-
+/*
 import de.maxhenkel.car.blocks.tileentity.TileEntityFluidExtractor;
 import de.maxhenkel.car.blocks.tileentity.TileEntityGenerator;
 import de.maxhenkel.car.blocks.tileentity.TileEntityTank;
@@ -33,4 +33,4 @@ public class PluginCar implements IWailaPlugin {
         registrar.registerComponentProvider(HUDHandlerCars.INSTANCE, TooltipPosition.TAIL, EntityGenericCar.class);
     }
 
-}
+}*/

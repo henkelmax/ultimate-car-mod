@@ -11,7 +11,7 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.PushReaction;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.fluid.IFluidState;
+import net.minecraft.fluid.FluidState;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.DirectionProperty;
@@ -44,11 +44,6 @@ public class BlockGasStationTop extends BlockBase {
     @Override
     public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
         return ModBlocks.FUEL_STATION.onBlockActivated(worldIn.getBlockState(pos.down()), worldIn, pos.down(), player, handIn, hit);
-    }
-
-    @Override
-    public boolean isNormalCube(BlockState state, IBlockReader worldIn, BlockPos pos) {
-        return false;
     }
 
     @Override
@@ -118,7 +113,7 @@ public class BlockGasStationTop extends BlockBase {
     }
 
     @Override
-    public boolean removedByPlayer(BlockState state, World world, BlockPos pos, PlayerEntity player, boolean willHarvest, IFluidState fluid) {
+    public boolean removedByPlayer(BlockState state, World world, BlockPos pos, PlayerEntity player, boolean willHarvest, FluidState fluid) {
         BlockState stateDown = world.getBlockState(pos.down());
         if (stateDown != null && stateDown.getBlock() != null && stateDown.getBlock().equals(ModBlocks.FUEL_STATION) && !player.abilities.isCreativeMode) {
             ModBlocks.FUEL_STATION.harvestBlock(world, player, pos.down(), world.getBlockState(pos.down()), world.getTileEntity(pos.down()), player.getHeldItemMainhand());

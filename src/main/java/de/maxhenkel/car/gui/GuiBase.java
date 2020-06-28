@@ -1,5 +1,6 @@
 package de.maxhenkel.car.gui;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.entity.player.PlayerInventory;
@@ -19,16 +20,16 @@ public abstract class GuiBase<T extends Container> extends ContainerScreen<T> {
     }
 
     @Override
-    protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
-        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-        minecraft.getTextureManager().bindTexture(texture);
-        blit(guiLeft, guiTop, 0, 0, xSize, ySize);
+    protected void func_230450_a_(MatrixStack matrixStack, float partialTicks, int mouseX, int mouseY) {
+        func_230446_a_(matrixStack);
+        RenderSystem.color4f(1F, 1F, 1F, 1F);
+        field_230706_i_.getTextureManager().bindTexture(texture);
+
+        func_238474_b_(matrixStack, guiLeft, guiTop, 0, 0, xSize, ySize);
     }
 
     @Override
-    public void render(int mouseX, int mouseY, float partialTicks) {
-        renderBackground();
-        super.render(mouseX, mouseY, partialTicks);
-        renderHoveredToolTip(mouseX, mouseY);
+    protected void func_230451_b_(MatrixStack matrixStack, int mouseX, int mouseY) {
+
     }
 }

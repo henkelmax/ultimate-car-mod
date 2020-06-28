@@ -5,7 +5,7 @@ import de.maxhenkel.car.entity.car.base.EntityGenericCar;
 import de.maxhenkel.car.entity.model.obj.OBJModelInstance;
 import de.maxhenkel.car.entity.model.obj.OBJModelRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 
 import java.util.List;
 
@@ -22,7 +22,7 @@ public class GenericCarModel extends OBJModelRenderer {
 
     @Override
     public void translateLicensePlate(EntityGenericCar entity, MatrixStack matrixStack) {
-        Vec3d offset = entity.getLicensePlateOffset();
+        Vector3d offset = entity.getLicensePlateOffset();
         matrixStack.translate(offset.x, offset.y, offset.z);
     }
 }

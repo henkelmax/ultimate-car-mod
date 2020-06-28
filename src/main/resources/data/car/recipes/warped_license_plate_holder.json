@@ -1,0 +1,20 @@
+{
+  "type": "crafting_shaped",
+  "pattern": [
+    "   ",
+    "WIW",
+    "WWW"
+  ],
+  "key": {
+    "W": {
+      "item": "minecraft:warped_planks"
+    },
+    "I": {
+      "tag": "forge:rods/iron"
+    }
+  },
+  "result": {
+    "item": "car:warped_license_plate_holder",
+    "count": 1
+  }
+}

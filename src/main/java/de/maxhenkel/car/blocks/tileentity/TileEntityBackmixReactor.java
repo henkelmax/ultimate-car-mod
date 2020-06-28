@@ -171,13 +171,13 @@ public class TileEntityBackmixReactor extends TileEntityBase implements ITickabl
     }
 
     @Override
-    public void read(CompoundNBT compound) {
+    public void func_230337_a_(BlockState blockState, CompoundNBT compound) {
         storedEnergy = compound.getInt("stored_endergy");
         currentCanola = compound.getInt("canola");
         currentMethanol = compound.getInt("methanol");
         currentMix = compound.getInt("mix");
         timeToGenerate = compound.getInt("time");
-        super.read(compound);
+        super.func_230337_a_(blockState, compound);
     }
 
     @Override

@@ -1,5 +1,5 @@
 package de.maxhenkel.car.integration.jei;
-
+/*
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.blocks.ModBlocks;
 import de.maxhenkel.tools.EntityTools;
@@ -81,4 +81,4 @@ public class CarRecipeCategory implements IRecipeCategory<CarRecipe> {
     public void draw(CarRecipe recipe, double mouseX, double mouseY) {
         renderer.render(recipe.getCar(), RECIPE_WIDTH - 30, RECIPE_HEIGHT - 54 / 4, 18);
     }
-}
+}*/

@@ -11,7 +11,7 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.particles.IParticleData;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.SoundCategory;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -104,7 +104,7 @@ public abstract class EntityCarBatteryBase extends EntityCarTemperatureBase {
         if (!world.isRemote) {
             return;
         }
-        Vec3d lookVec = getLookVec().normalize();
+        Vector3d lookVec = getLookVec().normalize();
         double offX = lookVec.x * -1D;
         double offY = lookVec.y;
         double offZ = lookVec.z * -1D;
@@ -325,6 +325,6 @@ public abstract class EntityCarBatteryBase extends EntityCarTemperatureBase {
 
     @Override
     public void playFailSound() {
-        ModSounds.playSound(getFailSound(), world, getPosition(), null, SoundCategory.MASTER, 1F, getBatterySoundPitchLevel());
+        ModSounds.playSound(getFailSound(), world, func_233580_cy_(), null, SoundCategory.MASTER, 1F, getBatterySoundPitchLevel());
     }
 }

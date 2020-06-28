@@ -9,7 +9,6 @@ import de.maxhenkel.tools.IItemBlock;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItem;
@@ -59,8 +58,8 @@ public class BlockTank extends BlockBase implements ITileEntityProvider, IItemBl
             FluidStack fluidStack = FluidStack.loadFluidStackFromNBT(fluidComp);
 
             if (fluidStack != null) {
-                tooltip.add(new TranslationTextComponent("tooltip.fluid", fluidStack.getDisplayName().applyTextStyle(TextFormatting.DARK_GRAY)).applyTextStyle(TextFormatting.GRAY));
-                tooltip.add(new TranslationTextComponent("tooltip.amount", new StringTextComponent(String.valueOf(fluidStack.getAmount())).applyTextStyle(TextFormatting.DARK_GRAY)).applyTextStyle(TextFormatting.GRAY));
+                tooltip.add(new TranslationTextComponent("tooltip.fluid", new StringTextComponent(fluidStack.getDisplayName().getString()).func_240699_a_(TextFormatting.DARK_GRAY)).func_240699_a_(TextFormatting.GRAY));
+                tooltip.add(new TranslationTextComponent("tooltip.amount", new StringTextComponent(String.valueOf(fluidStack.getAmount())).func_240699_a_(TextFormatting.DARK_GRAY)).func_240699_a_(TextFormatting.GRAY));
             }
         }
         super.addInformation(stack, worldIn, tooltip, flagIn);
@@ -168,16 +167,6 @@ public class BlockTank extends BlockBase implements ITileEntityProvider, IItemBl
     @Override
     public float getAmbientOcclusionLightValue(BlockState state, IBlockReader reader, BlockPos pos) {
         return 1F;
-    }
-
-    @Override
-    public boolean causesSuffocation(BlockState state, IBlockReader world, BlockPos pos) {
-        return false;
-    }
-
-    @Override
-    public boolean canEntitySpawn(BlockState state, IBlockReader worldIn, BlockPos pos, EntityType<?> type) {
-        return false;
     }
 
     @Nullable

@@ -5,10 +5,11 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.IPacket;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -48,7 +49,7 @@ public abstract class EntityVehicleBase extends Entity {
             this.prevPosZ = getPosZ();
         }
 
-        setPositionNonDirty();
+        func_233577_ch_();
 
         super.tick();
         tickLerp();
@@ -109,7 +110,7 @@ public abstract class EntityVehicleBase extends Entity {
         this.applyYawToEntity(entityToUpdate);
     }
 
-    public abstract Vec3d[] getPlayerOffsets();
+    public abstract Vector3d[] getPlayerOffsets();
 
     @Override
     public void updatePassenger(Entity passenger) {
@@ -126,13 +127,13 @@ public abstract class EntityVehicleBase extends Entity {
         if (passengers.size() > 0) {
             int i = passengers.indexOf(passenger);
 
-            Vec3d offset = getPlayerOffsets()[i];
+            Vector3d offset = getPlayerOffsets()[i];
             front = offset.x;
             side = offset.z;
             height = offset.y;
         }
 
-        Vec3d vec3d = (new Vec3d(front, height, side)).rotateYaw(-this.rotationYaw * 0.017453292F - ((float) Math.PI / 2F));
+        Vector3d vec3d = (new Vector3d(front, height, side)).rotateYaw(-this.rotationYaw * 0.017453292F - ((float) Math.PI / 2F));
         passenger.setPosition(getPosX() + vec3d.x, getPosY() + vec3d.y, getPosZ() + vec3d.z);
         passenger.rotationYaw += deltaRotation;
         passenger.setRotationYawHead(passenger.getRotationYawHead() + this.deltaRotation);
@@ -244,16 +245,16 @@ public abstract class EntityVehicleBase extends Entity {
     }
 
     @Override
-    public boolean processInitialInteract(PlayerEntity player, Hand hand) {
+    public ActionResultType processInitialInteract(PlayerEntity player, Hand hand) {
         if (!player.isSneaking()) {
             if (player.getRidingEntity() != this) {
                 if (!world.isRemote) {
                     player.startRiding(this);
                 }
             }
-            return true;
+            return ActionResultType.SUCCESS;
         }
-        return false;
+        return ActionResultType.FAIL;
     }
 
     public abstract boolean doesEnterThirdPerson();

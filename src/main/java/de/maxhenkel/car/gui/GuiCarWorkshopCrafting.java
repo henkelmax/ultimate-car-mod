@@ -1,5 +1,6 @@
 package de.maxhenkel.car.gui;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.blocks.tileentity.TileEntityCarWorkshop;
@@ -12,14 +13,13 @@ import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.Util;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
 public class GuiCarWorkshopCrafting extends GuiBase<ContainerCarWorkshopCrafting> {
 
     private static final ResourceLocation GUI_TEXTURE = new ResourceLocation(Main.MODID, "textures/gui/gui_car_workshop_crafting.png");
-
-    private static final int fontColor = 4210752;
 
     private TileEntityCarWorkshop tile;
     private PlayerEntity player;
@@ -40,55 +40,54 @@ public class GuiCarWorkshopCrafting extends GuiBase<ContainerCarWorkshopCrafting
     }
 
     @Override
-    protected void init() {
-        super.init();
+    protected void func_231160_c_() {
+        super.func_231160_c_();
 
-        buttonRepair = addButton(new Button(guiLeft + 105, guiTop + 72, 60, 20, new TranslationTextComponent("button.repair_car").getFormattedText(), button -> {
+        buttonRepair = func_230480_a_(new Button(guiLeft + 105, guiTop + 72, 60, 20, new TranslationTextComponent("button.repair_car"), button -> {
             Main.SIMPLE_CHANNEL.sendToServer(new MessageOpenCarWorkshopGui(tile.getPos(), player, true));
         }));
 
-        buttonSpawn = addButton(new Button(guiLeft + 105, guiTop + 106, 60, 20, new TranslationTextComponent("button.spawn_car").getFormattedText(), button -> {
+        buttonSpawn = func_230480_a_(new Button(guiLeft + 105, guiTop + 106, 60, 20, new TranslationTextComponent("button.spawn_car"), button -> {
             if (tile.getWorld().isRemote) {
                 if (tile.isCurrentCraftingCarValid()) {
                     Main.SIMPLE_CHANNEL.sendToServer(new MessageSpawnCar(tile.getPos()));
                 } else {
                     for (ITextComponent message : tile.getMessages()) {
-                        playerInventory.player.sendMessage(message);
+                        playerInventory.player.sendMessage(message, Util.field_240973_b_);
                     }
                 }
             }
         }));
-        buttonSpawn.active = false;
+        buttonSpawn.field_230693_o_ = false;
     }
 
     @Override
-    protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-        super.drawGuiContainerForegroundLayer(mouseX, mouseY);
+    protected void func_230451_b_(MatrixStack matrixStack, int mouseX, int mouseY) {
+        super.func_230451_b_(matrixStack, mouseX, mouseY);
 
         // Titles
-        font.drawString(tile.getDisplayName().getFormattedText(), 8, 6, fontColor);
-        font.drawString(playerInventory.getDisplayName().getFormattedText(), 8, ySize - 96 + 2,
-                fontColor);
+        field_230712_o_.func_238422_b_(matrixStack, tile.getDisplayName(), 8, 6, FONT_COLOR);
+        field_230712_o_.func_238422_b_(matrixStack, playerInventory.getDisplayName(), 8, ySize - 96 + 2, FONT_COLOR);
 
-        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+        RenderSystem.color4f(1F, 1F, 1F, 1F);
 
         EntityCarBase carTop = tile.getCarOnTop();
         EntityGenericCar car = tile.getCurrentCraftingCar();
 
         if (carTop != null) {
             drawCar(carTop);
-            buttonSpawn.active = false;
+            buttonSpawn.field_230693_o_ = false;
         } else {
             if (car != null) {
                 drawCar(car);
             }
-            buttonSpawn.active = true;
+            buttonSpawn.field_230693_o_ = true;
         }
     }
 
     @Override
-    public void tick() {
-        super.tick();
+    public void func_231023_e_() {
+        super.func_231023_e_();
         carRenderer.tick();
     }
 
@@ -97,7 +96,7 @@ public class GuiCarWorkshopCrafting extends GuiBase<ContainerCarWorkshopCrafting
     }
 
     @Override
-    public boolean isPauseScreen() {
+    public boolean func_231177_au__() {
         return false;
     }
 

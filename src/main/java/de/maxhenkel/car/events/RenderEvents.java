@@ -1,5 +1,6 @@
 package de.maxhenkel.car.events;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import de.maxhenkel.car.entity.car.base.EntityCarBase;
 import de.maxhenkel.car.entity.car.base.EntityCarFuelBase;
 import de.maxhenkel.car.entity.car.base.EntityVehicleBase;
@@ -46,40 +47,40 @@ public class RenderEvents {
 
         if (player.equals(car.getDriver())) {
             evt.setCanceled(true);
-            renderFuelBar(((float) car.getFuelAmount()) / ((float) car.getMaxFuel()));
-            renderSpeed(car.getKilometerPerHour());
+            renderFuelBar(evt.getMatrixStack(), ((float) car.getFuelAmount()) / ((float) car.getMaxFuel()));
+            renderSpeed(evt.getMatrixStack(), car.getKilometerPerHour());
         }
 
     }
 
-    public void renderFuelBar(float percent) {
+    public void renderFuelBar(MatrixStack matrixStack, float percent) {
         percent = MathHelper.clamp(percent, 0F, 1F);
         Minecraft mc = Minecraft.getInstance();
         int x = mc.getMainWindow().getScaledWidth() / 2 - 91;
 
-        mc.getTextureManager().bindTexture(AbstractGui.GUI_ICONS_LOCATION);
+        mc.getTextureManager().bindTexture(AbstractGui.field_230665_h_);
 
         int k = mc.getMainWindow().getScaledHeight() - 32 + 3;
-        mc.ingameGUI.blit(x, k, 0, 64, 182, 5);
+        mc.ingameGUI.func_238474_b_(matrixStack, x, k, 0, 64, 182, 5);
 
         int j = (int) (percent * 182F);
 
         if (j > 0) {
-            mc.ingameGUI.blit(x, k, 0, 69, j, 5);
+            mc.ingameGUI.func_238474_b_(matrixStack, x, k, 0, 69, j, 5);
         }
     }
 
-    public void renderSpeed(float speed) {
+    public void renderSpeed(MatrixStack matrixStack, float speed) {
         Minecraft mc = Minecraft.getInstance();
 
         String s = String.valueOf(MathTools.round(Math.abs(speed), 2));
         int i1 = (mc.getMainWindow().getScaledWidth() - mc.ingameGUI.getFontRenderer().getStringWidth(s)) / 2;
         int j1 = mc.getMainWindow().getScaledHeight() - 31 - 4;
-        mc.ingameGUI.getFontRenderer().drawString(s, i1 + 1, j1, 0);
-        mc.ingameGUI.getFontRenderer().drawString(s, i1 - 1, j1, 0);
-        mc.ingameGUI.getFontRenderer().drawString(s, i1, j1 + 1, 0);
-        mc.ingameGUI.getFontRenderer().drawString(s, i1, j1 - 1, 0);
-        mc.ingameGUI.getFontRenderer().drawString(s, i1, j1, 8453920);
+        mc.ingameGUI.getFontRenderer().func_238421_b_(matrixStack, s, i1 + 1, j1, 0);
+        mc.ingameGUI.getFontRenderer().func_238421_b_(matrixStack, s, i1 - 1, j1, 0);
+        mc.ingameGUI.getFontRenderer().func_238421_b_(matrixStack, s, i1, j1 + 1, 0);
+        mc.ingameGUI.getFontRenderer().func_238421_b_(matrixStack, s, i1, j1 - 1, 0);
+        mc.ingameGUI.getFontRenderer().func_238421_b_(matrixStack, s, i1, j1, 8453920);
 
     }
 

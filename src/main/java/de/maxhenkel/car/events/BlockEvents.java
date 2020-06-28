@@ -3,9 +3,12 @@ package de.maxhenkel.car.events;
 import de.maxhenkel.car.Main;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
+import net.minecraft.loot.LootContext;
+import net.minecraft.loot.LootParameterSets;
+import net.minecraft.loot.LootParameters;
+import net.minecraft.loot.LootTable;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.server.ServerWorld;
-import net.minecraft.world.storage.loot.*;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
@@ -34,7 +37,7 @@ public class BlockEvents {
 
         LootContext lootContext = builder.build(LootParameterSets.BLOCK);
 
-        LootTable lootTable=serverWorld.getServer().getLootTableManager().getLootTableFromLocation(GRASS_LOOT_TABLE);
+        LootTable lootTable = serverWorld.getServer().getLootTableManager().getLootTableFromLocation(GRASS_LOOT_TABLE);
 
         lootTable.generate(lootContext).forEach((stack) -> {
             Block.spawnAsEntity(serverWorld, event.getPos(), stack);

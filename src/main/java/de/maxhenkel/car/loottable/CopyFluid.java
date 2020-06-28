@@ -6,13 +6,13 @@ import de.maxhenkel.car.Main;
 import de.maxhenkel.car.blocks.tileentity.TileEntityTank;
 import de.maxhenkel.tools.FluidUtils;
 import net.minecraft.item.ItemStack;
+import net.minecraft.loot.LootContext;
+import net.minecraft.loot.LootFunction;
+import net.minecraft.loot.LootFunctionType;
+import net.minecraft.loot.LootParameters;
+import net.minecraft.loot.conditions.ILootCondition;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.storage.loot.LootContext;
-import net.minecraft.world.storage.loot.LootFunction;
-import net.minecraft.world.storage.loot.LootParameters;
-import net.minecraft.world.storage.loot.conditions.ILootCondition;
 import net.minecraftforge.fluids.FluidStack;
 
 public class CopyFluid extends LootFunction {
@@ -43,12 +43,12 @@ public class CopyFluid extends LootFunction {
         return stack;
     }
 
-    public static class Serializer extends net.minecraft.world.storage.loot.LootFunction.Serializer<CopyFluid> {
+    @Override
+    public LootFunctionType func_230425_b_() {
+        return Main.COPY_FLUID;
+    }
 
-        public Serializer() {
-            super(new ResourceLocation(Main.MODID, "copy_fluid"), CopyFluid.class);
-        }
-
+    public static class Serializer extends LootFunction.Serializer<CopyFluid> {
         @Override
         public CopyFluid deserialize(JsonObject jsonObject, JsonDeserializationContext jsonDeserializationContext, ILootCondition[] iLootConditions) {
             return new CopyFluid(iLootConditions);

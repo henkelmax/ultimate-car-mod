@@ -1,7 +1,7 @@
 package de.maxhenkel.tools;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import net.minecraft.client.renderer.Vector3f;
+import net.minecraft.util.math.vector.Vector3f;
 
 import java.util.ArrayList;
 import java.util.List;

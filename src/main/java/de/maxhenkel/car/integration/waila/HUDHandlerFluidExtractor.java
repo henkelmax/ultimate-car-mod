@@ -1,5 +1,5 @@
 package de.maxhenkel.car.integration.waila;
-
+/*
 import de.maxhenkel.car.blocks.tileentity.TileEntityFluidExtractor;
 import mcp.mobius.waila.api.IComponentProvider;
 import mcp.mobius.waila.api.IDataAccessor;
@@ -41,4 +41,4 @@ public class HUDHandlerFluidExtractor implements IComponentProvider, IServerData
             data.putString("filter", extractor.getFilterFluid().getRegistryName().toString());
         }
     }
-}
+}*/

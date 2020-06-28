@@ -1,5 +1,6 @@
 package de.maxhenkel.car.gui;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import de.maxhenkel.car.entity.car.base.EntityCarInventoryBase;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
@@ -22,14 +23,14 @@ public class GuiCarInventory extends GuiBase<ContainerCarInventory> {
     }
 
     @Override
-    protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-        super.drawGuiContainerForegroundLayer(mouseX, mouseY);
-        font.drawString(car.getDisplayName().getFormattedText(), 8, 6, FONT_COLOR);
-        font.drawString(playerInventory.getDisplayName().getFormattedText(), 8, ySize - 96 + 3, FONT_COLOR);
+    protected void func_230451_b_(MatrixStack matrixStack, int mouseX, int mouseY) {
+        super.func_230451_b_(matrixStack, mouseX, mouseY);
+        field_230712_o_.func_238422_b_(matrixStack, car.getDisplayName(), 8, 6, FONT_COLOR);
+        field_230712_o_.func_238422_b_(matrixStack, playerInventory.getDisplayName(), 8, ySize - 96 + 3, FONT_COLOR);
     }
 
     @Override
-    public boolean isPauseScreen() {
+    public boolean func_231177_au__() {
         return false;
     }
 }

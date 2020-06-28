@@ -13,6 +13,8 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkHooks;
@@ -30,8 +32,8 @@ public class ItemLicensePlate extends ItemCraftingComponent {
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         String text = getText(stack);
 
-        if (text != null && !text.isEmpty()) {
-            tooltip.add(new TranslationTextComponent("tooltip.license_plate_text", text));
+        if (!text.isEmpty()) {
+            tooltip.add(new TranslationTextComponent("tooltip.license_plate_text", new StringTextComponent(text).func_240699_a_(TextFormatting.DARK_GRAY)).func_240699_a_(TextFormatting.GRAY));
         }
 
         super.addInformation(stack, worldIn, tooltip, flagIn);

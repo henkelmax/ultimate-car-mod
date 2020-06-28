@@ -37,13 +37,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.item.crafting.SpecialRecipeSerializer;
+import net.minecraft.loot.LootFunctionType;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.village.PointOfInterestType;
-import net.minecraft.world.storage.loot.functions.LootFunctionManager;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
@@ -80,9 +80,10 @@ public class Main {
 
     public static EntityType CAR_ENTITY_TYPE;
 
+    public static LootFunctionType COPY_FLUID;
+
     public static PointOfInterestType POINT_OF_INTEREST_TYPE_GAS_STATION_ATTENDANT;
     public static VillagerProfession VILLAGER_PROFESSION_GAS_STATION_ATTENDANT;
-
 
     public Main() {
         FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(Item.class, this::registerItems);
@@ -135,7 +136,7 @@ public class Main {
 
         MinecraftForge.EVENT_BUS.register(new VillagerEvents());
 
-        LootFunctionManager.registerFunction(new CopyFluid.Serializer());
+        COPY_FLUID = Registry.register(Registry.field_239694_aZ_, new ResourceLocation(Main.MODID, "copy_fluid"), new LootFunctionType(new CopyFluid.Serializer()));
 
         SIMPLE_CHANNEL = NetworkRegistry.newSimpleChannel(new ResourceLocation(Main.MODID, "default"), () -> "1.0.0", s -> true, s -> true);
         SIMPLE_CHANNEL.registerMessage(0, MessageControlCar.class, (msg, buf) -> msg.toBytes(buf), (buf) -> new MessageControlCar().fromBytes(buf), (msg, fun) -> msg.executeServerSide(fun.get()));

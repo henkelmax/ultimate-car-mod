@@ -18,7 +18,7 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.SoundEvent;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
@@ -179,10 +179,10 @@ public class EntityGenericCar extends EntityCarLicensePlateBase {
     }
 
     @Override
-    public Vec3d[] getPlayerOffsets() {
+    public Vector3d[] getPlayerOffsets() {
         PartBody chassis = getPartByClass(PartBody.class);
         if (chassis == null) {
-            return new Vec3d[]{new Vec3d(0.55D, 0D, -0.38D), new Vec3d(0.55D, 0D, 0.38D)};
+            return new Vector3d[]{new Vector3d(0.55D, 0D, -0.38D), new Vector3d(0.55D, 0D, 0.38D)};
         }
         return chassis.getPlayerOffsets();
     }
@@ -197,19 +197,19 @@ public class EntityGenericCar extends EntityCarLicensePlateBase {
     }
 
     @Override
-    public Vec3d getLicensePlateOffset() {
+    public Vector3d getLicensePlateOffset() {
         PartBody chassis = getPartByClass(PartBody.class);
         if (chassis == null) {
-            return new Vec3d(0F, 0F, 0F);
+            return new Vector3d(0F, 0F, 0F);
         }
 
         PartLicensePlateHolder numberPlate = getPartByClass(PartLicensePlateHolder.class);
         if (numberPlate == null) {
-            return new Vec3d(0F, 0F, 0F);
+            return new Vector3d(0F, 0F, 0F);
         }
-        Vec3d offset = chassis.getNumberPlateOffset();
-        Vec3d textOffset = numberPlate.getTextOffset();
-        return new Vec3d(offset.x + textOffset.x, -offset.y + textOffset.y, offset.z - textOffset.z);
+        Vector3d offset = chassis.getNumberPlateOffset();
+        Vector3d textOffset = numberPlate.getTextOffset();
+        return new Vector3d(offset.x + textOffset.x, -offset.y + textOffset.y, offset.z - textOffset.z);
     }
 
     @Override

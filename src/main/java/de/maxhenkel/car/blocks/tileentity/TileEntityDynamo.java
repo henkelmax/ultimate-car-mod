@@ -3,6 +3,7 @@ package de.maxhenkel.car.blocks.tileentity;
 import de.maxhenkel.car.Config;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.tools.EnergyTools;
+import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.util.Direction;
@@ -54,9 +55,9 @@ public class TileEntityDynamo extends TileEntityBase implements IEnergyStorage, 
     }
 
     @Override
-    public void read(CompoundNBT compound) {
+    public void func_230337_a_(BlockState blockState, CompoundNBT compound) {
         storedEnergy = compound.getInt("stored_energy");
-        super.read(compound);
+        super.func_230337_a_(blockState, compound);
     }
 
     @Override

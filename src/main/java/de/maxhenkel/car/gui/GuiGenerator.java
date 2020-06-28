@@ -3,18 +3,18 @@ package de.maxhenkel.car.gui;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.blocks.tileentity.TileEntityGenerator;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
 public class GuiGenerator extends GuiBase<ContainerGenerator> {
 
-    private static final ResourceLocation GUI_TEXTURE = new ResourceLocation(Main.MODID,
-            "textures/gui/gui_generator.png");
-    private static final int fontColor = 4210752;
+    private static final ResourceLocation GUI_TEXTURE = new ResourceLocation(Main.MODID, "textures/gui/gui_generator.png");
 
     private PlayerInventory playerInv;
     private TileEntityGenerator tile;
@@ -29,42 +29,38 @@ public class GuiGenerator extends GuiBase<ContainerGenerator> {
     }
 
     @Override
-    protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-        super.drawGuiContainerForegroundLayer(mouseX, mouseY);
+    protected void func_230451_b_(MatrixStack matrixStack, int mouseX, int mouseY) {
+        super.func_230451_b_(matrixStack, mouseX, mouseY);
 
         // Title
-        font.drawString(playerInv.getDisplayName().getFormattedText(), 8, this.ySize - 96 + 2,
-                fontColor);
-        font.drawString(tile.getDisplayName().getFormattedText(), 62, 6, fontColor);
+        field_230712_o_.func_238422_b_(matrixStack, playerInv.getDisplayName(), 8, this.ySize - 96 + 2, FONT_COLOR);
+        field_230712_o_.func_238422_b_(matrixStack, tile.getDisplayName(), 62, 6, FONT_COLOR);
 
         if (mouseX >= guiLeft + 122 && mouseX <= guiLeft + 16 + 122) {
             if (mouseY >= guiTop + 8 && mouseY <= guiTop + 57 + 8) {
-                List<String> list = new ArrayList<String>();
-                list.add(new TranslationTextComponent("tooltip.energy", tile.getStoredEnergy())
-                        .getFormattedText());
-                renderTooltip(list, mouseX - guiLeft, mouseY - guiTop);
+                List<IFormattableTextComponent> list = new ArrayList<>();
+                list.add(new TranslationTextComponent("tooltip.energy", tile.getStoredEnergy()));
+                func_238654_b_(matrixStack, list, mouseX - guiLeft, mouseY - guiTop);
             }
         }
 
         if (mouseX >= guiLeft + 39 && mouseX <= guiLeft + 16 + 39) {
             if (mouseY >= guiTop + 8 && mouseY <= guiTop + 57 + 8) {
-                List<String> list = new ArrayList<String>();
-                list.add(new TranslationTextComponent("tooltip.fuel", tile.getCurrentMillibuckets())
-                        .getFormattedText());
-                renderTooltip(list, mouseX - guiLeft, mouseY - guiTop);
+                List<IFormattableTextComponent> list = new ArrayList<>();
+                list.add(new TranslationTextComponent("tooltip.fuel", tile.getCurrentMillibuckets()));
+                func_238654_b_(matrixStack, list, mouseX - guiLeft, mouseY - guiTop);
             }
         }
     }
 
     @Override
-    protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
-        super.drawGuiContainerBackgroundLayer(partialTicks, mouseX, mouseY);
-
-        drawEnergy();
-        drawFluid();
+    protected void func_230450_a_(MatrixStack matrixStack, float partialTicks, int mouseX, int mouseY) {
+        super.func_230450_a_(matrixStack, partialTicks, mouseX, mouseY);
+        drawEnergy(matrixStack);
+        drawFluid(matrixStack);
     }
 
-    public void drawEnergy() {
+    public void drawEnergy(MatrixStack matrixStack) {
         float perc = getEnergy();
 
         int texX = 176;
@@ -77,10 +73,10 @@ public class GuiGenerator extends GuiBase<ContainerGenerator> {
         int scHeight = (int) (texH * (1 - perc));
         int i = this.guiLeft;
         int j = this.guiTop;
-        blit(i + targetX, j + targetY + scHeight, texX, texY + scHeight, texW, texH - scHeight);
+        func_238474_b_(matrixStack, i + targetX, j + targetY + scHeight, texX, texY + scHeight, texW, texH - scHeight);
     }
 
-    public void drawFluid() {
+    public void drawFluid(MatrixStack matrixStack) {
         float perc = getFluid();
 
         int texX = 192;
@@ -93,7 +89,7 @@ public class GuiGenerator extends GuiBase<ContainerGenerator> {
         int scHeight = (int) (texH * (1 - perc));
         int i = this.guiLeft;
         int j = this.guiTop;
-        blit(i + targetX, j + targetY + scHeight, texX, texY + scHeight, texW, texH - scHeight);
+        func_238474_b_(matrixStack, i + targetX, j + targetY + scHeight, texX, texY + scHeight, texW, texH - scHeight);
     }
 
     public float getEnergy() {

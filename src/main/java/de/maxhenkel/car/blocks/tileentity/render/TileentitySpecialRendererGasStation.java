@@ -4,10 +4,10 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import de.maxhenkel.car.blocks.tileentity.TileEntityGasStation;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.client.renderer.Vector3f;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.util.Direction;
+import net.minecraft.util.math.vector.Vector3f;
 
 public class TileentitySpecialRendererGasStation extends TileEntityRenderer<TileEntityGasStation> {
 
@@ -33,19 +33,17 @@ public class TileentitySpecialRendererGasStation extends TileEntityRenderer<Tile
 
         FontRenderer renderer = renderDispatcher.getFontRenderer();
 
-        if (renderer != null) {
-            int textWidth = renderer.getStringWidth(name);
-            float textScale = 0.36F / textWidth;
-            textScale = Math.min(textScale, 0.01F);
+        int textWidth = renderer.getStringWidth(name);
+        float textScale = 0.36F / textWidth;
+        textScale = Math.min(textScale, 0.01F);
 
-            float posX = -(textScale * textWidth) / 2F;
+        float posX = -(textScale * textWidth) / 2F;
 
-            matrixStack.translate(posX, -0.815D, -0.188D);
+        matrixStack.translate(posX, -0.815D, -0.188D);
 
-            matrixStack.scale(textScale, textScale, textScale);
-            renderer.drawString(name, 0, 0, 0);
-            renderer.renderString(name, 0F, 0F, 0x0, false, matrixStack.getLast().getMatrix(), buffer, false, 0, light);
-        }
+        matrixStack.scale(textScale, textScale, textScale);
+
+        renderer.renderString(name, 0F, 0F, 0x0, false, matrixStack.getLast().getMatrix(), buffer, false, 0, light);
         matrixStack.pop();
     }
 

@@ -10,14 +10,14 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 
 public abstract class EntityCarLicensePlateBase extends EntityCarLockBase {
 
-    private static final DataParameter<String> LICENSE_PLATE = EntityDataManager
-            .<String>createKey(EntityCarLicensePlateBase.class, DataSerializers.STRING);
+    private static final DataParameter<String> LICENSE_PLATE = EntityDataManager.createKey(EntityCarLicensePlateBase.class, DataSerializers.STRING);
 
     public EntityCarLicensePlateBase(EntityType type, World worldIn) {
         super(type, worldIn);
@@ -30,7 +30,7 @@ public abstract class EntityCarLicensePlateBase extends EntityCarLockBase {
     }
 
     @Override
-    public boolean processInitialInteract(PlayerEntity player, Hand hand) {
+    public ActionResultType processInitialInteract(PlayerEntity player, Hand hand) {
         if (player.isSneaking() && !isLocked()) {
             if (hasLicensePlateHolder()) {
                 ItemStack stack = player.getHeldItem(hand);
@@ -40,7 +40,7 @@ public abstract class EntityCarLicensePlateBase extends EntityCarLockBase {
                         ItemTools.decrItemStack(stack, player);
                         player.setHeldItem(hand, stack);
                         setLicensePlate(text);
-                        return true;
+                        return ActionResultType.CONSUME;
                     }
                 }
             }
@@ -82,5 +82,5 @@ public abstract class EntityCarLicensePlateBase extends EntityCarLockBase {
         setLicensePlate(compound.getString("license_plate"));
     }
 
-    public abstract Vec3d getLicensePlateOffset();
+    public abstract Vector3d getLicensePlateOffset();
 }

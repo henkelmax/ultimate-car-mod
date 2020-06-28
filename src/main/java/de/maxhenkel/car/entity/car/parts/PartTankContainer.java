@@ -3,7 +3,7 @@ package de.maxhenkel.car.entity.car.parts;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.entity.model.obj.OBJModel;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
@@ -14,7 +14,7 @@ public class PartTankContainer extends PartTransporterBack {
     private int fluidAmount;
 
     public PartTankContainer(ResourceLocation texture) {
-        super(new OBJModel(new ResourceLocation(Main.MODID, "models/entity/tank_container.obj")), texture, new Vec3d(0D / 16D, 17D / 16D, 5.5D / 16D));
+        super(new OBJModel(new ResourceLocation(Main.MODID, "models/entity/tank_container.obj")), texture, new Vector3d(0D / 16D, 17D / 16D, 5.5D / 16D));
         this.fluidAmount = 64000;
     }
 

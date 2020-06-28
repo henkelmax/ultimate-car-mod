@@ -3,6 +3,7 @@ package de.maxhenkel.car.gui;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.net.MessageOpenCarWorkshopGui;
 import de.maxhenkel.tools.EntityTools;
@@ -15,15 +16,13 @@ import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
 public class GuiCarWorkshopRepair extends GuiBase<ContainerCarWorkshopRepair> {
 
-    private static final ResourceLocation GUI_TEXTURE = new ResourceLocation(Main.MODID,
-            "textures/gui/gui_car_workshop_repair.png");
-
-    private static final int fontColor = 4210752;
+    private static final ResourceLocation GUI_TEXTURE = new ResourceLocation(Main.MODID, "textures/gui/gui_car_workshop_repair.png");
 
     private PlayerEntity player;
     private TileEntityCarWorkshop tile;
@@ -44,38 +43,36 @@ public class GuiCarWorkshopRepair extends GuiBase<ContainerCarWorkshopRepair> {
     }
 
     @Override
-    protected void init() {
-        super.init();
+    protected void func_231160_c_() {
+        super.func_231160_c_();
 
-        this.buttonRepair = addButton(new Button(guiLeft + xSize - 7 - 60, guiTop + 105, 60, 20, new TranslationTextComponent("button.repair_car").getFormattedText(), button -> {
+        this.buttonRepair = func_230480_a_(new Button(guiLeft + xSize - 7 - 60, guiTop + 105, 60, 20, new TranslationTextComponent("button.repair_car"), button -> {
             if (tile.getWorld().isRemote) {
                 Main.SIMPLE_CHANNEL.sendToServer(new MessageRepairCar(tile.getPos(), player));
             }
         }));
-        this.buttonRepair.active = false;
+        this.buttonRepair.field_230693_o_ = false;
 
-        this.buttonBack = addButton(new Button(guiLeft + 7, guiTop + 105, 60, 20, new TranslationTextComponent("button.back").getFormattedText(), button -> {
+        this.buttonBack = func_230480_a_(new Button(guiLeft + 7, guiTop + 105, 60, 20, new TranslationTextComponent("button.back"), button -> {
             if (tile.getWorld().isRemote) {
                 Main.SIMPLE_CHANNEL.sendToServer(new MessageOpenCarWorkshopGui(tile.getPos(), player, false));
             }
         }));
-        this.buttonBack.active = true;
+        this.buttonBack.field_230693_o_ = true;
     }
 
-
     @Override
-    protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-        super.drawGuiContainerForegroundLayer(mouseX, mouseY);
+    protected void func_230451_b_(MatrixStack matrixStack, int mouseX, int mouseY) {
+        super.func_230451_b_(matrixStack, mouseX, mouseY);
 
         // Titles
-        font.drawString(tile.getDisplayName().getFormattedText(), 8, 6, fontColor);
-        font.drawString(player.inventory.getDisplayName().getFormattedText(), 8, ySize - 96 + 2,
-                fontColor);
+        field_230712_o_.func_238422_b_(matrixStack, tile.getDisplayName(), 8, 6, FONT_COLOR);
+        field_230712_o_.func_238422_b_(matrixStack, player.inventory.getDisplayName(), 8, ySize - 96 + 2, FONT_COLOR);
 
         EntityCarBase carTop = tile.getCarOnTop();
 
         if (!(carTop instanceof EntityCarDamageBase)) {
-            buttonRepair.active = false;
+            buttonRepair.field_230693_o_ = false;
             return;
         }
 
@@ -83,25 +80,23 @@ public class GuiCarWorkshopRepair extends GuiBase<ContainerCarWorkshopRepair> {
 
         if (mouseX >= guiLeft + 52 && mouseX <= guiLeft + 123) {
             if (mouseY >= guiTop + 81 && mouseY <= guiTop + 90) {
-                List<String> list = new ArrayList<String>();
-                list.add(new TranslationTextComponent("tooltip.damage", MathTools.round(car.getDamage(), 2))
-                        .getFormattedText());
-                renderTooltip(list, mouseX - guiLeft, mouseY - guiTop);
+                List<IFormattableTextComponent> list = new ArrayList<>();
+                list.add(new TranslationTextComponent("tooltip.damage", MathTools.round(car.getDamage(), 2)));
+                func_238654_b_(matrixStack, list, mouseX - guiLeft, mouseY - guiTop);
             }
         }
 
         if (tile.areRepairItemsInside() && car.getDamage() > 0) {
-            buttonRepair.active = true;
+            buttonRepair.field_230693_o_ = true;
         } else {
-            buttonRepair.active = false;
+            buttonRepair.field_230693_o_ = false;
         }
         drawCar(carTop);
-
     }
 
     @Override
-    public void tick() {
-        super.tick();
+    public void func_231023_e_() {
+        super.func_231023_e_();
         carRenderer.tick();
     }
 
@@ -116,18 +111,12 @@ public class GuiCarWorkshopRepair extends GuiBase<ContainerCarWorkshopRepair> {
     }
 
     @Override
-    protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
-        super.drawGuiContainerBackgroundLayer(partialTicks, mouseX, mouseY);
-
-        drawDamage();
+    protected void func_230450_a_(MatrixStack matrixStack, float partialTicks, int mouseX, int mouseY) {
+        super.func_230450_a_(matrixStack, partialTicks, mouseX, mouseY);
+        drawDamage(matrixStack);
     }
 
-    @Override
-    public boolean isPauseScreen() {
-        return false;
-    }
-
-    public void drawDamage() {
+    public void drawDamage(MatrixStack matrixStack) {
         EntityCarBase car = tile.getCarOnTop();
         if (!(car instanceof EntityCarDamageBase)) {
             return;
@@ -137,11 +126,16 @@ public class GuiCarWorkshopRepair extends GuiBase<ContainerCarWorkshopRepair> {
 
         double percent = 100 - getDamagePercent(c);
 
-        minecraft.getTextureManager().bindTexture(GUI_TEXTURE);
+        field_230706_i_.getTextureManager().bindTexture(GUI_TEXTURE);
         int scaled = (int) (72 * percent / 100);
         int i = this.guiLeft;
         int j = this.guiTop;
-        blit(i + 52, j + 81, 176, 0, scaled, 10);
+        func_238474_b_(matrixStack, i + 52, j + 81, 176, 0, scaled, 10);
+    }
+
+    @Override
+    public boolean func_231177_au__() {
+        return false;
     }
 
 }

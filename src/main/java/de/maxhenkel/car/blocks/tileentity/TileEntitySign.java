@@ -1,7 +1,7 @@
 package de.maxhenkel.car.blocks.tileentity;
 
-
 import de.maxhenkel.car.Main;
+import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.IIntArray;
 import net.minecraft.util.IntArray;
@@ -28,11 +28,11 @@ public class TileEntitySign extends TileEntityBase {
     }
 
     @Override
-    public void read(CompoundNBT compound) {
+    public void func_230337_a_(BlockState blockState, CompoundNBT compound) {
         for (int i = 0; i < text.length; i++) {
             this.text[i] = compound.getString("text" + i);
         }
-        super.read(compound);
+        super.func_230337_a_(blockState, compound);
     }
 
     public String getText(int i) {

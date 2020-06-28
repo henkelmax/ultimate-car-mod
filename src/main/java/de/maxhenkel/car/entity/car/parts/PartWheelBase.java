@@ -4,9 +4,9 @@ import de.maxhenkel.car.entity.car.base.EntityGenericCar;
 import de.maxhenkel.car.entity.model.obj.OBJModel;
 import de.maxhenkel.car.entity.model.obj.OBJModelInstance;
 import de.maxhenkel.car.entity.model.obj.OBJModelOptions;
-import net.minecraft.client.renderer.Vector3f;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.util.math.vector.Vector3f;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
@@ -51,7 +51,7 @@ public class PartWheelBase extends PartModel {
     public List<OBJModelInstance> getInstances(EntityGenericCar car) {
         List<OBJModelInstance> list = new ArrayList<>();
 
-        Vec3d[] wheelOffsets = new Vec3d[0];
+        Vector3d[] wheelOffsets = new Vector3d[0];
 
         for (Part part : car.getModelParts()) {
             if (part instanceof PartBody) {

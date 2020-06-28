@@ -1,0 +1,17 @@
+{
+  "type": "crafting_shaped",
+  "pattern": [
+    "   ",
+    "WW ",
+    "WWW"
+  ],
+  "key": {
+    "W": {
+      "item": "minecraft:warped_planks"
+    }
+  },
+  "result": {
+    "item": "car:warped_body",
+    "count": 1
+  }
+}

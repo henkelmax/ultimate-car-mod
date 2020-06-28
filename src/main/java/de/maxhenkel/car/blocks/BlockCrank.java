@@ -70,11 +70,6 @@ public class BlockCrank extends BlockBase implements IItemBlock {
     }
 
     @Override
-    public boolean isNormalCube(BlockState state, IBlockReader worldIn, BlockPos pos) {
-        return false;
-    }
-
-    @Override
     protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
         builder.add(CRANK_POS);
     }

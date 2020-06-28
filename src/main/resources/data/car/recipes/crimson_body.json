@@ -1,0 +1,17 @@
+{
+  "type": "crafting_shaped",
+  "pattern": [
+    "   ",
+    "WW ",
+    "WWW"
+  ],
+  "key": {
+    "W": {
+      "item": "minecraft:crimson_planks"
+    }
+  },
+  "result": {
+    "item": "car:crimson_body",
+    "count": 1
+  }
+}

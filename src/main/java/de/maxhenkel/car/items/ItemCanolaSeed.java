@@ -12,6 +12,7 @@ import net.minecraft.item.BlockNamedItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -33,11 +34,11 @@ public class ItemCanolaSeed extends BlockNamedItem implements IPlantable {
 
     @Override
     public PlantType getPlantType(IBlockReader world, BlockPos pos) {
-        return PlantType.Crop;
+        return PlantType.CROP;
     }
 
     @Override
-    public boolean itemInteractionForEntity(ItemStack stack, PlayerEntity playerIn, LivingEntity target, Hand hand) {
+    public ActionResultType itemInteractionForEntity(ItemStack stack, PlayerEntity playerIn, LivingEntity target, Hand hand) {
         if (!(target instanceof AnimalEntity)) {
             return super.itemInteractionForEntity(stack, playerIn, target, hand);
         }
@@ -51,13 +52,13 @@ public class ItemCanolaSeed extends BlockNamedItem implements IPlantable {
         if (animal.getGrowingAge() == 0 && !animal.isInLove()) {
             ItemTools.decrItemStack(stack, playerIn);
             animal.setInLove(playerIn);
-            return true;
+            return ActionResultType.CONSUME;
         }
 
         if (animal.isChild()) {
             ItemTools.decrItemStack(stack, playerIn);
             animal.ageUp((int) ((float) (-animal.getGrowingAge() / 20) * 0.1F), true);
-            return true;
+            return ActionResultType.CONSUME;
         }
         return super.itemInteractionForEntity(stack, playerIn, target, hand);
     }

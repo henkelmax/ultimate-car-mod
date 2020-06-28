@@ -1,5 +1,6 @@
 package de.maxhenkel.car.gui;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import de.maxhenkel.car.Main;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
@@ -17,13 +18,13 @@ public class GuiPainter extends GuiBase<ContainerPainter> {
     }
 
     @Override
-    protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-        super.drawGuiContainerForegroundLayer(mouseX, mouseY);
-        font.drawString(new TranslationTextComponent("gui.painter").getFormattedText(), 8, 6, FONT_COLOR);
+    protected void func_230451_b_(MatrixStack matrixStack, int mouseX, int mouseY) {
+        super.func_230451_b_(matrixStack, mouseX, mouseY);
+        field_230712_o_.func_238422_b_(matrixStack, new TranslationTextComponent("gui.painter"), 8, 6, FONT_COLOR);
     }
 
     @Override
-    public boolean isPauseScreen() {
+    public boolean func_231177_au__() {
         return false;
     }
 }

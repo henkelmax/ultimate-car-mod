@@ -298,8 +298,7 @@ public class TileEntityGasStation extends TileEntityBase implements ITickableTil
     }
 
     @Override
-    public void read(CompoundNBT compound) {
-
+    public void func_230337_a_(BlockState blockState, CompoundNBT compound) {
         fuelCounter = compound.getInt("counter");
 
         if (compound.contains("fluid")) {
@@ -314,8 +313,7 @@ public class TileEntityGasStation extends TileEntityBase implements ITickableTil
         freeAmountLeft = compound.getInt("free_amount");
 
         owner = compound.getUniqueId("owner");
-
-        super.read(compound);
+        super.func_230337_a_(blockState, compound);
     }
 
     public boolean isFueling() {
@@ -359,12 +357,11 @@ public class TileEntityGasStation extends TileEntityBase implements ITickableTil
     public String getRenderText() {
         IFluidHandler fluidHandler = getFluidHandlerInFront();
         if (fluidHandler == null) {
-            return new TranslationTextComponent("gas_station.no_car").getFormattedText();
+            return new TranslationTextComponent("gas_station.no_car").getString();
         } else if (fuelCounter <= 0) {
-            return new TranslationTextComponent("gas_station.ready").getFormattedText();
+            return new TranslationTextComponent("gas_station.ready").getString();
         } else {
-            return new TranslationTextComponent("gas_station.fuel_amount", fuelCounter)
-                    .getFormattedText();
+            return new TranslationTextComponent("gas_station.fuel_amount", fuelCounter).getString();
         }
     }
 

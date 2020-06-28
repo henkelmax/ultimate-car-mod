@@ -3,7 +3,7 @@ package de.maxhenkel.car.entity.car.parts;
 import de.maxhenkel.car.entity.model.obj.OBJModel;
 import de.maxhenkel.tools.FloatSupplier;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
@@ -11,9 +11,9 @@ import java.util.List;
 
 public class PartBody extends PartModel {
 
-    protected Vec3d[] wheelOffsets;
-    protected Vec3d[] playerOffsets;
-    protected Vec3d numberPlateOffset;
+    protected Vector3d[] wheelOffsets;
+    protected Vector3d[] playerOffsets;
+    protected Vector3d numberPlateOffset;
     protected float width;
     protected float height;
     protected float minRotationSpeed;
@@ -22,19 +22,19 @@ public class PartBody extends PartModel {
     protected FloatSupplier acceleration;
     protected FloatSupplier maxSpeed;
 
-    public PartBody(OBJModel model, ResourceLocation texture, Vec3d offset) {
+    public PartBody(OBJModel model, ResourceLocation texture, Vector3d offset) {
         super(model, texture, offset);
     }
 
-    public Vec3d[] getWheelOffsets() {
+    public Vector3d[] getWheelOffsets() {
         return wheelOffsets;
     }
 
-    public Vec3d[] getPlayerOffsets() {
+    public Vector3d[] getPlayerOffsets() {
         return playerOffsets;
     }
 
-    public Vec3d getNumberPlateOffset() {
+    public Vector3d getNumberPlateOffset() {
         return numberPlateOffset;
     }
 

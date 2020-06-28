@@ -33,23 +33,23 @@ public abstract class SoundLoopCar extends TickableSound {
 
     @Override
     public void tick() {
-        if (donePlaying) {
+        if (isDonePlaying()) {
             return;
         }
 
         if (!car.isAlive()) {
-            donePlaying = true;
+            setDonePlaying();
             return;
         }
 
         ClientPlayerEntity player = Minecraft.getInstance().player;
         if (player == null || !player.isAlive()) {
-            donePlaying = true;
+            setDonePlaying();
             return;
         }
 
         if (shouldStopSound()) {
-            donePlaying = true;
+            setDonePlaying();
             return;
         }
 
@@ -57,7 +57,7 @@ public abstract class SoundLoopCar extends TickableSound {
     }
 
     public void setDonePlaying() {
-        donePlaying = true;
+        func_239509_o_();
     }
 
     public abstract boolean shouldStopSound();

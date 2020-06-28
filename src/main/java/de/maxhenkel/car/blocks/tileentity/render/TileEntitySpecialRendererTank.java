@@ -9,13 +9,13 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Atlases;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.Vector3f;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.inventory.container.PlayerContainer;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.vector.Vector3f;
 import net.minecraftforge.fluids.FluidStack;
 
 public class TileEntitySpecialRendererTank extends TileEntityRenderer<TileEntityTank> {
@@ -40,7 +40,7 @@ public class TileEntitySpecialRendererTank extends TileEntityRenderer<TileEntity
 
     public void renderFluid(TileEntityTank tank, FluidStack fluid, float amount, float yStart, MatrixStack matrixStack, IRenderTypeBuffer buffer, int light, int overlay) {
         matrixStack.push();
-        IVertexBuilder builder = buffer.getBuffer(Atlases.getTranslucentBlockType());
+        IVertexBuilder builder = buffer.getBuffer(Atlases.getTranslucentCullBlockType());
 
         TextureAtlasSprite texture = Minecraft.getInstance().getModelManager().getAtlasTexture(PlayerContainer.LOCATION_BLOCKS_TEXTURE).getSprite(fluid.getFluid().getAttributes().getStillTexture());
 

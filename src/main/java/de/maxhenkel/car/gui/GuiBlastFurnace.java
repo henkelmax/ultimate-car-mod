@@ -7,8 +7,7 @@ import net.minecraft.util.text.ITextComponent;
 
 public class GuiBlastFurnace extends GuiEnergyFluidProducer<ContainerBlastFurnace> {
 
-    private static final ResourceLocation GUI_TEXTURE = new ResourceLocation(Main.MODID,
-            "textures/gui/gui_blastfurnace.png");
+    private static final ResourceLocation GUI_TEXTURE = new ResourceLocation(Main.MODID, "textures/gui/gui_blastfurnace.png");
 
     public GuiBlastFurnace(ContainerBlastFurnace container, PlayerInventory playerInventory, ITextComponent title) {
         super(GUI_TEXTURE, container, playerInventory, title);

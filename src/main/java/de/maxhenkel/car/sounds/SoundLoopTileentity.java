@@ -29,7 +29,7 @@ public class SoundLoopTileentity extends TickableSound {
 
     @Override
     public void tick() {
-        if (donePlaying) {
+        if (isDonePlaying()) {
             return;
         }
 
@@ -65,8 +65,7 @@ public class SoundLoopTileentity extends TickableSound {
     }
 
     public void stop() {
-        this.donePlaying = true;
-        this.repeat = false;
+        func_239509_o_();
     }
 
     public interface ISoundLoopable {

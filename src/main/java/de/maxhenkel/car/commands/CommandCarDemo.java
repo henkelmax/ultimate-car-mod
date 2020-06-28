@@ -9,7 +9,7 @@ import net.minecraft.command.CommandSource;
 import net.minecraft.command.Commands;
 import net.minecraft.command.arguments.Vec3Argument;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 
 import java.util.List;
@@ -22,7 +22,7 @@ public class CommandCarDemo {
                 .then(Commands.argument("pos", Vec3Argument.vec3()).executes((context) -> spawnCars(context.getSource().getWorld(), Vec3Argument.getVec3(context, "pos")))));
     }
 
-    public static int spawnCars(World world, Vec3d pos) {
+    public static int spawnCars(World world, Vector3d pos) {
         ItemStack wheel = new ItemStack(ModItems.WHEEL);
         ItemStack engine = new ItemStack(ModItems.ENGINE_6_CYLINDER);
         ItemStack tank = new ItemStack(ModItems.LARGE_TANK);

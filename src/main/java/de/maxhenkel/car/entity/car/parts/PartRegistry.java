@@ -22,8 +22,8 @@ public class PartRegistry {
     public static final Part BIRCH_LICENSE_PLATE_HOLDER = new PartLicensePlateHolder(new ResourceLocation("textures/block/birch_planks.png"));
     public static final Part JUNGLE_LICENSE_PLATE_HOLDER = new PartLicensePlateHolder(new ResourceLocation("textures/block/jungle_planks.png"));
     public static final Part SPRUCE_LICENSE_PLATE_HOLDER = new PartLicensePlateHolder(new ResourceLocation("textures/block/spruce_planks.png"));
-    public static final Part CRIMSON_LICENSE_PLATE_HOLDER = new PartLicensePlateHolder(new ResourceLocation(Main.MODID, "textures/block/crimson_planks.png")); //TODO Refer to minecraft path if 1.16 releases
-    public static final Part WARPED_LICENSE_PLATE_HOLDER = new PartLicensePlateHolder(new ResourceLocation(Main.MODID, "textures/block/warped_planks.png"));
+    public static final Part CRIMSON_LICENSE_PLATE_HOLDER = new PartLicensePlateHolder(new ResourceLocation("textures/block/crimson_planks.png"));
+    public static final Part WARPED_LICENSE_PLATE_HOLDER = new PartLicensePlateHolder(new ResourceLocation("textures/block/warped_planks.png"));
 
     public static final Part IRON_LICENSE_PLATE_HOLDER = new PartLicensePlateHolder(new ResourceLocation("textures/block/iron_block.png"));
     public static final Part DIAMOND_LICENSE_PLATE_HOLDER = new PartLicensePlateHolder(new ResourceLocation("textures/block/diamond_block.png"));
@@ -139,8 +139,8 @@ public class PartRegistry {
     public static final Part BIRCH_BUMPER = new PartBumper(new ResourceLocation("textures/block/birch_planks.png"));
     public static final Part JUNGLE_BUMPER = new PartBumper(new ResourceLocation("textures/block/jungle_planks.png"));
     public static final Part SPRUCE_BUMPER = new PartBumper(new ResourceLocation("textures/block/spruce_planks.png"));
-    public static final Part CRIMSON_BUMPER = new PartBumper(new ResourceLocation(Main.MODID, "textures/block/crimson_planks.png")); //TODO Refer to minecraft path if 1.16 releases
-    public static final Part WARPED_BUMPER = new PartBumper(new ResourceLocation(Main.MODID, "textures/block/warped_planks.png"));
+    public static final Part CRIMSON_BUMPER = new PartBumper(new ResourceLocation("textures/block/crimson_planks.png"));
+    public static final Part WARPED_BUMPER = new PartBumper(new ResourceLocation("textures/block/warped_planks.png"));
 
     public static final Part SMALL_TANK = new PartTank(500);
     public static final Part MEDIUM_TANK = new PartTank(1000);

@@ -96,18 +96,8 @@ public class BlockSplitTank extends BlockBase implements ITileEntityProvider, II
     }
 
     @Override
-    public boolean isNormalCube(BlockState state, IBlockReader worldIn, BlockPos pos) {
-        return false;
-    }
-
-    @Override
     public BlockRenderType getRenderType(BlockState state) {
         return BlockRenderType.MODEL;
-    }
-
-    @Override
-    public boolean causesSuffocation(BlockState state, IBlockReader world, BlockPos pos) {
-        return false;
     }
 
     @OnlyIn(Dist.CLIENT)

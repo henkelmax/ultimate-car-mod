@@ -7,11 +7,11 @@ import de.maxhenkel.tools.RenderTools;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.RenderState;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.Vector3f;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.Vec2f;
+import net.minecraft.util.math.vector.Vector2f;
+import net.minecraft.util.math.vector.Vector3f;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.lwjgl.opengl.GL11;
@@ -71,11 +71,11 @@ public class OBJModel {
 
     static class OBJModelData {
         private List<Vector3f> positions;
-        private List<Vec2f> texCoords;
+        private List<Vector2f> texCoords;
         private List<Vector3f> normals;
         private List<int[][]> faces;
 
-        public OBJModelData(List<Vector3f> positions, List<Vec2f> texCoords, List<Vector3f> normals, List<int[][]> faces) {
+        public OBJModelData(List<Vector3f> positions, List<Vector2f> texCoords, List<Vector3f> normals, List<int[][]> faces) {
             this.positions = positions;
             this.texCoords = texCoords;
             this.normals = normals;
@@ -86,7 +86,7 @@ public class OBJModel {
             return positions;
         }
 
-        public List<Vec2f> getTexCoords() {
+        public List<Vector2f> getTexCoords() {
             return texCoords;
         }
 

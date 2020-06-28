@@ -162,17 +162,14 @@ public class TileEntityGenerator extends TileEntityBase implements ITickableTile
     }
 
     @Override
-    public void read(CompoundNBT compound) {
-
+    public void func_230337_a_(BlockState blockState, CompoundNBT compound) {
         storedEnergy = compound.getInt("stored_energy");
-
         if (compound.contains("fluid")) {
             FluidStack stack = FluidStack.loadFluidStackFromNBT(compound.getCompound("fluid"));
             currentFluid = stack.getFluid();
             currentMillibuckets = stack.getAmount();
         }
-
-        super.read(compound);
+        super.func_230337_a_(blockState, compound);
     }
 
     @Override

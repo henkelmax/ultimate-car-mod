@@ -92,7 +92,7 @@ public class ItemCanister extends Item {
                     return;
                 }
 
-                addInfo(fluidStack.getDisplayName().getFormattedText(), fluidStack.getAmount(), tooltip);
+                addInfo(fluidStack.getDisplayName().getString(), fluidStack.getAmount(), tooltip);
                 super.addInformation(stack, worldIn, tooltip, flagIn);
                 return;
             }
@@ -106,8 +106,8 @@ public class ItemCanister extends Item {
     }
 
     private void addInfo(String fluid, int amount, List<ITextComponent> tooltip) {
-        tooltip.add(new TranslationTextComponent("canister.fluid", new StringTextComponent(fluid).applyTextStyle(TextFormatting.DARK_GRAY)).applyTextStyle(TextFormatting.GRAY));
-        tooltip.add(new TranslationTextComponent("canister.amount", new StringTextComponent(String.valueOf(amount)).applyTextStyle(TextFormatting.DARK_GRAY)).applyTextStyle(TextFormatting.GRAY));
+        tooltip.add(new TranslationTextComponent("canister.fluid", new StringTextComponent(fluid).func_240699_a_(TextFormatting.DARK_GRAY)).func_240699_a_(TextFormatting.GRAY));
+        tooltip.add(new TranslationTextComponent("canister.amount", new StringTextComponent(String.valueOf(amount)).func_240699_a_(TextFormatting.DARK_GRAY)).func_240699_a_(TextFormatting.GRAY));
     }
 
     public static boolean fillCanister(ItemStack canister, IFluidHandler handler) {

@@ -3,6 +3,7 @@ package de.maxhenkel.car.blocks.tileentity;
 import de.maxhenkel.car.Config;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.fluids.ModFluids;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Inventory;
@@ -152,12 +153,12 @@ public class TileEntitySplitTank extends TileEntityBase implements ITickableTile
     }
 
     @Override
-    public void read(CompoundNBT compound) {
+    public void func_230337_a_(BlockState blockState, CompoundNBT compound) {
         currentMix = compound.getInt("mix");
         currentBioDiesel = compound.getInt("bio_diesel");
         currentGlycerin = compound.getInt("glycerin");
         timeToGenerate = compound.getInt("timeToGenerate");
-        super.read(compound);
+        super.func_230337_a_(blockState, compound);
     }
 
     @Override

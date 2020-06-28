@@ -12,8 +12,8 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
-import net.minecraft.fluid.IFluidState;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.Item;
@@ -93,7 +93,7 @@ public class BlockFluidExtractor extends BlockBase implements ITileEntityProvide
     }
 
     private BlockState getState(World world, BlockPos pos, Direction except) {
-        IFluidState ifluidstate = world.getFluidState(pos);
+        FluidState ifluidstate = world.getFluidState(pos);
         return getDefaultState()
                 .with(UP, !except.equals(Direction.UP) && BlockFluidPipe.isConnectedTo(world, pos, Direction.UP))
                 .with(DOWN, !except.equals(Direction.DOWN) && BlockFluidPipe.isConnectedTo(world, pos, Direction.DOWN))
@@ -184,18 +184,13 @@ public class BlockFluidExtractor extends BlockBase implements ITileEntityProvide
     }
 
     @Override
-    public IFluidState getFluidState(BlockState state) {
+    public FluidState getFluidState(BlockState state) {
         return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
     }
 
     @Override
     public BlockRenderType getRenderType(BlockState state) {
         return BlockRenderType.MODEL;
-    }
-
-    @Override
-    public boolean isNormalCube(BlockState state, IBlockReader worldIn, BlockPos pos) {
-        return false;
     }
 
     @Nullable

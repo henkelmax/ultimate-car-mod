@@ -22,7 +22,7 @@ import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -144,7 +144,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
             if (!player.isPassenger(this) && player.isSneaking()) {
                 double motX = calculateMotionX(0.05F, player.rotationYaw);
                 double motZ = calculateMotionZ(0.05F, player.rotationYaw);
-                move(MoverType.PLAYER, new Vec3d(motX, 0, motZ));
+                move(MoverType.PLAYER, new Vector3d(motX, 0, motZ));
                 return;
             }
         }
@@ -355,9 +355,9 @@ public abstract class EntityCarBase extends EntityVehicleBase {
     }
 
     @Override
-    public boolean processInitialInteract(PlayerEntity player, Hand hand) {
+    public ActionResultType processInitialInteract(PlayerEntity player, Hand hand) {
         if (!canPlayerEnterCar(player)) {
-            return false;
+            return ActionResultType.FAIL;
         }
         return super.processInitialInteract(player, hand);
     }
@@ -479,19 +479,19 @@ public abstract class EntityCarBase extends EntityVehicleBase {
     }
 
     public void playStopSound() {
-        ModSounds.playSound(getStopSound(), world, getPosition(), null, SoundCategory.MASTER, 1F);
+        ModSounds.playSound(getStopSound(), world, func_233580_cy_(), null, SoundCategory.MASTER, 1F);
     }
 
     public void playFailSound() {
-        ModSounds.playSound(getFailSound(), world, getPosition(), null, SoundCategory.MASTER, 1F);
+        ModSounds.playSound(getFailSound(), world, func_233580_cy_(), null, SoundCategory.MASTER, 1F);
     }
 
     public void playCrashSound() {
-        ModSounds.playSound(getCrashSound(), world, getPosition(), null, SoundCategory.MASTER, 1F);
+        ModSounds.playSound(getCrashSound(), world, func_233580_cy_(), null, SoundCategory.MASTER, 1F);
     }
 
     public void playHornSound() {
-        ModSounds.playSound(getHornSound(), world, getPosition(), null, SoundCategory.MASTER, 1F);
+        ModSounds.playSound(getHornSound(), world, func_233580_cy_(), null, SoundCategory.MASTER, 1F);
     }
 
     public abstract SoundEvent getStopSound();
@@ -560,11 +560,11 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 
     public void fleeEntity(MobEntity entity) {
         double fleeDistance = 10;
-        Vec3d vecCar = new Vec3d(getPosX(), getPosY(), getPosZ());
-        Vec3d vecEntity = new Vec3d(entity.getPosX(), entity.getPosY(), entity.getPosZ());
-        Vec3d fleeDir = vecEntity.subtract(vecCar);
+        Vector3d vecCar = new Vector3d(getPosX(), getPosY(), getPosZ());
+        Vector3d vecEntity = new Vector3d(entity.getPosX(), entity.getPosY(), entity.getPosZ());
+        Vector3d fleeDir = vecEntity.subtract(vecCar);
         fleeDir = fleeDir.normalize();
-        Vec3d fleePos = new Vec3d(vecEntity.x + fleeDir.x * fleeDistance, vecEntity.y + fleeDir.y * fleeDistance, vecEntity.z + fleeDir.z * fleeDistance);
+        Vector3d fleePos = new Vector3d(vecEntity.x + fleeDir.x * fleeDistance, vecEntity.y + fleeDir.y * fleeDistance, vecEntity.z + fleeDir.z * fleeDistance);
 
         entity.getNavigator().tryMoveToXYZ(fleePos.x, fleePos.y, fleePos.z, 2.5);
     }

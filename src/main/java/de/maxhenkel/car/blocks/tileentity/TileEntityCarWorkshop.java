@@ -20,10 +20,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.Direction;
-import net.minecraft.util.IIntArray;
-import net.minecraft.util.IntArray;
-import net.minecraft.util.SoundCategory;
+import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
@@ -70,12 +67,12 @@ public class TileEntityCarWorkshop extends TileEntityBase implements IInventory 
 
     public void spawnCar(PlayerEntity player) {
         if (!areBlocksAround()) {
-            player.sendMessage(new TranslationTextComponent("message.incomplete_structure"));
+            player.sendMessage(new TranslationTextComponent("message.incomplete_structure"), Util.field_240973_b_);
             return;
         }
 
         if (!isTopFree()) {
-            player.sendMessage(new TranslationTextComponent("message.blocks_on_top"));
+            player.sendMessage(new TranslationTextComponent("message.blocks_on_top"), Util.field_240973_b_);
             return;
         }
 
@@ -84,7 +81,7 @@ public class TileEntityCarWorkshop extends TileEntityBase implements IInventory 
         EntityGenericCar car = currentCraftingCar;
 
         if (car == null || !isCurrentCraftingCarValid()) {
-            player.sendMessage(new TranslationTextComponent("message.no_reciepe"));
+            player.sendMessage(new TranslationTextComponent("message.no_reciepe"), Util.field_240973_b_);
             return;
         }
         BlockPos spawnPos = pos.up();
@@ -202,12 +199,10 @@ public class TileEntityCarWorkshop extends TileEntityBase implements IInventory 
     }
 
     @Override
-    public void read(CompoundNBT compound) {
+    public void func_230337_a_(BlockState blockState, CompoundNBT compound) {
         ItemTools.readInventory(compound, "crafting", craftingMatrix);
-
         ItemTools.readInventory(compound, "repair", repairInventory);
-
-        super.read(compound);
+        super.func_230337_a_(blockState, compound);
     }
 
     public void updateRecipe() {
@@ -350,19 +345,19 @@ public class TileEntityCarWorkshop extends TileEntityBase implements IInventory 
 
     public void repairCar(PlayerEntity player) {
         if (!areBlocksAround()) {
-            player.sendMessage(new TranslationTextComponent("message.incomplete_structure"));
+            player.sendMessage(new TranslationTextComponent("message.incomplete_structure"), Util.field_240973_b_);
             return;
         }
 
         if (!areRepairItemsInside()) {
-            player.sendMessage(new TranslationTextComponent("message.no_repair_items"));
+            player.sendMessage(new TranslationTextComponent("message.no_repair_items"), Util.field_240973_b_);
             return;
         }
 
         EntityCarBase carBase = getCarOnTop();
 
         if (!(carBase instanceof EntityCarDamageBase)) {
-            player.sendMessage(new TranslationTextComponent("message.no_car"));
+            player.sendMessage(new TranslationTextComponent("message.no_car"), Util.field_240973_b_);
             return;
         }
 

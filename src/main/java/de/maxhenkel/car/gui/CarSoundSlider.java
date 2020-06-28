@@ -1,27 +1,30 @@
 package de.maxhenkel.car.gui;
 
 import de.maxhenkel.car.Config;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.widget.AbstractSlider;
-import net.minecraft.client.resources.I18n;
+import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class CarSoundSlider extends AbstractSlider {
 
-    public CarSoundSlider(Minecraft minecraft, int x, int y, int width) {
-        super(minecraft.gameSettings, x, y, width, 20, Config.carVolume.get());
-        this.updateMessage();
+    public CarSoundSlider(int x, int y, int width) {
+        super(x, y, width, 20, new StringTextComponent(""), Config.carVolume.get());
+        func_230979_b_();
     }
 
-    protected void updateMessage() {
-        String amount = (float) this.value == (float) this.getYImage(false) ? I18n.format("options.off") : (int) ((float) this.value * 100.0F) + "%";
-        setMessage(I18n.format("soundCategory.car") + ": " + amount);
+    @Override
+    protected void func_230979_b_() {
+        TextComponent amount = field_230683_b_ <= 0D ? new TranslationTextComponent("options.off") : new StringTextComponent((int) ((float) field_230683_b_ * 100F) + "%");
+        func_238482_a_(new TranslationTextComponent("soundCategory.car").func_240702_b_(": ").func_230529_a_(amount));
     }
 
-    protected void applyValue() {
-        Config.carVolume.set(value);
+    @Override
+    protected void func_230972_a_() {
+        Config.carVolume.set(field_230683_b_);
         Config.carVolume.save();
     }
 }

@@ -29,8 +29,7 @@ public class BlockPaint extends BlockBase implements IItemBlock {
     public static final DirectionProperty FACING = DirectionProperty.create("facing", Direction.Plane.HORIZONTAL);
 
     public BlockPaint(EnumPaintType type, boolean isYellow) {
-        super(Properties.create(new Material.Builder(MaterialColor.AIR).build())
-                .hardnessAndResistance(2F).sound(SoundType.STONE).notSolid());
+        super(Properties.create(new Material.Builder(MaterialColor.AIR).build()).hardnessAndResistance(2F).sound(SoundType.STONE).notSolid());
         setRegistryName(new ResourceLocation(Main.MODID, type.name + (isYellow ? "_yellow" : "")));
 
         setDefaultState(stateContainer.getBaseState().with(FACING, Direction.NORTH));
@@ -81,11 +80,6 @@ public class BlockPaint extends BlockBase implements IItemBlock {
     @Override
     public VoxelShape getCollisionShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
         return VoxelShapes.empty();
-    }
-
-    @Override
-    public boolean isNormalCube(BlockState state, IBlockReader worldIn, BlockPos pos) {
-        return false;
     }
 
     @Override

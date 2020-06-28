@@ -18,6 +18,7 @@ import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
@@ -52,7 +53,7 @@ public abstract class EntityCarInventoryBase extends EntityCarFuelBase implement
     }
 
     @Override
-    public boolean processInitialInteract(PlayerEntity player, Hand hand) {
+    public ActionResultType processInitialInteract(PlayerEntity player, Hand hand) {
         if (canPlayerAccessInventoryExternal(player) && player.isSneaking()) {
             //Canister
             ItemStack stack = player.getHeldItem(hand);
@@ -61,9 +62,9 @@ public abstract class EntityCarInventoryBase extends EntityCarFuelBase implement
                     boolean success = ItemCanister.fillCanister(stack, this);
 
                     if (success) {
-                        ModSounds.playSound(SoundEvents.BLOCK_BREWING_STAND_BREW, world, getPosition(), null, SoundCategory.BLOCKS);
+                        ModSounds.playSound(SoundEvents.BLOCK_BREWING_STAND_BREW, world, func_233580_cy_(), null, SoundCategory.BLOCKS);
                     }
-                    return true;
+                    return ActionResultType.CONSUME;
                 }
                 if (getFluidInventorySize() > 0) {
                     IFluidHandler handler = FluidUtil.getFluidHandler(stack).orElse(null);
@@ -72,12 +73,12 @@ public abstract class EntityCarInventoryBase extends EntityCarFuelBase implement
 
                         if (!FluidUtils.isEmpty(fluidStack)) {
                             if (handleEmpty(stack, getInventoryFluidHandler(), player, hand)) {
-                                return true;
+                                return ActionResultType.CONSUME;
                             }
                         }
 
                         if (handleFill(stack, getInventoryFluidHandler(), player, hand)) {
-                            return true;
+                            return ActionResultType.CONSUME;
                         }
                     }
                 }
@@ -105,7 +106,7 @@ public abstract class EntityCarInventoryBase extends EntityCarFuelBase implement
                 }
             }
 
-            return true;
+            return ActionResultType.SUCCESS;
         }
         return super.processInitialInteract(player, hand);
     }

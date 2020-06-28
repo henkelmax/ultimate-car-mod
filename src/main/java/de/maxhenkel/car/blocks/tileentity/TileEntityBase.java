@@ -2,6 +2,7 @@ package de.maxhenkel.car.blocks.tileentity;
 
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.net.MessageSyncTileEntity;
+import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
@@ -31,7 +32,7 @@ public abstract class TileEntityBase extends TileEntity implements INameable {
                 ServerWorld serverWorld = (ServerWorld) world;
 
                 MessageSyncTileEntity msg = new MessageSyncTileEntity(pos, last);
-                serverWorld.getPlayers(player -> getDistanceSq(player.getPosX(), player.getPosY(), player.getPosZ()) <= 128D * 128D).forEach(player -> Main.SIMPLE_CHANNEL.sendTo(msg, player.connection.netManager, NetworkDirection.PLAY_TO_CLIENT));
+                serverWorld.getPlayers(player -> player.getDistanceSq(getPos().getX(), getPos().getY(), getPos().getZ()) <= 128D * 128D).forEach(player -> Main.SIMPLE_CHANNEL.sendTo(msg, player.connection.netManager, NetworkDirection.PLAY_TO_CLIENT));
                 this.compoundLast = last;
             }
         }
@@ -45,7 +46,7 @@ public abstract class TileEntityBase extends TileEntity implements INameable {
 
     @Override
     public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
-        read(pkt.getNbtCompound());
+        func_230337_a_(getBlockState(), pkt.getNbtCompound());
     }
 
     @Override
@@ -81,10 +82,10 @@ public abstract class TileEntityBase extends TileEntity implements INameable {
     }
 
     @Override
-    public void read(CompoundNBT compound) {
+    public void func_230337_a_(BlockState blockState, CompoundNBT compound) {
         if (compound.contains("CustomName")) {
-            name = ITextComponent.Serializer.fromJson(compound.getString("CustomName"));
+            name = ITextComponent.Serializer.func_240643_a_(compound.getString("CustomName"));
         }
-        super.read(compound);
+        super.func_230337_a_(blockState, compound);
     }
 }

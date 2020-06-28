@@ -1,5 +1,6 @@
 package de.maxhenkel.car.gui;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.blocks.tileentity.TileEntityGasStation;
 import de.maxhenkel.car.net.MessageGasStationAdminAmount;
@@ -9,6 +10,7 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
+import org.lwjgl.glfw.GLFW;
 
 import java.awt.*;
 
@@ -34,75 +36,63 @@ public class GuiGasStationAdmin extends GuiBase<ContainerGasStationAdmin> {
     }
 
     @Override
-    protected void init() {
-        super.init();
+    protected void func_231160_c_() {
+        super.func_231160_c_();
 
-        minecraft.keyboardListener.enableRepeatEvents(true);
-        textField = new TextFieldWidget(font, guiLeft + 54, guiTop + 22, 100, 16, new TranslationTextComponent("gas_station.admin.amount_text_field").getFormattedText());
-        textField.setCanLoseFocus(false);
-        textField.changeFocus(true);
+        field_230706_i_.keyboardListener.enableRepeatEvents(true);
+        textField = new TextFieldWidget(field_230712_o_, guiLeft + 54, guiTop + 22, 100, 16, new TranslationTextComponent("gas_station.admin.amount_text_field"));
         textField.setTextColor(-1);
         textField.setDisabledTextColour(-1);
         textField.setMaxStringLength(20);
         textField.setText(String.valueOf(gasStation.getTradeAmount()));
         textField.setResponder(this::onTextChanged);
-        children.add(textField);
-        setFocused(textField);
-    }
 
-    @Override
-    public void render(int mouseX, int mouseY, float partialTicks) {
-        super.render(mouseX, mouseY, partialTicks);
-        textField.render(mouseX, mouseY, partialTicks);
-        renderHoveredToolTip(mouseX, mouseY);
+        func_230480_a_(textField);
     }
 
     public void onTextChanged(String text) {
-        if (textField.isFocused()) {
-            if (!text.isEmpty()) {
-                try {
-                    int i = Integer.parseInt(text);
-                    Main.SIMPLE_CHANNEL.sendToServer(new MessageGasStationAdminAmount(gasStation.getPos(), i));
-                } catch (Exception e) {
-                }
+        if (!text.isEmpty()) {
+            try {
+                int i = Integer.parseInt(text);
+                Main.SIMPLE_CHANNEL.sendToServer(new MessageGasStationAdminAmount(gasStation.getPos(), i));
+            } catch (Exception e) {
             }
         }
     }
 
-    @Override
-    public void removed() {
-        super.removed();
-        minecraft.keyboardListener.enableRepeatEvents(false);
+    public void func_231164_f_() {
+        super.func_231164_f_();
+        field_230706_i_.keyboardListener.enableRepeatEvents(false);
     }
 
     @Override
-    public void resize(Minecraft mc, int x, int y) {
+    public void func_231152_a_(Minecraft mc, int x, int y) {
         String text = textField.getText();
-        init(mc, x, y);
+        func_231158_b_(mc, x, y);
         textField.setText(text);
     }
 
     @Override
-    public boolean keyPressed(int key, int a, int b) {
-        if (key == 256) {
-            this.minecraft.player.closeScreen();
+    public boolean func_231046_a_(int key, int a, int b) {
+        if (key == GLFW.GLFW_KEY_ESCAPE) {
+            field_230706_i_.player.closeScreen();
+            return true;
         }
 
-        return !textField.keyPressed(key, a, b) && !textField.canWrite() ? super.keyPressed(key, a, b) : true;
+        return textField.func_231046_a_(key, a, b) || textField.canWrite() || super.func_231046_a_(key, a, b);
     }
 
     @Override
-    protected void drawGuiContainerForegroundLayer(int x, int y) {
-        super.drawGuiContainerForegroundLayer(x, y);
+    protected void func_230451_b_(MatrixStack matrixStack, int mouseX, int mouseY) {
+        super.func_230451_b_(matrixStack, mouseX, mouseY);
 
-        drawCenteredString(font, new TranslationTextComponent("gui.gas_station").getFormattedText(),
-                xSize / 2, 5, TITLE_COLOR);
+        func_238471_a_(matrixStack, field_230712_o_, new TranslationTextComponent("gui.gas_station").getString(), xSize / 2, 5, TITLE_COLOR);
 
-        font.drawString(inventoryPlayer.getDisplayName().getFormattedText(), 8, ySize - 93, FONT_COLOR);
+        field_230712_o_.func_238422_b_(matrixStack, inventoryPlayer.getDisplayName(), 8, ySize - 93, FONT_COLOR);
     }
 
     @Override
-    public boolean isPauseScreen() {
+    public boolean func_231177_au__() {
         return false;
     }
 }

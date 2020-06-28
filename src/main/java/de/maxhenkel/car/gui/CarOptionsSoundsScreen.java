@@ -14,8 +14,8 @@ public class CarOptionsSoundsScreen extends OptionsSoundsScreen {
         super(screen, gameSettings);
     }
 
-    protected void init() {
-        super.init();
+    protected void func_231160_c_() {
+        super.func_231160_c_();
         int posX = 2;
         SoundCategory[] categories = SoundCategory.values();
         for (int i = 0; i < categories.length; ++i) {
@@ -25,7 +25,7 @@ public class CarOptionsSoundsScreen extends OptionsSoundsScreen {
             }
         }
 
-        addButton(new CarSoundSlider(minecraft, width / 2 - 155 + posX % 2 * 160, height / 6 - 12 + 24 * (posX >> 1), 150));
+        func_230480_a_(new CarSoundSlider(field_230708_k_ / 2 - 155 + posX % 2 * 160, field_230709_l_ / 6 - 12 + 24 * (posX >> 1), 150));
     }
 
 }
