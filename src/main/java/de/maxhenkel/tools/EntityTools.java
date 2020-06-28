@@ -1,7 +1,6 @@
 package de.maxhenkel.tools;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.systems.RenderSystem;
 import de.maxhenkel.car.entity.car.base.EntityCarBase;
 import de.maxhenkel.car.entity.car.base.EntityGenericCar;
 import net.minecraft.client.Minecraft;
@@ -9,7 +8,6 @@ import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.vector.Quaternion;
 import net.minecraft.util.math.vector.Vector3f;
 
 import javax.annotation.Nullable;
@@ -30,26 +28,22 @@ public class EntityTools {
         return player.world.getEntitiesWithinAABB(EntityGenericCar.class, new AxisAlignedBB(player.getPosX() - distance, player.getPosY() - distance, player.getPosZ() - distance, player.getPosX() + distance, player.getPosY() + distance, player.getPosZ() + distance), entity -> entity.getUniqueID().equals(uuid)).stream().findAny().orElse(null);
     }
 
-    public static void drawCarOnScreen(EntityCarBase car, int posX, int posY, int scale, float rotation) {
-        RenderSystem.pushMatrix();
+    public static void drawCarOnScreen(MatrixStack matrixStack, EntityCarBase car, int posX, int posY, float scale, float rotation) {
+        matrixStack.push();
+        matrixStack.translate(posX, posY, 100D);
+        matrixStack.scale(1F, 1F, -1F);
+        matrixStack.scale(scale, scale, scale);
 
-        RenderSystem.translatef((float) posX, (float) posY, 1050.0F);
-        RenderSystem.scalef(1.0F, 1.0F, -1.0F);
-        MatrixStack matrixstack = new MatrixStack();
-        matrixstack.translate(0.0D, 0.0D, 1000.0D);
-        matrixstack.scale((float) scale, (float) scale, (float) scale);
-
-        matrixstack.rotate(Vector3f.YP.rotationDegrees(135F + rotation));
-
-        Quaternion quaternion = Vector3f.ZP.rotationDegrees(180.0F);
-        matrixstack.rotate(quaternion);
+        matrixStack.rotate(Vector3f.YP.rotationDegrees(135F + rotation));
+        matrixStack.rotate(Vector3f.ZP.rotationDegrees(180F));
         EntityRendererManager entityrenderermanager = Minecraft.getInstance().getRenderManager();
         entityrenderermanager.setRenderShadow(false);
+
         IRenderTypeBuffer.Impl buffer = Minecraft.getInstance().getRenderTypeBuffers().getBufferSource();
-        entityrenderermanager.renderEntityStatic(car, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, matrixstack, buffer, 15728880);
+        entityrenderermanager.renderEntityStatic(car, 0D, 0D, 0D, 0F, 1F, matrixStack, buffer, 0xF000F0);
         buffer.finish();
         entityrenderermanager.setRenderShadow(true);
-        RenderSystem.popMatrix();
+        matrixStack.pop();
     }
 
     public static class CarRenderer {
@@ -73,8 +67,8 @@ public class EntityTools {
             }
         }
 
-        public void render(EntityCarBase car, int posX, int posY, int scale) {
-            EntityTools.drawCarOnScreen(car, posX, posY, scale, rotation + rotationPerTick * minecraft.getRenderPartialTicks());
+        public void render(MatrixStack matrixStack, EntityCarBase car, int posX, int posY, int scale) {
+            EntityTools.drawCarOnScreen(matrixStack, car, posX, posY, scale, rotation + rotationPerTick * minecraft.getRenderPartialTicks());
         }
     }
 
@@ -92,11 +86,11 @@ public class EntityTools {
             this(3.6F);
         }
 
-        public void render(EntityCarBase car, int posX, int posY, int scale) {
+        public void render(MatrixStack matrixStack, EntityCarBase car, int posX, int posY, int scale) {
             ticker.render(new Renderer() {
                 @Override
                 public void render(float partialTicks) {
-                    EntityTools.drawCarOnScreen(car, posX, posY, scale, rotation + rotationPerTick * partialTicks);
+                    EntityTools.drawCarOnScreen(matrixStack, car, posX, posY, scale, rotation + rotationPerTick * partialTicks);
                 }
 
                 @Override

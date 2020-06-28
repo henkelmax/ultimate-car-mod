@@ -75,11 +75,11 @@ public class GuiCarWorkshopCrafting extends GuiBase<ContainerCarWorkshopCrafting
         EntityGenericCar car = tile.getCurrentCraftingCar();
 
         if (carTop != null) {
-            drawCar(carTop);
+            drawCar(matrixStack, carTop);
             buttonSpawn.field_230693_o_ = false;
         } else {
             if (car != null) {
-                drawCar(car);
+                drawCar(matrixStack, car);
             }
             buttonSpawn.field_230693_o_ = true;
         }
@@ -91,8 +91,8 @@ public class GuiCarWorkshopCrafting extends GuiBase<ContainerCarWorkshopCrafting
         carRenderer.tick();
     }
 
-    private void drawCar(EntityCarBase car) {
-        carRenderer.render(car, xSize / 2, 55, 23);
+    private void drawCar(MatrixStack matrixStack, EntityCarBase car) {
+        carRenderer.render(matrixStack, car, xSize / 2, 55, 23);
     }
 
     @Override

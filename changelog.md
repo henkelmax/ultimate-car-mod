@@ -1,1 +1,1 @@
-- Fixed painter durability desync
+- Fixed JEI integration

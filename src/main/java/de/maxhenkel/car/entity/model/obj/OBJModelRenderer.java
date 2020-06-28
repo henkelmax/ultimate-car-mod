@@ -2,7 +2,6 @@ package de.maxhenkel.car.entity.model.obj;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
-import de.maxhenkel.car.entity.car.base.EntityCarLicensePlateBase;
 import de.maxhenkel.car.entity.car.base.EntityGenericCar;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
@@ -53,14 +52,12 @@ public abstract class OBJModelRenderer<T extends EntityGenericCar> extends Entit
             matrixStack.pop();
         }
 
-        if (entity instanceof EntityCarLicensePlateBase) {
-            String text = entity.getLicensePlate();
-            if (text != null && !text.isEmpty()) {
-                matrixStack.push();
-                RenderSystem.color4f(1F, 1F, 1F, 1F);
-                drawLicensePlate(entity, text, matrixStack, buffer, light);
-                matrixStack.pop();
-            }
+        String text = entity.getLicensePlate();
+        if (text != null && !text.isEmpty()) {
+            matrixStack.push();
+            RenderSystem.color4f(1F, 1F, 1F, 1F);
+            drawLicensePlate(entity, text, matrixStack, buffer, light);
+            matrixStack.pop();
         }
 
         matrixStack.pop();

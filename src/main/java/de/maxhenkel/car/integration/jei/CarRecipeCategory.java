@@ -1,5 +1,6 @@
 package de.maxhenkel.car.integration.jei;
-/*
+
+import com.mojang.blaze3d.matrix.MatrixStack;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.blocks.ModBlocks;
 import de.maxhenkel.tools.EntityTools;
@@ -26,8 +27,7 @@ public class CarRecipeCategory implements IRecipeCategory<CarRecipe> {
 
     @Override
     public IDrawable getBackground() {
-        return helper.createDrawable(new ResourceLocation(Main.MODID,
-                "textures/gui/jei_car_workshop_crafting.png"), 0, 0, RECIPE_WIDTH, RECIPE_HEIGHT);
+        return helper.createDrawable(new ResourceLocation(Main.MODID, "textures/gui/jei_car_workshop_crafting.png"), 0, 0, RECIPE_WIDTH, RECIPE_HEIGHT);
     }
 
     @Override
@@ -43,7 +43,7 @@ public class CarRecipeCategory implements IRecipeCategory<CarRecipe> {
 
     @Override
     public String getTitle() {
-        return ModBlocks.CAR_WORKSHOP.getNameTextComponent().getFormattedText();
+        return ModBlocks.CAR_WORKSHOP.func_235333_g_().getString();
     }
 
     @Override
@@ -78,7 +78,7 @@ public class CarRecipeCategory implements IRecipeCategory<CarRecipe> {
     private EntityTools.SimulatedCarRenderer renderer = new EntityTools.SimulatedCarRenderer();
 
     @Override
-    public void draw(CarRecipe recipe, double mouseX, double mouseY) {
-        renderer.render(recipe.getCar(), RECIPE_WIDTH - 30, RECIPE_HEIGHT - 54 / 4, 18);
+    public void draw(CarRecipe recipe, MatrixStack matrixStack, double mouseX, double mouseY) {
+        renderer.render(matrixStack, recipe.getCar(), RECIPE_WIDTH - 30, RECIPE_HEIGHT - 54 / 4, 18);
     }
-}*/
+}

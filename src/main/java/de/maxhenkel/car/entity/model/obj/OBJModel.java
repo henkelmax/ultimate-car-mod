@@ -56,11 +56,9 @@ public class OBJModel {
         RenderType.State state = RenderType.State
                 .getBuilder()
                 .texture(new RenderState.TextureState(resourceLocation, false, false))
-                .transparency(new RenderState.TransparencyState("no_transparency", () -> {
-                    RenderSystem.disableBlend();
-                }, () -> {
+                .transparency(new RenderState.TransparencyState("no_transparency", RenderSystem::disableBlend, () -> {
                 }))
-                .diffuseLighting(new RenderState.DiffuseLightingState(true))
+                .diffuseLighting(new RenderState.DiffuseLightingState(false))
                 .alpha(new RenderState.AlphaState(0.003921569F))
                 .lightmap(new RenderState.LightmapState(true))
                 .overlay(new RenderState.OverlayState(true))

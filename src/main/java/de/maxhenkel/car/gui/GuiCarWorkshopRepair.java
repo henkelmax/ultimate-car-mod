@@ -91,7 +91,7 @@ public class GuiCarWorkshopRepair extends GuiBase<ContainerCarWorkshopRepair> {
         } else {
             buttonRepair.field_230693_o_ = false;
         }
-        drawCar(carTop);
+        drawCar(matrixStack, carTop);
     }
 
     @Override
@@ -100,8 +100,8 @@ public class GuiCarWorkshopRepair extends GuiBase<ContainerCarWorkshopRepair> {
         carRenderer.tick();
     }
 
-    private void drawCar(EntityCarBase car) {
-        carRenderer.render(car, xSize / 2, 55, 23);
+    private void drawCar(MatrixStack matrixStack, EntityCarBase car) {
+        carRenderer.render(matrixStack, car, xSize / 2, 55, 23);
     }
 
     public double getDamagePercent(EntityCarDamageBase car) {

@@ -352,6 +352,10 @@ public class EntityGenericCar extends EntityCarLicensePlateBase {
         this.isSpawned = isSpawned;
     }
 
+    public boolean isSpawned() {
+        return isSpawned;
+    }
+
     @Override
     public void tick() {
         super.tick();
