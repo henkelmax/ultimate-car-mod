@@ -1,1 +1,1 @@
-- Updated to 1.16.1
+- Fixed painter durability desync

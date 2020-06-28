@@ -102,15 +102,11 @@ public class ItemPainter extends Item {
 
         context.getWorld().setBlockState(context.getPos().up(), state);
 
-        if (context.getWorld().isRemote) {
-            return ActionResultType.SUCCESS;
-        }
-
         stack1.damageItem(1, context.getPlayer(), playerEntity -> {
             playerEntity.sendBreakAnimation(context.getHand());
         });
 
-        return ActionResultType.SUCCESS;
+        return ActionResultType.CONSUME;
     }
 
     private BlockPaint getSelectedPaint(int id) {
