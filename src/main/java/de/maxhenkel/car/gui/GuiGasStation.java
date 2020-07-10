@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import de.maxhenkel.car.Main;
+import de.maxhenkel.car.entity.car.base.EntityGenericCar;
 import de.maxhenkel.tools.FluidUtils;
 import de.maxhenkel.car.blocks.tileentity.TileEntityGasStation;
 import net.minecraft.client.gui.widget.button.Button;
@@ -98,7 +99,13 @@ public class GuiGasStation extends GuiBase<ContainerGasStation> {
     }
 
     private void drawCarName(MatrixStack matrixStack, Entity entity) {
-        field_230712_o_.func_238422_b_(matrixStack, new TranslationTextComponent("gas_station.car_info", new StringTextComponent(entity.getDisplayName().getString()).func_240699_a_(TextFormatting.WHITE)), guiLeft + 63, guiTop + 20, FONT_COLOR);
+        String name;
+        if (entity instanceof EntityGenericCar) {
+            name = ((EntityGenericCar) entity).getShortName().getString();
+        } else {
+            name = entity.getDisplayName().getString();
+        }
+        field_230712_o_.func_238422_b_(matrixStack, new TranslationTextComponent("gas_station.car_info", new StringTextComponent(name).func_240699_a_(TextFormatting.WHITE)), guiLeft + 63, guiTop + 20, FONT_COLOR);
     }
 
     private void drawCarFuel(MatrixStack matrixStack, IFluidHandler handler) {

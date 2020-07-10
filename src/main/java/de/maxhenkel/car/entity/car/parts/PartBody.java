@@ -21,9 +21,13 @@ public class PartBody extends PartModel {
     protected FloatSupplier fuelEfficiency;
     protected FloatSupplier acceleration;
     protected FloatSupplier maxSpeed;
+    protected String translationKey;
+    protected String materialTranslationKey;
 
-    public PartBody(OBJModel model, ResourceLocation texture, Vector3d offset) {
+    public PartBody(OBJModel model, ResourceLocation texture, Vector3d offset, String translationKey, String materialTranslationKey) {
         super(model, texture, offset);
+        this.translationKey = translationKey;
+        this.materialTranslationKey = materialTranslationKey;
     }
 
     public Vector3d[] getWheelOffsets() {
@@ -68,6 +72,14 @@ public class PartBody extends PartModel {
 
     public float getMaxSpeed() {
         return maxSpeed.getAsFloat();
+    }
+
+    public String getTranslationKey() {
+        return translationKey;
+    }
+
+    public String getMaterialTranslationKey() {
+        return materialTranslationKey;
     }
 
     public boolean canFitWheel(PartWheelBase wheel) {

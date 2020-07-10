@@ -19,6 +19,8 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
@@ -279,6 +281,23 @@ public class EntityGenericCar extends EntityCarLicensePlateBase {
             return ModSounds.CAR_HORN;
         }
         return engine.getHornSound();
+    }
+
+    @Override
+    protected ITextComponent getProfessionName() {
+        PartBody body = getPartByClass(PartBody.class);
+        if (body == null) {
+            return super.getProfessionName();
+        }
+        return new TranslationTextComponent("car_name." + body.getTranslationKey(), new TranslationTextComponent("car_variant." + body.getMaterialTranslationKey()));
+    }
+
+    public ITextComponent getShortName() {
+        PartBody body = getPartByClass(PartBody.class);
+        if (body == null) {
+            return getProfessionName();
+        }
+        return new TranslationTextComponent("car_short_name." + body.getTranslationKey());
     }
 
     @Override

@@ -8,8 +8,8 @@ public abstract class PartBodyWoodBase extends PartBody {
 
     protected Vector3d bumperOffset;
 
-    public PartBodyWoodBase(OBJModel model, ResourceLocation texture, Vector3d offset) {
-        super(model, texture, offset);
+    public PartBodyWoodBase(OBJModel model, ResourceLocation texture, Vector3d offset, String translationKey, String materialTranslationKey) {
+        super(model, texture, offset, translationKey, materialTranslationKey);
     }
 
     public Vector3d getBumperOffset() {

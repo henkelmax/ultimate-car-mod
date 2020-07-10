@@ -1,2 +1,3 @@
 - Updated translation keys to avoid duplicates
 - Fixed gas station GUI
+- Added car names based on parts
