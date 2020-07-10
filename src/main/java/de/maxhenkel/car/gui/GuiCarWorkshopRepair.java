@@ -46,14 +46,14 @@ public class GuiCarWorkshopRepair extends GuiBase<ContainerCarWorkshopRepair> {
     protected void func_231160_c_() {
         super.func_231160_c_();
 
-        this.buttonRepair = func_230480_a_(new Button(guiLeft + xSize - 7 - 60, guiTop + 105, 60, 20, new TranslationTextComponent("button.repair_car"), button -> {
+        this.buttonRepair = func_230480_a_(new Button(guiLeft + xSize - 7 - 60, guiTop + 105, 60, 20, new TranslationTextComponent("button.car.repair_car"), button -> {
             if (tile.getWorld().isRemote) {
                 Main.SIMPLE_CHANNEL.sendToServer(new MessageRepairCar(tile.getPos(), player));
             }
         }));
         this.buttonRepair.field_230693_o_ = false;
 
-        this.buttonBack = func_230480_a_(new Button(guiLeft + 7, guiTop + 105, 60, 20, new TranslationTextComponent("button.back"), button -> {
+        this.buttonBack = func_230480_a_(new Button(guiLeft + 7, guiTop + 105, 60, 20, new TranslationTextComponent("button.car.back"), button -> {
             if (tile.getWorld().isRemote) {
                 Main.SIMPLE_CHANNEL.sendToServer(new MessageOpenCarWorkshopGui(tile.getPos(), player, false));
             }

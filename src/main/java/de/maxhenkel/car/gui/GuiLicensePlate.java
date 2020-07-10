@@ -41,12 +41,12 @@ public class GuiLicensePlate extends GuiBase<ContainerLicensePlate> {
 
         field_230706_i_.keyboardListener.enableRepeatEvents(true);
 
-        func_230480_a_(new Button(guiLeft + 20, guiTop + ySize - 25, 50, 20, new TranslationTextComponent("button.submit"), button -> {
+        func_230480_a_(new Button(guiLeft + 20, guiTop + ySize - 25, 50, 20, new TranslationTextComponent("button.car.submit"), button -> {
             Main.SIMPLE_CHANNEL.sendToServer(new MessageEditLicensePlate(player, textField.getText()));
             MessageEditLicensePlate.setItemText(player, textField.getText());
             Minecraft.getInstance().displayGuiScreen(null);
         }));
-        func_230480_a_(new Button(guiLeft + xSize - 50 - 15, guiTop + ySize - 25, 50, 20, new TranslationTextComponent("button.cancel"), button -> {
+        func_230480_a_(new Button(guiLeft + xSize - 50 - 15, guiTop + ySize - 25, 50, 20, new TranslationTextComponent("button.car.cancel"), button -> {
             Minecraft.getInstance().displayGuiScreen(null);
         }));
 

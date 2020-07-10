@@ -43,11 +43,11 @@ public class GuiGasStation extends GuiBase<ContainerGasStation> {
     protected void func_231160_c_() {
         super.func_231160_c_();
 
-        buttonStart = func_230480_a_(new Button((field_230708_k_ / 2) - 20, guiTop + 100, 40, 20, new TranslationTextComponent("button.start"), button -> {
+        buttonStart = func_230480_a_(new Button((field_230708_k_ / 2) - 20, guiTop + 100, 40, 20, new TranslationTextComponent("button.car.start"), button -> {
             gasStation.setFueling(true);
             gasStation.sendStartFuelPacket(true);
         }));
-        buttonStop = func_230480_a_(new Button(guiLeft + xSize - 40 - 7, guiTop + 100, 40, 20, new TranslationTextComponent("button.stop"), button -> {
+        buttonStop = func_230480_a_(new Button(guiLeft + xSize - 40 - 7, guiTop + 100, 40, 20, new TranslationTextComponent("button.car.stop"), button -> {
             gasStation.setFueling(false);
             gasStation.sendStartFuelPacket(false);
         }));
@@ -98,18 +98,15 @@ public class GuiGasStation extends GuiBase<ContainerGasStation> {
     }
 
     private void drawCarName(MatrixStack matrixStack, Entity entity) {
-        TextComponent carText;
-        if (entity == null) {
-            carText = new TranslationTextComponent("gas_station.nocar");
-        } else {
-            carText = new TranslationTextComponent("gas_station.carinfo", new StringTextComponent(entity.getDisplayName().getString()).func_240699_a_(TextFormatting.WHITE));
-        }
-
-        field_230712_o_.func_238422_b_(matrixStack, carText, guiLeft + 63, guiTop + 20, FONT_COLOR);
+        field_230712_o_.func_238422_b_(matrixStack, new TranslationTextComponent("gas_station.car_info", new StringTextComponent(entity.getDisplayName().getString()).func_240699_a_(TextFormatting.WHITE)), guiLeft + 63, guiTop + 20, FONT_COLOR);
     }
 
     private void drawCarFuel(MatrixStack matrixStack, IFluidHandler handler) {
-        if (handler == null || handler.getTanks() < 1) {
+        if (handler == null) {
+            field_230712_o_.func_238422_b_(matrixStack, new TranslationTextComponent("gas_station.no_car"), guiLeft + 63, guiTop + 30, FONT_COLOR);
+            return;
+        }
+        if (handler.getTanks() <= 0) {
             field_230712_o_.func_238422_b_(matrixStack, new TranslationTextComponent("gas_station.fuel_empty"), guiLeft + 63, guiTop + 30, FONT_COLOR);
             return;
         }

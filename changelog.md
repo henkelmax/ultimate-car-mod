@@ -1,1 +1,2 @@
-- Fixed JEI integration
+- Updated translation keys to avoid duplicates
+- Fixed gas station GUI

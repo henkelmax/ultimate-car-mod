@@ -43,11 +43,11 @@ public class GuiCarWorkshopCrafting extends GuiBase<ContainerCarWorkshopCrafting
     protected void func_231160_c_() {
         super.func_231160_c_();
 
-        buttonRepair = func_230480_a_(new Button(guiLeft + 105, guiTop + 72, 60, 20, new TranslationTextComponent("button.repair_car"), button -> {
+        buttonRepair = func_230480_a_(new Button(guiLeft + 105, guiTop + 72, 60, 20, new TranslationTextComponent("button.car.repair_car"), button -> {
             Main.SIMPLE_CHANNEL.sendToServer(new MessageOpenCarWorkshopGui(tile.getPos(), player, true));
         }));
 
-        buttonSpawn = func_230480_a_(new Button(guiLeft + 105, guiTop + 106, 60, 20, new TranslationTextComponent("button.spawn_car"), button -> {
+        buttonSpawn = func_230480_a_(new Button(guiLeft + 105, guiTop + 106, 60, 20, new TranslationTextComponent("button.car.spawn_car"), button -> {
             if (tile.getWorld().isRemote) {
                 if (tile.isCurrentCraftingCarValid()) {
                     Main.SIMPLE_CHANNEL.sendToServer(new MessageSpawnCar(tile.getPos()));

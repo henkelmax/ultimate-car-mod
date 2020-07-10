@@ -59,15 +59,15 @@ public class GuiSign extends GuiBase<ContainerSign> {
 
         setFocusedDefault(text1);
 
-        buttonSubmit = func_230480_a_(new Button(guiLeft + 20, guiTop + ySize - 25, 50, 20, new TranslationTextComponent("button.submit"), button -> {
+        buttonSubmit = func_230480_a_(new Button(guiLeft + 20, guiTop + ySize - 25, 50, 20, new TranslationTextComponent("button.car.submit"), button -> {
             save();
             Main.SIMPLE_CHANNEL.sendToServer(new MessageEditSign(sign.getPos(), text));
             Minecraft.getInstance().displayGuiScreen(null);
         }));
-        buttonCancel = func_230480_a_(new Button(guiLeft + xSize - 50 - 15, guiTop + ySize - 25, 50, 20, new TranslationTextComponent("button.cancel"), button -> {
+        buttonCancel = func_230480_a_(new Button(guiLeft + xSize - 50 - 15, guiTop + ySize - 25, 50, 20, new TranslationTextComponent("button.car.cancel"), button -> {
             Minecraft.getInstance().displayGuiScreen(null);
         }));
-        buttonSwitch = func_230480_a_(new Button(guiLeft + 5, guiTop + 49 + 10, 46, 20, new TranslationTextComponent("button.back"), button -> {
+        buttonSwitch = func_230480_a_(new Button(guiLeft + 5, guiTop + 49 + 10, 46, 20, new TranslationTextComponent("button.car.back"), button -> {
             save();
             front = !front;
 
@@ -76,13 +76,13 @@ public class GuiSign extends GuiBase<ContainerSign> {
                 text2.setText(text[1]);
                 text3.setText(text[2]);
                 text4.setText(text[3]);
-                buttonSwitch.func_238482_a_(new TranslationTextComponent("button.back"));
+                buttonSwitch.func_238482_a_(new TranslationTextComponent("button.car.back"));
             } else {
                 text1.setText(text[4]);
                 text2.setText(text[5]);
                 text3.setText(text[6]);
                 text4.setText(text[7]);
-                buttonSwitch.func_238482_a_(new TranslationTextComponent("button.front"));
+                buttonSwitch.func_238482_a_(new TranslationTextComponent("button.car.front"));
             }
         }));
     }
