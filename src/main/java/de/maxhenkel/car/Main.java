@@ -104,9 +104,7 @@ public class Main {
         ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, Config.SERVER_SPEC);
         ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, Config.CLIENT_SPEC);
 
-        DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
-            clientStart();
-        });
+        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> FMLJavaModLoadingContext.get().getModEventBus().addListener(Main.this::clientSetup));
     }
 
     @SubscribeEvent
@@ -121,11 +119,6 @@ public class Main {
     @SubscribeEvent
     public void serverLoad(FMLServerStartingEvent event) {
         CommandCarDemo.register(event.getCommandDispatcher());
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    public void clientStart() {
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(Main.this::clientSetup);
     }
 
     @SubscribeEvent
