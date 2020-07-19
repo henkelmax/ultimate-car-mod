@@ -3,7 +3,7 @@ package de.maxhenkel.car.blocks;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.ModItemGroups;
 import de.maxhenkel.car.blocks.tileentity.TileEntityCable;
-import de.maxhenkel.tools.VoxelShapeTools;
+import de.maxhenkel.corelib.block.VoxelUtils;
 import de.maxhenkel.tools.IItemBlock;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
@@ -110,27 +110,27 @@ public class BlockCable extends BlockBase implements ITileEntityProvider, IItemB
     public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
         VoxelShape shape = SHAPE_CORE;
         if (state.get(UP)) {
-            shape = VoxelShapeTools.combine(shape, SHAPE_UP);
+            shape = VoxelUtils.combine(shape, SHAPE_UP);
         }
 
         if (state.get(DOWN)) {
-            shape = VoxelShapeTools.combine(shape, SHAPE_DOWN);
+            shape = VoxelUtils.combine(shape, SHAPE_DOWN);
         }
 
         if (state.get(SOUTH)) {
-            shape = VoxelShapeTools.combine(shape, SHAPE_SOUTH);
+            shape = VoxelUtils.combine(shape, SHAPE_SOUTH);
         }
 
         if (state.get(NORTH)) {
-            shape = VoxelShapeTools.combine(shape, SHAPE_NORTH);
+            shape = VoxelUtils.combine(shape, SHAPE_NORTH);
         }
 
         if (state.get(EAST)) {
-            shape = VoxelShapeTools.combine(shape, SHAPE_EAST);
+            shape = VoxelUtils.combine(shape, SHAPE_EAST);
         }
 
         if (state.get(WEST)) {
-            shape = VoxelShapeTools.combine(shape, SHAPE_WEST);
+            shape = VoxelUtils.combine(shape, SHAPE_WEST);
         }
 
         return shape;
@@ -167,4 +167,5 @@ public class BlockCable extends BlockBase implements ITileEntityProvider, IItemB
     public TileEntity createNewTileEntity(IBlockReader worldIn) {
         return new TileEntityCable();
     }
+
 }

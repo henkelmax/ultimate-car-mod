@@ -3,7 +3,7 @@ package de.maxhenkel.car.blocks;
 import de.maxhenkel.car.blocks.tileentity.TileEntityOilMill;
 import de.maxhenkel.car.gui.ContainerOilMill;
 import de.maxhenkel.car.gui.TileEntityContainerProvider;
-import de.maxhenkel.tools.FluidUtils;
+import de.maxhenkel.corelib.fluid.FluidUtils;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -43,4 +43,5 @@ public class BlockOilMill extends BlockGui<TileEntityOilMill> {
     public TileEntity createNewTileEntity(IBlockReader worldIn) {
         return new TileEntityOilMill();
     }
+
 }

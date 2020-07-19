@@ -1,9 +1,9 @@
 package de.maxhenkel.car.gui;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import de.maxhenkel.car.Config;
 import de.maxhenkel.car.Main;
-import de.maxhenkel.tools.MathTools;
+import de.maxhenkel.corelib.inventory.ScreenBase;
+import de.maxhenkel.corelib.math.MathUtils;
 import de.maxhenkel.car.entity.car.base.EntityCarInventoryBase;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
@@ -11,7 +11,7 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
-public class GuiCar extends GuiBase<ContainerCar> {
+public class GuiCar extends ScreenBase<ContainerCar> {
 
     private static final ResourceLocation CAR_GUI_TEXTURE = new ResourceLocation(Main.MODID, "textures/gui/gui_car.png");
 
@@ -45,7 +45,7 @@ public class GuiCar extends GuiBase<ContainerCar> {
 
     public float getFuelPercent() {
         float fuelPerc = ((float) car.getFuelAmount()) / ((float) car.getMaxFuel()) * 100F;
-        return MathTools.round(fuelPerc, 2);
+        return MathUtils.round(fuelPerc, 2);
     }
 
     public int getBatteryPercent() {
@@ -53,11 +53,11 @@ public class GuiCar extends GuiBase<ContainerCar> {
     }
 
     public float getTemperatureCelsius() {
-        return MathTools.round(car.getTemperature(), 2);
+        return MathUtils.round(car.getTemperature(), 2);
     }
 
     public float getTemperatureFarenheit() {
-        return MathTools.round((car.getTemperature() * 1.8F) + 32F, 2);
+        return MathUtils.round((car.getTemperature() * 1.8F) + 32F, 2);
     }
 
     public float getTemperaturePercent() {
@@ -74,7 +74,7 @@ public class GuiCar extends GuiBase<ContainerCar> {
     public float getDamagePercent() {
         float dmg = car.getDamage();
         dmg = Math.min(dmg, 100);
-        return MathTools.round(dmg, 2);
+        return MathUtils.round(dmg, 2);
     }
 
     public TextComponent getFuelString() {
@@ -90,7 +90,7 @@ public class GuiCar extends GuiBase<ContainerCar> {
     }
 
     public TextComponent getTempString() {
-        if (Config.tempInFarenheit.get()) {
+        if (Main.CLIENT_CONFIG.tempInFarenheit.get()) {
             return new TranslationTextComponent("gui.car_temperature_farenheit", String.valueOf(getTemperatureFarenheit()));
         } else {
             return new TranslationTextComponent("gui.car_temperature_celsius", String.valueOf(getTemperatureCelsius()));

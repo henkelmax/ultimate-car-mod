@@ -2,7 +2,7 @@ package de.maxhenkel.car.entity.car.parts;
 
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.entity.car.base.EntityGenericCar;
-import de.maxhenkel.car.entity.model.obj.OBJModel;
+import de.maxhenkel.corelib.client.obj.OBJModel;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -183,7 +183,7 @@ public class PartRegistry {
                 flag = false;
             }
         }
-
         return flag;
     }
+
 }

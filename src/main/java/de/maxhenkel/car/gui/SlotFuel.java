@@ -25,10 +25,6 @@ public class SlotFuel extends Slot {
 
     @Override
     public void putStack(ItemStack stack) {
-        if (stack == null) {
-            return;
-        }
-
         if (!stack.getItem().equals(ModItems.CANISTER)) {
             return;
         }

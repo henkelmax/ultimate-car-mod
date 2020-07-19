@@ -81,7 +81,6 @@ public class InventoryPainter implements IInventory {
         return false;
     }
 
-
     @Override
     public void clear() {
 

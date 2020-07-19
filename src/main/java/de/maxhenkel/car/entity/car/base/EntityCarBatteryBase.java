@@ -1,6 +1,6 @@
 package de.maxhenkel.car.entity.car.base;
 
-import de.maxhenkel.car.Config;
+import de.maxhenkel.car.Main;
 import de.maxhenkel.car.sounds.ModSounds;
 import de.maxhenkel.car.sounds.SoundLoopStarting;
 import net.minecraft.entity.EntityType;
@@ -18,12 +18,9 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 public abstract class EntityCarBatteryBase extends EntityCarTemperatureBase {
 
-    private static final DataParameter<Integer> BATTERY_LEVEL = EntityDataManager.<Integer>createKey(EntityCarBatteryBase.class,
-            DataSerializers.VARINT);
-    private static final DataParameter<Integer> STARTING_TIME = EntityDataManager.<Integer>createKey(EntityCarBatteryBase.class,
-            DataSerializers.VARINT);
-    private static final DataParameter<Boolean> STARTING = EntityDataManager.<Boolean>createKey(EntityCarBatteryBase.class,
-            DataSerializers.BOOLEAN);
+    private static final DataParameter<Integer> BATTERY_LEVEL = EntityDataManager.createKey(EntityCarBatteryBase.class, DataSerializers.VARINT);
+    private static final DataParameter<Integer> STARTING_TIME = EntityDataManager.createKey(EntityCarBatteryBase.class, DataSerializers.VARINT);
+    private static final DataParameter<Boolean> STARTING = EntityDataManager.createKey(EntityCarBatteryBase.class, DataSerializers.BOOLEAN);
 
     @OnlyIn(Dist.CLIENT)
     private SoundLoopStarting startingLoop;
@@ -49,7 +46,7 @@ public abstract class EntityCarBatteryBase extends EntityCarTemperatureBase {
         if (world.isRemote) {
             if (isStarted()) {
                 timeSinceStarted++;
-                if (ticksExisted % 2 == 0) {//How often particles will spawn
+                if (ticksExisted % 2 == 0) { //How often particles will spawn
                     spawnParticles(getSpeed() > 0.1F);
                 }
             } else {
@@ -184,7 +181,7 @@ public abstract class EntityCarBatteryBase extends EntityCarTemperatureBase {
     }
 
     public int getBatteryUsage() {
-        if (!Config.useBattery.get()) {
+        if (!Main.SERVER_CONFIG.useBattery.get()) {
             return 0;
         }
 
@@ -327,4 +324,5 @@ public abstract class EntityCarBatteryBase extends EntityCarTemperatureBase {
     public void playFailSound() {
         ModSounds.playSound(getFailSound(), world, func_233580_cy_(), null, SoundCategory.MASTER, 1F, getBatterySoundPitchLevel());
     }
+
 }

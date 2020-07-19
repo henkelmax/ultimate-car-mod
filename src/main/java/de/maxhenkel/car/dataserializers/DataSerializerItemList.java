@@ -21,8 +21,8 @@ public class DataSerializerItemList {
 
             packetBuffer.writeInt(itemStacks.length);
 
-            for (int i = 0; i < itemStacks.length; i++) {
-                packetBuffer.writeItemStack(itemStacks[i]);
+            for (ItemStack itemStack : itemStacks) {
+                packetBuffer.writeItemStack(itemStack);
             }
         }
 

@@ -3,10 +3,10 @@ package de.maxhenkel.car.blocks;
 import de.maxhenkel.car.blocks.BlockPaint.EnumPaintType;
 import de.maxhenkel.car.blocks.fluid.CarFluidBlock;
 import de.maxhenkel.car.fluids.ModFluids;
+import de.maxhenkel.corelib.reflection.ReflectionUtils;
 import de.maxhenkel.tools.IItemBlock;
 import de.maxhenkel.tools.NoRegister;
 import de.maxhenkel.tools.OnlyBlock;
-import de.maxhenkel.tools.ReflectionTools;
 import net.minecraft.block.Block;
 import net.minecraft.block.FlowingFluidBlock;
 
@@ -71,12 +71,12 @@ public class ModBlocks {
     public static List<IItemBlock> getBlocksWithItems() {
         List<IItemBlock> blocks = new ArrayList<>();
         for (Field field : ModBlocks.class.getFields()) {
-            if (ReflectionTools.hasAnnotation(field, NoRegister.class) || ReflectionTools.hasAnnotation(field, OnlyBlock.class)) {
+            if (ReflectionUtils.hasAnnotation(field, NoRegister.class) || ReflectionUtils.hasAnnotation(field, OnlyBlock.class)) {
                 continue;
             }
             try {
                 Object obj = field.get(null);
-                if (obj != null && obj instanceof IItemBlock) {
+                if (obj instanceof IItemBlock) {
                     blocks.add((IItemBlock) obj);
                 }
             } catch (IllegalAccessException e) {
@@ -90,16 +90,15 @@ public class ModBlocks {
         return blocks;
     }
 
-
     public static List<Block> getAll() {
         List<Block> blocks = new ArrayList<>();
         for (Field field : ModBlocks.class.getFields()) {
-            if (ReflectionTools.hasAnnotation(field, NoRegister.class)) {
+            if (ReflectionUtils.hasAnnotation(field, NoRegister.class)) {
                 continue;
             }
             try {
                 Object obj = field.get(null);
-                if (obj != null && obj instanceof Block) {
+                if (obj instanceof Block) {
                     blocks.add((Block) obj);
                 }
             } catch (IllegalAccessException e) {

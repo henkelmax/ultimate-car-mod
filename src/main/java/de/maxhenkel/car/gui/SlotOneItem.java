@@ -16,11 +16,7 @@ public class SlotOneItem extends Slot {
 
     @Override
     public boolean isItemValid(ItemStack stack) {
-        if (stack.getItem().equals(item)) {
-            return true;
-        } else {
-            return false;
-        }
+        return stack.getItem().equals(item);
     }
 
 }

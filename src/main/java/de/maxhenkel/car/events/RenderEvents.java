@@ -4,7 +4,7 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import de.maxhenkel.car.entity.car.base.EntityCarBase;
 import de.maxhenkel.car.entity.car.base.EntityCarFuelBase;
 import de.maxhenkel.car.entity.car.base.EntityVehicleBase;
-import de.maxhenkel.tools.MathTools;
+import de.maxhenkel.corelib.math.MathUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.AbstractGui;
 import net.minecraft.entity.Entity;
@@ -73,7 +73,7 @@ public class RenderEvents {
     public void renderSpeed(MatrixStack matrixStack, float speed) {
         Minecraft mc = Minecraft.getInstance();
 
-        String s = String.valueOf(MathTools.round(Math.abs(speed), 2));
+        String s = String.valueOf(MathUtils.round(Math.abs(speed), 2));
         int i1 = (mc.getMainWindow().getScaledWidth() - mc.ingameGUI.getFontRenderer().getStringWidth(s)) / 2;
         int j1 = mc.getMainWindow().getScaledHeight() - 31 - 4;
         mc.ingameGUI.getFontRenderer().func_238421_b_(matrixStack, s, i1 + 1, j1, 0);

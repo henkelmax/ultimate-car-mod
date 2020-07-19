@@ -1,9 +1,11 @@
 package de.maxhenkel.car.net;
 
 import de.maxhenkel.car.blocks.tileentity.TileEntityGasStation;
+import de.maxhenkel.corelib.net.Message;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 public class MessageStartFuel implements Message<MessageStartFuel> {
@@ -19,6 +21,10 @@ public class MessageStartFuel implements Message<MessageStartFuel> {
         this.start = start;
     }
 
+    @Override
+    public Dist getExecutingSide() {
+        return Dist.DEDICATED_SERVER;
+    }
 
     @Override
     public void executeServerSide(NetworkEvent.Context context) {
@@ -29,11 +35,6 @@ public class MessageStartFuel implements Message<MessageStartFuel> {
             tank.setFueling(start);
             tank.synchronize();
         }
-    }
-
-    @Override
-    public void executeClientSide(NetworkEvent.Context context) {
-
     }
 
     @Override
@@ -48,4 +49,5 @@ public class MessageStartFuel implements Message<MessageStartFuel> {
         buf.writeBoolean(start);
         buf.writeBlockPos(pos);
     }
+
 }

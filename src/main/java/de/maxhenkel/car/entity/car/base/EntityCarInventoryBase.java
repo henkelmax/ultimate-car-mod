@@ -2,10 +2,9 @@ package de.maxhenkel.car.entity.car.base;
 
 import de.maxhenkel.car.gui.ContainerCar;
 import de.maxhenkel.car.gui.ContainerCarInventory;
-import de.maxhenkel.tools.FluidUtils;
-import de.maxhenkel.tools.ItemTools;
 import de.maxhenkel.car.items.ItemCanister;
 import de.maxhenkel.car.sounds.ModSounds;
+import de.maxhenkel.corelib.item.ItemUtils;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -46,10 +45,10 @@ public abstract class EntityCarInventoryBase extends EntityCarFuelBase implement
     public EntityCarInventoryBase(EntityType type, World worldIn) {
         super(type, worldIn);
 
-        this.internalInventory = new Inventory(27);
-        this.externalInventory = new Inventory(0);
-        this.partInventory = new Inventory(15);
-        this.fluidInventory = FluidStack.EMPTY;
+        internalInventory = new Inventory(27);
+        externalInventory = new Inventory(0);
+        partInventory = new Inventory(15);
+        fluidInventory = FluidStack.EMPTY;
     }
 
     @Override
@@ -71,7 +70,7 @@ public abstract class EntityCarInventoryBase extends EntityCarFuelBase implement
                     if (handler != null) {
                         FluidStack fluidStack = FluidUtil.getFluidContained(stack).orElse(FluidStack.EMPTY);
 
-                        if (!FluidUtils.isEmpty(fluidStack)) {
+                        if (!fluidStack.isEmpty()) {
                             if (handleEmpty(stack, getInventoryFluidHandler(), player, hand)) {
                                 return ActionResultType.CONSUME;
                             }
@@ -183,12 +182,12 @@ public abstract class EntityCarInventoryBase extends EntityCarFuelBase implement
     @Override
     public void readAdditional(CompoundNBT compound) {
         super.readAdditional(compound);
-        ItemTools.readInventory(compound, "int_inventory", internalInventory);
+        ItemUtils.readInventory(compound, "int_inventory", internalInventory);
 
         this.externalInventory = new Inventory(compound.getInt("external_inventory_size"));
-        ItemTools.readInventory(compound, "external_inventory", externalInventory);
+        ItemUtils.readInventory(compound, "external_inventory", externalInventory);
 
-        ItemTools.readInventory(compound, "parts", partInventory);
+        ItemUtils.readInventory(compound, "parts", partInventory);
 
         if (compound.contains("fluid_inventory")) {
             fluidInventory = FluidStack.loadFluidStackFromNBT(compound.getCompound("fluid_inventory"));
@@ -199,14 +198,14 @@ public abstract class EntityCarInventoryBase extends EntityCarFuelBase implement
     protected void writeAdditional(CompoundNBT compound) {
         super.writeAdditional(compound);
 
-        ItemTools.saveInventory(compound, "int_inventory", internalInventory);
+        ItemUtils.saveInventory(compound, "int_inventory", internalInventory);
 
         compound.putInt("external_inventory_size", externalInventory.getSizeInventory());
-        ItemTools.saveInventory(compound, "external_inventory", externalInventory);
+        ItemUtils.saveInventory(compound, "external_inventory", externalInventory);
 
-        ItemTools.saveInventory(compound, "parts", partInventory);
+        ItemUtils.saveInventory(compound, "parts", partInventory);
 
-        if (!FluidUtils.isEmpty(fluidInventory)) {
+        if (!fluidInventory.isEmpty()) {
             compound.put("fluid_inventory", fluidInventory.writeToNBT(new CompoundNBT()));
         }
     }
@@ -239,7 +238,7 @@ public abstract class EntityCarInventoryBase extends EntityCarFuelBase implement
 
         @Override
         public int fill(FluidStack resource, FluidAction action) {
-            if (FluidUtils.isEmpty(fluidInventory)) {
+            if (fluidInventory.isEmpty()) {
                 int amount = Math.min(resource.getAmount(), getFluidInventorySize());
 
                 if (action.execute()) {
@@ -262,7 +261,7 @@ public abstract class EntityCarInventoryBase extends EntityCarFuelBase implement
         @Nonnull
         @Override
         public FluidStack drain(FluidStack resource, FluidAction action) {
-            if (FluidUtils.isEmpty(fluidInventory)) {
+            if (fluidInventory.isEmpty()) {
                 return FluidStack.EMPTY;
             }
 
@@ -287,7 +286,7 @@ public abstract class EntityCarInventoryBase extends EntityCarFuelBase implement
         @Nonnull
         @Override
         public FluidStack drain(int maxDrain, FluidAction action) {
-            if (FluidUtils.isEmpty(fluidInventory)) {
+            if (fluidInventory.isEmpty()) {
                 return FluidStack.EMPTY;
             }
 
@@ -375,4 +374,5 @@ public abstract class EntityCarInventoryBase extends EntityCarFuelBase implement
     public IInventory getExternalInventory() {
         return externalInventory;
     }
+
 }

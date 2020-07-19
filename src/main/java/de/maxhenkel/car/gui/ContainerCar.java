@@ -10,7 +10,7 @@ public class ContainerCar extends ContainerBase {
     protected EntityCarInventoryBase car;
 
     public ContainerCar(int id, EntityCarInventoryBase car, PlayerInventory playerInv) {
-        super(Main.CAR_CONTAINER_TYPE, id, car, playerInv);
+        super(Main.CAR_CONTAINER_TYPE, id, playerInv, car);
         this.car = car;
 
         int numRows = car.getSizeInventory() / 9;
@@ -27,7 +27,7 @@ public class ContainerCar extends ContainerBase {
 
         addSlot(new SlotRepairKit(car, 0, 134, 66, playerInv.player));
 
-        addInvSlots();
+        addPlayerInventorySlots();
     }
 
     public EntityCarInventoryBase getCar() {

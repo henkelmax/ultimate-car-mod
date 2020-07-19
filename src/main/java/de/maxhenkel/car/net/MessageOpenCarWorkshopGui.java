@@ -2,14 +2,17 @@ package de.maxhenkel.car.net;
 
 import java.util.UUID;
 
+import de.maxhenkel.car.Main;
 import de.maxhenkel.car.blocks.tileentity.TileEntityCarWorkshop;
 import de.maxhenkel.car.gui.ContainerCarWorkshopCrafting;
 import de.maxhenkel.car.gui.ContainerCarWorkshopRepair;
 import de.maxhenkel.car.gui.TileEntityContainerProvider;
+import de.maxhenkel.corelib.net.Message;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 public class MessageOpenCarWorkshopGui implements Message<MessageOpenCarWorkshopGui> {
@@ -29,9 +32,14 @@ public class MessageOpenCarWorkshopGui implements Message<MessageOpenCarWorkshop
     }
 
     @Override
+    public Dist getExecutingSide() {
+        return Dist.DEDICATED_SERVER;
+    }
+
+    @Override
     public void executeServerSide(NetworkEvent.Context context) {
         if (!context.getSender().getUniqueID().equals(uuid)) {
-            System.out.println("---------UUID was not the same-----------");
+            Main.LOGGER.error("The UUID of the sender was not equal to the packet UUID");
             return;
         }
 
@@ -41,23 +49,19 @@ public class MessageOpenCarWorkshopGui implements Message<MessageOpenCarWorkshop
             return;
         }
         TileEntityCarWorkshop carWorkshop = (TileEntityCarWorkshop) te;
-        if(repair){
+
+        if (repair) {
             TileEntityContainerProvider.openGui(context.getSender(), carWorkshop, (i, playerInventory, playerEntity) -> new ContainerCarWorkshopRepair(i, carWorkshop, playerInventory));
-        }else{
+        } else {
             TileEntityContainerProvider.openGui(context.getSender(), carWorkshop, (i, playerInventory, playerEntity) -> new ContainerCarWorkshopCrafting(i, carWorkshop, playerInventory));
         }
-    }
-
-    @Override
-    public void executeClientSide(NetworkEvent.Context context) {
-
     }
 
     @Override
     public MessageOpenCarWorkshopGui fromBytes(PacketBuffer buf) {
         this.pos = buf.readBlockPos();
         this.uuid = buf.readUniqueId();
-        this.repair=buf.readBoolean();
+        this.repair = buf.readBoolean();
 
         return this;
     }
@@ -68,4 +72,5 @@ public class MessageOpenCarWorkshopGui implements Message<MessageOpenCarWorkshop
         buf.writeUniqueId(uuid);
         buf.writeBoolean(repair);
     }
+
 }

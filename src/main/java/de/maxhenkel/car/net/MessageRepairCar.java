@@ -2,11 +2,14 @@ package de.maxhenkel.car.net;
 
 import java.util.UUID;
 
+import de.maxhenkel.car.Main;
 import de.maxhenkel.car.blocks.tileentity.TileEntityCarWorkshop;
+import de.maxhenkel.corelib.net.Message;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 public class MessageRepairCar implements Message<MessageRepairCar> {
@@ -24,9 +27,14 @@ public class MessageRepairCar implements Message<MessageRepairCar> {
     }
 
     @Override
+    public Dist getExecutingSide() {
+        return Dist.DEDICATED_SERVER;
+    }
+
+    @Override
     public void executeServerSide(NetworkEvent.Context context) {
         if (!context.getSender().getUniqueID().equals(uuid)) {
-            System.out.println("---------UUID was not the same-----------");
+            Main.LOGGER.error("The UUID of the sender was not equal to the packet UUID");
             return;
         }
 
@@ -35,11 +43,6 @@ public class MessageRepairCar implements Message<MessageRepairCar> {
         if (te instanceof TileEntityCarWorkshop) {
             ((TileEntityCarWorkshop) te).repairCar(context.getSender());
         }
-    }
-
-    @Override
-    public void executeClientSide(NetworkEvent.Context context) {
-
     }
 
     @Override
@@ -54,4 +57,5 @@ public class MessageRepairCar implements Message<MessageRepairCar> {
         buf.writeBlockPos(pos);
         buf.writeUniqueId(uuid);
     }
+
 }

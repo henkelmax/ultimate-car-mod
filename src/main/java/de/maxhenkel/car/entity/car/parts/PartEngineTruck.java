@@ -1,16 +1,16 @@
 package de.maxhenkel.car.entity.car.parts;
 
-import de.maxhenkel.car.Config;
+import de.maxhenkel.car.Main;
 import de.maxhenkel.car.sounds.ModSounds;
 import net.minecraft.util.SoundEvent;
 
 public class PartEngineTruck extends PartEngine {
 
     public PartEngineTruck() {
-        this.maxSpeed = () -> Config.engineTruckMaxSpeed.get().floatValue();
-        this.maxReverseSpeed = () -> Config.engineTruckMaxReverseSpeed.get().floatValue();
-        this.acceleration = () -> Config.engineTruckAcceleration.get().floatValue();
-        this.fuelEfficiency = () -> Config.engineTruckFuelEfficiency.get().floatValue();
+        this.maxSpeed = () -> Main.SERVER_CONFIG.engineTruckMaxSpeed.get().floatValue();
+        this.maxReverseSpeed = () -> Main.SERVER_CONFIG.engineTruckMaxReverseSpeed.get().floatValue();
+        this.acceleration = () -> Main.SERVER_CONFIG.engineTruckAcceleration.get().floatValue();
+        this.fuelEfficiency = () -> Main.SERVER_CONFIG.engineTruckFuelEfficiency.get().floatValue();
     }
 
     @Override
@@ -52,4 +52,5 @@ public class PartEngineTruck extends PartEngine {
     public SoundEvent getHornSound() {
         return ModSounds.CAR_HORN;
     }
+
 }

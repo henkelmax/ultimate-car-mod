@@ -2,6 +2,8 @@ package de.maxhenkel.car.blocks.tileentity;
 
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.net.MessageSyncTileEntity;
+import de.maxhenkel.corelib.entity.EntityUtils;
+import de.maxhenkel.corelib.net.NetUtils;
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
@@ -12,7 +14,6 @@ import net.minecraft.util.IIntArray;
 import net.minecraft.util.INameable;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.server.ServerWorld;
-import net.minecraftforge.fml.network.NetworkDirection;
 
 import javax.annotation.Nullable;
 
@@ -32,8 +33,8 @@ public abstract class TileEntityBase extends TileEntity implements INameable {
                 ServerWorld serverWorld = (ServerWorld) world;
 
                 MessageSyncTileEntity msg = new MessageSyncTileEntity(pos, last);
-                serverWorld.getPlayers(player -> player.getDistanceSq(getPos().getX(), getPos().getY(), getPos().getZ()) <= 128D * 128D).forEach(player -> Main.SIMPLE_CHANNEL.sendTo(msg, player.connection.netManager, NetworkDirection.PLAY_TO_CLIENT));
-                this.compoundLast = last;
+                EntityUtils.forEachPlayerAround(serverWorld, getPos(), 128D, playerEntity -> NetUtils.sendTo(Main.SIMPLE_CHANNEL, playerEntity, msg));
+                compoundLast = last;
             }
         }
     }

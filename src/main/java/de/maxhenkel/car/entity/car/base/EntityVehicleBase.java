@@ -1,6 +1,6 @@
 package de.maxhenkel.car.entity.car.base;
 
-import de.maxhenkel.car.Config;
+import de.maxhenkel.car.Main;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
@@ -153,7 +153,7 @@ public abstract class EntityVehicleBase extends Entity {
     @Nullable
     @Override
     public AxisAlignedBB getCollisionBox(Entity entityIn) {
-        if (!Config.collideWithEntities.get()) {
+        if (!Main.SERVER_CONFIG.collideWithEntities.get()) {
             if (!(entityIn instanceof EntityVehicleBase)) {
                 return null;
             }
@@ -236,12 +236,12 @@ public abstract class EntityVehicleBase extends Entity {
         this.steps = 10;
     }
 
-    public static final double calculateMotionX(float speed, float rotationYaw) {
-        return (double) (MathHelper.sin(-rotationYaw * 0.017453292F) * speed);
+    public static double calculateMotionX(float speed, float rotationYaw) {
+        return MathHelper.sin(-rotationYaw * 0.017453292F) * speed;
     }
 
-    public static final double calculateMotionZ(float speed, float rotationYaw) {
-        return (double) (MathHelper.cos(rotationYaw * 0.017453292F) * speed);
+    public static double calculateMotionZ(float speed, float rotationYaw) {
+        return MathHelper.cos(rotationYaw * 0.017453292F) * speed;
     }
 
     @Override
@@ -263,4 +263,5 @@ public abstract class EntityVehicleBase extends Entity {
     public IPacket<?> createSpawnPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
+
 }

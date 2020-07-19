@@ -1,10 +1,12 @@
 package de.maxhenkel.car.net;
 
 import de.maxhenkel.car.items.ItemLicensePlate;
+import de.maxhenkel.corelib.net.Message;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.Hand;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 import java.util.UUID;
@@ -23,6 +25,10 @@ public class MessageEditLicensePlate implements Message<MessageEditLicensePlate>
         this.text = text;
     }
 
+    @Override
+    public Dist getExecutingSide() {
+        return Dist.DEDICATED_SERVER;
+    }
 
     @Override
     public void executeServerSide(NetworkEvent.Context context) {
@@ -46,12 +52,6 @@ public class MessageEditLicensePlate implements Message<MessageEditLicensePlate>
         }
     }
 
-
-    @Override
-    public void executeClientSide(NetworkEvent.Context context) {
-
-    }
-
     @Override
     public MessageEditLicensePlate fromBytes(PacketBuffer buf) {
         uuid = buf.readUniqueId();
@@ -64,4 +64,5 @@ public class MessageEditLicensePlate implements Message<MessageEditLicensePlate>
         buf.writeUniqueId(uuid);
         buf.writeString(text);
     }
+
 }

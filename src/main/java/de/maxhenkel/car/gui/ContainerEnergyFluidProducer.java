@@ -10,16 +10,17 @@ public abstract class ContainerEnergyFluidProducer extends ContainerBase {
     private TileEntityEnergyFluidProducer tile;
 
     public ContainerEnergyFluidProducer(ContainerType containerType, int id, TileEntityEnergyFluidProducer tile, PlayerInventory playerInv) {
-        super(containerType, id, tile, playerInv);
+        super(containerType, id, playerInv, tile);
         this.tile = tile;
 
-        this.addSlot(new Slot(tileInventory, 0, 56, 34));
-        this.addSlot(new SlotResult(tileInventory, 1, 116, 35));
+        this.addSlot(new Slot(inventory, 0, 56, 34));
+        this.addSlot(new SlotResult(inventory, 1, 116, 35));
 
-        addInvSlots();
+        addPlayerInventorySlots();
     }
 
     public TileEntityEnergyFluidProducer getTile() {
         return tile;
     }
+
 }

@@ -11,13 +11,13 @@ public class ContainerFluidExtractor extends ContainerBase {
     protected PlayerInventory playerInventory;
 
     public ContainerFluidExtractor(int id, TileEntityFluidExtractor tile, PlayerInventory playerInventory) {
-        super(Main.FLUID_EXTRACTOR_CONTAINER_TYPE, id, new Inventory(1), playerInventory);
+        super(Main.FLUID_EXTRACTOR_CONTAINER_TYPE, id, playerInventory, new Inventory(1));
         this.tile = tile;
         this.playerInventory = playerInventory;
 
-        addSlot(new SlotFluidFilter(tileInventory, 0, 26, 25, tile));
+        addSlot(new SlotFluidFilter(inventory, 0, 26, 25, tile));
 
-        addInvSlots();
+        addPlayerInventorySlots();
     }
 
     public TileEntityFluidExtractor getTile() {

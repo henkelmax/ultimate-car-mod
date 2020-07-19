@@ -19,6 +19,7 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkHooks;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 
@@ -65,6 +66,7 @@ public class ItemLicensePlate extends ItemCraftingComponent {
         compound.putString("plate_text", text);
     }
 
+    @Nonnull
     public static String getText(ItemStack stack) {
         if (!stack.hasTag()) {
             return "";
@@ -75,4 +77,5 @@ public class ItemLicensePlate extends ItemCraftingComponent {
         }
         return compound.getString("plate_text");
     }
+
 }

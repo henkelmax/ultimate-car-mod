@@ -1,6 +1,6 @@
 package de.maxhenkel.car.sounds;
 
-import de.maxhenkel.car.Config;
+import de.maxhenkel.car.Main;
 import de.maxhenkel.car.entity.car.base.EntityCarBase;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.TickableSound;
@@ -17,7 +17,7 @@ public abstract class SoundLoopCar extends TickableSound {
         this.car = car;
         this.repeat = true;
         this.repeatDelay = 0;
-        this.volume = Config.carVolume.get().floatValue();
+        this.volume = Main.CLIENT_CONFIG.carVolume.get().floatValue();
         this.pitch = 1F;
         this.priority = true;
         this.global = false;
@@ -61,4 +61,5 @@ public abstract class SoundLoopCar extends TickableSound {
     }
 
     public abstract boolean shouldStopSound();
+
 }

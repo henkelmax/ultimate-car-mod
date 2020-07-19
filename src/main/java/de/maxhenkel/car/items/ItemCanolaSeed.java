@@ -3,7 +3,7 @@ package de.maxhenkel.car.items;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.ModItemGroups;
 import de.maxhenkel.car.blocks.ModBlocks;
-import de.maxhenkel.tools.ItemTools;
+import de.maxhenkel.corelib.item.ItemUtils;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.passive.AnimalEntity;
@@ -50,16 +50,17 @@ public class ItemCanolaSeed extends BlockNamedItem implements IPlantable {
         }
 
         if (animal.getGrowingAge() == 0 && !animal.isInLove()) {
-            ItemTools.decrItemStack(stack, playerIn);
+            ItemUtils.decrItemStack(stack, playerIn);
             animal.setInLove(playerIn);
             return ActionResultType.CONSUME;
         }
 
         if (animal.isChild()) {
-            ItemTools.decrItemStack(stack, playerIn);
+            ItemUtils.decrItemStack(stack, playerIn);
             animal.ageUp((int) ((float) (-animal.getGrowingAge() / 20) * 0.1F), true);
             return ActionResultType.CONSUME;
         }
         return super.itemInteractionForEntity(stack, playerIn, target, hand);
     }
+
 }

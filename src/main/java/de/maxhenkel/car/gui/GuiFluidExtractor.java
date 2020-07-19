@@ -3,13 +3,14 @@ package de.maxhenkel.car.gui;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.blocks.tileentity.TileEntityFluidExtractor;
+import de.maxhenkel.corelib.inventory.ScreenBase;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.*;
 import net.minecraftforge.fluids.FluidStack;
 
-public class GuiFluidExtractor extends GuiBase<ContainerFluidExtractor> {
+public class GuiFluidExtractor extends ScreenBase<ContainerFluidExtractor> {
 
     private static final ResourceLocation GUI_TEXTURE = new ResourceLocation(Main.MODID, "textures/gui/gui_fluid_extractor.png");
 

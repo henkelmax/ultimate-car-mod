@@ -1,6 +1,6 @@
 package de.maxhenkel.car.events;
 
-import de.maxhenkel.car.Config;
+import de.maxhenkel.car.Main;
 import de.maxhenkel.car.entity.car.base.EntityVehicleBase;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
@@ -9,6 +9,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.LogicalSide;
 
 @OnlyIn(Dist.CLIENT)
 public class PlayerEvents {
@@ -23,7 +24,7 @@ public class PlayerEvents {
 
     @SubscribeEvent
     public void onPlayerTick(TickEvent.PlayerTickEvent evt) {
-        if (evt.side.equals(Dist.DEDICATED_SERVER)) {
+        if (evt.side.equals(LogicalSide.SERVER)) {
             return;
         }
 
@@ -46,7 +47,7 @@ public class PlayerEvents {
     }
 
     private void setThirdPerson(boolean third) {
-        if (!Config.thirdPersonEnter.get()) {
+        if (!Main.CLIENT_CONFIG.thirdPersonEnter.get()) {
             return;
         }
 
@@ -74,4 +75,5 @@ public class PlayerEvents {
 
         return null;
     }
+
 }

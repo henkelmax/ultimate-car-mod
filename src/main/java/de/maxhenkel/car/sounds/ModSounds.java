@@ -1,8 +1,8 @@
 package de.maxhenkel.car.sounds;
 
 import de.maxhenkel.car.Main;
+import de.maxhenkel.corelib.reflection.ReflectionUtils;
 import de.maxhenkel.tools.NoRegister;
-import de.maxhenkel.tools.ReflectionTools;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.TickableSound;
 import net.minecraft.entity.player.PlayerEntity;
@@ -50,12 +50,12 @@ public class ModSounds {
     public static List<SoundEvent> getAll() {
         List<SoundEvent> sounds = new ArrayList<>();
         for (Field field : ModSounds.class.getFields()) {
-            if (ReflectionTools.hasAnnotation(field, NoRegister.class)) {
+            if (ReflectionUtils.hasAnnotation(field, NoRegister.class)) {
                 continue;
             }
             try {
                 Object obj = field.get(null);
-                if (obj != null && obj instanceof SoundEvent) {
+                if (obj instanceof SoundEvent) {
                     sounds.add((SoundEvent) obj);
                 }
             } catch (IllegalAccessException e) {
@@ -125,4 +125,5 @@ public class ModSounds {
             Minecraft.getInstance().getSoundHandler().play(loop);
         }
     }
+
 }

@@ -5,9 +5,8 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import de.maxhenkel.car.Main;
+import de.maxhenkel.corelib.fluid.FluidUtils;
 import de.maxhenkel.tools.BlockPosList;
-import de.maxhenkel.car.Config;
-import de.maxhenkel.tools.FluidUtils;
 import de.maxhenkel.car.blocks.BlockFluidExtractor;
 import de.maxhenkel.car.blocks.ModBlocks;
 import net.minecraft.block.BlockState;
@@ -35,7 +34,7 @@ public class TileEntityFluidExtractor extends TileEntityBase implements ITickabl
 
     public TileEntityFluidExtractor() {
         super(Main.FLUID_EXTRACTOR_TILE_ENTITY_TYPE);
-        this.drainSpeed = Config.fluidExtractorDrainSpeed.get();
+        this.drainSpeed = Main.SERVER_CONFIG.fluidExtractorDrainSpeed.get();
         filter = null;
     }
 
@@ -95,7 +94,7 @@ public class TileEntityFluidExtractor extends TileEntityBase implements ITickabl
 
         for (IFluidHandler handler : fillHandlers) {
             if (getFilterFluid() == null) {
-                FluidUtil.tryFluidTransfer(handler, extractHandler, drainSpeed, true);
+                FluidUtils.tryFluidTransfer(handler, extractHandler, drainSpeed, true);
             } else {
                 FluidUtils.tryFluidTransfer(handler, extractHandler, drainSpeed, true, getFilterFluid());
             }
@@ -112,7 +111,7 @@ public class TileEntityFluidExtractor extends TileEntityBase implements ITickabl
 
         Direction side = state.get(BlockFluidExtractor.FACING);
 
-        extractHandler = FluidUtils.getFluidHandler(world, pos, side);
+        extractHandler = FluidUtils.getFluidHandlerOffset(world, pos, side);
     }
 
     public void getConnectedHandlers(List<IFluidHandler> handlers, BlockPosList positions, BlockPos pos) {
@@ -131,7 +130,7 @@ public class TileEntityFluidExtractor extends TileEntityBase implements ITickabl
                 continue;
             }
 
-            IFluidHandler handler = FluidUtils.getFluidHandler(world, pos, side);
+            IFluidHandler handler = FluidUtils.getFluidHandlerOffset(world, pos, side);
 
             if (handler == null || handler.equals(extractHandler)) {
                 continue;

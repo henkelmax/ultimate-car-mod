@@ -1,7 +1,7 @@
 package de.maxhenkel.car.entity.car.parts;
 
 import de.maxhenkel.car.Main;
-import de.maxhenkel.car.entity.model.obj.OBJModel;
+import de.maxhenkel.corelib.client.obj.OBJModel;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.ITextComponent;
@@ -30,4 +30,5 @@ public class PartTankContainer extends PartTransporterBack {
         }
         return true;
     }
+
 }

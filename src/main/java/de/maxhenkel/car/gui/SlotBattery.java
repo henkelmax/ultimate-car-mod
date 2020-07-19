@@ -21,10 +21,6 @@ public class SlotBattery extends Slot {
 
     @Override
     public void putStack(ItemStack stack) {
-        if (stack == null) {
-            return;
-        }
-
         if (!stack.getItem().equals(ModItems.BATTERY)) {
             return;
         }

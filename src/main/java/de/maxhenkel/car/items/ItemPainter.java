@@ -88,7 +88,7 @@ public class ItemPainter extends Item {
 
         ItemStack stack1 = SlotPainter.getPainterStack(context.getPlayer());
 
-        if (stack1 == null) {
+        if (stack1.isEmpty()) {
             return ActionResultType.FAIL;
         }
 
@@ -132,4 +132,5 @@ public class ItemPainter extends Item {
         }
         super.addInformation(stack, world, textComponents, tooltipFlag);
     }
+
 }

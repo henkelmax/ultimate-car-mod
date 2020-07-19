@@ -2,7 +2,7 @@ package de.maxhenkel.car.entity.car.base;
 
 import de.maxhenkel.car.entity.car.parts.PartLicensePlateHolder;
 import de.maxhenkel.car.items.ItemLicensePlate;
-import de.maxhenkel.tools.ItemTools;
+import de.maxhenkel.corelib.item.ItemUtils;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -36,8 +36,8 @@ public abstract class EntityCarLicensePlateBase extends EntityCarLockBase {
                 ItemStack stack = player.getHeldItem(hand);
                 if (stack.getItem() instanceof ItemLicensePlate) {
                     String text = ItemLicensePlate.getText(stack);
-                    if (text != null && !text.isEmpty()) {
-                        ItemTools.decrItemStack(stack, player);
+                    if (!text.isEmpty()) {
+                        ItemUtils.decrItemStack(stack, player);
                         player.setHeldItem(hand, stack);
                         setLicensePlate(text);
                         return ActionResultType.CONSUME;
@@ -83,4 +83,5 @@ public abstract class EntityCarLicensePlateBase extends EntityCarLockBase {
     }
 
     public abstract Vector3d getLicensePlateOffset();
+
 }

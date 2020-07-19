@@ -358,7 +358,7 @@
     "canister.fluid": "Fluid: %s",
     "canister.amount": "Amount: %s mb",
 
-    "filter.fluid": "Fluid Filter: %s",
+    "filter.fluid": "Filter: %s",
 
     "entity.car.car": "Car",
     "car_name.wood": "%s Wood Car",

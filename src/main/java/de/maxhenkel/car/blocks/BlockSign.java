@@ -1,14 +1,12 @@
 package de.maxhenkel.car.blocks;
 
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Maps;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.ModItemGroups;
 import de.maxhenkel.car.blocks.tileentity.TileEntitySign;
 import de.maxhenkel.car.gui.ContainerSign;
 import de.maxhenkel.car.gui.TileEntityContainerProvider;
+import de.maxhenkel.corelib.block.DirectionalVoxelShape;
 import de.maxhenkel.tools.IItemBlock;
-import de.maxhenkel.tools.VoxelShapeTools;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
@@ -38,9 +36,30 @@ import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
-import java.util.Map;
 
 public class BlockSign extends BlockBase implements ITileEntityProvider, IItemBlock, IWaterLoggable {
+
+    private static final VoxelShape SHAPE_NORTH_SOUTH = Block.makeCuboidShape(0D, 3D, 7.5D, 16D, 13D, 8.5D);
+    private static final VoxelShape SHAPE_EAST_WEST = Block.makeCuboidShape(7.5D, 3D, 0D, 8.5D, 13D, 16D);
+    private static final VoxelShape SHAPE_POST = Block.makeCuboidShape(7.5D, 0D, 7.5D, 8.5D, 3D, 8.5D);
+
+    private static final DirectionalVoxelShape SHAPES = new DirectionalVoxelShape.Builder()
+            .direction(Direction.NORTH,
+                    SHAPE_NORTH_SOUTH,
+                    SHAPE_POST
+            )
+            .direction(Direction.SOUTH,
+                    SHAPE_NORTH_SOUTH,
+                    SHAPE_POST
+            )
+            .direction(Direction.EAST,
+                    SHAPE_EAST_WEST,
+                    SHAPE_POST
+            )
+            .direction(Direction.WEST,
+                    SHAPE_EAST_WEST,
+                    SHAPE_POST
+            ).build();
 
     public static final DirectionProperty FACING = DirectionProperty.create("facing", Direction.Plane.HORIZONTAL);
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
@@ -70,21 +89,6 @@ public class BlockSign extends BlockBase implements ITileEntityProvider, IItemBl
         }
         return ActionResultType.SUCCESS;
     }
-
-    private static final VoxelShape SHAPE_NORTH_SOUTH = Block.makeCuboidShape(0D, 3D, 7.5D, 16D, 13D, 8.5D);
-    private static final VoxelShape SHAPE_EAST_WEST = Block.makeCuboidShape(7.5D, 3D, 0D, 8.5D, 13D, 16D);
-    private static final VoxelShape SHAPE_POST = Block.makeCuboidShape(7.5D, 0D, 7.5D, 8.5D, 3D, 8.5D);
-
-    private static final Map<Direction, VoxelShape> SHAPES = Maps.newEnumMap(ImmutableMap.of(
-            Direction.NORTH,
-            VoxelShapeTools.combine(SHAPE_NORTH_SOUTH, SHAPE_POST),
-            Direction.SOUTH,
-            VoxelShapeTools.combine(SHAPE_NORTH_SOUTH, SHAPE_POST),
-            Direction.EAST,
-            VoxelShapeTools.combine(SHAPE_EAST_WEST, SHAPE_POST),
-            Direction.WEST,
-            VoxelShapeTools.combine(SHAPE_EAST_WEST, SHAPE_POST)
-    ));
 
     @Override
     public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
@@ -126,4 +130,5 @@ public class BlockSign extends BlockBase implements ITileEntityProvider, IItemBl
     public TileEntity createNewTileEntity(IBlockReader worldIn) {
         return new TileEntitySign();
     }
+
 }

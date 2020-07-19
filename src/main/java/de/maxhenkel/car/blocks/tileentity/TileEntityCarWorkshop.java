@@ -8,12 +8,12 @@ import de.maxhenkel.car.entity.car.base.EntityGenericCar;
 import de.maxhenkel.car.entity.car.parts.PartRegistry;
 import de.maxhenkel.car.items.ICarPart;
 import de.maxhenkel.car.items.ItemKey;
-import de.maxhenkel.tools.ItemTools;
 import de.maxhenkel.car.blocks.BlockCarWorkshopOutter;
 import de.maxhenkel.car.blocks.ModBlocks;
 import de.maxhenkel.car.entity.car.base.EntityCarBase;
 import de.maxhenkel.car.entity.car.base.EntityCarDamageBase;
 import de.maxhenkel.car.sounds.ModSounds;
+import de.maxhenkel.corelib.item.ItemUtils;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.IInventory;
@@ -191,17 +191,17 @@ public class TileEntityCarWorkshop extends TileEntityBase implements IInventory 
 
     @Override
     public CompoundNBT write(CompoundNBT compound) {
-        ItemTools.saveInventory(compound, "crafting", craftingMatrix);
+        ItemUtils.saveInventory(compound, "crafting", craftingMatrix);
 
-        ItemTools.saveInventory(compound, "repair", repairInventory);
+        ItemUtils.saveInventory(compound, "repair", repairInventory);
 
         return super.write(compound);
     }
 
     @Override
     public void func_230337_a_(BlockState blockState, CompoundNBT compound) {
-        ItemTools.readInventory(compound, "crafting", craftingMatrix);
-        ItemTools.readInventory(compound, "repair", repairInventory);
+        ItemUtils.readInventory(compound, "crafting", craftingMatrix);
+        ItemUtils.readInventory(compound, "repair", repairInventory);
         super.func_230337_a_(blockState, compound);
     }
 
@@ -260,7 +260,7 @@ public class TileEntityCarWorkshop extends TileEntityBase implements IInventory 
         for (int i = 0; i < craftingMatrix.getSizeInventory(); i++) {
             ItemStack stack = craftingMatrix.getStackInSlot(i);
             if (!stack.isEmpty()) {
-                craftingMatrix.setInventorySlotContents(i, ItemTools.decrItemStack(stack, null));
+                stack.shrink(1);
             }
         }
     }
@@ -403,4 +403,5 @@ public class TileEntityCarWorkshop extends TileEntityBase implements IInventory 
     public IIntArray getFields() {
         return new IntArray(0);
     }
+
 }

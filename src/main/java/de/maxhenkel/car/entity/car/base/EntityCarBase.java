@@ -1,11 +1,10 @@
 package de.maxhenkel.car.entity.car.base;
 
-import de.maxhenkel.car.Config;
 import de.maxhenkel.car.DamageSourceCar;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.net.*;
 import de.maxhenkel.car.sounds.SoundLoopStart;
-import de.maxhenkel.tools.MathTools;
+import de.maxhenkel.corelib.math.MathUtils;
 import de.maxhenkel.car.sounds.ModSounds;
 import de.maxhenkel.car.sounds.SoundLoopHigh;
 import de.maxhenkel.car.sounds.SoundLoopIdle;
@@ -43,18 +42,12 @@ public abstract class EntityCarBase extends EntityVehicleBase {
     @OnlyIn(Dist.CLIENT)
     private SoundLoopHigh highLoop;
 
-    private static final DataParameter<Float> SPEED = EntityDataManager.<Float>createKey(EntityCarBase.class,
-            DataSerializers.FLOAT);
-    private static final DataParameter<Boolean> STARTED = EntityDataManager.<Boolean>createKey(EntityCarBase.class,
-            DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> FORWARD = EntityDataManager.<Boolean>createKey(EntityCarBase.class,
-            DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> BACKWARD = EntityDataManager.<Boolean>createKey(EntityCarBase.class,
-            DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> LEFT = EntityDataManager.<Boolean>createKey(EntityCarBase.class,
-            DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> RIGHT = EntityDataManager.<Boolean>createKey(EntityCarBase.class,
-            DataSerializers.BOOLEAN);
+    private static final DataParameter<Float> SPEED = EntityDataManager.createKey(EntityCarBase.class, DataSerializers.FLOAT);
+    private static final DataParameter<Boolean> STARTED = EntityDataManager.createKey(EntityCarBase.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> FORWARD = EntityDataManager.createKey(EntityCarBase.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> BACKWARD = EntityDataManager.createKey(EntityCarBase.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> LEFT = EntityDataManager.createKey(EntityCarBase.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> RIGHT = EntityDataManager.createKey(EntityCarBase.class, DataSerializers.BOOLEAN);
 
     public EntityCarBase(EntityType type, World worldIn) {
         super(type, worldIn);
@@ -118,7 +111,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 
     @Override
     public AxisAlignedBB getCollisionBox(Entity entityIn) {
-        if (Config.damageEntities.get() && entityIn instanceof LivingEntity) {
+        if (Main.SERVER_CONFIG.damageEntities.get() && entityIn instanceof LivingEntity) {
             if (entityIn.getBoundingBox().intersects(getCollisionBoundingBox())) {
                 float speed = getSpeed();
                 if (speed > 0.35F) {
@@ -208,7 +201,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
         float maxSp = getMaxSpeed() * modifier;
         float maxBackSp = getMaxReverseSpeed() * modifier;
 
-        float speed = MathTools.subtractToZero(getSpeed(), getRollResistance());
+        float speed = MathUtils.subtractToZero(getSpeed(), getRollResistance());
 
         if (isForward()) {
             if (speed <= maxSp) {
@@ -273,10 +266,10 @@ public abstract class EntityCarBase extends EntityVehicleBase {
         BlockPos pos = new BlockPos(getPosX(), getPosY() - 0.1D, getPosZ());
         BlockState state = world.getBlockState(pos);
 
-        if (state.isAir(world, pos) || Config.carDriveBlockList.contains(state.getBlock())) {
-            return Config.carOnroadSpeed.get().floatValue();
+        if (state.isAir(world, pos) || Main.SERVER_CONFIG.carDriveBlockList.contains(state.getBlock())) {
+            return Main.SERVER_CONFIG.carOnroadSpeed.get().floatValue();
         } else {
-            return Config.carOffroadSpeed.get().floatValue();
+            return Main.SERVER_CONFIG.carOffroadSpeed.get().floatValue();
         }
     }
 
@@ -391,12 +384,12 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 
     @Override
     protected void registerData() {
-        this.dataManager.register(STARTED, false);
-        this.dataManager.register(SPEED, 0F);
-        this.dataManager.register(FORWARD, false);
-        this.dataManager.register(BACKWARD, false);
-        this.dataManager.register(LEFT, false);
-        this.dataManager.register(RIGHT, false);
+        dataManager.register(STARTED, false);
+        dataManager.register(SPEED, 0F);
+        dataManager.register(FORWARD, false);
+        dataManager.register(BACKWARD, false);
+        dataManager.register(LEFT, false);
+        dataManager.register(RIGHT, false);
     }
 
     public void setSpeed(float speed) {
@@ -423,49 +416,49 @@ public abstract class EntityCarBase extends EntityVehicleBase {
             setLeft(false);
             setRight(false);
         }
-        this.dataManager.set(STARTED, started);
+        dataManager.set(STARTED, started);
     }
 
     public boolean isStarted() {
-        return this.dataManager.get(STARTED);
+        return dataManager.get(STARTED);
     }
 
     public void setForward(boolean forward) {
-        this.dataManager.set(FORWARD, forward);
+        dataManager.set(FORWARD, forward);
     }
 
     public boolean isForward() {
         if (getDriver() == null || !canPlayerDriveCar(getDriver())) {
             return false;
         }
-        return this.dataManager.get(FORWARD);
+        return dataManager.get(FORWARD);
     }
 
     public void setBackward(boolean backward) {
-        this.dataManager.set(BACKWARD, backward);
+        dataManager.set(BACKWARD, backward);
     }
 
     public boolean isBackward() {
         if (getDriver() == null || !canPlayerDriveCar(getDriver())) {
             return false;
         }
-        return this.dataManager.get(BACKWARD);
+        return dataManager.get(BACKWARD);
     }
 
     public void setLeft(boolean left) {
-        this.dataManager.set(LEFT, left);
+        dataManager.set(LEFT, left);
     }
 
     public boolean isLeft() {
-        return this.dataManager.get(LEFT);
+        return dataManager.get(LEFT);
     }
 
     public void setRight(boolean right) {
-        this.dataManager.set(RIGHT, right);
+        dataManager.set(RIGHT, right);
     }
 
     public boolean isRight() {
-        return this.dataManager.get(RIGHT);
+        return dataManager.get(RIGHT);
     }
 
     @Override
@@ -543,12 +536,12 @@ public abstract class EntityCarBase extends EntityVehicleBase {
                 if (car.getBatteryLevel() < 10) {
                     return;
                 }
-                if (Config.useBattery.get()) {
+                if (Main.SERVER_CONFIG.useBattery.get()) {
                     car.setBatteryLevel(car.getBatteryLevel() - 10);
                 }
             }
             playHornSound();
-            if (Config.hornFlee.get()) {
+            if (Main.SERVER_CONFIG.hornFlee.get()) {
                 double radius = 15;
                 List<MobEntity> list = world.getEntitiesWithinAABB(MobEntity.class, new AxisAlignedBB(getPosX() - radius, getPosY() - radius, getPosZ() - radius, getPosX() + radius, getPosY() + radius, getPosZ() + radius));
                 for (MobEntity ent : list) {
@@ -568,4 +561,5 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 
         entity.getNavigator().tryMoveToXYZ(fleePos.x, fleePos.y, fleePos.z, 2.5);
     }
+
 }

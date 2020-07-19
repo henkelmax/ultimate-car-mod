@@ -1,8 +1,6 @@
 package de.maxhenkel.car.blocks;
 
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Maps;
-import de.maxhenkel.tools.VoxelShapeTools;
+import de.maxhenkel.corelib.block.DirectionalVoxelShape;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.Direction;
@@ -11,37 +9,10 @@ import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
 
-import java.util.Map;
-
 public class BlockAsphaltSlope extends BlockSlope {
 
-    public BlockAsphaltSlope() {
-        super("asphalt_slope");
-    }
-
-    @Override
-    public VoxelShape getCollisionShape(BlockState state, IBlockReader reader, BlockPos pos, ISelectionContext context) {
-        return SHAPES.get(state.get(FACING));
-    }
-
-    @Override
-    public VoxelShape getRenderShape(BlockState state, IBlockReader reader, BlockPos pos) {
-        return SHAPES.get(state.get(FACING));
-    }
-
-    @Override
-    public VoxelShape getShape(BlockState state, IBlockReader reader, BlockPos pos, ISelectionContext context) {
-        return SHAPES.get(state.get(FACING));
-    }
-
-    @Override
-    public VoxelShape getRaytraceShape(BlockState state, IBlockReader reader, BlockPos pos) {
-        return SHAPES.get(state.get(FACING));
-    }
-
-    private static final Map<Direction, VoxelShape> SHAPES = Maps.newEnumMap(ImmutableMap.of(
-            Direction.NORTH,
-            VoxelShapeTools.combine(
+    private static final DirectionalVoxelShape SHAPES = new DirectionalVoxelShape.Builder()
+            .direction(Direction.NORTH,
                     Block.makeCuboidShape(0D, 0D, 0D, 16D, 1D, 16D),
                     Block.makeCuboidShape(0D, 1D, 0D, 16D, 2D, 15D),
                     Block.makeCuboidShape(0D, 2D, 0D, 16D, 3D, 14D),
@@ -58,9 +29,8 @@ public class BlockAsphaltSlope extends BlockSlope {
                     Block.makeCuboidShape(0D, 13D, 0D, 16D, 14D, 3D),
                     Block.makeCuboidShape(0D, 14D, 0D, 16D, 15D, 2D),
                     Block.makeCuboidShape(0D, 15D, 0D, 16D, 16D, 1D)
-            ),
-            Direction.SOUTH,
-            VoxelShapeTools.combine(
+            )
+            .direction(Direction.SOUTH,
                     Block.makeCuboidShape(0D, 0D, 0D, 16D, 1D, 16D),
                     Block.makeCuboidShape(0D, 1D, 1D, 16D, 2D, 16D),
                     Block.makeCuboidShape(0D, 2D, 2D, 16D, 3D, 16D),
@@ -77,9 +47,8 @@ public class BlockAsphaltSlope extends BlockSlope {
                     Block.makeCuboidShape(0D, 13D, 13D, 16D, 14D, 16D),
                     Block.makeCuboidShape(0D, 14D, 14D, 16D, 15D, 16D),
                     Block.makeCuboidShape(0D, 15D, 15D, 16D, 16D, 16D)
-            ),
-            Direction.EAST,
-            VoxelShapeTools.combine(
+            )
+            .direction(Direction.EAST,
                     Block.makeCuboidShape(0D, 0D, 0D, 16D, 1D, 16D),
                     Block.makeCuboidShape(1D, 1D, 0D, 16D, 2D, 16D),
                     Block.makeCuboidShape(2D, 2D, 0D, 16D, 3D, 16D),
@@ -96,9 +65,8 @@ public class BlockAsphaltSlope extends BlockSlope {
                     Block.makeCuboidShape(13D, 13D, 0D, 16D, 14D, 16D),
                     Block.makeCuboidShape(14D, 14D, 0D, 16D, 15D, 16D),
                     Block.makeCuboidShape(15D, 15D, 0D, 16D, 16D, 16D)
-            ),
-            Direction.WEST,
-            VoxelShapeTools.combine(
+            )
+            .direction(Direction.WEST,
                     Block.makeCuboidShape(0D, 0D, 0D, 16D, 1D, 16D),
                     Block.makeCuboidShape(0D, 1D, 0D, 15D, 2D, 16D),
                     Block.makeCuboidShape(0D, 2D, 0D, 14D, 3D, 16D),
@@ -115,7 +83,15 @@ public class BlockAsphaltSlope extends BlockSlope {
                     Block.makeCuboidShape(0D, 13D, 0D, 3D, 14D, 16D),
                     Block.makeCuboidShape(0D, 14D, 0D, 2D, 15D, 16D),
                     Block.makeCuboidShape(0D, 15D, 0D, 1D, 16D, 16D)
-            )
-    ));
+            ).build();
+
+    public BlockAsphaltSlope() {
+        super("asphalt_slope");
+    }
+
+    @Override
+    public VoxelShape getShape(BlockState state, IBlockReader reader, BlockPos pos, ISelectionContext context) {
+        return SHAPES.get(state.get(FACING));
+    }
 
 }

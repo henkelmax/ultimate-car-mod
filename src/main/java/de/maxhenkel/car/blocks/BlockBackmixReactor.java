@@ -3,7 +3,7 @@ package de.maxhenkel.car.blocks;
 import de.maxhenkel.car.blocks.tileentity.TileEntityBackmixReactor;
 import de.maxhenkel.car.gui.ContainerBackmixReactor;
 import de.maxhenkel.car.gui.TileEntityContainerProvider;
-import de.maxhenkel.tools.FluidUtils;
+import de.maxhenkel.corelib.fluid.FluidUtils;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -37,7 +37,6 @@ public class BlockBackmixReactor extends BlockGui<TileEntityBackmixReactor> {
     public void openGui(BlockState state, World worldIn, BlockPos pos, ServerPlayerEntity player, Hand handIn, TileEntityBackmixReactor tileEntity) {
         TileEntityContainerProvider.openGui(player, tileEntity, (i, playerInventory, playerEntity) -> new ContainerBackmixReactor(i, tileEntity, playerInventory));
     }
-
 
     @Nullable
     @Override

@@ -1,8 +1,7 @@
 package de.maxhenkel.car.entity.car.parts;
 
-import de.maxhenkel.car.Config;
 import de.maxhenkel.car.Main;
-import de.maxhenkel.car.entity.model.obj.OBJModel;
+import de.maxhenkel.corelib.client.obj.OBJModel;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.vector.Vector3d;
 
@@ -26,8 +25,9 @@ public class PartBodyWood extends PartBodyWoodBase {
         this.height = 1.6F;
         this.minRotationSpeed = 2F;
         this.maxRotationSpeed = 5F;
-        this.fuelEfficiency = () -> Config.bodyWoodFuelEfficiency.get().floatValue();
-        this.acceleration = () -> Config.bodyWoodAcceleration.get().floatValue();
-        this.maxSpeed = () -> Config.bodyWoodMaxSpeed.get().floatValue();
+        this.fuelEfficiency = () -> Main.SERVER_CONFIG.bodyWoodFuelEfficiency.get().floatValue();
+        this.acceleration = () -> Main.SERVER_CONFIG.bodyWoodAcceleration.get().floatValue();
+        this.maxSpeed = () -> Main.SERVER_CONFIG.bodyWoodMaxSpeed.get().floatValue();
     }
+
 }

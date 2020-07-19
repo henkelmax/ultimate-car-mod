@@ -4,7 +4,7 @@ import de.maxhenkel.car.Main;
 import de.maxhenkel.car.ModItemGroups;
 import de.maxhenkel.car.blocks.tileentity.TileEntityTank;
 import de.maxhenkel.car.blocks.tileentity.render.item.TankItemTileEntityRenderer;
-import de.maxhenkel.tools.FluidUtils;
+import de.maxhenkel.corelib.fluid.FluidUtils;
 import de.maxhenkel.tools.IItemBlock;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;

@@ -19,8 +19,8 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public abstract class EntityCarFuelBase extends EntityCarDamageBase implements IFluidHandler {
 
-    private static final DataParameter<Integer> FUEL_AMOUNT = EntityDataManager.<Integer>createKey(EntityCarFuelBase.class, DataSerializers.VARINT);
-    private static final DataParameter<String> FUEL_TYPE = EntityDataManager.<String>createKey(EntityCarFuelBase.class, DataSerializers.STRING);
+    private static final DataParameter<Integer> FUEL_AMOUNT = EntityDataManager.createKey(EntityCarFuelBase.class, DataSerializers.VARINT);
+    private static final DataParameter<String> FUEL_TYPE = EntityDataManager.createKey(EntityCarFuelBase.class, DataSerializers.STRING);
 
     public EntityCarFuelBase(EntityType type, World worldIn) {
         super(type, worldIn);
@@ -106,12 +106,12 @@ public abstract class EntityCarFuelBase extends EntityCarDamageBase implements I
     @Override
     protected void registerData() {
         super.registerData();
-        dataManager.register(FUEL_AMOUNT, Integer.valueOf(0));
-        dataManager.register(FUEL_TYPE, new String());
+        dataManager.register(FUEL_AMOUNT, 0);
+        dataManager.register(FUEL_TYPE, "");
     }
 
     public void setFuelAmount(int fuel) {
-        this.dataManager.set(FUEL_AMOUNT, Integer.valueOf(fuel));
+        this.dataManager.set(FUEL_AMOUNT, fuel);
     }
 
     public void setFuelType(String fluid) {
@@ -259,4 +259,5 @@ public abstract class EntityCarFuelBase extends EntityCarDamageBase implements I
 
         return new FluidStack(fluid, amount);
     }
+
 }

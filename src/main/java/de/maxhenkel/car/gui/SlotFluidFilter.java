@@ -1,7 +1,7 @@
 package de.maxhenkel.car.gui;
 
 import de.maxhenkel.car.blocks.tileentity.TileEntityFluidExtractor;
-import de.maxhenkel.tools.ItemTools;
+import de.maxhenkel.corelib.item.ItemUtils;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.container.Slot;
@@ -26,7 +26,7 @@ public class SlotFluidFilter extends Slot {
     @Override
     public boolean canTakeStack(PlayerEntity playerIn) {
         tile.setFilter(null);
-        ItemTools.removeStackFromSlot(inventory, index);
+        ItemUtils.removeStackFromSlot(inventory, index);
         onSlotChanged();
         return false;
     }
@@ -39,7 +39,7 @@ public class SlotFluidFilter extends Slot {
 
     private void setFluidContained(ItemStack stack) {
         if (stack == null) {
-            ItemTools.removeStackFromSlot(inventory, index);
+            ItemUtils.removeStackFromSlot(inventory, index);
             onSlotChanged();
             return;
         }
@@ -47,7 +47,7 @@ public class SlotFluidFilter extends Slot {
         FluidStack fluidStack = FluidUtil.getFluidContained(stack).orElse(null);
 
         if (fluidStack == null || fluidStack.getAmount() <= 0) {
-            ItemTools.removeStackFromSlot(inventory, index);
+            ItemUtils.removeStackFromSlot(inventory, index);
             onSlotChanged();
             return;
         }

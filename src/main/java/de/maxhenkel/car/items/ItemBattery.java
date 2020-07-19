@@ -3,7 +3,7 @@ package de.maxhenkel.car.items;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.ModItemGroups;
 import de.maxhenkel.car.blocks.ModBlocks;
-import de.maxhenkel.tools.EnergyTools;
+import de.maxhenkel.corelib.energy.EnergyUtils;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -45,7 +45,7 @@ public class ItemBattery extends Item {
     @Override
     public ActionResultType onItemUse(ItemUseContext context) {
         if (context.getWorld().getBlockState(context.getPos()).getBlock().equals(ModBlocks.GENERATOR)) {
-            IEnergyStorage storage = EnergyTools.getEnergyStorage(context.getWorld(), context.getPos(), context.getFace());
+            IEnergyStorage storage = EnergyUtils.getEnergyStorage(context.getWorld(), context.getPos(), context.getFace());
             if (storage != null) {
                 ItemStack stack = context.getPlayer().getHeldItem(context.getHand());
 
@@ -61,4 +61,5 @@ public class ItemBattery extends Item {
 
         return super.onItemUse(context);
     }
+
 }

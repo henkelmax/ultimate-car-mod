@@ -44,7 +44,7 @@ public abstract class BlockGui<T extends TileEntity> extends BlockBase implement
 
     @Override
     public Item toItem() {
-        return new BlockItem(this, new Item.Properties().group(ModItemGroups.TAB_CAR)).setRegistryName(this.getRegistryName());
+        return new BlockItem(this, new Item.Properties().group(ModItemGroups.TAB_CAR)).setRegistryName(getRegistryName());
     }
 
     @Override
@@ -75,7 +75,7 @@ public abstract class BlockGui<T extends TileEntity> extends BlockBase implement
         TileEntity tileentity = worldIn.getTileEntity(pos);
 
         if (state.getBlock() != newState.getBlock()) {
-            if (tileentity != null && tileentity instanceof IInventory) {
+            if (tileentity instanceof IInventory) {
                 InventoryHelper.dropInventoryItems(worldIn, pos, (IInventory) tileentity);
                 worldIn.updateComparatorOutputLevel(pos, this);
             }

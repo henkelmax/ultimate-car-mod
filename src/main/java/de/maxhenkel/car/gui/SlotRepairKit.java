@@ -1,10 +1,9 @@
 package de.maxhenkel.car.gui;
 
-import de.maxhenkel.car.Config;
+import de.maxhenkel.car.Main;
 import de.maxhenkel.car.entity.car.base.EntityCarDamageBase;
 import de.maxhenkel.car.items.ModItems;
 import de.maxhenkel.car.sounds.ModSounds;
-import de.maxhenkel.tools.ItemTools;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.InventoryHelper;
@@ -25,19 +24,15 @@ public class SlotRepairKit extends Slot {
 
     @Override
     public void putStack(ItemStack stack) {
-        if (stack == null) {
-            return;
-        }
-
         if (!stack.getItem().equals(ModItems.REPAIR_KIT)) {
             return;
         }
 
         if (car.getDamage() >= 90) {
 
-            ItemTools.decrItemStack(stack, null);
+            stack.shrink(1);
 
-            float damage = car.getDamage() - Config.repairKitRepairAmount.get().floatValue();
+            float damage = car.getDamage() - Main.SERVER_CONFIG.repairKitRepairAmount.get().floatValue();
             if (damage >= 0) {
                 car.setDamage(damage);
             }

@@ -1,9 +1,7 @@
 package de.maxhenkel.car.blocks;
 
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Maps;
 import de.maxhenkel.car.Main;
-import de.maxhenkel.tools.VoxelShapeTools;
+import de.maxhenkel.corelib.block.DirectionalVoxelShape;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
@@ -29,9 +27,30 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
-import java.util.Map;
 
 public class BlockGasStationTop extends BlockBase {
+
+    public static VoxelShape SHAPE_NORTH_SOUTH = Block.makeCuboidShape(2D, -16D, 5D, 14D, 15D, 11D);
+    public static VoxelShape SHAPE_NEAST_WEST = Block.makeCuboidShape(5D, -16D, 2D, 11D, 15D, 14D);
+    public static VoxelShape SHAPE_SLAB = Block.makeCuboidShape(0D, -16D, 0D, 16D, -8D, 16D);
+
+    private static final DirectionalVoxelShape SHAPES = new DirectionalVoxelShape.Builder()
+            .direction(Direction.NORTH,
+                    SHAPE_NORTH_SOUTH,
+                    SHAPE_SLAB
+            )
+            .direction(Direction.SOUTH,
+                    SHAPE_NORTH_SOUTH,
+                    SHAPE_SLAB
+            )
+            .direction(Direction.EAST,
+                    SHAPE_NEAST_WEST,
+                    SHAPE_SLAB
+            )
+            .direction(Direction.WEST,
+                    SHAPE_NEAST_WEST,
+                    SHAPE_SLAB
+            ).build();
 
     public static final DirectionProperty FACING = DirectionProperty.create("facing", Direction.Plane.HORIZONTAL);
 
@@ -62,32 +81,6 @@ public class BlockGasStationTop extends BlockBase {
         builder.add(FACING);
     }
 
-    public static VoxelShape SHAPE_NORTH_SOUTH = Block.makeCuboidShape(2D, -16D, 5D, 14D, 15D, 11D);
-    public static VoxelShape SHAPE_NEAST_WEST = Block.makeCuboidShape(5D, -16D, 2D, 11D, 15D, 14D);
-    public static VoxelShape SHAPE_SLAB = Block.makeCuboidShape(0D, -16D, 0D, 16D, -8D, 16D);
-
-    private static final Map<Direction, VoxelShape> SHAPES = Maps.newEnumMap(ImmutableMap.of(
-            Direction.NORTH,
-            VoxelShapeTools.combine(
-                    SHAPE_NORTH_SOUTH,
-                    SHAPE_SLAB
-            ),
-            Direction.SOUTH,
-            VoxelShapeTools.combine(
-                    SHAPE_NORTH_SOUTH,
-                    SHAPE_SLAB
-            ),
-            Direction.EAST,
-            VoxelShapeTools.combine(
-                    SHAPE_NEAST_WEST,
-                    SHAPE_SLAB
-            ),
-            Direction.WEST,
-            VoxelShapeTools.combine(
-                    SHAPE_NEAST_WEST,
-                    SHAPE_SLAB
-            )
-    ));
 
     @Override
     public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
@@ -105,7 +98,7 @@ public class BlockGasStationTop extends BlockBase {
             super.onReplaced(state, worldIn, pos, newState, isMoving);
 
             BlockState stateDown = worldIn.getBlockState(pos.down());
-            if (stateDown != null && stateDown.getBlock().equals(ModBlocks.FUEL_STATION)) {
+            if (stateDown.getBlock().equals(ModBlocks.FUEL_STATION)) {
                 worldIn.destroyBlock(pos.down(), false);
             }
         }
@@ -115,7 +108,8 @@ public class BlockGasStationTop extends BlockBase {
     @Override
     public boolean removedByPlayer(BlockState state, World world, BlockPos pos, PlayerEntity player, boolean willHarvest, FluidState fluid) {
         BlockState stateDown = world.getBlockState(pos.down());
-        if (stateDown != null && stateDown.getBlock() != null && stateDown.getBlock().equals(ModBlocks.FUEL_STATION) && !player.abilities.isCreativeMode) {
+        stateDown.getBlock();
+        if (stateDown.getBlock().equals(ModBlocks.FUEL_STATION) && !player.abilities.isCreativeMode) {
             ModBlocks.FUEL_STATION.harvestBlock(world, player, pos.down(), world.getBlockState(pos.down()), world.getTileEntity(pos.down()), player.getHeldItemMainhand());
         }
         return super.removedByPlayer(state, world, pos, player, willHarvest, fluid);
@@ -124,7 +118,8 @@ public class BlockGasStationTop extends BlockBase {
     @Override
     public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, PlayerEntity player) {
         BlockState stateDown = world.getBlockState(pos.down());
-        if (stateDown != null && stateDown.getBlock() != null && stateDown.getBlock().equals(ModBlocks.FUEL_STATION)) {
+        stateDown.getBlock();
+        if (stateDown.getBlock().equals(ModBlocks.FUEL_STATION)) {
             return ModBlocks.FUEL_STATION.getPickBlock(stateDown, target, world, pos.down(), player);
         }
         return super.getPickBlock(state, target, world, pos, player);

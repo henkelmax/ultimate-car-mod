@@ -1,6 +1,6 @@
 package de.maxhenkel.car.entity.car.base;
 
-import de.maxhenkel.tools.MathTools;
+import de.maxhenkel.corelib.math.MathUtils;
 import net.minecraft.entity.EntityType;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
@@ -10,7 +10,7 @@ import net.minecraft.world.World;
 
 public abstract class EntityCarTemperatureBase extends EntityCarBase {
 
-    private static final DataParameter<Float> TEMPERATURE = EntityDataManager.<Float>createKey(EntityCarTemperatureBase.class, DataSerializers.FLOAT);
+    private static final DataParameter<Float> TEMPERATURE = EntityDataManager.createKey(EntityCarTemperatureBase.class, DataSerializers.FLOAT);
 
     public EntityCarTemperatureBase(EntityType type, World worldIn) {
         super(type, worldIn);
@@ -41,7 +41,7 @@ public abstract class EntityCarTemperatureBase extends EntityCarBase {
 
         float tempToReach = getTemperatureToReach();
 
-        if (MathTools.isInBounds(temp, tempToReach, rate)) {
+        if (MathUtils.isInBounds(temp, tempToReach, rate)) {
             setTemperature(tempToReach);
         } else {
             if (tempToReach < temp) {

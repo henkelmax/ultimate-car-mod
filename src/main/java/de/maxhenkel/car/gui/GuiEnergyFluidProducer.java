@@ -5,13 +5,14 @@ import java.util.List;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import de.maxhenkel.car.blocks.tileentity.TileEntityEnergyFluidProducer;
+import de.maxhenkel.corelib.inventory.ScreenBase;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
-public abstract class GuiEnergyFluidProducer<T extends ContainerEnergyFluidProducer> extends GuiBase<T> {
+public abstract class GuiEnergyFluidProducer<T extends ContainerEnergyFluidProducer> extends ScreenBase<T> {
 
     private PlayerInventory playerInv;
     private TileEntityEnergyFluidProducer tile;
@@ -143,4 +144,5 @@ public abstract class GuiEnergyFluidProducer<T extends ContainerEnergyFluidProdu
     public boolean func_231177_au__() {
         return false;
     }
+
 }

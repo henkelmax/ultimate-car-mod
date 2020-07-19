@@ -2,7 +2,7 @@ package de.maxhenkel.car.blocks.tileentity;
 
 import de.maxhenkel.car.blocks.BlockGui;
 import de.maxhenkel.car.recipes.EnergyFluidProducerRecipe;
-import de.maxhenkel.tools.ItemTools;
+import de.maxhenkel.corelib.item.ItemUtils;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.Fluid;
@@ -159,7 +159,7 @@ public abstract class TileEntityEnergyFluidProducer extends TileEntityBase imple
         compound.putInt("time", time);
         compound.putInt("fluid_stored", currentMillibuckets);
 
-        ItemTools.saveInventory(compound, "slots", inventory);
+        ItemUtils.saveInventory(compound, "slots", inventory);
 
         return super.write(compound);
     }
@@ -170,7 +170,7 @@ public abstract class TileEntityEnergyFluidProducer extends TileEntityBase imple
         time = compound.getInt("time");
         currentMillibuckets = compound.getInt("fluid_stored");
 
-        ItemTools.readInventory(compound, "slots", inventory);
+        ItemUtils.readInventory(compound, "slots", inventory);
         super.func_230337_a_(blockState, compound);
     }
 
@@ -383,4 +383,5 @@ public abstract class TileEntityEnergyFluidProducer extends TileEntityBase imple
 
         return new FluidStack(getProducingFluid(), amount);
     }
+
 }

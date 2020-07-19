@@ -5,7 +5,7 @@ import de.maxhenkel.car.ModItemGroups;
 import de.maxhenkel.car.blocks.tileentity.TileEntitySplitTank;
 import de.maxhenkel.car.gui.ContainerSplitTank;
 import de.maxhenkel.car.gui.TileEntityContainerProvider;
-import de.maxhenkel.tools.FluidUtils;
+import de.maxhenkel.corelib.fluid.FluidUtils;
 import de.maxhenkel.tools.IItemBlock;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
@@ -137,4 +137,5 @@ public class BlockSplitTank extends BlockBase implements ITileEntityProvider, II
     public TileEntity createNewTileEntity(IBlockReader worldIn) {
         return new TileEntitySplitTank();
     }
+
 }

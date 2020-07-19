@@ -7,8 +7,8 @@ import java.util.List;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.entity.car.base.EntityGenericCar;
-import de.maxhenkel.tools.FluidUtils;
 import de.maxhenkel.car.blocks.tileentity.TileEntityGasStation;
+import de.maxhenkel.corelib.inventory.ScreenBase;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -18,7 +18,7 @@ import net.minecraft.util.text.*;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 
-public class GuiGasStation extends GuiBase<ContainerGasStation> {
+public class GuiGasStation extends ScreenBase<ContainerGasStation> {
 
     private static final ResourceLocation GUI_TEXTURE = new ResourceLocation(Main.MODID, "textures/gui/gui_gas_station.png");
 
@@ -124,7 +124,7 @@ public class GuiGasStation extends GuiBase<ContainerGasStation> {
         );
         field_230712_o_.func_238422_b_(matrixStack, fuelText, guiLeft + 63, guiTop + 30, FONT_COLOR);
 
-        if (FluidUtils.isEmpty(tank)) {
+        if (tank.isEmpty()) {
             return;
         } else {
             field_230712_o_.func_238422_b_(matrixStack, new TranslationTextComponent("gas_station.car_fuel_type", new StringTextComponent(tank.getDisplayName().getString()).func_240699_a_(TextFormatting.WHITE)), guiLeft + 63, guiTop + 40, FONT_COLOR);
@@ -138,7 +138,7 @@ public class GuiGasStation extends GuiBase<ContainerGasStation> {
     private void drawBuffer(MatrixStack matrixStack) {
         FluidStack stack = gasStation.getStorage();
 
-        if (FluidUtils.isEmpty(stack)) {
+        if (stack.isEmpty()) {
             field_230712_o_.func_238422_b_(matrixStack, new TranslationTextComponent("gas_station.fuel_empty"), guiLeft + 63, guiTop + 70, FONT_COLOR);
             return;
         }
@@ -163,4 +163,5 @@ public class GuiGasStation extends GuiBase<ContainerGasStation> {
     public boolean func_231177_au__() {
         return false;
     }
+
 }

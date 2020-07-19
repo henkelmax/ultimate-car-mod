@@ -2,9 +2,11 @@ package de.maxhenkel.car.net;
 
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.entity.car.base.EntityCarBatteryBase;
+import de.maxhenkel.corelib.net.Message;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketBuffer;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.network.NetworkDirection;
 import net.minecraftforge.fml.network.NetworkEvent;
 
@@ -23,9 +25,14 @@ public class MessageCenterCar implements Message<MessageCenterCar> {
     }
 
     @Override
+    public Dist getExecutingSide() {
+        return Dist.DEDICATED_SERVER;
+    }
+
+    @Override
     public void executeServerSide(NetworkEvent.Context context) {
         if (!context.getSender().getUniqueID().equals(uuid)) {
-            System.out.println("---------UUID was not the same-----------");
+            Main.LOGGER.error("The UUID of the sender was not equal to the packet UUID");
             return;
         }
 
@@ -45,11 +52,6 @@ public class MessageCenterCar implements Message<MessageCenterCar> {
     }
 
     @Override
-    public void executeClientSide(NetworkEvent.Context context) {
-
-    }
-
-    @Override
     public MessageCenterCar fromBytes(PacketBuffer buf) {
         this.uuid = buf.readUniqueId();
         return this;
@@ -59,4 +61,5 @@ public class MessageCenterCar implements Message<MessageCenterCar> {
     public void toBytes(PacketBuffer buf) {
         buf.writeUniqueId(uuid);
     }
+
 }

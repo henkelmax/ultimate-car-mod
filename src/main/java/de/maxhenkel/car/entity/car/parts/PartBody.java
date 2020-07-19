@@ -1,6 +1,6 @@
 package de.maxhenkel.car.entity.car.parts;
 
-import de.maxhenkel.car.entity.model.obj.OBJModel;
+import de.maxhenkel.corelib.client.obj.OBJModel;
 import de.maxhenkel.tools.FloatSupplier;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.vector.Vector3d;
@@ -116,4 +116,5 @@ public class PartBody extends PartModel {
 
         return true;
     }
+
 }

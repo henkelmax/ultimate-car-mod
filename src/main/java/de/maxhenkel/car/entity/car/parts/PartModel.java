@@ -1,10 +1,10 @@
 package de.maxhenkel.car.entity.car.parts;
 
 import de.maxhenkel.car.entity.car.base.EntityGenericCar;
-import de.maxhenkel.car.entity.model.obj.OBJModel;
-import de.maxhenkel.car.entity.model.obj.OBJModelInstance;
-import de.maxhenkel.car.entity.model.obj.OBJModelOptions;
-import de.maxhenkel.tools.Rotation;
+import de.maxhenkel.corelib.client.obj.OBJModel;
+import de.maxhenkel.corelib.client.obj.OBJModelInstance;
+import de.maxhenkel.corelib.client.obj.OBJModelOptions;
+import de.maxhenkel.corelib.math.Rotation;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.vector.Vector3d;
 

@@ -8,6 +8,7 @@ import de.maxhenkel.car.entity.car.base.EntityCarBase;
 import de.maxhenkel.car.entity.car.base.EntityGenericCar;
 import de.maxhenkel.car.net.MessageOpenCarWorkshopGui;
 import de.maxhenkel.car.net.MessageSpawnCar;
+import de.maxhenkel.corelib.inventory.ScreenBase;
 import de.maxhenkel.tools.EntityTools;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.entity.player.PlayerEntity;
@@ -17,7 +18,7 @@ import net.minecraft.util.Util;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
-public class GuiCarWorkshopCrafting extends GuiBase<ContainerCarWorkshopCrafting> {
+public class GuiCarWorkshopCrafting extends ScreenBase<ContainerCarWorkshopCrafting> {
 
     private static final ResourceLocation GUI_TEXTURE = new ResourceLocation(Main.MODID, "textures/gui/gui_car_workshop_crafting.png");
 

@@ -1,8 +1,7 @@
 package de.maxhenkel.car.entity.car.parts;
 
-import de.maxhenkel.car.Config;
 import de.maxhenkel.car.Main;
-import de.maxhenkel.car.entity.model.obj.OBJModel;
+import de.maxhenkel.corelib.client.obj.OBJModel;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.vector.Vector3d;
 
@@ -24,13 +23,14 @@ public class PartBodySUV extends PartBody {
         this.height = 1.4F;
         this.minRotationSpeed = 1.1F;
         this.maxRotationSpeed = 5F;
-        this.fuelEfficiency = () -> Config.bodySUVFuelEfficiency.get().floatValue();
-        this.acceleration = () -> Config.bodySUVAcceleration.get().floatValue();
-        this.maxSpeed = () -> Config.bodySUVMaxSpeed.get().floatValue();
+        this.fuelEfficiency = () -> Main.SERVER_CONFIG.bodySUVFuelEfficiency.get().floatValue();
+        this.acceleration = () -> Main.SERVER_CONFIG.bodySUVAcceleration.get().floatValue();
+        this.maxSpeed = () -> Main.SERVER_CONFIG.bodySUVMaxSpeed.get().floatValue();
     }
 
     @Override
     public boolean canFitWheel(PartWheelBase wheel) {
         return wheel instanceof PartWheelBig;
     }
+
 }

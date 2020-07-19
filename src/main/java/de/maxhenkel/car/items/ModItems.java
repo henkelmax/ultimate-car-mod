@@ -3,8 +3,8 @@ package de.maxhenkel.car.items;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.entity.car.parts.PartRegistry;
 import de.maxhenkel.car.fluids.ModFluids;
+import de.maxhenkel.corelib.reflection.ReflectionUtils;
 import de.maxhenkel.tools.NoRegister;
-import de.maxhenkel.tools.ReflectionTools;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 
@@ -229,12 +229,12 @@ public class ModItems {
     public static List<Item> getAll() {
         List<Item> items = new ArrayList<>();
         for (Field field : ModItems.class.getFields()) {
-            if (ReflectionTools.hasAnnotation(field, NoRegister.class)) {
+            if (ReflectionUtils.hasAnnotation(field, NoRegister.class)) {
                 continue;
             }
             try {
                 Object obj = field.get(null);
-                if (obj != null && obj instanceof Item) {
+                if (obj instanceof Item) {
                     items.add((Item) obj);
                 }
             } catch (IllegalAccessException e) {
@@ -244,4 +244,5 @@ public class ModItems {
 
         return items;
     }
+
 }

@@ -1,6 +1,5 @@
 package de.maxhenkel.car.blocks.tileentity;
 
-import de.maxhenkel.car.Config;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.blocks.BlockGui;
 import de.maxhenkel.car.blocks.ModBlocks;
@@ -13,9 +12,9 @@ public class TileEntityOilMill extends TileEntityEnergyFluidProducer {
 
     public TileEntityOilMill() {
         super(Main.OIL_MILL_TILE_ENTITY_TYPE, Main.RECIPE_TYPE_OIL_MILL);
-        this.maxEnergy = Config.oilMillEnergyStorage.get();
+        this.maxEnergy = Main.SERVER_CONFIG.oilMillEnergyStorage.get();
         this.storedEnergy = 0;
-        this.fluidAmount = Config.oilMillFluidStorage.get();
+        this.fluidAmount = Main.SERVER_CONFIG.oilMillFluidStorage.get();
         this.currentMillibuckets = 0;
     }
 

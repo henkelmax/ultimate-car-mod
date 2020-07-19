@@ -31,9 +31,6 @@ public class SlotPainter extends Slot {
 
     public void setPainterID(int index) {
         ItemStack stack = player.getHeldItemMainhand();
-        if (stack == null) {
-            return;
-        }
 
         Item i = stack.getItem();
 
@@ -62,14 +59,11 @@ public class SlotPainter extends Slot {
 
     public static ItemStack getPainterStack(PlayerEntity player) {
         ItemStack stack = player.getHeldItemMainhand();
-        if (stack == null) {
-            return null;
-        }
 
         Item i = stack.getItem();
 
         if (!(i instanceof ItemPainter)) {
-            return null;
+            return ItemStack.EMPTY;
         }
 
         return stack;

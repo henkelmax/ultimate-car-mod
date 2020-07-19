@@ -1,6 +1,5 @@
 package de.maxhenkel.car.blocks.tileentity;
 
-import de.maxhenkel.car.Config;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.blocks.ModBlocks;
 import de.maxhenkel.car.fluids.ModFluids;
@@ -43,24 +42,24 @@ public class TileEntityBackmixReactor extends TileEntityBase implements ITickabl
 
     public TileEntityBackmixReactor() {
         super(Main.BACKMIX_REACTOR_TILE_ENTITY_TYPE);
-        this.maxStorage = Config.backmixReactorEnergyStorage.get();
+        this.maxStorage = Main.SERVER_CONFIG.backmixReactorEnergyStorage.get();
         this.storedEnergy = 0;
-        this.energyUsage = Config.backmixReactorEnergyUsage.get();
+        this.energyUsage = Main.SERVER_CONFIG.backmixReactorEnergyUsage.get();
 
-        this.maxMethanol = Config.backmixReactorFluidStorage.get();
-        this.maxCanola = Config.backmixReactorFluidStorage.get();
-        this.maxMix = Config.backmixReactorFluidStorage.get();
+        this.maxMethanol = Main.SERVER_CONFIG.backmixReactorFluidStorage.get();
+        this.maxCanola = Main.SERVER_CONFIG.backmixReactorFluidStorage.get();
+        this.maxMix = Main.SERVER_CONFIG.backmixReactorFluidStorage.get();
 
         this.currentCanola = 0;
         this.currentMethanol = 0;
         this.currentMix = 0;
 
-        this.generatingTime = Config.backmixReactorGeneratingTime.get();
+        this.generatingTime = Main.SERVER_CONFIG.backmixReactorGeneratingTime.get();
         this.timeToGenerate = 0;
 
-        this.mixGeneration = Config.backmixReactorMixGeneration.get();
-        this.methanolUsage = Config.backmixReactorMethanolUsage.get();
-        this.canolaUsage = Config.backmixReactorCanolaUsage.get();
+        this.mixGeneration = Main.SERVER_CONFIG.backmixReactorMixGeneration.get();
+        this.methanolUsage = Main.SERVER_CONFIG.backmixReactorMethanolUsage.get();
+        this.canolaUsage = Main.SERVER_CONFIG.backmixReactorCanolaUsage.get();
     }
 
     public final IIntArray FIELDS = new IIntArray() {

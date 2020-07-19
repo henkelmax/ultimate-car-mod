@@ -12,7 +12,7 @@ public class ContainerCarWorkshopRepair extends ContainerBase {
     protected TileEntityCarWorkshop tile;
 
     public ContainerCarWorkshopRepair(int id, TileEntityCarWorkshop tile, PlayerInventory playerInventory) {
-        super(Main.CAR_WORKSHOP_REPAIR_CONTAINER_TYPE, id, tile, playerInventory);
+        super(Main.CAR_WORKSHOP_REPAIR_CONTAINER_TYPE, id, playerInventory, tile);
         this.playerInventory = playerInventory;
         this.tile = tile;
 
@@ -20,7 +20,7 @@ public class ContainerCarWorkshopRepair extends ContainerBase {
         this.addSlot(new SlotOneItem(tile.getRepairInventory(), 1, 80, 61, ModItems.WRENCH));
         this.addSlot(new SlotOneItem(tile.getRepairInventory(), 2, 110, 61, ModItems.HAMMER));
 
-        addInvSlots();
+        addPlayerInventorySlots();
     }
 
     @Override

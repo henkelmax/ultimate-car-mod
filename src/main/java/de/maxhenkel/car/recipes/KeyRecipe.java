@@ -5,7 +5,6 @@ import java.util.UUID;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.items.ItemKey;
 import de.maxhenkel.car.items.ModItems;
-import de.maxhenkel.tools.ItemTools;
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -15,9 +14,9 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
-public class ReciepeKey extends SpecialRecipe {
+public class KeyRecipe extends SpecialRecipe {
 
-    public ReciepeKey(ResourceLocation idIn) {
+    public KeyRecipe(ResourceLocation idIn) {
         super(idIn);
     }
 
@@ -43,8 +42,8 @@ public class ReciepeKey extends SpecialRecipe {
             }
 
             if (stack.getItem().equals(Items.IRON_INGOT)) {
-                ItemStack s = ItemTools.decrItemStack(stack, null);
-                inv.setInventorySlotContents(i, s);
+                stack.shrink(1);
+                inv.setInventorySlotContents(i, stack);
             }
         }
 
@@ -104,4 +103,5 @@ public class ReciepeKey extends SpecialRecipe {
 
         return false;
     }
+
 }

@@ -1,7 +1,7 @@
 package de.maxhenkel.car.items;
 
 import de.maxhenkel.car.Main;
-import de.maxhenkel.tools.ItemTools;
+import de.maxhenkel.corelib.item.ItemUtils;
 import de.maxhenkel.car.ModItemGroups;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.passive.AnimalEntity;
@@ -34,13 +34,13 @@ public class ItemCanolaCake extends Item {
         }
 
         if (animal.getGrowingAge() == 0 && !animal.isInLove()) {
-            ItemTools.decrItemStack(stack, playerIn);
+            ItemUtils.decrItemStack(stack, playerIn);
             animal.setInLove(playerIn);
             return ActionResultType.CONSUME;
         }
 
         if (animal.isChild()) {
-            ItemTools.decrItemStack(stack, playerIn);
+            ItemUtils.decrItemStack(stack, playerIn);
             animal.ageUp((int) ((float) (-animal.getGrowingAge() / 20) * 0.1F), true);
             return ActionResultType.CONSUME;
         }

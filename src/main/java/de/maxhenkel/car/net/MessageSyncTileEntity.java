@@ -1,5 +1,6 @@
 package de.maxhenkel.car.net;
 
+import de.maxhenkel.corelib.net.Message;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
@@ -25,8 +26,8 @@ public class MessageSyncTileEntity implements Message<MessageSyncTileEntity> {
     }
 
     @Override
-    public void executeServerSide(NetworkEvent.Context context) {
-
+    public Dist getExecutingSide() {
+        return Dist.CLIENT;
     }
 
     @Override
@@ -61,4 +62,5 @@ public class MessageSyncTileEntity implements Message<MessageSyncTileEntity> {
         buf.writeBlockPos(pos);
         buf.writeCompoundTag(tag);
     }
+
 }

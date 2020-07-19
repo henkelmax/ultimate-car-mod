@@ -9,14 +9,14 @@ public class ContainerPainter extends ContainerBase {
     protected PlayerInventory playerInventory;
 
     public ContainerPainter(int id, PlayerInventory playerInventory, boolean isYellow) {
-        super(Main.PAINTER_CONTAINER_TYPE, id, new InventoryPainter(isYellow), null);
+        super(Main.PAINTER_CONTAINER_TYPE, id, null, new InventoryPainter(isYellow));
         this.playerInventory = playerInventory;
 
         for (int j = 0; j < 4; j++) {
             for (int k = 0; k < 9; k++) {
                 int index = k + j * 9;
                 if (index < BlockPaint.EnumPaintType.values().length) {
-                    addSlot(new SlotPainter(playerInventory.player, tileInventory, index, 8 + k * 18, 18 + j * 18));
+                    addSlot(new SlotPainter(playerInventory.player, inventory, index, 8 + k * 18, 18 + j * 18));
                 }
             }
         }

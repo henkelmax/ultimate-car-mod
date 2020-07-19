@@ -11,19 +11,20 @@ public class ContainerGenerator extends ContainerBase {
     private TileEntityGenerator generator;
 
     public ContainerGenerator(int id, TileEntityGenerator generator, PlayerInventory playerInv, IIntArray fields) {
-        super(Main.GENERATOR_CONTAINER_TYPE, id, generator, playerInv);
-        this.generator=generator;
+        super(Main.GENERATOR_CONTAINER_TYPE, id, playerInv, generator);
+        this.generator = generator;
 
-        addInvSlots();
+        addPlayerInventorySlots();
 
         trackIntArray(fields);
     }
 
-    public ContainerGenerator(int id, TileEntityGenerator generator, PlayerInventory playerInv){
+    public ContainerGenerator(int id, TileEntityGenerator generator, PlayerInventory playerInv) {
         this(id, generator, playerInv, new IntArray(2));
     }
 
     public TileEntityGenerator getGenerator() {
         return generator;
     }
+
 }

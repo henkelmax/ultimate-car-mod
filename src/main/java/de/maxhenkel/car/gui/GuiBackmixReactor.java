@@ -3,6 +3,7 @@ package de.maxhenkel.car.gui;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.blocks.tileentity.TileEntityBackmixReactor;
+import de.maxhenkel.corelib.inventory.ScreenBase;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.util.ResourceLocation;
@@ -13,7 +14,7 @@ import net.minecraft.util.text.TranslationTextComponent;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GuiBackmixReactor extends GuiBase<ContainerBackmixReactor> {
+public class GuiBackmixReactor extends ScreenBase<ContainerBackmixReactor> {
 
     private static final ResourceLocation GUI_TEXTURE = new ResourceLocation(Main.MODID, "textures/gui/gui_backmix_reactor.png");
 
@@ -192,4 +193,5 @@ public class GuiBackmixReactor extends GuiBase<ContainerBackmixReactor> {
         int time = tile.generatingTime - tile.getTimeToGenerate();
         return ((float) time) / ((float) tile.generatingTime);
     }
+
 }

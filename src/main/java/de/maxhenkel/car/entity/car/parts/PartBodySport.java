@@ -1,8 +1,7 @@
 package de.maxhenkel.car.entity.car.parts;
 
-import de.maxhenkel.car.Config;
 import de.maxhenkel.car.Main;
-import de.maxhenkel.car.entity.model.obj.OBJModel;
+import de.maxhenkel.corelib.client.obj.OBJModel;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.vector.Vector3d;
 
@@ -24,8 +23,9 @@ public class PartBodySport extends PartBody {
         this.height = 1.2F;
         this.minRotationSpeed = 1.1F;
         this.maxRotationSpeed = 5F;
-        this.fuelEfficiency = () -> Config.bodySportFuelEfficiency.get().floatValue();
-        this.acceleration = () -> Config.bodySportAcceleration.get().floatValue();
-        this.maxSpeed = () -> Config.bodySportMaxSpeed.get().floatValue();
+        this.fuelEfficiency = () -> Main.SERVER_CONFIG.bodySportFuelEfficiency.get().floatValue();
+        this.acceleration = () -> Main.SERVER_CONFIG.bodySportAcceleration.get().floatValue();
+        this.maxSpeed = () -> Main.SERVER_CONFIG.bodySportMaxSpeed.get().floatValue();
     }
+
 }

@@ -9,12 +9,13 @@ public class ContainerBackmixReactor extends ContainerBase {
     private TileEntityBackmixReactor backmixReactor;
 
     public ContainerBackmixReactor(int id, TileEntityBackmixReactor backmixReactor, PlayerInventory playerInv) {
-        super(Main.BACKMIX_REACTOR_CONTAINER_TYPE, id, backmixReactor, playerInv);
+        super(Main.BACKMIX_REACTOR_CONTAINER_TYPE, id, playerInv, backmixReactor);
         this.backmixReactor = backmixReactor;
-        addInvSlots();
+        addPlayerInventorySlots();
     }
 
     public TileEntityBackmixReactor getBackmixReactor() {
         return backmixReactor;
     }
+
 }

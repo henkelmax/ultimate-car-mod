@@ -10,13 +10,13 @@ public class ContainerGasStation extends ContainerBase {
     private TileEntityGasStation gasStation;
 
     public ContainerGasStation(int id, TileEntityGasStation gasStation, PlayerInventory playerInv) {
-        super(Main.FUEL_STATION_CONTAINER_TYPE, id, gasStation, playerInv);
+        super(Main.FUEL_STATION_CONTAINER_TYPE, id, playerInv, gasStation);
         this.gasStation = gasStation;
 
         addSlot(new SlotPresent(gasStation.getTradingInventory().getStackInSlot(0), 18, 99));
         addSlot(new Slot(gasStation.getTradingInventory(), 1, 38, 99));
 
-        addInvSlots();
+        addPlayerInventorySlots();
     }
 
     public TileEntityGasStation getGasStation() {
@@ -27,4 +27,5 @@ public class ContainerGasStation extends ContainerBase {
     public int getInvOffset() {
         return 51;
     }
+
 }

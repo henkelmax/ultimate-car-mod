@@ -1,11 +1,10 @@
 package de.maxhenkel.car.blocks.tileentity;
 
-import de.maxhenkel.car.Config;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.blocks.BlockGui;
 import de.maxhenkel.car.blocks.ModBlocks;
 import de.maxhenkel.car.fluids.ModFluids;
-import de.maxhenkel.tools.EnergyTools;
+import de.maxhenkel.corelib.energy.EnergyUtils;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.Fluid;
@@ -40,11 +39,11 @@ public class TileEntityGenerator extends TileEntityBase implements ITickableTile
     public TileEntityGenerator() {
         super(Main.GENERATOR_TILE_ENTITY_TYPE);
         this.inventory = new Inventory(0);
-        this.maxStorage = Config.generatorEnergyStorage.get();
+        this.maxStorage = Main.SERVER_CONFIG.generatorEnergyStorage.get();
         this.storedEnergy = 0;
-        this.maxMillibuckets = Config.generatorFluidStorage.get();
+        this.maxMillibuckets = Main.SERVER_CONFIG.generatorFluidStorage.get();
         this.currentMillibuckets = 0;
-        this.energyGeneration = Config.generatorEnergyGeneration.get();
+        this.energyGeneration = Main.SERVER_CONFIG.generatorEnergyGeneration.get();
     }
 
     public final IIntArray FIELDS = new IIntArray() {
@@ -117,12 +116,12 @@ public class TileEntityGenerator extends TileEntityBase implements ITickableTile
 
     private void handlePushEnergy() {
         for (Direction side : Direction.values()) {
-            IEnergyStorage storage = EnergyTools.getEnergyStorageOffset(world, pos, side);
+            IEnergyStorage storage = EnergyUtils.getEnergyStorageOffset(world, pos, side);
             if (storage == null) {
                 continue;
             }
 
-            EnergyTools.pushEnergy(this, storage, storedEnergy, side.getOpposite(), side);
+            EnergyUtils.pushEnergy(this, storage, storedEnergy);
         }
     }
 
@@ -339,4 +338,5 @@ public class TileEntityGenerator extends TileEntityBase implements ITickableTile
     public FluidStack drain(int maxDrain, FluidAction action) {
         return FluidStack.EMPTY;
     }
+
 }

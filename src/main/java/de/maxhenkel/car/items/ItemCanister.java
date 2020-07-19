@@ -2,7 +2,6 @@ package de.maxhenkel.car.items;
 
 import java.util.List;
 
-import de.maxhenkel.car.Config;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.ModItemGroups;
 import de.maxhenkel.car.blocks.ModBlocks;
@@ -119,10 +118,10 @@ public class ItemCanister extends Item {
             fluid = FluidStack.loadFluidStackFromNBT(comp.getCompound("fuel"));
         }
 
-        int maxAmount = Config.canisterMaxFuel.get();
+        int maxAmount = Main.SERVER_CONFIG.canisterMaxFuel.get();
 
         if (fluid != null) {
-            maxAmount = Config.canisterMaxFuel.get() - fluid.getAmount();
+            maxAmount = Main.SERVER_CONFIG.canisterMaxFuel.get() - fluid.getAmount();
         }
 
         if (maxAmount <= 0) {
@@ -130,7 +129,7 @@ public class ItemCanister extends Item {
         }
 
         FluidStack resultSim = handler.drain(maxAmount, IFluidHandler.FluidAction.SIMULATE);
-        if (resultSim == null || resultSim.getAmount() <= 0) {
+        if (resultSim.getAmount() <= 0) {
             return false;
         }
 
@@ -140,7 +139,7 @@ public class ItemCanister extends Item {
 
         FluidStack result = handler.drain(maxAmount, IFluidHandler.FluidAction.EXECUTE);
 
-        if (result == null || result.isEmpty()) {
+        if (result.isEmpty()) {
             return false;
         }
 

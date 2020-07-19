@@ -1,15 +1,14 @@
 package de.maxhenkel.car.entity.car.base;
 
-import de.maxhenkel.car.Config;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.dataserializers.DataSerializerItemList;
 import de.maxhenkel.car.entity.car.parts.*;
-import de.maxhenkel.car.entity.model.obj.OBJModelInstance;
 import de.maxhenkel.car.integration.jei.CarRecipe;
 import de.maxhenkel.car.integration.jei.CarRecipeBuilder;
 import de.maxhenkel.car.items.ICarPart;
 import de.maxhenkel.car.items.ItemKey;
 import de.maxhenkel.car.sounds.ModSounds;
+import de.maxhenkel.corelib.client.obj.OBJModelInstance;
 import net.minecraft.entity.EntityType;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.inventory.Inventory;
@@ -154,7 +153,7 @@ public class EntityGenericCar extends EntityCarLicensePlateBase {
 
         float fluidEfficiency = 0F;
 
-        if (fluid == null || Config.carValidFuelList.contains(fluid)) {
+        if (fluid == null || Main.SERVER_CONFIG.carValidFuelList.contains(fluid)) {
             fluidEfficiency = 1;
         }
 
@@ -488,4 +487,5 @@ public class EntityGenericCar extends EntityCarLicensePlateBase {
     public List<OBJModelInstance> getModels() {
         return modelInstances;
     }
+
 }

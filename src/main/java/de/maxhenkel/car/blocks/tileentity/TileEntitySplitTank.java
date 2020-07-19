@@ -1,6 +1,5 @@
 package de.maxhenkel.car.blocks.tileentity;
 
-import de.maxhenkel.car.Config;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.fluids.ModFluids;
 import net.minecraft.block.BlockState;
@@ -41,20 +40,20 @@ public class TileEntitySplitTank extends TileEntityBase implements ITickableTile
         super(Main.SPLIT_TANK_TILE_ENTITY_TYPE);
         this.inventory = new Inventory(0);
         this.currentMix = 0;
-        this.maxMix = Config.splitTankFluidStorage.get();
+        this.maxMix = Main.SERVER_CONFIG.splitTankFluidStorage.get();
 
         this.currentBioDiesel = 0;
-        this.maxBioDiesel = Config.splitTankFluidStorage.get();
+        this.maxBioDiesel = Main.SERVER_CONFIG.splitTankFluidStorage.get();
 
         this.currentGlycerin = 0;
-        this.maxGlycerin = Config.splitTankFluidStorage.get();
+        this.maxGlycerin = Main.SERVER_CONFIG.splitTankFluidStorage.get();
 
-        this.generatingTime = Config.splitTankGeneratingTime.get();
+        this.generatingTime = Main.SERVER_CONFIG.splitTankGeneratingTime.get();
         this.timeToGenerate = 0;
 
-        this.mixUsage = Config.splitTankMixUsage.get();
-        this.glycerinGeneration = Config.splitTankGlycerinGeneration.get();
-        this.bioDieselGeneration = Config.splitTankBioDieselGeneration.get();
+        this.mixUsage = Main.SERVER_CONFIG.splitTankMixUsage.get();
+        this.glycerinGeneration = Main.SERVER_CONFIG.splitTankGlycerinGeneration.get();
+        this.bioDieselGeneration = Main.SERVER_CONFIG.splitTankBioDieselGeneration.get();
     }
 
     public final IIntArray FIELDS = new IIntArray() {

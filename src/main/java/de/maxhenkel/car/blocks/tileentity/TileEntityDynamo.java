@@ -1,8 +1,7 @@
 package de.maxhenkel.car.blocks.tileentity;
 
-import de.maxhenkel.car.Config;
 import de.maxhenkel.car.Main;
-import de.maxhenkel.tools.EnergyTools;
+import de.maxhenkel.corelib.energy.EnergyUtils;
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.ITickableTileEntity;
@@ -21,8 +20,8 @@ public class TileEntityDynamo extends TileEntityBase implements IEnergyStorage, 
 
     public TileEntityDynamo() {
         super(Main.DYNAMO_TILE_ENTITY_TYPE);
-        this.maxStorage = Config.dynamoEnergyStorage.get();
-        this.generation = Config.dynamoEnergyGeneration.get();
+        this.maxStorage = Main.SERVER_CONFIG.dynamoEnergyStorage.get();
+        this.generation = Main.SERVER_CONFIG.dynamoEnergyGeneration.get();
         this.storedEnergy = 0;
 
     }
@@ -30,13 +29,13 @@ public class TileEntityDynamo extends TileEntityBase implements IEnergyStorage, 
     @Override
     public void tick() {
         for (Direction side : Direction.values()) {
-            IEnergyStorage storage = EnergyTools.getEnergyStorageOffset(world, pos, side);
+            IEnergyStorage storage = EnergyUtils.getEnergyStorageOffset(world, pos, side);
 
             if (storage == null) {
                 continue;
             }
 
-            EnergyTools.pushEnergy(this, storage, storedEnergy, side.getOpposite(), side);
+            EnergyUtils.pushEnergy(this, storage, storedEnergy);
         }
     }
 
@@ -106,4 +105,5 @@ public class TileEntityDynamo extends TileEntityBase implements IEnergyStorage, 
     public IIntArray getFields() {
         return new IntArray(0);
     }
+
 }

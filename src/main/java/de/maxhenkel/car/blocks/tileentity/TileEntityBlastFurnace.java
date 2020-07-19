@@ -1,6 +1,5 @@
 package de.maxhenkel.car.blocks.tileentity;
 
-import de.maxhenkel.car.Config;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.blocks.BlockGui;
 import de.maxhenkel.car.blocks.ModBlocks;
@@ -13,9 +12,9 @@ public class TileEntityBlastFurnace extends TileEntityEnergyFluidProducer {
 
     public TileEntityBlastFurnace() {
         super(Main.BLAST_FURNACE_TILE_ENTITY_TYPE, Main.RECIPE_TYPE_BLAST_FURNACE);
-        this.maxEnergy = Config.blastFurnaceEnergyStorage.get();
+        this.maxEnergy = Main.SERVER_CONFIG.blastFurnaceEnergyStorage.get();
         this.storedEnergy = 0;
-        this.fluidAmount = Config.blastFurnaceFluidStorage.get();
+        this.fluidAmount = Main.SERVER_CONFIG.blastFurnaceFluidStorage.get();
         this.currentMillibuckets = 0;
     }
 

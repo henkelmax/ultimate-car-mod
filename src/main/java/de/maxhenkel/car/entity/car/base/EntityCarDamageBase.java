@@ -15,8 +15,7 @@ import net.minecraft.world.World;
 
 public abstract class EntityCarDamageBase extends EntityCarBatteryBase {
 
-    private static final DataParameter<Float> DAMAGE = EntityDataManager.<Float>createKey(EntityCarDamageBase.class,
-            DataSerializers.FLOAT);
+    private static final DataParameter<Float> DAMAGE = EntityDataManager.createKey(EntityCarDamageBase.class, DataSerializers.FLOAT);
 
     public EntityCarDamageBase(EntityType type, World worldIn) {
         super(type, worldIn);
@@ -183,7 +182,7 @@ public abstract class EntityCarDamageBase extends EntityCarBatteryBase {
     @Override
     protected void registerData() {
         super.registerData();
-        this.dataManager.register(DAMAGE, Float.valueOf(0));
+        this.dataManager.register(DAMAGE, 0F);
     }
 
     public void setDamage(float damage) {
@@ -192,7 +191,7 @@ public abstract class EntityCarDamageBase extends EntityCarBatteryBase {
         } else if (damage < 0) {
             damage = 0;
         }
-        this.dataManager.set(DAMAGE, Float.valueOf(damage));
+        this.dataManager.set(DAMAGE, damage);
     }
 
     public float getDamage() {

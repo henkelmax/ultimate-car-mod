@@ -1,6 +1,7 @@
 package de.maxhenkel.car.net;
 
 import de.maxhenkel.car.entity.car.base.EntityCarBase;
+import de.maxhenkel.corelib.net.Message;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -44,8 +45,8 @@ public class MessageCenterCarClient implements Message<MessageCenterCarClient> {
     }
 
     @Override
-    public void executeServerSide(NetworkEvent.Context context) {
-
+    public Dist getExecutingSide() {
+        return Dist.CLIENT;
     }
 
     @Override
@@ -63,4 +64,5 @@ public class MessageCenterCarClient implements Message<MessageCenterCarClient> {
     public void toBytes(PacketBuffer buf) {
         buf.writeUniqueId(uuid);
     }
+
 }

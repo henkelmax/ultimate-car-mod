@@ -3,7 +3,7 @@ package de.maxhenkel.car.blocks;
 import de.maxhenkel.car.blocks.tileentity.TileEntityGenerator;
 import de.maxhenkel.car.gui.ContainerGenerator;
 import de.maxhenkel.car.gui.TileEntityContainerProvider;
-import de.maxhenkel.tools.FluidUtils;
+import de.maxhenkel.corelib.fluid.FluidUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
@@ -52,4 +52,5 @@ public class BlockGenerator extends BlockGui<TileEntityGenerator> {
     public TileEntity createNewTileEntity(IBlockReader worldIn) {
         return new TileEntityGenerator();
     }
+
 }

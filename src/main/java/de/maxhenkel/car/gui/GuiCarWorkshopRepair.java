@@ -6,8 +6,9 @@ import java.util.List;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.net.MessageOpenCarWorkshopGui;
+import de.maxhenkel.corelib.inventory.ScreenBase;
+import de.maxhenkel.corelib.math.MathUtils;
 import de.maxhenkel.tools.EntityTools;
-import de.maxhenkel.tools.MathTools;
 import de.maxhenkel.car.blocks.tileentity.TileEntityCarWorkshop;
 import de.maxhenkel.car.entity.car.base.EntityCarBase;
 import de.maxhenkel.car.entity.car.base.EntityCarDamageBase;
@@ -20,7 +21,7 @@ import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
-public class GuiCarWorkshopRepair extends GuiBase<ContainerCarWorkshopRepair> {
+public class GuiCarWorkshopRepair extends ScreenBase<ContainerCarWorkshopRepair> {
 
     private static final ResourceLocation GUI_TEXTURE = new ResourceLocation(Main.MODID, "textures/gui/gui_car_workshop_repair.png");
 
@@ -81,7 +82,7 @@ public class GuiCarWorkshopRepair extends GuiBase<ContainerCarWorkshopRepair> {
         if (mouseX >= guiLeft + 52 && mouseX <= guiLeft + 123) {
             if (mouseY >= guiTop + 81 && mouseY <= guiTop + 90) {
                 List<IFormattableTextComponent> list = new ArrayList<>();
-                list.add(new TranslationTextComponent("tooltip.damage", MathTools.round(car.getDamage(), 2)));
+                list.add(new TranslationTextComponent("tooltip.damage", MathUtils.round(car.getDamage(), 2)));
                 func_238654_b_(matrixStack, list, mouseX - guiLeft, mouseY - guiTop);
             }
         }
@@ -107,7 +108,7 @@ public class GuiCarWorkshopRepair extends GuiBase<ContainerCarWorkshopRepair> {
     public double getDamagePercent(EntityCarDamageBase car) {
         float dmg = car.getDamage();
         dmg = Math.min(dmg, 100);
-        return MathTools.round(dmg, 2);
+        return MathUtils.round(dmg, 2);
     }
 
     @Override

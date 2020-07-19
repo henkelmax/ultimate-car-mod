@@ -1,9 +1,11 @@
 package de.maxhenkel.car.net;
 
 import de.maxhenkel.car.blocks.tileentity.TileEntitySign;
+import de.maxhenkel.corelib.net.Message;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 public class MessageEditSign implements Message<MessageEditSign> {
@@ -21,17 +23,17 @@ public class MessageEditSign implements Message<MessageEditSign> {
     }
 
     @Override
+    public Dist getExecutingSide() {
+        return Dist.DEDICATED_SERVER;
+    }
+
+    @Override
     public void executeServerSide(NetworkEvent.Context context) {
         TileEntity te = context.getSender().world.getTileEntity(pos);
 
         if (te instanceof TileEntitySign) {
             ((TileEntitySign) te).setText(text);
         }
-    }
-
-    @Override
-    public void executeClientSide(NetworkEvent.Context context) {
-
     }
 
     @Override
@@ -52,4 +54,5 @@ public class MessageEditSign implements Message<MessageEditSign> {
             buf.writeString(text[i], 20);
         }
     }
+
 }

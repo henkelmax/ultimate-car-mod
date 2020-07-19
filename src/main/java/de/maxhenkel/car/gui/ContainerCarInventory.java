@@ -10,7 +10,7 @@ public class ContainerCarInventory extends ContainerBase {
     private EntityCarInventoryBase car;
 
     public ContainerCarInventory(int id, EntityCarInventoryBase car, PlayerInventory playerInventory) {
-        super(Main.CAR_INVENTORY_CONTAINER_TYPE, id, car.getExternalInventory(), playerInventory);
+        super(Main.CAR_INVENTORY_CONTAINER_TYPE, id, playerInventory, car.getExternalInventory());
         this.car = car;
 
         int rows = getRows();
@@ -21,7 +21,7 @@ public class ContainerCarInventory extends ContainerBase {
             }
         }
 
-        addInvSlots();
+        addPlayerInventorySlots();
     }
 
     public int getRows() {
@@ -36,4 +36,5 @@ public class ContainerCarInventory extends ContainerBase {
     public EntityCarInventoryBase getCar() {
         return car;
     }
+
 }

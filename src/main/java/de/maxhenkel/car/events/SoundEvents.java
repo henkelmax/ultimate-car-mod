@@ -1,6 +1,6 @@
 package de.maxhenkel.car.events;
 
-import de.maxhenkel.car.Config;
+import de.maxhenkel.car.Main;
 import de.maxhenkel.car.gui.CarOptionsSoundsScreen;
 import de.maxhenkel.car.sounds.ModSounds;
 import net.minecraft.client.Minecraft;
@@ -55,7 +55,8 @@ public class SoundEvents {
     @SubscribeEvent
     public void onSound(PlaySoundAtEntityEvent event) {
         if (ModSounds.isCarSoundCategory(event.getSound())) {
-            event.setVolume(Config.carVolume.get().floatValue());
+            event.setVolume(Main.CLIENT_CONFIG.carVolume.get().floatValue());
         }
     }
+
 }
