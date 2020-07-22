@@ -2,7 +2,7 @@ package de.maxhenkel.car.blocks;
 
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.ModItemGroups;
-import de.maxhenkel.tools.IItemBlock;
+import de.maxhenkel.corelib.block.IItemBlock;
 import net.minecraft.block.SlabBlock;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;

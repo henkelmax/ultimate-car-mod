@@ -3,7 +3,7 @@ package de.maxhenkel.car.blocks;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.ModItemGroups;
 import de.maxhenkel.car.entity.car.base.EntityGenericCar;
-import de.maxhenkel.tools.IItemBlock;
+import de.maxhenkel.corelib.block.IItemBlock;
 import net.minecraft.block.AbstractPressurePlateBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;

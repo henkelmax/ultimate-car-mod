@@ -5,7 +5,7 @@ import de.maxhenkel.car.ModItemGroups;
 import de.maxhenkel.car.blocks.tileentity.TileEntityCarWorkshop;
 import de.maxhenkel.car.gui.ContainerCarWorkshopCrafting;
 import de.maxhenkel.car.gui.TileEntityContainerProvider;
-import de.maxhenkel.tools.IItemBlock;
+import de.maxhenkel.corelib.block.IItemBlock;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;

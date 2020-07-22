@@ -1,7 +1,7 @@
 package de.maxhenkel.car.blocks;
 
 import de.maxhenkel.car.Main;
-import de.maxhenkel.tools.IItemBlock;
+import de.maxhenkel.corelib.block.IItemBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;

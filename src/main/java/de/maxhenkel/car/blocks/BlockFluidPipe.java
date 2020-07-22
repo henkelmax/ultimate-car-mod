@@ -2,9 +2,9 @@ package de.maxhenkel.car.blocks;
 
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.ModItemGroups;
+import de.maxhenkel.corelib.block.IItemBlock;
 import de.maxhenkel.corelib.block.VoxelUtils;
 import de.maxhenkel.corelib.fluid.FluidUtils;
-import de.maxhenkel.tools.IItemBlock;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
