@@ -1,1 +1,2 @@
-- Fixed GUIs not showing tooltips
+- Added debug bounding boxes for gas station
+- Increased gas station detection area

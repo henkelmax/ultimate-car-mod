@@ -7,6 +7,7 @@ import de.maxhenkel.car.net.MessageStartFuel;
 import de.maxhenkel.car.sounds.ModSounds;
 import de.maxhenkel.car.sounds.SoundLoopTileentity;
 import de.maxhenkel.car.sounds.SoundLoopTileentity.ISoundLoopable;
+import de.maxhenkel.corelib.CachedValue;
 import de.maxhenkel.corelib.item.ItemUtils;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
@@ -364,18 +365,7 @@ public class TileEntityGasStation extends TileEntityBase implements ITickableTil
     }
 
     public IFluidHandler getFluidHandlerInFront() {
-        BlockState ownState = world.getBlockState(getPos());
-
-        if (!ownState.getBlock().equals(ModBlocks.FUEL_STATION)) {
-            return null;
-        }
-
-        Direction facing = ownState.get(BlockGasStation.FACING);
-
-        BlockPos start = getPos().offset(facing);
-
-        AxisAlignedBB aabb = new AxisAlignedBB(start.getX(), start.getY(), start.getZ(), start.getX() + 1D,
-                start.getY() + 2.5D, start.getZ() + 1D).expand(facing.getXOffset(), 0D, facing.getZOffset());
+        AxisAlignedBB aabb = getDetectionBox();
 
         List<Entity> entities = world.getEntitiesWithinAABB(Entity.class, aabb);
 
@@ -384,6 +374,25 @@ public class TileEntityGasStation extends TileEntityBase implements ITickableTil
         }
 
         return entities.get(0).getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY).orElse(null);
+    }
+
+    private CachedValue<AxisAlignedBB> detectionBox = new CachedValue(this::createDetextionBox);
+
+    private AxisAlignedBB createDetextionBox() {
+        BlockState ownState = world.getBlockState(getPos());
+
+        if (!ownState.getBlock().equals(ModBlocks.FUEL_STATION)) {
+            return null;
+        }
+        Direction facing = ownState.get(BlockGasStation.FACING);
+        BlockPos start = getPos().offset(facing);
+        return new AxisAlignedBB(start.getX(), start.getY(), start.getZ(), start.getX() + 1D, start.getY() + 2.5D, start.getZ() + 1D)
+                .expand(facing.getXOffset(), 0D, facing.getZOffset())
+                .grow(facing.getXOffset() == 0 ? 0.5D : 0D, 0D, facing.getZOffset() == 0 ? 0.5D : 0D);
+    }
+
+    public AxisAlignedBB getDetectionBox() {
+        return detectionBox.get();
     }
 
     public boolean canEntityBeFueled() {
