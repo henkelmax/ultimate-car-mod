@@ -52,7 +52,6 @@ import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
-import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
@@ -70,7 +69,6 @@ import org.lwjgl.glfw.GLFW;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
-import java.util.Set;
 
 @Mod(Main.MODID)
 public class Main {
@@ -407,7 +405,7 @@ public class Main {
         TANK_TILE_ENTITY_TYPE.setRegistryName(new ResourceLocation(MODID, "tank"));
         event.getRegistry().register(TANK_TILE_ENTITY_TYPE);
 
-        GAS_STATION_TILE_ENTITY_TYPE = TileEntityType.Builder.create(TileEntityGasStation::new, ModBlocks.FUEL_STATION).build(null);
+        GAS_STATION_TILE_ENTITY_TYPE = TileEntityType.Builder.create(TileEntityGasStation::new, ModBlocks.GAS_STATION).build(null);
         GAS_STATION_TILE_ENTITY_TYPE.setRegistryName(new ResourceLocation(MODID, "fuel_station")); //TODO rename to gas_station
         event.getRegistry().register(GAS_STATION_TILE_ENTITY_TYPE);
     }
@@ -482,16 +480,13 @@ public class Main {
 
     @SubscribeEvent
     public void registerPointsOfInterest(RegistryEvent.Register<PointOfInterestType> event) {
+        POINT_OF_INTEREST_TYPE_GAS_STATION_ATTENDANT = new PointOfInterestType("gas_station_attendant", ImmutableSet.copyOf(ModBlocks.GAS_STATION.getStateContainer().getValidStates()), 1, 1);
+
+        POINT_OF_INTEREST_TYPE_GAS_STATION_ATTENDANT.setRegistryName(Main.MODID, "gas_station_attendant");
+        event.getRegistry().registerAll(
+                POINT_OF_INTEREST_TYPE_GAS_STATION_ATTENDANT
+        );
         try {
-            Constructor<PointOfInterestType> constructor = PointOfInterestType.class.getDeclaredConstructor(String.class, Set.class, int.class, int.class);
-            constructor.setAccessible(true);
-            POINT_OF_INTEREST_TYPE_GAS_STATION_ATTENDANT = constructor.newInstance("gas_station_attendant", ImmutableSet.copyOf(ModBlocks.FUEL_STATION.getStateContainer().getValidStates()), 1, 1);
-
-            POINT_OF_INTEREST_TYPE_GAS_STATION_ATTENDANT.setRegistryName(Main.MODID, "gas_station_attendant");
-            event.getRegistry().registerAll(
-                    POINT_OF_INTEREST_TYPE_GAS_STATION_ATTENDANT
-            );
-
             Method register = ObfuscationReflectionHelper.findMethod(PointOfInterestType.class, "func_221052_a", PointOfInterestType.class);
             register.invoke(null, POINT_OF_INTEREST_TYPE_GAS_STATION_ATTENDANT);
         } catch (Exception e) {

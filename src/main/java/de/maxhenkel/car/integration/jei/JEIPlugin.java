@@ -46,8 +46,8 @@ public class JEIPlugin implements IModPlugin {
         registration.addIngredientInfo(new ItemStack(ModItems.REPAIR_KIT), VanillaTypes.ITEM, "description.repair_kit");
         registration.addIngredientInfo(new ItemStack(ModBlocks.CRANK), VanillaTypes.ITEM, "description.crank");
         registration.addIngredientInfo(new ItemStack(ModBlocks.DYNAMO), VanillaTypes.ITEM, "description.dynamo");
-        registration.addIngredientInfo(new ItemStack(ModBlocks.FUEL_STATION), VanillaTypes.ITEM, "description.fuel_station");
-        registration.addIngredientInfo(new ItemStack(ModBlocks.FUEL_STATION), VanillaTypes.ITEM, "description.fuel_station_admin");
+        registration.addIngredientInfo(new ItemStack(ModBlocks.GAS_STATION), VanillaTypes.ITEM, "description.fuel_station");
+        registration.addIngredientInfo(new ItemStack(ModBlocks.GAS_STATION), VanillaTypes.ITEM, "description.fuel_station_admin");
         registration.addIngredientInfo(new ItemStack(ModBlocks.TANK), VanillaTypes.ITEM, "description.tank");
         registration.addIngredientInfo(new ItemStack(ModBlocks.FLUID_EXTRACTOR), VanillaTypes.ITEM, "description.fluid_extractor");
         registration.addIngredientInfo(new ItemStack(ModItems.BATTERY), VanillaTypes.ITEM, "description.battery");

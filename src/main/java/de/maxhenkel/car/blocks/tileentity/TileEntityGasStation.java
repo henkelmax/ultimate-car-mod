@@ -113,7 +113,7 @@ public class TileEntityGasStation extends TileEntityBase implements ITickableTil
     private void fixTop() {
         BlockState top = world.getBlockState(pos.up());
         BlockState bottom = world.getBlockState(pos);
-        Direction facing = bottom.get(ModBlocks.FUEL_STATION.FACING);
+        Direction facing = bottom.get(ModBlocks.GAS_STATION.FACING);
         if (top.getBlock().equals(ModBlocks.FUEL_STATION_TOP)) {
             if (!top.get(ModBlocks.FUEL_STATION_TOP.FACING).equals(facing)) {
                 world.setBlockState(pos.up(), ModBlocks.FUEL_STATION_TOP.getDefaultState().with(ModBlocks.FUEL_STATION_TOP.FACING, facing));
@@ -381,7 +381,7 @@ public class TileEntityGasStation extends TileEntityBase implements ITickableTil
     private AxisAlignedBB createDetextionBox() {
         BlockState ownState = world.getBlockState(getPos());
 
-        if (!ownState.getBlock().equals(ModBlocks.FUEL_STATION)) {
+        if (!ownState.getBlock().equals(ModBlocks.GAS_STATION)) {
             return null;
         }
         Direction facing = ownState.get(BlockGasStation.FACING);
@@ -407,7 +407,7 @@ public class TileEntityGasStation extends TileEntityBase implements ITickableTil
     public BlockState getBlockState() {
         BlockState ownState = world.getBlockState(getPos());
 
-        if (!ownState.getBlock().equals(ModBlocks.FUEL_STATION)) {
+        if (!ownState.getBlock().equals(ModBlocks.GAS_STATION)) {
             return null;
         }
         return ownState;

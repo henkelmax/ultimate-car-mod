@@ -22,7 +22,7 @@ public class ModBlocks {
     public static final BlockAsphaltSlopeFlat ASPHALT_SLOPE_FLAT_UPPER = new BlockAsphaltSlopeFlat(true);
     public static final BlockAsphaltSlopeFlat ASPHALT_SLOPE_FLAT_LOWER = new BlockAsphaltSlopeFlat(false);
     public static final BlockAsphaltSlab ASPHALT_SLAB = new BlockAsphaltSlab();
-    public static final BlockGasStation FUEL_STATION = new BlockGasStation();
+    public static final BlockGasStation GAS_STATION = new BlockGasStation();
     @OnlyBlock
     public static final BlockGasStationTop FUEL_STATION_TOP = new BlockGasStationTop();
     @OnlyBlock

@@ -62,7 +62,7 @@ public class BlockGasStationTop extends BlockBase {
 
     @Override
     public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
-        return ModBlocks.FUEL_STATION.onBlockActivated(worldIn.getBlockState(pos.down()), worldIn, pos.down(), player, handIn, hit);
+        return ModBlocks.GAS_STATION.onBlockActivated(worldIn.getBlockState(pos.down()), worldIn, pos.down(), player, handIn, hit);
     }
 
     @Override
@@ -98,7 +98,7 @@ public class BlockGasStationTop extends BlockBase {
             super.onReplaced(state, worldIn, pos, newState, isMoving);
 
             BlockState stateDown = worldIn.getBlockState(pos.down());
-            if (stateDown.getBlock().equals(ModBlocks.FUEL_STATION)) {
+            if (stateDown.getBlock().equals(ModBlocks.GAS_STATION)) {
                 worldIn.destroyBlock(pos.down(), false);
             }
         }
@@ -109,8 +109,8 @@ public class BlockGasStationTop extends BlockBase {
     public boolean removedByPlayer(BlockState state, World world, BlockPos pos, PlayerEntity player, boolean willHarvest, FluidState fluid) {
         BlockState stateDown = world.getBlockState(pos.down());
         stateDown.getBlock();
-        if (stateDown.getBlock().equals(ModBlocks.FUEL_STATION) && !player.abilities.isCreativeMode) {
-            ModBlocks.FUEL_STATION.harvestBlock(world, player, pos.down(), world.getBlockState(pos.down()), world.getTileEntity(pos.down()), player.getHeldItemMainhand());
+        if (stateDown.getBlock().equals(ModBlocks.GAS_STATION) && !player.abilities.isCreativeMode) {
+            ModBlocks.GAS_STATION.harvestBlock(world, player, pos.down(), world.getBlockState(pos.down()), world.getTileEntity(pos.down()), player.getHeldItemMainhand());
         }
         return super.removedByPlayer(state, world, pos, player, willHarvest, fluid);
     }
@@ -119,8 +119,8 @@ public class BlockGasStationTop extends BlockBase {
     public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, PlayerEntity player) {
         BlockState stateDown = world.getBlockState(pos.down());
         stateDown.getBlock();
-        if (stateDown.getBlock().equals(ModBlocks.FUEL_STATION)) {
-            return ModBlocks.FUEL_STATION.getPickBlock(stateDown, target, world, pos.down(), player);
+        if (stateDown.getBlock().equals(ModBlocks.GAS_STATION)) {
+            return ModBlocks.GAS_STATION.getPickBlock(stateDown, target, world, pos.down(), player);
         }
         return super.getPickBlock(state, target, world, pos, player);
     }

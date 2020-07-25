@@ -1,2 +1,1 @@
-- Added debug bounding boxes for gas station
-- Increased gas station detection area
+- Fixed gas station attendant villager profession
