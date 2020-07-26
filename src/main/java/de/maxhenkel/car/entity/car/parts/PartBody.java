@@ -1,13 +1,13 @@
 package de.maxhenkel.car.entity.car.parts;
 
 import de.maxhenkel.corelib.client.obj.OBJModel;
-import de.maxhenkel.tools.FloatSupplier;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
 import java.util.List;
+import java.util.function.Supplier;
 
 public class PartBody extends PartModel {
 
@@ -18,9 +18,9 @@ public class PartBody extends PartModel {
     protected float height;
     protected float minRotationSpeed;
     protected float maxRotationSpeed;
-    protected FloatSupplier fuelEfficiency;
-    protected FloatSupplier acceleration;
-    protected FloatSupplier maxSpeed;
+    protected Supplier<Float> fuelEfficiency;
+    protected Supplier<Float> acceleration;
+    protected Supplier<Float> maxSpeed;
     protected String translationKey;
     protected String materialTranslationKey;
 
@@ -63,15 +63,15 @@ public class PartBody extends PartModel {
     }
 
     public float getFuelEfficiency() {
-        return fuelEfficiency.getAsFloat();
+        return fuelEfficiency.get();
     }
 
     public float getAcceleration() {
-        return acceleration.getAsFloat();
+        return acceleration.get();
     }
 
     public float getMaxSpeed() {
-        return maxSpeed.getAsFloat();
+        return maxSpeed.get();
     }
 
     public String getTranslationKey() {

@@ -1,4 +1,4 @@
-package de.maxhenkel.car;
+package de.maxhenkel.car.config;
 
 import de.maxhenkel.corelib.config.ConfigBase;
 import net.minecraftforge.common.ForgeConfigSpec;

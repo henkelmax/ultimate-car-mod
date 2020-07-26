@@ -8,6 +8,8 @@ import de.maxhenkel.car.blocks.tileentity.render.TileEntitySpecialRendererSplitT
 import de.maxhenkel.car.blocks.tileentity.render.TileEntitySpecialRendererTank;
 import de.maxhenkel.car.blocks.tileentity.render.TileentitySpecialRendererGasStation;
 import de.maxhenkel.car.commands.CommandCarDemo;
+import de.maxhenkel.car.config.ClientConfig;
+import de.maxhenkel.car.config.ServerConfig;
 import de.maxhenkel.car.dataserializers.DataSerializerItemList;
 import de.maxhenkel.car.entity.car.base.EntityGenericCar;
 import de.maxhenkel.car.entity.model.GenericCarModel;

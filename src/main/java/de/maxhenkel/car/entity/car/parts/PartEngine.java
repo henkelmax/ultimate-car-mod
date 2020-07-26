@@ -1,18 +1,18 @@
 package de.maxhenkel.car.entity.car.parts;
 
-import de.maxhenkel.tools.FloatSupplier;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
 import java.util.List;
+import java.util.function.Supplier;
 
 public abstract class PartEngine extends Part {
 
-    protected FloatSupplier maxSpeed;
-    protected FloatSupplier maxReverseSpeed;
-    protected FloatSupplier acceleration;
-    protected FloatSupplier fuelEfficiency;
+    protected Supplier<Float> maxSpeed;
+    protected Supplier<Float> maxReverseSpeed;
+    protected Supplier<Float> acceleration;
+    protected Supplier<Float> fuelEfficiency;
 
     public PartEngine() {
 
@@ -35,19 +35,19 @@ public abstract class PartEngine extends Part {
     public abstract SoundEvent getHornSound();
 
     public float getMaxSpeed() {
-        return maxSpeed.getAsFloat();
+        return maxSpeed.get();
     }
 
     public float getMaxReverseSpeed() {
-        return maxReverseSpeed.getAsFloat();
+        return maxReverseSpeed.get();
     }
 
     public float getAcceleration() {
-        return acceleration.getAsFloat();
+        return acceleration.get();
     }
 
     public float getFuelEfficiency() {
-        return fuelEfficiency.getAsFloat();
+        return fuelEfficiency.get();
     }
 
     @Override

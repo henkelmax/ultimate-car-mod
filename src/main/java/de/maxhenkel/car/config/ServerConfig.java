@@ -1,4 +1,4 @@
-package de.maxhenkel.car;
+package de.maxhenkel.car.config;
 
 import de.maxhenkel.car.blocks.ModBlocks;
 import de.maxhenkel.car.fluids.ModFluids;
