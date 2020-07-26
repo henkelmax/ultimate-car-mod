@@ -24,6 +24,7 @@ import net.minecraft.util.IIntArray;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
@@ -34,8 +35,7 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 
 import javax.annotation.Nonnull;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class TileEntityGasStation extends TileEntityBase implements ITickableTileEntity, IFluidHandler, ISoundLoopable, IInventory {
 
@@ -364,16 +364,16 @@ public class TileEntityGasStation extends TileEntityBase implements ITickableTil
         }
     }
 
+    private CachedValue<Vector3d> center = new CachedValue<>(() -> new Vector3d(getPos().getX() + 0.5D, getPos().getY() + 1.5D, getPos().getZ() + 0.5D));
+
     public IFluidHandler getFluidHandlerInFront() {
-        AxisAlignedBB aabb = getDetectionBox();
-
-        List<Entity> entities = world.getEntitiesWithinAABB(Entity.class, aabb);
-
-        if (entities.isEmpty()) {
-            return null;
-        }
-
-        return entities.get(0).getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY).orElse(null);
+        return world.getEntitiesWithinAABB(Entity.class, getDetectionBox())
+                .stream()
+                .sorted(Comparator.comparingDouble(o -> o.getDistanceSq(center.get())))
+                .map(entity -> entity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY).orElse(null))
+                .filter(Objects::nonNull)
+                .findFirst()
+                .orElse(null);
     }
 
     private CachedValue<AxisAlignedBB> detectionBox = new CachedValue(this::createDetextionBox);

@@ -1,6 +1,7 @@
 package de.maxhenkel.car.entity.car.base;
 
 import de.maxhenkel.car.Main;
+import de.maxhenkel.car.config.Fuel;
 import de.maxhenkel.car.dataserializers.DataSerializerItemList;
 import de.maxhenkel.car.entity.car.parts.*;
 import de.maxhenkel.car.integration.jei.CarRecipe;
@@ -140,24 +141,29 @@ public class EntityGenericCar extends EntityCarLicensePlateBase {
     }
 
     @Override
-    public float getEfficiency(@Nullable Fluid fluid) {
+    public int getEfficiency(@Nullable Fluid fluid) {
         PartEngine engine = getPartByClass(PartEngine.class);
         if (engine == null) {
-            return 0F;
+            return 0;
         }
 
         PartBody chassis = getPartByClass(PartBody.class);
         if (chassis == null) {
-            return 0F;
+            return 0;
         }
 
-        float fluidEfficiency = 0F;
+        int fluidEfficiency = 0;
 
-        if (fluid == null || Main.SERVER_CONFIG.carValidFuelList.contains(fluid)) {
-            fluidEfficiency = 1;
+        if (fluid == null) {
+            fluidEfficiency = 100;
+        } else {
+            Fuel fuel = Main.FUEL_CONFIG.getFuels().getOrDefault(fluid, null);
+            if (fuel != null) {
+                fluidEfficiency = fuel.getEfficiency();
+            }
         }
 
-        return chassis.getFuelEfficiency() * engine.getFuelEfficiency() * fluidEfficiency;
+        return (int) Math.ceil(chassis.getFuelEfficiency() * engine.getFuelEfficiency() * (float) fluidEfficiency);
     }
 
     @Override

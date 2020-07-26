@@ -35,18 +35,12 @@ public abstract class EntityCarFuelBase extends EntityCarDamageBase implements I
         fuelTick();
     }
 
-    protected int calculateTickFuel() {
-        float efficiency = getEfficiency(getFluid());
-        int ticks = (int) (efficiency * 100D);
-        if (ticks <= 0) {
-            ticks = 1;
-        }
-        return ticks;
-    }
-
     protected void fuelTick() {
-        float fuel = getFuelAmount();
-        int tickFuel = calculateTickFuel();
+        int fuel = getFuelAmount();
+        int tickFuel = getEfficiency(getFluid());
+        if (tickFuel <= 0) {
+            return;
+        }
         if (fuel > 0 && isAccelerating()) {
             if (ticksExisted % tickFuel == 0) {
                 acceleratingFuelTick();
@@ -147,10 +141,10 @@ public abstract class EntityCarFuelBase extends EntityCarDamageBase implements I
         if (fluid == null) {
             return false;
         }
-        return getEfficiency(fluid) > 0F;
+        return getEfficiency(fluid) > 0;
     }
 
-    public abstract float getEfficiency(@Nullable Fluid fluid);
+    public abstract int getEfficiency(@Nullable Fluid fluid);
 
     @Override
     protected void writeAdditional(CompoundNBT compound) {

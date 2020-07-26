@@ -9,6 +9,7 @@ import de.maxhenkel.car.blocks.tileentity.render.TileEntitySpecialRendererTank;
 import de.maxhenkel.car.blocks.tileentity.render.TileentitySpecialRendererGasStation;
 import de.maxhenkel.car.commands.CommandCarDemo;
 import de.maxhenkel.car.config.ClientConfig;
+import de.maxhenkel.car.config.FuelConfig;
 import de.maxhenkel.car.config.ServerConfig;
 import de.maxhenkel.car.dataserializers.DataSerializerItemList;
 import de.maxhenkel.car.entity.car.base.EntityGenericCar;
@@ -25,6 +26,7 @@ import de.maxhenkel.car.sounds.ModSounds;
 import de.maxhenkel.car.villagers.VillagerEvents;
 import de.maxhenkel.corelib.ClientRegistry;
 import de.maxhenkel.corelib.CommonRegistry;
+import de.maxhenkel.corelib.config.DynamicConfig;
 import de.maxhenkel.tools.EntityTools;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderType;
@@ -89,6 +91,7 @@ public class Main {
     public static VillagerProfession VILLAGER_PROFESSION_GAS_STATION_ATTENDANT;
 
     public static ServerConfig SERVER_CONFIG;
+    public static FuelConfig FUEL_CONFIG;
     public static ClientConfig CLIENT_CONFIG;
 
     public Main() {
@@ -107,6 +110,7 @@ public class Main {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::onRegisterCommands);
 
         SERVER_CONFIG = CommonRegistry.registerConfig(ModConfig.Type.SERVER, ServerConfig.class, true);
+        FUEL_CONFIG = CommonRegistry.registerDynamicConfig(DynamicConfig.DynamicConfigType.SERVER, Main.MODID, "fuel", FuelConfig.class);
         CLIENT_CONFIG = CommonRegistry.registerConfig(ModConfig.Type.CLIENT, ClientConfig.class);
 
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> FMLJavaModLoadingContext.get().getModEventBus().addListener(Main.this::clientSetup));

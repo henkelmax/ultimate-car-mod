@@ -59,7 +59,6 @@ public class ServerConfig extends ConfigBase {
     public final ForgeConfigSpec.DoubleValue carOffroadSpeed;
     public final ForgeConfigSpec.DoubleValue carOnroadSpeed;
     public final ForgeConfigSpec.ConfigValue<List<? extends String>> carDriveBlocks;
-    public final ForgeConfigSpec.ConfigValue<List<? extends String>> carValidFuels;
 
     public final ForgeConfigSpec.BooleanValue collideWithEntities;
     public final ForgeConfigSpec.BooleanValue damageEntities;
@@ -104,7 +103,6 @@ public class ServerConfig extends ConfigBase {
 
     public List<Fluid> gasStationValidFuelList = new ArrayList<>();
     public List<Block> carDriveBlockList = new ArrayList<>();
-    public List<Fluid> carValidFuelList = new ArrayList<>();
 
     public ServerConfig(ForgeConfigSpec.Builder builder) {
         super(builder);
@@ -160,8 +158,6 @@ public class ServerConfig extends ConfigBase {
                 ModBlocks.ASPHALT_SLOPE_FLAT_LOWER.getRegistryName().toString(),
                 ModBlocks.ASPHALT_SLOPE_FLAT_UPPER.getRegistryName().toString()
         ), Objects::nonNull);
-        carValidFuels = builder.defineList("car.valid_fuels", Arrays.asList(ModFluids.BIO_DIESEL.getRegistryName().toString()), Objects::nonNull);
-
 
         engine6CylinderFuelEfficiency = builder.defineInRange("car.parts.engine_6_cylinder.fuel_efficiency", 0.25D, 0.001D, 10D);
         engine3CylinderFuelEfficiency = builder.defineInRange("car.parts.engine_3_cylinder.fuel_efficiency", 0.5D, 0.001D, 10D);
@@ -198,7 +194,6 @@ public class ServerConfig extends ConfigBase {
         super.onReload(event);
         gasStationValidFuelList = gasStationValidFuels.get().stream().map(ResourceLocation::new).map(ForgeRegistries.FLUIDS::getValue).filter(Objects::nonNull).collect(Collectors.toList());
         carDriveBlockList = carDriveBlocks.get().stream().map(ResourceLocation::new).map(ForgeRegistries.BLOCKS::getValue).filter(Objects::nonNull).collect(Collectors.toList());
-        carValidFuelList = carValidFuels.get().stream().map(ResourceLocation::new).map(ForgeRegistries.FLUIDS::getValue).filter(Objects::nonNull).collect(Collectors.toList());
     }
 
 }
