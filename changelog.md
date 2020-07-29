@@ -1,2 +1,1 @@
-- Added separate config for fuel efficiencies
-- Fixed cars sometimes not detected by gas stations
+- Fixed crash with the latest forge version
