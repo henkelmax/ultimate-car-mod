@@ -1,1 +1,1 @@
-- Fixed crash with the latest forge version
+- Re-added HWYLA integration

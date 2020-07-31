@@ -1,5 +1,5 @@
 package de.maxhenkel.car.integration.waila;
-/*
+
 import de.maxhenkel.car.blocks.tileentity.TileEntityGenerator;
 import mcp.mobius.waila.api.IComponentProvider;
 import mcp.mobius.waila.api.IDataAccessor;
@@ -40,4 +40,5 @@ public class HUDHandlerGenerator implements IComponentProvider, IServerDataProvi
         data.putInt("fluid", generator.getFluidInTank(0).getAmount());
         data.putInt("max_fluid", generator.getTankCapacity(0));
     }
-}*/
+
+}

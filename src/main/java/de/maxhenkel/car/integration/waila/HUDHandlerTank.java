@@ -1,5 +1,5 @@
 package de.maxhenkel.car.integration.waila;
-/*
+
 import de.maxhenkel.car.blocks.tileentity.TileEntityTank;
 import mcp.mobius.waila.api.IComponentProvider;
 import mcp.mobius.waila.api.IDataAccessor;
@@ -40,4 +40,5 @@ public class HUDHandlerTank implements IComponentProvider, IServerDataProvider<T
 
         data.put("fluid", tank.getFluid().writeToNBT(new CompoundNBT()));
     }
-}*/
+
+}
