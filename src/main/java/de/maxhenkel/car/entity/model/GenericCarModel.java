@@ -19,7 +19,7 @@ public class GenericCarModel extends OBJEntityRenderer<EntityGenericCar> {
     }
 
     @Override
-    public List<OBJModelInstance> getModels(EntityGenericCar entity) {
+    public List<OBJModelInstance<EntityGenericCar>> getModels(EntityGenericCar entity) {
         return entity.getModels();
     }
 

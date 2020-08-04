@@ -19,15 +19,15 @@ public class PartBumper extends PartModel {
     }
 
     @Override
-    public List<OBJModelInstance> getInstances(EntityGenericCar car) {
+    public List<OBJModelInstance<EntityGenericCar>> getInstances(EntityGenericCar car) {
         PartBodyWoodBase chassis = car.getPartByClass(PartBodyWoodBase.class);
 
         if (chassis == null) {
             return super.getInstances(car);
         }
 
-        List<OBJModelInstance> list = new ArrayList<>();
-        list.add(new OBJModelInstance(model, new OBJModelOptions(texture, chassis.getBumperOffset(), rotation)));
+        List<OBJModelInstance<EntityGenericCar>> list = new ArrayList<>();
+        list.add(new OBJModelInstance<>(model, new OBJModelOptions<>(texture, chassis.getBumperOffset(), rotation)));
         onPartAdd(list);
         return list;
     }

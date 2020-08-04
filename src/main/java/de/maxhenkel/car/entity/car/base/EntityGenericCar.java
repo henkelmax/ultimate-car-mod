@@ -470,7 +470,7 @@ public class EntityGenericCar extends EntityCarLicensePlateBase {
 
     //---------------CLIENT---------------------------------
 
-    private List<OBJModelInstance> modelInstances = new ArrayList<>();
+    private List<OBJModelInstance<EntityGenericCar>> modelInstances = new ArrayList<>();
 
     protected void initModel() {
         modelInstances.clear();
@@ -490,7 +490,7 @@ public class EntityGenericCar extends EntityCarLicensePlateBase {
         }
     }
 
-    public List<OBJModelInstance> getModels() {
+    public List<OBJModelInstance<EntityGenericCar>> getModels() {
         return modelInstances;
     }
 

@@ -28,15 +28,15 @@ public class PartLicensePlateHolder extends PartModel {
     }
 
     @Override
-    public List<OBJModelInstance> getInstances(EntityGenericCar car) {
+    public List<OBJModelInstance<EntityGenericCar>> getInstances(EntityGenericCar car) {
         PartBody chassis = car.getPartByClass(PartBody.class);
 
         if (chassis == null) {
             return super.getInstances(car);
         }
 
-        List<OBJModelInstance> list = new ArrayList<>();
-        list.add(new OBJModelInstance(model, new OBJModelOptions(texture, chassis.getNumberPlateOffset(), rotation)));
+        List<OBJModelInstance<EntityGenericCar>> list = new ArrayList<>();
+        list.add(new OBJModelInstance<>(model, new OBJModelOptions<>(texture, chassis.getNumberPlateOffset(), rotation)));
         onPartAdd(list);
         return list;
     }

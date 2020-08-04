@@ -48,8 +48,8 @@ public class PartWheelBase extends PartModel {
     }
 
     @Override
-    public List<OBJModelInstance> getInstances(EntityGenericCar car) {
-        List<OBJModelInstance> list = new ArrayList<>();
+    public List<OBJModelInstance<EntityGenericCar>> getInstances(EntityGenericCar car) {
+        List<OBJModelInstance<EntityGenericCar>> list = new ArrayList<>();
 
         Vector3d[] wheelOffsets = new Vector3d[0];
 
@@ -68,7 +68,7 @@ public class PartWheelBase extends PartModel {
         }
 
         for (int i = 0; i < wheelOffsets.length && i < wheels.size(); i++) {
-            list.add(new OBJModelInstance(wheels.get(i).model, new OBJModelOptions(wheels.get(i).texture, wheelOffsets[i], null, (matrixStack, partialTicks) -> {
+            list.add(new OBJModelInstance<>(wheels.get(i).model, new OBJModelOptions<>(wheels.get(i).texture, wheelOffsets[i], null, (c, matrixStack, partialTicks) -> {
                 matrixStack.rotate(Vector3f.XP.rotationDegrees(-car.getWheelRotation(partialTicks)));
             })));
         }

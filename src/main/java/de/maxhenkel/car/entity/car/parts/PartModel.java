@@ -7,6 +7,7 @@ import de.maxhenkel.corelib.client.obj.OBJModelOptions;
 import de.maxhenkel.corelib.math.Rotation;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.util.math.vector.Vector3f;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +23,7 @@ public class PartModel extends Part {
         this.model = model;
         this.texture = texture;
         this.offset = offset;
-        this.rotation = rotation;
+        this.rotation = new Rotation(-90F, Vector3f.XP).add(rotation);
     }
 
     public PartModel(OBJModel model, ResourceLocation texture, Vector3d offset) {
@@ -37,14 +38,14 @@ public class PartModel extends Part {
         return model;
     }
 
-    public List<OBJModelInstance> getInstances(EntityGenericCar car) {
-        List<OBJModelInstance> list = new ArrayList<>();
-        list.add(new OBJModelInstance(model, new OBJModelOptions(texture, offset, rotation)));
+    public List<OBJModelInstance<EntityGenericCar>> getInstances(EntityGenericCar car) {
+        List<OBJModelInstance<EntityGenericCar>> list = new ArrayList<>();
+        list.add(new OBJModelInstance<>(model, new OBJModelOptions<>(texture, offset, rotation)));
         onPartAdd(list);
         return list;
     }
 
-    protected void onPartAdd(List<OBJModelInstance> list) {
+    protected void onPartAdd(List<OBJModelInstance<EntityGenericCar>> list) {
 
     }
 
