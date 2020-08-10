@@ -1,4 +1,14 @@
-# The Ultimate Car Mod
+# The Ultimate Car Mod ![](http://cf.way2muchnoise.eu/full_267458_downloads.svg)
+![](http://cf.way2muchnoise.eu/versions/267458.svg)
+
+## Links
+- [CurseForge](https://www.curseforge.com/minecraft/mc-mods/ultimate-car-mod)
+- [ModRepo](https://modrepo.de/minecraft/car/overview)
+- [GitHub](https://github.com/henkelmax/ultimate-car-mod)
+- [FAQ](https://modrepo.de/minecraft/car/faq)
+- [Credits](https://modrepo.de/minecraft/car/credits)
+
+---
 
 ![car](https://i.imgur.com/OG5HlNP.png)
 
@@ -13,10 +23,6 @@ After having your car, road construction is the next step: You have various
 options to design your own streets and be creative!
 
 ![video](https://youtu.be/4L9XzcompFQ)
-
-## [Quick start guide](https://www.curseforge.com/minecraft/mc-mods/ultimate-car-mod/pages/overview)
-
-#### [Crafting Recipes (Minecraft 1.10.X - 1.12.X)](https://www.curseforge.com/linkout?remoteUrl=http%253a%252f%252fmccarmod.blogspot.de%252f2017%252f04%252frecipes-fuel-production-recipes-oil.html)
 
 ## Features
 
@@ -87,38 +93,3 @@ options to design your own streets and be creative!
 ![](https://3.bp.blogspot.com/-g2Qx8PZ2k9o/WPUXNTxPswI/AAAAAAAA4EE/MHw44RePJV8zVEDJxXDiO-lQZIHMZ6HkwCEw/s1600/2017-04-17_21.12.46.png)
 ![](https://1.bp.blogspot.com/-Iu8D0BynXh4/WPUXMzqeLgI/AAAAAAAA4EE/rcrn5twFP1oRp20i2hHx_KMVplnVH_amQCEw/s1600/2017-04-17_21.12.23.png)
 ![](https://i.imgur.com/y5baBXb.png)
-
-
-## YOU ARE ALLOWED TO USE THIS MOD IN MODPACKS
-
-#### Credits
-
-3 Cylinder Engine Sounds by: qubodup
-
-Creative Commons Attribution License
-
-Link: http://www.freesound.org/people/qubodup/sounds/147243/
-
-License: https://creativecommons.org/licenses/by/3.0/legalcode
-
-Changes were made.
-
-
-TruckEngine Sounds by: willybilly1984
-
-Creative Commons Attribution License
-
-Link: https://freesound.org/people/willybilly1984/sounds/345336/
-
-License: https://creativecommons.org/licenses/by/3.0/
-
-Changes were made.
-
-
-Gas Station Attendant Sounds by: XiiiSamples
-
-https://freesound.org/people/XiiiSamples/sounds/382268/
-
----
-
-[Gallery](https://imgur.com/a/KCcBzpS)
