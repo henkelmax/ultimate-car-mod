@@ -22,7 +22,7 @@ Based on the real biodiesel production, we created a system, which is a vital fa
 After having your car, road construction is the next step: You have various
 options to design your own streets and be creative!
 
-![video](https://youtu.be/4L9XzcompFQ)
+[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/4L9XzcompFQ/0.jpg)](https://youtu.be/4L9XzcompFQ)
 
 ## Features
 
