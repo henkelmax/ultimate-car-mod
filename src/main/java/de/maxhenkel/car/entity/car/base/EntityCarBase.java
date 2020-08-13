@@ -110,9 +110,9 @@ public abstract class EntityCarBase extends EntityVehicleBase {
     }
 
     @Override
-    public AxisAlignedBB getCollisionBox(Entity entityIn) {
+    public boolean func_241849_j(Entity entityIn) {
         if (Main.SERVER_CONFIG.damageEntities.get() && entityIn instanceof LivingEntity) {
-            if (entityIn.getBoundingBox().intersects(getCollisionBoundingBox())) {
+            if (entityIn.getBoundingBox().intersects(getBoundingBox())) {
                 float speed = getSpeed();
                 if (speed > 0.35F) {
                     float damage = speed * 10;
@@ -121,16 +121,12 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 
             }
         }
-        return super.getCollisionBox(entityIn);
+        return super.func_241849_j(entityIn);
     }
 
 
     public void checkPush() {
-        if (getCollisionBoundingBox() == null) {
-            return;
-        }
-
-        List<PlayerEntity> list = world.getEntitiesWithinAABB(PlayerEntity.class, getCollisionBoundingBox().expand(0.2, 0, 0.2).expand(-0.2, 0, -0.2));
+        List<PlayerEntity> list = world.getEntitiesWithinAABB(PlayerEntity.class, getBoundingBox().expand(0.2, 0, 0.2).expand(-0.2, 0, -0.2));
 
         for (int j = 0; j < list.size(); j++) {
             PlayerEntity player = list.get(j);

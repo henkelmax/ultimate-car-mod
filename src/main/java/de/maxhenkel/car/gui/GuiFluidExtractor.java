@@ -31,8 +31,8 @@ public class GuiFluidExtractor extends ScreenBase<ContainerFluidExtractor> {
         super.func_230451_b_(matrixStack, mouseX, mouseY);
 
         // Title
-        field_230712_o_.func_238422_b_(matrixStack, playerInv.getDisplayName(), 8, this.ySize - 96 + 2, FONT_COLOR);
-        field_230712_o_.func_238422_b_(matrixStack, tile.getDisplayName(), 8, 6, FONT_COLOR);
+        field_230712_o_.func_238422_b_(matrixStack, playerInv.getDisplayName().func_241878_f(), 8, this.ySize - 96 + 2, FONT_COLOR);
+        field_230712_o_.func_238422_b_(matrixStack, tile.getDisplayName().func_241878_f(), 8, 6, FONT_COLOR);
 
         drawFilter(matrixStack);
     }
@@ -48,7 +48,7 @@ public class GuiFluidExtractor extends ScreenBase<ContainerFluidExtractor> {
             name = new StringTextComponent(new FluidStack(f, 1).getDisplayName().getString());
         }
 
-        field_230712_o_.func_238422_b_(matrixStack, new TranslationTextComponent("filter.fluid", name.func_240699_a_(TextFormatting.WHITE)), 46, 28, FONT_COLOR);
+        field_230712_o_.func_238422_b_(matrixStack, new TranslationTextComponent("filter.fluid", name.func_240699_a_(TextFormatting.WHITE)).func_241878_f(), 46, 28, FONT_COLOR);
     }
 
 }

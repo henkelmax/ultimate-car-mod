@@ -13,6 +13,7 @@ import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.IReorderingProcessor;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.*;
 import net.minecraftforge.fluids.FluidStack;
@@ -76,7 +77,7 @@ public class GuiGasStation extends ScreenBase<ContainerGasStation> {
         drawRefueled(matrixStack);
         drawBuffer(matrixStack);
 
-        field_230712_o_.func_238422_b_(matrixStack, playerInventory.getDisplayName(), guiLeft + 8, guiTop + ySize - 93, FONT_COLOR);
+        field_230712_o_.func_238422_b_(matrixStack, playerInventory.getDisplayName().func_241878_f(), guiLeft + 8, guiTop + ySize - 93, FONT_COLOR);
     }
 
     @Override
@@ -91,8 +92,8 @@ public class GuiGasStation extends ScreenBase<ContainerGasStation> {
 
         if (mouseX >= guiLeft + 18 && mouseX <= guiLeft + 33) {
             if (mouseY >= guiTop + 99 && mouseY <= guiTop + 114) {
-                List<IFormattableTextComponent> list = new ArrayList<>();
-                list.add(new TranslationTextComponent("tooltip.trade", stack.getCount(), stack.getDisplayName(), gasStation.getTradeAmount()));
+                List<IReorderingProcessor> list = new ArrayList<>();
+                list.add(new TranslationTextComponent("tooltip.trade", stack.getCount(), stack.getDisplayName(), gasStation.getTradeAmount()).func_241878_f());
                 func_238654_b_(matrixStack, list, mouseX - guiLeft, mouseY - guiTop);
             }
         }
@@ -105,16 +106,16 @@ public class GuiGasStation extends ScreenBase<ContainerGasStation> {
         } else {
             name = entity.getDisplayName().getString();
         }
-        field_230712_o_.func_238422_b_(matrixStack, new TranslationTextComponent("gas_station.car_info", new StringTextComponent(name).func_240699_a_(TextFormatting.WHITE)), guiLeft + 63, guiTop + 20, FONT_COLOR);
+        field_230712_o_.func_238422_b_(matrixStack, new TranslationTextComponent("gas_station.car_info", new StringTextComponent(name).func_240699_a_(TextFormatting.WHITE)).func_241878_f(), guiLeft + 63, guiTop + 20, FONT_COLOR);
     }
 
     private void drawCarFuel(MatrixStack matrixStack, IFluidHandler handler) {
         if (handler == null) {
-            field_230712_o_.func_238422_b_(matrixStack, new TranslationTextComponent("gas_station.no_car"), guiLeft + 63, guiTop + 30, FONT_COLOR);
+            field_230712_o_.func_238422_b_(matrixStack, new TranslationTextComponent("gas_station.no_car").func_241878_f(), guiLeft + 63, guiTop + 30, FONT_COLOR);
             return;
         }
         if (handler.getTanks() <= 0) {
-            field_230712_o_.func_238422_b_(matrixStack, new TranslationTextComponent("gas_station.fuel_empty"), guiLeft + 63, guiTop + 30, FONT_COLOR);
+            field_230712_o_.func_238422_b_(matrixStack, new TranslationTextComponent("gas_station.fuel_empty").func_241878_f(), guiLeft + 63, guiTop + 30, FONT_COLOR);
             return;
         }
         FluidStack tank = handler.getFluidInTank(0);
@@ -122,24 +123,24 @@ public class GuiGasStation extends ScreenBase<ContainerGasStation> {
                 new StringTextComponent(String.valueOf(tank.getAmount())).func_240699_a_(TextFormatting.WHITE),
                 new StringTextComponent(String.valueOf(handler.getTankCapacity(0))).func_240699_a_(TextFormatting.WHITE)
         );
-        field_230712_o_.func_238422_b_(matrixStack, fuelText, guiLeft + 63, guiTop + 30, FONT_COLOR);
+        field_230712_o_.func_238422_b_(matrixStack, fuelText.func_241878_f(), guiLeft + 63, guiTop + 30, FONT_COLOR);
 
         if (tank.isEmpty()) {
             return;
         } else {
-            field_230712_o_.func_238422_b_(matrixStack, new TranslationTextComponent("gas_station.car_fuel_type", new StringTextComponent(tank.getDisplayName().getString()).func_240699_a_(TextFormatting.WHITE)), guiLeft + 63, guiTop + 40, FONT_COLOR);
+            field_230712_o_.func_238422_b_(matrixStack, new TranslationTextComponent("gas_station.car_fuel_type", new StringTextComponent(tank.getDisplayName().getString()).func_240699_a_(TextFormatting.WHITE)).func_241878_f(), guiLeft + 63, guiTop + 40, FONT_COLOR);
         }
     }
 
     private void drawRefueled(MatrixStack matrixStack) {
-        field_230712_o_.func_238422_b_(matrixStack, new TranslationTextComponent("gas_station.refueled", new StringTextComponent(String.valueOf(gasStation.getFuelCounter())).func_240699_a_(TextFormatting.WHITE)), guiLeft + 63, guiTop + 60, FONT_COLOR);
+        field_230712_o_.func_238422_b_(matrixStack, new TranslationTextComponent("gas_station.refueled", new StringTextComponent(String.valueOf(gasStation.getFuelCounter())).func_240699_a_(TextFormatting.WHITE)).func_241878_f(), guiLeft + 63, guiTop + 60, FONT_COLOR);
     }
 
     private void drawBuffer(MatrixStack matrixStack) {
         FluidStack stack = gasStation.getStorage();
 
         if (stack.isEmpty()) {
-            field_230712_o_.func_238422_b_(matrixStack, new TranslationTextComponent("gas_station.fuel_empty"), guiLeft + 63, guiTop + 70, FONT_COLOR);
+            field_230712_o_.func_238422_b_(matrixStack, new TranslationTextComponent("gas_station.fuel_empty").func_241878_f(), guiLeft + 63, guiTop + 70, FONT_COLOR);
             return;
         }
 
@@ -150,13 +151,13 @@ public class GuiGasStation extends ScreenBase<ContainerGasStation> {
                 new StringTextComponent(String.valueOf(gasStation.maxStorageAmount)).func_240699_a_(TextFormatting.WHITE)
         );
 
-        field_230712_o_.func_238422_b_(matrixStack, amountText, guiLeft + 63, guiTop + 70, FONT_COLOR);
+        field_230712_o_.func_238422_b_(matrixStack, amountText.func_241878_f(), guiLeft + 63, guiTop + 70, FONT_COLOR);
 
         TextComponent bufferText = new TranslationTextComponent("gas_station.fuel_buffer_type",
                 new StringTextComponent(stack.getDisplayName().getString()).func_240699_a_(TextFormatting.WHITE)
         );
 
-        field_230712_o_.func_238422_b_(matrixStack, bufferText, guiLeft + 63, guiTop + 80, FONT_COLOR);
+        field_230712_o_.func_238422_b_(matrixStack, bufferText.func_241878_f(), guiLeft + 63, guiTop + 80, FONT_COLOR);
     }
 
     @Override

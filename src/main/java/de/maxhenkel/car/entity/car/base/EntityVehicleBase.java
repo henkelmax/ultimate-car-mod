@@ -15,7 +15,6 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.network.NetworkHooks;
 
-import javax.annotation.Nullable;
 import java.util.List;
 
 public abstract class EntityVehicleBase extends Entity {
@@ -100,10 +99,6 @@ public abstract class EntityVehicleBase extends Entity {
         entityToUpdate.setRotationYawHead(entityToUpdate.rotationYaw);
     }
 
-    /**
-     * Applies this entity's orientation (pitch/yaw) to another entity. Used to
-     * update passenger orientation.
-     */
     @OnlyIn(Dist.CLIENT)
     @Override
     public void applyOrientationToEntity(Entity entityToUpdate) {
@@ -145,29 +140,19 @@ public abstract class EntityVehicleBase extends Entity {
         return getDriver();
     }
 
-    /**
-     * Returns a boundingBox used to collide the entity with other entities and
-     * blocks. This enables the entity to be pushable on contact, like boats or
-     * minecarts.
-     */
-    @Nullable
     @Override
-    public AxisAlignedBB getCollisionBox(Entity entityIn) {
+    public boolean func_241849_j(Entity entity) {
         if (!Main.SERVER_CONFIG.collideWithEntities.get()) {
-            if (!(entityIn instanceof EntityVehicleBase)) {
-                return null;
+            if (!(entity instanceof EntityVehicleBase)) {
+                return false;
             }
         }
-        return entityIn.canBePushed() ? entityIn.getBoundingBox() : null;
+        return (entity.func_241845_aY() || entity.canBePushed()) && !isRidingSameEntity(entity);
     }
 
-    /**
-     * Returns the collision bounding box for this entity
-     */
-    @Nullable
     @Override
-    public AxisAlignedBB getCollisionBoundingBox() {
-        return this.getBoundingBox();
+    public boolean func_241845_aY() {
+        return true;
     }
 
     @Override
@@ -185,19 +170,11 @@ public abstract class EntityVehicleBase extends Entity {
         return false;
     }
 
-    /**
-     * Returns true if this entity should push and be pushed by other entities
-     * when colliding.
-     */
     @Override
     public boolean canBePushed() {
         return true;
     }
 
-    /**
-     * Returns true if other Entities should be prevented from moving through
-     * this Entity.
-     */
     @Override
     public boolean canBeCollidedWith() {
         return isAlive();
@@ -222,9 +199,6 @@ public abstract class EntityVehicleBase extends Entity {
         }
     }
 
-    /**
-     * Set the position and rotation values directly without any clamping.
-     */
     @OnlyIn(Dist.CLIENT)
     @Override
     public void setPositionAndRotationDirect(double x, double y, double z, float yaw, float pitch, int posRotationIncrements, boolean teleport) {

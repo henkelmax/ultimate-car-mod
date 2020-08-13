@@ -34,13 +34,13 @@ public class GuiCar extends ScreenBase<ContainerCar> {
         super.func_230451_b_(matrixStack, mouseX, mouseY);
 
         //Titles
-        field_230712_o_.func_238422_b_(matrixStack, car.getDisplayName(), 7, 87, fontColor);
-        field_230712_o_.func_238422_b_(matrixStack, playerInv.getDisplayName(), 8, this.ySize - 96 + 2, fontColor);
+        field_230712_o_.func_238422_b_(matrixStack, car.getDisplayName().func_241878_f(), 7, 87, fontColor);
+        field_230712_o_.func_238422_b_(matrixStack, playerInv.getDisplayName().func_241878_f(), 8, this.ySize - 96 + 2, fontColor);
 
-        field_230712_o_.func_238422_b_(matrixStack, getFuelString(), 7, 9, fontColor);
-        field_230712_o_.func_238422_b_(matrixStack, getDamageString(), 7, 35, fontColor);
-        field_230712_o_.func_238422_b_(matrixStack, getBatteryString(), 95, 9, fontColor);
-        field_230712_o_.func_238422_b_(matrixStack, getTempString(), 95, 35, fontColor);
+        field_230712_o_.func_238422_b_(matrixStack, getFuelString().func_241878_f(), 7, 9, fontColor);
+        field_230712_o_.func_238422_b_(matrixStack, getDamageString().func_241878_f(), 7, 35, fontColor);
+        field_230712_o_.func_238422_b_(matrixStack, getBatteryString().func_241878_f(), 95, 9, fontColor);
+        field_230712_o_.func_238422_b_(matrixStack, getTempString().func_241878_f(), 95, 35, fontColor);
     }
 
     public float getFuelPercent() {

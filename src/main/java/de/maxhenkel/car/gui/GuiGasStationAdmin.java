@@ -89,7 +89,7 @@ public class GuiGasStationAdmin extends ScreenBase<ContainerGasStationAdmin> {
 
         func_238471_a_(matrixStack, field_230712_o_, new TranslationTextComponent("gui.gas_station").getString(), xSize / 2, 5, TITLE_COLOR);
 
-        field_230712_o_.func_238422_b_(matrixStack, inventoryPlayer.getDisplayName(), 8, ySize - 93, FONT_COLOR);
+        field_230712_o_.func_238422_b_(matrixStack, inventoryPlayer.getDisplayName().func_241878_f(), 8, ySize - 93, FONT_COLOR);
     }
 
     @Override

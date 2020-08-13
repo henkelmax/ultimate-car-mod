@@ -1,17 +1,17 @@
 package de.maxhenkel.car.gui;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.mojang.blaze3d.matrix.MatrixStack;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.blocks.tileentity.TileEntityGenerator;
 import de.maxhenkel.corelib.inventory.ScreenBase;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.util.IReorderingProcessor;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class GuiGenerator extends ScreenBase<ContainerGenerator> {
 
@@ -34,21 +34,21 @@ public class GuiGenerator extends ScreenBase<ContainerGenerator> {
         super.func_230451_b_(matrixStack, mouseX, mouseY);
 
         // Title
-        field_230712_o_.func_238422_b_(matrixStack, playerInv.getDisplayName(), 8, this.ySize - 96 + 2, FONT_COLOR);
-        field_230712_o_.func_238422_b_(matrixStack, tile.getDisplayName(), 62, 6, FONT_COLOR);
+        field_230712_o_.func_238422_b_(matrixStack, playerInv.getDisplayName().func_241878_f(), 8, this.ySize - 96 + 2, FONT_COLOR);
+        field_230712_o_.func_238422_b_(matrixStack, tile.getDisplayName().func_241878_f(), 62, 6, FONT_COLOR);
 
         if (mouseX >= guiLeft + 122 && mouseX <= guiLeft + 16 + 122) {
             if (mouseY >= guiTop + 8 && mouseY <= guiTop + 57 + 8) {
-                List<IFormattableTextComponent> list = new ArrayList<>();
-                list.add(new TranslationTextComponent("tooltip.energy", tile.getStoredEnergy()));
+                List<IReorderingProcessor> list = new ArrayList<>();
+                list.add(new TranslationTextComponent("tooltip.energy", tile.getStoredEnergy()).func_241878_f());
                 func_238654_b_(matrixStack, list, mouseX - guiLeft, mouseY - guiTop);
             }
         }
 
         if (mouseX >= guiLeft + 39 && mouseX <= guiLeft + 16 + 39) {
             if (mouseY >= guiTop + 8 && mouseY <= guiTop + 57 + 8) {
-                List<IFormattableTextComponent> list = new ArrayList<>();
-                list.add(new TranslationTextComponent("tooltip.fuel", tile.getCurrentMillibuckets()));
+                List<IReorderingProcessor> list = new ArrayList<>();
+                list.add(new TranslationTextComponent("tooltip.fuel", tile.getCurrentMillibuckets()).func_241878_f());
                 func_238654_b_(matrixStack, list, mouseX - guiLeft, mouseY - guiTop);
             }
         }

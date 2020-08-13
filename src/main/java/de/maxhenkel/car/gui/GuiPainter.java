@@ -21,7 +21,7 @@ public class GuiPainter extends ScreenBase<ContainerPainter> {
     @Override
     protected void func_230451_b_(MatrixStack matrixStack, int mouseX, int mouseY) {
         super.func_230451_b_(matrixStack, mouseX, mouseY);
-        field_230712_o_.func_238422_b_(matrixStack, new TranslationTextComponent("gui.painter"), 8, 6, FONT_COLOR);
+        field_230712_o_.func_238422_b_(matrixStack, new TranslationTextComponent("gui.painter").func_241878_f(), 8, 6, FONT_COLOR);
     }
 
     @Override

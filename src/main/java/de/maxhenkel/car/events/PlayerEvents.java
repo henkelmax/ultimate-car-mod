@@ -4,6 +4,7 @@ import de.maxhenkel.car.Main;
 import de.maxhenkel.car.entity.car.base.EntityVehicleBase;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
+import net.minecraft.client.settings.PointOfView;
 import net.minecraft.entity.Entity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -52,9 +53,9 @@ public class PlayerEvents {
         }
 
         if (third) {
-            minecraft.gameSettings.thirdPersonView = 1;
+            minecraft.gameSettings.func_243229_a(PointOfView.THIRD_PERSON_BACK);
         } else {
-            minecraft.gameSettings.thirdPersonView = 0;
+            minecraft.gameSettings.func_243229_a(PointOfView.FIRST_PERSON);
         }
 
     }

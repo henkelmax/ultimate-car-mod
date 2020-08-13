@@ -1,16 +1,16 @@
 package de.maxhenkel.car.gui;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.mojang.blaze3d.matrix.MatrixStack;
 import de.maxhenkel.car.blocks.tileentity.TileEntityEnergyFluidProducer;
 import de.maxhenkel.corelib.inventory.ScreenBase;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.util.IReorderingProcessor;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class GuiEnergyFluidProducer<T extends ContainerEnergyFluidProducer> extends ScreenBase<T> {
 
@@ -41,29 +41,29 @@ public abstract class GuiEnergyFluidProducer<T extends ContainerEnergyFluidProdu
         super.func_230451_b_(matrixStack, mouseX, mouseY);
 
         // Titles
-        field_230712_o_.func_238422_b_(matrixStack, func_231171_q_(), 38, 6, FONT_COLOR);
-        field_230712_o_.func_238422_b_(matrixStack, playerInv.getDisplayName(), 8, this.ySize - 96 + 2, FONT_COLOR);
+        field_230712_o_.func_238422_b_(matrixStack, func_231171_q_().func_241878_f(), 38, 6, FONT_COLOR);
+        field_230712_o_.func_238422_b_(matrixStack, playerInv.getDisplayName().func_241878_f(), 8, this.ySize - 96 + 2, FONT_COLOR);
 
         if (mouseX >= guiLeft + 11 && mouseX <= guiLeft + 16 + 11) {
             if (mouseY >= guiTop + 8 && mouseY <= guiTop + 57 + 8) {
-                List<IFormattableTextComponent> list = new ArrayList<>();
-                list.add(new TranslationTextComponent(getUnlocalizedTooltipEnergy(), tile.getStoredEnergy()));
+                List<IReorderingProcessor> list = new ArrayList<>();
+                list.add(new TranslationTextComponent(getUnlocalizedTooltipEnergy(), tile.getStoredEnergy()).func_241878_f());
                 func_238654_b_(matrixStack, list, mouseX - guiLeft, mouseY - guiTop);
             }
         }
 
         if (mouseX >= guiLeft + 148 && mouseX <= guiLeft + 16 + 148) {
             if (mouseY >= guiTop + 8 && mouseY <= guiTop + 57 + 8) {
-                List<IFormattableTextComponent> list = new ArrayList<>();
-                list.add(new TranslationTextComponent(getUnlocalizedTooltipLiquid(), tile.getCurrentMillibuckets()));
+                List<IReorderingProcessor> list = new ArrayList<>();
+                list.add(new TranslationTextComponent(getUnlocalizedTooltipLiquid(), tile.getCurrentMillibuckets()).func_241878_f());
                 func_238654_b_(matrixStack, list, mouseX - guiLeft, mouseY - guiTop);
             }
         }
 
         if (mouseX >= guiLeft + 79 && mouseX <= guiLeft + 24 + 79) {
             if (mouseY >= guiTop + 34 && mouseY <= guiTop + 17 + 34) {
-                List<IFormattableTextComponent> list = new ArrayList<>();
-                list.add(new TranslationTextComponent(getUnlocalizedTooltipProgress(), ((int) (getProgress() * 100F))));
+                List<IReorderingProcessor> list = new ArrayList<>();
+                list.add(new TranslationTextComponent(getUnlocalizedTooltipProgress(), ((int) (getProgress() * 100F))).func_241878_f());
                 func_238654_b_(matrixStack, list, mouseX - guiLeft, mouseY - guiTop);
             }
         }

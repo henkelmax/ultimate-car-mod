@@ -110,7 +110,7 @@ public class GuiSign extends ScreenBase<ContainerSign> {
             s = new TranslationTextComponent("gui.sign.back").getString();
         }
 
-        field_230712_o_.func_238422_b_(matrixStack, new TranslationTextComponent("gui.sign", s), 54, 10, FONT_COLOR);
+        field_230712_o_.func_238422_b_(matrixStack, new TranslationTextComponent("gui.sign", s).func_241878_f(), 54, 10, FONT_COLOR);
     }
 
     public void func_231164_f_() {
