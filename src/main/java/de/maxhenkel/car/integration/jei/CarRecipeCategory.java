@@ -1,5 +1,5 @@
 package de.maxhenkel.car.integration.jei;
-/*
+
 import com.mojang.blaze3d.matrix.MatrixStack;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.blocks.ModBlocks;
@@ -81,4 +81,4 @@ public class CarRecipeCategory implements IRecipeCategory<CarRecipe> {
     public void draw(CarRecipe recipe, MatrixStack matrixStack, double mouseX, double mouseY) {
         renderer.render(matrixStack, recipe.getCar(), RECIPE_WIDTH - 30, RECIPE_HEIGHT - 54 / 4, 18);
     }
-}*/
+}
