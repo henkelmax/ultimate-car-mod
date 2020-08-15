@@ -111,7 +111,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 
     @Override
     public boolean func_241849_j(Entity entityIn) {
-        if (Main.SERVER_CONFIG.damageEntities.get() && entityIn instanceof LivingEntity) {
+        if (Main.SERVER_CONFIG.damageEntities.get() && entityIn instanceof LivingEntity && !getPassengers().contains(entityIn)) {
             if (entityIn.getBoundingBox().intersects(getBoundingBox())) {
                 float speed = getSpeed();
                 if (speed > 0.35F) {

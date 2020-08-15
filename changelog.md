@@ -1,2 +1,1 @@
-- Re-added JEI integration
-- Update pack format
+- Fixed getting damage when driving cars
