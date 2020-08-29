@@ -1,1 +1,1 @@
-- Fixed getting damage when driving cars
+- Fixed a crash when interacting with blocks
