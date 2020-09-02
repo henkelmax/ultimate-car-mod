@@ -7,7 +7,7 @@ buildscript {
     }
     dependencies {
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '3.+', changing: true
-        classpath group: 'de.maxhenkel.forge-update', name: 'forge-update', version: '1.0.2'
+        classpath group: 'de.maxhenkel.forge-update', name: 'forge-update', version: '1.0.3'
     }
 }
 
@@ -31,7 +31,6 @@ minecraft {
     runs {
         client {
             workingDirectory project.file('run').canonicalPath
-            //property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
             property 'forge.logging.console.level', 'debug'
             args = ['--username', 'henkelmax']
             source sourceSets.main
@@ -39,7 +38,6 @@ minecraft {
 
         server {
             workingDirectory project.file('run/server').canonicalPath
-            //property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
             property 'forge.logging.console.level', 'debug'
             source sourceSets.main
         }
@@ -48,9 +46,7 @@ minecraft {
 
 dependencies {
     minecraft "net.minecraftforge:forge:${mod_minecraft_version}-${forge_version}"
-    // compile against the JEI API but do not include it at runtime
     compileOnly fg.deobf("mezz.jei:jei-${mod_minecraft_version}:${jei_version}:api")
-    // at runtime, use the full JEI jar
     runtimeOnly fg.deobf("mezz.jei:jei-${mod_minecraft_version}:${jei_version}")
 
     compile fg.deobf("mcp.mobius.waila:Hwyla:${hwyla_version}")
@@ -127,7 +123,7 @@ repositories {
     }
     maven {
         name = "Hwyla"
-        url "http://tehnut.info/maven"
+        url "https://maven.tehnut.info"
     }
 }
 
