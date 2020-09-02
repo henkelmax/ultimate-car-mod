@@ -1,1 +1,1 @@
-- Fixed a crash when interacting with blocks
+- Fixed a crash when interacting with cars
