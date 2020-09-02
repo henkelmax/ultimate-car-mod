@@ -1,1 +1,1 @@
-- Added canola seeds as chicken breeding item
+- Fixed a crash when interacting with cars

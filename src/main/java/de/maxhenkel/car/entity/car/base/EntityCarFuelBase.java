@@ -239,7 +239,7 @@ public abstract class EntityCarFuelBase extends EntityCarDamageBase implements I
         int totalAmount = getFuelAmount();
 
         if (fluid == null) {
-            return null;
+            return FluidStack.EMPTY;
         }
 
         int amount = Math.min(maxDrain, totalAmount);
