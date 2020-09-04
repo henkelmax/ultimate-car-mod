@@ -71,7 +71,7 @@ public class TileEntityFluidExtractor extends TileEntityBase implements ITickabl
             drainSimulated = extractHandler.drain(new FluidStack(getFilterFluid(), drainSpeed), IFluidHandler.FluidAction.SIMULATE);
         }
 
-        if (drainSimulated == null || drainSimulated.getAmount() <= 0) {
+        if (drainSimulated.getAmount() <= 0) {
             return;
         }
 

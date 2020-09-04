@@ -183,11 +183,7 @@ public class TileEntityTank extends TileEntityBase implements IFluidHandler, ITi
         BlockState s = world.getBlockState(pos.offset(facing));
         if (s.isNormalCube(world, pos.offset(facing))) {
             if (facing.equals(Direction.UP)) {
-                if (fluid.getAmount() >= CAPACITY) {
-                    return true;
-                } else {
-                    return false;
-                }
+                return fluid.getAmount() >= CAPACITY;
             }
             return true;
         }
@@ -208,9 +204,7 @@ public class TileEntityTank extends TileEntityBase implements IFluidHandler, ITi
                 return true;
             }
 
-            if (tank.fluid.getFluid().equals(fluid.getFluid())) {
-                return true;
-            }
+            return tank.fluid.getFluid().equals(fluid.getFluid());
         }
         return false;
     }

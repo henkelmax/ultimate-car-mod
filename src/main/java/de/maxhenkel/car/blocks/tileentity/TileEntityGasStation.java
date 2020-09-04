@@ -2,6 +2,8 @@ package de.maxhenkel.car.blocks.tileentity;
 
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.blocks.BlockGasStation;
+import de.maxhenkel.car.blocks.BlockGasStationTop;
+import de.maxhenkel.car.blocks.BlockOrientableHorizontal;
 import de.maxhenkel.car.blocks.ModBlocks;
 import de.maxhenkel.car.net.MessageStartFuel;
 import de.maxhenkel.car.sounds.ModSounds;
@@ -37,7 +39,7 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 import javax.annotation.Nonnull;
 import java.util.*;
 
-public class TileEntityGasStation extends TileEntityBase implements ITickableTileEntity, IFluidHandler, ISoundLoopable, IInventory {
+public class TileEntityGasStation extends TileEntityBase implements ITickableTileEntity, IFluidHandler, ISoundLoopable {
 
     private FluidStack storage;
 
@@ -113,13 +115,13 @@ public class TileEntityGasStation extends TileEntityBase implements ITickableTil
     private void fixTop() {
         BlockState top = world.getBlockState(pos.up());
         BlockState bottom = world.getBlockState(pos);
-        Direction facing = bottom.get(ModBlocks.GAS_STATION.FACING);
+        Direction facing = bottom.get(BlockOrientableHorizontal.FACING);
         if (top.getBlock().equals(ModBlocks.FUEL_STATION_TOP)) {
-            if (!top.get(ModBlocks.FUEL_STATION_TOP.FACING).equals(facing)) {
-                world.setBlockState(pos.up(), ModBlocks.FUEL_STATION_TOP.getDefaultState().with(ModBlocks.FUEL_STATION_TOP.FACING, facing));
+            if (!top.get(BlockGasStationTop.FACING).equals(facing)) {
+                world.setBlockState(pos.up(), ModBlocks.FUEL_STATION_TOP.getDefaultState().with(BlockGasStationTop.FACING, facing));
             }
         } else if (world.isAirBlock(pos.up())) {
-            world.setBlockState(pos.up(), ModBlocks.FUEL_STATION_TOP.getDefaultState().with(ModBlocks.FUEL_STATION_TOP.FACING, facing));
+            world.setBlockState(pos.up(), ModBlocks.FUEL_STATION_TOP.getDefaultState().with(BlockGasStationTop.FACING, facing));
         }
 
     }
@@ -450,66 +452,6 @@ public class TileEntityGasStation extends TileEntityBase implements ITickableTil
     @Override
     public AxisAlignedBB getRenderBoundingBox() {
         return new AxisAlignedBB(pos, pos.add(1, 2, 1));
-    }
-
-    @Override
-    public int getSizeInventory() {
-        return 0;
-    }
-
-    @Override
-    public ItemStack getStackInSlot(int index) {
-        return null;
-    }
-
-    @Override
-    public ItemStack decrStackSize(int index, int count) {
-        return null;
-    }
-
-    @Override
-    public ItemStack removeStackFromSlot(int index) {
-        return null;
-    }
-
-    @Override
-    public void setInventorySlotContents(int index, ItemStack stack) {
-
-    }
-
-    @Override
-    public int getInventoryStackLimit() {
-        return 0;
-    }
-
-    @Override
-    public boolean isUsableByPlayer(PlayerEntity player) {
-        return true;
-    }
-
-    @Override
-    public boolean isEmpty() {
-        return true;
-    }
-
-    @Override
-    public void openInventory(PlayerEntity player) {
-
-    }
-
-    @Override
-    public void closeInventory(PlayerEntity player) {
-
-    }
-
-    @Override
-    public boolean isItemValidForSlot(int index, ItemStack stack) {
-        return false;
-    }
-
-    @Override
-    public void clear() {
-
     }
 
     public int getTradeAmount() {

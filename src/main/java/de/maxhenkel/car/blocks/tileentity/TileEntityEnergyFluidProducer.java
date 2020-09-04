@@ -144,7 +144,7 @@ public abstract class TileEntityEnergyFluidProducer extends TileEntityBase imple
         setBlockEnabled(true);
     }
 
-    public abstract BlockGui getOwnBlock();
+    public abstract BlockGui<? extends TileEntityEnergyFluidProducer> getOwnBlock();
 
     public void setBlockEnabled(boolean enabled) {
         BlockState state = world.getBlockState(getPos());
@@ -241,18 +241,12 @@ public abstract class TileEntityEnergyFluidProducer extends TileEntityBase imple
 
     @Override
     public boolean canInsertItem(int index, ItemStack itemStackIn, Direction direction) {
-        if (index == 0) {
-            return true;
-        }
-        return false;
+        return index == 0;
     }
 
     @Override
     public boolean canExtractItem(int index, ItemStack stack, Direction direction) {
-        if (index == 1) {
-            return true;
-        }
-        return false;
+        return index == 1;
     }
 
 

@@ -80,11 +80,7 @@ public class TileEntityGenerator extends TileEntityBase implements ITickableTile
             return;
         }
 
-        if (isEnabled()) {
-            setBlockEnabled(true);
-        } else {
-            setBlockEnabled(false);
-        }
+        setBlockEnabled(isEnabled());
 
         if (currentFluid != null && currentMillibuckets > 0
                 && (storedEnergy + energyGeneration) <= maxStorage) {
@@ -126,11 +122,7 @@ public class TileEntityGenerator extends TileEntityBase implements ITickableTile
     }
 
     public boolean isEnabled() {
-        int fuelGen = energyGeneration;
-        if (currentMillibuckets > 0 && storedEnergy + fuelGen < maxStorage) {
-            return true;
-        }
-        return false;
+        return currentMillibuckets > 0 && storedEnergy + energyGeneration < maxStorage;
     }
 
     public void setBlockEnabled(boolean enabled) {

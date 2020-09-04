@@ -180,14 +180,8 @@ public class TileEntityCarWorkshop extends TileEntityBase implements IInventory 
     }
 
     private boolean checkSideBlock(BlockPos p) {
-        BlockState state = world.getBlockState(p);
-        if (state.getBlock().equals(ModBlocks.CAR_WORKSHOP_OUTTER)) {
-            return true;
-        }
-        return false;
+        return world.getBlockState(p).getBlock().equals(ModBlocks.CAR_WORKSHOP_OUTTER);
     }
-
-    // Inventory
 
     @Override
     public CompoundNBT write(CompoundNBT compound) {

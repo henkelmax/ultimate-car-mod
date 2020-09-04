@@ -110,11 +110,7 @@ public class TileEntityBackmixReactor extends TileEntityBase implements ITickabl
             return;
         }
 
-        if (isEnabled()) {
-            setBlockEnabled(true);
-        } else {
-            setBlockEnabled(false);
-        }
+        setBlockEnabled(isEnabled());
 
         if (timeToGenerate > 0 && storedEnergy >= energyUsage) {
             storedEnergy -= energyUsage;
@@ -144,9 +140,7 @@ public class TileEntityBackmixReactor extends TileEntityBase implements ITickabl
     public boolean isEnabled() {
         if (storedEnergy > 0 && currentMix < maxMix) {
             if (currentMethanol >= methanolUsage) {
-                if (currentCanola >= canolaUsage) {
-                    return true;
-                }
+                return currentCanola >= canolaUsage;
             }
         }
         return false;

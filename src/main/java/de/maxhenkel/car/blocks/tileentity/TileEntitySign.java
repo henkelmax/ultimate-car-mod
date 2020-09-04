@@ -8,15 +8,15 @@ import net.minecraft.util.IntArray;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
+import java.util.Arrays;
+
 public class TileEntitySign extends TileEntityBase {
 
     private String[] text = new String[8];
 
     public TileEntitySign() {
         super(Main.SIGN_TILE_ENTITY_TYPE);
-        for (int i = 0; i < text.length; i++) {
-            text[i] = "";
-        }
+        Arrays.fill(text, "");
     }
 
     @Override
