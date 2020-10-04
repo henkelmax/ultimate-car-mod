@@ -11,7 +11,6 @@ import de.maxhenkel.car.commands.CommandCarDemo;
 import de.maxhenkel.car.config.ClientConfig;
 import de.maxhenkel.car.config.FuelConfig;
 import de.maxhenkel.car.config.ServerConfig;
-import de.maxhenkel.car.dataserializers.DataSerializerItemList;
 import de.maxhenkel.car.entity.car.base.EntityGenericCar;
 import de.maxhenkel.car.entity.model.GenericCarModel;
 import de.maxhenkel.car.events.*;
@@ -27,6 +26,7 @@ import de.maxhenkel.car.villagers.VillagerEvents;
 import de.maxhenkel.corelib.ClientRegistry;
 import de.maxhenkel.corelib.CommonRegistry;
 import de.maxhenkel.corelib.config.DynamicConfig;
+import de.maxhenkel.corelib.dataserializers.DataSerializerItemList;
 import de.maxhenkel.tools.EntityTools;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderType;
@@ -450,9 +450,7 @@ public class Main {
 
     @SubscribeEvent
     public void registerSerializers(RegistryEvent.Register<DataSerializerEntry> event) {
-        DataSerializerEntry dataSerializerEntryItemList = new DataSerializerEntry(DataSerializerItemList.ITEM_LIST);
-        dataSerializerEntryItemList.setRegistryName(new ResourceLocation(MODID, "serializer_item_list"));
-        event.getRegistry().register(dataSerializerEntryItemList);
+        DataSerializerItemList.register(event, new ResourceLocation(MODID, "serializer_item_list"));
     }
 
     @SubscribeEvent

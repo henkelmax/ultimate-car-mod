@@ -2,7 +2,6 @@ package de.maxhenkel.car.entity.car.base;
 
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.config.Fuel;
-import de.maxhenkel.car.dataserializers.DataSerializerItemList;
 import de.maxhenkel.car.entity.car.parts.*;
 import de.maxhenkel.car.integration.jei.CarRecipe;
 import de.maxhenkel.car.integration.jei.CarRecipeBuilder;
@@ -10,6 +9,7 @@ import de.maxhenkel.car.items.ICarPart;
 import de.maxhenkel.car.items.ItemKey;
 import de.maxhenkel.car.sounds.ModSounds;
 import de.maxhenkel.corelib.client.obj.OBJModelInstance;
+import de.maxhenkel.corelib.dataserializers.DataSerializerItemList;
 import net.minecraft.entity.EntityType;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.inventory.Inventory;
@@ -17,6 +17,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.ITextComponent;
@@ -31,7 +32,7 @@ import java.util.Random;
 
 public class EntityGenericCar extends EntityCarLicensePlateBase {
 
-    private static final DataParameter<ItemStack[]> PARTS = EntityDataManager.createKey(EntityGenericCar.class, DataSerializerItemList.ITEM_LIST);
+    private static final DataParameter<NonNullList<ItemStack>> PARTS = EntityDataManager.createKey(EntityGenericCar.class, DataSerializerItemList.ITEM_LIST);
 
     private List<Part> parts;
 
@@ -308,7 +309,7 @@ public class EntityGenericCar extends EntityCarLicensePlateBase {
     @Override
     protected void registerData() {
         super.registerData();
-        this.dataManager.register(PARTS, null);
+        this.dataManager.register(PARTS, NonNullList.create());
     }
 
     public <T extends Part> T getPartByClass(Class<T> clazz) {
@@ -322,21 +323,21 @@ public class EntityGenericCar extends EntityCarLicensePlateBase {
     }
 
     public void setPartSerializer() {
-        ItemStack[] stacks = new ItemStack[partInventory.getSizeInventory()];
+        NonNullList<ItemStack> stacks = NonNullList.withSize(partInventory.getSizeInventory(), ItemStack.EMPTY);
         for (int i = 0; i < partInventory.getSizeInventory(); i++) {
-            stacks[i] = partInventory.getStackInSlot(i);
+            stacks.set(i, partInventory.getStackInSlot(i));
         }
 
         dataManager.set(PARTS, stacks);
     }
 
     private boolean updateClientSideItems() {
-        ItemStack[] stacks = dataManager.get(PARTS);
-        if (stacks == null) {
+        NonNullList<ItemStack> stacks = dataManager.get(PARTS);
+        if (stacks.isEmpty()) {
             return false;
         }
-        for (int i = 0; i < stacks.length; i++) {
-            partInventory.setInventorySlotContents(i, stacks[i]);
+        for (int i = 0; i < stacks.size(); i++) {
+            partInventory.setInventorySlotContents(i, stacks.get(i));
         }
         return true;
     }
@@ -345,7 +346,7 @@ public class EntityGenericCar extends EntityCarLicensePlateBase {
     public void readAdditional(CompoundNBT compound) {
         super.readAdditional(compound);
 
-        if (compound.keySet().stream().noneMatch(s -> !s.equals("id"))) {
+        if (compound.keySet().stream().allMatch(s -> s.equals("id"))) {
             randomizeParts();
             setInventorySlotContents(0, ItemKey.getKeyForCar(getUniqueID()));
             setInventorySlotContents(1, ItemKey.getKeyForCar(getUniqueID()));

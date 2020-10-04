@@ -1,2 +1,1 @@
-- Updated dependencies
-- Updated mods.toml
+- Used dataserializer from corelib
