@@ -1,7 +1,7 @@
 modLoader="javafml"
 loaderVersion="${mod_forge_version}"
 license="All rights reserved"
-issueTrackerURL="https://www.curseforge.com/minecraft/mc-mods/ultimate-car-mod/issues"
+issueTrackerURL="https://github.com/henkelmax/ultimate-car-mod/issues"
 [[mods]]
 modId="${mod_id}"
 version="${mod_version}"
