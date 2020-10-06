@@ -50,7 +50,7 @@ public class BlockSplitTank extends BlockBase implements ITileEntityProvider, II
                 }
                 return super.canPlace(context, state);
             }
-        }.setRegistryName(this.getRegistryName());
+        }.setRegistryName(getRegistryName());
     }
 
     @Override
@@ -114,7 +114,7 @@ public class BlockSplitTank extends BlockBase implements ITileEntityProvider, II
 
         TileEntity tileentity = worldIn.getTileEntity(pos);
 
-        if (tileentity != null && tileentity instanceof IInventory) {
+        if (tileentity instanceof IInventory) {
             InventoryHelper.dropInventoryItems(worldIn, pos, (IInventory) tileentity);
             worldIn.updateComparatorOutputLevel(pos, this);
         }
@@ -127,7 +127,8 @@ public class BlockSplitTank extends BlockBase implements ITileEntityProvider, II
         super.onReplaced(state, worldIn, pos, newState, isMoving);
 
         BlockState stateUp = worldIn.getBlockState(pos.up());
-        if (stateUp != null && stateUp.getBlock() != null && stateUp.getBlock().equals(ModBlocks.SPLIT_TANK_TOP)) {
+        stateUp.getBlock();
+        if (stateUp.getBlock().equals(ModBlocks.SPLIT_TANK_TOP)) {
             worldIn.destroyBlock(pos.up(), false);
         }
     }

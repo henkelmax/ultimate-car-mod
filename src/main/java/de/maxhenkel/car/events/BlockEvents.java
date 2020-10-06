@@ -40,9 +40,7 @@ public class BlockEvents {
 
         LootTable lootTable = serverWorld.getServer().getLootTableManager().getLootTableFromLocation(GRASS_LOOT_TABLE);
 
-        lootTable.generate(lootContext).forEach((stack) -> {
-            Block.spawnAsEntity(serverWorld, event.getPos(), stack);
-        });
+        lootTable.generate(lootContext).forEach((stack) -> Block.spawnAsEntity(serverWorld, event.getPos(), stack));
     }
 
 }

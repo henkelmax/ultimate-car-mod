@@ -25,6 +25,7 @@ import de.maxhenkel.car.sounds.ModSounds;
 import de.maxhenkel.car.villagers.VillagerEvents;
 import de.maxhenkel.corelib.ClientRegistry;
 import de.maxhenkel.corelib.CommonRegistry;
+import de.maxhenkel.corelib.block.IItemBlock;
 import de.maxhenkel.corelib.config.DynamicConfig;
 import de.maxhenkel.corelib.dataserializers.DataSerializerItemList;
 import de.maxhenkel.tools.EntityTools;
@@ -202,7 +203,7 @@ public class Main {
     @SubscribeEvent
     public void registerItems(RegistryEvent.Register<Item> event) {
         event.getRegistry().registerAll(
-                ModBlocks.getBlocksWithItems().stream().map(block -> block.toItem()).toArray(Item[]::new)
+                ModBlocks.getBlocksWithItems().stream().map(IItemBlock::toItem).toArray(Item[]::new)
         );
 
         event.getRegistry().registerAll(

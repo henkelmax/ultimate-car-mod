@@ -18,7 +18,7 @@ public class EntityTools {
     /**
      * Gets the first car in the range of 10 blocks of the player
      *
-     * @param player
+     * @param player the player
      * @param uuid   the UUID of the car
      * @return the car or null
      */

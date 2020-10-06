@@ -73,7 +73,7 @@ public class BlockGasStation extends BlockOrientableHorizontal {
                 }
                 return super.canPlace(context, state);
             }
-        }.setRegistryName(this.getRegistryName());
+        }.setRegistryName(getRegistryName());
     }
 
     @Override

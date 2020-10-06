@@ -18,8 +18,7 @@ public class CarOptionsSoundsScreen extends OptionsSoundsScreen {
         super.func_231160_c_();
         int posX = 2;
         SoundCategory[] categories = SoundCategory.values();
-        for (int i = 0; i < categories.length; ++i) {
-            SoundCategory category = categories[i];
+        for (SoundCategory category : categories) {
             if (category != SoundCategory.MASTER) {
                 ++posX;
             }

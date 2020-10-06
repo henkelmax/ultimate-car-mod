@@ -378,7 +378,7 @@ public class TileEntityGasStation extends TileEntityBase implements ITickableTil
                 .orElse(null);
     }
 
-    private CachedValue<AxisAlignedBB> detectionBox = new CachedValue(this::createDetextionBox);
+    private CachedValue<AxisAlignedBB> detectionBox = new CachedValue<>(this::createDetextionBox);
 
     private AxisAlignedBB createDetextionBox() {
         BlockState ownState = world.getBlockState(getPos());

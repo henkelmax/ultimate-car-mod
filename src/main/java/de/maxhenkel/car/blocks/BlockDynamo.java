@@ -24,7 +24,7 @@ public class BlockDynamo extends BlockBase implements ITileEntityProvider, IItem
 
     @Override
     public Item toItem() {
-        return new BlockItem(this, new Item.Properties().group(ModItemGroups.TAB_CAR)).setRegistryName(this.getRegistryName());
+        return new BlockItem(this, new Item.Properties().group(ModItemGroups.TAB_CAR)).setRegistryName(getRegistryName());
     }
 
     @Override

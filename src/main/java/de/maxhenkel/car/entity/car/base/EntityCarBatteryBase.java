@@ -204,9 +204,9 @@ public abstract class EntityCarBatteryBase extends EntityCarTemperatureBase {
     @Override
     protected void registerData() {
         super.registerData();
-        this.dataManager.register(BATTERY_LEVEL, Integer.valueOf(getMaxBatteryLevel()));
-        this.dataManager.register(STARTING_TIME, Integer.valueOf(0));
-        this.dataManager.register(STARTING, Boolean.valueOf(false));
+        this.dataManager.register(BATTERY_LEVEL, getMaxBatteryLevel());
+        this.dataManager.register(STARTING_TIME, 0);
+        this.dataManager.register(STARTING, Boolean.FALSE);
     }
 
     public int getStartingTime() {
@@ -214,7 +214,7 @@ public abstract class EntityCarBatteryBase extends EntityCarTemperatureBase {
     }
 
     public void setStartingTime(int time) {
-        this.dataManager.set(STARTING_TIME, Integer.valueOf(time));
+        this.dataManager.set(STARTING_TIME, time);
     }
 
     public boolean isStarting() {
@@ -247,7 +247,7 @@ public abstract class EntityCarBatteryBase extends EntityCarTemperatureBase {
                 }
             }
         }
-        this.dataManager.set(STARTING, Boolean.valueOf(starting));
+        this.dataManager.set(STARTING, starting);
     }
 
     public float getBatterySoundPitchLevel() {
@@ -266,9 +266,7 @@ public abstract class EntityCarBatteryBase extends EntityCarTemperatureBase {
 
         float perc = (float) levelUnder / (float) startLevel;
 
-        float pitch = basePitch - (perc / 2.3F); //2 = max 0.5 pitch
-        //System.out.println(pitch);
-        return pitch;
+        return basePitch - (perc / 2.3F);
     }
 
     public float getBatteryPercentage() {
@@ -281,7 +279,7 @@ public abstract class EntityCarBatteryBase extends EntityCarTemperatureBase {
         } else if (level > getMaxBatteryLevel()) {
             level = getMaxBatteryLevel();
         }
-        this.dataManager.set(BATTERY_LEVEL, Integer.valueOf(level));
+        this.dataManager.set(BATTERY_LEVEL, level);
     }
 
     public int getBatteryLevel() {

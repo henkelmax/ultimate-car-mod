@@ -125,9 +125,7 @@ public class GuiGasStation extends ScreenBase<ContainerGasStation> {
         );
         field_230712_o_.func_238422_b_(matrixStack, fuelText.func_241878_f(), guiLeft + 63, guiTop + 30, FONT_COLOR);
 
-        if (tank.isEmpty()) {
-            return;
-        } else {
+        if (!tank.isEmpty()) {
             field_230712_o_.func_238422_b_(matrixStack, new TranslationTextComponent("gas_station.car_fuel_type", new StringTextComponent(tank.getDisplayName().getString()).func_240699_a_(TextFormatting.WHITE)).func_241878_f(), guiLeft + 63, guiTop + 40, FONT_COLOR);
         }
     }

@@ -76,20 +76,20 @@ public class CommandCarDemo {
 
         posZ += 3D;
 
-        for (int i = 0; i < tankContainers.size(); i++) {
+        for (ItemStack tankContainer : tankContainers) {
             for (int j = 0; j < transporters.size(); j++) {
                 double xStart = pos.getX() - transporters.size();
                 double posX = xStart + j * 3D;
-                createCar(world, posX, pos.y, posZ, transporters.get(j), wheel, wheel, wheel, wheel, wheel, wheel, engine, tank, tankContainers.get(i));
+                createCar(world, posX, pos.y, posZ, transporters.get(j), wheel, wheel, wheel, wheel, wheel, wheel, engine, tank, tankContainer);
             }
             posZ += 3D;
         }
 
-        for (int i = 0; i < containers.size(); i++) {
+        for (ItemStack container : containers) {
             for (int j = 0; j < transporters.size(); j++) {
                 double xStart = pos.getX() - transporters.size();
                 double posX = xStart + j * 3D;
-                createCar(world, posX, pos.y, posZ, transporters.get(j), wheel, wheel, wheel, wheel, wheel, wheel, engine, tank, containers.get(i));
+                createCar(world, posX, pos.y, posZ, transporters.get(j), wheel, wheel, wheel, wheel, wheel, wheel, engine, tank, container);
             }
             posZ += 3D;
         }

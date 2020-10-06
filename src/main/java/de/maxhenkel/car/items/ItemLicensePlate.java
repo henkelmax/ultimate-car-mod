@@ -57,7 +57,7 @@ public class ItemLicensePlate extends ItemCraftingComponent {
                 }
             });
         }
-        return new ActionResult(ActionResultType.SUCCESS, stack);
+        return new ActionResult<>(ActionResultType.SUCCESS, stack);
     }
 
     public static void setText(ItemStack stack, String text) {

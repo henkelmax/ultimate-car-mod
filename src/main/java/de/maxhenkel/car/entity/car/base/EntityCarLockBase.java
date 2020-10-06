@@ -58,7 +58,7 @@ public abstract class EntityCarLockBase extends EntityCarInventoryBase {
     @Override
     protected void registerData() {
         super.registerData();
-        this.dataManager.register(LOCKED, Boolean.valueOf(false));
+        this.dataManager.register(LOCKED, Boolean.FALSE);
     }
 
     public void setLocked(boolean locked, boolean playsound) {
@@ -68,7 +68,7 @@ public abstract class EntityCarLockBase extends EntityCarInventoryBase {
             playUnLockSound();
         }
 
-        this.dataManager.set(LOCKED, Boolean.valueOf(locked));
+        this.dataManager.set(LOCKED, locked);
     }
 
     public boolean isLocked() {

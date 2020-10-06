@@ -128,8 +128,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
     public void checkPush() {
         List<PlayerEntity> list = world.getEntitiesWithinAABB(PlayerEntity.class, getBoundingBox().expand(0.2, 0, 0.2).expand(-0.2, 0, -0.2));
 
-        for (int j = 0; j < list.size(); j++) {
-            PlayerEntity player = list.get(j);
+        for (PlayerEntity player : list) {
             if (!player.isPassenger(this) && player.isSneaking()) {
                 double motX = calculateMotionX(0.05F, player.rotationYaw);
                 double motZ = calculateMotionZ(0.05F, player.rotationYaw);
@@ -140,11 +139,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
     }
 
     public boolean canEngineStayOn() {
-        if (isInWater() || isInLava()) {
-            return false;
-        }
-
-        return true;
+        return !isInWater() && !isInLava();
     }
 
     @OnlyIn(Dist.CLIENT)

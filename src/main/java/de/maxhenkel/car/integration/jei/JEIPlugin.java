@@ -51,8 +51,8 @@ public class JEIPlugin implements IModPlugin {
         registration.addIngredientInfo(new ItemStack(ModBlocks.TANK), VanillaTypes.ITEM, "description.tank");
         registration.addIngredientInfo(new ItemStack(ModBlocks.FLUID_EXTRACTOR), VanillaTypes.ITEM, "description.fluid_extractor");
         registration.addIngredientInfo(new ItemStack(ModItems.BATTERY), VanillaTypes.ITEM, "description.battery");
-        registration.addIngredientInfo(Arrays.stream(ModItems.CONTAINERS).map(item -> new ItemStack(item)).collect(Collectors.toList()), VanillaTypes.ITEM, "description.container");
-        registration.addIngredientInfo(Arrays.stream(ModItems.TANK_CONTAINERS).map(item -> new ItemStack(item)).collect(Collectors.toList()), VanillaTypes.ITEM, "description.tank_container");
+        registration.addIngredientInfo(Arrays.stream(ModItems.CONTAINERS).map(ItemStack::new).collect(Collectors.toList()), VanillaTypes.ITEM, "description.container");
+        registration.addIngredientInfo(Arrays.stream(ModItems.TANK_CONTAINERS).map(ItemStack::new).collect(Collectors.toList()), VanillaTypes.ITEM, "description.tank_container");
         registration.addIngredientInfo(new ItemStack(ModItems.LICENSE_PLATE), VanillaTypes.ITEM, "description.license_plate");
     }
 

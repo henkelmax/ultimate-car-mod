@@ -24,7 +24,7 @@ public class TileEntityOilMill extends TileEntityEnergyFluidProducer {
     }
 
     @Override
-    public BlockGui getOwnBlock() {
+    public BlockGui<TileEntityOilMill> getOwnBlock() {
         return ModBlocks.OIL_MILL;
     }
 

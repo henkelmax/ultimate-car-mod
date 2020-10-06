@@ -60,9 +60,7 @@ public class ItemPainter extends Item {
                     public Container createMenu(int i, PlayerInventory playerInventory, PlayerEntity playerEntity) {
                         return new ContainerPainter(i, playerInventory, isYellow);
                     }
-                }, packetBuffer -> {
-                    packetBuffer.writeBoolean(isYellow);
-                });
+                }, packetBuffer -> packetBuffer.writeBoolean(isYellow));
             }
         }
         return super.onItemRightClick(worldIn, playerIn, handIn);
@@ -102,9 +100,7 @@ public class ItemPainter extends Item {
 
         context.getWorld().setBlockState(context.getPos().up(), state);
 
-        stack1.damageItem(1, context.getPlayer(), playerEntity -> {
-            playerEntity.sendBreakAnimation(context.getHand());
-        });
+        stack1.damageItem(1, context.getPlayer(), playerEntity -> playerEntity.sendBreakAnimation(context.getHand()));
 
         return ActionResultType.CONSUME;
     }

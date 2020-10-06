@@ -50,8 +50,8 @@ public class MessageEditSign implements Message<MessageEditSign> {
     @Override
     public void toBytes(PacketBuffer buf) {
         buf.writeBlockPos(pos);
-        for (int i = 0; i < text.length; i++) {
-            buf.writeString(text[i], 20);
+        for (String s : text) {
+            buf.writeString(s, 20);
         }
     }
 

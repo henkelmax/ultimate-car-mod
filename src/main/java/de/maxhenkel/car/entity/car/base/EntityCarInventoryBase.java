@@ -99,9 +99,7 @@ public abstract class EntityCarInventoryBase extends EntityCarFuelBase implement
                         public Container createMenu(int i, PlayerInventory playerInventory, PlayerEntity playerEntity) {
                             return new ContainerCarInventory(i, EntityCarInventoryBase.this, playerInventory);
                         }
-                    }, packetBuffer -> {
-                        packetBuffer.writeUniqueId(getUniqueID());
-                    });
+                    }, packetBuffer -> packetBuffer.writeUniqueId(getUniqueID()));
                 }
             }
 
@@ -173,9 +171,7 @@ public abstract class EntityCarInventoryBase extends EntityCarFuelBase implement
                 public Container createMenu(int i, PlayerInventory playerInventory, PlayerEntity playerEntity) {
                     return new ContainerCar(i, EntityCarInventoryBase.this, playerInventory);
                 }
-            }, packetBuffer -> {
-                packetBuffer.writeUniqueId(getUniqueID());
-            });
+            }, packetBuffer -> packetBuffer.writeUniqueId(getUniqueID()));
         }
     }
 

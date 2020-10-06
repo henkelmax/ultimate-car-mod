@@ -45,7 +45,7 @@ public class BlockPaint extends BlockBase implements IItemBlock {
                 }
                 return super.canPlace(context, state);
             }
-        }.setRegistryName(this.getRegistryName());
+        }.setRegistryName(getRegistryName());
     }
 
 

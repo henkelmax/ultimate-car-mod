@@ -19,7 +19,7 @@ public class TileEntityBlastFurnace extends TileEntityEnergyFluidProducer {
     }
 
     @Override
-    public BlockGui getOwnBlock() {
+    public BlockGui<TileEntityBlastFurnace> getOwnBlock() {
         return ModBlocks.BLAST_FURNACE;
     }
 

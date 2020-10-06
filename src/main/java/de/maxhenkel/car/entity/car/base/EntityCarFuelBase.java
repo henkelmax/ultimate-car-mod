@@ -63,11 +63,7 @@ public abstract class EntityCarFuelBase extends EntityCarDamageBase implements I
     private void removeFuel(int amount) {
         int fuel = getFuelAmount();
         int newFuel = fuel - amount;
-        if (newFuel <= 0) {
-            setFuelAmount(0);
-        } else {
-            setFuelAmount(newFuel);
-        }
+        setFuelAmount(Math.max(newFuel, 0));
     }
 
     @Override

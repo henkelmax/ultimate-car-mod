@@ -205,8 +205,8 @@ public abstract class EntityVehicleBase extends Entity {
         this.clientX = x;
         this.clientY = y;
         this.clientZ = z;
-        this.clientYaw = (double) yaw;
-        this.clientPitch = (double) pitch;
+        this.clientYaw = yaw;
+        this.clientPitch = pitch;
         this.steps = 10;
     }
 

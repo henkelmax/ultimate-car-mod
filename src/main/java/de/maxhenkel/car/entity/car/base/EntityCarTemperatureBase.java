@@ -76,7 +76,7 @@ public abstract class EntityCarTemperatureBase extends EntityCarBase {
     }
 
     public void setTemperature(float temperature) {
-        this.dataManager.set(TEMPERATURE, Float.valueOf(temperature));
+        this.dataManager.set(TEMPERATURE, temperature);
     }
 
     public abstract float getOptimalTemperature();
@@ -84,7 +84,7 @@ public abstract class EntityCarTemperatureBase extends EntityCarBase {
     @Override
     protected void registerData() {
         super.registerData();
-        this.dataManager.register(TEMPERATURE, Float.valueOf(0F));
+        this.dataManager.register(TEMPERATURE, 0F);
     }
 
     @Override

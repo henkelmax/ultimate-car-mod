@@ -66,7 +66,7 @@ public class BlockFluidExtractor extends BlockBase implements ITileEntityProvide
 
     @Override
     public Item toItem() {
-        return new BlockItem(this, new Item.Properties().group(ModItemGroups.TAB_CAR)).setRegistryName(this.getRegistryName());
+        return new BlockItem(this, new Item.Properties().group(ModItemGroups.TAB_CAR)).setRegistryName(getRegistryName());
     }
 
     @Override

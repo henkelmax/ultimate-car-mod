@@ -32,28 +32,28 @@ public class ItemKey extends Item {
             if (worldIn.isRemote) {
                 playerIn.sendStatusMessage(new TranslationTextComponent("message.key_no_car"), true);
             }
-            return new ActionResult(ActionResultType.PASS, stack);
+            return new ActionResult<>(ActionResultType.PASS, stack);
         } else if (worldIn.isRemote) {
-            return new ActionResult(ActionResultType.SUCCESS, stack);
+            return new ActionResult<>(ActionResultType.SUCCESS, stack);
         }
 
         List<EntityCarLockBase> cars = worldIn.getEntitiesWithinAABB(EntityCarLockBase.class, new AxisAlignedBB(playerIn.getPosX() - 25D, playerIn.getPosY() - 25D, playerIn.getPosZ() - 25D, playerIn.getPosX() + 25D, playerIn.getPosY() + 25D, playerIn.getPosZ() + 25D), new PredicateUUID(carUUID));
 
         if (cars.isEmpty()) {
             playerIn.sendStatusMessage(new TranslationTextComponent("message.car_out_of_range"), true);
-            return new ActionResult(ActionResultType.SUCCESS, stack);
+            return new ActionResult<>(ActionResultType.SUCCESS, stack);
         }
 
         EntityCarLockBase car = cars.get(0);
 
         if (car == null) {
             playerIn.sendMessage(new TranslationTextComponent("message.car_out_of_range"), Util.field_240973_b_);
-            return new ActionResult(ActionResultType.SUCCESS, stack);
+            return new ActionResult<>(ActionResultType.SUCCESS, stack);
         }
 
         car.setLocked(!car.isLocked(), true);
 
-        return new ActionResult(ActionResultType.SUCCESS, stack);
+        return new ActionResult<>(ActionResultType.SUCCESS, stack);
     }
 
     public static void setCar(ItemStack stack, UUID carUUID) {

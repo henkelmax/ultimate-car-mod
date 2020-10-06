@@ -6,6 +6,7 @@ import net.minecraft.item.ItemStack;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -110,16 +111,14 @@ public class CarRecipeBuilder {
     }
 
     public static List<ItemStack> concatItems(Item[]... items) {
-        return concatArrays(items).stream().map(item -> new ItemStack(item)).collect(Collectors.toList());
+        return concatArrays(items).stream().map(ItemStack::new).collect(Collectors.toList());
     }
 
     private static <T> List<T> concatArrays(T[]... arrays) {
         List<T> list = new ArrayList<>();
 
         for (T[] array : arrays) {
-            for (T element : array) {
-                list.add(element);
-            }
+            Collections.addAll(list, array);
         }
 
         return list;

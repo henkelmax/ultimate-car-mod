@@ -120,9 +120,7 @@ public abstract class EntityCarDamageBase extends EntityCarBatteryBase {
             long time = player.world.getGameTime();
             if (time - lastDamage < 10L) {
                 destroyCar(player, true);
-                stack.damageItem(50, player, playerEntity -> {
-                    playerEntity.sendBreakAnimation(Hand.MAIN_HAND);
-                });
+                stack.damageItem(50, player, playerEntity -> playerEntity.sendBreakAnimation(Hand.MAIN_HAND));
             } else {
                 lastDamage = time;
             }
