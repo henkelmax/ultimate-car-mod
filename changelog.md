@@ -1,1 +1,1 @@
-- Used dataserializer from corelib
+- Fixed a potential error on world load

@@ -313,7 +313,11 @@ public class TileEntityGasStation extends TileEntityBase implements ITickableTil
         tradeAmount = compound.getInt("trade_amount");
         freeAmountLeft = compound.getInt("free_amount");
 
-        owner = compound.getUniqueId("owner");
+        if (compound.contains("owner")) {
+            owner = compound.getUniqueId("owner");
+        } else {
+            owner = new UUID(0L, 0L);
+        }
         super.func_230337_a_(blockState, compound);
     }
 
