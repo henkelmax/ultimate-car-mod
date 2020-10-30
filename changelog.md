@@ -1,1 +1,1 @@
-- Fixed a potential error on world load
+- Fixed a crash with shatter
