@@ -1,1 +1,1 @@
-- Fixed a crash when interacting with cars
+- Fixed a crash with shatter
