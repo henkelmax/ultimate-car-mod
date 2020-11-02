@@ -30,17 +30,17 @@ public class GuiSplitTank extends ScreenBase<ContainerSplitTank> {
     }
 
     @Override
-    protected void func_230451_b_(MatrixStack matrixStack, int mouseX, int mouseY) {
-        super.func_230451_b_(matrixStack, mouseX, mouseY);
+    protected void drawGuiContainerForegroundLayer(MatrixStack matrixStack, int mouseX, int mouseY) {
+        super.drawGuiContainerForegroundLayer(matrixStack, mouseX, mouseY);
 
         // Title
-        field_230712_o_.func_238422_b_(matrixStack, playerInv.getDisplayName().func_241878_f(), 8, this.ySize - 96 + 2, FONT_COLOR);
+        font.func_238422_b_(matrixStack, playerInv.getDisplayName().func_241878_f(), 8, this.ySize - 96 + 2, FONT_COLOR);
 
         if (mouseX >= guiLeft + 50 && mouseX <= guiLeft + 16 + 50) {
             if (mouseY >= guiTop + 8 && mouseY <= guiTop + 57 + 8) {
                 List<IReorderingProcessor> list = new ArrayList<>();
                 list.add(new TranslationTextComponent("tooltip.mix", tile.getCurrentMix()).func_241878_f());
-                func_238654_b_(matrixStack, list, mouseX - guiLeft, mouseY - guiTop);
+                renderTooltip(matrixStack, list, mouseX - guiLeft, mouseY - guiTop);
             }
         }
 
@@ -48,7 +48,7 @@ public class GuiSplitTank extends ScreenBase<ContainerSplitTank> {
             if (mouseY >= guiTop + 8 && mouseY <= guiTop + 57 + 8) {
                 List<IReorderingProcessor> list = new ArrayList<>();
                 list.add(new TranslationTextComponent("tooltip.glycerin", tile.getCurrentGlycerin()).func_241878_f());
-                func_238654_b_(matrixStack, list, mouseX - guiLeft, mouseY - guiTop);
+                renderTooltip(matrixStack, list, mouseX - guiLeft, mouseY - guiTop);
             }
         }
 
@@ -56,7 +56,7 @@ public class GuiSplitTank extends ScreenBase<ContainerSplitTank> {
             if (mouseY >= guiTop + 8 && mouseY <= guiTop + 57 + 8) {
                 List<IReorderingProcessor> list = new ArrayList<>();
                 list.add(new TranslationTextComponent("tooltip.bio_diesel", tile.getCurrentBioDiesel()).func_241878_f());
-                func_238654_b_(matrixStack, list, mouseX - guiLeft, mouseY - guiTop);
+                renderTooltip(matrixStack, list, mouseX - guiLeft, mouseY - guiTop);
             }
         }
 
@@ -64,14 +64,14 @@ public class GuiSplitTank extends ScreenBase<ContainerSplitTank> {
             if (mouseY >= guiTop + 34 && mouseY <= guiTop + 17 + 34) {
                 List<IReorderingProcessor> list = new ArrayList<>();
                 list.add(new TranslationTextComponent("tooltip.progress", ((int) (getProgress() * 100F))).func_241878_f());
-                func_238654_b_(matrixStack, list, mouseX - guiLeft, mouseY - guiTop);
+                renderTooltip(matrixStack, list, mouseX - guiLeft, mouseY - guiTop);
             }
         }
     }
 
     @Override
-    protected void func_230450_a_(MatrixStack matrixStack, float partialTicks, int mouseX, int mouseY) {
-        super.func_230450_a_(matrixStack, partialTicks, mouseX, mouseY);
+    protected void drawGuiContainerBackgroundLayer(MatrixStack matrixStack, float partialTicks, int mouseX, int mouseY) {
+        super.drawGuiContainerBackgroundLayer(matrixStack, partialTicks, mouseX, mouseY);
         drawProgress(matrixStack);
         drawMix(matrixStack);
         drawBioDiesel(matrixStack);
@@ -91,7 +91,7 @@ public class GuiSplitTank extends ScreenBase<ContainerSplitTank> {
         int scHeight = (int) (texH * (1 - perc));
         int i = this.guiLeft;
         int j = this.guiTop;
-        func_238474_b_(matrixStack, i + targetX, j + targetY + scHeight, texX, texY + scHeight, texW, texH - scHeight);
+        blit(matrixStack, i + targetX, j + targetY + scHeight, texX, texY + scHeight, texW, texH - scHeight);
     }
 
     public void drawBioDiesel(MatrixStack matrixStack) {
@@ -107,7 +107,7 @@ public class GuiSplitTank extends ScreenBase<ContainerSplitTank> {
         int scHeight = (int) (texH * (1 - perc));
         int i = this.guiLeft;
         int j = this.guiTop;
-        func_238474_b_(matrixStack, i + targetX, j + targetY + scHeight, texX, texY + scHeight, texW, texH - scHeight);
+        blit(matrixStack, i + targetX, j + targetY + scHeight, texX, texY + scHeight, texW, texH - scHeight);
     }
 
     public void drawMix(MatrixStack matrixStack) {
@@ -123,7 +123,7 @@ public class GuiSplitTank extends ScreenBase<ContainerSplitTank> {
         int scHeight = (int) (texH * (1 - perc));
         int i = this.guiLeft;
         int j = this.guiTop;
-        func_238474_b_(matrixStack, i + targetX, j + targetY + scHeight, texX, texY + scHeight, texW, texH - scHeight);
+        blit(matrixStack, i + targetX, j + targetY + scHeight, texX, texY + scHeight, texW, texH - scHeight);
     }
 
     public void drawProgress(MatrixStack matrixStack) {
@@ -139,7 +139,7 @@ public class GuiSplitTank extends ScreenBase<ContainerSplitTank> {
         int scWidth = (int) (texW * perc);
         int i = this.guiLeft;
         int j = this.guiTop;
-        func_238474_b_(matrixStack, i + targetX, j + targetY, texX, texY, scWidth, texH);
+        blit(matrixStack, i + targetX, j + targetY, texX, texY, scWidth, texH);
     }
 
     public float getMix() {

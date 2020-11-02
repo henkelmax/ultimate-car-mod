@@ -141,7 +141,7 @@ public abstract class EntityVehicleBase extends Entity {
     }
 
     @Override
-    public boolean func_241849_j(Entity entity) {
+    public boolean canCollide(Entity entity) {
         if (!Main.SERVER_CONFIG.collideWithEntities.get()) {
             if (!(entity instanceof EntityVehicleBase)) {
                 return false;

@@ -320,7 +320,7 @@ public abstract class EntityCarBatteryBase extends EntityCarTemperatureBase {
 
     @Override
     public void playFailSound() {
-        ModSounds.playSound(getFailSound(), world, func_233580_cy_(), null, SoundCategory.MASTER, 1F, getBatterySoundPitchLevel());
+        ModSounds.playSound(getFailSound(), world, getPosition(), null, SoundCategory.MASTER, 1F, getBatterySoundPitchLevel());
     }
 
 }

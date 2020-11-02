@@ -58,15 +58,15 @@ public class RenderEvents {
         Minecraft mc = Minecraft.getInstance();
         int x = mc.getMainWindow().getScaledWidth() / 2 - 91;
 
-        mc.getTextureManager().bindTexture(AbstractGui.field_230665_h_);
+        mc.getTextureManager().bindTexture(AbstractGui.GUI_ICONS_LOCATION);
 
         int k = mc.getMainWindow().getScaledHeight() - 32 + 3;
-        mc.ingameGUI.func_238474_b_(matrixStack, x, k, 0, 64, 182, 5);
+        mc.ingameGUI.blit(matrixStack, x, k, 0, 64, 182, 5);
 
         int j = (int) (percent * 182F);
 
         if (j > 0) {
-            mc.ingameGUI.func_238474_b_(matrixStack, x, k, 0, 69, j, 5);
+            mc.ingameGUI.blit(matrixStack, x, k, 0, 69, j, 5);
         }
     }
 
@@ -76,11 +76,11 @@ public class RenderEvents {
         String s = String.valueOf(MathUtils.round(Math.abs(speed), 2));
         int i1 = (mc.getMainWindow().getScaledWidth() - mc.ingameGUI.getFontRenderer().getStringWidth(s)) / 2;
         int j1 = mc.getMainWindow().getScaledHeight() - 31 - 4;
-        mc.ingameGUI.getFontRenderer().func_238421_b_(matrixStack, s, i1 + 1, j1, 0);
-        mc.ingameGUI.getFontRenderer().func_238421_b_(matrixStack, s, i1 - 1, j1, 0);
-        mc.ingameGUI.getFontRenderer().func_238421_b_(matrixStack, s, i1, j1 + 1, 0);
-        mc.ingameGUI.getFontRenderer().func_238421_b_(matrixStack, s, i1, j1 - 1, 0);
-        mc.ingameGUI.getFontRenderer().func_238421_b_(matrixStack, s, i1, j1, 8453920);
+        mc.ingameGUI.getFontRenderer().drawString(matrixStack, s, i1 + 1, j1, 0);
+        mc.ingameGUI.getFontRenderer().drawString(matrixStack, s, i1 - 1, j1, 0);
+        mc.ingameGUI.getFontRenderer().drawString(matrixStack, s, i1, j1 + 1, 0);
+        mc.ingameGUI.getFontRenderer().drawString(matrixStack, s, i1, j1 - 1, 0);
+        mc.ingameGUI.getFontRenderer().drawString(matrixStack, s, i1, j1, 8453920);
 
     }
 

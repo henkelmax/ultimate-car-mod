@@ -58,8 +58,8 @@ public class BlockTank extends BlockBase implements ITileEntityProvider, IItemBl
             FluidStack fluidStack = FluidStack.loadFluidStackFromNBT(fluidComp);
 
             if (fluidStack != null) {
-                tooltip.add(new TranslationTextComponent("tooltip.fluid", new StringTextComponent(fluidStack.getDisplayName().getString()).func_240699_a_(TextFormatting.DARK_GRAY)).func_240699_a_(TextFormatting.GRAY));
-                tooltip.add(new TranslationTextComponent("tooltip.amount", new StringTextComponent(String.valueOf(fluidStack.getAmount())).func_240699_a_(TextFormatting.DARK_GRAY)).func_240699_a_(TextFormatting.GRAY));
+                tooltip.add(new TranslationTextComponent("tooltip.fluid", new StringTextComponent(fluidStack.getDisplayName().getString()).mergeStyle(TextFormatting.DARK_GRAY)).mergeStyle(TextFormatting.GRAY));
+                tooltip.add(new TranslationTextComponent("tooltip.amount", new StringTextComponent(String.valueOf(fluidStack.getAmount())).mergeStyle(TextFormatting.DARK_GRAY)).mergeStyle(TextFormatting.GRAY));
             }
         }
         super.addInformation(stack, worldIn, tooltip, flagIn);

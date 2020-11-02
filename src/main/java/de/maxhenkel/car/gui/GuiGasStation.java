@@ -42,28 +42,28 @@ public class GuiGasStation extends ScreenBase<ContainerGasStation> {
     }
 
     @Override
-    protected void func_231160_c_() {
-        super.func_231160_c_();
+    protected void init() {
+        super.init();
 
-        buttonStart = func_230480_a_(new Button((field_230708_k_ / 2) - 20, guiTop + 100, 40, 20, new TranslationTextComponent("button.car.start"), button -> {
+        buttonStart = addButton(new Button((width / 2) - 20, guiTop + 100, 40, 20, new TranslationTextComponent("button.car.start"), button -> {
             gasStation.setFueling(true);
             gasStation.sendStartFuelPacket(true);
         }));
-        buttonStop = func_230480_a_(new Button(guiLeft + xSize - 40 - 7, guiTop + 100, 40, 20, new TranslationTextComponent("button.car.stop"), button -> {
+        buttonStop = addButton(new Button(guiLeft + xSize - 40 - 7, guiTop + 100, 40, 20, new TranslationTextComponent("button.car.stop"), button -> {
             gasStation.setFueling(false);
             gasStation.sendStartFuelPacket(false);
         }));
     }
 
     @Override
-    protected void func_230450_a_(MatrixStack matrixStack, float partialTicks, int mouseX, int mouseY) {
-        super.func_230450_a_(matrixStack, partialTicks, mouseX, mouseY);
+    protected void drawGuiContainerBackgroundLayer(MatrixStack matrixStack, float partialTicks, int mouseX, int mouseY) {
+        super.drawGuiContainerBackgroundLayer(matrixStack, partialTicks, mouseX, mouseY);
         // buttons
-        buttonStart.field_230693_o_ = !gasStation.isFueling();
-        buttonStop.field_230693_o_ = gasStation.isFueling();
+        buttonStart.active = !gasStation.isFueling();
+        buttonStop.active = gasStation.isFueling();
 
         // text
-        func_238471_a_(matrixStack, field_230712_o_, new TranslationTextComponent("gui.gas_station").getString(), field_230708_k_ / 2, guiTop + 5, TITLE_COLOR);
+        drawCenteredString(matrixStack, font, new TranslationTextComponent("gui.gas_station").getString(), width / 2, guiTop + 5, TITLE_COLOR);
 
         // Car name
         IFluidHandler fluidHandler = gasStation.getFluidHandlerInFront();
@@ -77,12 +77,12 @@ public class GuiGasStation extends ScreenBase<ContainerGasStation> {
         drawRefueled(matrixStack);
         drawBuffer(matrixStack);
 
-        field_230712_o_.func_238422_b_(matrixStack, playerInventory.getDisplayName().func_241878_f(), guiLeft + 8, guiTop + ySize - 93, FONT_COLOR);
+        font.func_238422_b_(matrixStack, playerInventory.getDisplayName().func_241878_f(), guiLeft + 8, guiTop + ySize - 93, FONT_COLOR);
     }
 
     @Override
-    protected void func_230451_b_(MatrixStack matrixStack, int mouseX, int mouseY) {
-        super.func_230451_b_(matrixStack, mouseX, mouseY);
+    protected void drawGuiContainerForegroundLayer(MatrixStack matrixStack, int mouseX, int mouseY) {
+        super.drawGuiContainerForegroundLayer(matrixStack, mouseX, mouseY);
 
         ItemStack stack = gasStation.getTradingInventory().getStackInSlot(0);
 
@@ -94,7 +94,7 @@ public class GuiGasStation extends ScreenBase<ContainerGasStation> {
             if (mouseY >= guiTop + 99 && mouseY <= guiTop + 114) {
                 List<IReorderingProcessor> list = new ArrayList<>();
                 list.add(new TranslationTextComponent("tooltip.trade", stack.getCount(), stack.getDisplayName(), gasStation.getTradeAmount()).func_241878_f());
-                func_238654_b_(matrixStack, list, mouseX - guiLeft, mouseY - guiTop);
+                renderTooltip(matrixStack, list, mouseX - guiLeft, mouseY - guiTop);
             }
         }
     }
@@ -106,60 +106,60 @@ public class GuiGasStation extends ScreenBase<ContainerGasStation> {
         } else {
             name = entity.getDisplayName().getString();
         }
-        field_230712_o_.func_238422_b_(matrixStack, new TranslationTextComponent("gas_station.car_info", new StringTextComponent(name).func_240699_a_(TextFormatting.WHITE)).func_241878_f(), guiLeft + 63, guiTop + 20, FONT_COLOR);
+        font.func_238422_b_(matrixStack, new TranslationTextComponent("gas_station.car_info", new StringTextComponent(name).mergeStyle(TextFormatting.WHITE)).func_241878_f(), guiLeft + 63, guiTop + 20, FONT_COLOR);
     }
 
     private void drawCarFuel(MatrixStack matrixStack, IFluidHandler handler) {
         if (handler == null) {
-            field_230712_o_.func_238422_b_(matrixStack, new TranslationTextComponent("gas_station.no_car").func_241878_f(), guiLeft + 63, guiTop + 30, FONT_COLOR);
+            font.func_238422_b_(matrixStack, new TranslationTextComponent("gas_station.no_car").func_241878_f(), guiLeft + 63, guiTop + 30, FONT_COLOR);
             return;
         }
         if (handler.getTanks() <= 0) {
-            field_230712_o_.func_238422_b_(matrixStack, new TranslationTextComponent("gas_station.fuel_empty").func_241878_f(), guiLeft + 63, guiTop + 30, FONT_COLOR);
+            font.func_238422_b_(matrixStack, new TranslationTextComponent("gas_station.fuel_empty").func_241878_f(), guiLeft + 63, guiTop + 30, FONT_COLOR);
             return;
         }
         FluidStack tank = handler.getFluidInTank(0);
         TextComponent fuelText = new TranslationTextComponent("gas_station.car_fuel_amount",
-                new StringTextComponent(String.valueOf(tank.getAmount())).func_240699_a_(TextFormatting.WHITE),
-                new StringTextComponent(String.valueOf(handler.getTankCapacity(0))).func_240699_a_(TextFormatting.WHITE)
+                new StringTextComponent(String.valueOf(tank.getAmount())).mergeStyle(TextFormatting.WHITE),
+                new StringTextComponent(String.valueOf(handler.getTankCapacity(0))).mergeStyle(TextFormatting.WHITE)
         );
-        field_230712_o_.func_238422_b_(matrixStack, fuelText.func_241878_f(), guiLeft + 63, guiTop + 30, FONT_COLOR);
+        font.func_238422_b_(matrixStack, fuelText.func_241878_f(), guiLeft + 63, guiTop + 30, FONT_COLOR);
 
         if (!tank.isEmpty()) {
-            field_230712_o_.func_238422_b_(matrixStack, new TranslationTextComponent("gas_station.car_fuel_type", new StringTextComponent(tank.getDisplayName().getString()).func_240699_a_(TextFormatting.WHITE)).func_241878_f(), guiLeft + 63, guiTop + 40, FONT_COLOR);
+            font.func_238422_b_(matrixStack, new TranslationTextComponent("gas_station.car_fuel_type", new StringTextComponent(tank.getDisplayName().getString()).mergeStyle(TextFormatting.WHITE)).func_241878_f(), guiLeft + 63, guiTop + 40, FONT_COLOR);
         }
     }
 
     private void drawRefueled(MatrixStack matrixStack) {
-        field_230712_o_.func_238422_b_(matrixStack, new TranslationTextComponent("gas_station.refueled", new StringTextComponent(String.valueOf(gasStation.getFuelCounter())).func_240699_a_(TextFormatting.WHITE)).func_241878_f(), guiLeft + 63, guiTop + 60, FONT_COLOR);
+        font.func_238422_b_(matrixStack, new TranslationTextComponent("gas_station.refueled", new StringTextComponent(String.valueOf(gasStation.getFuelCounter())).mergeStyle(TextFormatting.WHITE)).func_241878_f(), guiLeft + 63, guiTop + 60, FONT_COLOR);
     }
 
     private void drawBuffer(MatrixStack matrixStack) {
         FluidStack stack = gasStation.getStorage();
 
         if (stack.isEmpty()) {
-            field_230712_o_.func_238422_b_(matrixStack, new TranslationTextComponent("gas_station.fuel_empty").func_241878_f(), guiLeft + 63, guiTop + 70, FONT_COLOR);
+            font.func_238422_b_(matrixStack, new TranslationTextComponent("gas_station.fuel_empty").func_241878_f(), guiLeft + 63, guiTop + 70, FONT_COLOR);
             return;
         }
 
         int amount = gasStation.getFuelAmount();
 
         TextComponent amountText = new TranslationTextComponent("gas_station.fuel_buffer_amount",
-                new StringTextComponent(String.valueOf(amount)).func_240699_a_(TextFormatting.WHITE),
-                new StringTextComponent(String.valueOf(gasStation.maxStorageAmount)).func_240699_a_(TextFormatting.WHITE)
+                new StringTextComponent(String.valueOf(amount)).mergeStyle(TextFormatting.WHITE),
+                new StringTextComponent(String.valueOf(gasStation.maxStorageAmount)).mergeStyle(TextFormatting.WHITE)
         );
 
-        field_230712_o_.func_238422_b_(matrixStack, amountText.func_241878_f(), guiLeft + 63, guiTop + 70, FONT_COLOR);
+        font.func_238422_b_(matrixStack, amountText.func_241878_f(), guiLeft + 63, guiTop + 70, FONT_COLOR);
 
         TextComponent bufferText = new TranslationTextComponent("gas_station.fuel_buffer_type",
-                new StringTextComponent(stack.getDisplayName().getString()).func_240699_a_(TextFormatting.WHITE)
+                new StringTextComponent(stack.getDisplayName().getString()).mergeStyle(TextFormatting.WHITE)
         );
 
-        field_230712_o_.func_238422_b_(matrixStack, bufferText.func_241878_f(), guiLeft + 63, guiTop + 80, FONT_COLOR);
+        font.func_238422_b_(matrixStack, bufferText.func_241878_f(), guiLeft + 63, guiTop + 80, FONT_COLOR);
     }
 
     @Override
-    public boolean func_231177_au__() {
+    public boolean isPauseScreen() {
         return false;
     }
 

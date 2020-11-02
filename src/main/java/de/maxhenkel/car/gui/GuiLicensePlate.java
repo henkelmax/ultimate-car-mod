@@ -37,61 +37,62 @@ public class GuiLicensePlate extends ScreenBase<ContainerLicensePlate> {
     }
 
     @Override
-    protected void func_231160_c_() {
-        super.func_231160_c_();
+    protected void init() {
+        super.init();
 
-        field_230706_i_.keyboardListener.enableRepeatEvents(true);
+        minecraft.keyboardListener.enableRepeatEvents(true);
 
-        func_230480_a_(new Button(guiLeft + 20, guiTop + ySize - 25, 50, 20, new TranslationTextComponent("button.car.submit"), button -> {
+        addButton(new Button(guiLeft + 20, guiTop + ySize - 25, 50, 20, new TranslationTextComponent("button.car.submit"), button -> {
             Main.SIMPLE_CHANNEL.sendToServer(new MessageEditLicensePlate(player, textField.getText()));
             MessageEditLicensePlate.setItemText(player, textField.getText());
             Minecraft.getInstance().displayGuiScreen(null);
         }));
-        func_230480_a_(new Button(guiLeft + xSize - 50 - 15, guiTop + ySize - 25, 50, 20, new TranslationTextComponent("button.car.cancel"), button -> {
+        addButton(new Button(guiLeft + xSize - 50 - 15, guiTop + ySize - 25, 50, 20, new TranslationTextComponent("button.car.cancel"), button -> {
             Minecraft.getInstance().displayGuiScreen(null);
         }));
 
-        textField = new TextFieldWidget(field_230712_o_, guiLeft + 30, guiTop + 30, 116, 16, new StringTextComponent(""));
+        textField = new TextFieldWidget(font, guiLeft + 30, guiTop + 30, 116, 16, new StringTextComponent(""));
         textField.setTextColor(-1);
         textField.setDisabledTextColour(-1);
         textField.setEnableBackgroundDrawing(true);
         textField.setMaxStringLength(10);
         textField.setText(ItemLicensePlate.getText(containerLicensePlate.getLicensePlate()));
 
-        func_230480_a_(textField);
+        addButton(textField);
         setFocusedDefault(textField);
     }
 
     @Override
-    public void func_231152_a_(Minecraft mc, int x, int y) {
+    public void resize(Minecraft mc, int x, int y) {
         String text = textField.getText();
-        func_231158_b_(mc, x, y);
+        init(mc, x, y);
         textField.setText(text);
     }
 
     @Override
-    public boolean func_231046_a_(int key, int a, int b) {
+    public boolean keyPressed(int key, int a, int b) {
         if (key == GLFW.GLFW_KEY_ESCAPE) {
-            field_230706_i_.player.closeScreen();
+            minecraft.player.closeScreen();
             return true;
         }
 
-        return textField.func_231046_a_(key, a, b) || textField.canWrite() || super.func_231046_a_(key, a, b);
+        return textField.keyPressed(key, a, b) || textField.canWrite() || super.keyPressed(key, a, b);
     }
 
     @Override
-    protected void func_230451_b_(MatrixStack matrixStack, int mouseX, int mouseY) {
-        super.func_230451_b_(matrixStack, mouseX, mouseY);
-        func_238471_a_(matrixStack, field_230712_o_, containerLicensePlate.getLicensePlate().getDisplayName().getString(), xSize / 2, 5, TITLE_COLOR);
-    }
-
-    public void func_231164_f_() {
-        super.func_231164_f_();
-        field_230706_i_.keyboardListener.enableRepeatEvents(false);
+    protected void drawGuiContainerForegroundLayer(MatrixStack matrixStack, int mouseX, int mouseY) {
+        super.drawGuiContainerForegroundLayer(matrixStack, mouseX, mouseY);
+        drawCenteredString(matrixStack, font, containerLicensePlate.getLicensePlate().getDisplayName().getString(), xSize / 2, 5, TITLE_COLOR);
     }
 
     @Override
-    public boolean func_231177_au__() {
+    public void onClose() {
+        super.onClose();
+        minecraft.keyboardListener.enableRepeatEvents(false);
+    }
+
+    @Override
+    public boolean isPauseScreen() {
         return false;
     }
 

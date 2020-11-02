@@ -1,4 +1,5 @@
 package de.maxhenkel.car.integration.jei;
+/*
 
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.items.ModItems;
@@ -64,4 +65,4 @@ public class PainterRecipeCategory implements IRecipeCategory<PainterRecipe> {
         group.set(1, new ItemStack(wrapper.getOutput()));
 
     }
-}
+}*/

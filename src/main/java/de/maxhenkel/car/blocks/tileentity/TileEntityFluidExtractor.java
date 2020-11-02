@@ -153,14 +153,14 @@ public class TileEntityFluidExtractor extends TileEntityBase implements ITickabl
     }
 
     @Override
-    public void func_230337_a_(BlockState blockState, CompoundNBT compound) {
+    public void read(BlockState blockState, CompoundNBT compound) {
         if (compound.contains("filter")) {
             CompoundNBT tag = compound.getCompound("filter");
             filter = ItemStack.read(tag);
         } else {
             filter = null;
         }
-        super.func_230337_a_(blockState, compound);
+        super.read(blockState, compound);
     }
 
     @Override

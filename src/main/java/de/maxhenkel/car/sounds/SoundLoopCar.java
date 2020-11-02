@@ -57,7 +57,7 @@ public abstract class SoundLoopCar extends TickableSound {
     }
 
     public void setDonePlaying() {
-        func_239509_o_();
+        finishPlaying();
     }
 
     public abstract boolean shouldStopSound();

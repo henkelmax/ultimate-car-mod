@@ -122,14 +122,14 @@ public class TileEntityTank extends TileEntityBase implements IFluidHandler, ITi
     }
 
     @Override
-    public void func_230337_a_(BlockState blockState, CompoundNBT compound) {
+    public void read(BlockState blockState, CompoundNBT compound) {
         if (compound.contains("fluid")) {
             CompoundNBT comp = compound.getCompound("fluid");
             fluid = FluidStack.loadFluidStackFromNBT(comp);
         } else {
             fluid = FluidStack.EMPTY;
         }
-        super.func_230337_a_(blockState, compound);
+        super.read(blockState, compound);
     }
 
     public void setFluid(FluidStack fluid) {

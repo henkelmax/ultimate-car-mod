@@ -54,9 +54,9 @@ public class TileEntityDynamo extends TileEntityBase implements IEnergyStorage, 
     }
 
     @Override
-    public void func_230337_a_(BlockState blockState, CompoundNBT compound) {
+    public void read(BlockState blockState, CompoundNBT compound) {
         storedEnergy = compound.getInt("stored_energy");
-        super.func_230337_a_(blockState, compound);
+        super.read(blockState, compound);
     }
 
     @Override

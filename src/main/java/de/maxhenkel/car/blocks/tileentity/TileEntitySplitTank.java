@@ -152,12 +152,12 @@ public class TileEntitySplitTank extends TileEntityBase implements ITickableTile
     }
 
     @Override
-    public void func_230337_a_(BlockState blockState, CompoundNBT compound) {
+    public void read(BlockState blockState, CompoundNBT compound) {
         currentMix = compound.getInt("mix");
         currentBioDiesel = compound.getInt("bio_diesel");
         currentGlycerin = compound.getInt("glycerin");
         timeToGenerate = compound.getInt("timeToGenerate");
-        super.func_230337_a_(blockState, compound);
+        super.read(blockState, compound);
     }
 
     @Override

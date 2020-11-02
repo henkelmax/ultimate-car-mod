@@ -19,13 +19,13 @@ public class GuiPainter extends ScreenBase<ContainerPainter> {
     }
 
     @Override
-    protected void func_230451_b_(MatrixStack matrixStack, int mouseX, int mouseY) {
-        super.func_230451_b_(matrixStack, mouseX, mouseY);
-        field_230712_o_.func_238422_b_(matrixStack, new TranslationTextComponent("gui.painter").func_241878_f(), 8, 6, FONT_COLOR);
+    protected void drawGuiContainerForegroundLayer(MatrixStack matrixStack, int mouseX, int mouseY) {
+        super.drawGuiContainerForegroundLayer(matrixStack, mouseX, mouseY);
+        font.func_238422_b_(matrixStack, new TranslationTextComponent("gui.painter").func_241878_f(), 8, 6, FONT_COLOR);
     }
 
     @Override
-    public boolean func_231177_au__() {
+    public boolean isPauseScreen() {
         return false;
     }
 

@@ -105,8 +105,8 @@ public class ItemCanister extends Item {
     }
 
     private void addInfo(String fluid, int amount, List<ITextComponent> tooltip) {
-        tooltip.add(new TranslationTextComponent("canister.fluid", new StringTextComponent(fluid).func_240699_a_(TextFormatting.DARK_GRAY)).func_240699_a_(TextFormatting.GRAY));
-        tooltip.add(new TranslationTextComponent("canister.amount", new StringTextComponent(String.valueOf(amount)).func_240699_a_(TextFormatting.DARK_GRAY)).func_240699_a_(TextFormatting.GRAY));
+        tooltip.add(new TranslationTextComponent("canister.fluid", new StringTextComponent(fluid).mergeStyle(TextFormatting.DARK_GRAY)).mergeStyle(TextFormatting.GRAY));
+        tooltip.add(new TranslationTextComponent("canister.amount", new StringTextComponent(String.valueOf(amount)).mergeStyle(TextFormatting.DARK_GRAY)).mergeStyle(TextFormatting.GRAY));
     }
 
     public static boolean fillCanister(ItemStack canister, IFluidHandler handler) {

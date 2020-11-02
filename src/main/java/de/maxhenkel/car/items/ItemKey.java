@@ -47,7 +47,7 @@ public class ItemKey extends Item {
         EntityCarLockBase car = cars.get(0);
 
         if (car == null) {
-            playerIn.sendMessage(new TranslationTextComponent("message.car_out_of_range"), Util.field_240973_b_);
+            playerIn.sendMessage(new TranslationTextComponent("message.car_out_of_range"), Util.DUMMY_UUID);
             return new ActionResult<>(ActionResultType.SUCCESS, stack);
         }
 

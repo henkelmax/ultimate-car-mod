@@ -61,7 +61,7 @@ public abstract class EntityCarInventoryBase extends EntityCarFuelBase implement
                     boolean success = ItemCanister.fillCanister(stack, this);
 
                     if (success) {
-                        ModSounds.playSound(SoundEvents.BLOCK_BREWING_STAND_BREW, world, func_233580_cy_(), null, SoundCategory.BLOCKS);
+                        ModSounds.playSound(SoundEvents.BLOCK_BREWING_STAND_BREW, world, getPosition(), null, SoundCategory.BLOCKS);
                     }
                     return ActionResultType.CONSUME;
                 }

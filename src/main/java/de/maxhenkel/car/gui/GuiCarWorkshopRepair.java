@@ -44,36 +44,36 @@ public class GuiCarWorkshopRepair extends ScreenBase<ContainerCarWorkshopRepair>
     }
 
     @Override
-    protected void func_231160_c_() {
-        super.func_231160_c_();
+    protected void init() {
+        super.init();
 
-        this.buttonRepair = func_230480_a_(new Button(guiLeft + xSize - 7 - 60, guiTop + 105, 60, 20, new TranslationTextComponent("button.car.repair_car"), button -> {
+        this.buttonRepair = addButton(new Button(guiLeft + xSize - 7 - 60, guiTop + 105, 60, 20, new TranslationTextComponent("button.car.repair_car"), button -> {
             if (tile.getWorld().isRemote) {
                 Main.SIMPLE_CHANNEL.sendToServer(new MessageRepairCar(tile.getPos(), player));
             }
         }));
-        this.buttonRepair.field_230693_o_ = false;
+        this.buttonRepair.active = false;
 
-        this.buttonBack = func_230480_a_(new Button(guiLeft + 7, guiTop + 105, 60, 20, new TranslationTextComponent("button.car.back"), button -> {
+        this.buttonBack = addButton(new Button(guiLeft + 7, guiTop + 105, 60, 20, new TranslationTextComponent("button.car.back"), button -> {
             if (tile.getWorld().isRemote) {
                 Main.SIMPLE_CHANNEL.sendToServer(new MessageOpenCarWorkshopGui(tile.getPos(), player, false));
             }
         }));
-        this.buttonBack.field_230693_o_ = true;
+        this.buttonBack.active = true;
     }
 
     @Override
-    protected void func_230451_b_(MatrixStack matrixStack, int mouseX, int mouseY) {
-        super.func_230451_b_(matrixStack, mouseX, mouseY);
+    protected void drawGuiContainerForegroundLayer(MatrixStack matrixStack, int mouseX, int mouseY) {
+        super.drawGuiContainerForegroundLayer(matrixStack, mouseX, mouseY);
 
         // Titles
-        field_230712_o_.func_238422_b_(matrixStack, tile.getDisplayName().func_241878_f(), 8, 6, FONT_COLOR);
-        field_230712_o_.func_238422_b_(matrixStack, player.inventory.getDisplayName().func_241878_f(), 8, ySize - 96 + 2, FONT_COLOR);
+        font.func_238422_b_(matrixStack, tile.getDisplayName().func_241878_f(), 8, 6, FONT_COLOR);
+        font.func_238422_b_(matrixStack, player.inventory.getDisplayName().func_241878_f(), 8, ySize - 96 + 2, FONT_COLOR);
 
         EntityCarBase carTop = tile.getCarOnTop();
 
         if (!(carTop instanceof EntityCarDamageBase)) {
-            buttonRepair.field_230693_o_ = false;
+            buttonRepair.active = false;
             return;
         }
 
@@ -83,21 +83,21 @@ public class GuiCarWorkshopRepair extends ScreenBase<ContainerCarWorkshopRepair>
             if (mouseY >= guiTop + 81 && mouseY <= guiTop + 90) {
                 List<IReorderingProcessor> list = new ArrayList<>();
                 list.add(new TranslationTextComponent("tooltip.damage", MathUtils.round(car.getDamage(), 2)).func_241878_f());
-                func_238654_b_(matrixStack, list, mouseX - guiLeft, mouseY - guiTop);
+                renderTooltip(matrixStack, list, mouseX - guiLeft, mouseY - guiTop);
             }
         }
 
         if (tile.areRepairItemsInside() && car.getDamage() > 0) {
-            buttonRepair.field_230693_o_ = true;
+            buttonRepair.active = true;
         } else {
-            buttonRepair.field_230693_o_ = false;
+            buttonRepair.active = false;
         }
         drawCar(matrixStack, carTop);
     }
 
     @Override
-    public void func_231023_e_() {
-        super.func_231023_e_();
+    public void tick() {
+        super.tick();
         carRenderer.tick();
     }
 
@@ -112,8 +112,8 @@ public class GuiCarWorkshopRepair extends ScreenBase<ContainerCarWorkshopRepair>
     }
 
     @Override
-    protected void func_230450_a_(MatrixStack matrixStack, float partialTicks, int mouseX, int mouseY) {
-        super.func_230450_a_(matrixStack, partialTicks, mouseX, mouseY);
+    protected void drawGuiContainerBackgroundLayer(MatrixStack matrixStack, float partialTicks, int mouseX, int mouseY) {
+        super.drawGuiContainerBackgroundLayer(matrixStack, partialTicks, mouseX, mouseY);
         drawDamage(matrixStack);
     }
 
@@ -127,15 +127,15 @@ public class GuiCarWorkshopRepair extends ScreenBase<ContainerCarWorkshopRepair>
 
         double percent = 100 - getDamagePercent(c);
 
-        field_230706_i_.getTextureManager().bindTexture(GUI_TEXTURE);
+        minecraft.getTextureManager().bindTexture(GUI_TEXTURE);
         int scaled = (int) (72 * percent / 100);
         int i = this.guiLeft;
         int j = this.guiTop;
-        func_238474_b_(matrixStack, i + 52, j + 81, 176, 0, scaled, 10);
+        blit(matrixStack, i + 52, j + 81, 176, 0, scaled, 10);
     }
 
     @Override
-    public boolean func_231177_au__() {
+    public boolean isPauseScreen() {
         return false;
     }
 

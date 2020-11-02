@@ -65,7 +65,7 @@ public class SoundLoopTileentity extends TickableSound {
     }
 
     public void stop() {
-        func_239509_o_();
+        finishPlaying();
     }
 
     public interface ISoundLoopable {

@@ -31,8 +31,8 @@ public class ItemBattery extends Item {
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         int damage = getMaxDamage(stack) - getDamage(stack);
 
-        tooltip.add(new TranslationTextComponent("tooltip.battery_energy", new StringTextComponent(String.valueOf(damage)).func_240699_a_(TextFormatting.DARK_GRAY)).func_240699_a_(TextFormatting.GRAY));
-        tooltip.add(new TranslationTextComponent("tooltip.battery").func_240699_a_(TextFormatting.GRAY));
+        tooltip.add(new TranslationTextComponent("tooltip.battery_energy", new StringTextComponent(String.valueOf(damage)).mergeStyle(TextFormatting.DARK_GRAY)).mergeStyle(TextFormatting.GRAY));
+        tooltip.add(new TranslationTextComponent("tooltip.battery").mergeStyle(TextFormatting.GRAY));
 
         super.addInformation(stack, worldIn, tooltip, flagIn);
     }

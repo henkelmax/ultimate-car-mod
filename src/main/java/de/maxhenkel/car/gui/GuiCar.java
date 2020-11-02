@@ -30,17 +30,17 @@ public class GuiCar extends ScreenBase<ContainerCar> {
     }
 
     @Override
-    protected void func_230451_b_(MatrixStack matrixStack, int mouseX, int mouseY) {
-        super.func_230451_b_(matrixStack, mouseX, mouseY);
+    protected void drawGuiContainerForegroundLayer(MatrixStack matrixStack, int mouseX, int mouseY) {
+        super.drawGuiContainerForegroundLayer(matrixStack, mouseX, mouseY);
 
         //Titles
-        field_230712_o_.func_238422_b_(matrixStack, car.getDisplayName().func_241878_f(), 7, 87, fontColor);
-        field_230712_o_.func_238422_b_(matrixStack, playerInv.getDisplayName().func_241878_f(), 8, this.ySize - 96 + 2, fontColor);
+        font.func_238422_b_(matrixStack, car.getDisplayName().func_241878_f(), 7, 87, fontColor);
+        font.func_238422_b_(matrixStack, playerInv.getDisplayName().func_241878_f(), 8, this.ySize - 96 + 2, fontColor);
 
-        field_230712_o_.func_238422_b_(matrixStack, getFuelString().func_241878_f(), 7, 9, fontColor);
-        field_230712_o_.func_238422_b_(matrixStack, getDamageString().func_241878_f(), 7, 35, fontColor);
-        field_230712_o_.func_238422_b_(matrixStack, getBatteryString().func_241878_f(), 95, 9, fontColor);
-        field_230712_o_.func_238422_b_(matrixStack, getTempString().func_241878_f(), 95, 35, fontColor);
+        font.func_238422_b_(matrixStack, getFuelString().func_241878_f(), 7, 9, fontColor);
+        font.func_238422_b_(matrixStack, getDamageString().func_241878_f(), 7, 35, fontColor);
+        font.func_238422_b_(matrixStack, getBatteryString().func_241878_f(), 95, 9, fontColor);
+        font.func_238422_b_(matrixStack, getTempString().func_241878_f(), 95, 35, fontColor);
     }
 
     public float getFuelPercent() {
@@ -98,8 +98,8 @@ public class GuiCar extends ScreenBase<ContainerCar> {
     }
 
     @Override
-    protected void func_230450_a_(MatrixStack matrixStack, float partialTicks, int mouseX, int mouseY) {
-        super.func_230450_a_(matrixStack, partialTicks, mouseX, mouseY);
+    protected void drawGuiContainerBackgroundLayer(MatrixStack matrixStack, float partialTicks, int mouseX, int mouseY) {
+        super.drawGuiContainerBackgroundLayer(matrixStack, partialTicks, mouseX, mouseY);
         drawFuel(matrixStack, getFuelPercent());
         drawDamage(matrixStack, 100F - getDamagePercent());
         drawBattery(matrixStack, car.getBatteryPercentage());
@@ -111,28 +111,28 @@ public class GuiCar extends ScreenBase<ContainerCar> {
         int scaled = (int) (72F * percent / 100D);
         int i = this.guiLeft;
         int j = this.guiTop;
-        func_238474_b_(matrixStack, i + 8, j + 20, 176, 0, scaled, 10);
+        blit(matrixStack, i + 8, j + 20, 176, 0, scaled, 10);
     }
 
     public void drawDamage(MatrixStack matrixStack, float percent) {
         int scaled = (int) (72F * percent / 100D);
         int i = this.guiLeft;
         int j = this.guiTop;
-        func_238474_b_(matrixStack, i + 8, j + 46, 176, 10, scaled, 10);
+        blit(matrixStack, i + 8, j + 46, 176, 10, scaled, 10);
     }
 
     public void drawTemp(MatrixStack matrixStack, float percent) {
         int scaled = (int) (72F * percent);
         int i = this.guiLeft;
         int j = this.guiTop;
-        func_238474_b_(matrixStack, i + 96, j + 46, 176, 30, scaled, 10);
+        blit(matrixStack, i + 96, j + 46, 176, 30, scaled, 10);
     }
 
     public void drawBattery(MatrixStack matrixStack, float percent) {
         int scaled = (int) (72F * percent);
         int i = this.guiLeft;
         int j = this.guiTop;
-        func_238474_b_(matrixStack, i + 96, j + 20, 176, 20, scaled, 10);
+        blit(matrixStack, i + 96, j + 20, 176, 20, scaled, 10);
     }
 
 }

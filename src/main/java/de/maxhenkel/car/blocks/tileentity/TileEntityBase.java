@@ -47,7 +47,7 @@ public abstract class TileEntityBase extends TileEntity implements INameable {
 
     @Override
     public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
-        func_230337_a_(getBlockState(), pkt.getNbtCompound());
+        read(getBlockState(), pkt.getNbtCompound());
     }
 
     @Override
@@ -83,10 +83,10 @@ public abstract class TileEntityBase extends TileEntity implements INameable {
     }
 
     @Override
-    public void func_230337_a_(BlockState blockState, CompoundNBT compound) {
+    public void read(BlockState blockState, CompoundNBT compound) {
         if (compound.contains("CustomName")) {
-            name = ITextComponent.Serializer.func_240643_a_(compound.getString("CustomName"));
+            name = ITextComponent.Serializer.getComponentFromJson(compound.getString("CustomName"));
         }
-        super.func_230337_a_(blockState, compound);
+        super.read(blockState, compound);
     }
 }

@@ -24,7 +24,7 @@ public class ItemRepairKit extends Item {
 
     @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        tooltip.add(new TranslationTextComponent("tooltip.repair_kit").func_240699_a_(TextFormatting.GRAY));
+        tooltip.add(new TranslationTextComponent("tooltip.repair_kit").mergeStyle(TextFormatting.GRAY));
         super.addInformation(stack, worldIn, tooltip, flagIn);
     }
 

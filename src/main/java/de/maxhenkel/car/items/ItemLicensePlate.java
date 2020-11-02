@@ -34,7 +34,7 @@ public class ItemLicensePlate extends ItemCraftingComponent {
         String text = getText(stack);
 
         if (!text.isEmpty()) {
-            tooltip.add(new TranslationTextComponent("tooltip.license_plate_text", new StringTextComponent(text).func_240699_a_(TextFormatting.DARK_GRAY)).func_240699_a_(TextFormatting.GRAY));
+            tooltip.add(new TranslationTextComponent("tooltip.license_plate_text", new StringTextComponent(text).mergeStyle(TextFormatting.DARK_GRAY)).mergeStyle(TextFormatting.GRAY));
         }
 
         super.addInformation(stack, worldIn, tooltip, flagIn);

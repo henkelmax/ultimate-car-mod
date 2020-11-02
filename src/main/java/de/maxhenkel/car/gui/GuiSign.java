@@ -45,13 +45,13 @@ public class GuiSign extends ScreenBase<ContainerSign> {
     }
 
     @Override
-    protected void func_231160_c_() {
-        super.func_231160_c_();
+    protected void init() {
+        super.init();
 
-        guiLeft = (field_230708_k_ - xSize) / 2;
-        guiTop = (field_230709_l_ - ySize) / 2;
+        guiLeft = (width - xSize) / 2;
+        guiTop = (height - ySize) / 2;
 
-        field_230706_i_.keyboardListener.enableRepeatEvents(true);
+        minecraft.keyboardListener.enableRepeatEvents(true);
 
         text1 = initTextField(0, 0);
         text2 = initTextField(1, 20);
@@ -60,15 +60,15 @@ public class GuiSign extends ScreenBase<ContainerSign> {
 
         setFocusedDefault(text1);
 
-        buttonSubmit = func_230480_a_(new Button(guiLeft + 20, guiTop + ySize - 25, 50, 20, new TranslationTextComponent("button.car.submit"), button -> {
+        buttonSubmit = addButton(new Button(guiLeft + 20, guiTop + ySize - 25, 50, 20, new TranslationTextComponent("button.car.submit"), button -> {
             save();
             Main.SIMPLE_CHANNEL.sendToServer(new MessageEditSign(sign.getPos(), text));
             Minecraft.getInstance().displayGuiScreen(null);
         }));
-        buttonCancel = func_230480_a_(new Button(guiLeft + xSize - 50 - 15, guiTop + ySize - 25, 50, 20, new TranslationTextComponent("button.car.cancel"), button -> {
+        buttonCancel = addButton(new Button(guiLeft + xSize - 50 - 15, guiTop + ySize - 25, 50, 20, new TranslationTextComponent("button.car.cancel"), button -> {
             Minecraft.getInstance().displayGuiScreen(null);
         }));
-        buttonSwitch = func_230480_a_(new Button(guiLeft + 5, guiTop + 49 + 10, 46, 20, new TranslationTextComponent("button.car.back"), button -> {
+        buttonSwitch = addButton(new Button(guiLeft + 5, guiTop + 49 + 10, 46, 20, new TranslationTextComponent("button.car.back"), button -> {
             save();
             front = !front;
 
@@ -77,31 +77,31 @@ public class GuiSign extends ScreenBase<ContainerSign> {
                 text2.setText(text[1]);
                 text3.setText(text[2]);
                 text4.setText(text[3]);
-                buttonSwitch.func_238482_a_(new TranslationTextComponent("button.car.back"));
+                buttonSwitch.setMessage(new TranslationTextComponent("button.car.back"));
             } else {
                 text1.setText(text[4]);
                 text2.setText(text[5]);
                 text3.setText(text[6]);
                 text4.setText(text[7]);
-                buttonSwitch.func_238482_a_(new TranslationTextComponent("button.car.front"));
+                buttonSwitch.setMessage(new TranslationTextComponent("button.car.front"));
             }
         }));
     }
 
     private TextFieldWidget initTextField(int id, int height) {
-        TextFieldWidget field = new TextFieldWidget(field_230712_o_, guiLeft + 54, guiTop + 30 + height, 114, 16, new StringTextComponent(""));
+        TextFieldWidget field = new TextFieldWidget(font, guiLeft + 54, guiTop + 30 + height, 114, 16, new StringTextComponent(""));
         field.setTextColor(-1);
         field.setDisabledTextColour(-1);
         field.setEnableBackgroundDrawing(true);
         field.setMaxStringLength(20);
         field.setText(text[id]);
-        func_230480_a_(field);
+        addButton(field);
         return field;
     }
 
     @Override
-    protected void func_230451_b_(MatrixStack matrixStack, int mouseX, int mouseY) {
-        super.func_230451_b_(matrixStack, mouseX, mouseY);
+    protected void drawGuiContainerForegroundLayer(MatrixStack matrixStack, int mouseX, int mouseY) {
+        super.drawGuiContainerForegroundLayer(matrixStack, mouseX, mouseY);
 
         String s;
         if (front) {
@@ -110,29 +110,30 @@ public class GuiSign extends ScreenBase<ContainerSign> {
             s = new TranslationTextComponent("gui.sign.back").getString();
         }
 
-        field_230712_o_.func_238422_b_(matrixStack, new TranslationTextComponent("gui.sign", s).func_241878_f(), 54, 10, FONT_COLOR);
-    }
-
-    public void func_231164_f_() {
-        super.func_231164_f_();
-        field_230706_i_.keyboardListener.enableRepeatEvents(false);
+        font.func_238422_b_(matrixStack, new TranslationTextComponent("gui.sign", s).func_241878_f(), 54, 10, FONT_COLOR);
     }
 
     @Override
-    public boolean func_231046_a_(int key, int a, int b) {
+    public void onClose() {
+        super.onClose();
+        minecraft.keyboardListener.enableRepeatEvents(false);
+    }
+
+    @Override
+    public boolean keyPressed(int key, int scanCode, int modifiers) {
         if (key == GLFW.GLFW_KEY_ESCAPE) {
-            field_230706_i_.player.closeScreen();
+            minecraft.player.closeScreen();
             return true;
         }
 
-        return text1.func_231046_a_(key, a, b) ||
+        return text1.keyPressed(key, scanCode, modifiers) ||
                 text1.canWrite() ||
-                text2.func_231046_a_(key, a, b) ||
+                text2.keyPressed(key, scanCode, modifiers) ||
                 text2.canWrite() ||
-                text3.func_231046_a_(key, a, b) ||
+                text3.keyPressed(key, scanCode, modifiers) ||
                 text3.canWrite() ||
-                text4.func_231046_a_(key, a, b) ||
-                text4.canWrite() || super.func_231046_a_(key, a, b);
+                text4.keyPressed(key, scanCode, modifiers) ||
+                text4.canWrite() || super.keyPressed(key, scanCode, modifiers);
     }
 
     private void save() {
@@ -150,12 +151,12 @@ public class GuiSign extends ScreenBase<ContainerSign> {
     }
 
     @Override
-    public void func_231152_a_(Minecraft mc, int x, int y) {
+    public void resize(Minecraft mc, int x, int y) {
         String txt1 = text1.getText();
         String txt2 = text2.getText();
         String txt3 = text3.getText();
         String txt4 = text4.getText();
-        func_231158_b_(mc, x, y);
+        init(mc, x, y);
         text1.setText(txt1);
         text2.setText(txt2);
         text3.setText(txt3);
@@ -163,7 +164,7 @@ public class GuiSign extends ScreenBase<ContainerSign> {
     }
 
     @Override
-    public boolean func_231177_au__() {
+    public boolean isPauseScreen() {
         return false;
     }
 

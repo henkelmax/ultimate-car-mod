@@ -1,4 +1,5 @@
 package de.maxhenkel.car.integration.jei;
+/*
 
 import java.util.Arrays;
 import java.util.stream.Collectors;
@@ -73,4 +74,4 @@ public class JEIPlugin implements IModPlugin {
         registry.addRecipeCategories(new CarRecipeCategory(registry.getJeiHelpers().getGuiHelper()));
     }
 
-}
+}*/

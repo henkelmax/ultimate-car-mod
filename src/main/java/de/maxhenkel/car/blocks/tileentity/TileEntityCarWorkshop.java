@@ -67,12 +67,12 @@ public class TileEntityCarWorkshop extends TileEntityBase implements IInventory 
 
     public void spawnCar(PlayerEntity player) {
         if (!areBlocksAround()) {
-            player.sendMessage(new TranslationTextComponent("message.incomplete_structure"), Util.field_240973_b_);
+            player.sendMessage(new TranslationTextComponent("message.incomplete_structure"), Util.DUMMY_UUID);
             return;
         }
 
         if (!isTopFree()) {
-            player.sendMessage(new TranslationTextComponent("message.blocks_on_top"), Util.field_240973_b_);
+            player.sendMessage(new TranslationTextComponent("message.blocks_on_top"), Util.DUMMY_UUID);
             return;
         }
 
@@ -81,7 +81,7 @@ public class TileEntityCarWorkshop extends TileEntityBase implements IInventory 
         EntityGenericCar car = currentCraftingCar;
 
         if (car == null || !isCurrentCraftingCarValid()) {
-            player.sendMessage(new TranslationTextComponent("message.no_reciepe"), Util.field_240973_b_);
+            player.sendMessage(new TranslationTextComponent("message.no_reciepe"), Util.DUMMY_UUID);
             return;
         }
         BlockPos spawnPos = pos.up();
@@ -193,10 +193,10 @@ public class TileEntityCarWorkshop extends TileEntityBase implements IInventory 
     }
 
     @Override
-    public void func_230337_a_(BlockState blockState, CompoundNBT compound) {
+    public void read(BlockState blockState, CompoundNBT compound) {
         ItemUtils.readInventory(compound, "crafting", craftingMatrix);
         ItemUtils.readInventory(compound, "repair", repairInventory);
-        super.func_230337_a_(blockState, compound);
+        super.read(blockState, compound);
     }
 
     public void updateRecipe() {
@@ -339,19 +339,19 @@ public class TileEntityCarWorkshop extends TileEntityBase implements IInventory 
 
     public void repairCar(PlayerEntity player) {
         if (!areBlocksAround()) {
-            player.sendMessage(new TranslationTextComponent("message.incomplete_structure"), Util.field_240973_b_);
+            player.sendMessage(new TranslationTextComponent("message.incomplete_structure"), Util.DUMMY_UUID);
             return;
         }
 
         if (!areRepairItemsInside()) {
-            player.sendMessage(new TranslationTextComponent("message.no_repair_items"), Util.field_240973_b_);
+            player.sendMessage(new TranslationTextComponent("message.no_repair_items"), Util.DUMMY_UUID);
             return;
         }
 
         EntityCarBase carBase = getCarOnTop();
 
         if (!(carBase instanceof EntityCarDamageBase)) {
-            player.sendMessage(new TranslationTextComponent("message.no_car"), Util.field_240973_b_);
+            player.sendMessage(new TranslationTextComponent("message.no_car"), Util.DUMMY_UUID);
             return;
         }
 

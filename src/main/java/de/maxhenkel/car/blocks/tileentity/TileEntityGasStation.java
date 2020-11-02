@@ -299,7 +299,7 @@ public class TileEntityGasStation extends TileEntityBase implements ITickableTil
     }
 
     @Override
-    public void func_230337_a_(BlockState blockState, CompoundNBT compound) {
+    public void read(BlockState blockState, CompoundNBT compound) {
         fuelCounter = compound.getInt("counter");
 
         if (compound.contains("fluid")) {
@@ -318,7 +318,7 @@ public class TileEntityGasStation extends TileEntityBase implements ITickableTil
         } else {
             owner = new UUID(0L, 0L);
         }
-        super.func_230337_a_(blockState, compound);
+        super.read(blockState, compound);
     }
 
     public boolean isFueling() {

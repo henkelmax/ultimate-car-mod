@@ -36,7 +36,7 @@ public class SlotRepairKit extends Slot {
             if (damage >= 0) {
                 car.setDamage(damage);
             }
-            ModSounds.playSound(ModSounds.RATCHET, car.world, car.func_233580_cy_(), null, SoundCategory.BLOCKS);
+            ModSounds.playSound(ModSounds.RATCHET, car.world, car.getPosition(), null, SoundCategory.BLOCKS);
         }
 
         if (!player.inventory.addItemStackToInventory(stack)) {

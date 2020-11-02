@@ -165,13 +165,13 @@ public abstract class TileEntityEnergyFluidProducer extends TileEntityBase imple
     }
 
     @Override
-    public void func_230337_a_(BlockState blockState, CompoundNBT compound) {
+    public void read(BlockState blockState, CompoundNBT compound) {
         storedEnergy = compound.getInt("energy_stored");
         time = compound.getInt("time");
         currentMillibuckets = compound.getInt("fluid_stored");
 
         ItemUtils.readInventory(compound, "slots", inventory);
-        super.func_230337_a_(blockState, compound);
+        super.read(blockState, compound);
     }
 
     @Override

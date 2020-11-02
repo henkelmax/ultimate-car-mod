@@ -41,34 +41,34 @@ public class GuiCarWorkshopCrafting extends ScreenBase<ContainerCarWorkshopCraft
     }
 
     @Override
-    protected void func_231160_c_() {
-        super.func_231160_c_();
+    protected void init() {
+        super.init();
 
-        buttonRepair = func_230480_a_(new Button(guiLeft + 105, guiTop + 72, 60, 20, new TranslationTextComponent("button.car.repair_car"), button -> {
+        buttonRepair = addButton(new Button(guiLeft + 105, guiTop + 72, 60, 20, new TranslationTextComponent("button.car.repair_car"), button -> {
             Main.SIMPLE_CHANNEL.sendToServer(new MessageOpenCarWorkshopGui(tile.getPos(), player, true));
         }));
 
-        buttonSpawn = func_230480_a_(new Button(guiLeft + 105, guiTop + 106, 60, 20, new TranslationTextComponent("button.car.spawn_car"), button -> {
+        buttonSpawn = addButton(new Button(guiLeft + 105, guiTop + 106, 60, 20, new TranslationTextComponent("button.car.spawn_car"), button -> {
             if (tile.getWorld().isRemote) {
                 if (tile.isCurrentCraftingCarValid()) {
                     Main.SIMPLE_CHANNEL.sendToServer(new MessageSpawnCar(tile.getPos()));
                 } else {
                     for (ITextComponent message : tile.getMessages()) {
-                        playerInventory.player.sendMessage(message, Util.field_240973_b_);
+                        playerInventory.player.sendMessage(message, Util.DUMMY_UUID);
                     }
                 }
             }
         }));
-        buttonSpawn.field_230693_o_ = false;
+        buttonSpawn.active = false;
     }
 
     @Override
-    protected void func_230451_b_(MatrixStack matrixStack, int mouseX, int mouseY) {
-        super.func_230451_b_(matrixStack, mouseX, mouseY);
+    protected void drawGuiContainerForegroundLayer(MatrixStack matrixStack, int mouseX, int mouseY) {
+        super.drawGuiContainerForegroundLayer(matrixStack, mouseX, mouseY);
 
         // Titles
-        field_230712_o_.func_238422_b_(matrixStack, tile.getDisplayName().func_241878_f(), 8, 6, FONT_COLOR);
-        field_230712_o_.func_238422_b_(matrixStack, playerInventory.getDisplayName().func_241878_f(), 8, ySize - 96 + 2, FONT_COLOR);
+        font.func_238422_b_(matrixStack, tile.getDisplayName().func_241878_f(), 8, 6, FONT_COLOR);
+        font.func_238422_b_(matrixStack, playerInventory.getDisplayName().func_241878_f(), 8, ySize - 96 + 2, FONT_COLOR);
 
         RenderSystem.color4f(1F, 1F, 1F, 1F);
 
@@ -77,18 +77,18 @@ public class GuiCarWorkshopCrafting extends ScreenBase<ContainerCarWorkshopCraft
 
         if (carTop != null) {
             drawCar(matrixStack, carTop);
-            buttonSpawn.field_230693_o_ = false;
+            buttonSpawn.active = false;
         } else {
             if (car != null) {
                 drawCar(matrixStack, car);
             }
-            buttonSpawn.field_230693_o_ = true;
+            buttonSpawn.active = true;
         }
     }
 
     @Override
-    public void func_231023_e_() {
-        super.func_231023_e_();
+    public void tick() {
+        super.tick();
         carRenderer.tick();
     }
 
@@ -97,7 +97,7 @@ public class GuiCarWorkshopCrafting extends ScreenBase<ContainerCarWorkshopCraft
     }
 
     @Override
-    public boolean func_231177_au__() {
+    public boolean isPauseScreen() {
         return false;
     }
 

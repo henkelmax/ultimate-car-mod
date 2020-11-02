@@ -14,8 +14,8 @@ public class CarOptionsSoundsScreen extends OptionsSoundsScreen {
         super(screen, gameSettings);
     }
 
-    protected void func_231160_c_() {
-        super.func_231160_c_();
+    protected void init() {
+        super.init();
         int posX = 2;
         SoundCategory[] categories = SoundCategory.values();
         for (SoundCategory category : categories) {
@@ -24,7 +24,7 @@ public class CarOptionsSoundsScreen extends OptionsSoundsScreen {
             }
         }
 
-        func_230480_a_(new CarSoundSlider(field_230708_k_ / 2 - 155 + posX % 2 * 160, field_230709_l_ / 6 - 12 + 24 * (posX >> 1), 150));
+        addButton(new CarSoundSlider(width / 2 - 155 + posX % 2 * 160, height / 6 - 12 + 24 * (posX >> 1), 150));
     }
 
 }

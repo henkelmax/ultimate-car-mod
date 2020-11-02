@@ -24,14 +24,14 @@ public class GuiCarInventory extends ScreenBase<ContainerCarInventory> {
     }
 
     @Override
-    protected void func_230451_b_(MatrixStack matrixStack, int mouseX, int mouseY) {
-        super.func_230451_b_(matrixStack, mouseX, mouseY);
-        field_230712_o_.func_238422_b_(matrixStack, car.getDisplayName().func_241878_f(), 8, 6, FONT_COLOR);
-        field_230712_o_.func_238422_b_(matrixStack, playerInventory.getDisplayName().func_241878_f(), 8, ySize - 96 + 3, FONT_COLOR);
+    protected void drawGuiContainerForegroundLayer(MatrixStack matrixStack, int mouseX, int mouseY) {
+        super.drawGuiContainerForegroundLayer(matrixStack, mouseX, mouseY);
+        font.func_238422_b_(matrixStack, car.getDisplayName().func_241878_f(), 8, 6, FONT_COLOR);
+        font.func_238422_b_(matrixStack, playerInventory.getDisplayName().func_241878_f(), 8, ySize - 96 + 3, FONT_COLOR);
     }
 
     @Override
-    public boolean func_231177_au__() {
+    public boolean isPauseScreen() {
         return false;
     }
 

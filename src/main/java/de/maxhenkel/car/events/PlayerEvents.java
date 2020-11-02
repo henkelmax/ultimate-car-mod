@@ -53,9 +53,9 @@ public class PlayerEvents {
         }
 
         if (third) {
-            minecraft.gameSettings.func_243229_a(PointOfView.THIRD_PERSON_BACK);
+            minecraft.gameSettings.setPointOfView(PointOfView.THIRD_PERSON_BACK);
         } else {
-            minecraft.gameSettings.func_243229_a(PointOfView.FIRST_PERSON);
+            minecraft.gameSettings.setPointOfView(PointOfView.FIRST_PERSON);
         }
 
     }

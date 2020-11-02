@@ -110,7 +110,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
     }
 
     @Override
-    public boolean func_241849_j(Entity entityIn) {
+    public boolean canCollide(Entity entityIn) {
         if (Main.SERVER_CONFIG.damageEntities.get() && entityIn instanceof LivingEntity && !getPassengers().contains(entityIn)) {
             if (entityIn.getBoundingBox().intersects(getBoundingBox())) {
                 float speed = getSpeed();
@@ -121,7 +121,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 
             }
         }
-        return super.func_241849_j(entityIn);
+        return super.canCollide(entityIn);
     }
 
 
@@ -463,19 +463,19 @@ public abstract class EntityCarBase extends EntityVehicleBase {
     }
 
     public void playStopSound() {
-        ModSounds.playSound(getStopSound(), world, func_233580_cy_(), null, SoundCategory.MASTER, 1F);
+        ModSounds.playSound(getStopSound(), world, getPosition(), null, SoundCategory.MASTER, 1F);
     }
 
     public void playFailSound() {
-        ModSounds.playSound(getFailSound(), world, func_233580_cy_(), null, SoundCategory.MASTER, 1F);
+        ModSounds.playSound(getFailSound(), world, getPosition(), null, SoundCategory.MASTER, 1F);
     }
 
     public void playCrashSound() {
-        ModSounds.playSound(getCrashSound(), world, func_233580_cy_(), null, SoundCategory.MASTER, 1F);
+        ModSounds.playSound(getCrashSound(), world, getPosition(), null, SoundCategory.MASTER, 1F);
     }
 
     public void playHornSound() {
-        ModSounds.playSound(getHornSound(), world, func_233580_cy_(), null, SoundCategory.MASTER, 1F);
+        ModSounds.playSound(getHornSound(), world, getPosition(), null, SoundCategory.MASTER, 1F);
     }
 
     public abstract SoundEvent getStopSound();

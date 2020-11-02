@@ -46,7 +46,7 @@ public class MessageSyncTileEntity implements Message<MessageSyncTileEntity> {
         TileEntity te = player.world.getTileEntity(pos);
 
         if (te != null) {
-            te.func_230337_a_(te.getBlockState(), tag);
+            te.read(te.getBlockState(), tag);
         }
     }
 

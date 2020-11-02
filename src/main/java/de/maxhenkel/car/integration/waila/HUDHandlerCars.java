@@ -26,7 +26,7 @@ public class HUDHandlerCars implements IEntityComponentProvider {
         ITaggableList<ResourceLocation, ITextComponent> tooltip = (ITaggableList<ResourceLocation, ITextComponent>) t;
         tooltip.setTag(PluginCar.OBJECT_NAME_TAG, new StringTextComponent(String.format(Waila.CONFIG.get().getFormatting().getEntityName(), accessor.getEntity().getDisplayName().getString())));
         if (config.get(PluginCar.CONFIG_SHOW_REGISTRY)) {
-            tooltip.setTag(PluginCar.REGISTRY_NAME_TAG, new StringTextComponent(accessor.getEntity().getType().getRegistryName().toString()).func_240699_a_(TextFormatting.GRAY));
+            tooltip.setTag(PluginCar.REGISTRY_NAME_TAG, new StringTextComponent(accessor.getEntity().getType().getRegistryName().toString()).mergeStyle(TextFormatting.GRAY));
         }
     }
 

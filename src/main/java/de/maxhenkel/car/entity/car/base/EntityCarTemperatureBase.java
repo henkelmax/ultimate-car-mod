@@ -68,7 +68,7 @@ public abstract class EntityCarTemperatureBase extends EntityCarBase {
     }
 
     public float getBiomeTemperatureCelsius() {
-        return (world.getBiome(func_233580_cy_()).getTemperature(func_233580_cy_()) - 0.3F) * 30F;
+        return (world.getBiome(getPosition()).getTemperature(getPosition()) - 0.3F) * 30F;
     }
 
     public float getTemperature() {
