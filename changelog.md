@@ -1,1 +1,1 @@
-- Fixed a crash with shatter
+- Fixed license plate rendering
