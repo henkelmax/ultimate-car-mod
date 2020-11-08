@@ -1,5 +1,4 @@
 package de.maxhenkel.car.integration.jei;
-/*
 
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.items.ModItems;
@@ -31,7 +30,6 @@ public class PainterRecipeCategory implements IRecipeCategory<PainterRecipe> {
     public IDrawable getIcon() {
         return helper.createDrawableIngredient(new ItemStack(ModItems.PAINTER));
     }
-
 
     @Override
     public void setIngredients(PainterRecipe recipe, IIngredients iIngredients) {
@@ -65,4 +63,4 @@ public class PainterRecipeCategory implements IRecipeCategory<PainterRecipe> {
         group.set(1, new ItemStack(wrapper.getOutput()));
 
     }
-}*/
+}

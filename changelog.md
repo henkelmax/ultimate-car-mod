@@ -1,1 +1,1 @@
-- Fixed misaligned car model
+- Re-added JEI compatibility
