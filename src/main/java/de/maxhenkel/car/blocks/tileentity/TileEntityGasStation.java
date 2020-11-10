@@ -244,7 +244,7 @@ public class TileEntityGasStation extends TileEntityBase implements ITickableTil
     }
 
     public boolean isValidFluid(Fluid f) {
-        return Main.SERVER_CONFIG.gasStationValidFuelList.contains(f);
+        return Main.SERVER_CONFIG.gasStationValidFuelList.stream().anyMatch(f::isIn);
     }
 
     public void setOwner(UUID owner) {

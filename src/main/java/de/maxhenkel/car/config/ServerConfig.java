@@ -1,17 +1,15 @@
 package de.maxhenkel.car.config;
 
-import de.maxhenkel.car.blocks.ModBlocks;
-import de.maxhenkel.car.fluids.ModFluids;
 import de.maxhenkel.corelib.config.ConfigBase;
+import de.maxhenkel.corelib.tag.TagUtils;
 import net.minecraft.block.Block;
 import net.minecraft.fluid.Fluid;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.tags.ITag;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.fml.config.ModConfig;
-import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -101,8 +99,8 @@ public class ServerConfig extends ConfigBase {
     public final ForgeConfigSpec.DoubleValue bodyTransporterAcceleration;
     public final ForgeConfigSpec.DoubleValue bodyTransporterMaxSpeed;
 
-    public List<Fluid> gasStationValidFuelList = new ArrayList<>();
-    public List<Block> carDriveBlockList = new ArrayList<>();
+    public List<ITag<Fluid>> gasStationValidFuelList = new ArrayList<>();
+    public List<ITag<Block>> carDriveBlockList = new ArrayList<>();
 
     public ServerConfig(ForgeConfigSpec.Builder builder) {
         super(builder);
@@ -128,7 +126,7 @@ public class ServerConfig extends ConfigBase {
         fluidExtractorDrainSpeed = builder.defineInRange("machines.fluid_extractor.drain_speed", 25, 5, Short.MAX_VALUE);
 
         gasStationTransferRate = builder.defineInRange("machines.gas_station.transfer_rate", 5, 1, Short.MAX_VALUE);
-        gasStationValidFuels = builder.defineList("machines.gas_station.valid_fuels", Arrays.asList(ModFluids.BIO_DIESEL.getRegistryName().toString()), Objects::nonNull);
+        gasStationValidFuels = builder.comment("If it starts with '#' it is a tag").defineList("machines.gas_station.valid_fuels", Collections.singletonList("#car:gas_station"), Objects::nonNull);
 
         generatorEnergyStorage = builder.defineInRange("machines.generator.energy_storage", 30000, 1000, Short.MAX_VALUE);
         generatorFluidStorage = builder.defineInRange("machines.generator.fluid_storage", 3000, 1000, Short.MAX_VALUE);
@@ -150,14 +148,8 @@ public class ServerConfig extends ConfigBase {
         useBattery = builder.comment("True if starting the car should use battery").define("car.use_battery", true);
 
         carOffroadSpeed = builder.comment("The speed modifier for cars on non road blocks").defineInRange("car.offroad_speed_modifier", 1D, 0.001D, 10D);
-        carOnroadSpeed = builder.comment("The speed modifier for cars on road blocks").defineInRange("car.onroad_speed_modifier", 1D, 0.001D, 10D);
-        carDriveBlocks = builder.defineList("car.road_blocks.blocks", Arrays.asList(
-                ModBlocks.ASPHALT.getRegistryName().toString(),
-                ModBlocks.ASPHALT_SLAB.getRegistryName().toString(),
-                ModBlocks.ASPHALT_SLOPE.getRegistryName().toString(),
-                ModBlocks.ASPHALT_SLOPE_FLAT_LOWER.getRegistryName().toString(),
-                ModBlocks.ASPHALT_SLOPE_FLAT_UPPER.getRegistryName().toString()
-        ), Objects::nonNull);
+        carOnroadSpeed = builder.comment("The speed modifier for cars on road blocks", "On road blocks are defined in the config section 'road_blocks'").defineInRange("car.onroad_speed_modifier", 1D, 0.001D, 10D);
+        carDriveBlocks = builder.comment("If it starts with '#' it is a tag").defineList("car.road_blocks.blocks", Collections.singletonList("#car:drivable_blocks"), Objects::nonNull);
 
         engine6CylinderFuelEfficiency = builder.defineInRange("car.parts.engine_6_cylinder.fuel_efficiency", 0.25D, 0.001D, 10D);
         engine3CylinderFuelEfficiency = builder.defineInRange("car.parts.engine_3_cylinder.fuel_efficiency", 0.5D, 0.001D, 10D);
@@ -192,8 +184,8 @@ public class ServerConfig extends ConfigBase {
     @Override
     public void onReload(ModConfig.ModConfigEvent event) {
         super.onReload(event);
-        gasStationValidFuelList = gasStationValidFuels.get().stream().map(ResourceLocation::new).map(ForgeRegistries.FLUIDS::getValue).filter(Objects::nonNull).collect(Collectors.toList());
-        carDriveBlockList = carDriveBlocks.get().stream().map(ResourceLocation::new).map(ForgeRegistries.BLOCKS::getValue).filter(Objects::nonNull).collect(Collectors.toList());
+        gasStationValidFuelList = gasStationValidFuels.get().stream().map(TagUtils::getFluid).filter(Objects::nonNull).collect(Collectors.toList());
+        carDriveBlockList = carDriveBlocks.get().stream().map(TagUtils::getBlock).filter(Objects::nonNull).collect(Collectors.toList());
     }
 
 }

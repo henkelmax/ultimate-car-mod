@@ -257,7 +257,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
         BlockPos pos = new BlockPos(getPosX(), getPosY() - 0.1D, getPosZ());
         BlockState state = world.getBlockState(pos);
 
-        if (state.isAir(world, pos) || Main.SERVER_CONFIG.carDriveBlockList.contains(state.getBlock())) {
+        if (state.isAir(world, pos) || Main.SERVER_CONFIG.carDriveBlockList.stream().anyMatch(tag -> state.getBlock().isIn(tag))) {
             return Main.SERVER_CONFIG.carOnroadSpeed.get().floatValue();
         } else {
             return Main.SERVER_CONFIG.carOffroadSpeed.get().floatValue();

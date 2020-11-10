@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "car:asphalt",
+    "car:asphalt_slab",
+    "car:asphalt_slope",
+    "car:asphalt_slope_flat_upper",
+    "car:asphalt_slope_flat_lower"
+  ]
+}

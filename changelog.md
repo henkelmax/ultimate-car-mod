@@ -1,1 +1,2 @@
-- Re-added JEI compatibility
+- Added tags for drivable blocks and gas station fluids
+- Added tag support in config
