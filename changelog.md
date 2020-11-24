@@ -1,2 +1,1 @@
-- Added tags for drivable blocks and gas station fluids
-- Added tag support in config
+- Made Canola, Canola Cake and Canola Seeds compostable

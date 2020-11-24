@@ -30,6 +30,7 @@ import de.maxhenkel.corelib.config.DynamicConfig;
 import de.maxhenkel.corelib.dataserializers.DataSerializerItemList;
 import de.maxhenkel.tools.EntityTools;
 import net.minecraft.block.Block;
+import net.minecraft.block.ComposterBlock;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.client.settings.KeyBinding;
@@ -46,6 +47,7 @@ import net.minecraft.item.crafting.SpecialRecipeSerializer;
 import net.minecraft.loot.LootFunctionType;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Hand;
+import net.minecraft.util.IItemProvider;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.registry.Registry;
@@ -147,6 +149,15 @@ public class Main {
         CommonRegistry.registerMessage(SIMPLE_CHANNEL, 13, MessageCenterCar.class);
         CommonRegistry.registerMessage(SIMPLE_CHANNEL, 14, MessageCenterCarClient.class);
         CommonRegistry.registerMessage(SIMPLE_CHANNEL, 15, MessageEditLicensePlate.class);
+
+        try {
+            Method registerCompostable = ObfuscationReflectionHelper.findMethod(ComposterBlock.class, "func_220290_a", float.class, IItemProvider.class);
+            registerCompostable.invoke(null, 0.3F, ModItems.CANOLA_SEEDS);
+            registerCompostable.invoke(null, 0.5F, ModItems.CANOLA_CAKE);
+            registerCompostable.invoke(null, 0.65F, ModItems.CANOLA);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public static KeyBinding FORWARD_KEY;
