@@ -1,0 +1,16 @@
+{
+    "multipart": [
+        {   "when": { "north": "true" },
+            "apply": { "model": "car:block/guard_rail", "uvlock": false }
+        },
+        {   "when": { "east": "true" },
+            "apply": { "model": "car:block/guard_rail", "y": 90, "uvlock": false }
+        },
+        {   "when": { "south": "true" },
+            "apply": { "model": "car:block/guard_rail", "y": 180, "uvlock": false }
+        },
+        {   "when": { "west": "true" },
+            "apply": { "model": "car:block/guard_rail", "y": 270, "uvlock": false }
+        }
+    ]
+}

@@ -35,7 +35,8 @@ public class ModBlocks {
     @OnlyBlock
     public static final BlockSplitTankTop SPLIT_TANK_TOP = new BlockSplitTankTop();
     public static final BlockTank TANK = new BlockTank();
-    public static final BlockCrashBarrier CRASH_BARRIER = new BlockCrashBarrier();
+    @OnlyBlock
+    public static final BlockGuardRail GUARD_RAIL = new BlockGuardRail();
     public static final BlockCarWorkshop CAR_WORKSHOP = new BlockCarWorkshop();
     public static final BlockCarWorkshopOutter CAR_WORKSHOP_OUTTER = new BlockCarWorkshopOutter();
     public static final BlockCable CABLE = new BlockCable();

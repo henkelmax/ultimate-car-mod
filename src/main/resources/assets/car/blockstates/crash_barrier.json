@@ -1,8 +1,0 @@
-{
-    "variants": {
-        "facing=north": { "model": "car:block/crash_barrier" },
-        "facing=south": { "model": "car:block/crash_barrier", "y": 180 },
-        "facing=west":  { "model": "car:block/crash_barrier", "y": 270 },
-        "facing=east":  { "model": "car:block/crash_barrier", "y": 90 }
-    }
-}

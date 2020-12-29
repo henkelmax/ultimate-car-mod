@@ -1,1 +1,2 @@
-- Made Canola, Canola Cake and Canola Seeds compostable
+- Removed crash barrier
+- Added guard rail

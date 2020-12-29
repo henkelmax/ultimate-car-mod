@@ -2,12 +2,12 @@
   "type": "minecraft:block",
   "pools": [
     {
-      "name": "crash_barrier",
+      "name": "guard_rail",
       "rolls": 1,
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "car:crash_barrier"
+          "name": "car:guard_rail"
         }
       ],
       "conditions": [

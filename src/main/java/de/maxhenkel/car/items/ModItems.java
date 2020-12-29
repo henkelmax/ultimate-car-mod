@@ -29,11 +29,9 @@ public class ModItems {
     public static final ItemCraftingComponent CABLE_INSULATOR = new ItemCraftingComponent("cable_insulator");
     public static final ItemKey KEY = new ItemKey();
     public static final ItemBattery BATTERY = new ItemBattery();
+    public static final ItemGuardRail GUARD_RAIL = new ItemGuardRail();
 
     public static final ItemLicensePlate LICENSE_PLATE = new ItemLicensePlate("license_plate");
-    /**
-     * ---- CAR PARTS ----
-     **/
 
     public static final ItemCarPart ENGINE_3_CYLINDER = new ItemCarPart("engine_3_cylinder", PartRegistry.ENGINE_3_CYLINDER);
     public static final ItemCarPart ENGINE_6_CYLINDER = new ItemCarPart("engine_6_cylinder", PartRegistry.ENGINE_6_CYLINDER);
