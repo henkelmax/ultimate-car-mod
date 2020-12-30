@@ -107,7 +107,7 @@ public class TileEntityGenerator extends TileEntityBase implements ITickableTile
     }
 
     public boolean isValidFuel(Fluid f) {
-        return ModFluids.BIO_DIESEL.equals(f);
+        return Main.SERVER_CONFIG.generatorValidFuelList.stream().anyMatch(f::isIn);
     }
 
     private void handlePushEnergy() {

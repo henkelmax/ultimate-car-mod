@@ -1,2 +1,1 @@
-- Removed crash barrier
-- Added guard rail
+- Allow custom fluids in generator

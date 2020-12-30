@@ -43,6 +43,7 @@ public class ServerConfig extends ConfigBase {
     public final ForgeConfigSpec.IntValue generatorEnergyStorage;
     public final ForgeConfigSpec.IntValue generatorFluidStorage;
     public final ForgeConfigSpec.IntValue generatorEnergyGeneration;
+    public final ForgeConfigSpec.ConfigValue<List<? extends String>> generatorValidFuels;
 
     public final ForgeConfigSpec.IntValue splitTankFluidStorage;
     public final ForgeConfigSpec.IntValue splitTankGeneratingTime;
@@ -100,6 +101,7 @@ public class ServerConfig extends ConfigBase {
     public final ForgeConfigSpec.DoubleValue bodyTransporterMaxSpeed;
 
     public List<ITag<Fluid>> gasStationValidFuelList = new ArrayList<>();
+    public List<ITag<Fluid>> generatorValidFuelList = new ArrayList<>();
     public List<ITag<Block>> carDriveBlockList = new ArrayList<>();
 
     public ServerConfig(ForgeConfigSpec.Builder builder) {
@@ -131,6 +133,7 @@ public class ServerConfig extends ConfigBase {
         generatorEnergyStorage = builder.defineInRange("machines.generator.energy_storage", 30000, 1000, Short.MAX_VALUE);
         generatorFluidStorage = builder.defineInRange("machines.generator.fluid_storage", 3000, 1000, Short.MAX_VALUE);
         generatorEnergyGeneration = builder.defineInRange("machines.generator.energy_generation", 500, 1, Short.MAX_VALUE);
+        generatorValidFuels = builder.comment("If it starts with '#' it is a tag").defineList("machines.generator.valid_fuels", Collections.singletonList("#car:generator"), Objects::nonNull);
 
         splitTankFluidStorage = builder.defineInRange("machines.split_tank.fluid_storage", 3000, 1000, Short.MAX_VALUE);
         splitTankGeneratingTime = builder.defineInRange("machines.split_tank.generating_time", 800, 10, Short.MAX_VALUE);
@@ -185,6 +188,7 @@ public class ServerConfig extends ConfigBase {
     public void onReload(ModConfig.ModConfigEvent event) {
         super.onReload(event);
         gasStationValidFuelList = gasStationValidFuels.get().stream().map(TagUtils::getFluid).filter(Objects::nonNull).collect(Collectors.toList());
+        generatorValidFuelList = generatorValidFuels.get().stream().map(TagUtils::getFluid).filter(Objects::nonNull).collect(Collectors.toList());
         carDriveBlockList = carDriveBlocks.get().stream().map(TagUtils::getBlock).filter(Objects::nonNull).collect(Collectors.toList());
     }
 
