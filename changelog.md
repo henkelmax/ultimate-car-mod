@@ -1,1 +1,2 @@
-- Allow custom fluids in generator
+- Fixed painter durability desync
+- Added middle edge double line

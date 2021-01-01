@@ -15,7 +15,7 @@ public class GuiPainter extends ScreenBase<ContainerPainter> {
     public GuiPainter(ContainerPainter containerPainter, PlayerInventory playerInventory, ITextComponent title) {
         super(PAINTER_GUI_TEXTURE, containerPainter, playerInventory, title);
         xSize = 176;
-        ySize = 96;
+        ySize = 114;
     }
 
     @Override

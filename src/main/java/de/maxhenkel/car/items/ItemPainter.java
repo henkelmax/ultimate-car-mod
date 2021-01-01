@@ -102,7 +102,7 @@ public class ItemPainter extends Item {
 
         stack1.damageItem(1, context.getPlayer(), playerEntity -> playerEntity.sendBreakAnimation(context.getHand()));
 
-        return ActionResultType.CONSUME;
+        return ActionResultType.SUCCESS;
     }
 
     private BlockPaint getSelectedPaint(int id) {

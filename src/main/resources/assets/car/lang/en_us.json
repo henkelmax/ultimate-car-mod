@@ -138,6 +138,8 @@
     "block.car.line_double_yellow": "Double Line",
     "block.car.line_double_middle": "Middle Double Line",
     "block.car.line_double_middle_yellow": "Middle Double Line",
+    "block.car.line_double_middle_edge": "Middle Edge Double Line",
+    "block.car.line_double_middle_edge_yellow": "Middle Edge Double Line",
     "block.car.line_double_end": "End Double Line",
     "block.car.line_double_end_yellow": "End Double Line",
     "block.car.car_pressure_plate": "Car Pressure Plate",

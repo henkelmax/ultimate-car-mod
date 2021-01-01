@@ -12,7 +12,7 @@ public class ContainerPainter extends ContainerBase {
         super(Main.PAINTER_CONTAINER_TYPE, id, null, new InventoryPainter(isYellow));
         this.playerInventory = playerInventory;
 
-        for (int j = 0; j < 4; j++) {
+        for (int j = 0; j < 5; j++) {
             for (int k = 0; k < 9; k++) {
                 int index = k + j * 9;
                 if (index < BlockPaint.EnumPaintType.values().length) {

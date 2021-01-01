@@ -147,6 +147,7 @@ public class BlockPaint extends BlockBase implements IItemBlock {
         LINE_CORNER("line_corner"),
         LINE_DOUBLE("line_double"),
         LINE_DOUBLE_MIDDLE("line_double_middle"),
+        LINE_DOUBLE_MIDDLE_EDGE("line_double_middle_edge"),
         LINE_DOUBLE_END("line_double_end"),
         ARROW_ZEBRAS("arrow_zebras"),
         ARROW_P("arrow_p"),
