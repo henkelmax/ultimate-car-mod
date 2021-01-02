@@ -1,2 +1,1 @@
-- Fixed painter durability desync
-- Added middle edge double line
+- Fixed gas station attendant villager zombie texture
