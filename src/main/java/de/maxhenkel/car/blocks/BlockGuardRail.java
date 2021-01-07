@@ -39,9 +39,10 @@ public class BlockGuardRail extends BlockBase implements IWaterLoggable {
     private static final VoxelShape SHAPE_SOUTH = Block.makeCuboidShape(0D, 0D, 0D, 16D, 16D, 2D);
     private static final VoxelShape SHAPE_EAST = Block.makeCuboidShape(2D, 0D, 0D, 0D, 16D, 16D);
     private static final VoxelShape SHAPE_WEST = Block.makeCuboidShape(16D, 0D, 0D, 14D, 16D, 16D);
+    private static final VoxelShape SHAPE = Block.makeCuboidShape(7.5D, 0D, 7.5D, 8.5D, 16D, 8.5D);
 
     public BlockGuardRail() {
-        super(Properties.create(Material.IRON, MaterialColor.IRON).hardnessAndResistance(2F).sound(SoundType.LANTERN));
+        super(Properties.create(Material.IRON, MaterialColor.IRON).hardnessAndResistance(2F).sound(SoundType.LANTERN).notSolid());
         setRegistryName(new ResourceLocation(Main.MODID, "guard_rail"));
 
         setDefaultState(stateContainer.getBaseState().with(NORTH, false).with(SOUTH, false).with(EAST, false).with(WEST, false).with(WATERLOGGED, false));
@@ -75,6 +76,9 @@ public class BlockGuardRail extends BlockBase implements IWaterLoggable {
         }
         if (state.get(WEST)) {
             shape = VoxelUtils.combine(shape, SHAPE_WEST);
+        }
+        if (shape.isEmpty()) {
+            shape = VoxelUtils.combine(shape, SHAPE);
         }
         return shape;
     }
@@ -133,4 +137,5 @@ public class BlockGuardRail extends BlockBase implements IWaterLoggable {
         });
         return drops;
     }
+
 }
