@@ -1,3 +1,1 @@
-- Piglins now love golden license plates
-- Fixed guard rails next to block are seethrough
-- Fixed guard rails placed with commands invisible
+- Updated to 1.16.5
