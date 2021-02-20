@@ -1,6 +1,7 @@
 package de.maxhenkel.car.blocks.tileentity;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import de.maxhenkel.car.Main;
@@ -204,9 +205,15 @@ public class TileEntityCarWorkshop extends TileEntityBase implements IInventory 
 
         for (int i = 0; i < craftingMatrix.getSizeInventory(); i++) {
             ItemStack stack = craftingMatrix.getStackInSlot(i);
-            if (!stack.isEmpty() && stack.getItem() instanceof ICarPart) {
-                if (((ICarPart) stack.getItem()).getPart(stack) != null) {
-                    items.add(stack);
+            if (!stack.isEmpty()) {
+                if (stack.getItem() instanceof ICarPart) {
+                    if (((ICarPart) stack.getItem()).getPart(stack) != null) {
+                        items.add(stack);
+                    }
+                } else {
+                    currentCraftingCar = null;
+                    messages = Arrays.asList(new TranslationTextComponent("message.parts.no_car_part", stack.getDisplayName()));
+                    return;
                 }
             }
         }

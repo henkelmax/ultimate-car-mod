@@ -1,1 +1,1 @@
-- Added canola to crops tag
+- Fixed non car items getting consumed when crafting a car

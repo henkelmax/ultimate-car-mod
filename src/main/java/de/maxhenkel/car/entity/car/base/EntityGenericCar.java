@@ -44,7 +44,7 @@ public class EntityGenericCar extends EntityCarLicensePlateBase {
         this(Main.CAR_ENTITY_TYPE, worldIn);
     }
 
-    private List<Part> getParts() {
+    private List<Part> getCarParts() {
         if (parts == null) {
             parts = new ArrayList<>();
         }
@@ -313,7 +313,7 @@ public class EntityGenericCar extends EntityCarLicensePlateBase {
     }
 
     public <T extends Part> T getPartByClass(Class<T> clazz) {
-        for (Part part : getParts()) {
+        for (Part part : getCarParts()) {
             if (clazz.isInstance(part)) {
                 return (T) part;
             }
@@ -362,7 +362,7 @@ public class EntityGenericCar extends EntityCarLicensePlateBase {
     protected void randomizeParts() {
         List<CarRecipe> allRecipes = CarRecipeBuilder.getAllRecipes();
         CarRecipe recipe = allRecipes.get(new Random().nextInt(allRecipes.size()));
-        getParts().clear();
+        getCarParts().clear();
         partInventory.clear();
         List<ItemStack> inputs = recipe.getInputs();
         for (int i = 0; i < inputs.size(); i++) {
@@ -404,11 +404,11 @@ public class EntityGenericCar extends EntityCarLicensePlateBase {
     }
 
     public List<Part> getModelParts() {
-        return Collections.unmodifiableList(getParts());
+        return Collections.unmodifiableList(getCarParts());
     }
 
     public void initParts() {
-        getParts().clear();
+        getCarParts().clear();
 
         for (int i = 0; i < partInventory.getSizeInventory(); i++) {
             ItemStack stack = partInventory.getStackInSlot(i);
@@ -425,7 +425,7 @@ public class EntityGenericCar extends EntityCarLicensePlateBase {
                 continue;
             }
 
-            getParts().add(part);
+            getCarParts().add(part);
         }
 
         checkInitializing();
@@ -477,7 +477,7 @@ public class EntityGenericCar extends EntityCarLicensePlateBase {
         modelInstances.clear();
 
         boolean addedWheels = false;
-        for (Part part : getParts()) {
+        for (Part part : getCarParts()) {
             if (part instanceof PartModel) {
                 if (part instanceof PartWheelBase) {
                     if (!addedWheels) {

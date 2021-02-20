@@ -18,6 +18,7 @@
     "message.parts.wrong_wheel_type": "Wrong wheel type",
     "message.parts.no_body": "No body",
     "message.parts.too_many_bodies": "Too many bodies",
+    "message.parts.no_car_part": "%s is not a car part",
     "message.incomplete_structure": "Structure Incomplete",
     "message.blocks_on_top": "No space. Please remove blocks above",
     "message.no_reciepe": "No valid reciepe",
