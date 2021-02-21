@@ -1,1 +1,1 @@
-- Fixed non car items getting consumed when crafting a car
+- Added chinese translation
