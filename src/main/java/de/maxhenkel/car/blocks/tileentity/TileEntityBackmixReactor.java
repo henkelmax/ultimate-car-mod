@@ -63,6 +63,7 @@ public class TileEntityBackmixReactor extends TileEntityBase implements ITickabl
     }
 
     public final IIntArray FIELDS = new IIntArray() {
+        @Override
         public int get(int index) {
             switch (index) {
                 case 0:
@@ -79,6 +80,7 @@ public class TileEntityBackmixReactor extends TileEntityBase implements ITickabl
             return 0;
         }
 
+        @Override
         public void set(int index, int value) {
             switch (index) {
                 case 0:
@@ -99,14 +101,15 @@ public class TileEntityBackmixReactor extends TileEntityBase implements ITickabl
             }
         }
 
-        public int size() {
+        @Override
+        public int getCount() {
             return 5;
         }
     };
 
     @Override
     public void tick() {
-        if (world.isRemote) {
+        if (level.isClientSide) {
             return;
         }
 
@@ -134,7 +137,7 @@ public class TileEntityBackmixReactor extends TileEntityBase implements ITickabl
                 }
             }
         }
-        markDirty();
+        setChanged();
     }
 
     public boolean isEnabled() {
@@ -147,84 +150,84 @@ public class TileEntityBackmixReactor extends TileEntityBase implements ITickabl
     }
 
     public void setBlockEnabled(boolean enabled) {
-        BlockState state = world.getBlockState(getPos());
+        BlockState state = level.getBlockState(getBlockPos());
         if (state.getBlock().equals(ModBlocks.BACKMIX_REACTOR)) {
-            ModBlocks.BACKMIX_REACTOR.setPowered(world, pos, state, enabled);
+            ModBlocks.BACKMIX_REACTOR.setPowered(level, worldPosition, state, enabled);
         }
     }
 
     @Override
-    public CompoundNBT write(CompoundNBT compound) {
+    public CompoundNBT save(CompoundNBT compound) {
         compound.putInt("stored_endergy", storedEnergy);
         compound.putInt("canola", currentCanola);
         compound.putInt("methanol", currentMethanol);
         compound.putInt("mix", currentMix);
         compound.putInt("time", timeToGenerate);
-        return super.write(compound);
+        return super.save(compound);
     }
 
     @Override
-    public void read(BlockState blockState, CompoundNBT compound) {
+    public void load(BlockState blockState, CompoundNBT compound) {
         storedEnergy = compound.getInt("stored_endergy");
         currentCanola = compound.getInt("canola");
         currentMethanol = compound.getInt("methanol");
         currentMix = compound.getInt("mix");
         timeToGenerate = compound.getInt("time");
-        super.read(blockState, compound);
+        super.load(blockState, compound);
     }
 
     @Override
-    public int getSizeInventory() {
+    public int getContainerSize() {
         return 0;
     }
 
     @Override
-    public ItemStack getStackInSlot(int index) {
+    public ItemStack getItem(int index) {
         return ItemStack.EMPTY;
     }
 
     @Override
-    public ItemStack decrStackSize(int index, int count) {
+    public ItemStack removeItem(int index, int count) {
         return ItemStack.EMPTY;
     }
 
     @Override
-    public ItemStack removeStackFromSlot(int index) {
+    public ItemStack removeItemNoUpdate(int index) {
         return ItemStack.EMPTY;
     }
 
     @Override
-    public void setInventorySlotContents(int index, ItemStack stack) {
+    public void setItem(int index, ItemStack stack) {
 
     }
 
     @Override
-    public int getInventoryStackLimit() {
+    public int getMaxStackSize() {
         return 0;
     }
 
     @Override
-    public boolean isUsableByPlayer(PlayerEntity player) {
+    public boolean stillValid(PlayerEntity player) {
         return true;
     }
 
     @Override
-    public void openInventory(PlayerEntity player) {
+    public void startOpen(PlayerEntity player) {
 
     }
 
     @Override
-    public void closeInventory(PlayerEntity player) {
+    public void stopOpen(PlayerEntity player) {
 
     }
 
     @Override
-    public boolean isItemValidForSlot(int index, ItemStack stack) {
+    public boolean canPlaceItem(int index, ItemStack stack) {
         return false;
     }
 
     @Override
-    public void clear() {
+    public void clearContent() {
 
     }
 
@@ -239,7 +242,7 @@ public class TileEntityBackmixReactor extends TileEntityBase implements ITickabl
 
         if (!simulate) {
             storedEnergy += Math.min(energyNeeded, maxReceive);
-            markDirty();
+            setChanged();
         }
 
         return Math.min(energyNeeded, maxReceive);
@@ -346,14 +349,14 @@ public class TileEntityBackmixReactor extends TileEntityBase implements ITickabl
             int amount = Math.min(maxMethanol - currentMethanol, resource.getAmount());
             if (action.execute()) {
                 currentMethanol += amount;
-                markDirty();
+                setChanged();
             }
             return amount;
         } else if (resource.getFluid().equals(ModFluids.CANOLA_OIL)) {
             int amount = Math.min(maxCanola - currentCanola, resource.getAmount());
             if (action.execute()) {
                 currentCanola += amount;
-                markDirty();
+                setChanged();
             }
             return amount;
         }
@@ -368,7 +371,7 @@ public class TileEntityBackmixReactor extends TileEntityBase implements ITickabl
 
         if (action.execute()) {
             currentMix -= amount;
-            markDirty();
+            setChanged();
         }
 
         return new FluidStack(ModFluids.CANOLA_METHANOL_MIX, amount);
@@ -381,7 +384,7 @@ public class TileEntityBackmixReactor extends TileEntityBase implements ITickabl
 
         if (action.execute()) {
             currentMix -= amount;
-            markDirty();
+            setChanged();
         }
 
         return new FluidStack(ModFluids.CANOLA_METHANOL_MIX, amount);

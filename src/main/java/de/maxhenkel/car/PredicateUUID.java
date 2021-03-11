@@ -15,7 +15,7 @@ public class PredicateUUID implements Predicate<EntityCarBase> {
 
     @Override
     public boolean apply(EntityCarBase input) {
-        return input.getUniqueID().equals(uuid);
+        return input.getUUID().equals(uuid);
     }
 
 }

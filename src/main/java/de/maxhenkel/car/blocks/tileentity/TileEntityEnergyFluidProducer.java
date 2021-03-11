@@ -46,6 +46,7 @@ public abstract class TileEntityEnergyFluidProducer extends TileEntityBase imple
     }
 
     public final IIntArray FIELDS = new IIntArray() {
+        @Override
         public int get(int index) {
             switch (index) {
                 case 0:
@@ -59,6 +60,7 @@ public abstract class TileEntityEnergyFluidProducer extends TileEntityBase imple
             }
         }
 
+        @Override
         public void set(int index, int value) {
             switch (index) {
                 case 0:
@@ -73,29 +75,30 @@ public abstract class TileEntityEnergyFluidProducer extends TileEntityBase imple
             }
         }
 
-        public int size() {
+        @Override
+        public int getCount() {
             return 3;
         }
     };
 
     public EnergyFluidProducerRecipe getRecipe() {
-        return world.getRecipeManager().getRecipe(recipeType, this, world).orElse(null);
+        return level.getRecipeManager().getRecipeFor(recipeType, this, level).orElse(null);
     }
 
     @Override
     public void tick() {
-        if (world.isRemote) {
+        if (level.isClientSide) {
             return;
         }
 
-        ItemStack input = inventory.getStackInSlot(0);
-        ItemStack output = inventory.getStackInSlot(1);
+        ItemStack input = inventory.getItem(0);
+        ItemStack output = inventory.getItem(1);
 
         EnergyFluidProducerRecipe recipe = getRecipe();
 
         if (recipe == null) {
             time = 0;
-            markDirty();
+            setChanged();
             setBlockEnabled(false);
             return;
         }
@@ -107,21 +110,21 @@ public abstract class TileEntityEnergyFluidProducer extends TileEntityBase imple
 
         if (input.isEmpty()) {
             time = 0;
-            markDirty();
+            setChanged();
             setBlockEnabled(false);
             return;
         }
 
-        if (!(output.isEmpty() || (ItemStack.areItemsEqual(output, recipe.getRecipeOutput()) && output.getCount() + recipe.getRecipeOutput().getCount() <= output.getMaxStackSize()))) {
+        if (!(output.isEmpty() || (ItemStack.isSame(output, recipe.getResultItem()) && output.getCount() + recipe.getResultItem().getCount() <= output.getMaxStackSize()))) {
             time = 0;
-            markDirty();
+            setChanged();
             setBlockEnabled(false);
             return;
         }
 
         if (currentMillibuckets + recipe.getFluidAmount() > fluidAmount) {
             time = 0;
-            markDirty();
+            setChanged();
             setBlockEnabled(false);
             return;
         }
@@ -133,100 +136,100 @@ public abstract class TileEntityEnergyFluidProducer extends TileEntityBase imple
             time = 0;
 
             if (output.isEmpty()) {
-                inventory.setInventorySlotContents(1, recipe.getRecipeOutput());
+                inventory.setItem(1, recipe.getResultItem());
             } else if (output.getCount() < output.getMaxStackSize()) {
-                output.grow(recipe.getRecipeOutput().getCount());
+                output.grow(recipe.getResultItem().getCount());
             }
             currentMillibuckets += recipe.getFluidAmount();
             input.shrink(1);
         }
-        markDirty();
+        setChanged();
         setBlockEnabled(true);
     }
 
     public abstract BlockGui<? extends TileEntityEnergyFluidProducer> getOwnBlock();
 
     public void setBlockEnabled(boolean enabled) {
-        BlockState state = world.getBlockState(getPos());
+        BlockState state = level.getBlockState(getBlockPos());
         if (state.getBlock().equals(getOwnBlock())) {
-            getOwnBlock().setPowered(world, pos, state, enabled);
+            getOwnBlock().setPowered(level, worldPosition, state, enabled);
         }
     }
 
     @Override
-    public CompoundNBT write(CompoundNBT compound) {
+    public CompoundNBT save(CompoundNBT compound) {
         compound.putInt("energy_stored", storedEnergy);
         compound.putInt("time", time);
         compound.putInt("fluid_stored", currentMillibuckets);
 
         ItemUtils.saveInventory(compound, "slots", inventory);
 
-        return super.write(compound);
+        return super.save(compound);
     }
 
     @Override
-    public void read(BlockState blockState, CompoundNBT compound) {
+    public void load(BlockState blockState, CompoundNBT compound) {
         storedEnergy = compound.getInt("energy_stored");
         time = compound.getInt("time");
         currentMillibuckets = compound.getInt("fluid_stored");
 
         ItemUtils.readInventory(compound, "slots", inventory);
-        super.read(blockState, compound);
+        super.load(blockState, compound);
     }
 
     @Override
-    public int getSizeInventory() {
-        return inventory.getSizeInventory();
+    public int getContainerSize() {
+        return inventory.getContainerSize();
     }
 
     @Override
-    public ItemStack getStackInSlot(int index) {
-        return inventory.getStackInSlot(index);
+    public ItemStack getItem(int index) {
+        return inventory.getItem(index);
     }
 
     @Override
-    public ItemStack decrStackSize(int index, int count) {
-        return inventory.decrStackSize(index, count);
+    public ItemStack removeItem(int index, int count) {
+        return inventory.removeItem(index, count);
     }
 
     @Override
-    public ItemStack removeStackFromSlot(int index) {
-        return inventory.removeStackFromSlot(index);
+    public ItemStack removeItemNoUpdate(int index) {
+        return inventory.removeItemNoUpdate(index);
     }
 
     @Override
-    public void setInventorySlotContents(int index, ItemStack stack) {
-        inventory.setInventorySlotContents(index, stack);
+    public void setItem(int index, ItemStack stack) {
+        inventory.setItem(index, stack);
     }
 
     @Override
-    public int getInventoryStackLimit() {
-        return inventory.getInventoryStackLimit();
+    public int getMaxStackSize() {
+        return inventory.getMaxStackSize();
     }
 
     @Override
-    public boolean isUsableByPlayer(PlayerEntity player) {
-        return inventory.isUsableByPlayer(player);
+    public boolean stillValid(PlayerEntity player) {
+        return inventory.stillValid(player);
     }
 
     @Override
-    public void openInventory(PlayerEntity player) {
-        inventory.openInventory(player);
+    public void startOpen(PlayerEntity player) {
+        inventory.startOpen(player);
     }
 
     @Override
-    public void closeInventory(PlayerEntity player) {
-        inventory.closeInventory(player);
+    public void stopOpen(PlayerEntity player) {
+        inventory.stopOpen(player);
     }
 
     @Override
-    public boolean isItemValidForSlot(int index, ItemStack stack) {
-        return inventory.isItemValidForSlot(index, stack);
+    public boolean canPlaceItem(int index, ItemStack stack) {
+        return inventory.canPlaceItem(index, stack);
     }
 
     @Override
-    public void clear() {
-        inventory.clear();
+    public void clearContent() {
+        inventory.clearContent();
     }
 
     @Override
@@ -240,12 +243,12 @@ public abstract class TileEntityEnergyFluidProducer extends TileEntityBase imple
     }
 
     @Override
-    public boolean canInsertItem(int index, ItemStack itemStackIn, Direction direction) {
+    public boolean canPlaceItemThroughFace(int index, ItemStack itemStackIn, Direction direction) {
         return index == 0;
     }
 
     @Override
-    public boolean canExtractItem(int index, ItemStack stack, Direction direction) {
+    public boolean canTakeItemThroughFace(int index, ItemStack stack, Direction direction) {
         return index == 1;
     }
 
@@ -290,7 +293,7 @@ public abstract class TileEntityEnergyFluidProducer extends TileEntityBase imple
 
         if (!simulate) {
             storedEnergy += Math.min(energyNeeded, maxReceive);
-            markDirty();
+            setChanged();
         }
 
         return Math.min(energyNeeded, maxReceive);
@@ -359,7 +362,7 @@ public abstract class TileEntityEnergyFluidProducer extends TileEntityBase imple
 
         if (action.execute()) {
             currentMillibuckets -= amount;
-            markDirty();
+            setChanged();
         }
 
         return new FluidStack(getProducingFluid(), amount);
@@ -372,7 +375,7 @@ public abstract class TileEntityEnergyFluidProducer extends TileEntityBase imple
 
         if (action.execute()) {
             currentMillibuckets -= amount;
-            markDirty();
+            setChanged();
         }
 
         return new FluidStack(getProducingFluid(), amount);

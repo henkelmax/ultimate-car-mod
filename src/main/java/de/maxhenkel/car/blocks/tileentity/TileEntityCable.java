@@ -36,7 +36,7 @@ public class TileEntityCable extends TileEntityBase implements ITickableTileEnti
         List<IEnergyStorage> providers = new ArrayList<>();
 
         for (Direction facing : Direction.values()) {
-            IEnergyStorage provider = EnergyUtils.getEnergyStorageOffset(world, pos, facing);
+            IEnergyStorage provider = EnergyUtils.getEnergyStorageOffset(level, worldPosition, facing);
 
             if (provider == null || provider instanceof TileEntityCable) {
                 continue;
@@ -63,7 +63,7 @@ public class TileEntityCable extends TileEntityBase implements ITickableTileEnti
 
         List<IEnergyStorage> receivers = new ArrayList<>();
 
-        getConnectedReceivers(providers, receivers, new BlockPosList(), pos);
+        getConnectedReceivers(providers, receivers, new BlockPosList(), worldPosition);
 
         if (receivers.size() <= 0) {
             return;
@@ -92,13 +92,13 @@ public class TileEntityCable extends TileEntityBase implements ITickableTileEnti
 
     public void getConnectedReceivers(List<IEnergyStorage> sources, List<IEnergyStorage> receivers, BlockPosList positions, BlockPos pos) {
         for (Direction side : Direction.values()) {
-            BlockPos p = pos.offset(side);
+            BlockPos p = pos.relative(side);
 
             if (positions.contains(p)) {
                 continue;
             }
 
-            BlockState state = world.getBlockState(p);
+            BlockState state = level.getBlockState(p);
 
             if (state.getBlock().equals(ModBlocks.CABLE)) {
                 positions.add(p);
@@ -106,7 +106,7 @@ public class TileEntityCable extends TileEntityBase implements ITickableTileEnti
                 continue;
             }
 
-            IEnergyStorage storage = EnergyUtils.getEnergyStorageOffset(world, pos, side);
+            IEnergyStorage storage = EnergyUtils.getEnergyStorageOffset(level, pos, side);
 
             if (storage == null || storage.equals(this)) {
                 continue;

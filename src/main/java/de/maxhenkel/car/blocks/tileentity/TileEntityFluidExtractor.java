@@ -55,7 +55,7 @@ public class TileEntityFluidExtractor extends TileEntityBase implements ITickabl
 
     @Override
     public void tick() {
-        if (world.isRemote) {
+        if (level.isClientSide) {
             return;
         }
         updateExtractHandler();
@@ -77,7 +77,7 @@ public class TileEntityFluidExtractor extends TileEntityBase implements ITickabl
 
         List<IFluidHandler> handlers = new LinkedList<>();
 
-        getConnectedHandlers(handlers, new BlockPosList(), pos);
+        getConnectedHandlers(handlers, new BlockPosList(), worldPosition);
 
         List<IFluidHandler> fillHandlers = new LinkedList<>();
 
@@ -102,27 +102,27 @@ public class TileEntityFluidExtractor extends TileEntityBase implements ITickabl
     }
 
     public void updateExtractHandler() {
-        BlockState state = world.getBlockState(pos);
+        BlockState state = level.getBlockState(worldPosition);
 
         if (!state.getBlock().equals(ModBlocks.FLUID_EXTRACTOR)) {
             extractHandler = null;
             return;
         }
 
-        Direction side = state.get(BlockFluidExtractor.FACING);
+        Direction side = state.getValue(BlockFluidExtractor.FACING);
 
-        extractHandler = FluidUtils.getFluidHandlerOffset(world, pos, side);
+        extractHandler = FluidUtils.getFluidHandlerOffset(level, worldPosition, side);
     }
 
     public void getConnectedHandlers(List<IFluidHandler> handlers, BlockPosList positions, BlockPos pos) {
         for (Direction side : Direction.values()) {
-            BlockPos p = pos.offset(side);
+            BlockPos p = pos.relative(side);
 
             if (positions.contains(p)) {
                 continue;
             }
 
-            BlockState state = world.getBlockState(p);
+            BlockState state = level.getBlockState(p);
 
             if (state.getBlock().equals(ModBlocks.FLUID_PIPE) || state.getBlock().equals(ModBlocks.FLUID_EXTRACTOR)) {
                 positions.add(p);
@@ -130,7 +130,7 @@ public class TileEntityFluidExtractor extends TileEntityBase implements ITickabl
                 continue;
             }
 
-            IFluidHandler handler = FluidUtils.getFluidHandlerOffset(world, pos, side);
+            IFluidHandler handler = FluidUtils.getFluidHandlerOffset(level, pos, side);
 
             if (handler == null || handler.equals(extractHandler)) {
                 continue;
@@ -141,26 +141,26 @@ public class TileEntityFluidExtractor extends TileEntityBase implements ITickabl
     }
 
     @Override
-    public CompoundNBT write(CompoundNBT compound) {
+    public CompoundNBT save(CompoundNBT compound) {
 
         if (filter != null) {
             CompoundNBT tag = new CompoundNBT();
-            filter.write(tag);
+            filter.save(tag);
             compound.put("filter", tag);
         }
 
-        return super.write(compound);
+        return super.save(compound);
     }
 
     @Override
-    public void read(BlockState blockState, CompoundNBT compound) {
+    public void load(BlockState blockState, CompoundNBT compound) {
         if (compound.contains("filter")) {
             CompoundNBT tag = compound.getCompound("filter");
-            filter = ItemStack.read(tag);
+            filter = ItemStack.of(tag);
         } else {
             filter = null;
         }
-        super.read(blockState, compound);
+        super.load(blockState, compound);
     }
 
     @Override
@@ -178,12 +178,12 @@ public class TileEntityFluidExtractor extends TileEntityBase implements ITickabl
     public void setFilter(ItemStack filter) {
         if (filter == null) {
             this.filter = null;
-            markDirty();
+            setChanged();
             synchronize();
             return;
         }
         this.filter = filter.copy();
-        markDirty();
+        setChanged();
         synchronize();
     }
 

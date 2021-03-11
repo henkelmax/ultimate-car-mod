@@ -16,7 +16,7 @@ public class ContainerGenerator extends ContainerBase {
 
         addPlayerInventorySlots();
 
-        trackIntArray(fields);
+        addDataSlots(fields);
     }
 
     public ContainerGenerator(int id, TileEntityGenerator generator, PlayerInventory playerInv) {

@@ -36,16 +36,16 @@ import javax.annotation.Nullable;
 public class BlockSplitTank extends BlockBase implements ITileEntityProvider, IItemBlock {
 
     protected BlockSplitTank() {
-        super(Properties.create(Material.IRON).hardnessAndResistance(3F).sound(SoundType.STONE).notSolid());
+        super(Properties.of(Material.METAL).strength(3F).sound(SoundType.STONE).noOcclusion());
         setRegistryName(new ResourceLocation(Main.MODID, "split_tank"));
     }
 
     @Override
     public Item toItem() {
-        return new BlockItem(this, new Item.Properties().group(ModItemGroups.TAB_CAR)) {
+        return new BlockItem(this, new Item.Properties().tab(ModItemGroups.TAB_CAR)) {
             @Override
             protected boolean canPlace(BlockItemUseContext context, BlockState state) {
-                if (!context.getWorld().isAirBlock(context.getPos().up())) {
+                if (!context.getLevel().isEmptyBlock(context.getClickedPos().above())) {
                     return false;
                 }
                 return super.canPlace(context, state);
@@ -54,13 +54,13 @@ public class BlockSplitTank extends BlockBase implements ITileEntityProvider, II
     }
 
     @Override
-    public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
+    public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
         if (FluidUtils.tryFluidInteraction(player, handIn, worldIn, pos)) {
             return ActionResultType.SUCCESS;
         }
 
-        if (!player.isSneaking()) {
-            TileEntity te = worldIn.getTileEntity(pos);
+        if (!player.isShiftKeyDown()) {
+            TileEntity te = worldIn.getBlockEntity(pos);
 
             if (!(te instanceof TileEntitySplitTank)) {
                 return ActionResultType.FAIL;
@@ -77,65 +77,65 @@ public class BlockSplitTank extends BlockBase implements ITileEntityProvider, II
 
     @Override
     public VoxelShape getCollisionShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-        return Block.makeCuboidShape(0D, 0D, 0D, 16D, 24D, 16D);
+        return Block.box(0D, 0D, 0D, 16D, 24D, 16D);
     }
 
     @Override
-    public VoxelShape getRenderShape(BlockState state, IBlockReader worldIn, BlockPos pos) {
-        return Block.makeCuboidShape(0D, 0D, 0D, 16D, 24D, 16D);
+    public VoxelShape getOcclusionShape(BlockState state, IBlockReader worldIn, BlockPos pos) {
+        return Block.box(0D, 0D, 0D, 16D, 24D, 16D);
     }
 
     @Override
-    public VoxelShape getRaytraceShape(BlockState state, IBlockReader worldIn, BlockPos pos) {
-        return Block.makeCuboidShape(0D, 0D, 0D, 16D, 24D, 16D);
+    public VoxelShape getInteractionShape(BlockState state, IBlockReader worldIn, BlockPos pos) {
+        return Block.box(0D, 0D, 0D, 16D, 24D, 16D);
     }
 
     @Override
     public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-        return Block.makeCuboidShape(0D, 0D, 0D, 16D, 24D, 16D);
+        return Block.box(0D, 0D, 0D, 16D, 24D, 16D);
     }
 
     @Override
-    public BlockRenderType getRenderType(BlockState state) {
+    public BlockRenderType getRenderShape(BlockState state) {
         return BlockRenderType.MODEL;
     }
 
     @OnlyIn(Dist.CLIENT)
     @Override
-    public float getAmbientOcclusionLightValue(BlockState state, IBlockReader worldIn, BlockPos pos) {
+    public float getShadeBrightness(BlockState state, IBlockReader worldIn, BlockPos pos) {
         return 1.0F;
     }
 
     @Override
-    public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
-        if (worldIn.isAirBlock(pos.up())) {
-            worldIn.setBlockState(pos.up(), ModBlocks.SPLIT_TANK_TOP.getDefaultState());
+    public void setPlacedBy(World worldIn, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
+        if (worldIn.isEmptyBlock(pos.above())) {
+            worldIn.setBlockAndUpdate(pos.above(), ModBlocks.SPLIT_TANK_TOP.defaultBlockState());
         }
 
-        TileEntity tileentity = worldIn.getTileEntity(pos);
+        TileEntity tileentity = worldIn.getBlockEntity(pos);
 
         if (tileentity instanceof IInventory) {
-            InventoryHelper.dropInventoryItems(worldIn, pos, (IInventory) tileentity);
-            worldIn.updateComparatorOutputLevel(pos, this);
+            InventoryHelper.dropContents(worldIn, pos, (IInventory) tileentity);
+            worldIn.updateNeighbourForOutputSignal(pos, this);
         }
 
-        super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
+        super.setPlacedBy(worldIn, pos, state, placer, stack);
     }
 
     @Override
-    public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
-        super.onReplaced(state, worldIn, pos, newState, isMoving);
+    public void onRemove(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
+        super.onRemove(state, worldIn, pos, newState, isMoving);
 
-        BlockState stateUp = worldIn.getBlockState(pos.up());
+        BlockState stateUp = worldIn.getBlockState(pos.above());
         stateUp.getBlock();
         if (stateUp.getBlock().equals(ModBlocks.SPLIT_TANK_TOP)) {
-            worldIn.destroyBlock(pos.up(), false);
+            worldIn.destroyBlock(pos.above(), false);
         }
     }
 
     @Nullable
     @Override
-    public TileEntity createNewTileEntity(IBlockReader worldIn) {
+    public TileEntity newBlockEntity(IBlockReader worldIn) {
         return new TileEntitySplitTank();
     }
 

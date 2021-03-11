@@ -70,6 +70,7 @@ public class TileEntityGasStation extends TileEntityBase implements ITickableTil
     }
 
     public final IIntArray FIELDS = new IIntArray() {
+        @Override
         public int get(int index) {
             switch (index) {
                 case 0:
@@ -85,6 +86,7 @@ public class TileEntityGasStation extends TileEntityBase implements ITickableTil
             return 0;
         }
 
+        @Override
         public void set(int index, int value) {
             switch (index) {
                 case 0:
@@ -97,12 +99,13 @@ public class TileEntityGasStation extends TileEntityBase implements ITickableTil
                     break;
                 case 2:
                     tradeAmount = value;
-                    markDirty();
+                    setChanged();
                     break;
             }
         }
 
-        public int size() {
+        @Override
+        public int getCount() {
             return 3;
         }
     };
@@ -113,22 +116,22 @@ public class TileEntityGasStation extends TileEntityBase implements ITickableTil
     }
 
     private void fixTop() {
-        BlockState top = world.getBlockState(pos.up());
-        BlockState bottom = world.getBlockState(pos);
-        Direction facing = bottom.get(BlockOrientableHorizontal.FACING);
+        BlockState top = level.getBlockState(worldPosition.above());
+        BlockState bottom = level.getBlockState(worldPosition);
+        Direction facing = bottom.getValue(BlockOrientableHorizontal.FACING);
         if (top.getBlock().equals(ModBlocks.FUEL_STATION_TOP)) {
-            if (!top.get(BlockGasStationTop.FACING).equals(facing)) {
-                world.setBlockState(pos.up(), ModBlocks.FUEL_STATION_TOP.getDefaultState().with(BlockGasStationTop.FACING, facing));
+            if (!top.getValue(BlockGasStationTop.FACING).equals(facing)) {
+                level.setBlockAndUpdate(worldPosition.above(), ModBlocks.FUEL_STATION_TOP.defaultBlockState().setValue(BlockGasStationTop.FACING, facing));
             }
-        } else if (world.isAirBlock(pos.up())) {
-            world.setBlockState(pos.up(), ModBlocks.FUEL_STATION_TOP.getDefaultState().with(BlockGasStationTop.FACING, facing));
+        } else if (level.isEmptyBlock(worldPosition.above())) {
+            level.setBlockAndUpdate(worldPosition.above(), ModBlocks.FUEL_STATION_TOP.defaultBlockState().setValue(BlockGasStationTop.FACING, facing));
         }
 
     }
 
     @Override
     public void tick() {
-        if (world.getGameTime() % 100 == 0) {
+        if (level.getGameTime() % 100 == 0) {
             fixTop();
         }
 
@@ -139,7 +142,7 @@ public class TileEntityGasStation extends TileEntityBase implements ITickableTil
                 fuelCounter = 0;
                 isFueling = false;
                 synchronize();
-                markDirty();
+                setChanged();
             }
             return;
         }
@@ -165,10 +168,10 @@ public class TileEntityGasStation extends TileEntityBase implements ITickableTil
         if (freeAmountLeft <= 0) {
             if (tradeAmount <= 0) {
                 freeAmountLeft = transferRate;
-                markDirty();
+                setChanged();
             } else if (removeTradeItem()) {
                 freeAmountLeft = tradeAmount;
-                markDirty();
+                setChanged();
             } else {
                 isFueling = false;
                 synchronize();
@@ -183,7 +186,7 @@ public class TileEntityGasStation extends TileEntityBase implements ITickableTil
             freeAmountLeft -= result.getAmount();
             synchronize(100);
 
-            markDirty();
+            setChanged();
             if (!wasFueling) {
                 synchronize();
             }
@@ -200,8 +203,8 @@ public class TileEntityGasStation extends TileEntityBase implements ITickableTil
      * @return true if the item was successfully removed
      */
     public boolean removeTradeItem() {
-        ItemStack tradeTemplate = trading.getStackInSlot(0);
-        ItemStack tradingStack = trading.getStackInSlot(1);
+        ItemStack tradeTemplate = trading.getItem(0);
+        ItemStack tradingStack = trading.getItem(1);
 
         if (tradeTemplate.isEmpty()) {
             return true;
@@ -215,7 +218,7 @@ public class TileEntityGasStation extends TileEntityBase implements ITickableTil
             return false;
         }
 
-        if (tradeTemplate.getDamage() != tradingStack.getDamage()) {
+        if (tradeTemplate.getDamageValue() != tradingStack.getDamageValue()) {
             return false;
         }
 
@@ -230,7 +233,7 @@ public class TileEntityGasStation extends TileEntityBase implements ITickableTil
             return false;
         }
         tradingStack.setCount(tradingStack.getCount() - tradeTemplate.getCount());
-        trading.setInventorySlotContents(1, tradingStack);
+        trading.setItem(1, tradingStack);
 
         return true;
     }
@@ -244,17 +247,17 @@ public class TileEntityGasStation extends TileEntityBase implements ITickableTil
     }
 
     public boolean isValidFluid(Fluid f) {
-        return Main.SERVER_CONFIG.gasStationValidFuelList.stream().anyMatch(f::isIn);
+        return Main.SERVER_CONFIG.gasStationValidFuelList.stream().anyMatch(f::is);
     }
 
     public void setOwner(UUID owner) {
         this.owner = owner;
-        markDirty();
+        setChanged();
     }
 
     public void setOwner(PlayerEntity player) {
-        this.owner = new UUID(player.getUniqueID().getMostSignificantBits(), player.getUniqueID().getLeastSignificantBits());
-        markDirty();
+        this.owner = new UUID(player.getUUID().getMostSignificantBits(), player.getUUID().getLeastSignificantBits());
+        setChanged();
     }
 
     /**
@@ -264,20 +267,20 @@ public class TileEntityGasStation extends TileEntityBase implements ITickableTil
         if (player instanceof ServerPlayerEntity) {
             ServerPlayerEntity p = (ServerPlayerEntity) player;
 
-            boolean isOp = p.hasPermissionLevel(p.server.getOpPermissionLevel());
+            boolean isOp = p.hasPermissions(p.server.getOperatorUserPermissionLevel());
             if (isOp) {
                 return true;
             }
         }
-        return player.getUniqueID().equals(owner);
+        return player.getUUID().equals(owner);
     }
 
     public boolean hasTrade() {
-        return !trading.getStackInSlot(0).isEmpty();
+        return !trading.getItem(0).isEmpty();
     }
 
     @Override
-    public CompoundNBT write(CompoundNBT compound) {
+    public CompoundNBT save(CompoundNBT compound) {
         compound.putInt("counter", fuelCounter);
 
         if (!storage.isEmpty()) {
@@ -293,13 +296,13 @@ public class TileEntityGasStation extends TileEntityBase implements ITickableTil
         compound.putInt("trade_amount", tradeAmount);
         compound.putInt("free_amount", freeAmountLeft);
 
-        compound.putUniqueId("owner", owner);
+        compound.putUUID("owner", owner);
 
-        return super.write(compound);
+        return super.save(compound);
     }
 
     @Override
-    public void read(BlockState blockState, CompoundNBT compound) {
+    public void load(BlockState blockState, CompoundNBT compound) {
         fuelCounter = compound.getInt("counter");
 
         if (compound.contains("fluid")) {
@@ -314,11 +317,11 @@ public class TileEntityGasStation extends TileEntityBase implements ITickableTil
         freeAmountLeft = compound.getInt("free_amount");
 
         if (compound.contains("owner")) {
-            owner = compound.getUniqueId("owner");
+            owner = compound.getUUID("owner");
         } else {
             owner = new UUID(0L, 0L);
         }
-        super.read(blockState, compound);
+        super.load(blockState, compound);
     }
 
     public boolean isFueling() {
@@ -331,7 +334,7 @@ public class TileEntityGasStation extends TileEntityBase implements ITickableTil
 
     public void setStorage(FluidStack storage) {
         this.storage = storage;
-        markDirty();
+        setChanged();
         synchronize();
     }
 
@@ -341,7 +344,7 @@ public class TileEntityGasStation extends TileEntityBase implements ITickableTil
 
     public void setFuelCounter(int fuelCounter) {
         this.fuelCounter = fuelCounter;
-        markDirty();
+        setChanged();
         synchronize();
     }
 
@@ -351,7 +354,7 @@ public class TileEntityGasStation extends TileEntityBase implements ITickableTil
         }
 
         if (isFueling && !this.isFueling) {
-            if (world.isRemote) {
+            if (level.isClientSide) {
                 playSound();
             }
         }
@@ -370,12 +373,12 @@ public class TileEntityGasStation extends TileEntityBase implements ITickableTil
         }
     }
 
-    private CachedValue<Vector3d> center = new CachedValue<>(() -> new Vector3d(getPos().getX() + 0.5D, getPos().getY() + 1.5D, getPos().getZ() + 0.5D));
+    private CachedValue<Vector3d> center = new CachedValue<>(() -> new Vector3d(worldPosition.getX() + 0.5D, worldPosition.getY() + 1.5D, worldPosition.getZ() + 0.5D));
 
     public IFluidHandler getFluidHandlerInFront() {
-        return world.getEntitiesWithinAABB(Entity.class, getDetectionBox())
+        return level.getEntitiesOfClass(Entity.class, getDetectionBox())
                 .stream()
-                .sorted(Comparator.comparingDouble(o -> o.getDistanceSq(center.get())))
+                .sorted(Comparator.comparingDouble(o -> o.distanceToSqr(center.get())))
                 .map(entity -> entity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY).orElse(null))
                 .filter(Objects::nonNull)
                 .findFirst()
@@ -385,16 +388,16 @@ public class TileEntityGasStation extends TileEntityBase implements ITickableTil
     private CachedValue<AxisAlignedBB> detectionBox = new CachedValue<>(this::createDetextionBox);
 
     private AxisAlignedBB createDetextionBox() {
-        BlockState ownState = world.getBlockState(getPos());
+        BlockState ownState = level.getBlockState(worldPosition);
 
         if (!ownState.getBlock().equals(ModBlocks.GAS_STATION)) {
             return null;
         }
-        Direction facing = ownState.get(BlockGasStation.FACING);
-        BlockPos start = getPos().offset(facing);
+        Direction facing = ownState.getValue(BlockGasStation.FACING);
+        BlockPos start = worldPosition.relative(facing);
         return new AxisAlignedBB(start.getX(), start.getY(), start.getZ(), start.getX() + 1D, start.getY() + 2.5D, start.getZ() + 1D)
-                .expand(facing.getXOffset(), 0D, facing.getZOffset())
-                .grow(facing.getXOffset() == 0 ? 0.5D : 0D, 0D, facing.getZOffset() == 0 ? 0.5D : 0D);
+                .expandTowards(facing.getStepX(), 0D, facing.getStepZ())
+                .inflate(facing.getStepX() == 0 ? 0.5D : 0D, 0D, facing.getStepZ() == 0 ? 0.5D : 0D);
     }
 
     public AxisAlignedBB getDetectionBox() {
@@ -411,7 +414,7 @@ public class TileEntityGasStation extends TileEntityBase implements ITickableTil
     }
 
     public BlockState getBlockState() {
-        BlockState ownState = world.getBlockState(getPos());
+        BlockState ownState = level.getBlockState(worldPosition);
 
         if (!ownState.getBlock().equals(ModBlocks.GAS_STATION)) {
             return null;
@@ -425,12 +428,12 @@ public class TileEntityGasStation extends TileEntityBase implements ITickableTil
             return Direction.NORTH;
         }
 
-        return state.get(BlockGasStation.FACING);
+        return state.getValue(BlockGasStation.FACING);
     }
 
     public void sendStartFuelPacket(boolean start) {
-        if (world.isRemote) {
-            Main.SIMPLE_CHANNEL.sendToServer(new MessageStartFuel(pos, start));
+        if (level.isClientSide) {
+            Main.SIMPLE_CHANNEL.sendToServer(new MessageStartFuel(worldPosition, start));
         }
     }
 
@@ -445,7 +448,7 @@ public class TileEntityGasStation extends TileEntityBase implements ITickableTil
 
     @OnlyIn(Dist.CLIENT)
     public void playSound() {
-        ModSounds.playSoundLoop(new SoundLoopTileentity(ModSounds.GAS_STATION, SoundCategory.BLOCKS, this), world);
+        ModSounds.playSoundLoop(new SoundLoopTileentity(ModSounds.GAS_STATION, SoundCategory.BLOCKS, this), level);
     }
 
     @Override
@@ -455,7 +458,7 @@ public class TileEntityGasStation extends TileEntityBase implements ITickableTil
 
     @Override
     public AxisAlignedBB getRenderBoundingBox() {
-        return new AxisAlignedBB(pos, pos.add(1, 2, 1));
+        return new AxisAlignedBB(worldPosition, worldPosition.offset(1, 2, 1));
     }
 
     public int getTradeAmount() {
@@ -511,7 +514,7 @@ public class TileEntityGasStation extends TileEntityBase implements ITickableTil
             if (action.execute()) {
                 storage = new FluidStack(resource.getFluid(), amount);
                 synchronize();
-                markDirty();
+                setChanged();
             }
 
             return amount;
@@ -520,7 +523,7 @@ public class TileEntityGasStation extends TileEntityBase implements ITickableTil
 
             if (action.execute()) {
                 storage.setAmount(storage.getAmount() + amount);
-                markDirty();
+                setChanged();
             }
 
             return amount;
@@ -547,7 +550,7 @@ public class TileEntityGasStation extends TileEntityBase implements ITickableTil
                     synchronize();
                 }
 
-                markDirty();
+                setChanged();
             }
 
             return new FluidStack(f, amount);
@@ -574,7 +577,7 @@ public class TileEntityGasStation extends TileEntityBase implements ITickableTil
                 synchronize();
             }
 
-            markDirty();
+            setChanged();
         }
 
         return new FluidStack(f, amount);

@@ -25,25 +25,25 @@ public class EntityTools {
     @Nullable
     public static EntityGenericCar getCarByUUID(PlayerEntity player, UUID uuid) {
         double distance = 10D;
-        return player.world.getEntitiesWithinAABB(EntityGenericCar.class, new AxisAlignedBB(player.getPosX() - distance, player.getPosY() - distance, player.getPosZ() - distance, player.getPosX() + distance, player.getPosY() + distance, player.getPosZ() + distance), entity -> entity.getUniqueID().equals(uuid)).stream().findAny().orElse(null);
+        return player.level.getEntitiesOfClass(EntityGenericCar.class, new AxisAlignedBB(player.getX() - distance, player.getY() - distance, player.getZ() - distance, player.getX() + distance, player.getY() + distance, player.getZ() + distance), entity -> entity.getUUID().equals(uuid)).stream().findAny().orElse(null);
     }
 
     public static void drawCarOnScreen(MatrixStack matrixStack, EntityCarBase car, int posX, int posY, float scale, float rotation) {
-        matrixStack.push();
+        matrixStack.pushPose();
         matrixStack.translate(posX, posY, 100D);
         matrixStack.scale(1F, 1F, -1F);
         matrixStack.scale(scale, scale, scale);
 
-        matrixStack.rotate(Vector3f.YP.rotationDegrees(135F + rotation));
-        matrixStack.rotate(Vector3f.ZP.rotationDegrees(180F));
-        EntityRendererManager entityrenderermanager = Minecraft.getInstance().getRenderManager();
+        matrixStack.mulPose(Vector3f.YP.rotationDegrees(135F + rotation));
+        matrixStack.mulPose(Vector3f.ZP.rotationDegrees(180F));
+        EntityRendererManager entityrenderermanager = Minecraft.getInstance().getEntityRenderDispatcher();
         entityrenderermanager.setRenderShadow(false);
 
-        IRenderTypeBuffer.Impl buffer = Minecraft.getInstance().getRenderTypeBuffers().getBufferSource();
-        entityrenderermanager.renderEntityStatic(car, 0D, 0D, 0D, 0F, 1F, matrixStack, buffer, 0xF000F0);
-        buffer.finish();
+        IRenderTypeBuffer.Impl buffer = Minecraft.getInstance().renderBuffers().bufferSource();
+        entityrenderermanager.render(car, 0D, 0D, 0D, 0F, 1F, matrixStack, buffer, 0xF000F0);
+        buffer.endBatch();
         entityrenderermanager.setRenderShadow(true);
-        matrixStack.pop();
+        matrixStack.popPose();
     }
 
     public static class CarRenderer {
@@ -68,7 +68,7 @@ public class EntityTools {
         }
 
         public void render(MatrixStack matrixStack, EntityCarBase car, int posX, int posY, int scale) {
-            EntityTools.drawCarOnScreen(matrixStack, car, posX, posY, scale, rotation + rotationPerTick * minecraft.getRenderPartialTicks());
+            EntityTools.drawCarOnScreen(matrixStack, car, posX, posY, scale, rotation + rotationPerTick * minecraft.getFrameTime());
         }
     }
 

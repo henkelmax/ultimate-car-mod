@@ -29,7 +29,7 @@ public class TileEntityDynamo extends TileEntityBase implements IEnergyStorage, 
     @Override
     public void tick() {
         for (Direction side : Direction.values()) {
-            IEnergyStorage storage = EnergyUtils.getEnergyStorageOffset(world, pos, side);
+            IEnergyStorage storage = EnergyUtils.getEnergyStorageOffset(level, worldPosition, side);
 
             if (storage == null) {
                 continue;
@@ -44,19 +44,19 @@ public class TileEntityDynamo extends TileEntityBase implements IEnergyStorage, 
         if (storedEnergy > maxStorage) {
             storedEnergy = maxStorage;
         }
-        markDirty();
+        setChanged();
     }
 
     @Override
-    public CompoundNBT write(CompoundNBT compound) {
+    public CompoundNBT save(CompoundNBT compound) {
         compound.putInt("stored_energy", storedEnergy);
-        return super.write(compound);
+        return super.save(compound);
     }
 
     @Override
-    public void read(BlockState blockState, CompoundNBT compound) {
+    public void load(BlockState blockState, CompoundNBT compound) {
         storedEnergy = compound.getInt("stored_energy");
-        super.read(blockState, compound);
+        super.load(blockState, compound);
     }
 
     @Override
@@ -70,7 +70,7 @@ public class TileEntityDynamo extends TileEntityBase implements IEnergyStorage, 
 
         if (!simulate) {
             storedEnergy -= i;
-            markDirty();
+            setChanged();
         }
 
         return i;

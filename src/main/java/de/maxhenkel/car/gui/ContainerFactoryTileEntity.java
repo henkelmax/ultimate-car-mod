@@ -16,7 +16,7 @@ public class ContainerFactoryTileEntity<T extends Container, U extends TileEntit
 
     @Override
     public T create(int windowId, PlayerInventory inv, PacketBuffer data) {
-        TileEntity te = inv.player.world.getTileEntity(data.readBlockPos());
+        TileEntity te = inv.player.level.getBlockEntity(data.readBlockPos());
         try {
             return containerCreator.create(windowId, (U) te, inv);
         } catch (ClassCastException e) {

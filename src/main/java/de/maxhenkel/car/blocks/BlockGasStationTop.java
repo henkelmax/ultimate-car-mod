@@ -30,9 +30,9 @@ import javax.annotation.Nullable;
 
 public class BlockGasStationTop extends BlockBase {
 
-    public static VoxelShape SHAPE_NORTH_SOUTH = Block.makeCuboidShape(2D, -16D, 5D, 14D, 15D, 11D);
-    public static VoxelShape SHAPE_NEAST_WEST = Block.makeCuboidShape(5D, -16D, 2D, 11D, 15D, 14D);
-    public static VoxelShape SHAPE_SLAB = Block.makeCuboidShape(0D, -16D, 0D, 16D, -8D, 16D);
+    public static VoxelShape SHAPE_NORTH_SOUTH = Block.box(2D, -16D, 5D, 14D, 15D, 11D);
+    public static VoxelShape SHAPE_NEAST_WEST = Block.box(5D, -16D, 2D, 11D, 15D, 14D);
+    public static VoxelShape SHAPE_SLAB = Block.box(0D, -16D, 0D, 16D, -8D, 16D);
 
     private static final DirectionalVoxelShape SHAPES = new DirectionalVoxelShape.Builder()
             .direction(Direction.NORTH,
@@ -55,72 +55,72 @@ public class BlockGasStationTop extends BlockBase {
     public static final DirectionProperty FACING = DirectionProperty.create("facing", Direction.Plane.HORIZONTAL);
 
     public BlockGasStationTop() {
-        super(Properties.create(Material.IRON).hardnessAndResistance(4F).sound(SoundType.METAL));
+        super(Properties.of(Material.METAL).strength(4F).sound(SoundType.METAL));
         setRegistryName(new ResourceLocation(Main.MODID, "gas_station_top"));
-        setDefaultState(stateContainer.getBaseState().with(FACING, Direction.NORTH));
+        registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH));
     }
 
     @Override
-    public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
-        return ModBlocks.GAS_STATION.onBlockActivated(worldIn.getBlockState(pos.down()), worldIn, pos.down(), player, handIn, hit);
+    public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
+        return ModBlocks.GAS_STATION.use(worldIn.getBlockState(pos.below()), worldIn, pos.below(), player, handIn, hit);
     }
 
     @Override
-    public PushReaction getPushReaction(BlockState state) {
+    public PushReaction getPistonPushReaction(BlockState state) {
         return PushReaction.BLOCK;
     }
 
     @Nullable
     @Override
     public BlockState getStateForPlacement(BlockItemUseContext context) {
-        return this.getDefaultState().with(FACING, context.getPlacementHorizontalFacing());
+        return this.defaultBlockState().setValue(FACING, context.getHorizontalDirection());
     }
 
     @Override
-    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
         builder.add(FACING);
     }
 
 
     @Override
     public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-        return SHAPES.get(state.get(FACING));
+        return SHAPES.get(state.getValue(FACING));
     }
 
     @Override
-    public BlockRenderType getRenderType(BlockState state) {
+    public BlockRenderType getRenderShape(BlockState state) {
         return BlockRenderType.MODEL;
     }
 
     @Override
-    public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
+    public void onRemove(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
         if (state.getBlock() != newState.getBlock()) {
-            super.onReplaced(state, worldIn, pos, newState, isMoving);
+            super.onRemove(state, worldIn, pos, newState, isMoving);
 
-            BlockState stateDown = worldIn.getBlockState(pos.down());
+            BlockState stateDown = worldIn.getBlockState(pos.below());
             if (stateDown.getBlock().equals(ModBlocks.GAS_STATION)) {
-                worldIn.destroyBlock(pos.down(), false);
+                worldIn.destroyBlock(pos.below(), false);
             }
         }
-        super.onReplaced(state, worldIn, pos, newState, isMoving);
+        super.onRemove(state, worldIn, pos, newState, isMoving);
     }
 
     @Override
     public boolean removedByPlayer(BlockState state, World world, BlockPos pos, PlayerEntity player, boolean willHarvest, FluidState fluid) {
-        BlockState stateDown = world.getBlockState(pos.down());
+        BlockState stateDown = world.getBlockState(pos.below());
         stateDown.getBlock();
-        if (stateDown.getBlock().equals(ModBlocks.GAS_STATION) && !player.abilities.isCreativeMode) {
-            ModBlocks.GAS_STATION.harvestBlock(world, player, pos.down(), world.getBlockState(pos.down()), world.getTileEntity(pos.down()), player.getHeldItemMainhand());
+        if (stateDown.getBlock().equals(ModBlocks.GAS_STATION) && !player.abilities.instabuild) {
+            ModBlocks.GAS_STATION.playerDestroy(world, player, pos.below(), world.getBlockState(pos.below()), world.getBlockEntity(pos.below()), player.getMainHandItem());
         }
         return super.removedByPlayer(state, world, pos, player, willHarvest, fluid);
     }
 
     @Override
     public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, PlayerEntity player) {
-        BlockState stateDown = world.getBlockState(pos.down());
+        BlockState stateDown = world.getBlockState(pos.below());
         stateDown.getBlock();
         if (stateDown.getBlock().equals(ModBlocks.GAS_STATION)) {
-            return ModBlocks.GAS_STATION.getPickBlock(stateDown, target, world, pos.down(), player);
+            return ModBlocks.GAS_STATION.getPickBlock(stateDown, target, world, pos.below(), player);
         }
         return super.getPickBlock(state, target, world, pos, player);
     }

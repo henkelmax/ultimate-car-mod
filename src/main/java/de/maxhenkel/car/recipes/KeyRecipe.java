@@ -21,7 +21,7 @@ public class KeyRecipe extends SpecialRecipe {
     }
 
     @Override
-    public ItemStack getRecipeOutput() {
+    public ItemStack getResultItem() {
         return new ItemStack(ModItems.KEY);
     }
 
@@ -34,8 +34,8 @@ public class KeyRecipe extends SpecialRecipe {
     public NonNullList<ItemStack> getRemainingItems(CraftingInventory inv) {
         NonNullList<ItemStack> list = NonNullList.create();
 
-        for (int i = 0; i < inv.getSizeInventory(); i++) {
-            ItemStack stack = inv.getStackInSlot(i);
+        for (int i = 0; i < inv.getContainerSize(); i++) {
+            ItemStack stack = inv.getItem(i);
 
             if (stack.isEmpty()) {
                 continue;
@@ -43,7 +43,7 @@ public class KeyRecipe extends SpecialRecipe {
 
             if (stack.getItem().equals(Items.IRON_INGOT)) {
                 stack.shrink(1);
-                inv.setInventorySlotContents(i, stack);
+                inv.setItem(i, stack);
             }
         }
 
@@ -52,16 +52,16 @@ public class KeyRecipe extends SpecialRecipe {
 
     @Override
     public boolean matches(CraftingInventory inv, World worldIn) {
-        return getCraftingResult(inv) != null;
+        return assemble(inv) != null;
     }
 
     @Override
-    public ItemStack getCraftingResult(CraftingInventory inv) {
+    public ItemStack assemble(CraftingInventory inv) {
         ItemStack key = null;
         ItemStack iron = null;
 
-        for (int i = 0; i < inv.getSizeInventory(); i++) {
-            ItemStack stack = inv.getStackInSlot(i);
+        for (int i = 0; i < inv.getContainerSize(); i++) {
+            ItemStack stack = inv.getItem(i);
 
             if (stack.isEmpty()) {
                 continue;
@@ -96,7 +96,7 @@ public class KeyRecipe extends SpecialRecipe {
     }
 
     @Override
-    public boolean canFit(int width, int height) {
+    public boolean canCraftInDimensions(int width, int height) {
         if (width > 1 && height > 1) {
             return true;
         }

@@ -47,18 +47,18 @@ public class TileEntityCarWorkshop extends TileEntityBase implements IInventory 
     }
 
     public EntityCarBase getCarOnTop() {
-        BlockState ownState = world.getBlockState(getPos());
+        BlockState ownState = level.getBlockState(worldPosition);
 
         if (!ownState.getBlock().equals(ModBlocks.CAR_WORKSHOP)) {
             return null;
         }
 
-        BlockPos start = getPos().offset(Direction.UP);
+        BlockPos start = worldPosition.relative(Direction.UP);
 
         AxisAlignedBB aabb = new AxisAlignedBB(start.getX(), start.getY(), start.getZ(), start.getX() + 1,
                 start.getY() + 1, start.getZ() + 1);
 
-        List<EntityCarBase> cars = world.getEntitiesWithinAABB(EntityCarBase.class, aabb);
+        List<EntityCarBase> cars = level.getEntitiesOfClass(EntityCarBase.class, aabb);
         if (cars.isEmpty()) {
             return null;
         }
@@ -68,12 +68,12 @@ public class TileEntityCarWorkshop extends TileEntityBase implements IInventory 
 
     public void spawnCar(PlayerEntity player) {
         if (!areBlocksAround()) {
-            player.sendMessage(new TranslationTextComponent("message.incomplete_structure"), Util.DUMMY_UUID);
+            player.sendMessage(new TranslationTextComponent("message.incomplete_structure"), Util.NIL_UUID);
             return;
         }
 
         if (!isTopFree()) {
-            player.sendMessage(new TranslationTextComponent("message.blocks_on_top"), Util.DUMMY_UUID);
+            player.sendMessage(new TranslationTextComponent("message.blocks_on_top"), Util.NIL_UUID);
             return;
         }
 
@@ -82,15 +82,15 @@ public class TileEntityCarWorkshop extends TileEntityBase implements IInventory 
         EntityGenericCar car = currentCraftingCar;
 
         if (car == null || !isCurrentCraftingCarValid()) {
-            player.sendMessage(new TranslationTextComponent("message.no_reciepe"), Util.DUMMY_UUID);
+            player.sendMessage(new TranslationTextComponent("message.no_reciepe"), Util.NIL_UUID);
             return;
         }
-        BlockPos spawnPos = pos.up();
-        car.setPosition(spawnPos.getX() + 0.5, spawnPos.getY(), spawnPos.getZ() + 0.5);
+        BlockPos spawnPos = worldPosition.above();
+        car.setPos(spawnPos.getX() + 0.5, spawnPos.getY(), spawnPos.getZ() + 0.5);
 
         removeCraftItems();
         car.setFuelAmount(100);
-        world.addEntity(car);
+        level.addFreshEntity(car);
         car.setIsSpawned(true);
         car.initTemperature();
     }
@@ -108,65 +108,63 @@ public class TileEntityCarWorkshop extends TileEntityBase implements IInventory 
      * northwest=8
      */
     private void placeStructure() {
-        world.setBlockState(pos.add(0, 0, -1), getState(1));
-        world.setBlockState(pos.add(1, 0, -1), getState(2));
-        world.setBlockState(pos.add(1, 0, 0), getState(3));
-        world.setBlockState(pos.add(1, 0, 1), getState(4));
-        world.setBlockState(pos.add(0, 0, 1), getState(5));
-        world.setBlockState(pos.add(-1, 0, 1), getState(6));
-        world.setBlockState(pos.add(-1, 0, 0), getState(7));
-        world.setBlockState(pos.add(-1, 0, -1), getState(8));
+        level.setBlockAndUpdate(worldPosition.offset(0, 0, -1), getState(1));
+        level.setBlockAndUpdate(worldPosition.offset(1, 0, -1), getState(2));
+        level.setBlockAndUpdate(worldPosition.offset(1, 0, 0), getState(3));
+        level.setBlockAndUpdate(worldPosition.offset(1, 0, 1), getState(4));
+        level.setBlockAndUpdate(worldPosition.offset(0, 0, 1), getState(5));
+        level.setBlockAndUpdate(worldPosition.offset(-1, 0, 1), getState(6));
+        level.setBlockAndUpdate(worldPosition.offset(-1, 0, 0), getState(7));
+        level.setBlockAndUpdate(worldPosition.offset(-1, 0, -1), getState(8));
 
         setOwnBlockValid(true);
     }
 
     private void setOwnBlockValid(boolean valid) {
-        BlockState state = world.getBlockState(pos);
+        BlockState state = level.getBlockState(worldPosition);
         if (!state.getBlock().equals(ModBlocks.CAR_WORKSHOP)) {
             return;
         }
-        ModBlocks.CAR_WORKSHOP.setValid(world, pos, state, valid);
+        ModBlocks.CAR_WORKSHOP.setValid(level, worldPosition, state, valid);
     }
 
     private BlockState getState(int meta) {
-        return ModBlocks.CAR_WORKSHOP_OUTTER.getDefaultState().with(BlockCarWorkshopOutter.POSITION,
-                meta);
+        return ModBlocks.CAR_WORKSHOP_OUTTER.defaultBlockState().setValue(BlockCarWorkshopOutter.POSITION, meta);
     }
 
     public boolean areBlocksAround() {
-        if (!checkSideBlock(pos.add(0, 0, 1))) {
+        if (!checkSideBlock(worldPosition.offset(0, 0, 1))) {
             return false;
         }
-        if (!checkSideBlock(pos.add(1, 0, 0))) {
+        if (!checkSideBlock(worldPosition.offset(1, 0, 0))) {
             return false;
         }
-        if (!checkSideBlock(pos.add(1, 0, 1))) {
+        if (!checkSideBlock(worldPosition.offset(1, 0, 1))) {
             return false;
         }
-        if (!checkSideBlock(pos.add(0, 0, -1))) {
+        if (!checkSideBlock(worldPosition.offset(0, 0, -1))) {
             return false;
         }
-        if (!checkSideBlock(pos.add(-1, 0, 0))) {
+        if (!checkSideBlock(worldPosition.offset(-1, 0, 0))) {
             return false;
         }
-        if (!checkSideBlock(pos.add(-1, 0, -1))) {
+        if (!checkSideBlock(worldPosition.offset(-1, 0, -1))) {
             return false;
         }
-        if (!checkSideBlock(pos.add(-1, 0, 1))) {
+        if (!checkSideBlock(worldPosition.offset(-1, 0, 1))) {
             return false;
         }
-        if (!checkSideBlock(pos.add(1, 0, -1))) {
+        if (!checkSideBlock(worldPosition.offset(1, 0, -1))) {
             return false;
         }
         return true;
     }
 
     public boolean isTopFree() {
-        BlockPos pos = getPos();
         for (int x = -1; x <= 1; x++) {
             for (int y = 1; y <= 2; y++) {
                 for (int z = -1; z <= 1; z++) {
-                    if (!checkBlockAir(pos.add(x, y, z))) {
+                    if (!checkBlockAir(worldPosition.offset(x, y, z))) {
                         return false;
                     }
                 }
@@ -177,34 +175,34 @@ public class TileEntityCarWorkshop extends TileEntityBase implements IInventory 
     }
 
     private boolean checkBlockAir(BlockPos p) {
-        return world.isAirBlock(p);
+        return level.isEmptyBlock(p);
     }
 
     private boolean checkSideBlock(BlockPos p) {
-        return world.getBlockState(p).getBlock().equals(ModBlocks.CAR_WORKSHOP_OUTTER);
+        return level.getBlockState(p).getBlock().equals(ModBlocks.CAR_WORKSHOP_OUTTER);
     }
 
     @Override
-    public CompoundNBT write(CompoundNBT compound) {
+    public CompoundNBT save(CompoundNBT compound) {
         ItemUtils.saveInventory(compound, "crafting", craftingMatrix);
 
         ItemUtils.saveInventory(compound, "repair", repairInventory);
 
-        return super.write(compound);
+        return super.save(compound);
     }
 
     @Override
-    public void read(BlockState blockState, CompoundNBT compound) {
+    public void load(BlockState blockState, CompoundNBT compound) {
         ItemUtils.readInventory(compound, "crafting", craftingMatrix);
         ItemUtils.readInventory(compound, "repair", repairInventory);
-        super.read(blockState, compound);
+        super.load(blockState, compound);
     }
 
     public void updateRecipe() {
         List<ItemStack> items = new ArrayList<>();
 
-        for (int i = 0; i < craftingMatrix.getSizeInventory(); i++) {
-            ItemStack stack = craftingMatrix.getStackInSlot(i);
+        for (int i = 0; i < craftingMatrix.getContainerSize(); i++) {
+            ItemStack stack = craftingMatrix.getItem(i);
             if (!stack.isEmpty()) {
                 if (stack.getItem() instanceof ICarPart) {
                     if (((ICarPart) stack.getItem()).getPart(stack) != null) {
@@ -212,7 +210,7 @@ public class TileEntityCarWorkshop extends TileEntityBase implements IInventory 
                     }
                 } else {
                     currentCraftingCar = null;
-                    messages = Arrays.asList(new TranslationTextComponent("message.parts.no_car_part", stack.getDisplayName()));
+                    messages = Arrays.asList(new TranslationTextComponent("message.parts.no_car_part", stack.getHoverName()));
                     return;
                 }
             }
@@ -220,7 +218,7 @@ public class TileEntityCarWorkshop extends TileEntityBase implements IInventory 
 
         List<ITextComponent> messages = new ArrayList<>();
 
-        currentCraftingCar = createCar(world, items, messages);
+        currentCraftingCar = createCar(level, items, messages);
 
         this.messages = messages;
     }
@@ -229,14 +227,14 @@ public class TileEntityCarWorkshop extends TileEntityBase implements IInventory 
         EntityGenericCar car = new EntityGenericCar(world);
 
         //Put keys in inventory
-        car.setInventorySlotContents(0, ItemKey.getKeyForCar(car.getUniqueID()));
-        car.setInventorySlotContents(1, ItemKey.getKeyForCar(car.getUniqueID()));
+        car.setItem(0, ItemKey.getKeyForCar(car.getUUID()));
+        car.setItem(1, ItemKey.getKeyForCar(car.getUUID()));
 
         car.setIsSpawned(false);
 
 
         for (int i = 0; i < partStacks.size(); i++) {
-            car.getPartInventory().setInventorySlotContents(i, partStacks.get(i).copy().split(1));
+            car.getPartInventory().setItem(i, partStacks.get(i).copy().split(1));
         }
 
         car.initParts();
@@ -258,8 +256,8 @@ public class TileEntityCarWorkshop extends TileEntityBase implements IInventory 
     }
 
     public void removeCraftItems() {
-        for (int i = 0; i < craftingMatrix.getSizeInventory(); i++) {
-            ItemStack stack = craftingMatrix.getStackInSlot(i);
+        for (int i = 0; i < craftingMatrix.getContainerSize(); i++) {
+            ItemStack stack = craftingMatrix.getItem(i);
             if (!stack.isEmpty()) {
                 stack.shrink(1);
             }
@@ -267,43 +265,43 @@ public class TileEntityCarWorkshop extends TileEntityBase implements IInventory 
     }
 
     @Override
-    public int getSizeInventory() {
-        return craftingMatrix.getSizeInventory();
+    public int getContainerSize() {
+        return craftingMatrix.getContainerSize();
     }
 
     @Override
-    public ItemStack getStackInSlot(int index) {
-        return craftingMatrix.getStackInSlot(index);
+    public ItemStack getItem(int index) {
+        return craftingMatrix.getItem(index);
     }
 
     @Override
-    public ItemStack decrStackSize(int index, int count) {
-        ItemStack stack = craftingMatrix.decrStackSize(index, count);
+    public ItemStack removeItem(int index, int count) {
+        ItemStack stack = craftingMatrix.removeItem(index, count);
         updateRecipe();
         return stack;
     }
 
     @Override
-    public ItemStack removeStackFromSlot(int index) {
-        ItemStack stack = craftingMatrix.removeStackFromSlot(index);
+    public ItemStack removeItemNoUpdate(int index) {
+        ItemStack stack = craftingMatrix.removeItemNoUpdate(index);
         updateRecipe();
         return stack;
     }
 
     @Override
-    public void setInventorySlotContents(int index, ItemStack stack) {
-        craftingMatrix.setInventorySlotContents(index, stack);
+    public void setItem(int index, ItemStack stack) {
+        craftingMatrix.setItem(index, stack);
         updateRecipe();
     }
 
     @Override
-    public int getInventoryStackLimit() {
-        return craftingMatrix.getInventoryStackLimit();
+    public int getMaxStackSize() {
+        return craftingMatrix.getMaxStackSize();
     }
 
     @Override
-    public boolean isUsableByPlayer(PlayerEntity player) {
-        return craftingMatrix.isUsableByPlayer(player);
+    public boolean stillValid(PlayerEntity player) {
+        return craftingMatrix.stillValid(player);
     }
 
     @Override
@@ -312,23 +310,23 @@ public class TileEntityCarWorkshop extends TileEntityBase implements IInventory 
     }
 
     @Override
-    public void openInventory(PlayerEntity player) {
-        craftingMatrix.openInventory(player);
+    public void startOpen(PlayerEntity player) {
+        craftingMatrix.startOpen(player);
     }
 
     @Override
-    public void closeInventory(PlayerEntity player) {
-        craftingMatrix.openInventory(player);
+    public void stopOpen(PlayerEntity player) {
+        craftingMatrix.startOpen(player);
     }
 
     @Override
-    public boolean isItemValidForSlot(int index, ItemStack stack) {
-        return craftingMatrix.isItemValidForSlot(index, stack);
+    public boolean canPlaceItem(int index, ItemStack stack) {
+        return craftingMatrix.canPlaceItem(index, stack);
     }
 
     @Override
-    public void clear() {
-        craftingMatrix.clear();
+    public void clearContent() {
+        craftingMatrix.clearContent();
         updateRecipe();
     }
 
@@ -346,19 +344,19 @@ public class TileEntityCarWorkshop extends TileEntityBase implements IInventory 
 
     public void repairCar(PlayerEntity player) {
         if (!areBlocksAround()) {
-            player.sendMessage(new TranslationTextComponent("message.incomplete_structure"), Util.DUMMY_UUID);
+            player.sendMessage(new TranslationTextComponent("message.incomplete_structure"), Util.NIL_UUID);
             return;
         }
 
         if (!areRepairItemsInside()) {
-            player.sendMessage(new TranslationTextComponent("message.no_repair_items"), Util.DUMMY_UUID);
+            player.sendMessage(new TranslationTextComponent("message.no_repair_items"), Util.NIL_UUID);
             return;
         }
 
         EntityCarBase carBase = getCarOnTop();
 
         if (!(carBase instanceof EntityCarDamageBase)) {
-            player.sendMessage(new TranslationTextComponent("message.no_car"), Util.DUMMY_UUID);
+            player.sendMessage(new TranslationTextComponent("message.no_car"), Util.NIL_UUID);
             return;
         }
 
@@ -372,12 +370,12 @@ public class TileEntityCarWorkshop extends TileEntityBase implements IInventory 
 
         car.setDamage(car.getDamage() - 10F);
 
-        ModSounds.playSound(ModSounds.RATCHET, world, pos, null, SoundCategory.BLOCKS);
+        ModSounds.playSound(ModSounds.RATCHET, level, worldPosition, null, SoundCategory.BLOCKS);
     }
 
     public boolean areRepairItemsInside() {
-        for (int i = 0; i < repairInventory.getSizeInventory(); i++) {
-            if (repairInventory.getStackInSlot(i).isEmpty()) {
+        for (int i = 0; i < repairInventory.getContainerSize(); i++) {
+            if (repairInventory.getItem(i).isEmpty()) {
                 return false;
             }
         }
@@ -386,10 +384,10 @@ public class TileEntityCarWorkshop extends TileEntityBase implements IInventory 
     }
 
     public void damageRepairItemsInside(PlayerEntity player) {
-        for (int i = 0; i < repairInventory.getSizeInventory(); i++) {
-            ItemStack stack = repairInventory.getStackInSlot(i);
+        for (int i = 0; i < repairInventory.getContainerSize(); i++) {
+            ItemStack stack = repairInventory.getItem(i);
             if (!stack.isEmpty()) {
-                stack.damageItem(10, player, playerEntity -> {
+                stack.hurtAndBreak(10, player, playerEntity -> {
                 });
             }
         }
@@ -397,7 +395,7 @@ public class TileEntityCarWorkshop extends TileEntityBase implements IInventory 
 
     @Override
     public ITextComponent getTranslatedName() {
-        return new TranslationTextComponent(ModBlocks.CAR_WORKSHOP.getTranslationKey());
+        return new TranslationTextComponent(ModBlocks.CAR_WORKSHOP.getDescriptionId());
     }
 
     @Override

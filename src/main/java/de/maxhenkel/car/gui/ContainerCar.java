@@ -13,7 +13,7 @@ public class ContainerCar extends ContainerBase {
         super(Main.CAR_CONTAINER_TYPE, id, playerInv, car);
         this.car = car;
 
-        int numRows = car.getSizeInventory() / 9;
+        int numRows = car.getContainerSize() / 9;
 
         for (int j = 0; j < numRows; j++) {
             for (int k = 0; k < 9; k++) {

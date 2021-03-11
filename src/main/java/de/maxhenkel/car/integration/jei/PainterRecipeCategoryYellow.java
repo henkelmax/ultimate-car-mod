@@ -40,7 +40,7 @@ public class PainterRecipeCategoryYellow implements IRecipeCategory<PainterRecip
 
     @Override
     public String getTitle() {
-        return ModItems.PAINTER.getName().getString();
+        return ModItems.PAINTER.getDescription().getString();
     }
 
     @Override

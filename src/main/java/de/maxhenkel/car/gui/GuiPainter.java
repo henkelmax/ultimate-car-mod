@@ -14,14 +14,14 @@ public class GuiPainter extends ScreenBase<ContainerPainter> {
 
     public GuiPainter(ContainerPainter containerPainter, PlayerInventory playerInventory, ITextComponent title) {
         super(PAINTER_GUI_TEXTURE, containerPainter, playerInventory, title);
-        xSize = 176;
-        ySize = 114;
+        imageWidth = 176;
+        imageHeight = 114;
     }
 
     @Override
-    protected void drawGuiContainerForegroundLayer(MatrixStack matrixStack, int mouseX, int mouseY) {
-        super.drawGuiContainerForegroundLayer(matrixStack, mouseX, mouseY);
-        font.func_238422_b_(matrixStack, new TranslationTextComponent("gui.painter").func_241878_f(), 8, 6, FONT_COLOR);
+    protected void renderLabels(MatrixStack matrixStack, int mouseX, int mouseY) {
+        super.renderLabels(matrixStack, mouseX, mouseY);
+        font.draw(matrixStack, new TranslationTextComponent("gui.painter").getVisualOrderText(), 8, 6, FONT_COLOR);
     }
 
     @Override

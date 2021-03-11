@@ -21,8 +21,8 @@ public class CopyFluid extends LootFunction {
     }
 
     @Override
-    public ItemStack doApply(ItemStack stack, LootContext context) {
-        TileEntity tileEntity = context.get(LootParameters.BLOCK_ENTITY);
+    public ItemStack run(ItemStack stack, LootContext context) {
+        TileEntity tileEntity = context.getParamOrNull(LootParameters.BLOCK_ENTITY);
         if (!(tileEntity instanceof TileEntityTank)) {
             return stack;
         }
@@ -43,7 +43,7 @@ public class CopyFluid extends LootFunction {
     }
 
     @Override
-    public LootFunctionType getFunctionType() {
+    public LootFunctionType getType() {
         return Main.COPY_FLUID;
     }
 

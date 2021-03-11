@@ -25,7 +25,7 @@ public class MessageControlCar implements Message<MessageControlCar> {
         this.backward = backward;
         this.left = left;
         this.right = right;
-        this.uuid = player.getUniqueID();
+        this.uuid = player.getUUID();
     }
 
     @Override
@@ -35,12 +35,12 @@ public class MessageControlCar implements Message<MessageControlCar> {
 
     @Override
     public void executeServerSide(NetworkEvent.Context context) {
-        if (!context.getSender().getUniqueID().equals(uuid)) {
+        if (!context.getSender().getUUID().equals(uuid)) {
             Main.LOGGER.error("The UUID of the sender was not equal to the packet UUID");
             return;
         }
 
-        Entity e = context.getSender().getRidingEntity();
+        Entity e = context.getSender().getVehicle();
 
         if (!(e instanceof EntityCarBase)) {
             return;
@@ -57,7 +57,7 @@ public class MessageControlCar implements Message<MessageControlCar> {
         this.backward = buf.readBoolean();
         this.left = buf.readBoolean();
         this.right = buf.readBoolean();
-        this.uuid = buf.readUniqueId();
+        this.uuid = buf.readUUID();
         return this;
     }
 
@@ -67,7 +67,7 @@ public class MessageControlCar implements Message<MessageControlCar> {
         buf.writeBoolean(backward);
         buf.writeBoolean(left);
         buf.writeBoolean(right);
-        buf.writeUniqueId(uuid);
+        buf.writeUUID(uuid);
     }
 
 }

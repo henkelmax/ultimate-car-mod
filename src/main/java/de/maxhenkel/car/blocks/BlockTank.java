@@ -42,34 +42,34 @@ import java.util.List;
 public class BlockTank extends BlockBase implements ITileEntityProvider, IItemBlock {
 
     protected BlockTank() {
-        super(Block.Properties.create(Material.GLASS).hardnessAndResistance(0.5F).sound(SoundType.GLASS).notSolid());
+        super(Block.Properties.of(Material.GLASS).strength(0.5F).sound(SoundType.GLASS).noOcclusion());
         setRegistryName(new ResourceLocation(Main.MODID, "tank"));
     }
 
     @Override
     public Item toItem() {
-        return new BlockItem(this, new Item.Properties().group(ModItemGroups.TAB_CAR).maxStackSize(1).setISTER(() -> TankItemTileEntityRenderer::new)).setRegistryName(getRegistryName());
+        return new BlockItem(this, new Item.Properties().tab(ModItemGroups.TAB_CAR).stacksTo(1).setISTER(() -> TankItemTileEntityRenderer::new)).setRegistryName(getRegistryName());
     }
 
     @Override
-    public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+    public void appendHoverText(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         if (stack.hasTag() && stack.getTag().contains("fluid")) {
             CompoundNBT fluidComp = stack.getTag().getCompound("fluid");
             FluidStack fluidStack = FluidStack.loadFluidStackFromNBT(fluidComp);
 
             if (fluidStack != null) {
-                tooltip.add(new TranslationTextComponent("tooltip.fluid", new StringTextComponent(fluidStack.getDisplayName().getString()).mergeStyle(TextFormatting.DARK_GRAY)).mergeStyle(TextFormatting.GRAY));
-                tooltip.add(new TranslationTextComponent("tooltip.amount", new StringTextComponent(String.valueOf(fluidStack.getAmount())).mergeStyle(TextFormatting.DARK_GRAY)).mergeStyle(TextFormatting.GRAY));
+                tooltip.add(new TranslationTextComponent("tooltip.fluid", new StringTextComponent(fluidStack.getDisplayName().getString()).withStyle(TextFormatting.DARK_GRAY)).withStyle(TextFormatting.GRAY));
+                tooltip.add(new TranslationTextComponent("tooltip.amount", new StringTextComponent(String.valueOf(fluidStack.getAmount())).withStyle(TextFormatting.DARK_GRAY)).withStyle(TextFormatting.GRAY));
             }
         }
-        super.addInformation(stack, worldIn, tooltip, flagIn);
+        super.appendHoverText(stack, worldIn, tooltip, flagIn);
     }
 
     @Override
-    public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
-        super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
+    public void setPlacedBy(World worldIn, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
+        super.setPlacedBy(worldIn, pos, state, placer, stack);
 
-        TileEntity te = worldIn.getTileEntity(pos);
+        TileEntity te = worldIn.getBlockEntity(pos);
 
         if (!(te instanceof TileEntityTank)) {
             return;
@@ -101,8 +101,8 @@ public class BlockTank extends BlockBase implements ITileEntityProvider, IItemBl
     }
 
     @Override
-    public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
-        ItemStack stack = player.getHeldItem(handIn);
+    public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
+        ItemStack stack = player.getItemInHand(handIn);
         if (FluidUtil.getFluidContained(stack).orElse(null) != null) {
             FluidUtils.tryFluidInteraction(player, handIn, worldIn, pos);
             return ActionResultType.SUCCESS;
@@ -112,7 +112,7 @@ public class BlockTank extends BlockBase implements ITileEntityProvider, IItemBl
     }
 
     public static boolean handleEmpty(ItemStack stack, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand) {
-        TileEntity te = worldIn.getTileEntity(pos);
+        TileEntity te = worldIn.getBlockEntity(pos);
 
         if (!(te instanceof IFluidHandler)) {
             return false;
@@ -125,7 +125,7 @@ public class BlockTank extends BlockBase implements ITileEntityProvider, IItemBl
         FluidActionResult res = FluidUtil.tryEmptyContainerAndStow(stack, handler, inv, Integer.MAX_VALUE, playerIn, true);
 
         if (res.isSuccess()) {
-            playerIn.setHeldItem(hand, res.result);
+            playerIn.setItemInHand(hand, res.result);
             return true;
         }
 
@@ -133,7 +133,7 @@ public class BlockTank extends BlockBase implements ITileEntityProvider, IItemBl
     }
 
     public static boolean handleFill(ItemStack stack, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand) {
-        TileEntity te = worldIn.getTileEntity(pos);
+        TileEntity te = worldIn.getBlockEntity(pos);
 
         if (!(te instanceof IFluidHandler)) {
             return false;
@@ -146,7 +146,7 @@ public class BlockTank extends BlockBase implements ITileEntityProvider, IItemBl
         FluidActionResult result = FluidUtil.tryFillContainerAndStow(stack, blockHandler, inv, Integer.MAX_VALUE, playerIn, true);
 
         if (result.isSuccess()) {
-            playerIn.setHeldItem(hand, result.result);
+            playerIn.setItemInHand(hand, result.result);
             return true;
         }
 
@@ -154,7 +154,7 @@ public class BlockTank extends BlockBase implements ITileEntityProvider, IItemBl
     }
 
     @Override
-    public BlockRenderType getRenderType(BlockState state) {
+    public BlockRenderType getRenderShape(BlockState state) {
         return BlockRenderType.INVISIBLE;
     }
 
@@ -165,13 +165,13 @@ public class BlockTank extends BlockBase implements ITileEntityProvider, IItemBl
 
     @OnlyIn(Dist.CLIENT)
     @Override
-    public float getAmbientOcclusionLightValue(BlockState state, IBlockReader reader, BlockPos pos) {
+    public float getShadeBrightness(BlockState state, IBlockReader reader, BlockPos pos) {
         return 1F;
     }
 
     @Nullable
     @Override
-    public TileEntity createNewTileEntity(IBlockReader worldIn) {
+    public TileEntity newBlockEntity(IBlockReader worldIn) {
         return new TileEntityTank();
     }
 

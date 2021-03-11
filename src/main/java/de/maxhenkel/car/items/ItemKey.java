@@ -19,35 +19,35 @@ import net.minecraft.world.World;
 public class ItemKey extends Item {
 
     public ItemKey() {
-        super(new Item.Properties().maxStackSize(1).group(ModItemGroups.TAB_CAR));
+        super(new Item.Properties().stacksTo(1).tab(ModItemGroups.TAB_CAR));
         setRegistryName(new ResourceLocation(Main.MODID, "key"));
     }
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
-        ItemStack stack = playerIn.getHeldItem(handIn);
+    public ActionResult<ItemStack> use(World worldIn, PlayerEntity playerIn, Hand handIn) {
+        ItemStack stack = playerIn.getItemInHand(handIn);
         UUID carUUID = getCar(stack);
 
         if (carUUID == null) {
-            if (worldIn.isRemote) {
-                playerIn.sendStatusMessage(new TranslationTextComponent("message.key_no_car"), true);
+            if (worldIn.isClientSide) {
+                playerIn.displayClientMessage(new TranslationTextComponent("message.key_no_car"), true);
             }
             return new ActionResult<>(ActionResultType.PASS, stack);
-        } else if (worldIn.isRemote) {
+        } else if (worldIn.isClientSide) {
             return new ActionResult<>(ActionResultType.SUCCESS, stack);
         }
 
-        List<EntityCarLockBase> cars = worldIn.getEntitiesWithinAABB(EntityCarLockBase.class, new AxisAlignedBB(playerIn.getPosX() - 25D, playerIn.getPosY() - 25D, playerIn.getPosZ() - 25D, playerIn.getPosX() + 25D, playerIn.getPosY() + 25D, playerIn.getPosZ() + 25D), new PredicateUUID(carUUID));
+        List<EntityCarLockBase> cars = worldIn.getEntitiesOfClass(EntityCarLockBase.class, new AxisAlignedBB(playerIn.getX() - 25D, playerIn.getY() - 25D, playerIn.getZ() - 25D, playerIn.getX() + 25D, playerIn.getY() + 25D, playerIn.getZ() + 25D), new PredicateUUID(carUUID));
 
         if (cars.isEmpty()) {
-            playerIn.sendStatusMessage(new TranslationTextComponent("message.car_out_of_range"), true);
+            playerIn.displayClientMessage(new TranslationTextComponent("message.car_out_of_range"), true);
             return new ActionResult<>(ActionResultType.SUCCESS, stack);
         }
 
         EntityCarLockBase car = cars.get(0);
 
         if (car == null) {
-            playerIn.sendMessage(new TranslationTextComponent("message.car_out_of_range"), Util.DUMMY_UUID);
+            playerIn.sendMessage(new TranslationTextComponent("message.car_out_of_range"), Util.NIL_UUID);
             return new ActionResult<>(ActionResultType.SUCCESS, stack);
         }
 
@@ -63,7 +63,7 @@ public class ItemKey extends Item {
 
         CompoundNBT comp = stack.getTag();
 
-        comp.putUniqueId("car", carUUID);
+        comp.putUUID("car", carUUID);
     }
 
     public static UUID getCar(ItemStack stack) {
@@ -81,7 +81,7 @@ public class ItemKey extends Item {
             return null;
         }
 
-        return comp.getUniqueId("car");
+        return comp.getUUID("car");
     }
 
     public static ItemStack getKeyForCar(UUID car) {

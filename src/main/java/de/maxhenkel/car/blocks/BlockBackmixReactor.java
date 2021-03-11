@@ -22,15 +22,15 @@ import javax.annotation.Nullable;
 public class BlockBackmixReactor extends BlockGui<TileEntityBackmixReactor> {
 
     protected BlockBackmixReactor() {
-        super("backmix_reactor", Material.IRON, SoundType.METAL, 3F, 3F);
+        super("backmix_reactor", Material.METAL, SoundType.METAL, 3F, 3F);
     }
 
     @Override
-    public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
+    public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
         if (FluidUtils.tryFluidInteraction(player, handIn, worldIn, pos)) {
             return ActionResultType.SUCCESS;
         }
-        return super.onBlockActivated(state, worldIn, pos, player, handIn, hit);
+        return super.use(state, worldIn, pos, player, handIn, hit);
     }
 
     @Override
@@ -40,7 +40,7 @@ public class BlockBackmixReactor extends BlockGui<TileEntityBackmixReactor> {
 
     @Nullable
     @Override
-    public TileEntity createNewTileEntity(IBlockReader worldIn) {
+    public TileEntity newBlockEntity(IBlockReader worldIn) {
         return new TileEntityBackmixReactor();
     }
 }

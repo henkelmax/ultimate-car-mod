@@ -57,6 +57,7 @@ public class TileEntitySplitTank extends TileEntityBase implements ITickableTile
     }
 
     public final IIntArray FIELDS = new IIntArray() {
+        @Override
         public int get(int index) {
             switch (index) {
                 case 0:
@@ -71,6 +72,7 @@ public class TileEntitySplitTank extends TileEntityBase implements ITickableTile
             return 0;
         }
 
+        @Override
         public void set(int index, int value) {
             switch (index) {
                 case 0:
@@ -88,14 +90,15 @@ public class TileEntitySplitTank extends TileEntityBase implements ITickableTile
             }
         }
 
-        public int size() {
+        @Override
+        public int getCount() {
             return 4;
         }
     };
 
     @Override
     public void tick() {
-        if (world.isRemote) {
+        if (level.isClientSide) {
             return;
         }
 
@@ -127,11 +130,11 @@ public class TileEntitySplitTank extends TileEntityBase implements ITickableTile
             }
         }
 
-        if (world.getGameTime() % 200 == 0) {
+        if (level.getGameTime() % 200 == 0) {
             synchronize();
         }
 
-        markDirty();
+        setChanged();
     }
 
     public float getBioDieselPerc() {
@@ -143,56 +146,56 @@ public class TileEntitySplitTank extends TileEntityBase implements ITickableTile
     }
 
     @Override
-    public CompoundNBT write(CompoundNBT compound) {
+    public CompoundNBT save(CompoundNBT compound) {
         compound.putInt("mix", currentMix);
         compound.putInt("bio_diesel", currentBioDiesel);
         compound.putInt("glycerin", currentGlycerin);
         compound.putInt("time", timeToGenerate);
-        return super.write(compound);
+        return super.save(compound);
     }
 
     @Override
-    public void read(BlockState blockState, CompoundNBT compound) {
+    public void load(BlockState blockState, CompoundNBT compound) {
         currentMix = compound.getInt("mix");
         currentBioDiesel = compound.getInt("bio_diesel");
         currentGlycerin = compound.getInt("glycerin");
         timeToGenerate = compound.getInt("timeToGenerate");
-        super.read(blockState, compound);
+        super.load(blockState, compound);
     }
 
     @Override
-    public int getSizeInventory() {
-        return inventory.getSizeInventory();
+    public int getContainerSize() {
+        return inventory.getContainerSize();
     }
 
     @Override
-    public ItemStack getStackInSlot(int index) {
-        return inventory.getStackInSlot(index);
+    public ItemStack getItem(int index) {
+        return inventory.getItem(index);
     }
 
     @Override
-    public ItemStack decrStackSize(int index, int count) {
-        return inventory.decrStackSize(index, count);
+    public ItemStack removeItem(int index, int count) {
+        return inventory.removeItem(index, count);
     }
 
     @Override
-    public ItemStack removeStackFromSlot(int index) {
-        return inventory.removeStackFromSlot(index);
+    public ItemStack removeItemNoUpdate(int index) {
+        return inventory.removeItemNoUpdate(index);
     }
 
     @Override
-    public void setInventorySlotContents(int index, ItemStack stack) {
-        inventory.setInventorySlotContents(index, stack);
+    public void setItem(int index, ItemStack stack) {
+        inventory.setItem(index, stack);
     }
 
     @Override
-    public int getInventoryStackLimit() {
-        return inventory.getInventoryStackLimit();
+    public int getMaxStackSize() {
+        return inventory.getMaxStackSize();
     }
 
     @Override
-    public boolean isUsableByPlayer(PlayerEntity player) {
-        return inventory.isUsableByPlayer(player);
+    public boolean stillValid(PlayerEntity player) {
+        return inventory.stillValid(player);
     }
 
     @Override
@@ -201,23 +204,23 @@ public class TileEntitySplitTank extends TileEntityBase implements ITickableTile
     }
 
     @Override
-    public void openInventory(PlayerEntity player) {
-        inventory.openInventory(player);
+    public void startOpen(PlayerEntity player) {
+        inventory.startOpen(player);
     }
 
     @Override
-    public void closeInventory(PlayerEntity player) {
-        inventory.closeInventory(player);
+    public void stopOpen(PlayerEntity player) {
+        inventory.stopOpen(player);
     }
 
     @Override
-    public boolean isItemValidForSlot(int index, ItemStack stack) {
-        return inventory.isItemValidForSlot(index, stack);
+    public boolean canPlaceItem(int index, ItemStack stack) {
+        return inventory.canPlaceItem(index, stack);
     }
 
     @Override
-    public void clear() {
-        inventory.clear();
+    public void clearContent() {
+        inventory.clearContent();
     }
 
     public int getCurrentMix() {
@@ -291,7 +294,7 @@ public class TileEntitySplitTank extends TileEntityBase implements ITickableTile
             int amount = Math.min(maxMix - currentMix, resource.getAmount());
             if (action.execute()) {
                 currentMix += amount;
-                markDirty();
+                setChanged();
             }
             return amount;
         }
@@ -307,7 +310,7 @@ public class TileEntitySplitTank extends TileEntityBase implements ITickableTile
 
             if (action.execute()) {
                 currentGlycerin -= amount;
-                markDirty();
+                setChanged();
             }
 
             return new FluidStack(ModFluids.GLYCERIN, amount);
@@ -316,7 +319,7 @@ public class TileEntitySplitTank extends TileEntityBase implements ITickableTile
 
             if (action.execute()) {
                 currentBioDiesel -= amount;
-                markDirty();
+                setChanged();
             }
             return new FluidStack(ModFluids.BIO_DIESEL, amount);
         }
@@ -332,7 +335,7 @@ public class TileEntitySplitTank extends TileEntityBase implements ITickableTile
 
             if (action.execute()) {
                 currentGlycerin -= amount;
-                markDirty();
+                setChanged();
             }
 
             return new FluidStack(ModFluids.GLYCERIN, amount);
@@ -341,7 +344,7 @@ public class TileEntitySplitTank extends TileEntityBase implements ITickableTile
 
             if (action.execute()) {
                 currentBioDiesel -= amount;
-                markDirty();
+                setChanged();
             }
             return new FluidStack(ModFluids.BIO_DIESEL, amount);
         }

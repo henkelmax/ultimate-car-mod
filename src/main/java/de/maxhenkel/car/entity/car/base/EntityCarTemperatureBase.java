@@ -10,7 +10,7 @@ import net.minecraft.world.World;
 
 public abstract class EntityCarTemperatureBase extends EntityCarBase {
 
-    private static final DataParameter<Float> TEMPERATURE = EntityDataManager.createKey(EntityCarTemperatureBase.class, DataSerializers.FLOAT);
+    private static final DataParameter<Float> TEMPERATURE = EntityDataManager.defineId(EntityCarTemperatureBase.class, DataSerializers.FLOAT);
 
     public EntityCarTemperatureBase(EntityType type, World worldIn) {
         super(type, worldIn);
@@ -20,10 +20,10 @@ public abstract class EntityCarTemperatureBase extends EntityCarBase {
     public void tick() {
         super.tick();
 
-        if (world.isRemote) {
+        if (level.isClientSide) {
             return;
         }
-        if (ticksExisted % 20 != 0) {
+        if (tickCount % 20 != 0) {
             return;
         }
 
@@ -35,7 +35,7 @@ public abstract class EntityCarTemperatureBase extends EntityCarBase {
             tempRate = 5;
         }
 
-        float rate = tempRate * 0.2F + (rand.nextFloat() - 0.5F) * 0.1F;
+        float rate = tempRate * 0.2F + (random.nextFloat() - 0.5F) * 0.1F;
 
         float temp = getTemperature();
 
@@ -68,34 +68,34 @@ public abstract class EntityCarTemperatureBase extends EntityCarBase {
     }
 
     public float getBiomeTemperatureCelsius() {
-        return (world.getBiome(getPosition()).getTemperature(getPosition()) - 0.3F) * 30F;
+        return (level.getBiome(blockPosition()).getTemperature(blockPosition()) - 0.3F) * 30F;
     }
 
     public float getTemperature() {
-        return this.dataManager.get(TEMPERATURE);
+        return this.entityData.get(TEMPERATURE);
     }
 
     public void setTemperature(float temperature) {
-        this.dataManager.set(TEMPERATURE, temperature);
+        this.entityData.set(TEMPERATURE, temperature);
     }
 
     public abstract float getOptimalTemperature();
 
     @Override
-    protected void registerData() {
-        super.registerData();
-        this.dataManager.register(TEMPERATURE, 0F);
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(TEMPERATURE, 0F);
     }
 
     @Override
-    public void readAdditional(CompoundNBT compound) {
-        super.readAdditional(compound);
+    public void readAdditionalSaveData(CompoundNBT compound) {
+        super.readAdditionalSaveData(compound);
         setTemperature(compound.getFloat("temperature"));
     }
 
     @Override
-    protected void writeAdditional(CompoundNBT compound) {
-        super.writeAdditional(compound);
+    protected void addAdditionalSaveData(CompoundNBT compound) {
+        super.addAdditionalSaveData(compound);
         compound.putFloat("temperature", getTemperature());
     }
 

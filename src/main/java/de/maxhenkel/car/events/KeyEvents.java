@@ -35,7 +35,7 @@ public class KeyEvents {
             return;
         }
 
-        Entity riding = player.getRidingEntity();
+        Entity riding = player.getVehicle();
 
         if (!(riding instanceof EntityCarBatteryBase)) {
             return;
@@ -44,9 +44,9 @@ public class KeyEvents {
         EntityCarBatteryBase car = (EntityCarBatteryBase) riding;
 
         if (player.equals(car.getDriver())) {
-            car.updateControls(Main.FORWARD_KEY.isKeyDown(), Main.BACK_KEY.isKeyDown(), Main.LEFT_KEY.isKeyDown(), Main.RIGHT_KEY.isKeyDown(), player);
+            car.updateControls(Main.FORWARD_KEY.isDown(), Main.BACK_KEY.isDown(), Main.LEFT_KEY.isDown(), Main.RIGHT_KEY.isDown(), player);
 
-            if (Main.START_KEY.isKeyDown()) {
+            if (Main.START_KEY.isDown()) {
                 if (!wasStartPressed) {
                     Main.SIMPLE_CHANNEL.sendToServer(new MessageStarting(true, false, player));
                     wasStartPressed = true;
@@ -58,7 +58,7 @@ public class KeyEvents {
                 wasStartPressed = false;
             }
 
-            if (Main.HORN_KEY.isKeyDown()) {
+            if (Main.HORN_KEY.isDown()) {
                 if (!wasHornPressed) {
                     car.onHornPressed(player);
                     wasHornPressed = true;
@@ -67,10 +67,10 @@ public class KeyEvents {
                 wasHornPressed = false;
             }
 
-            if (Main.CENTER_KEY.isKeyDown()) {
+            if (Main.CENTER_KEY.isDown()) {
                 if (!wasCenterPressed) {
                     Main.SIMPLE_CHANNEL.sendToServer(new MessageCenterCar(player));
-                    player.sendStatusMessage(new TranslationTextComponent("message.center_car"), true);
+                    player.displayClientMessage(new TranslationTextComponent("message.center_car"), true);
                     wasCenterPressed = true;
                 }
             } else {
@@ -78,7 +78,7 @@ public class KeyEvents {
             }
         }
 
-        if (Main.CAR_GUI_KEY.isKeyDown()) {
+        if (Main.CAR_GUI_KEY.isDown()) {
             if (!wasGuiPressed) {
                 car.openCarGUI(player);
                 wasGuiPressed = true;

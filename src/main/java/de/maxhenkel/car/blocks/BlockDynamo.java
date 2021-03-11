@@ -18,23 +18,23 @@ import javax.annotation.Nullable;
 public class BlockDynamo extends BlockBase implements ITileEntityProvider, IItemBlock {
 
     protected BlockDynamo() {
-        super(Properties.create(Material.IRON, MaterialColor.OBSIDIAN).hardnessAndResistance(3F).sound(SoundType.METAL));
+        super(Properties.of(Material.METAL, MaterialColor.COLOR_BLACK).strength(3F).sound(SoundType.METAL));
         setRegistryName(new ResourceLocation(Main.MODID, "dynamo"));
     }
 
     @Override
     public Item toItem() {
-        return new BlockItem(this, new Item.Properties().group(ModItemGroups.TAB_CAR)).setRegistryName(getRegistryName());
+        return new BlockItem(this, new Item.Properties().tab(ModItemGroups.TAB_CAR)).setRegistryName(getRegistryName());
     }
 
     @Override
-    public BlockRenderType getRenderType(BlockState state) {
+    public BlockRenderType getRenderShape(BlockState state) {
         return BlockRenderType.MODEL;
     }
 
     @Nullable
     @Override
-    public TileEntity createNewTileEntity(IBlockReader worldIn) {
+    public TileEntity newBlockEntity(IBlockReader worldIn) {
         return new TileEntityDynamo();
     }
 

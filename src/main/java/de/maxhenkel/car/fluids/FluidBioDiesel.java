@@ -20,7 +20,7 @@ public class FluidBioDiesel extends CarFluidSource {
         super(
                 FluidAttributes.builder(
                         new ResourceLocation(Main.MODID, "block/bio_diesel_still"),
-                        new ResourceLocation(Main.MODID, "block/bio_diesel_flowing")).sound(SoundEvents.ITEM_BUCKET_FILL),
+                        new ResourceLocation(Main.MODID, "block/bio_diesel_flowing")).sound(SoundEvents.BUCKET_FILL),
                 () -> ModBlocks.BIO_DIESEL,
                 () -> ModFluids.BIO_DIESEL,
                 () -> ModFluids.BIO_DIESEL_FLOWING,
@@ -33,8 +33,8 @@ public class FluidBioDiesel extends CarFluidSource {
     public void applyEffects(Entity entity, BlockState state, World worldIn, BlockPos pos) {
         if (entity instanceof PlayerEntity) {
             PlayerEntity player = (PlayerEntity) entity;
-            if (!player.abilities.isCreativeMode) {
-                player.addPotionEffect(new EffectInstance(Effects.NAUSEA, 100, 0, true, false));
+            if (!player.abilities.instabuild) {
+                player.addEffect(new EffectInstance(Effects.CONFUSION, 100, 0, true, false));
             }
         }
     }

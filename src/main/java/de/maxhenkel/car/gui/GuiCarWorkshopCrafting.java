@@ -36,25 +36,25 @@ public class GuiCarWorkshopCrafting extends ScreenBase<ContainerCarWorkshopCraft
         this.tile = container.getTile();
         this.carRenderer = new EntityTools.CarRenderer();
 
-        xSize = 176;
-        ySize = 222;
+        imageWidth = 176;
+        imageHeight = 222;
     }
 
     @Override
     protected void init() {
         super.init();
 
-        buttonRepair = addButton(new Button(guiLeft + 105, guiTop + 72, 60, 20, new TranslationTextComponent("button.car.repair_car"), button -> {
-            Main.SIMPLE_CHANNEL.sendToServer(new MessageOpenCarWorkshopGui(tile.getPos(), player, true));
+        buttonRepair = addButton(new Button(leftPos + 105, topPos + 72, 60, 20, new TranslationTextComponent("button.car.repair_car"), button -> {
+            Main.SIMPLE_CHANNEL.sendToServer(new MessageOpenCarWorkshopGui(tile.getBlockPos(), player, true));
         }));
 
-        buttonSpawn = addButton(new Button(guiLeft + 105, guiTop + 106, 60, 20, new TranslationTextComponent("button.car.spawn_car"), button -> {
-            if (tile.getWorld().isRemote) {
+        buttonSpawn = addButton(new Button(leftPos + 105, topPos + 106, 60, 20, new TranslationTextComponent("button.car.spawn_car"), button -> {
+            if (tile.getLevel().isClientSide) {
                 if (tile.isCurrentCraftingCarValid()) {
-                    Main.SIMPLE_CHANNEL.sendToServer(new MessageSpawnCar(tile.getPos()));
+                    Main.SIMPLE_CHANNEL.sendToServer(new MessageSpawnCar(tile.getBlockPos()));
                 } else {
                     for (ITextComponent message : tile.getMessages()) {
-                        playerInventory.player.sendMessage(message, Util.DUMMY_UUID);
+                        inventory.player.sendMessage(message, Util.NIL_UUID);
                     }
                 }
             }
@@ -63,12 +63,12 @@ public class GuiCarWorkshopCrafting extends ScreenBase<ContainerCarWorkshopCraft
     }
 
     @Override
-    protected void drawGuiContainerForegroundLayer(MatrixStack matrixStack, int mouseX, int mouseY) {
-        super.drawGuiContainerForegroundLayer(matrixStack, mouseX, mouseY);
+    protected void renderLabels(MatrixStack matrixStack, int mouseX, int mouseY) {
+        super.renderLabels(matrixStack, mouseX, mouseY);
 
         // Titles
-        font.func_238422_b_(matrixStack, tile.getDisplayName().func_241878_f(), 8, 6, FONT_COLOR);
-        font.func_238422_b_(matrixStack, playerInventory.getDisplayName().func_241878_f(), 8, ySize - 96 + 2, FONT_COLOR);
+        font.draw(matrixStack, tile.getDisplayName().getVisualOrderText(), 8, 6, FONT_COLOR);
+        font.draw(matrixStack, inventory.getDisplayName().getVisualOrderText(), 8, imageHeight - 96 + 2, FONT_COLOR);
 
         RenderSystem.color4f(1F, 1F, 1F, 1F);
 
@@ -93,7 +93,7 @@ public class GuiCarWorkshopCrafting extends ScreenBase<ContainerCarWorkshopCraft
     }
 
     private void drawCar(MatrixStack matrixStack, EntityCarBase car) {
-        carRenderer.render(matrixStack, car, xSize / 2, 55, 23);
+        carRenderer.render(matrixStack, car, imageWidth / 2, 55, 23);
     }
 
     @Override

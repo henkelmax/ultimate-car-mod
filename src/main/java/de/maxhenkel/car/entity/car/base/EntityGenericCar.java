@@ -32,7 +32,7 @@ import java.util.Random;
 
 public class EntityGenericCar extends EntityCarLicensePlateBase {
 
-    private static final DataParameter<NonNullList<ItemStack>> PARTS = EntityDataManager.createKey(EntityGenericCar.class, DataSerializerItemList.ITEM_LIST);
+    private static final DataParameter<NonNullList<ItemStack>> PARTS = EntityDataManager.defineId(EntityGenericCar.class, DataSerializerItemList.ITEM_LIST);
 
     private List<Part> parts;
 
@@ -290,10 +290,10 @@ public class EntityGenericCar extends EntityCarLicensePlateBase {
     }
 
     @Override
-    protected ITextComponent getProfessionName() {
+    protected ITextComponent getTypeName() {
         PartBody body = getPartByClass(PartBody.class);
         if (body == null) {
-            return super.getProfessionName();
+            return super.getTypeName();
         }
         return new TranslationTextComponent("car_name." + body.getTranslationKey(), new TranslationTextComponent("car_variant." + body.getMaterialTranslationKey()));
     }
@@ -301,15 +301,15 @@ public class EntityGenericCar extends EntityCarLicensePlateBase {
     public ITextComponent getShortName() {
         PartBody body = getPartByClass(PartBody.class);
         if (body == null) {
-            return getProfessionName();
+            return getTypeName();
         }
         return new TranslationTextComponent("car_short_name." + body.getTranslationKey());
     }
 
     @Override
-    protected void registerData() {
-        super.registerData();
-        this.dataManager.register(PARTS, NonNullList.create());
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(PARTS, NonNullList.create());
     }
 
     public <T extends Part> T getPartByClass(Class<T> clazz) {
@@ -323,33 +323,33 @@ public class EntityGenericCar extends EntityCarLicensePlateBase {
     }
 
     public void setPartSerializer() {
-        NonNullList<ItemStack> stacks = NonNullList.withSize(partInventory.getSizeInventory(), ItemStack.EMPTY);
-        for (int i = 0; i < partInventory.getSizeInventory(); i++) {
-            stacks.set(i, partInventory.getStackInSlot(i));
+        NonNullList<ItemStack> stacks = NonNullList.withSize(partInventory.getContainerSize(), ItemStack.EMPTY);
+        for (int i = 0; i < partInventory.getContainerSize(); i++) {
+            stacks.set(i, partInventory.getItem(i));
         }
 
-        dataManager.set(PARTS, stacks);
+        entityData.set(PARTS, stacks);
     }
 
     private boolean updateClientSideItems() {
-        NonNullList<ItemStack> stacks = dataManager.get(PARTS);
+        NonNullList<ItemStack> stacks = entityData.get(PARTS);
         if (stacks.isEmpty()) {
             return false;
         }
         for (int i = 0; i < stacks.size(); i++) {
-            partInventory.setInventorySlotContents(i, stacks.get(i));
+            partInventory.setItem(i, stacks.get(i));
         }
         return true;
     }
 
     @Override
-    public void readAdditional(CompoundNBT compound) {
-        super.readAdditional(compound);
+    public void readAdditionalSaveData(CompoundNBT compound) {
+        super.readAdditionalSaveData(compound);
 
-        if (compound.keySet().stream().allMatch(s -> s.equals("id"))) {
+        if (compound.getAllKeys().stream().allMatch(s -> s.equals("id"))) {
             randomizeParts();
-            setInventorySlotContents(0, ItemKey.getKeyForCar(getUniqueID()));
-            setInventorySlotContents(1, ItemKey.getKeyForCar(getUniqueID()));
+            setItem(0, ItemKey.getKeyForCar(getUUID()));
+            setItem(1, ItemKey.getKeyForCar(getUUID()));
             setFuelAmount(100);
             setBatteryLevel(500);
             initTemperature();
@@ -363,10 +363,10 @@ public class EntityGenericCar extends EntityCarLicensePlateBase {
         List<CarRecipe> allRecipes = CarRecipeBuilder.getAllRecipes();
         CarRecipe recipe = allRecipes.get(new Random().nextInt(allRecipes.size()));
         getCarParts().clear();
-        partInventory.clear();
+        partInventory.clearContent();
         List<ItemStack> inputs = recipe.getInputs();
         for (int i = 0; i < inputs.size(); i++) {
-            partInventory.setInventorySlotContents(i, inputs.get(i));
+            partInventory.setItem(i, inputs.get(i));
         }
     }
 
@@ -390,7 +390,7 @@ public class EntityGenericCar extends EntityCarLicensePlateBase {
 
     public void tryInitPartsAndModel() {
         if (!isInitialized) {
-            if (world.isRemote) {
+            if (level.isClientSide) {
                 if (!isSpawned || updateClientSideItems()) {
                     initParts();
                     initModel();
@@ -410,8 +410,8 @@ public class EntityGenericCar extends EntityCarLicensePlateBase {
     public void initParts() {
         getCarParts().clear();
 
-        for (int i = 0; i < partInventory.getSizeInventory(); i++) {
-            ItemStack stack = partInventory.getStackInSlot(i);
+        for (int i = 0; i < partInventory.getContainerSize(); i++) {
+            ItemStack stack = partInventory.getItem(i);
 
             if (!(stack.getItem() instanceof ICarPart)) {
                 continue;
@@ -436,7 +436,7 @@ public class EntityGenericCar extends EntityCarLicensePlateBase {
 
         if (body instanceof PartBodyTransporter) {
             PartContainer container = getPartByClass(PartContainer.class);
-            if (externalInventory.getSizeInventory() <= 0) {
+            if (externalInventory.getContainerSize() <= 0) {
                 if (container != null) {
                     externalInventory = new Inventory(54);
                 } else {
@@ -447,7 +447,7 @@ public class EntityGenericCar extends EntityCarLicensePlateBase {
 
         PartWheelBase partWheels = getPartByClass(PartWheelBase.class);
         if (partWheels != null) {
-            stepHeight = partWheels.getStepHeight();
+            maxUpStep = partWheels.getStepHeight();
         }
     }
 

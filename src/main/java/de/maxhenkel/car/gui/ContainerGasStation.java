@@ -13,7 +13,7 @@ public class ContainerGasStation extends ContainerBase {
         super(Main.FUEL_STATION_CONTAINER_TYPE, id, playerInv, null);
         this.gasStation = gasStation;
 
-        addSlot(new SlotPresent(gasStation.getTradingInventory().getStackInSlot(0), 18, 99));
+        addSlot(new SlotPresent(gasStation.getTradingInventory().getItem(0), 18, 99));
         addSlot(new Slot(gasStation.getTradingInventory(), 1, 38, 99));
 
         addPlayerInventorySlots();

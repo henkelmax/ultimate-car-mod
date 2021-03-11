@@ -25,22 +25,22 @@ public class GuiCar extends ScreenBase<ContainerCar> {
         this.playerInv = playerInv;
         this.car = containerCar.getCar();
 
-        xSize = 176;
-        ySize = 248;
+        imageWidth = 176;
+        imageHeight = 248;
     }
 
     @Override
-    protected void drawGuiContainerForegroundLayer(MatrixStack matrixStack, int mouseX, int mouseY) {
-        super.drawGuiContainerForegroundLayer(matrixStack, mouseX, mouseY);
+    protected void renderLabels(MatrixStack matrixStack, int mouseX, int mouseY) {
+        super.renderLabels(matrixStack, mouseX, mouseY);
 
         //Titles
-        font.func_238422_b_(matrixStack, car.getDisplayName().func_241878_f(), 7, 87, fontColor);
-        font.func_238422_b_(matrixStack, playerInv.getDisplayName().func_241878_f(), 8, this.ySize - 96 + 2, fontColor);
+        font.draw(matrixStack, car.getDisplayName().getVisualOrderText(), 7, 87, fontColor);
+        font.draw(matrixStack, playerInv.getDisplayName().getVisualOrderText(), 8, this.imageHeight - 96 + 2, fontColor);
 
-        font.func_238422_b_(matrixStack, getFuelString().func_241878_f(), 7, 9, fontColor);
-        font.func_238422_b_(matrixStack, getDamageString().func_241878_f(), 7, 35, fontColor);
-        font.func_238422_b_(matrixStack, getBatteryString().func_241878_f(), 95, 9, fontColor);
-        font.func_238422_b_(matrixStack, getTempString().func_241878_f(), 95, 35, fontColor);
+        font.draw(matrixStack, getFuelString().getVisualOrderText(), 7, 9, fontColor);
+        font.draw(matrixStack, getDamageString().getVisualOrderText(), 7, 35, fontColor);
+        font.draw(matrixStack, getBatteryString().getVisualOrderText(), 95, 9, fontColor);
+        font.draw(matrixStack, getTempString().getVisualOrderText(), 95, 35, fontColor);
     }
 
     public float getFuelPercent() {
@@ -98,8 +98,8 @@ public class GuiCar extends ScreenBase<ContainerCar> {
     }
 
     @Override
-    protected void drawGuiContainerBackgroundLayer(MatrixStack matrixStack, float partialTicks, int mouseX, int mouseY) {
-        super.drawGuiContainerBackgroundLayer(matrixStack, partialTicks, mouseX, mouseY);
+    protected void renderBg(MatrixStack matrixStack, float partialTicks, int mouseX, int mouseY) {
+        super.renderBg(matrixStack, partialTicks, mouseX, mouseY);
         drawFuel(matrixStack, getFuelPercent());
         drawDamage(matrixStack, 100F - getDamagePercent());
         drawBattery(matrixStack, car.getBatteryPercentage());
@@ -109,29 +109,29 @@ public class GuiCar extends ScreenBase<ContainerCar> {
     public void drawFuel(MatrixStack matrixStack, float percent) {
         //72x10
         int scaled = (int) (72F * percent / 100D);
-        int i = this.guiLeft;
-        int j = this.guiTop;
+        int i = this.leftPos;
+        int j = this.topPos;
         blit(matrixStack, i + 8, j + 20, 176, 0, scaled, 10);
     }
 
     public void drawDamage(MatrixStack matrixStack, float percent) {
         int scaled = (int) (72F * percent / 100D);
-        int i = this.guiLeft;
-        int j = this.guiTop;
+        int i = this.leftPos;
+        int j = this.topPos;
         blit(matrixStack, i + 8, j + 46, 176, 10, scaled, 10);
     }
 
     public void drawTemp(MatrixStack matrixStack, float percent) {
         int scaled = (int) (72F * percent);
-        int i = this.guiLeft;
-        int j = this.guiTop;
+        int i = this.leftPos;
+        int j = this.topPos;
         blit(matrixStack, i + 96, j + 46, 176, 30, scaled, 10);
     }
 
     public void drawBattery(MatrixStack matrixStack, float percent) {
         int scaled = (int) (72F * percent);
-        int i = this.guiLeft;
-        int j = this.guiTop;
+        int i = this.leftPos;
+        int j = this.topPos;
         blit(matrixStack, i + 96, j + 20, 176, 20, scaled, 10);
     }
 

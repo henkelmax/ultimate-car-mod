@@ -31,7 +31,7 @@ public class ItemPainter extends Item {
     private boolean isYellow;
 
     public ItemPainter(boolean isYellow) {
-        super(new Item.Properties().maxStackSize(1).maxDamage(1024).group(ModItemGroups.TAB_CAR));
+        super(new Item.Properties().stacksTo(1).durability(1024).tab(ModItemGroups.TAB_CAR));
         setRegistryName(new ResourceLocation(Main.MODID, "painter" + (isYellow ? "_yellow" : "")));
         this.isYellow = isYellow;
 
@@ -46,13 +46,13 @@ public class ItemPainter extends Item {
     }
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
-        if (playerIn.isSneaking()) {
+    public ActionResult<ItemStack> use(World worldIn, PlayerEntity playerIn, Hand handIn) {
+        if (playerIn.isShiftKeyDown()) {
             if (playerIn instanceof ServerPlayerEntity) {
                 NetworkHooks.openGui((ServerPlayerEntity) playerIn, new INamedContainerProvider() {
                     @Override
                     public ITextComponent getDisplayName() {
-                        return ItemPainter.this.getDisplayName(playerIn.getHeldItem(handIn));
+                        return ItemPainter.this.getName(playerIn.getItemInHand(handIn));
                     }
 
                     @Nullable
@@ -63,24 +63,24 @@ public class ItemPainter extends Item {
                 }, packetBuffer -> packetBuffer.writeBoolean(isYellow));
             }
         }
-        return super.onItemRightClick(worldIn, playerIn, handIn);
+        return super.use(worldIn, playerIn, handIn);
     }
 
     @Override
-    public ActionResultType onItemUse(ItemUseContext context) {
-        if (context.getPlayer().isSneaking()) {
+    public ActionResultType useOn(ItemUseContext context) {
+        if (context.getPlayer().isShiftKeyDown()) {
             return ActionResultType.PASS;
         }
 
-        if (!context.getFace().equals(Direction.UP)) {
+        if (!context.getClickedFace().equals(Direction.UP)) {
             return ActionResultType.FAIL;
         }
 
-        if (!BlockPaint.canPlaceBlockAt(context.getWorld(), context.getPos().up())) {
+        if (!BlockPaint.canPlaceBlockAt(context.getLevel(), context.getClickedPos().above())) {
             return ActionResultType.FAIL;
         }
 
-        if (!context.getWorld().isAirBlock(context.getPos().up())) {
+        if (!context.getLevel().isEmptyBlock(context.getClickedPos().above())) {
             return ActionResultType.FAIL;
         }
 
@@ -96,11 +96,11 @@ public class ItemPainter extends Item {
             return ActionResultType.FAIL;
         }
 
-        BlockState state = block.getDefaultState().with(BlockPaint.FACING, context.getPlayer().getHorizontalFacing());
+        BlockState state = block.defaultBlockState().setValue(BlockPaint.FACING, context.getPlayer().getDirection());
 
-        context.getWorld().setBlockState(context.getPos().up(), state);
+        context.getLevel().setBlockAndUpdate(context.getClickedPos().above(), state);
 
-        stack1.damageItem(1, context.getPlayer(), playerEntity -> playerEntity.sendBreakAnimation(context.getHand()));
+        stack1.hurtAndBreak(1, context.getPlayer(), playerEntity -> playerEntity.broadcastBreakEvent(context.getHand()));
 
         return ActionResultType.SUCCESS;
     }
@@ -121,12 +121,12 @@ public class ItemPainter extends Item {
     }
 
     @Override
-    public void addInformation(ItemStack stack, @Nullable World world, List<ITextComponent> textComponents, ITooltipFlag tooltipFlag) {
+    public void appendHoverText(ItemStack stack, @Nullable World world, List<ITextComponent> textComponents, ITooltipFlag tooltipFlag) {
         BlockPaint paint = getSelectedPaint(SlotPainter.getPainterID(stack));
         if (paint != null) {
-            textComponents.add(new TranslationTextComponent("tooltip.painter", new TranslationTextComponent(paint.getTranslationKey()).mergeStyle(TextFormatting.DARK_GRAY)).mergeStyle(TextFormatting.GRAY));
+            textComponents.add(new TranslationTextComponent("tooltip.painter", new TranslationTextComponent(paint.getDescriptionId()).withStyle(TextFormatting.DARK_GRAY)).withStyle(TextFormatting.GRAY));
         }
-        super.addInformation(stack, world, textComponents, tooltipFlag);
+        super.appendHoverText(stack, world, textComponents, tooltipFlag);
     }
 
 }

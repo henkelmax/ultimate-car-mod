@@ -25,53 +25,53 @@ public class GuiSplitTank extends ScreenBase<ContainerSplitTank> {
         this.playerInv = playerInv;
         this.tile = containerSplitTank.getSplitTank();
 
-        xSize = 176;
-        ySize = 166;
+        imageWidth = 176;
+        imageHeight = 166;
     }
 
     @Override
-    protected void drawGuiContainerForegroundLayer(MatrixStack matrixStack, int mouseX, int mouseY) {
-        super.drawGuiContainerForegroundLayer(matrixStack, mouseX, mouseY);
+    protected void renderLabels(MatrixStack matrixStack, int mouseX, int mouseY) {
+        super.renderLabels(matrixStack, mouseX, mouseY);
 
         // Title
-        font.func_238422_b_(matrixStack, playerInv.getDisplayName().func_241878_f(), 8, this.ySize - 96 + 2, FONT_COLOR);
+        font.draw(matrixStack, playerInv.getDisplayName().getVisualOrderText(), 8, this.imageHeight - 96 + 2, FONT_COLOR);
 
-        if (mouseX >= guiLeft + 50 && mouseX <= guiLeft + 16 + 50) {
-            if (mouseY >= guiTop + 8 && mouseY <= guiTop + 57 + 8) {
+        if (mouseX >= leftPos + 50 && mouseX <= leftPos + 16 + 50) {
+            if (mouseY >= topPos + 8 && mouseY <= topPos + 57 + 8) {
                 List<IReorderingProcessor> list = new ArrayList<>();
-                list.add(new TranslationTextComponent("tooltip.mix", tile.getCurrentMix()).func_241878_f());
-                renderTooltip(matrixStack, list, mouseX - guiLeft, mouseY - guiTop);
+                list.add(new TranslationTextComponent("tooltip.mix", tile.getCurrentMix()).getVisualOrderText());
+                renderTooltip(matrixStack, list, mouseX - leftPos, mouseY - topPos);
             }
         }
 
-        if (mouseX >= guiLeft + 120 && mouseX <= guiLeft + 16 + 120) {
-            if (mouseY >= guiTop + 8 && mouseY <= guiTop + 57 + 8) {
+        if (mouseX >= leftPos + 120 && mouseX <= leftPos + 16 + 120) {
+            if (mouseY >= topPos + 8 && mouseY <= topPos + 57 + 8) {
                 List<IReorderingProcessor> list = new ArrayList<>();
-                list.add(new TranslationTextComponent("tooltip.glycerin", tile.getCurrentGlycerin()).func_241878_f());
-                renderTooltip(matrixStack, list, mouseX - guiLeft, mouseY - guiTop);
+                list.add(new TranslationTextComponent("tooltip.glycerin", tile.getCurrentGlycerin()).getVisualOrderText());
+                renderTooltip(matrixStack, list, mouseX - leftPos, mouseY - topPos);
             }
         }
 
-        if (mouseX >= guiLeft + 141 && mouseX <= guiLeft + 16 + 141) {
-            if (mouseY >= guiTop + 8 && mouseY <= guiTop + 57 + 8) {
+        if (mouseX >= leftPos + 141 && mouseX <= leftPos + 16 + 141) {
+            if (mouseY >= topPos + 8 && mouseY <= topPos + 57 + 8) {
                 List<IReorderingProcessor> list = new ArrayList<>();
-                list.add(new TranslationTextComponent("tooltip.bio_diesel", tile.getCurrentBioDiesel()).func_241878_f());
-                renderTooltip(matrixStack, list, mouseX - guiLeft, mouseY - guiTop);
+                list.add(new TranslationTextComponent("tooltip.bio_diesel", tile.getCurrentBioDiesel()).getVisualOrderText());
+                renderTooltip(matrixStack, list, mouseX - leftPos, mouseY - topPos);
             }
         }
 
-        if (mouseX >= guiLeft + 79 && mouseX <= guiLeft + 24 + 79) {
-            if (mouseY >= guiTop + 34 && mouseY <= guiTop + 17 + 34) {
+        if (mouseX >= leftPos + 79 && mouseX <= leftPos + 24 + 79) {
+            if (mouseY >= topPos + 34 && mouseY <= topPos + 17 + 34) {
                 List<IReorderingProcessor> list = new ArrayList<>();
-                list.add(new TranslationTextComponent("tooltip.progress", ((int) (getProgress() * 100F))).func_241878_f());
-                renderTooltip(matrixStack, list, mouseX - guiLeft, mouseY - guiTop);
+                list.add(new TranslationTextComponent("tooltip.progress", ((int) (getProgress() * 100F))).getVisualOrderText());
+                renderTooltip(matrixStack, list, mouseX - leftPos, mouseY - topPos);
             }
         }
     }
 
     @Override
-    protected void drawGuiContainerBackgroundLayer(MatrixStack matrixStack, float partialTicks, int mouseX, int mouseY) {
-        super.drawGuiContainerBackgroundLayer(matrixStack, partialTicks, mouseX, mouseY);
+    protected void renderBg(MatrixStack matrixStack, float partialTicks, int mouseX, int mouseY) {
+        super.renderBg(matrixStack, partialTicks, mouseX, mouseY);
         drawProgress(matrixStack);
         drawMix(matrixStack);
         drawBioDiesel(matrixStack);
@@ -89,8 +89,8 @@ public class GuiSplitTank extends ScreenBase<ContainerSplitTank> {
         int targetY = 8;
 
         int scHeight = (int) (texH * (1 - perc));
-        int i = this.guiLeft;
-        int j = this.guiTop;
+        int i = this.leftPos;
+        int j = this.topPos;
         blit(matrixStack, i + targetX, j + targetY + scHeight, texX, texY + scHeight, texW, texH - scHeight);
     }
 
@@ -105,8 +105,8 @@ public class GuiSplitTank extends ScreenBase<ContainerSplitTank> {
         int targetY = 8;
 
         int scHeight = (int) (texH * (1 - perc));
-        int i = this.guiLeft;
-        int j = this.guiTop;
+        int i = this.leftPos;
+        int j = this.topPos;
         blit(matrixStack, i + targetX, j + targetY + scHeight, texX, texY + scHeight, texW, texH - scHeight);
     }
 
@@ -121,8 +121,8 @@ public class GuiSplitTank extends ScreenBase<ContainerSplitTank> {
         int targetY = 8;
 
         int scHeight = (int) (texH * (1 - perc));
-        int i = this.guiLeft;
-        int j = this.guiTop;
+        int i = this.leftPos;
+        int j = this.topPos;
         blit(matrixStack, i + targetX, j + targetY + scHeight, texX, texY + scHeight, texW, texH - scHeight);
     }
 
@@ -137,8 +137,8 @@ public class GuiSplitTank extends ScreenBase<ContainerSplitTank> {
         int targetY = 34;
 
         int scWidth = (int) (texW * perc);
-        int i = this.guiLeft;
-        int j = this.guiTop;
+        int i = this.leftPos;
+        int j = this.topPos;
         blit(matrixStack, i + targetX, j + targetY, texX, texY, scWidth, texH);
     }
 

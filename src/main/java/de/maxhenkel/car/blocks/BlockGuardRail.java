@@ -35,17 +35,24 @@ public class BlockGuardRail extends BlockBase implements IWaterLoggable {
     public static final BooleanProperty WEST = BlockStateProperties.WEST;
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
-    private static final VoxelShape SHAPE_NORTH = Block.makeCuboidShape(0D, 0D, 16D, 16D, 16D, 14D);
-    private static final VoxelShape SHAPE_SOUTH = Block.makeCuboidShape(0D, 0D, 0D, 16D, 16D, 2D);
-    private static final VoxelShape SHAPE_EAST = Block.makeCuboidShape(2D, 0D, 0D, 0D, 16D, 16D);
-    private static final VoxelShape SHAPE_WEST = Block.makeCuboidShape(16D, 0D, 0D, 14D, 16D, 16D);
-    private static final VoxelShape SHAPE = Block.makeCuboidShape(7.5D, 0D, 7.5D, 8.5D, 16D, 8.5D);
+    private static final VoxelShape SHAPE_NORTH = Block.box(0D, 0D, 16D, 16D, 16D, 14D);
+    private static final VoxelShape SHAPE_SOUTH = Block.box(0D, 0D, 0D, 16D, 16D, 2D);
+    private static final VoxelShape SHAPE_EAST = Block.box(2D, 0D, 0D, 0D, 16D, 16D);
+    private static final VoxelShape SHAPE_WEST = Block.box(16D, 0D, 0D, 14D, 16D, 16D);
+    private static final VoxelShape SHAPE = Block.box(7.5D, 0D, 7.5D, 8.5D, 16D, 8.5D);
 
     public BlockGuardRail() {
-        super(Properties.create(Material.IRON, MaterialColor.IRON).hardnessAndResistance(2F).sound(SoundType.LANTERN).notSolid());
+        super(Properties.of(Material.METAL, MaterialColor.METAL).strength(2F).sound(SoundType.LANTERN).noOcclusion());
         setRegistryName(new ResourceLocation(Main.MODID, "guard_rail"));
 
-        setDefaultState(stateContainer.getBaseState().with(NORTH, false).with(SOUTH, false).with(EAST, false).with(WEST, false).with(WATERLOGGED, false));
+        registerDefaultState(stateDefinition
+                .any()
+                .setValue(NORTH, false)
+                .setValue(SOUTH, false)
+                .setValue(EAST, false)
+                .setValue(WEST, false)
+                .setValue(WATERLOGGED, false)
+        );
     }
 
     public BooleanProperty getProperty(Direction direction) {
@@ -65,16 +72,16 @@ public class BlockGuardRail extends BlockBase implements IWaterLoggable {
     @Override
     public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
         VoxelShape shape = VoxelShapes.empty();
-        if (state.get(NORTH)) {
+        if (state.getValue(NORTH)) {
             shape = VoxelUtils.combine(shape, SHAPE_NORTH);
         }
-        if (state.get(SOUTH)) {
+        if (state.getValue(SOUTH)) {
             shape = VoxelUtils.combine(shape, SHAPE_SOUTH);
         }
-        if (state.get(EAST)) {
+        if (state.getValue(EAST)) {
             shape = VoxelUtils.combine(shape, SHAPE_EAST);
         }
-        if (state.get(WEST)) {
+        if (state.getValue(WEST)) {
             shape = VoxelUtils.combine(shape, SHAPE_WEST);
         }
         if (shape.isEmpty()) {
@@ -86,31 +93,31 @@ public class BlockGuardRail extends BlockBase implements IWaterLoggable {
     @Nullable
     @Override
     public BlockState getStateForPlacement(BlockItemUseContext context) {
-        FluidState ifluidstate = context.getWorld().getFluidState(context.getPos());
-        BlockState state = getDefaultState().with(WATERLOGGED, ifluidstate.isTagged(FluidTags.WATER) && ifluidstate.getLevel() == 8);
-        return state.with(getProperty(context.getPlacementHorizontalFacing()), true);
+        FluidState ifluidstate = context.getLevel().getFluidState(context.getClickedPos());
+        BlockState state = defaultBlockState().setValue(WATERLOGGED, ifluidstate.is(FluidTags.WATER) && ifluidstate.getAmount() == 8);
+        return state.setValue(getProperty(context.getHorizontalDirection()), true);
     }
 
     @Override
-    public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos) {
-        if (stateIn.get(WATERLOGGED)) {
-            worldIn.getPendingFluidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickRate(worldIn));
+    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos) {
+        if (stateIn.getValue(WATERLOGGED)) {
+            worldIn.getLiquidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(worldIn));
         }
-        return super.updatePostPlacement(stateIn, facing, facingState, worldIn, currentPos, facingPos);
+        return super.updateShape(stateIn, facing, facingState, worldIn, currentPos, facingPos);
     }
 
     @Override
-    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
         builder.add(NORTH, SOUTH, EAST, WEST, WATERLOGGED);
     }
 
     @Override
     public FluidState getFluidState(BlockState state) {
-        return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
+        return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
     }
 
     @Override
-    public BlockRenderType getRenderType(BlockState state) {
+    public BlockRenderType getRenderShape(BlockState state) {
         return BlockRenderType.MODEL;
     }
 
@@ -120,16 +127,16 @@ public class BlockGuardRail extends BlockBase implements IWaterLoggable {
         drops.stream().filter(itemStack -> itemStack.getItem() == ModItems.GUARD_RAIL).forEach(itemStack -> {
             if (itemStack.getCount() == 1) {
                 int amount = 0;
-                if (state.get(NORTH)) {
+                if (state.getValue(NORTH)) {
                     amount++;
                 }
-                if (state.get(SOUTH)) {
+                if (state.getValue(SOUTH)) {
                     amount++;
                 }
-                if (state.get(EAST)) {
+                if (state.getValue(EAST)) {
                     amount++;
                 }
-                if (state.get(WEST)) {
+                if (state.getValue(WEST)) {
                     amount++;
                 }
                 itemStack.setCount(amount);

@@ -17,7 +17,7 @@ public class FluidGlycerinFlowing extends CarFluidFlowing {
         super(
                 FluidAttributes.builder(
                         new ResourceLocation(Main.MODID, "block/glycerin_still"),
-                        new ResourceLocation(Main.MODID, "block/glycerin_flowing")).sound(SoundEvents.ITEM_BUCKET_FILL).density(5000).viscosity(100),
+                        new ResourceLocation(Main.MODID, "block/glycerin_flowing")).sound(SoundEvents.BUCKET_FILL).density(5000).viscosity(100),
                 () -> ModBlocks.GLYCERIN,
                 () -> ModFluids.GLYCERIN,
                 () -> ModFluids.GLYCERIN_FLOWING,

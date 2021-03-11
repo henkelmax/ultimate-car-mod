@@ -26,44 +26,44 @@ public class BlockCarPressurePlate extends AbstractPressurePlateBlock implements
     public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 
     protected BlockCarPressurePlate() {
-        super(Block.Properties.create(Material.ROCK).doesNotBlockMovement().hardnessAndResistance(0.5F));
+        super(Block.Properties.of(Material.STONE).noCollission().strength(0.5F));
         setRegistryName(new ResourceLocation(Main.MODID, "car_pressure_plate"));
-        setDefaultState(stateContainer.getBaseState().with(POWERED, false));
+        registerDefaultState(stateDefinition.any().setValue(POWERED, false));
     }
 
     @Override
     public Item toItem() {
-        return new BlockItem(this, new Item.Properties().group(ModItemGroups.TAB_CAR)).setRegistryName(getRegistryName());
+        return new BlockItem(this, new Item.Properties().tab(ModItemGroups.TAB_CAR)).setRegistryName(getRegistryName());
     }
 
     @Override
-    protected void playClickOnSound(IWorld worldIn, BlockPos pos) {
-        worldIn.playSound(null, pos, SoundEvents.BLOCK_STONE_PRESSURE_PLATE_CLICK_ON, SoundCategory.BLOCKS, 0.3F, 0.6F);
+    protected void playOnSound(IWorld worldIn, BlockPos pos) {
+        worldIn.playSound(null, pos, SoundEvents.STONE_PRESSURE_PLATE_CLICK_ON, SoundCategory.BLOCKS, 0.3F, 0.6F);
     }
 
     @Override
-    protected void playClickOffSound(IWorld worldIn, BlockPos pos) {
-        worldIn.playSound(null, pos, SoundEvents.BLOCK_STONE_PRESSURE_PLATE_CLICK_OFF, SoundCategory.BLOCKS, 0.3F, 0.5F);
+    protected void playOffSound(IWorld worldIn, BlockPos pos) {
+        worldIn.playSound(null, pos, SoundEvents.STONE_PRESSURE_PLATE_CLICK_OFF, SoundCategory.BLOCKS, 0.3F, 0.5F);
     }
 
     @Override
-    protected int computeRedstoneStrength(World worldIn, BlockPos pos) {
-        AxisAlignedBB axisalignedbb = PRESSURE_AABB.offset(pos);
-        return worldIn.getEntitiesWithinAABB(EntityGenericCar.class, axisalignedbb).size() > 0 ? 15 : 0;
+    protected int getSignalStrength(World worldIn, BlockPos pos) {
+        AxisAlignedBB axisalignedbb = TOUCH_AABB.move(pos);
+        return worldIn.getEntitiesOfClass(EntityGenericCar.class, axisalignedbb).size() > 0 ? 15 : 0;
     }
 
     @Override
-    protected int getRedstoneStrength(BlockState state) {
-        return state.get(POWERED) ? 15 : 0;
+    protected int getSignalForState(BlockState state) {
+        return state.getValue(POWERED) ? 15 : 0;
     }
 
     @Override
-    protected BlockState setRedstoneStrength(BlockState state, int strength) {
-        return state.with(POWERED, strength > 0);
+    protected BlockState setSignalForState(BlockState state, int strength) {
+        return state.setValue(POWERED, strength > 0);
     }
 
     @Override
-    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
         builder.add(POWERED);
     }
 }

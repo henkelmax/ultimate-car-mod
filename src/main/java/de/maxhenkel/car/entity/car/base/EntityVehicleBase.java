@@ -34,21 +34,21 @@ public abstract class EntityVehicleBase extends Entity {
 
     public EntityVehicleBase(EntityType type, World worldIn) {
         super(type, worldIn);
-        this.preventEntitySpawning = true;
-        this.stepHeight = 0.6F;
+        this.blocksBuilding = true;
+        this.maxUpStep = 0.6F;
 
         recalculateBoundingBox();
     }
 
     @Override
     public void tick() {
-        if (!world.isRemote) {
-            this.prevPosX = getPosX();
-            this.prevPosY = getPosY();
-            this.prevPosZ = getPosZ();
+        if (!level.isClientSide) {
+            this.xo = getX();
+            this.yo = getY();
+            this.zo = getZ();
         }
 
-        func_233577_ch_();
+        checkAndResetForcedChunkAdditionFlag(); //TODO check
 
         super.tick();
         tickLerp();
@@ -59,7 +59,7 @@ public abstract class EntityVehicleBase extends Entity {
     public void recalculateBoundingBox() {
         double width = getCarWidth();
         double height = getCarHeight();
-        boundingBox = new AxisAlignedBB(getPosX() - width / 2D, getPosY(), getPosZ() - width / 2D, getPosX() + width / 2D, getPosY() + height, getPosZ() + width / 2D);
+        boundingBox = new AxisAlignedBB(getX() - width / 2D, getY(), getZ() - width / 2D, getX() + width / 2D, getY() + height, getZ() + width / 2D);
     }
 
     public double getCarWidth() {
@@ -86,30 +86,30 @@ public abstract class EntityVehicleBase extends Entity {
     public abstract int getPassengerSize();
 
     @Override
-    protected boolean canFitPassenger(Entity passenger) {
+    protected boolean canAddPassenger(Entity passenger) {
         return this.getPassengers().size() < getPassengerSize();
     }
 
     protected void applyYawToEntity(Entity entityToUpdate) {
-        entityToUpdate.setRenderYawOffset(this.rotationYaw);
-        float f = MathHelper.wrapDegrees(entityToUpdate.rotationYaw - this.rotationYaw);
+        entityToUpdate.setYBodyRot(this.yRot);
+        float f = MathHelper.wrapDegrees(entityToUpdate.yRot - this.yRot);
         float f1 = MathHelper.clamp(f, -130.0F, 130.0F);
-        entityToUpdate.prevRotationYaw += f1 - f;
-        entityToUpdate.rotationYaw += f1 - f;
-        entityToUpdate.setRotationYawHead(entityToUpdate.rotationYaw);
+        entityToUpdate.yRotO += f1 - f;
+        entityToUpdate.yRot += f1 - f;
+        entityToUpdate.setYHeadRot(entityToUpdate.yRot);
     }
 
     @OnlyIn(Dist.CLIENT)
     @Override
-    public void applyOrientationToEntity(Entity entityToUpdate) {
+    public void onPassengerTurned(Entity entityToUpdate) {
         this.applyYawToEntity(entityToUpdate);
     }
 
     public abstract Vector3d[] getPlayerOffsets();
 
     @Override
-    public void updatePassenger(Entity passenger) {
-        if (!isPassenger(passenger)) {
+    public void positionRider(Entity passenger) {
+        if (!hasPassenger(passenger)) {
             return;
         }
 
@@ -128,10 +128,10 @@ public abstract class EntityVehicleBase extends Entity {
             height = offset.y;
         }
 
-        Vector3d vec3d = (new Vector3d(front, height, side)).rotateYaw(-this.rotationYaw * 0.017453292F - ((float) Math.PI / 2F));
-        passenger.setPosition(getPosX() + vec3d.x, getPosY() + vec3d.y, getPosZ() + vec3d.z);
-        passenger.rotationYaw += deltaRotation;
-        passenger.setRotationYawHead(passenger.getRotationYawHead() + this.deltaRotation);
+        Vector3d vec3d = (new Vector3d(front, height, side)).yRot(-this.yRot * 0.017453292F - ((float) Math.PI / 2F));
+        passenger.setPos(getX() + vec3d.x, getY() + vec3d.y, getZ() + vec3d.z);
+        passenger.yRot += deltaRotation;
+        passenger.setYHeadRot(passenger.getYHeadRot() + this.deltaRotation);
         applyYawToEntity(passenger);
     }
 
@@ -141,17 +141,17 @@ public abstract class EntityVehicleBase extends Entity {
     }
 
     @Override
-    public boolean canCollide(Entity entity) {
+    public boolean canCollideWith(Entity entity) {
         if (!Main.SERVER_CONFIG.collideWithEntities.get()) {
             if (!(entity instanceof EntityVehicleBase)) {
                 return false;
             }
         }
-        return (entity.func_241845_aY() || entity.canBePushed()) && !isRidingSameEntity(entity);
+        return (entity.canBeCollidedWith() || entity.isPushable()) && !isPassengerOfSameVehicle(entity);
     }
 
     @Override
-    public boolean func_241845_aY() {
+    public boolean canBeCollidedWith() {
         return true;
     }
 
@@ -166,42 +166,42 @@ public abstract class EntityVehicleBase extends Entity {
     }
 
     @Override
-    public boolean canRenderOnFire() {
+    public boolean displayFireAnimation() {
         return false;
     }
 
     @Override
-    public boolean canBePushed() {
+    public boolean isPushable() {
         return true;
     }
 
     @Override
-    public boolean canBeCollidedWith() {
+    public boolean isPickable() {
         return isAlive();
     }
 
     private void tickLerp() {
-        if (this.canPassengerSteer()) {
+        if (this.isControlledByLocalInstance()) {
             this.steps = 0;
-            this.setPacketCoordinates(this.getPosX(), this.getPosY(), this.getPosZ());
+            this.setPacketCoordinates(this.getX(), this.getY(), this.getZ());
         }
 
         if (this.steps > 0) {
-            double d0 = getPosX() + (clientX - getPosX()) / (double) steps;
-            double d1 = getPosY() + (clientY - getPosY()) / (double) steps;
-            double d2 = getPosZ() + (clientZ - getPosZ()) / (double) steps;
-            double d3 = MathHelper.wrapDegrees(clientYaw - (double) rotationYaw);
-            rotationYaw = (float) ((double) rotationYaw + d3 / (double) steps);
-            rotationPitch = (float) ((double) rotationPitch + (clientPitch - (double) rotationPitch) / (double) steps);
+            double d0 = getX() + (clientX - getX()) / (double) steps;
+            double d1 = getY() + (clientY - getY()) / (double) steps;
+            double d2 = getZ() + (clientZ - getZ()) / (double) steps;
+            double d3 = MathHelper.wrapDegrees(clientYaw - (double) yRot);
+            yRot = (float) ((double) yRot + d3 / (double) steps);
+            xRot = (float) ((double) xRot + (clientPitch - (double) xRot) / (double) steps);
             --steps;
-            this.setPosition(d0, d1, d2);
-            this.setRotation(rotationYaw, rotationPitch);
+            this.setPos(d0, d1, d2);
+            this.setRot(yRot, xRot);
         }
     }
 
     @OnlyIn(Dist.CLIENT)
     @Override
-    public void setPositionAndRotationDirect(double x, double y, double z, float yaw, float pitch, int posRotationIncrements, boolean teleport) {
+    public void lerpTo(double x, double y, double z, float yaw, float pitch, int posRotationIncrements, boolean teleport) {
         this.clientX = x;
         this.clientY = y;
         this.clientZ = z;
@@ -219,10 +219,10 @@ public abstract class EntityVehicleBase extends Entity {
     }
 
     @Override
-    public ActionResultType processInitialInteract(PlayerEntity player, Hand hand) {
-        if (!player.isSneaking()) {
-            if (player.getRidingEntity() != this) {
-                if (!world.isRemote) {
+    public ActionResultType interact(PlayerEntity player, Hand hand) {
+        if (!player.isShiftKeyDown()) {
+            if (player.getVehicle() != this) {
+                if (!level.isClientSide) {
                     player.startRiding(this);
                 }
             }
@@ -234,7 +234,7 @@ public abstract class EntityVehicleBase extends Entity {
     public abstract boolean doesEnterThirdPerson();
 
     @Override
-    public IPacket<?> createSpawnPacket() {
+    public IPacket<?> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 

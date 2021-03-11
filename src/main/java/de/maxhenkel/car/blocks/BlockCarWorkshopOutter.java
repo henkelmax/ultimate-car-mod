@@ -33,36 +33,36 @@ public class BlockCarWorkshopOutter extends BlockBase implements IItemBlock {
     public static final IntegerProperty POSITION = IntegerProperty.create("position", 0, 8);
 
     public BlockCarWorkshopOutter() {
-        super(Properties.create(Material.IRON, MaterialColor.GRAY).hardnessAndResistance(3F).sound(SoundType.METAL));
+        super(Properties.of(Material.METAL, MaterialColor.COLOR_GRAY).strength(3F).sound(SoundType.METAL));
         setRegistryName(new ResourceLocation(Main.MODID, "car_workshop_outter"));
 
-        this.setDefaultState(stateContainer.getBaseState().with(POSITION, 0));
+        this.registerDefaultState(stateDefinition.any().setValue(POSITION, 0));
     }
 
     @Override
     public Item toItem() {
-        return new BlockItem(this, new Item.Properties().group(ModItemGroups.TAB_CAR)).setRegistryName(getRegistryName());
+        return new BlockItem(this, new Item.Properties().tab(ModItemGroups.TAB_CAR)).setRegistryName(getRegistryName());
     }
 
     @Override
-    public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
+    public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
         BlockPos tePos = findCenter(worldIn, pos);
 
         if (tePos == null) {
             return ActionResultType.FAIL;
         }
-        return ModBlocks.CAR_WORKSHOP.onBlockActivated(worldIn.getBlockState(tePos), worldIn, tePos, player, handIn, hit);
+        return ModBlocks.CAR_WORKSHOP.use(worldIn.getBlockState(tePos), worldIn, tePos, player, handIn, hit);
     }
 
     @Override
-    public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
-        super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
+    public void setPlacedBy(World worldIn, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
+        super.setPlacedBy(worldIn, pos, state, placer, stack);
         validate(worldIn, pos);
     }
 
     @Override
-    public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
-        super.onReplaced(state, worldIn, pos, newState, isMoving);
+    public void onRemove(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
+        super.onRemove(state, worldIn, pos, newState, isMoving);
         validate(worldIn, pos);
     }
 
@@ -73,7 +73,7 @@ public class BlockCarWorkshopOutter extends BlockBase implements IItemBlock {
             return;
         }
 
-        TileEntity te = worldIn.getTileEntity(tePos);
+        TileEntity te = worldIn.getBlockEntity(tePos);
 
         if (!(te instanceof TileEntityCarWorkshop)) {
             return;
@@ -85,29 +85,29 @@ public class BlockCarWorkshopOutter extends BlockBase implements IItemBlock {
     }
 
     private static BlockPos findCenter(World world, BlockPos pos) {
-        if (isCenter(world, pos.add(0, 0, 1))) {
-            return pos.add(0, 0, 1);
+        if (isCenter(world, pos.offset(0, 0, 1))) {
+            return pos.offset(0, 0, 1);
         }
-        if (isCenter(world, pos.add(1, 0, 0))) {
-            return pos.add(1, 0, 0);
+        if (isCenter(world, pos.offset(1, 0, 0))) {
+            return pos.offset(1, 0, 0);
         }
-        if (isCenter(world, pos.add(1, 0, 1))) {
-            return pos.add(1, 0, 1);
+        if (isCenter(world, pos.offset(1, 0, 1))) {
+            return pos.offset(1, 0, 1);
         }
-        if (isCenter(world, pos.add(0, 0, -1))) {
-            return pos.add(0, 0, -1);
+        if (isCenter(world, pos.offset(0, 0, -1))) {
+            return pos.offset(0, 0, -1);
         }
-        if (isCenter(world, pos.add(-1, 0, 0))) {
-            return pos.add(-1, 0, 0);
+        if (isCenter(world, pos.offset(-1, 0, 0))) {
+            return pos.offset(-1, 0, 0);
         }
-        if (isCenter(world, pos.add(-1, 0, -1))) {
-            return pos.add(-1, 0, -1);
+        if (isCenter(world, pos.offset(-1, 0, -1))) {
+            return pos.offset(-1, 0, -1);
         }
-        if (isCenter(world, pos.add(-1, 0, 1))) {
-            return pos.add(-1, 0, 1);
+        if (isCenter(world, pos.offset(-1, 0, 1))) {
+            return pos.offset(-1, 0, 1);
         }
-        if (isCenter(world, pos.add(1, 0, -1))) {
-            return pos.add(1, 0, -1);
+        if (isCenter(world, pos.offset(1, 0, -1))) {
+            return pos.offset(1, 0, -1);
         }
         return null;
     }
@@ -119,17 +119,17 @@ public class BlockCarWorkshopOutter extends BlockBase implements IItemBlock {
     @Nullable
     @Override
     public BlockState getStateForPlacement(BlockItemUseContext context) {
-        return this.getDefaultState().with(POSITION, 0);
+        return this.defaultBlockState().setValue(POSITION, 0);
     }
 
     @Override
-    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
         builder.add(POSITION);
     }
 
 
     @Override
-    public BlockRenderType getRenderType(BlockState state) {
+    public BlockRenderType getRenderShape(BlockState state) {
         return BlockRenderType.MODEL;
     }
 

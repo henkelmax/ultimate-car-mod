@@ -25,7 +25,7 @@ public class TileEntitySpecialRendererSplitTank extends TileEntityRenderer<TileE
 
     @Override
     public void render(TileEntitySplitTank te, float partialTicks, MatrixStack matrixStack, IRenderTypeBuffer buffer, int light, int overlay) {
-        matrixStack.push();
+        matrixStack.pushPose();
         float bioDiesel = te.getBioDieselPerc() / 2F;
         float glycerin = te.getGlycerinPerc() / 2F;
 
@@ -36,21 +36,21 @@ public class TileEntitySpecialRendererSplitTank extends TileEntityRenderer<TileE
         if (glycerin > 0) {
             renderFluid(GLYCERIN_STACK, glycerin, bioDiesel + 1F / 16F, matrixStack, buffer, light, overlay);
         }
-        matrixStack.pop();
+        matrixStack.popPose();
     }
 
     public void renderFluid(FluidStack fluid, float amount, float yStart, MatrixStack matrixStack, IRenderTypeBuffer buffer, int light, int overlay) {
-        matrixStack.push();
+        matrixStack.pushPose();
         matrixStack.scale(0.98F, 0.98F, 0.98F);
         matrixStack.translate(0.01F, 0.01F, 0.01F);
 
-        IVertexBuilder builder = buffer.getBuffer(Atlases.getItemEntityTranslucentCullType());
-        TextureAtlasSprite texture = Minecraft.getInstance().getModelManager().getAtlasTexture(PlayerContainer.LOCATION_BLOCKS_TEXTURE).getSprite(fluid.getFluid().getAttributes().getStillTexture());
+        IVertexBuilder builder = buffer.getBuffer(Atlases.translucentItemSheet());
+        TextureAtlasSprite texture = Minecraft.getInstance().getModelManager().getAtlas(PlayerContainer.BLOCK_ATLAS).getSprite(fluid.getFluid().getAttributes().getStillTexture());
 
-        float uMin = texture.getMinU();
-        float uMax = texture.getMaxU();
-        float vMin = texture.getMinV();
-        float vMax = texture.getMaxV();
+        float uMin = texture.getU0();
+        float uMax = texture.getU1();
+        float vMin = texture.getV0();
+        float vMax = texture.getV1();
 
         float vHeight = vMax - vMin;
 
@@ -86,7 +86,7 @@ public class TileEntitySpecialRendererSplitTank extends TileEntityRenderer<TileE
         RenderUtils.vertex(builder, matrixStack, 1F - s, yStart + amount - s * 2F, 1F - s, uMin, vMin, light, overlay);
         RenderUtils.vertex(builder, matrixStack, 1F - s, yStart + amount - s * 2F, 0F + s, uMax, vMin, light, overlay);
 
-        matrixStack.pop();
+        matrixStack.popPose();
     }
 
 }

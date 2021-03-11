@@ -42,94 +42,94 @@ public class BlockCable extends BlockBase implements ITileEntityProvider, IItemB
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
     protected BlockCable() {
-        super(Block.Properties.create(Material.WOOL, MaterialColor.GRAY).hardnessAndResistance(0.25F).sound(SoundType.CLOTH));
+        super(Block.Properties.of(Material.WOOL, MaterialColor.COLOR_GRAY).strength(0.25F).sound(SoundType.WOOL));
         setRegistryName(new ResourceLocation(Main.MODID, "cable"));
 
-        setDefaultState(stateContainer.getBaseState()
-                .with(UP, false)
-                .with(DOWN, false)
-                .with(NORTH, false)
-                .with(SOUTH, false)
-                .with(EAST, false)
-                .with(WEST, false)
-                .with(WATERLOGGED, false)
+        registerDefaultState(stateDefinition.any()
+                .setValue(UP, false)
+                .setValue(DOWN, false)
+                .setValue(NORTH, false)
+                .setValue(SOUTH, false)
+                .setValue(EAST, false)
+                .setValue(WEST, false)
+                .setValue(WATERLOGGED, false)
         );
     }
 
     @Override
     public Item toItem() {
-        return new BlockItem(this, new Item.Properties().group(ModItemGroups.TAB_CAR)).setRegistryName(getRegistryName());
+        return new BlockItem(this, new Item.Properties().tab(ModItemGroups.TAB_CAR)).setRegistryName(getRegistryName());
     }
 
     @Nullable
     @Override
     public BlockState getStateForPlacement(BlockItemUseContext context) {
-        return getState(context.getWorld(), context.getPos());
+        return getState(context.getLevel(), context.getClickedPos());
     }
 
     private BlockState getState(World world, BlockPos pos) {
         FluidState ifluidstate = world.getFluidState(pos);
-        return getDefaultState()
-                .with(UP, isConnectedTo(world, pos, Direction.UP))
-                .with(DOWN, isConnectedTo(world, pos, Direction.DOWN))
-                .with(NORTH, isConnectedTo(world, pos, Direction.NORTH))
-                .with(SOUTH, isConnectedTo(world, pos, Direction.SOUTH))
-                .with(EAST, isConnectedTo(world, pos, Direction.EAST))
-                .with(WEST, isConnectedTo(world, pos, Direction.WEST))
-                .with(WATERLOGGED, ifluidstate.isTagged(FluidTags.WATER) && ifluidstate.getLevel() == 8);
+        return defaultBlockState()
+                .setValue(UP, isConnectedTo(world, pos, Direction.UP))
+                .setValue(DOWN, isConnectedTo(world, pos, Direction.DOWN))
+                .setValue(NORTH, isConnectedTo(world, pos, Direction.NORTH))
+                .setValue(SOUTH, isConnectedTo(world, pos, Direction.SOUTH))
+                .setValue(EAST, isConnectedTo(world, pos, Direction.EAST))
+                .setValue(WEST, isConnectedTo(world, pos, Direction.WEST))
+                .setValue(WATERLOGGED, ifluidstate.is(FluidTags.WATER) && ifluidstate.getAmount() == 8);
     }
 
     @Override
-    public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos) {
-        if (stateIn.get(WATERLOGGED)) {
-            worldIn.getPendingFluidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickRate(worldIn));
+    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos) {
+        if (stateIn.getValue(WATERLOGGED)) {
+            worldIn.getLiquidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(worldIn));
         }
-        return super.updatePostPlacement(stateIn, facing, facingState, worldIn, currentPos, facingPos);
+        return super.updateShape(stateIn, facing, facingState, worldIn, currentPos, facingPos);
     }
 
     @Override
     public void neighborChanged(BlockState state, World world, BlockPos pos, Block block, BlockPos pos1, boolean b) {
         super.neighborChanged(state, world, pos, block, pos1, b);
-        world.setBlockState(pos, getState(world, pos));
+        world.setBlockAndUpdate(pos, getState(world, pos));
     }
 
     @Override
-    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
         builder.add(UP, DOWN, NORTH, SOUTH, EAST, WEST, WATERLOGGED);
     }
 
-    public static final VoxelShape SHAPE_NORTH = Block.makeCuboidShape(6.5D, 6.5D, 6.5D, 9.5D, 9.5D, 0D);
-    public static final VoxelShape SHAPE_SOUTH = Block.makeCuboidShape(6.5D, 6.5D, 9.5D, 9.5D, 9.5D, 16D);
-    public static final VoxelShape SHAPE_EAST = Block.makeCuboidShape(9.5D, 6.5D, 6.5D, 16D, 9.5D, 9.5D);
-    public static final VoxelShape SHAPE_WEST = Block.makeCuboidShape(6.5D, 6.5D, 6.5D, 0D, 9.5D, 9.5D);
-    public static final VoxelShape SHAPE_UP = Block.makeCuboidShape(6.5D, 9.5D, 6.5D, 9.5D, 16D, 9.5D);
-    public static final VoxelShape SHAPE_DOWN = Block.makeCuboidShape(6.5D, 6.5D, 6.5D, 9.5D, 0D, 9.5D);
-    public static final VoxelShape SHAPE_CORE = Block.makeCuboidShape(6.5D, 6.5D, 6.5D, 9.5D, 9.5D, 9.5D);
+    public static final VoxelShape SHAPE_NORTH = Block.box(6.5D, 6.5D, 6.5D, 9.5D, 9.5D, 0D);
+    public static final VoxelShape SHAPE_SOUTH = Block.box(6.5D, 6.5D, 9.5D, 9.5D, 9.5D, 16D);
+    public static final VoxelShape SHAPE_EAST = Block.box(9.5D, 6.5D, 6.5D, 16D, 9.5D, 9.5D);
+    public static final VoxelShape SHAPE_WEST = Block.box(6.5D, 6.5D, 6.5D, 0D, 9.5D, 9.5D);
+    public static final VoxelShape SHAPE_UP = Block.box(6.5D, 9.5D, 6.5D, 9.5D, 16D, 9.5D);
+    public static final VoxelShape SHAPE_DOWN = Block.box(6.5D, 6.5D, 6.5D, 9.5D, 0D, 9.5D);
+    public static final VoxelShape SHAPE_CORE = Block.box(6.5D, 6.5D, 6.5D, 9.5D, 9.5D, 9.5D);
 
     @Override
     public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
         VoxelShape shape = SHAPE_CORE;
-        if (state.get(UP)) {
+        if (state.getValue(UP)) {
             shape = VoxelUtils.combine(shape, SHAPE_UP);
         }
 
-        if (state.get(DOWN)) {
+        if (state.getValue(DOWN)) {
             shape = VoxelUtils.combine(shape, SHAPE_DOWN);
         }
 
-        if (state.get(SOUTH)) {
+        if (state.getValue(SOUTH)) {
             shape = VoxelUtils.combine(shape, SHAPE_SOUTH);
         }
 
-        if (state.get(NORTH)) {
+        if (state.getValue(NORTH)) {
             shape = VoxelUtils.combine(shape, SHAPE_NORTH);
         }
 
-        if (state.get(EAST)) {
+        if (state.getValue(EAST)) {
             shape = VoxelUtils.combine(shape, SHAPE_EAST);
         }
 
-        if (state.get(WEST)) {
+        if (state.getValue(WEST)) {
             shape = VoxelUtils.combine(shape, SHAPE_WEST);
         }
 
@@ -138,13 +138,13 @@ public class BlockCable extends BlockBase implements ITileEntityProvider, IItemB
 
 
     public static boolean isConnectedTo(IWorldReader world, BlockPos pos, Direction facing) {
-        BlockState state = world.getBlockState(pos.offset(facing));
+        BlockState state = world.getBlockState(pos.relative(facing));
 
         if (state.getBlock().equals(ModBlocks.CABLE)) {
             return true;
         }
 
-        TileEntity te = world.getTileEntity(pos.offset(facing));
+        TileEntity te = world.getBlockEntity(pos.relative(facing));
 
         if (te == null || !te.getCapability(CapabilityEnergy.ENERGY, facing.getOpposite()).isPresent()) {
             return false;
@@ -154,17 +154,17 @@ public class BlockCable extends BlockBase implements ITileEntityProvider, IItemB
 
     @Override
     public FluidState getFluidState(BlockState state) {
-        return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
+        return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
     }
 
     @Override
-    public BlockRenderType getRenderType(BlockState state) {
+    public BlockRenderType getRenderShape(BlockState state) {
         return BlockRenderType.MODEL;
     }
 
     @Nullable
     @Override
-    public TileEntity createNewTileEntity(IBlockReader worldIn) {
+    public TileEntity newBlockEntity(IBlockReader worldIn) {
         return new TileEntityCable();
     }
 

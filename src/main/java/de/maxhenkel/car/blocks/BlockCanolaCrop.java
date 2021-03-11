@@ -23,16 +23,16 @@ import net.minecraft.world.server.ServerWorld;
 import java.util.Random;
 
 public class BlockCanolaCrop extends CropsBlock {
-    public static final IntegerProperty CANOLA_AGE = BlockStateProperties.AGE_0_3;
+    public static final IntegerProperty CANOLA_AGE = BlockStateProperties.AGE_3;
 
     private static final VoxelShape[] SHAPE = new VoxelShape[]{
-            Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 2.0D, 16.0D),
-            Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 4.0D, 16.0D),
-            Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 9.0D, 16.0D),
-            Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 13.0D, 16.0D)};
+            Block.box(0.0D, 0.0D, 0.0D, 16.0D, 2.0D, 16.0D),
+            Block.box(0.0D, 0.0D, 0.0D, 16.0D, 4.0D, 16.0D),
+            Block.box(0.0D, 0.0D, 0.0D, 16.0D, 9.0D, 16.0D),
+            Block.box(0.0D, 0.0D, 0.0D, 16.0D, 13.0D, 16.0D)};
 
     public BlockCanolaCrop() {
-        super(Properties.create(Material.PLANTS).doesNotBlockMovement().tickRandomly().hardnessAndResistance(0F).sound(SoundType.CROP));
+        super(Properties.of(Material.PLANT).noCollission().randomTicks().strength(0F).sound(SoundType.CROP));
 
         setRegistryName(new ResourceLocation(Main.MODID, "canola"));
     }
@@ -47,7 +47,7 @@ public class BlockCanolaCrop extends CropsBlock {
     }
 
     @Override
-    protected IItemProvider getSeedsItem() {
+    protected IItemProvider getBaseSeedId() {
         return ModItems.CANOLA_SEEDS;
     }
 
@@ -64,13 +64,13 @@ public class BlockCanolaCrop extends CropsBlock {
     }
 
     @Override
-    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
         builder.add(CANOLA_AGE);
     }
 
     @Override
     public VoxelShape getShape(BlockState state, IBlockReader reader, BlockPos pos, ISelectionContext context) {
-        return SHAPE[state.get(getAgeProperty())];
+        return SHAPE[state.getValue(getAgeProperty())];
     }
 
     @Override
@@ -79,7 +79,7 @@ public class BlockCanolaCrop extends CropsBlock {
     }
 
     @Override
-    public VoxelShape getRaytraceShape(BlockState state, IBlockReader reader, BlockPos pos) {
+    public VoxelShape getInteractionShape(BlockState state, IBlockReader reader, BlockPos pos) {
         return VoxelShapes.empty();
     }
 }

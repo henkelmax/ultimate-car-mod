@@ -21,7 +21,7 @@ public class MessageEditLicensePlate implements Message<MessageEditLicensePlate>
     }
 
     public MessageEditLicensePlate(PlayerEntity player, String text) {
-        this.uuid = player.getUniqueID();
+        this.uuid = player.getUUID();
         this.text = text;
     }
 
@@ -32,37 +32,37 @@ public class MessageEditLicensePlate implements Message<MessageEditLicensePlate>
 
     @Override
     public void executeServerSide(NetworkEvent.Context context) {
-        if (!context.getSender().getUniqueID().equals(uuid)) {
+        if (!context.getSender().getUUID().equals(uuid)) {
             return;
         }
         setItemText(context.getSender(), text);
     }
 
     public static void setItemText(PlayerEntity player, String text) {
-        ItemStack stack = player.getHeldItem(Hand.MAIN_HAND);
+        ItemStack stack = player.getItemInHand(Hand.MAIN_HAND);
         if (stack.getItem() instanceof ItemLicensePlate) {
             ItemLicensePlate.setText(stack, text);
-            player.setHeldItem(Hand.MAIN_HAND, stack);
+            player.setItemInHand(Hand.MAIN_HAND, stack);
         } else {
-            stack = player.getHeldItem(Hand.OFF_HAND);
+            stack = player.getItemInHand(Hand.OFF_HAND);
             if (stack.getItem() instanceof ItemLicensePlate) {
                 ItemLicensePlate.setText(stack, text);
-                player.setHeldItem(Hand.OFF_HAND, stack);
+                player.setItemInHand(Hand.OFF_HAND, stack);
             }
         }
     }
 
     @Override
     public MessageEditLicensePlate fromBytes(PacketBuffer buf) {
-        uuid = buf.readUniqueId();
-        text = buf.readString(128);
+        uuid = buf.readUUID();
+        text = buf.readUtf(128);
         return this;
     }
 
     @Override
     public void toBytes(PacketBuffer buf) {
-        buf.writeUniqueId(uuid);
-        buf.writeString(text);
+        buf.writeUUID(uuid);
+        buf.writeUtf(text);
     }
 
 }

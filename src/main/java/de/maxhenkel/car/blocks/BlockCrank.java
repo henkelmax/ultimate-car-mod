@@ -29,17 +29,17 @@ public class BlockCrank extends BlockBase implements IItemBlock {
 
     public static final IntegerProperty CRANK_POS = IntegerProperty.create("rotation", 0, 7);
 
-    public static final VoxelShape SHAPE = Block.makeCuboidShape(3.2D, 0D, 3.2D, 12.8D, 9.6D, 12.8D);
+    public static final VoxelShape SHAPE = Block.box(3.2D, 0D, 3.2D, 12.8D, 9.6D, 12.8D);
 
     public BlockCrank() {
-        super(Properties.create(Material.WOOD, MaterialColor.WOOD).hardnessAndResistance(0.5F).sound(SoundType.WOOD));
+        super(Properties.of(Material.WOOD, MaterialColor.WOOD).strength(0.5F).sound(SoundType.WOOD));
         setRegistryName(new ResourceLocation(Main.MODID, "crank"));
-        setDefaultState(stateContainer.getBaseState().with(CRANK_POS, 0));
+        registerDefaultState(stateDefinition.any().setValue(CRANK_POS, 0));
     }
 
     @Override
     public Item toItem() {
-        return new BlockItem(this, new Item.Properties().group(ModItemGroups.TAB_CAR)).setRegistryName(getRegistryName());
+        return new BlockItem(this, new Item.Properties().tab(ModItemGroups.TAB_CAR)).setRegistryName(getRegistryName());
     }
 
     @Override
@@ -48,8 +48,8 @@ public class BlockCrank extends BlockBase implements IItemBlock {
     }
 
     @Override
-    public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
-        TileEntity te = worldIn.getTileEntity(pos.down());
+    public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
+        TileEntity te = worldIn.getBlockEntity(pos.below());
 
         if (!(te instanceof TileEntityDynamo)) {
             return ActionResultType.FAIL;
@@ -59,18 +59,18 @@ public class BlockCrank extends BlockBase implements IItemBlock {
 
         dyn.addEnergy(dyn.generation);
 
-        int i = state.get(CRANK_POS) + 1;
+        int i = state.getValue(CRANK_POS) + 1;
         if (i > 7) {
             i = 0;
         }
 
-        worldIn.setBlockState(pos, state.with(CRANK_POS, i), 3);
+        worldIn.setBlock(pos, state.setValue(CRANK_POS, i), 3);
 
         return ActionResultType.SUCCESS;
     }
 
     @Override
-    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
         builder.add(CRANK_POS);
     }
 

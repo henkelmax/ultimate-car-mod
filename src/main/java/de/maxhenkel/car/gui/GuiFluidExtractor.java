@@ -22,17 +22,17 @@ public class GuiFluidExtractor extends ScreenBase<ContainerFluidExtractor> {
         this.playerInv = player;
         this.tile = container.getTile();
 
-        xSize = 176;
-        ySize = 139;
+        imageWidth = 176;
+        imageHeight = 139;
     }
 
     @Override
-    protected void drawGuiContainerForegroundLayer(MatrixStack matrixStack, int mouseX, int mouseY) {
-        super.drawGuiContainerForegroundLayer(matrixStack, mouseX, mouseY);
+    protected void renderLabels(MatrixStack matrixStack, int mouseX, int mouseY) {
+        super.renderLabels(matrixStack, mouseX, mouseY);
 
         // Title
-        font.func_238422_b_(matrixStack, playerInv.getDisplayName().func_241878_f(), 8, this.ySize - 96 + 2, FONT_COLOR);
-        font.func_238422_b_(matrixStack, tile.getDisplayName().func_241878_f(), 8, 6, FONT_COLOR);
+        font.draw(matrixStack, playerInv.getDisplayName().getVisualOrderText(), 8, this.imageHeight - 96 + 2, FONT_COLOR);
+        font.draw(matrixStack, tile.getDisplayName().getVisualOrderText(), 8, 6, FONT_COLOR);
 
         drawFilter(matrixStack);
     }
@@ -48,7 +48,7 @@ public class GuiFluidExtractor extends ScreenBase<ContainerFluidExtractor> {
             name = new StringTextComponent(new FluidStack(f, 1).getDisplayName().getString());
         }
 
-        font.func_238422_b_(matrixStack, new TranslationTextComponent("filter.fluid", name.mergeStyle(TextFormatting.WHITE)).func_241878_f(), 46, 28, FONT_COLOR);
+        font.draw(matrixStack, new TranslationTextComponent("filter.fluid", name.withStyle(TextFormatting.WHITE)).getVisualOrderText(), 46, 28, FONT_COLOR);
     }
 
 }

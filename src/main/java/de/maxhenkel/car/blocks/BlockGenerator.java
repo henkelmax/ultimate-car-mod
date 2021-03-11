@@ -26,15 +26,15 @@ import javax.annotation.Nullable;
 public class BlockGenerator extends BlockGui<TileEntityGenerator> {
 
     protected BlockGenerator() {
-        super("generator", Properties.create(Material.IRON, MaterialColor.IRON).hardnessAndResistance(3F, 3F).sound(SoundType.STONE).notSolid());
+        super("generator", Properties.of(Material.METAL, MaterialColor.METAL).strength(3F, 3F).sound(SoundType.STONE).noOcclusion());
     }
 
     @Override
-    public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
+    public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
         if (FluidUtils.tryFluidInteraction(player, handIn, worldIn, pos)) {
             return ActionResultType.SUCCESS;
         }
-        return super.onBlockActivated(state, worldIn, pos, player, handIn, hit);
+        return super.use(state, worldIn, pos, player, handIn, hit);
     }
 
     @Override
@@ -44,12 +44,12 @@ public class BlockGenerator extends BlockGui<TileEntityGenerator> {
 
     @Override
     public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-        return Block.makeCuboidShape(0D, 0D, 0D, 16D, 13D, 16D);
+        return Block.box(0D, 0D, 0D, 16D, 13D, 16D);
     }
 
     @Nullable
     @Override
-    public TileEntity createNewTileEntity(IBlockReader worldIn) {
+    public TileEntity newBlockEntity(IBlockReader worldIn) {
         return new TileEntityGenerator();
     }
 

@@ -13,18 +13,18 @@ public class CarSoundSlider extends AbstractSlider {
 
     public CarSoundSlider(int x, int y, int width) {
         super(x, y, width, 20, new StringTextComponent(""), Main.CLIENT_CONFIG.carVolume.get());
-        func_230979_b_();
+        updateMessage();
     }
 
     @Override
-    protected void func_230979_b_() {
-        TextComponent amount = sliderValue <= 0D ? new TranslationTextComponent("options.off") : new StringTextComponent((int) ((float) sliderValue * 100F) + "%");
-        setMessage(new TranslationTextComponent("soundCategory.car").appendString(": ").append(amount));
+    protected void updateMessage() {
+        TextComponent amount = value <= 0D ? new TranslationTextComponent("options.off") : new StringTextComponent((int) ((float) value * 100F) + "%");
+        setMessage(new TranslationTextComponent("soundCategory.car").append(": ").append(amount));
     }
 
     @Override
-    protected void func_230972_a_() {
-        Main.CLIENT_CONFIG.carVolume.set(sliderValue);
+    protected void applyValue() {
+        Main.CLIENT_CONFIG.carVolume.set(value);
         Main.CLIENT_CONFIG.carVolume.save();
     }
 

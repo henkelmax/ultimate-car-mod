@@ -39,36 +39,36 @@ public class GuiCarWorkshopRepair extends ScreenBase<ContainerCarWorkshopRepair>
         this.tile = container.getTile();
         this.carRenderer = new EntityTools.CarRenderer();
 
-        xSize = 176;
-        ySize = 222;
+        imageWidth = 176;
+        imageHeight = 222;
     }
 
     @Override
     protected void init() {
         super.init();
 
-        this.buttonRepair = addButton(new Button(guiLeft + xSize - 7 - 60, guiTop + 105, 60, 20, new TranslationTextComponent("button.car.repair_car"), button -> {
-            if (tile.getWorld().isRemote) {
-                Main.SIMPLE_CHANNEL.sendToServer(new MessageRepairCar(tile.getPos(), player));
+        this.buttonRepair = addButton(new Button(leftPos + imageWidth - 7 - 60, topPos + 105, 60, 20, new TranslationTextComponent("button.car.repair_car"), button -> {
+            if (tile.getLevel().isClientSide) {
+                Main.SIMPLE_CHANNEL.sendToServer(new MessageRepairCar(tile.getBlockPos(), player));
             }
         }));
         this.buttonRepair.active = false;
 
-        this.buttonBack = addButton(new Button(guiLeft + 7, guiTop + 105, 60, 20, new TranslationTextComponent("button.car.back"), button -> {
-            if (tile.getWorld().isRemote) {
-                Main.SIMPLE_CHANNEL.sendToServer(new MessageOpenCarWorkshopGui(tile.getPos(), player, false));
+        this.buttonBack = addButton(new Button(leftPos + 7, topPos + 105, 60, 20, new TranslationTextComponent("button.car.back"), button -> {
+            if (tile.getLevel().isClientSide) {
+                Main.SIMPLE_CHANNEL.sendToServer(new MessageOpenCarWorkshopGui(tile.getBlockPos(), player, false));
             }
         }));
         this.buttonBack.active = true;
     }
 
     @Override
-    protected void drawGuiContainerForegroundLayer(MatrixStack matrixStack, int mouseX, int mouseY) {
-        super.drawGuiContainerForegroundLayer(matrixStack, mouseX, mouseY);
+    protected void renderLabels(MatrixStack matrixStack, int mouseX, int mouseY) {
+        super.renderLabels(matrixStack, mouseX, mouseY);
 
         // Titles
-        font.func_238422_b_(matrixStack, tile.getDisplayName().func_241878_f(), 8, 6, FONT_COLOR);
-        font.func_238422_b_(matrixStack, player.inventory.getDisplayName().func_241878_f(), 8, ySize - 96 + 2, FONT_COLOR);
+        font.draw(matrixStack, tile.getDisplayName().getVisualOrderText(), 8, 6, FONT_COLOR);
+        font.draw(matrixStack, player.inventory.getDisplayName().getVisualOrderText(), 8, imageHeight - 96 + 2, FONT_COLOR);
 
         EntityCarBase carTop = tile.getCarOnTop();
 
@@ -79,11 +79,11 @@ public class GuiCarWorkshopRepair extends ScreenBase<ContainerCarWorkshopRepair>
 
         EntityCarDamageBase car = (EntityCarDamageBase) carTop;
 
-        if (mouseX >= guiLeft + 52 && mouseX <= guiLeft + 123) {
-            if (mouseY >= guiTop + 81 && mouseY <= guiTop + 90) {
+        if (mouseX >= leftPos + 52 && mouseX <= leftPos + 123) {
+            if (mouseY >= topPos + 81 && mouseY <= topPos + 90) {
                 List<IReorderingProcessor> list = new ArrayList<>();
-                list.add(new TranslationTextComponent("tooltip.damage", MathUtils.round(car.getDamage(), 2)).func_241878_f());
-                renderTooltip(matrixStack, list, mouseX - guiLeft, mouseY - guiTop);
+                list.add(new TranslationTextComponent("tooltip.damage", MathUtils.round(car.getDamage(), 2)).getVisualOrderText());
+                renderTooltip(matrixStack, list, mouseX - leftPos, mouseY - topPos);
             }
         }
 
@@ -102,7 +102,7 @@ public class GuiCarWorkshopRepair extends ScreenBase<ContainerCarWorkshopRepair>
     }
 
     private void drawCar(MatrixStack matrixStack, EntityCarBase car) {
-        carRenderer.render(matrixStack, car, xSize / 2, 55, 23);
+        carRenderer.render(matrixStack, car, imageWidth / 2, 55, 23);
     }
 
     public double getDamagePercent(EntityCarDamageBase car) {
@@ -112,8 +112,8 @@ public class GuiCarWorkshopRepair extends ScreenBase<ContainerCarWorkshopRepair>
     }
 
     @Override
-    protected void drawGuiContainerBackgroundLayer(MatrixStack matrixStack, float partialTicks, int mouseX, int mouseY) {
-        super.drawGuiContainerBackgroundLayer(matrixStack, partialTicks, mouseX, mouseY);
+    protected void renderBg(MatrixStack matrixStack, float partialTicks, int mouseX, int mouseY) {
+        super.renderBg(matrixStack, partialTicks, mouseX, mouseY);
         drawDamage(matrixStack);
     }
 
@@ -127,10 +127,10 @@ public class GuiCarWorkshopRepair extends ScreenBase<ContainerCarWorkshopRepair>
 
         double percent = 100 - getDamagePercent(c);
 
-        minecraft.getTextureManager().bindTexture(GUI_TEXTURE);
+        minecraft.getTextureManager().bind(GUI_TEXTURE);
         int scaled = (int) (72 * percent / 100);
-        int i = this.guiLeft;
-        int j = this.guiTop;
+        int i = this.leftPos;
+        int j = this.topPos;
         blit(matrixStack, i + 52, j + 81, 176, 0, scaled, 10);
     }
 

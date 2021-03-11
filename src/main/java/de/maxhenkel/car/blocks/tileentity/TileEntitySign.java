@@ -20,19 +20,19 @@ public class TileEntitySign extends TileEntityBase {
     }
 
     @Override
-    public CompoundNBT write(CompoundNBT compound) {
+    public CompoundNBT save(CompoundNBT compound) {
         for (int i = 0; i < text.length; i++) {
             compound.putString("text" + i, text[i]);
         }
-        return super.write(compound);
+        return super.save(compound);
     }
 
     @Override
-    public void read(BlockState blockState, CompoundNBT compound) {
+    public void load(BlockState blockState, CompoundNBT compound) {
         for (int i = 0; i < text.length; i++) {
             this.text[i] = compound.getString("text" + i);
         }
-        super.read(blockState, compound);
+        super.load(blockState, compound);
     }
 
     public String getText(int i) {
@@ -51,7 +51,7 @@ public class TileEntitySign extends TileEntityBase {
             return;
         }
         text[i] = s;
-        markDirty();
+        setChanged();
         synchronize();
     }
 
@@ -60,7 +60,7 @@ public class TileEntitySign extends TileEntityBase {
             return;
         }
         text = s;
-        markDirty();
+        setChanged();
         synchronize();
     }
 

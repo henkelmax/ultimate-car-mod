@@ -17,7 +17,7 @@ public class FluidCanolaMethanolMixFlowing extends CarFluidFlowing {
         super(
                 FluidAttributes.builder(
                         new ResourceLocation(Main.MODID, "block/canola_methanol_mix_still"),
-                        new ResourceLocation(Main.MODID, "block/canola_methanol_mix_flowing")).sound(SoundEvents.ITEM_BUCKET_FILL),
+                        new ResourceLocation(Main.MODID, "block/canola_methanol_mix_flowing")).sound(SoundEvents.BUCKET_FILL),
                 () -> ModBlocks.CANOLA_METHANOL_MIX,
                 () -> ModFluids.CANOLA_METHANOL_MIX,
                 () -> ModFluids.CANOLA_METHANOL_MIX_FLOWING,

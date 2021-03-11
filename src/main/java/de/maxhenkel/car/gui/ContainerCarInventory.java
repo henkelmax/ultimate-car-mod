@@ -25,7 +25,7 @@ public class ContainerCarInventory extends ContainerBase {
     }
 
     public int getRows() {
-        return car.getExternalInventory().getSizeInventory() / 9;
+        return car.getExternalInventory().getContainerSize() / 9;
     }
 
     @Override

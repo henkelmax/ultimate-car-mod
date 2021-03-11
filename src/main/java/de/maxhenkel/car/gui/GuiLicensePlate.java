@@ -32,63 +32,63 @@ public class GuiLicensePlate extends ScreenBase<ContainerLicensePlate> {
         super(GUI_TEXTURE, containerLicensePlate, playerInventory, title);
         this.containerLicensePlate = containerLicensePlate;
         this.player = playerInventory.player;
-        this.xSize = 176;
-        this.ySize = 84;
+        this.imageWidth = 176;
+        this.imageHeight = 84;
     }
 
     @Override
     protected void init() {
         super.init();
 
-        minecraft.keyboardListener.enableRepeatEvents(true);
+        minecraft.keyboardHandler.setSendRepeatsToGui(true);
 
-        addButton(new Button(guiLeft + 20, guiTop + ySize - 25, 50, 20, new TranslationTextComponent("button.car.submit"), button -> {
-            Main.SIMPLE_CHANNEL.sendToServer(new MessageEditLicensePlate(player, textField.getText()));
-            MessageEditLicensePlate.setItemText(player, textField.getText());
-            Minecraft.getInstance().displayGuiScreen(null);
+        addButton(new Button(leftPos + 20, topPos + imageHeight - 25, 50, 20, new TranslationTextComponent("button.car.submit"), button -> {
+            Main.SIMPLE_CHANNEL.sendToServer(new MessageEditLicensePlate(player, textField.getValue()));
+            MessageEditLicensePlate.setItemText(player, textField.getValue());
+            Minecraft.getInstance().setScreen(null);
         }));
-        addButton(new Button(guiLeft + xSize - 50 - 15, guiTop + ySize - 25, 50, 20, new TranslationTextComponent("button.car.cancel"), button -> {
-            Minecraft.getInstance().displayGuiScreen(null);
+        addButton(new Button(leftPos + imageWidth - 50 - 15, topPos + imageHeight - 25, 50, 20, new TranslationTextComponent("button.car.cancel"), button -> {
+            Minecraft.getInstance().setScreen(null);
         }));
 
-        textField = new TextFieldWidget(font, guiLeft + 30, guiTop + 30, 116, 16, new StringTextComponent(""));
+        textField = new TextFieldWidget(font, leftPos + 30, topPos + 30, 116, 16, new StringTextComponent(""));
         textField.setTextColor(-1);
-        textField.setDisabledTextColour(-1);
-        textField.setEnableBackgroundDrawing(true);
-        textField.setMaxStringLength(10);
-        textField.setText(ItemLicensePlate.getText(containerLicensePlate.getLicensePlate()));
+        textField.setTextColorUneditable(-1);
+        textField.setBordered(true);
+        textField.setMaxLength(10);
+        textField.setValue(ItemLicensePlate.getText(containerLicensePlate.getLicensePlate()));
 
         addButton(textField);
-        setFocusedDefault(textField);
+        setInitialFocus(textField);
     }
 
     @Override
     public void resize(Minecraft mc, int x, int y) {
-        String text = textField.getText();
+        String text = textField.getValue();
         init(mc, x, y);
-        textField.setText(text);
+        textField.setValue(text);
     }
 
     @Override
     public boolean keyPressed(int key, int a, int b) {
         if (key == GLFW.GLFW_KEY_ESCAPE) {
-            minecraft.player.closeScreen();
+            minecraft.player.closeContainer();
             return true;
         }
 
-        return textField.keyPressed(key, a, b) || textField.canWrite() || super.keyPressed(key, a, b);
+        return textField.keyPressed(key, a, b) || textField.canConsumeInput() || super.keyPressed(key, a, b);
     }
 
     @Override
-    protected void drawGuiContainerForegroundLayer(MatrixStack matrixStack, int mouseX, int mouseY) {
-        super.drawGuiContainerForegroundLayer(matrixStack, mouseX, mouseY);
-        drawCenteredString(matrixStack, font, containerLicensePlate.getLicensePlate().getDisplayName().getString(), xSize / 2, 5, TITLE_COLOR);
+    protected void renderLabels(MatrixStack matrixStack, int mouseX, int mouseY) {
+        super.renderLabels(matrixStack, mouseX, mouseY);
+        drawCenteredString(matrixStack, font, containerLicensePlate.getLicensePlate().getHoverName().getString(), imageWidth / 2, 5, TITLE_COLOR);
     }
 
     @Override
     public void onClose() {
         super.onClose();
-        minecraft.keyboardListener.enableRepeatEvents(false);
+        minecraft.keyboardHandler.setSendRepeatsToGui(false);
     }
 
     @Override

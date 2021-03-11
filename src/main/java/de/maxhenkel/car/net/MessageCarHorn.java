@@ -22,7 +22,7 @@ public class MessageCarHorn implements Message<MessageCarHorn> {
 
     public MessageCarHorn(boolean pressed, PlayerEntity player) {
         this.pressed = pressed;
-        this.uuid = player.getUniqueID();
+        this.uuid = player.getUUID();
     }
 
     @Override
@@ -36,12 +36,12 @@ public class MessageCarHorn implements Message<MessageCarHorn> {
             return;
         }
 
-        if (!context.getSender().getUniqueID().equals(uuid)) {
+        if (!context.getSender().getUUID().equals(uuid)) {
             Main.LOGGER.error("The UUID of the sender was not equal to the packet UUID");
             return;
         }
 
-        Entity riding = context.getSender().getRidingEntity();
+        Entity riding = context.getSender().getVehicle();
 
         if (!(riding instanceof EntityCarBase)) {
             return;
@@ -56,14 +56,14 @@ public class MessageCarHorn implements Message<MessageCarHorn> {
     @Override
     public MessageCarHorn fromBytes(PacketBuffer buf) {
         this.pressed = buf.readBoolean();
-        this.uuid = buf.readUniqueId();
+        this.uuid = buf.readUUID();
         return this;
     }
 
     @Override
     public void toBytes(PacketBuffer buf) {
         buf.writeBoolean(pressed);
-        buf.writeUniqueId(uuid);
+        buf.writeUUID(uuid);
     }
 
 }

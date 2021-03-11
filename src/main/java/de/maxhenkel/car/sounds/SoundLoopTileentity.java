@@ -16,10 +16,10 @@ public class SoundLoopTileentity extends TickableSound {
 
     public SoundLoopTileentity(SoundEvent event, SoundCategory category, TileEntity tileEntity) {
         super(event, category);
-        this.world = tileEntity.getWorld();
-        this.pos = tileEntity.getPos();
-        this.repeat = true;
-        this.repeatDelay = 0;
+        this.world = tileEntity.getLevel();
+        this.pos = tileEntity.getBlockPos();
+        this.looping = true;
+        this.delay = 0;
         this.x = pos.getX();
         this.y = pos.getY();
         this.z = pos.getZ();
@@ -29,17 +29,17 @@ public class SoundLoopTileentity extends TickableSound {
 
     @Override
     public void tick() {
-        if (isDonePlaying()) {
+        if (isStopped()) {
             return;
         }
 
         TileEntity tileEntity = getTileEntity();
 
-        if (tileEntity == null || tileEntity.getWorld() == null) {
+        if (tileEntity == null || tileEntity.getLevel() == null) {
             stop();
         }
 
-        if (tileEntity.getWorld().isRemote) {
+        if (tileEntity.getLevel().isClientSide) {
             ClientPlayerEntity player = Minecraft.getInstance().player;
             if (player == null || !player.isAlive()) {
                 stop();
@@ -61,11 +61,7 @@ public class SoundLoopTileentity extends TickableSound {
     }
 
     public TileEntity getTileEntity() {
-        return world.getTileEntity(pos);
-    }
-
-    public void stop() {
-        finishPlaying();
+        return world.getBlockEntity(pos);
     }
 
     public interface ISoundLoopable {

@@ -19,8 +19,8 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public abstract class EntityCarFuelBase extends EntityCarDamageBase implements IFluidHandler {
 
-    private static final DataParameter<Integer> FUEL_AMOUNT = EntityDataManager.createKey(EntityCarFuelBase.class, DataSerializers.VARINT);
-    private static final DataParameter<String> FUEL_TYPE = EntityDataManager.createKey(EntityCarFuelBase.class, DataSerializers.STRING);
+    private static final DataParameter<Integer> FUEL_AMOUNT = EntityDataManager.defineId(EntityCarFuelBase.class, DataSerializers.INT);
+    private static final DataParameter<String> FUEL_TYPE = EntityDataManager.defineId(EntityCarFuelBase.class, DataSerializers.STRING);
 
     public EntityCarFuelBase(EntityType type, World worldIn) {
         super(type, worldIn);
@@ -42,11 +42,11 @@ public abstract class EntityCarFuelBase extends EntityCarDamageBase implements I
             return;
         }
         if (fuel > 0 && isAccelerating()) {
-            if (ticksExisted % tickFuel == 0) {
+            if (tickCount % tickFuel == 0) {
                 acceleratingFuelTick();
             }
         } else if (fuel > 0 && isStarted()) {
-            if (ticksExisted % (tickFuel * 100) == 0) {
+            if (tickCount % (tickFuel * 100) == 0) {
                 idleFuelTick();
             }
         }
@@ -94,21 +94,21 @@ public abstract class EntityCarFuelBase extends EntityCarDamageBase implements I
     }
 
     @Override
-    protected void registerData() {
-        super.registerData();
-        dataManager.register(FUEL_AMOUNT, 0);
-        dataManager.register(FUEL_TYPE, "");
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        entityData.define(FUEL_AMOUNT, 0);
+        entityData.define(FUEL_TYPE, "");
     }
 
     public void setFuelAmount(int fuel) {
-        this.dataManager.set(FUEL_AMOUNT, fuel);
+        this.entityData.set(FUEL_AMOUNT, fuel);
     }
 
     public void setFuelType(String fluid) {
         if (fluid == null) {
             fluid = "";
         }
-        dataManager.set(FUEL_TYPE, fluid);
+        entityData.set(FUEL_TYPE, fluid);
     }
 
     public void setFuelType(Fluid fluid) {
@@ -116,7 +116,7 @@ public abstract class EntityCarFuelBase extends EntityCarDamageBase implements I
     }
 
     public String getFuelType() {
-        return this.dataManager.get(FUEL_TYPE);
+        return this.entityData.get(FUEL_TYPE);
     }
 
     @Nullable
@@ -130,7 +130,7 @@ public abstract class EntityCarFuelBase extends EntityCarDamageBase implements I
     }
 
     public int getFuelAmount() {
-        return this.dataManager.get(FUEL_AMOUNT);
+        return this.entityData.get(FUEL_AMOUNT);
     }
 
     public boolean isValidFuel(Fluid fluid) {
@@ -143,15 +143,15 @@ public abstract class EntityCarFuelBase extends EntityCarDamageBase implements I
     public abstract int getEfficiency(@Nullable Fluid fluid);
 
     @Override
-    protected void writeAdditional(CompoundNBT compound) {
-        super.writeAdditional(compound);
+    protected void addAdditionalSaveData(CompoundNBT compound) {
+        super.addAdditionalSaveData(compound);
         compound.putInt("fuel", getFuelAmount());
         compound.putString("fuel_type", getFuelType());
     }
 
     @Override
-    public void readAdditional(CompoundNBT compound) {
-        super.readAdditional(compound);
+    public void readAdditionalSaveData(CompoundNBT compound) {
+        super.readAdditionalSaveData(compound);
         setFuelAmount(compound.getInt("fuel"));
         if (compound.contains("fuel_type")) {
             setFuelType(compound.getString("fuel_type"));

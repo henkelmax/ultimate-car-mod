@@ -15,25 +15,25 @@ public abstract class SoundLoopCar extends TickableSound {
     public SoundLoopCar(EntityCarBase car, SoundEvent event, SoundCategory category) {
         super(event, category);
         this.car = car;
-        this.repeat = true;
-        this.repeatDelay = 0;
+        this.looping = true;
+        this.delay = 0;
         this.volume = Main.CLIENT_CONFIG.carVolume.get().floatValue();
         this.pitch = 1F;
         this.priority = true;
-        this.global = false;
-        this.attenuationType = AttenuationType.LINEAR;
+        this.relative = false;
+        this.attenuation = AttenuationType.LINEAR;
         this.updatePos();
     }
 
     public void updatePos() {
-        this.x = (float) car.getPosX();
-        this.y = (float) car.getPosY();
-        this.z = (float) car.getPosZ();
+        this.x = (float) car.getX();
+        this.y = (float) car.getY();
+        this.z = (float) car.getZ();
     }
 
     @Override
     public void tick() {
-        if (isDonePlaying()) {
+        if (isStopped()) {
             return;
         }
 
@@ -57,7 +57,7 @@ public abstract class SoundLoopCar extends TickableSound {
     }
 
     public void setDonePlaying() {
-        finishPlaying();
+        stop();
     }
 
     public abstract boolean shouldStopSound();

@@ -37,9 +37,9 @@ import javax.annotation.Nullable;
 
 public class BlockGasStation extends BlockOrientableHorizontal {
 
-    public static VoxelShape SHAPE_NORTH_SOUTH = Block.makeCuboidShape(2D, 0D, 5D, 14D, 31D, 11D);
-    public static VoxelShape SHAPE_NEAST_WEST = Block.makeCuboidShape(5D, 0D, 2D, 11D, 31D, 14D);
-    public static VoxelShape SHAPE_SLAB = Block.makeCuboidShape(0D, 0D, 0D, 16D, 8.01D, 16D);
+    public static VoxelShape SHAPE_NORTH_SOUTH = Block.box(2D, 0D, 5D, 14D, 31D, 11D);
+    public static VoxelShape SHAPE_NEAST_WEST = Block.box(5D, 0D, 2D, 11D, 31D, 14D);
+    public static VoxelShape SHAPE_SLAB = Block.box(0D, 0D, 0D, 16D, 8.01D, 16D);
 
     private static final DirectionalVoxelShape SHAPES = new DirectionalVoxelShape.Builder()
             .direction(Direction.NORTH,
@@ -60,15 +60,15 @@ public class BlockGasStation extends BlockOrientableHorizontal {
             ).build();
 
     public BlockGasStation() {
-        super("gas_station", Material.IRON, MaterialColor.IRON, SoundType.METAL, 4F, 50F);
+        super("gas_station", Material.METAL, MaterialColor.METAL, SoundType.METAL, 4F, 50F);
     }
 
     @Override
     public Item toItem() {
-        return new BlockItem(this, new Item.Properties().group(ModItemGroups.TAB_CAR)) {
+        return new BlockItem(this, new Item.Properties().tab(ModItemGroups.TAB_CAR)) {
             @Override
             protected boolean canPlace(BlockItemUseContext context, BlockState state) {
-                if (!context.getWorld().isAirBlock(context.getPos().up())) {
+                if (!context.getLevel().isEmptyBlock(context.getClickedPos().above())) {
                     return false;
                 }
                 return super.canPlace(context, state);
@@ -77,8 +77,8 @@ public class BlockGasStation extends BlockOrientableHorizontal {
     }
 
     @Override
-    public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
-        TileEntity te = worldIn.getTileEntity(pos);
+    public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
+        TileEntity te = worldIn.getBlockEntity(pos);
 
         if (!(te instanceof TileEntityGasStation)) {
             return ActionResultType.FAIL;
@@ -86,7 +86,7 @@ public class BlockGasStation extends BlockOrientableHorizontal {
 
         TileEntityGasStation station = (TileEntityGasStation) te;
 
-        ItemStack stack = player.getHeldItem(handIn);
+        ItemStack stack = player.getItemInHand(handIn);
 
         if (station.isOwner(player) || !station.hasTrade()) {
             FluidStack fluidStack = FluidUtil.getFluidContained(stack).orElse(FluidStack.EMPTY);
@@ -107,7 +107,7 @@ public class BlockGasStation extends BlockOrientableHorizontal {
             }
         }
 
-        if (!player.isSneaking()) {
+        if (!player.isShiftKeyDown()) {
             if (player instanceof ServerPlayerEntity) {
                 TileEntityContainerProvider.openGui((ServerPlayerEntity) player, station, (i, playerInventory, playerEntity) -> new ContainerGasStation(i, station, playerInventory));
             }
@@ -124,51 +124,51 @@ public class BlockGasStation extends BlockOrientableHorizontal {
 
     @Override
     public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-        return SHAPES.get(state.get(FACING));
+        return SHAPES.get(state.getValue(FACING));
     }
 
     @Override
-    public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
-        if (worldIn.isAirBlock(pos.up())) {
-            worldIn.setBlockState(pos.up(), ModBlocks.FUEL_STATION_TOP.getDefaultState().with(ModBlocks.FUEL_STATION_TOP.FACING, state.get(FACING)));
+    public void setPlacedBy(World worldIn, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
+        if (worldIn.isEmptyBlock(pos.above())) {
+            worldIn.setBlockAndUpdate(pos.above(), ModBlocks.FUEL_STATION_TOP.defaultBlockState().setValue(ModBlocks.FUEL_STATION_TOP.FACING, state.getValue(FACING)));
         }
 
-        TileEntity te = worldIn.getTileEntity(pos);
+        TileEntity te = worldIn.getBlockEntity(pos);
 
         if (te instanceof TileEntityGasStation && placer instanceof PlayerEntity) {
             TileEntityGasStation station = (TileEntityGasStation) te;
             station.setOwner((PlayerEntity) placer);
         }
 
-        super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
+        super.setPlacedBy(worldIn, pos, state, placer, stack);
     }
 
     @Override
-    public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
-        super.onReplaced(state, worldIn, pos, newState, isMoving);
+    public void onRemove(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
+        super.onRemove(state, worldIn, pos, newState, isMoving);
 
-        BlockState stateUp = worldIn.getBlockState(pos.up());
+        BlockState stateUp = worldIn.getBlockState(pos.above());
         stateUp.getBlock();
         if (stateUp.getBlock().equals(ModBlocks.FUEL_STATION_TOP)) {
-            worldIn.destroyBlock(pos.up(), false);
+            worldIn.destroyBlock(pos.above(), false);
         }
 
         dropItems(worldIn, pos);
     }
 
     public static void dropItems(World worldIn, BlockPos pos) {
-        TileEntity te = worldIn.getTileEntity(pos);
+        TileEntity te = worldIn.getBlockEntity(pos);
 
         if (te instanceof TileEntityGasStation) {
             TileEntityGasStation station = (TileEntityGasStation) te;
-            InventoryHelper.dropInventoryItems(worldIn, pos, station.getInventory());
-            InventoryHelper.dropInventoryItems(worldIn, pos, station.getTradingInventory());
+            InventoryHelper.dropContents(worldIn, pos, station.getInventory());
+            InventoryHelper.dropContents(worldIn, pos, station.getTradingInventory());
         }
     }
 
     @Nullable
     @Override
-    public TileEntity createNewTileEntity(IBlockReader worldIn) {
+    public TileEntity newBlockEntity(IBlockReader worldIn) {
         return new TileEntityGasStation();
     }
 

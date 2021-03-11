@@ -42,16 +42,16 @@ public abstract class EntityCarBase extends EntityVehicleBase {
     @OnlyIn(Dist.CLIENT)
     private SoundLoopHigh highLoop;
 
-    private static final DataParameter<Float> SPEED = EntityDataManager.createKey(EntityCarBase.class, DataSerializers.FLOAT);
-    private static final DataParameter<Boolean> STARTED = EntityDataManager.createKey(EntityCarBase.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> FORWARD = EntityDataManager.createKey(EntityCarBase.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> BACKWARD = EntityDataManager.createKey(EntityCarBase.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> LEFT = EntityDataManager.createKey(EntityCarBase.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> RIGHT = EntityDataManager.createKey(EntityCarBase.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Float> SPEED = EntityDataManager.defineId(EntityCarBase.class, DataSerializers.FLOAT);
+    private static final DataParameter<Boolean> STARTED = EntityDataManager.defineId(EntityCarBase.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> FORWARD = EntityDataManager.defineId(EntityCarBase.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> BACKWARD = EntityDataManager.defineId(EntityCarBase.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> LEFT = EntityDataManager.defineId(EntityCarBase.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> RIGHT = EntityDataManager.defineId(EntityCarBase.class, DataSerializers.BOOLEAN);
 
     public EntityCarBase(EntityType type, World worldIn) {
         super(type, worldIn);
-        this.stepHeight = 0.5F;
+        this.maxUpStep = 0.5F;
     }
 
     public abstract float getMaxSpeed();
@@ -82,9 +82,9 @@ public abstract class EntityCarBase extends EntityVehicleBase {
         controlCar();
         checkPush();
 
-        move(MoverType.SELF, getMotion());
+        move(MoverType.SELF, getDeltaMovement());
 
-        if (world.isRemote) {
+        if (level.isClientSide) {
             updateSounds();
         }
 
@@ -92,46 +92,46 @@ public abstract class EntityCarBase extends EntityVehicleBase {
     }
 
     public void centerCar() {
-        Direction facing = getHorizontalFacing();
+        Direction facing = getDirection();
         switch (facing) {
             case SOUTH:
-                rotationYaw = 0F;
+                yRot = 0F;
                 break;
             case NORTH:
-                rotationYaw = 180F;
+                yRot = 180F;
                 break;
             case EAST:
-                rotationYaw = -90F;
+                yRot = -90F;
                 break;
             case WEST:
-                rotationYaw = 90F;
+                yRot = 90F;
                 break;
         }
     }
 
     @Override
-    public boolean canCollide(Entity entityIn) {
+    public boolean canCollideWith(Entity entityIn) {
         if (Main.SERVER_CONFIG.damageEntities.get() && entityIn instanceof LivingEntity && !getPassengers().contains(entityIn)) {
             if (entityIn.getBoundingBox().intersects(getBoundingBox())) {
                 float speed = getSpeed();
                 if (speed > 0.35F) {
                     float damage = speed * 10;
-                    entityIn.attackEntityFrom(DamageSourceCar.DAMAGE_CAR, damage);
+                    entityIn.hurt(DamageSourceCar.DAMAGE_CAR, damage);
                 }
 
             }
         }
-        return super.canCollide(entityIn);
+        return super.canCollideWith(entityIn);
     }
 
 
     public void checkPush() {
-        List<PlayerEntity> list = world.getEntitiesWithinAABB(PlayerEntity.class, getBoundingBox().expand(0.2, 0, 0.2).expand(-0.2, 0, -0.2));
+        List<PlayerEntity> list = level.getEntitiesOfClass(PlayerEntity.class, getBoundingBox().expandTowards(0.2, 0, 0.2).expandTowards(-0.2, 0, -0.2));
 
         for (PlayerEntity player : list) {
-            if (!player.isPassenger(this) && player.isSneaking()) {
-                double motX = calculateMotionX(0.05F, player.rotationYaw);
-                double motZ = calculateMotionZ(0.05F, player.rotationYaw);
+            if (!player.hasPassenger(this) && player.isShiftKeyDown()) {
+                double motX = calculateMotionX(0.05F, player.yRot);
+                double motZ = calculateMotionZ(0.05F, player.yRot);
                 move(MoverType.PLAYER, new Vector3d(motX, 0, motZ));
                 return;
             }
@@ -172,7 +172,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
         if (sound == null) {
             return false;
         }
-        return Minecraft.getInstance().getSoundHandler().isPlaying(sound);
+        return Minecraft.getInstance().getSoundManager().isActive(sound);
     }
 
     public void destroyCar(PlayerEntity player, boolean dropParts) {
@@ -180,7 +180,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
     }
 
     private void controlCar() {
-        if (!isBeingRidden()) {
+        if (!isVehicle()) {
             setForward(false);
             setBackward(false);
             setLeft(false);
@@ -229,35 +229,35 @@ public abstract class EntityCarBase extends EntityVehicleBase {
             deltaRotation += rotationSpeed;
         }
 
-        rotationYaw += deltaRotation;
-        float delta = Math.abs(rotationYaw - prevRotationYaw);
-        while (rotationYaw > 180F) {
-            rotationYaw -= 360F;
-            prevRotationYaw = rotationYaw - delta;
+        yRot += deltaRotation;
+        float delta = Math.abs(yRot - yRotO);
+        while (yRot > 180F) {
+            yRot -= 360F;
+            yRotO = yRot - delta;
         }
-        while (rotationYaw <= -180F) {
-            rotationYaw += 360F;
-            prevRotationYaw = delta + rotationYaw;
+        while (yRot <= -180F) {
+            yRot += 360F;
+            yRotO = delta + yRot;
         }
 
-        if (collidedHorizontally) {
-            if (world.isRemote && !collidedLastTick) {
+        if (horizontalCollision) {
+            if (level.isClientSide && !collidedLastTick) {
                 onCollision(speed);
                 collidedLastTick = true;
             }
         } else {
-            setMotion(calculateMotionX(getSpeed(), rotationYaw), getMotion().y, calculateMotionZ(getSpeed(), rotationYaw));
-            if (world.isRemote) {
+            setDeltaMovement(calculateMotionX(getSpeed(), yRot), getDeltaMovement().y, calculateMotionZ(getSpeed(), yRot));
+            if (level.isClientSide) {
                 collidedLastTick = false;
             }
         }
     }
 
     public float getModifier() {
-        BlockPos pos = new BlockPos(getPosX(), getPosY() - 0.1D, getPosZ());
-        BlockState state = world.getBlockState(pos);
+        BlockPos pos = new BlockPos(getX(), getY() - 0.1D, getZ());
+        BlockState state = level.getBlockState(pos);
 
-        if (state.isAir(world, pos) || Main.SERVER_CONFIG.carDriveBlockList.stream().anyMatch(tag -> state.getBlock().isIn(tag))) {
+        if (state.isAir(level, pos) || Main.SERVER_CONFIG.carDriveBlockList.stream().anyMatch(tag -> state.getBlock().is(tag))) {
             return Main.SERVER_CONFIG.carOnroadSpeed.get().floatValue();
         } else {
             return Main.SERVER_CONFIG.carOffroadSpeed.get().floatValue();
@@ -265,11 +265,11 @@ public abstract class EntityCarBase extends EntityVehicleBase {
     }
 
     public void onCollision(float speed) {
-        if (world.isRemote) {
+        if (level.isClientSide) {
             Main.SIMPLE_CHANNEL.sendToServer(new MessageCrash(speed, this));
         }
         setSpeed(0.01F);
-        setMotion(0D, getMotion().y, 0D);
+        setDeltaMovement(0D, getDeltaMovement().y, 0D);
     }
 
     public boolean canPlayerDriveCar(PlayerEntity player) {
@@ -283,11 +283,11 @@ public abstract class EntityCarBase extends EntityVehicleBase {
     }
 
     private void updateGravity() {
-        if (hasNoGravity()) {
-            setMotion(getMotion().x, 0D, getMotion().z);
+        if (isNoGravity()) {
+            setDeltaMovement(getDeltaMovement().x, 0D, getDeltaMovement().z);
             return;
         }
-        setMotion(getMotion().x, getMotion().y - 0.2D, getMotion().z);
+        setDeltaMovement(getDeltaMovement().x, getDeltaMovement().y - 0.2D, getDeltaMovement().z);
     }
 
     public void updateControls(boolean forward, boolean backward, boolean left, boolean right, PlayerEntity player) {
@@ -312,7 +312,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
             setRight(right);
             needsUpdate = true;
         }
-        if (this.world.isRemote && needsUpdate) {
+        if (this.level.isClientSide && needsUpdate) {
             Main.SIMPLE_CHANNEL.sendToServer(new MessageControlCar(forward, backward, left, right, player));
         }
     }
@@ -339,11 +339,11 @@ public abstract class EntityCarBase extends EntityVehicleBase {
     }
 
     @Override
-    public ActionResultType processInitialInteract(PlayerEntity player, Hand hand) {
+    public ActionResultType interact(PlayerEntity player, Hand hand) {
         if (!canPlayerEnterCar(player)) {
             return ActionResultType.FAIL;
         }
-        return super.processInitialInteract(player, hand);
+        return super.interact(player, hand);
     }
 
     public float getKilometerPerHour() {
@@ -363,32 +363,32 @@ public abstract class EntityCarBase extends EntityVehicleBase {
     }
 
     public void openCarGUI(PlayerEntity player) {
-        if (world.isRemote) {
+        if (level.isClientSide) {
             Main.SIMPLE_CHANNEL.sendToServer(new MessageCarGui(player));
         }
     }
 
     public boolean isAccelerating() {
-        boolean b = (isForward() || isBackward()) && !collidedHorizontally;
+        boolean b = (isForward() || isBackward()) && !horizontalCollision;
         return b && isStarted();
     }
 
     @Override
-    protected void registerData() {
-        dataManager.register(STARTED, false);
-        dataManager.register(SPEED, 0F);
-        dataManager.register(FORWARD, false);
-        dataManager.register(BACKWARD, false);
-        dataManager.register(LEFT, false);
-        dataManager.register(RIGHT, false);
+    protected void defineSynchedData() {
+        entityData.define(STARTED, false);
+        entityData.define(SPEED, 0F);
+        entityData.define(FORWARD, false);
+        entityData.define(BACKWARD, false);
+        entityData.define(LEFT, false);
+        entityData.define(RIGHT, false);
     }
 
     public void setSpeed(float speed) {
-        this.dataManager.set(SPEED, speed);
+        this.entityData.set(SPEED, speed);
     }
 
     public float getSpeed() {
-        return this.dataManager.get(SPEED);
+        return this.entityData.get(SPEED);
     }
 
     public void setStarted(boolean started) {
@@ -407,75 +407,75 @@ public abstract class EntityCarBase extends EntityVehicleBase {
             setLeft(false);
             setRight(false);
         }
-        dataManager.set(STARTED, started);
+        entityData.set(STARTED, started);
     }
 
     public boolean isStarted() {
-        return dataManager.get(STARTED);
+        return entityData.get(STARTED);
     }
 
     public void setForward(boolean forward) {
-        dataManager.set(FORWARD, forward);
+        entityData.set(FORWARD, forward);
     }
 
     public boolean isForward() {
         if (getDriver() == null || !canPlayerDriveCar(getDriver())) {
             return false;
         }
-        return dataManager.get(FORWARD);
+        return entityData.get(FORWARD);
     }
 
     public void setBackward(boolean backward) {
-        dataManager.set(BACKWARD, backward);
+        entityData.set(BACKWARD, backward);
     }
 
     public boolean isBackward() {
         if (getDriver() == null || !canPlayerDriveCar(getDriver())) {
             return false;
         }
-        return dataManager.get(BACKWARD);
+        return entityData.get(BACKWARD);
     }
 
     public void setLeft(boolean left) {
-        dataManager.set(LEFT, left);
+        entityData.set(LEFT, left);
     }
 
     public boolean isLeft() {
-        return dataManager.get(LEFT);
+        return entityData.get(LEFT);
     }
 
     public void setRight(boolean right) {
-        dataManager.set(RIGHT, right);
+        entityData.set(RIGHT, right);
     }
 
     public boolean isRight() {
-        return dataManager.get(RIGHT);
+        return entityData.get(RIGHT);
     }
 
     @Override
-    public void readAdditional(CompoundNBT compound) {
+    public void readAdditionalSaveData(CompoundNBT compound) {
         setStarted(compound.getBoolean("started"), false, false);
     }
 
     @Override
-    protected void writeAdditional(CompoundNBT compound) {
+    protected void addAdditionalSaveData(CompoundNBT compound) {
         compound.putBoolean("started", isStarted());
     }
 
     public void playStopSound() {
-        ModSounds.playSound(getStopSound(), world, getPosition(), null, SoundCategory.MASTER, 1F);
+        ModSounds.playSound(getStopSound(), level, blockPosition(), null, SoundCategory.MASTER, 1F);
     }
 
     public void playFailSound() {
-        ModSounds.playSound(getFailSound(), world, getPosition(), null, SoundCategory.MASTER, 1F);
+        ModSounds.playSound(getFailSound(), level, blockPosition(), null, SoundCategory.MASTER, 1F);
     }
 
     public void playCrashSound() {
-        ModSounds.playSound(getCrashSound(), world, getPosition(), null, SoundCategory.MASTER, 1F);
+        ModSounds.playSound(getCrashSound(), level, blockPosition(), null, SoundCategory.MASTER, 1F);
     }
 
     public void playHornSound() {
-        ModSounds.playSound(getHornSound(), world, getPosition(), null, SoundCategory.MASTER, 1F);
+        ModSounds.playSound(getHornSound(), level, blockPosition(), null, SoundCategory.MASTER, 1F);
     }
 
     public abstract SoundEvent getStopSound();
@@ -498,7 +498,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
     public void checkIdleLoop() {
         if (!isSoundPlaying(idleLoop)) {
             idleLoop = new SoundLoopIdle(this, getIdleSound(), SoundCategory.MASTER);
-            ModSounds.playSoundLoop(idleLoop, world);
+            ModSounds.playSoundLoop(idleLoop, level);
         }
     }
 
@@ -506,7 +506,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
     public void checkHighLoop() {
         if (!isSoundPlaying(highLoop)) {
             highLoop = new SoundLoopHigh(this, getHighSound(), SoundCategory.MASTER);
-            ModSounds.playSoundLoop(highLoop, world);
+            ModSounds.playSoundLoop(highLoop, level);
         }
     }
 
@@ -514,12 +514,12 @@ public abstract class EntityCarBase extends EntityVehicleBase {
     public void checkStartLoop() {
         if (!isSoundPlaying(startLoop)) {
             startLoop = new SoundLoopStart(this, getStartSound(), SoundCategory.MASTER);
-            ModSounds.playSoundLoop(startLoop, world);
+            ModSounds.playSoundLoop(startLoop, level);
         }
     }
 
     public void onHornPressed(PlayerEntity player) {
-        if (world.isRemote) {
+        if (level.isClientSide) {
             Main.SIMPLE_CHANNEL.sendToServer(new MessageCarHorn(true, player));
         } else {
             if (this instanceof EntityCarBatteryBase) {
@@ -534,7 +534,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
             playHornSound();
             if (Main.SERVER_CONFIG.hornFlee.get()) {
                 double radius = 15;
-                List<MobEntity> list = world.getEntitiesWithinAABB(MobEntity.class, new AxisAlignedBB(getPosX() - radius, getPosY() - radius, getPosZ() - radius, getPosX() + radius, getPosY() + radius, getPosZ() + radius));
+                List<MobEntity> list = level.getEntitiesOfClass(MobEntity.class, new AxisAlignedBB(getX() - radius, getY() - radius, getZ() - radius, getX() + radius, getY() + radius, getZ() + radius));
                 for (MobEntity ent : list) {
                     fleeEntity(ent);
                 }
@@ -544,13 +544,13 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 
     public void fleeEntity(MobEntity entity) {
         double fleeDistance = 10;
-        Vector3d vecCar = new Vector3d(getPosX(), getPosY(), getPosZ());
-        Vector3d vecEntity = new Vector3d(entity.getPosX(), entity.getPosY(), entity.getPosZ());
+        Vector3d vecCar = new Vector3d(getX(), getY(), getZ());
+        Vector3d vecEntity = new Vector3d(entity.getX(), entity.getY(), entity.getZ());
         Vector3d fleeDir = vecEntity.subtract(vecCar);
         fleeDir = fleeDir.normalize();
         Vector3d fleePos = new Vector3d(vecEntity.x + fleeDir.x * fleeDistance, vecEntity.y + fleeDir.y * fleeDistance, vecEntity.z + fleeDir.z * fleeDistance);
 
-        entity.getNavigator().tryMoveToXYZ(fleePos.x, fleePos.y, fleePos.z, 2.5);
+        entity.getNavigation().moveTo(fleePos.x, fleePos.y, fleePos.z, 2.5);
     }
 
 }

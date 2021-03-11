@@ -18,7 +18,7 @@ public class TankItemTileEntityRenderer extends ItemStackTileEntityRenderer {
     }
 
     @Override
-    public void func_239207_a_(ItemStack itemStackIn, ItemCameraTransforms.TransformType transformType, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int combinedLightIn, int combinedOverlayIn) {
+    public void renderByItem(ItemStack itemStackIn, ItemCameraTransforms.TransformType transformType, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int combinedLightIn, int combinedOverlayIn) {
         if (tileEntityTank == null) {
             tileEntityTank = new TileEntityTank();
         }

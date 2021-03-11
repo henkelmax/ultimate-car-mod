@@ -20,28 +20,28 @@ public class SlotBattery extends Slot {
     }
 
     @Override
-    public void putStack(ItemStack stack) {
+    public void set(ItemStack stack) {
         if (!stack.getItem().equals(ModItems.BATTERY)) {
             return;
         }
 
-        int energy = stack.getMaxDamage() - stack.getDamage();
+        int energy = stack.getMaxDamage() - stack.getDamageValue();
 
         int energyToFill = car.getMaxBatteryLevel() - car.getBatteryLevel();
 
         int fill = Math.min(energy, energyToFill);
 
-        stack.setDamage(stack.getMaxDamage() - (energy - fill));
+        stack.setDamageValue(stack.getMaxDamage() - (energy - fill));
 
         car.setBatteryLevel(car.getBatteryLevel() + fill);
 
-        if (!player.inventory.addItemStackToInventory(stack)) {
-            InventoryHelper.spawnItemStack(car.world, car.getPosX(), car.getPosY(), car.getPosZ(), stack);
+        if (!player.inventory.add(stack)) {
+            InventoryHelper.dropItemStack(car.level, car.getX(), car.getY(), car.getZ(), stack);
         }
     }
 
     @Override
-    public boolean isItemValid(ItemStack stack) {
+    public boolean mayPlace(ItemStack stack) {
         return stack.getItem().equals(ModItems.BATTERY);
     }
 

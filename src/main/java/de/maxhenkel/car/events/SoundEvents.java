@@ -46,7 +46,7 @@ public class SoundEvents {
 
             Screen parent = (Screen) parentField.get(sounds);
 
-            event.setGui(new CarOptionsSoundsScreen(parent, Minecraft.getInstance().gameSettings));
+            event.setGui(new CarOptionsSoundsScreen(parent, Minecraft.getInstance().options));
         } catch (Exception e) {
             e.printStackTrace();
         }

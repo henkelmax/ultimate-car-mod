@@ -24,7 +24,7 @@ public class SlotFuel extends Slot {
     }
 
     @Override
-    public void putStack(ItemStack stack) {
+    public void set(ItemStack stack) {
         if (!stack.getItem().equals(ModItems.CANISTER)) {
             return;
         }
@@ -32,16 +32,16 @@ public class SlotFuel extends Slot {
         boolean success = ItemCanister.fuelFluidHandler(stack, car);
 
         if (success) {
-            ModSounds.playSound(SoundEvents.BLOCK_BREWING_STAND_BREW, car.world, car.getPosition(), null, SoundCategory.MASTER);
+            ModSounds.playSound(SoundEvents.BREWING_STAND_BREW, car.level, car.blockPosition(), null, SoundCategory.MASTER);
         }
 
-        if (!player.inventory.addItemStackToInventory(stack)) {
-            InventoryHelper.spawnItemStack(car.world, car.getPosX(), car.getPosY(), car.getPosZ(), stack);
+        if (!player.inventory.add(stack)) {
+            InventoryHelper.dropItemStack(car.level, car.getX(), car.getY(), car.getZ(), stack);
         }
     }
 
     @Override
-    public boolean isItemValid(ItemStack stack) {
+    public boolean mayPlace(ItemStack stack) {
         return stack.getItem().equals(ModItems.CANISTER);
     }
 

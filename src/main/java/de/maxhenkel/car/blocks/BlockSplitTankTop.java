@@ -24,21 +24,21 @@ import net.minecraft.world.World;
 public class BlockSplitTankTop extends BlockBase {
 
     public BlockSplitTankTop() {
-        super(Properties.create(Material.IRON).hardnessAndResistance(3F).sound(SoundType.STONE));
+        super(Properties.of(Material.METAL).strength(3F).sound(SoundType.STONE));
         setRegistryName(new ResourceLocation(Main.MODID, "split_tank_top"));
     }
 
     @Override
-    public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
-        return ModBlocks.SPLIT_TANK.onBlockActivated(worldIn.getBlockState(pos.down()), worldIn, pos.down(), player, handIn, hit);
+    public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
+        return ModBlocks.SPLIT_TANK.use(worldIn.getBlockState(pos.below()), worldIn, pos.below(), player, handIn, hit);
     }
 
     @Override
-    public PushReaction getPushReaction(BlockState state) {
+    public PushReaction getPistonPushReaction(BlockState state) {
         return PushReaction.BLOCK;
     }
 
-    private static final VoxelShape SHAPE = Block.makeCuboidShape(0D, -16D, 0D, 16D, 8D, 16D);
+    private static final VoxelShape SHAPE = Block.box(0D, -16D, 0D, 16D, 8D, 16D);
 
     @Override
     public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
@@ -46,37 +46,37 @@ public class BlockSplitTankTop extends BlockBase {
     }
 
     @Override
-    public BlockRenderType getRenderType(BlockState state) {
+    public BlockRenderType getRenderShape(BlockState state) {
         return BlockRenderType.MODEL;
     }
 
     @Override
-    public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
+    public void onRemove(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
         if (state.getBlock() != newState.getBlock()) {
-            super.onReplaced(state, worldIn, pos, newState, isMoving);
+            super.onRemove(state, worldIn, pos, newState, isMoving);
 
-            BlockState stateDown = worldIn.getBlockState(pos.down());
+            BlockState stateDown = worldIn.getBlockState(pos.below());
             if (stateDown != null && stateDown.getBlock().equals(ModBlocks.SPLIT_TANK)) {
-                worldIn.destroyBlock(pos.down(), false);
+                worldIn.destroyBlock(pos.below(), false);
             }
         }
-        super.onReplaced(state, worldIn, pos, newState, isMoving);
+        super.onRemove(state, worldIn, pos, newState, isMoving);
     }
 
     @Override
     public boolean removedByPlayer(BlockState state, World world, BlockPos pos, PlayerEntity player, boolean willHarvest, FluidState fluid) {
-        BlockState stateDown = world.getBlockState(pos.down());
-        if (stateDown != null && stateDown.getBlock() != null && stateDown.getBlock().equals(ModBlocks.SPLIT_TANK) && !player.abilities.isCreativeMode) {
-            ModBlocks.SPLIT_TANK.harvestBlock(world, player, pos.down(), world.getBlockState(pos.down()), world.getTileEntity(pos.down()), player.getHeldItemMainhand());
+        BlockState stateDown = world.getBlockState(pos.below());
+        if (stateDown != null && stateDown.getBlock() != null && stateDown.getBlock().equals(ModBlocks.SPLIT_TANK) && !player.abilities.instabuild) {
+            ModBlocks.SPLIT_TANK.playerDestroy(world, player, pos.below(), world.getBlockState(pos.below()), world.getBlockEntity(pos.below()), player.getMainHandItem());
         }
         return super.removedByPlayer(state, world, pos, player, willHarvest, fluid);
     }
 
     @Override
     public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, PlayerEntity player) {
-        BlockState stateDown = world.getBlockState(pos.down());
+        BlockState stateDown = world.getBlockState(pos.below());
         if (stateDown.getBlock().equals(ModBlocks.SPLIT_TANK)) {
-            return ModBlocks.SPLIT_TANK.getPickBlock(stateDown, target, world, pos.down(), player);
+            return ModBlocks.SPLIT_TANK.getPickBlock(stateDown, target, world, pos.below(), player);
         }
         return super.getPickBlock(stateDown, target, world, pos, player);
     }

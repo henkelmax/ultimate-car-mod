@@ -9,7 +9,7 @@ public class SoundLoopStarting extends SoundLoopCar {
 
     public SoundLoopStarting(EntityCarBase car, SoundEvent event, SoundCategory category) {
         super(car, event, category);
-        this.repeat = true;
+        this.looping = true;
     }
 
     @Override

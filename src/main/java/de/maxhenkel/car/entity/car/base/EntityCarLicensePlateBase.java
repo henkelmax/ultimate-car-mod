@@ -17,28 +17,28 @@ import net.minecraft.world.World;
 
 public abstract class EntityCarLicensePlateBase extends EntityCarLockBase {
 
-    private static final DataParameter<String> LICENSE_PLATE = EntityDataManager.createKey(EntityCarLicensePlateBase.class, DataSerializers.STRING);
+    private static final DataParameter<String> LICENSE_PLATE = EntityDataManager.defineId(EntityCarLicensePlateBase.class, DataSerializers.STRING);
 
     public EntityCarLicensePlateBase(EntityType type, World worldIn) {
         super(type, worldIn);
     }
 
     @Override
-    protected void registerData() {
-        super.registerData();
-        this.dataManager.register(LICENSE_PLATE, "");
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(LICENSE_PLATE, "");
     }
 
     @Override
-    public ActionResultType processInitialInteract(PlayerEntity player, Hand hand) {
-        if (player.isSneaking() && !isLocked()) {
+    public ActionResultType interact(PlayerEntity player, Hand hand) {
+        if (player.isShiftKeyDown() && !isLocked()) {
             if (hasLicensePlateHolder()) {
-                ItemStack stack = player.getHeldItem(hand);
+                ItemStack stack = player.getItemInHand(hand);
                 if (stack.getItem() instanceof ItemLicensePlate) {
                     String text = ItemLicensePlate.getText(stack);
                     if (!text.isEmpty()) {
                         ItemUtils.decrItemStack(stack, player);
-                        player.setHeldItem(hand, stack);
+                        player.setItemInHand(hand, stack);
                         setLicensePlate(text);
                         return ActionResultType.CONSUME;
                     }
@@ -46,7 +46,7 @@ public abstract class EntityCarLicensePlateBase extends EntityCarLockBase {
             }
         }
 
-        return super.processInitialInteract(player, hand);
+        return super.interact(player, hand);
     }
 
     public boolean hasLicensePlateHolder() {
@@ -63,22 +63,22 @@ public abstract class EntityCarLicensePlateBase extends EntityCarLockBase {
     }
 
     public String getLicensePlate() {
-        return this.dataManager.get(LICENSE_PLATE);
+        return this.entityData.get(LICENSE_PLATE);
     }
 
     public void setLicensePlate(String plate) {
-        dataManager.set(LICENSE_PLATE, plate);
+        entityData.set(LICENSE_PLATE, plate);
     }
 
     @Override
-    protected void writeAdditional(CompoundNBT compound) {
-        super.writeAdditional(compound);
+    protected void addAdditionalSaveData(CompoundNBT compound) {
+        super.addAdditionalSaveData(compound);
         compound.putString("license_plate", getLicensePlate());
     }
 
     @Override
-    public void readAdditional(CompoundNBT compound) {
-        super.readAdditional(compound);
+    public void readAdditionalSaveData(CompoundNBT compound) {
+        super.readAdditionalSaveData(compound);
         setLicensePlate(compound.getString("license_plate"));
     }
 

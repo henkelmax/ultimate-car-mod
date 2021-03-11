@@ -29,10 +29,10 @@ public class BlockPaint extends BlockBase implements IItemBlock {
     public static final DirectionProperty FACING = DirectionProperty.create("facing", Direction.Plane.HORIZONTAL);
 
     public BlockPaint(EnumPaintType type, boolean isYellow) {
-        super(Properties.create(new Material.Builder(MaterialColor.AIR).build()).hardnessAndResistance(2F).sound(SoundType.STONE).notSolid());
+        super(Properties.of(new Material.Builder(MaterialColor.NONE).build()).strength(2F).sound(SoundType.STONE).noOcclusion());
         setRegistryName(new ResourceLocation(Main.MODID, type.name + (isYellow ? "_yellow" : "")));
 
-        setDefaultState(stateContainer.getBaseState().with(FACING, Direction.NORTH));
+        registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH));
     }
 
     @Override
@@ -40,7 +40,7 @@ public class BlockPaint extends BlockBase implements IItemBlock {
         return new BlockItem(this, new Item.Properties()) {
             @Override
             protected boolean canPlace(BlockItemUseContext context, BlockState state) {
-                if (!canPlaceBlockAt(context.getWorld(), context.getPos())) {
+                if (!canPlaceBlockAt(context.getLevel(), context.getClickedPos())) {
                     return false;
                 }
                 return super.canPlace(context, state);
@@ -52,18 +52,18 @@ public class BlockPaint extends BlockBase implements IItemBlock {
     @Nullable
     @Override
     public BlockState getStateForPlacement(BlockItemUseContext context) {
-        return this.getDefaultState().with(FACING, context.getPlacementHorizontalFacing().getOpposite());
+        return this.defaultBlockState().setValue(FACING, context.getHorizontalDirection().getOpposite());
     }
 
     @Override
-    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
         builder.add(FACING);
     }
 
-    private static final VoxelShape SHAPE = Block.makeCuboidShape(0D, 0D, 0D, 16D, 0.25D, 16D);
+    private static final VoxelShape SHAPE = Block.box(0D, 0D, 0D, 16D, 0.25D, 16D);
 
     @Override
-    public VoxelShape getRenderShape(BlockState state, IBlockReader worldIn, BlockPos pos) {
+    public VoxelShape getOcclusionShape(BlockState state, IBlockReader worldIn, BlockPos pos) {
         return SHAPE;
     }
 
@@ -73,7 +73,7 @@ public class BlockPaint extends BlockBase implements IItemBlock {
     }
 
     @Override
-    public VoxelShape getRaytraceShape(BlockState state, IBlockReader worldIn, BlockPos pos) {
+    public VoxelShape getInteractionShape(BlockState state, IBlockReader worldIn, BlockPos pos) {
         return VoxelShapes.empty();
     }
 
@@ -102,16 +102,16 @@ public class BlockPaint extends BlockBase implements IItemBlock {
     }
 
     public static boolean canPlaceBlockAt(World worldIn, BlockPos pos) {
-        return hasSolidSideOnTop(worldIn, pos.down());
+        return canSupportRigidBlock(worldIn, pos.below());
     }
 
     @Override
-    public BlockRenderType getRenderType(BlockState state) {
+    public BlockRenderType getRenderShape(BlockState state) {
         return BlockRenderType.MODEL;
     }
 
     @Override
-    public boolean isReplaceable(BlockState state, BlockItemUseContext useContext) {
+    public boolean canBeReplaced(BlockState state, BlockItemUseContext useContext) {
         return false;
     }
 

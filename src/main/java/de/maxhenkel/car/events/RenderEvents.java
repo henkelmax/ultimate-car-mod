@@ -33,7 +33,7 @@ public class RenderEvents {
 
         PlayerEntity player = mc.player;
 
-        Entity e = player.getRidingEntity();
+        Entity e = player.getVehicle();
 
         if (e == null) {
             return;
@@ -56,17 +56,17 @@ public class RenderEvents {
     public void renderFuelBar(MatrixStack matrixStack, float percent) {
         percent = MathHelper.clamp(percent, 0F, 1F);
         Minecraft mc = Minecraft.getInstance();
-        int x = mc.getMainWindow().getScaledWidth() / 2 - 91;
+        int x = mc.getWindow().getGuiScaledWidth() / 2 - 91;
 
-        mc.getTextureManager().bindTexture(AbstractGui.GUI_ICONS_LOCATION);
+        mc.getTextureManager().bind(AbstractGui.GUI_ICONS_LOCATION);
 
-        int k = mc.getMainWindow().getScaledHeight() - 32 + 3;
-        mc.ingameGUI.blit(matrixStack, x, k, 0, 64, 182, 5);
+        int k = mc.getWindow().getGuiScaledHeight() - 32 + 3;
+        mc.gui.blit(matrixStack, x, k, 0, 64, 182, 5);
 
         int j = (int) (percent * 182F);
 
         if (j > 0) {
-            mc.ingameGUI.blit(matrixStack, x, k, 0, 69, j, 5);
+            mc.gui.blit(matrixStack, x, k, 0, 69, j, 5);
         }
     }
 
@@ -74,13 +74,13 @@ public class RenderEvents {
         Minecraft mc = Minecraft.getInstance();
 
         String s = String.valueOf(MathUtils.round(Math.abs(speed), 2));
-        int i1 = (mc.getMainWindow().getScaledWidth() - mc.ingameGUI.getFontRenderer().getStringWidth(s)) / 2;
-        int j1 = mc.getMainWindow().getScaledHeight() - 31 - 4;
-        mc.ingameGUI.getFontRenderer().drawString(matrixStack, s, i1 + 1, j1, 0);
-        mc.ingameGUI.getFontRenderer().drawString(matrixStack, s, i1 - 1, j1, 0);
-        mc.ingameGUI.getFontRenderer().drawString(matrixStack, s, i1, j1 + 1, 0);
-        mc.ingameGUI.getFontRenderer().drawString(matrixStack, s, i1, j1 - 1, 0);
-        mc.ingameGUI.getFontRenderer().drawString(matrixStack, s, i1, j1, 8453920);
+        int i1 = (mc.getWindow().getGuiScaledWidth() - mc.gui.getFont().width(s)) / 2;
+        int j1 = mc.getWindow().getGuiScaledHeight() - 31 - 4;
+        mc.gui.getFont().draw(matrixStack, s, i1 + 1, j1, 0);
+        mc.gui.getFont().draw(matrixStack, s, i1 - 1, j1, 0);
+        mc.gui.getFont().draw(matrixStack, s, i1, j1 + 1, 0);
+        mc.gui.getFont().draw(matrixStack, s, i1, j1 - 1, 0);
+        mc.gui.getFont().draw(matrixStack, s, i1, j1, 8453920);
 
     }
 
@@ -101,18 +101,18 @@ public class RenderEvents {
     @SubscribeEvent
     public void renderPlayerPre(RenderPlayerEvent.Pre event) {
         PlayerEntity player = event.getPlayer();
-        if (player.getRidingEntity() instanceof EntityCarBase) {
-            EntityCarBase car = (EntityCarBase) event.getPlayer().getRidingEntity();
-            event.getMatrixStack().push();
+        if (player.getVehicle() instanceof EntityCarBase) {
+            EntityCarBase car = (EntityCarBase) event.getPlayer().getVehicle();
+            event.getMatrixStack().pushPose();
             event.getMatrixStack().scale(EntityVehicleBase.SCALE_FACTOR, EntityVehicleBase.SCALE_FACTOR, EntityVehicleBase.SCALE_FACTOR);
-            event.getMatrixStack().translate(0D, (event.getPlayer().getHeight() - (event.getPlayer().getHeight() * EntityVehicleBase.SCALE_FACTOR)) / 1.5D + car.getPlayerYOffset(), 0D);
+            event.getMatrixStack().translate(0D, (event.getPlayer().getBbHeight() - (event.getPlayer().getBbHeight() * EntityVehicleBase.SCALE_FACTOR)) / 1.5D + car.getPlayerYOffset(), 0D);
         }
     }
 
     @SubscribeEvent
     public void renderPlayerPost(RenderPlayerEvent.Post event) {
-        if (event.getPlayer().getRidingEntity() instanceof EntityCarBase) {
-            event.getMatrixStack().pop();
+        if (event.getPlayer().getVehicle() instanceof EntityCarBase) {
+            event.getMatrixStack().popPose();
         }
     }
 

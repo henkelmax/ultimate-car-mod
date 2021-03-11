@@ -18,14 +18,14 @@ import javax.annotation.Nullable;
 public class ItemRepairKit extends Item {
 
     public ItemRepairKit() {
-        super(new Item.Properties().maxStackSize(1).group(ModItemGroups.TAB_CAR));
+        super(new Item.Properties().stacksTo(1).tab(ModItemGroups.TAB_CAR));
         setRegistryName(new ResourceLocation(Main.MODID, "repair_kit"));
     }
 
     @Override
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        tooltip.add(new TranslationTextComponent("tooltip.repair_kit").mergeStyle(TextFormatting.GRAY));
-        super.addInformation(stack, worldIn, tooltip, flagIn);
+    public void appendHoverText(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+        tooltip.add(new TranslationTextComponent("tooltip.repair_kit").withStyle(TextFormatting.GRAY));
+        super.appendHoverText(stack, worldIn, tooltip, flagIn);
     }
 
 }

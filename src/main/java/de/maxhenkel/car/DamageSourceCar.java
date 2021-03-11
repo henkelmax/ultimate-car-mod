@@ -11,22 +11,22 @@ public class DamageSourceCar extends DamageSource {
     }
 
     @Override
-    public boolean canHarmInCreative() {
+    public boolean isBypassInvul() {
         return false;
     }
 
     @Override
-    public boolean isDamageAbsolute() {
+    public boolean isBypassMagic() {
         return false;
     }
 
     @Override
-    public boolean isDifficultyScaled() {
+    public boolean scalesWithDifficulty() {
         return false;
     }
 
     @Override
-    public boolean isUnblockable() {
+    public boolean isBypassArmor() {
         return true;
     }
 
@@ -36,12 +36,12 @@ public class DamageSourceCar extends DamageSource {
     }
 
     @Override
-    public boolean isFireDamage() {
+    public boolean isFire() {
         return false;
     }
 
     @Override
-    public boolean isMagicDamage() {
+    public boolean isMagic() {
         return false;
     }
 

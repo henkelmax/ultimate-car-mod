@@ -24,44 +24,44 @@ public class SlotFluidFilter extends Slot {
     }
 
     @Override
-    public boolean canTakeStack(PlayerEntity playerIn) {
+    public boolean mayPickup(PlayerEntity playerIn) {
         tile.setFilter(null);
-        ItemUtils.removeStackFromSlot(inventory, index);
-        onSlotChanged();
+        ItemUtils.removeStackFromSlot(container, index);
+        setChanged();
         return false;
     }
 
     @Override
-    public boolean isItemValid(ItemStack stack) {
+    public boolean mayPlace(ItemStack stack) {
         setFluidContained(stack);
         return false;
     }
 
     private void setFluidContained(ItemStack stack) {
         if (stack == null) {
-            ItemUtils.removeStackFromSlot(inventory, index);
-            onSlotChanged();
+            ItemUtils.removeStackFromSlot(container, index);
+            setChanged();
             return;
         }
 
         FluidStack fluidStack = FluidUtil.getFluidContained(stack).orElse(null);
 
         if (fluidStack == null || fluidStack.getAmount() <= 0) {
-            ItemUtils.removeStackFromSlot(inventory, index);
-            onSlotChanged();
+            ItemUtils.removeStackFromSlot(container, index);
+            setChanged();
             return;
         }
 
         tile.setFilter(stack);
 
-        Item i = fluidStack.getFluid().getFilledBucket();
+        Item i = fluidStack.getFluid().getBucket();
 
         if (i == null) {
-            inventory.setInventorySlotContents(index, stack.copy());
-            onSlotChanged();
+            container.setItem(index, stack.copy());
+            setChanged();
         } else {
-            inventory.setInventorySlotContents(index, new ItemStack(i));
-            onSlotChanged();
+            container.setItem(index, new ItemStack(i));
+            setChanged();
         }
     }
 

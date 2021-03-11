@@ -14,7 +14,7 @@ public class OilMillRecipe extends EnergyFluidProducerRecipe {
     }
 
     @Override
-    public ItemStack getIcon() {
+    public ItemStack getToastSymbol() {
         return new ItemStack(ModBlocks.OIL_MILL);
     }
 

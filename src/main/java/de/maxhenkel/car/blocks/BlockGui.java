@@ -33,28 +33,28 @@ public abstract class BlockGui<T extends TileEntity> extends BlockBase implement
     public static final DirectionProperty FACING = DirectionProperty.create("facing", Direction.Plane.HORIZONTAL);
 
     protected BlockGui(String name, Material material, SoundType soundType, float hardness, float resistance) {
-        this(name, Properties.create(material, MaterialColor.IRON).hardnessAndResistance(hardness, resistance).sound(soundType));
+        this(name, Properties.of(material, MaterialColor.METAL).strength(hardness, resistance).sound(soundType));
     }
 
     protected BlockGui(String name, Block.Properties properties) {
         super(properties);
         setRegistryName(new ResourceLocation(Main.MODID, name));
-        setDefaultState(stateContainer.getBaseState().with(POWERED, false).with(FACING, Direction.NORTH));
+        registerDefaultState(stateDefinition.any().setValue(POWERED, false).setValue(FACING, Direction.NORTH));
     }
 
     @Override
     public Item toItem() {
-        return new BlockItem(this, new Item.Properties().group(ModItemGroups.TAB_CAR)).setRegistryName(getRegistryName());
+        return new BlockItem(this, new Item.Properties().tab(ModItemGroups.TAB_CAR)).setRegistryName(getRegistryName());
     }
 
     @Override
-    public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
-        if (!player.isSneaking()) {
+    public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
+        if (!player.isShiftKeyDown()) {
             if (!(player instanceof ServerPlayerEntity)) {
                 return ActionResultType.SUCCESS;
             }
 
-            TileEntity tileEntity = worldIn.getTileEntity(pos);
+            TileEntity tileEntity = worldIn.getBlockEntity(pos);
 
             try {
                 T tile = (T) tileEntity;
@@ -71,48 +71,48 @@ public abstract class BlockGui<T extends TileEntity> extends BlockBase implement
     public abstract void openGui(BlockState state, World worldIn, BlockPos pos, ServerPlayerEntity player, Hand handIn, T tileEntity);
 
     @Override
-    public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
-        TileEntity tileentity = worldIn.getTileEntity(pos);
+    public void onRemove(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
+        TileEntity tileentity = worldIn.getBlockEntity(pos);
 
         if (state.getBlock() != newState.getBlock()) {
             if (tileentity instanceof IInventory) {
-                InventoryHelper.dropInventoryItems(worldIn, pos, (IInventory) tileentity);
-                worldIn.updateComparatorOutputLevel(pos, this);
+                InventoryHelper.dropContents(worldIn, pos, (IInventory) tileentity);
+                worldIn.updateNeighbourForOutputSignal(pos, this);
             }
         }
 
-        super.onReplaced(state, worldIn, pos, newState, isMoving);
+        super.onRemove(state, worldIn, pos, newState, isMoving);
     }
 
     @Nullable
     @Override
     public BlockState getStateForPlacement(BlockItemUseContext context) {
-        return this.getDefaultState().with(FACING, context.getPlacementHorizontalFacing().getOpposite()).with(POWERED, false);
+        return this.defaultBlockState().setValue(FACING, context.getHorizontalDirection().getOpposite()).setValue(POWERED, false);
     }
 
     @Override
-    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
         builder.add(FACING, POWERED);
     }
 
     @Override
-    public BlockRenderType getRenderType(BlockState state) {
+    public BlockRenderType getRenderShape(BlockState state) {
         return BlockRenderType.MODEL;
     }
 
     public void setPowered(World world, BlockPos pos, BlockState state, boolean powered) {
 
-        if (state.get(POWERED).equals(powered)) {
+        if (state.getValue(POWERED).equals(powered)) {
             return;
         }
 
-        TileEntity tileentity = world.getTileEntity(pos);
+        TileEntity tileentity = world.getBlockEntity(pos);
 
-        world.setBlockState(pos, state.with(POWERED, powered), 2);
+        world.setBlock(pos, state.setValue(POWERED, powered), 2);
 
         if (tileentity != null) {
-            tileentity.validate();
-            world.setTileEntity(pos, tileentity);
+            tileentity.clearRemoved();
+            world.setBlockEntity(pos, tileentity);
         }
     }
 

@@ -18,37 +18,37 @@ public class SlotPresent extends Slot {
     }
 
     @Override
-    public ItemStack getStack() {
+    public ItemStack getItem() {
         return stack;
     }
 
     @Override
-    public void putStack(ItemStack stack) {
+    public void set(ItemStack stack) {
 
     }
 
     @Override
-    public void onSlotChanged() {
+    public void setChanged() {
 
     }
 
     @Override
-    public int getSlotStackLimit() {
+    public int getMaxStackSize() {
         return 0;
     }
 
     @Override
-    public ItemStack decrStackSize(int amount) {
+    public ItemStack remove(int amount) {
         return ItemStack.EMPTY;
     }
 
     @Override
-    public boolean isItemValid(ItemStack stack) {
+    public boolean mayPlace(ItemStack stack) {
         return false;
     }
 
     @Override
-    public boolean canTakeStack(PlayerEntity playerIn) {
+    public boolean mayPickup(PlayerEntity playerIn) {
         return false;
     }
 }

@@ -20,7 +20,7 @@ public class MessageCrash implements Message<MessageCrash> {
 
     public MessageCrash(float speed, EntityCarBase car) {
         this.speed = speed;
-        this.uuid = car.getUniqueID();
+        this.uuid = car.getUUID();
     }
 
     @Override
@@ -30,7 +30,7 @@ public class MessageCrash implements Message<MessageCrash> {
 
     @Override
     public void executeServerSide(NetworkEvent.Context context) {
-        Entity riding = context.getSender().getRidingEntity();
+        Entity riding = context.getSender().getVehicle();
 
         if (!(riding instanceof EntityCarBase)) {
             return;
@@ -38,7 +38,7 @@ public class MessageCrash implements Message<MessageCrash> {
 
         EntityCarBase car = (EntityCarBase) riding;
 
-        if (!car.getUniqueID().equals(uuid)) {
+        if (!car.getUUID().equals(uuid)) {
             return;
         }
 
@@ -48,14 +48,14 @@ public class MessageCrash implements Message<MessageCrash> {
     @Override
     public MessageCrash fromBytes(PacketBuffer buf) {
         this.speed = buf.readFloat();
-        this.uuid = buf.readUniqueId();
+        this.uuid = buf.readUUID();
         return this;
     }
 
     @Override
     public void toBytes(PacketBuffer buf) {
         buf.writeFloat(speed);
-        buf.writeUniqueId(uuid);
+        buf.writeUUID(uuid);
     }
 
 }

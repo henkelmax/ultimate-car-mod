@@ -18,9 +18,9 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 public abstract class EntityCarBatteryBase extends EntityCarTemperatureBase {
 
-    private static final DataParameter<Integer> BATTERY_LEVEL = EntityDataManager.createKey(EntityCarBatteryBase.class, DataSerializers.VARINT);
-    private static final DataParameter<Integer> STARTING_TIME = EntityDataManager.createKey(EntityCarBatteryBase.class, DataSerializers.VARINT);
-    private static final DataParameter<Boolean> STARTING = EntityDataManager.createKey(EntityCarBatteryBase.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Integer> BATTERY_LEVEL = EntityDataManager.defineId(EntityCarBatteryBase.class, DataSerializers.INT);
+    private static final DataParameter<Integer> STARTING_TIME = EntityDataManager.defineId(EntityCarBatteryBase.class, DataSerializers.INT);
+    private static final DataParameter<Boolean> STARTING = EntityDataManager.defineId(EntityCarBatteryBase.class, DataSerializers.BOOLEAN);
 
     @OnlyIn(Dist.CLIENT)
     private SoundLoopStarting startingLoop;
@@ -43,10 +43,10 @@ public abstract class EntityCarBatteryBase extends EntityCarTemperatureBase {
     public void tick() {
         super.tick();
 
-        if (world.isRemote) {
+        if (level.isClientSide) {
             if (isStarted()) {
                 timeSinceStarted++;
-                if (ticksExisted % 2 == 0) { //How often particles will spawn
+                if (tickCount % 2 == 0) { //How often particles will spawn
                     spawnParticles(getSpeed() > 0.1F);
                 }
             } else {
@@ -56,7 +56,7 @@ public abstract class EntityCarBatteryBase extends EntityCarTemperatureBase {
         }
 
         if (isStarting()) {
-            if (ticksExisted % 2 == 0) {
+            if (tickCount % 2 == 0) {
                 setBatteryLevel(getBatteryLevel() - getBatteryUsage());
             }
 
@@ -91,17 +91,17 @@ public abstract class EntityCarBatteryBase extends EntityCarTemperatureBase {
                 chargingRate = 1;
             }
 
-            if (ticksExisted % 20 == 0) {
+            if (tickCount % 20 == 0) {
                 setBatteryLevel(getBatteryLevel() + chargingRate);
             }
         }
     }
 
     public void spawnParticles(boolean driving) {
-        if (!world.isRemote) {
+        if (!level.isClientSide) {
             return;
         }
-        Vector3d lookVec = getLookVec().normalize();
+        Vector3d lookVec = getLookAngle().normalize();
         double offX = lookVec.x * -1D;
         double offY = lookVec.y;
         double offZ = lookVec.z * -1D;
@@ -143,11 +143,11 @@ public abstract class EntityCarBatteryBase extends EntityCarTemperatureBase {
 
     }
 
-    private void spawnParticle(IParticleData particleTypes, double offX, double offY, double offZ, double speedX, double speedZ, double random) {
-        world.addParticle(particleTypes,
-                getPosX() + offX + (rand.nextDouble() * random - random / 2D),
-                getPosY() + offY + (rand.nextDouble() * random - random / 2D) + getCarHeight() / 8F,
-                getPosZ() + offZ + (rand.nextDouble() * random - random / 2D),
+    private void spawnParticle(IParticleData particleTypes, double offX, double offY, double offZ, double speedX, double speedZ, double r) {
+        level.addParticle(particleTypes,
+                getX() + offX + (random.nextDouble() * r - r / 2D),
+                getY() + offY + (random.nextDouble() * r - r / 2D) + getCarHeight() / 8F,
+                getZ() + offZ + (random.nextDouble() * r - r / 2D),
                 speedX, 0.0D, speedZ);
     }
 
@@ -156,7 +156,7 @@ public abstract class EntityCarBatteryBase extends EntityCarTemperatureBase {
     }
 
     public int getTimeToStart() {
-        int time = rand.nextInt(10) + 5;
+        int time = random.nextInt(10) + 5;
 
         float temp = getTemperature();
         if (temp < 0F) {
@@ -172,9 +172,9 @@ public abstract class EntityCarBatteryBase extends EntityCarTemperatureBase {
         float batteryPerc = getBatteryPercentage();
 
         if (batteryPerc < 0.5F) {
-            time += 20 + rand.nextInt(10);
+            time += 20 + random.nextInt(10);
         } else if (batteryPerc < 0.75F) {
-            time += 10 + rand.nextInt(10);
+            time += 10 + random.nextInt(10);
         }
 
         return time;
@@ -202,23 +202,23 @@ public abstract class EntityCarBatteryBase extends EntityCarTemperatureBase {
     }
 
     @Override
-    protected void registerData() {
-        super.registerData();
-        this.dataManager.register(BATTERY_LEVEL, getMaxBatteryLevel());
-        this.dataManager.register(STARTING_TIME, 0);
-        this.dataManager.register(STARTING, Boolean.FALSE);
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(BATTERY_LEVEL, getMaxBatteryLevel());
+        this.entityData.define(STARTING_TIME, 0);
+        this.entityData.define(STARTING, Boolean.FALSE);
     }
 
     public int getStartingTime() {
-        return this.dataManager.get(STARTING_TIME);
+        return this.entityData.get(STARTING_TIME);
     }
 
     public void setStartingTime(int time) {
-        this.dataManager.set(STARTING_TIME, time);
+        this.entityData.set(STARTING_TIME, time);
     }
 
     public boolean isStarting() {
-        return this.dataManager.get(STARTING);
+        return this.entityData.get(STARTING);
     }
 
     /**
@@ -247,7 +247,7 @@ public abstract class EntityCarBatteryBase extends EntityCarTemperatureBase {
                 }
             }
         }
-        this.dataManager.set(STARTING, starting);
+        this.entityData.set(STARTING, starting);
     }
 
     public float getBatterySoundPitchLevel() {
@@ -279,11 +279,11 @@ public abstract class EntityCarBatteryBase extends EntityCarTemperatureBase {
         } else if (level > getMaxBatteryLevel()) {
             level = getMaxBatteryLevel();
         }
-        this.dataManager.set(BATTERY_LEVEL, level);
+        this.entityData.set(BATTERY_LEVEL, level);
     }
 
     public int getBatteryLevel() {
-        return this.dataManager.get(BATTERY_LEVEL);
+        return this.entityData.get(BATTERY_LEVEL);
     }
 
     public int getMaxBatteryLevel() {
@@ -299,14 +299,14 @@ public abstract class EntityCarBatteryBase extends EntityCarTemperatureBase {
     }
 
     @Override
-    public void readAdditional(CompoundNBT compound) {
-        super.readAdditional(compound);
+    public void readAdditionalSaveData(CompoundNBT compound) {
+        super.readAdditionalSaveData(compound);
         setBatteryLevel(compound.getInt("battery"));
     }
 
     @Override
-    protected void writeAdditional(CompoundNBT compound) {
-        super.writeAdditional(compound);
+    protected void addAdditionalSaveData(CompoundNBT compound) {
+        super.addAdditionalSaveData(compound);
         compound.putInt("battery", getBatteryLevel());
     }
 
@@ -314,13 +314,13 @@ public abstract class EntityCarBatteryBase extends EntityCarTemperatureBase {
     public void checkStartingLoop() {
         if (!isSoundPlaying(startingLoop)) {
             startingLoop = new SoundLoopStarting(this, getStartingSound(), SoundCategory.MASTER);
-            ModSounds.playSoundLoop(startingLoop, world);
+            ModSounds.playSoundLoop(startingLoop, level);
         }
     }
 
     @Override
     public void playFailSound() {
-        ModSounds.playSound(getFailSound(), world, getPosition(), null, SoundCategory.MASTER, 1F, getBatterySoundPitchLevel());
+        ModSounds.playSound(getFailSound(), level, blockPosition(), null, SoundCategory.MASTER, 1F, getBatterySoundPitchLevel());
     }
 
 }

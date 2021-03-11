@@ -30,17 +30,17 @@ public class TileentitySpecialRendererGasStation extends TileEntityRenderer<Tile
             return;
         }
 
-        matrixStack.push();
+        matrixStack.pushPose();
         matrixStack.translate(0.5D, 1D, 0.5D);
-        matrixStack.rotate(Vector3f.XP.rotationDegrees(180F));
+        matrixStack.mulPose(Vector3f.XP.rotationDegrees(180F));
 
         Direction dir = target.getDirection();
 
-        matrixStack.rotate(Vector3f.YP.rotationDegrees(dir.getHorizontalAngle()));
+        matrixStack.mulPose(Vector3f.YP.rotationDegrees(dir.toYRot()));
 
-        FontRenderer renderer = renderDispatcher.getFontRenderer();
+        FontRenderer font = renderer.getFont();
 
-        int textWidth = renderer.getStringWidth(name);
+        int textWidth = font.width(name);
         float textScale = 0.36F / textWidth;
         textScale = Math.min(textScale, 0.01F);
 
@@ -50,19 +50,19 @@ public class TileentitySpecialRendererGasStation extends TileEntityRenderer<Tile
 
         matrixStack.scale(textScale, textScale, textScale);
 
-        renderer.renderString(name, 0F, 0F, 0x0, false, matrixStack.getLast().getMatrix(), buffer, false, 0, combinedLightIn);
-        matrixStack.pop();
+        font.drawInBatch(name, 0F, 0F, 0x0, false, matrixStack.last().pose(), buffer, false, 0, combinedLightIn);
+        matrixStack.popPose();
 
-        if (minecraft.getRenderManager().isDebugBoundingBox() && !Minecraft.getInstance().isReducedDebug()) {
-            matrixStack.push();
+        if (minecraft.getEntityRenderDispatcher().shouldRenderHitBoxes() && !Minecraft.getInstance().showOnlyReducedInfo()) {
+            matrixStack.pushPose();
             renderBoundingBox(target, partialTicks, matrixStack, buffer, combinedLightIn, combinedOverlayIn);
-            matrixStack.pop();
+            matrixStack.popPose();
         }
     }
 
     public void renderBoundingBox(TileEntityGasStation target, float partialTicks, MatrixStack matrixStack, IRenderTypeBuffer buffer, int combinedLightIn, int combinedOverlayIn) {
-        AxisAlignedBB axisalignedbb = target.getDetectionBox().offset(-target.getPos().getX(), -target.getPos().getY(), -target.getPos().getZ());
-        WorldRenderer.drawBoundingBox(matrixStack, buffer.getBuffer(RenderType.getLines()), axisalignedbb, 0F, 0F, 1F, 1F);
+        AxisAlignedBB axisalignedbb = target.getDetectionBox().move(-target.getBlockPos().getX(), -target.getBlockPos().getY(), -target.getBlockPos().getZ());
+        WorldRenderer.renderLineBox(matrixStack, buffer.getBuffer(RenderType.lines()), axisalignedbb, 0F, 0F, 1F, 1F);
     }
 
 }

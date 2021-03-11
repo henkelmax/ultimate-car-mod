@@ -23,7 +23,7 @@ public class SlotRepairKit extends Slot {
     }
 
     @Override
-    public void putStack(ItemStack stack) {
+    public void set(ItemStack stack) {
         if (!stack.getItem().equals(ModItems.REPAIR_KIT)) {
             return;
         }
@@ -36,16 +36,16 @@ public class SlotRepairKit extends Slot {
             if (damage >= 0) {
                 car.setDamage(damage);
             }
-            ModSounds.playSound(ModSounds.RATCHET, car.world, car.getPosition(), null, SoundCategory.BLOCKS);
+            ModSounds.playSound(ModSounds.RATCHET, car.level, car.blockPosition(), null, SoundCategory.BLOCKS);
         }
 
-        if (!player.inventory.addItemStackToInventory(stack)) {
-            InventoryHelper.spawnItemStack(car.world, car.getPosX(), car.getPosY(), car.getPosZ(), stack);
+        if (!player.inventory.add(stack)) {
+            InventoryHelper.dropItemStack(car.level, car.getX(), car.getY(), car.getZ(), stack);
         }
     }
 
     @Override
-    public boolean isItemValid(ItemStack stack) {
+    public boolean mayPlace(ItemStack stack) {
         return stack.getItem().equals(ModItems.REPAIR_KIT);
     }
 

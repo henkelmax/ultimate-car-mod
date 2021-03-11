@@ -35,18 +35,18 @@ public class BlockCarWorkshop extends BlockBase implements ITileEntityProvider, 
     public static final BooleanProperty VALID = BooleanProperty.create("valid");
 
     protected BlockCarWorkshop() {
-        super(Properties.create(Material.IRON, MaterialColor.GRAY).hardnessAndResistance(3F).sound(SoundType.METAL));
+        super(Properties.of(Material.METAL, MaterialColor.COLOR_GRAY).strength(3F).sound(SoundType.METAL));
         setRegistryName(new ResourceLocation(Main.MODID, "car_workshop"));
-        this.setDefaultState(stateContainer.getBaseState().with(VALID, false));
+        this.registerDefaultState(stateDefinition.any().setValue(VALID, false));
     }
 
     @Override
     public Item toItem() {
-        return new BlockItem(this, new Item.Properties().group(ModItemGroups.TAB_CAR)).setRegistryName(getRegistryName());
+        return new BlockItem(this, new Item.Properties().tab(ModItemGroups.TAB_CAR)).setRegistryName(getRegistryName());
     }
 
     @Override
-    public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
+    public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
         TileEntityCarWorkshop workshop = getOwnTileEntity(worldIn, pos);
 
         if (workshop == null) {
@@ -64,7 +64,7 @@ public class BlockCarWorkshop extends BlockBase implements ITileEntityProvider, 
     }
 
     public TileEntityCarWorkshop getOwnTileEntity(World world, BlockPos pos) {
-        TileEntity tile = world.getTileEntity(pos);
+        TileEntity tile = world.getBlockEntity(pos);
         if (tile == null) {
             return null;
         }
@@ -77,8 +77,8 @@ public class BlockCarWorkshop extends BlockBase implements ITileEntityProvider, 
     }
 
     @Override
-    public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
-        super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
+    public void setPlacedBy(World worldIn, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
+        super.setPlacedBy(worldIn, pos, state, placer, stack);
 
         TileEntityCarWorkshop workshop = getOwnTileEntity(worldIn, pos);
 
@@ -90,7 +90,7 @@ public class BlockCarWorkshop extends BlockBase implements ITileEntityProvider, 
     }
 
     @Override
-    public BlockRenderType getRenderType(BlockState state) {
+    public BlockRenderType getRenderShape(BlockState state) {
         return BlockRenderType.MODEL;
     }
 
@@ -98,44 +98,44 @@ public class BlockCarWorkshop extends BlockBase implements ITileEntityProvider, 
     @Nullable
     @Override
     public BlockState getStateForPlacement(BlockItemUseContext context) {
-        return this.getDefaultState().with(VALID, false);
+        return this.defaultBlockState().setValue(VALID, false);
     }
 
     @Override
-    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
         builder.add(VALID);
     }
 
 
     public void setValid(World world, BlockPos pos, BlockState state, boolean valid) {
-        if (state.get(VALID).equals(valid)) {
+        if (state.getValue(VALID).equals(valid)) {
             return;
         }
 
-        TileEntity tileentity = world.getTileEntity(pos);
+        TileEntity tileentity = world.getBlockEntity(pos);
 
-        world.setBlockState(pos, state.with(VALID, valid), 2);
+        world.setBlock(pos, state.setValue(VALID, valid), 2);
 
         if (tileentity != null) {
-            tileentity.validate();
-            world.setTileEntity(pos, tileentity);
+            tileentity.clearRemoved();
+            world.setBlockEntity(pos, tileentity);
         }
     }
 
     @Override
-    public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
+    public void onRemove(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
         TileEntityCarWorkshop workshop = getOwnTileEntity(worldIn, pos);
 
         if (workshop != null) {
-            InventoryHelper.dropInventoryItems(worldIn, pos, workshop);
+            InventoryHelper.dropContents(worldIn, pos, workshop);
         }
 
-        super.onReplaced(state, worldIn, pos, newState, isMoving);
+        super.onRemove(state, worldIn, pos, newState, isMoving);
     }
 
     @Nullable
     @Override
-    public TileEntity createNewTileEntity(IBlockReader worldIn) {
+    public TileEntity newBlockEntity(IBlockReader worldIn) {
         return new TileEntityCarWorkshop();
     }
 }

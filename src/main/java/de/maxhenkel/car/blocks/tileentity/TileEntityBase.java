@@ -27,32 +27,32 @@ public abstract class TileEntityBase extends TileEntity implements INameable {
     }
 
     public void synchronize() {
-        if (!world.isRemote && world instanceof ServerWorld) {
-            CompoundNBT last = write(new CompoundNBT());
+        if (!level.isClientSide && level instanceof ServerWorld) {
+            CompoundNBT last = save(new CompoundNBT());
             if (compoundLast == null || !compoundLast.equals(last)) {
-                ServerWorld serverWorld = (ServerWorld) world;
+                ServerWorld serverWorld = (ServerWorld) level;
 
-                MessageSyncTileEntity msg = new MessageSyncTileEntity(pos, last);
-                EntityUtils.forEachPlayerAround(serverWorld, getPos(), 128D, playerEntity -> NetUtils.sendTo(Main.SIMPLE_CHANNEL, playerEntity, msg));
+                MessageSyncTileEntity msg = new MessageSyncTileEntity(worldPosition, last);
+                EntityUtils.forEachPlayerAround(serverWorld, worldPosition, 128D, playerEntity -> NetUtils.sendTo(Main.SIMPLE_CHANNEL, playerEntity, msg));
                 compoundLast = last;
             }
         }
     }
 
     public void synchronize(int ticks) {
-        if (world.getGameTime() % ticks == 0) {
+        if (level.getGameTime() % ticks == 0) {
             synchronize();
         }
     }
 
     @Override
     public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
-        read(getBlockState(), pkt.getNbtCompound());
+        load(getBlockState(), pkt.getTag());
     }
 
     @Override
     public CompoundNBT getUpdateTag() {
-        return this.write(new CompoundNBT());
+        return this.save(new CompoundNBT());
     }
 
     public abstract ITextComponent getTranslatedName();
@@ -75,18 +75,18 @@ public abstract class TileEntityBase extends TileEntity implements INameable {
     public abstract IIntArray getFields();
 
     @Override
-    public CompoundNBT write(CompoundNBT compound) {
+    public CompoundNBT save(CompoundNBT compound) {
         if (name != null) {
             compound.putString("CustomName", ITextComponent.Serializer.toJson(name));
         }
-        return super.write(compound);
+        return super.save(compound);
     }
 
     @Override
-    public void read(BlockState blockState, CompoundNBT compound) {
+    public void load(BlockState blockState, CompoundNBT compound) {
         if (compound.contains("CustomName")) {
-            name = ITextComponent.Serializer.getComponentFromJson(compound.getString("CustomName"));
+            name = ITextComponent.Serializer.fromJson(compound.getString("CustomName"));
         }
-        super.read(blockState, compound);
+        super.load(blockState, compound);
     }
 }

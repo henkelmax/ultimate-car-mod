@@ -32,20 +32,20 @@ public class GuiGasStationAdmin extends ScreenBase<ContainerGasStationAdmin> {
         this.gasStation = gasStation.getGasStation();
         this.inventoryPlayer = playerInventory;
 
-        xSize = 176;
-        ySize = 197;
+        imageWidth = 176;
+        imageHeight = 197;
     }
 
     @Override
     protected void init() {
         super.init();
 
-        minecraft.keyboardListener.enableRepeatEvents(true);
-        textField = new TextFieldWidget(font, guiLeft + 54, guiTop + 22, 100, 16, new TranslationTextComponent("gas_station.admin.amount_text_field"));
+        minecraft.keyboardHandler.setSendRepeatsToGui(true);
+        textField = new TextFieldWidget(font, leftPos + 54, topPos + 22, 100, 16, new TranslationTextComponent("gas_station.admin.amount_text_field"));
         textField.setTextColor(-1);
-        textField.setDisabledTextColour(-1);
-        textField.setMaxStringLength(20);
-        textField.setText(String.valueOf(gasStation.getTradeAmount()));
+        textField.setTextColorUneditable(-1);
+        textField.setMaxLength(20);
+        textField.setValue(String.valueOf(gasStation.getTradeAmount()));
         textField.setResponder(this::onTextChanged);
 
         addButton(textField);
@@ -55,7 +55,7 @@ public class GuiGasStationAdmin extends ScreenBase<ContainerGasStationAdmin> {
         if (!text.isEmpty()) {
             try {
                 int i = Integer.parseInt(text);
-                Main.SIMPLE_CHANNEL.sendToServer(new MessageGasStationAdminAmount(gasStation.getPos(), i));
+                Main.SIMPLE_CHANNEL.sendToServer(new MessageGasStationAdminAmount(gasStation.getBlockPos(), i));
             } catch (Exception e) {
             }
         }
@@ -63,33 +63,33 @@ public class GuiGasStationAdmin extends ScreenBase<ContainerGasStationAdmin> {
 
     public void onClose() {
         super.onClose();
-        minecraft.keyboardListener.enableRepeatEvents(false);
+        minecraft.keyboardHandler.setSendRepeatsToGui(false);
     }
 
     @Override
     public void resize(Minecraft mc, int x, int y) {
-        String text = textField.getText();
+        String text = textField.getValue();
         init(mc, x, y);
-        textField.setText(text);
+        textField.setValue(text);
     }
 
     @Override
     public boolean keyPressed(int key, int scanCode, int modifiers) {
         if (key == GLFW.GLFW_KEY_ESCAPE) {
-            minecraft.player.closeScreen();
+            minecraft.player.closeContainer();
             return true;
         }
 
-        return textField.keyPressed(key, scanCode, modifiers) || textField.canWrite() || super.keyPressed(key, scanCode, modifiers);
+        return textField.keyPressed(key, scanCode, modifiers) || textField.canConsumeInput() || super.keyPressed(key, scanCode, modifiers);
     }
 
     @Override
-    protected void drawGuiContainerForegroundLayer(MatrixStack matrixStack, int mouseX, int mouseY) {
-        super.drawGuiContainerForegroundLayer(matrixStack, mouseX, mouseY);
+    protected void renderLabels(MatrixStack matrixStack, int mouseX, int mouseY) {
+        super.renderLabels(matrixStack, mouseX, mouseY);
 
-        drawCenteredString(matrixStack, font, new TranslationTextComponent("gui.gas_station").getString(), xSize / 2, 5, TITLE_COLOR);
+        drawCenteredString(matrixStack, font, new TranslationTextComponent("gui.gas_station").getString(), imageWidth / 2, 5, TITLE_COLOR);
 
-        font.func_238422_b_(matrixStack, inventoryPlayer.getDisplayName().func_241878_f(), 8, ySize - 93, FONT_COLOR);
+        font.draw(matrixStack, inventoryPlayer.getDisplayName().getVisualOrderText(), 8, imageHeight - 93, FONT_COLOR);
     }
 
     @Override

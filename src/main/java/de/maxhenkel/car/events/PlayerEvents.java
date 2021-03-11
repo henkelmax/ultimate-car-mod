@@ -53,9 +53,9 @@ public class PlayerEvents {
         }
 
         if (third) {
-            minecraft.gameSettings.setPointOfView(PointOfView.THIRD_PERSON_BACK);
+            minecraft.options.setCameraType(PointOfView.THIRD_PERSON_BACK);
         } else {
-            minecraft.gameSettings.setPointOfView(PointOfView.FIRST_PERSON);
+            minecraft.options.setCameraType(PointOfView.FIRST_PERSON);
         }
 
     }
@@ -65,7 +65,7 @@ public class PlayerEvents {
     }
 
     private Entity getRidingEntity() {
-        return getPlayer().getRidingEntity();
+        return getPlayer().getVehicle();
     }
 
     private EntityVehicleBase getRidingVehicle() {

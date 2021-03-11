@@ -16,7 +16,7 @@ import javax.annotation.Nullable;
 public class CarBucketItem extends BucketItem {
 
     public CarBucketItem(Fluid containedFluidIn, ResourceLocation registryName) {
-        super(() -> containedFluidIn, new Item.Properties().containerItem(Items.BUCKET).maxStackSize(1).group(ModItemGroups.TAB_CAR));
+        super(() -> containedFluidIn, new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1).tab(ModItemGroups.TAB_CAR));
         setRegistryName(registryName);
     }
 

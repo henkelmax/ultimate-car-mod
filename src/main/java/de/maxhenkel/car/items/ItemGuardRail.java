@@ -22,48 +22,48 @@ import net.minecraft.world.World;
 public class ItemGuardRail extends BlockItem {
 
     public ItemGuardRail() {
-        super(ModBlocks.GUARD_RAIL, new Item.Properties().group(ModItemGroups.TAB_CAR));
+        super(ModBlocks.GUARD_RAIL, new Item.Properties().tab(ModItemGroups.TAB_CAR));
         setRegistryName(ModBlocks.GUARD_RAIL.getRegistryName());
     }
 
     @Override
-    public ActionResultType tryPlace(BlockItemUseContext context) {
-        BlockItemUseContext bc = getBlockItemUseContext(context);
+    public ActionResultType place(BlockItemUseContext context) {
+        BlockItemUseContext bc = updatePlacementContext(context);
         if (bc == null) {
-            return super.tryPlace(context);
+            return super.place(context);
         }
 
-        World world = context.getWorld();
-        Direction face = bc.getFace();
+        World world = context.getLevel();
+        Direction face = bc.getClickedFace();
 
-        if (face.getYOffset() != 0) {
-            face = bc.getPlacementHorizontalFacing();
+        if (face.getStepY() != 0) {
+            face = bc.getHorizontalDirection();
         }
 
-        BlockState clickedBlock = world.getBlockState(bc.getPos());
+        BlockState clickedBlock = world.getBlockState(bc.getClickedPos());
 
         if (clickedBlock.getBlock() != getBlock()) {
-            return super.tryPlace(context);
+            return super.place(context);
         }
 
         BooleanProperty property = ModBlocks.GUARD_RAIL.getProperty(face);
-        if (clickedBlock.get(property)) {
-            return super.tryPlace(context);
+        if (clickedBlock.getValue(property)) {
+            return super.place(context);
         }
 
-        BlockState place = clickedBlock.with(property, true);
+        BlockState place = clickedBlock.setValue(property, true);
         if (!placeBlock(bc, place)) {
             return ActionResultType.FAIL;
         }
 
-        BlockPos blockpos = bc.getPos();
+        BlockPos blockpos = bc.getClickedPos();
         PlayerEntity playerentity = bc.getPlayer();
-        ItemStack itemstack = bc.getItem();
+        ItemStack itemstack = bc.getItemInHand();
         BlockState placed = world.getBlockState(blockpos);
         Block block = placed.getBlock();
         if (block == place.getBlock()) {
-            onBlockPlaced(blockpos, world, playerentity, itemstack, placed);
-            block.onBlockPlacedBy(world, blockpos, placed, playerentity, itemstack);
+            updateCustomBlockEntityTag(blockpos, world, playerentity, itemstack, placed);
+            block.setPlacedBy(world, blockpos, placed, playerentity, itemstack);
             if (playerentity instanceof ServerPlayerEntity) {
                 CriteriaTriggers.PLACED_BLOCK.trigger((ServerPlayerEntity) playerentity, blockpos, itemstack);
             }
@@ -71,11 +71,11 @@ public class ItemGuardRail extends BlockItem {
 
         SoundType soundtype = placed.getSoundType(world, blockpos, context.getPlayer());
         world.playSound(playerentity, blockpos, this.getPlaceSound(placed, world, blockpos, context.getPlayer()), SoundCategory.BLOCKS, (soundtype.getVolume() + 1.0F) / 2.0F, soundtype.getPitch() * 0.8F);
-        if (playerentity == null || !playerentity.abilities.isCreativeMode) {
+        if (playerentity == null || !playerentity.abilities.instabuild) {
             itemstack.shrink(1);
         }
 
-        return ActionResultType.func_233537_a_(world.isRemote);
+        return ActionResultType.sidedSuccess(world.isClientSide);
     }
 
 }

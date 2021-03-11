@@ -16,35 +16,35 @@ import net.minecraft.util.ResourceLocation;
 public class ItemCanolaCake extends Item {
 
     public ItemCanolaCake() {
-        super(new Item.Properties().group(ModItemGroups.TAB_CAR));
+        super(new Item.Properties().tab(ModItemGroups.TAB_CAR));
         setRegistryName(new ResourceLocation(Main.MODID, "canola_cake"));
 
     }
 
     @Override
-    public ActionResultType itemInteractionForEntity(ItemStack stack, PlayerEntity playerIn, LivingEntity target, Hand hand) {
+    public ActionResultType interactLivingEntity(ItemStack stack, PlayerEntity playerIn, LivingEntity target, Hand hand) {
         if (!(target instanceof AnimalEntity)) {
-            return super.itemInteractionForEntity(stack, playerIn, target, hand);
+            return super.interactLivingEntity(stack, playerIn, target, hand);
         }
 
         AnimalEntity animal = (AnimalEntity) target;
 
-        if (!animal.isBreedingItem(new ItemStack(Items.WHEAT))) {
-            return super.itemInteractionForEntity(stack, playerIn, target, hand);
+        if (!animal.isFood(new ItemStack(Items.WHEAT))) {
+            return super.interactLivingEntity(stack, playerIn, target, hand);
         }
 
-        if (animal.getGrowingAge() == 0 && !animal.isInLove()) {
+        if (animal.getAge() == 0 && !animal.isInLove()) {
             ItemUtils.decrItemStack(stack, playerIn);
             animal.setInLove(playerIn);
             return ActionResultType.CONSUME;
         }
 
-        if (animal.isChild()) {
+        if (animal.isBaby()) {
             ItemUtils.decrItemStack(stack, playerIn);
-            animal.ageUp((int) ((float) (-animal.getGrowingAge() / 20) * 0.1F), true);
+            animal.ageUp((int) ((float) (-animal.getAge() / 20) * 0.1F), true);
             return ActionResultType.CONSUME;
         }
-        return super.itemInteractionForEntity(stack, playerIn, target, hand);
+        return super.interactLivingEntity(stack, playerIn, target, hand);
     }
 
 }

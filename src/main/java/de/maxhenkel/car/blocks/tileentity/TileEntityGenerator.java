@@ -47,6 +47,7 @@ public class TileEntityGenerator extends TileEntityBase implements ITickableTile
     }
 
     public final IIntArray FIELDS = new IIntArray() {
+        @Override
         public int get(int index) {
             switch (index) {
                 case 0:
@@ -57,6 +58,7 @@ public class TileEntityGenerator extends TileEntityBase implements ITickableTile
             return 0;
         }
 
+        @Override
         public void set(int index, int value) {
             switch (index) {
                 case 0:
@@ -68,15 +70,15 @@ public class TileEntityGenerator extends TileEntityBase implements ITickableTile
             }
         }
 
-        public int size() {
+        @Override
+        public int getCount() {
             return 2;
         }
     };
 
     @Override
     public void tick() {
-
-        if (world.isRemote) {
+        if (level.isClientSide) {
             return;
         }
 
@@ -103,16 +105,16 @@ public class TileEntityGenerator extends TileEntityBase implements ITickableTile
         }
 
         handlePushEnergy();
-        markDirty();
+        setChanged();
     }
 
     public boolean isValidFuel(Fluid f) {
-        return Main.SERVER_CONFIG.generatorValidFuelList.stream().anyMatch(f::isIn);
+        return Main.SERVER_CONFIG.generatorValidFuelList.stream().anyMatch(f::is);
     }
 
     private void handlePushEnergy() {
         for (Direction side : Direction.values()) {
-            IEnergyStorage storage = EnergyUtils.getEnergyStorageOffset(world, pos, side);
+            IEnergyStorage storage = EnergyUtils.getEnergyStorageOffset(level, worldPosition, side);
             if (storage == null) {
                 continue;
             }
@@ -126,10 +128,10 @@ public class TileEntityGenerator extends TileEntityBase implements ITickableTile
     }
 
     public void setBlockEnabled(boolean enabled) {
-        BlockState state = world.getBlockState(getPos());
+        BlockState state = level.getBlockState(worldPosition);
         if (state.getBlock().equals(ModBlocks.GENERATOR)) {
-            if (state.get(BlockGui.POWERED) != enabled) {
-                ModBlocks.GENERATOR.setPowered(world, pos, state, enabled);
+            if (state.getValue(BlockGui.POWERED) != enabled) {
+                ModBlocks.GENERATOR.setPowered(level, worldPosition, state, enabled);
             }
         }
     }
@@ -141,7 +143,7 @@ public class TileEntityGenerator extends TileEntityBase implements ITickableTile
 
 
     @Override
-    public CompoundNBT write(CompoundNBT compound) {
+    public CompoundNBT save(CompoundNBT compound) {
         compound.putInt("stored_energy", storedEnergy);
         if (currentFluid != null) {
             FluidStack stack = new FluidStack(currentFluid, currentMillibuckets);
@@ -149,53 +151,53 @@ public class TileEntityGenerator extends TileEntityBase implements ITickableTile
             stack.writeToNBT(comp);
             compound.put("fluid", comp);
         }
-        return super.write(compound);
+        return super.save(compound);
     }
 
     @Override
-    public void read(BlockState blockState, CompoundNBT compound) {
+    public void load(BlockState blockState, CompoundNBT compound) {
         storedEnergy = compound.getInt("stored_energy");
         if (compound.contains("fluid")) {
             FluidStack stack = FluidStack.loadFluidStackFromNBT(compound.getCompound("fluid"));
             currentFluid = stack.getFluid();
             currentMillibuckets = stack.getAmount();
         }
-        super.read(blockState, compound);
+        super.load(blockState, compound);
     }
 
     @Override
-    public int getSizeInventory() {
-        return inventory.getSizeInventory();
+    public int getContainerSize() {
+        return inventory.getContainerSize();
     }
 
     @Override
-    public ItemStack getStackInSlot(int index) {
-        return inventory.getStackInSlot(index);
+    public ItemStack getItem(int index) {
+        return inventory.getItem(index);
     }
 
     @Override
-    public ItemStack decrStackSize(int index, int count) {
-        return inventory.decrStackSize(index, count);
+    public ItemStack removeItem(int index, int count) {
+        return inventory.removeItem(index, count);
     }
 
     @Override
-    public ItemStack removeStackFromSlot(int index) {
-        return inventory.removeStackFromSlot(index);
+    public ItemStack removeItemNoUpdate(int index) {
+        return inventory.removeItemNoUpdate(index);
     }
 
     @Override
-    public void setInventorySlotContents(int index, ItemStack stack) {
-        inventory.setInventorySlotContents(index, stack);
+    public void setItem(int index, ItemStack stack) {
+        inventory.setItem(index, stack);
     }
 
     @Override
-    public int getInventoryStackLimit() {
-        return inventory.getInventoryStackLimit();
+    public int getMaxStackSize() {
+        return inventory.getMaxStackSize();
     }
 
     @Override
-    public boolean isUsableByPlayer(PlayerEntity player) {
-        return inventory.isUsableByPlayer(player);
+    public boolean stillValid(PlayerEntity player) {
+        return inventory.stillValid(player);
     }
 
     @Override
@@ -204,23 +206,23 @@ public class TileEntityGenerator extends TileEntityBase implements ITickableTile
     }
 
     @Override
-    public void openInventory(PlayerEntity player) {
-        inventory.openInventory(player);
+    public void startOpen(PlayerEntity player) {
+        inventory.startOpen(player);
     }
 
     @Override
-    public void closeInventory(PlayerEntity player) {
-        inventory.closeInventory(player);
+    public void stopOpen(PlayerEntity player) {
+        inventory.stopOpen(player);
     }
 
     @Override
-    public boolean isItemValidForSlot(int index, ItemStack stack) {
-        return inventory.isItemValidForSlot(index, stack);
+    public boolean canPlaceItem(int index, ItemStack stack) {
+        return inventory.canPlaceItem(index, stack);
     }
 
     @Override
-    public void clear() {
-        inventory.clear();
+    public void clearContent() {
+        inventory.clearContent();
     }
 
     @Override
@@ -234,7 +236,7 @@ public class TileEntityGenerator extends TileEntityBase implements ITickableTile
 
         if (!simulate) {
             storedEnergy -= i;
-            markDirty();
+            setChanged();
         }
 
         return i;
@@ -311,7 +313,7 @@ public class TileEntityGenerator extends TileEntityBase implements ITickableTile
                 if (currentFluid == null) {
                     currentFluid = resource.getFluid();
                 }
-                markDirty();
+                setChanged();
             }
             return amount;
         }

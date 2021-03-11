@@ -29,7 +29,7 @@ public class MessageEditSign implements Message<MessageEditSign> {
 
     @Override
     public void executeServerSide(NetworkEvent.Context context) {
-        TileEntity te = context.getSender().world.getTileEntity(pos);
+        TileEntity te = context.getSender().level.getBlockEntity(pos);
 
         if (te instanceof TileEntitySign) {
             ((TileEntitySign) te).setText(text);
@@ -41,7 +41,7 @@ public class MessageEditSign implements Message<MessageEditSign> {
         this.pos = buf.readBlockPos();
         this.text = new String[8];
         for (int i = 0; i < text.length; i++) {
-            this.text[i] = buf.readString(20);
+            this.text[i] = buf.readUtf(20);
         }
 
         return this;
@@ -51,7 +51,7 @@ public class MessageEditSign implements Message<MessageEditSign> {
     public void toBytes(PacketBuffer buf) {
         buf.writeBlockPos(pos);
         for (String s : text) {
-            buf.writeString(s, 20);
+            buf.writeUtf(s, 20);
         }
     }
 

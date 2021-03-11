@@ -14,7 +14,7 @@ public class BlastFurnaceRecipe extends EnergyFluidProducerRecipe {
     }
 
     @Override
-    public ItemStack getIcon() {
+    public ItemStack getToastSymbol() {
         return new ItemStack(ModBlocks.BLAST_FURNACE);
     }
 

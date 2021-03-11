@@ -17,7 +17,7 @@ public class FluidMethanolFlowing extends CarFluidFlowing {
         super(
                 FluidAttributes.builder(
                         new ResourceLocation(Main.MODID, "block/methanol_still"),
-                        new ResourceLocation(Main.MODID, "block/methanol_flowing")).sound(SoundEvents.ITEM_BUCKET_FILL),
+                        new ResourceLocation(Main.MODID, "block/methanol_flowing")).sound(SoundEvents.BUCKET_FILL),
                 () -> ModBlocks.METHANOL,
                 () -> ModFluids.METHANOL,
                 () -> ModFluids.METHANOL_FLOWING,

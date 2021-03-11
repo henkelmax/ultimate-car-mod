@@ -15,7 +15,7 @@ import net.minecraft.world.World;
 
 public abstract class EntityCarDamageBase extends EntityCarBatteryBase {
 
-    private static final DataParameter<Float> DAMAGE = EntityDataManager.createKey(EntityCarDamageBase.class, DataSerializers.FLOAT);
+    private static final DataParameter<Float> DAMAGE = EntityDataManager.defineId(EntityCarDamageBase.class, DataSerializers.FLOAT);
 
     public EntityCarDamageBase(EntityType type, World worldIn) {
         super(type, worldIn);
@@ -35,7 +35,7 @@ public abstract class EntityCarDamageBase extends EntityCarBatteryBase {
     }
 
     public void particles() {
-        if (!world.isRemote) {
+        if (!level.isClientSide) {
             return;
         }
 
@@ -47,12 +47,12 @@ public abstract class EntityCarDamageBase extends EntityCarBatteryBase {
         int damage = (int) getDamage();
 
         if (damage < 70) {
-            if (rand.nextInt(10) != 0) {
+            if (random.nextInt(10) != 0) {
                 return;
             }
             amount = 1;
         } else if (damage < 80) {
-            if (rand.nextInt(5) != 0) {
+            if (random.nextInt(5) != 0) {
                 return;
             }
             amount = 1;
@@ -63,10 +63,10 @@ public abstract class EntityCarDamageBase extends EntityCarBatteryBase {
         }
 
         for (int i = 0; i < amount; i++) {
-            this.world.addParticle(ParticleTypes.LARGE_SMOKE,
-                    getPosX() + (rand.nextDouble() - 0.5D) * getCarWidth(),
-                    getPosY() + rand.nextDouble() * getCarHeight(),
-                    getPosZ() + (rand.nextDouble() - 0.5D) * getCarWidth(),
+            this.level.addParticle(ParticleTypes.LARGE_SMOKE,
+                    getX() + (random.nextDouble() - 0.5D) * getCarWidth(),
+                    getY() + random.nextDouble() * getCarHeight(),
+                    getZ() + (random.nextDouble() - 0.5D) * getCarWidth(),
                     0.0D, 0.0D, 0.0D);
         }
 
@@ -91,19 +91,19 @@ public abstract class EntityCarDamageBase extends EntityCarBatteryBase {
     private long lastDamage;
 
     @Override
-    public boolean attackEntityFrom(DamageSource source, float amount) {
+    public boolean hurt(DamageSource source, float amount) {
         if (this.isInvulnerable()) {
             return false;
         }
 
-        if (world.isRemote || !isAlive()) {
+        if (level.isClientSide || !isAlive()) {
             return false;
         }
 
-        if (!(source.getImmediateSource() instanceof PlayerEntity)) {
+        if (!(source.getDirectEntity() instanceof PlayerEntity)) {
             return false;
         }
-        PlayerEntity player = (PlayerEntity) source.getImmediateSource();
+        PlayerEntity player = (PlayerEntity) source.getDirectEntity();
 
         if (player == null) {
             return false;
@@ -114,13 +114,13 @@ public abstract class EntityCarDamageBase extends EntityCarBatteryBase {
         }
 
 
-        ItemStack stack = player.getHeldItemMainhand();
+        ItemStack stack = player.getMainHandItem();
 
         if (stack.getItem() instanceof ItemRepairTool) {
-            long time = player.world.getGameTime();
+            long time = player.level.getGameTime();
             if (time - lastDamage < 10L) {
                 destroyCar(player, true);
-                stack.damageItem(50, player, playerEntity -> playerEntity.sendBreakAnimation(Hand.MAIN_HAND));
+                stack.hurtAndBreak(50, player, playerEntity -> playerEntity.broadcastBreakEvent(Hand.MAIN_HAND));
             } else {
                 lastDamage = time;
             }
@@ -149,13 +149,13 @@ public abstract class EntityCarDamageBase extends EntityCarBatteryBase {
         int value = super.getTimeToStart();
 
         if (getDamage() >= 95) {
-            value += rand.nextInt(25) + 50;
+            value += random.nextInt(25) + 50;
         } else if (getDamage() >= 90) {
-            value += rand.nextInt(15) + 30;
+            value += random.nextInt(15) + 30;
         } else if (getDamage() >= 80) {
-            value += rand.nextInt(15) + 10;
+            value += random.nextInt(15) + 10;
         } else if (getDamage() >= 50) {
-            value += rand.nextInt(10) + 5;
+            value += random.nextInt(10) + 5;
         }
 
         return value;
@@ -178,9 +178,9 @@ public abstract class EntityCarDamageBase extends EntityCarBatteryBase {
     }
 
     @Override
-    protected void registerData() {
-        super.registerData();
-        this.dataManager.register(DAMAGE, 0F);
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(DAMAGE, 0F);
     }
 
     public void setDamage(float damage) {
@@ -189,22 +189,22 @@ public abstract class EntityCarDamageBase extends EntityCarBatteryBase {
         } else if (damage < 0) {
             damage = 0;
         }
-        this.dataManager.set(DAMAGE, damage);
+        this.entityData.set(DAMAGE, damage);
     }
 
     public float getDamage() {
-        return this.dataManager.get(DAMAGE);
+        return this.entityData.get(DAMAGE);
     }
 
     @Override
-    protected void writeAdditional(CompoundNBT compound) {
-        super.writeAdditional(compound);
+    protected void addAdditionalSaveData(CompoundNBT compound) {
+        super.addAdditionalSaveData(compound);
         compound.putFloat("damage", getDamage());
     }
 
     @Override
-    public void readAdditional(CompoundNBT compound) {
-        super.readAdditional(compound);
+    public void readAdditionalSaveData(CompoundNBT compound) {
+        super.readAdditionalSaveData(compound);
         setDamage(compound.getFloat("damage"));
     }
 

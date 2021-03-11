@@ -27,7 +27,7 @@ public class TileEntityContainerProvider implements INamedContainerProvider {
     }
 
     public static void openGui(ServerPlayerEntity player, TileEntityBase tileEntity, ContainerCreator containerCreator) {
-        NetworkHooks.openGui(player, new TileEntityContainerProvider(containerCreator, tileEntity), packetBuffer -> packetBuffer.writeBlockPos(tileEntity.getPos()));
+        NetworkHooks.openGui(player, new TileEntityContainerProvider(containerCreator, tileEntity), packetBuffer -> packetBuffer.writeBlockPos(tileEntity.getBlockPos()));
     }
 
     @Nullable

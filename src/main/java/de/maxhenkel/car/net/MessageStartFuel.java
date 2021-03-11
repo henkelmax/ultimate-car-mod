@@ -28,7 +28,7 @@ public class MessageStartFuel implements Message<MessageStartFuel> {
 
     @Override
     public void executeServerSide(NetworkEvent.Context context) {
-        TileEntity te = context.getSender().world.getTileEntity(pos);
+        TileEntity te = context.getSender().level.getBlockEntity(pos);
 
         if (te instanceof TileEntityGasStation) {
             TileEntityGasStation tank = (TileEntityGasStation) te;

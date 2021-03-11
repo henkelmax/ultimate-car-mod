@@ -49,32 +49,32 @@ public class BlockFluidExtractor extends BlockBase implements ITileEntityProvide
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
     protected BlockFluidExtractor() {
-        super(Properties.create(Material.WOOL, MaterialColor.GRAY).hardnessAndResistance(0.5F).sound(SoundType.METAL));
+        super(Properties.of(Material.WOOL, MaterialColor.COLOR_GRAY).strength(0.5F).sound(SoundType.METAL));
         setRegistryName(new ResourceLocation(Main.MODID, "fluid_extractor"));
 
-        setDefaultState(stateContainer.getBaseState()
-                .with(FACING, Direction.NORTH)
-                .with(UP, false)
-                .with(DOWN, false)
-                .with(NORTH, false)
-                .with(SOUTH, false)
-                .with(EAST, false)
-                .with(WEST, false)
-                .with(WATERLOGGED, false)
+        registerDefaultState(stateDefinition.any()
+                .setValue(FACING, Direction.NORTH)
+                .setValue(UP, false)
+                .setValue(DOWN, false)
+                .setValue(NORTH, false)
+                .setValue(SOUTH, false)
+                .setValue(EAST, false)
+                .setValue(WEST, false)
+                .setValue(WATERLOGGED, false)
         );
     }
 
     @Override
     public Item toItem() {
-        return new BlockItem(this, new Item.Properties().group(ModItemGroups.TAB_CAR)).setRegistryName(getRegistryName());
+        return new BlockItem(this, new Item.Properties().tab(ModItemGroups.TAB_CAR)).setRegistryName(getRegistryName());
     }
 
     @Override
-    public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
-        if (player.isSneaking()) {
+    public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
+        if (player.isShiftKeyDown()) {
             return ActionResultType.FAIL;
         }
-        TileEntity te = worldIn.getTileEntity(pos);
+        TileEntity te = worldIn.getBlockEntity(pos);
         if (!(te instanceof TileEntityFluidExtractor)) {
             return ActionResultType.FAIL;
         }
@@ -88,79 +88,79 @@ public class BlockFluidExtractor extends BlockBase implements ITileEntityProvide
     @Nullable
     @Override
     public BlockState getStateForPlacement(BlockItemUseContext context) {
-        Direction facing = context.getFace().getOpposite();
-        return getState(context.getWorld(), context.getPos(), facing).with(FACING, facing);
+        Direction facing = context.getClickedFace().getOpposite();
+        return getState(context.getLevel(), context.getClickedPos(), facing).setValue(FACING, facing);
     }
 
     private BlockState getState(World world, BlockPos pos, Direction except) {
         FluidState ifluidstate = world.getFluidState(pos);
-        return getDefaultState()
-                .with(UP, !except.equals(Direction.UP) && BlockFluidPipe.isConnectedTo(world, pos, Direction.UP))
-                .with(DOWN, !except.equals(Direction.DOWN) && BlockFluidPipe.isConnectedTo(world, pos, Direction.DOWN))
-                .with(NORTH, !except.equals(Direction.NORTH) && BlockFluidPipe.isConnectedTo(world, pos, Direction.NORTH))
-                .with(SOUTH, !except.equals(Direction.SOUTH) && BlockFluidPipe.isConnectedTo(world, pos, Direction.SOUTH))
-                .with(EAST, !except.equals(Direction.EAST) && BlockFluidPipe.isConnectedTo(world, pos, Direction.EAST))
-                .with(WEST, !except.equals(Direction.WEST) && BlockFluidPipe.isConnectedTo(world, pos, Direction.WEST))
-                .with(WATERLOGGED, ifluidstate.isTagged(FluidTags.WATER) && ifluidstate.getLevel() == 8);
+        return defaultBlockState()
+                .setValue(UP, !except.equals(Direction.UP) && BlockFluidPipe.isConnectedTo(world, pos, Direction.UP))
+                .setValue(DOWN, !except.equals(Direction.DOWN) && BlockFluidPipe.isConnectedTo(world, pos, Direction.DOWN))
+                .setValue(NORTH, !except.equals(Direction.NORTH) && BlockFluidPipe.isConnectedTo(world, pos, Direction.NORTH))
+                .setValue(SOUTH, !except.equals(Direction.SOUTH) && BlockFluidPipe.isConnectedTo(world, pos, Direction.SOUTH))
+                .setValue(EAST, !except.equals(Direction.EAST) && BlockFluidPipe.isConnectedTo(world, pos, Direction.EAST))
+                .setValue(WEST, !except.equals(Direction.WEST) && BlockFluidPipe.isConnectedTo(world, pos, Direction.WEST))
+                .setValue(WATERLOGGED, ifluidstate.is(FluidTags.WATER) && ifluidstate.getAmount() == 8);
     }
 
     @Override
-    public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos) {
-        if (stateIn.get(WATERLOGGED)) {
-            worldIn.getPendingFluidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickRate(worldIn));
+    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos) {
+        if (stateIn.getValue(WATERLOGGED)) {
+            worldIn.getLiquidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(worldIn));
         }
-        return super.updatePostPlacement(stateIn, facing, facingState, worldIn, currentPos, facingPos);
+        return super.updateShape(stateIn, facing, facingState, worldIn, currentPos, facingPos);
     }
 
     @Override
     public void neighborChanged(BlockState state, World world, BlockPos pos, Block block, BlockPos pos1, boolean b) {
         super.neighborChanged(state, world, pos, block, pos1, b);
-        Direction facing = world.getBlockState(pos).get(FACING);
-        world.setBlockState(pos, getState(world, pos, facing).with(FACING, facing));
+        Direction facing = world.getBlockState(pos).getValue(FACING);
+        world.setBlockAndUpdate(pos, getState(world, pos, facing).setValue(FACING, facing));
     }
 
     @Override
-    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
         builder.add(FACING, UP, DOWN, NORTH, SOUTH, EAST, WEST, WATERLOGGED);
     }
 
-    public static final VoxelShape SHAPE_NORTH = Block.makeCuboidShape(6D, 6D, 6D, 10D, 10D, 0D);
-    public static final VoxelShape SHAPE_SOUTH = Block.makeCuboidShape(6D, 6D, 10D, 10D, 10D, 16D);
-    public static final VoxelShape SHAPE_EAST = Block.makeCuboidShape(10D, 6D, 6D, 16D, 10D, 10D);
-    public static final VoxelShape SHAPE_WEST = Block.makeCuboidShape(6D, 6D, 6D, 0D, 10D, 10D);
-    public static final VoxelShape SHAPE_UP = Block.makeCuboidShape(6D, 10D, 6D, 10D, 16D, 10D);
-    public static final VoxelShape SHAPE_DOWN = Block.makeCuboidShape(6D, 6D, 6D, 10D, 0D, 10D);
-    public static final VoxelShape SHAPE_CORE = Block.makeCuboidShape(6D, 6D, 6D, 10D, 10D, 10D);
-    public static final VoxelShape SHAPE_EXTRACTOR_NORTH = Block.makeCuboidShape(1D, 1D, 0D, 15D, 15D, 1D);
-    public static final VoxelShape SHAPE_EXTRACTOR_SOUTH = Block.makeCuboidShape(1D, 1D, 15D, 15D, 15D, 16D);
-    public static final VoxelShape SHAPE_EXTRACTOR_EAST = Block.makeCuboidShape(15D, 1D, 1D, 16D, 15D, 15D);
-    public static final VoxelShape SHAPE_EXTRACTOR_WEST = Block.makeCuboidShape(0D, 1D, 1D, 1D, 15D, 15D);
-    public static final VoxelShape SHAPE_EXTRACTOR_UP = Block.makeCuboidShape(1D, 15D, 1D, 15D, 16D, 15D);
-    public static final VoxelShape SHAPE_EXTRACTOR_DOWN = Block.makeCuboidShape(1D, 0D, 1D, 15D, 1D, 15D);
+    public static final VoxelShape SHAPE_NORTH = Block.box(6D, 6D, 6D, 10D, 10D, 0D);
+    public static final VoxelShape SHAPE_SOUTH = Block.box(6D, 6D, 10D, 10D, 10D, 16D);
+    public static final VoxelShape SHAPE_EAST = Block.box(10D, 6D, 6D, 16D, 10D, 10D);
+    public static final VoxelShape SHAPE_WEST = Block.box(6D, 6D, 6D, 0D, 10D, 10D);
+    public static final VoxelShape SHAPE_UP = Block.box(6D, 10D, 6D, 10D, 16D, 10D);
+    public static final VoxelShape SHAPE_DOWN = Block.box(6D, 6D, 6D, 10D, 0D, 10D);
+    public static final VoxelShape SHAPE_CORE = Block.box(6D, 6D, 6D, 10D, 10D, 10D);
+    public static final VoxelShape SHAPE_EXTRACTOR_NORTH = Block.box(1D, 1D, 0D, 15D, 15D, 1D);
+    public static final VoxelShape SHAPE_EXTRACTOR_SOUTH = Block.box(1D, 1D, 15D, 15D, 15D, 16D);
+    public static final VoxelShape SHAPE_EXTRACTOR_EAST = Block.box(15D, 1D, 1D, 16D, 15D, 15D);
+    public static final VoxelShape SHAPE_EXTRACTOR_WEST = Block.box(0D, 1D, 1D, 1D, 15D, 15D);
+    public static final VoxelShape SHAPE_EXTRACTOR_UP = Block.box(1D, 15D, 1D, 15D, 16D, 15D);
+    public static final VoxelShape SHAPE_EXTRACTOR_DOWN = Block.box(1D, 0D, 1D, 15D, 1D, 15D);
 
     @Override
     public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
         VoxelShape shape = SHAPE_CORE;
 
-        if (state.get(NORTH)) {
+        if (state.getValue(NORTH)) {
             shape = VoxelUtils.combine(shape, SHAPE_NORTH);
         }
-        if (state.get(SOUTH)) {
+        if (state.getValue(SOUTH)) {
             shape = VoxelUtils.combine(shape, SHAPE_SOUTH);
         }
-        if (state.get(EAST)) {
+        if (state.getValue(EAST)) {
             shape = VoxelUtils.combine(shape, SHAPE_EAST);
         }
-        if (state.get(WEST)) {
+        if (state.getValue(WEST)) {
             shape = VoxelUtils.combine(shape, SHAPE_WEST);
         }
-        if (state.get(UP)) {
+        if (state.getValue(UP)) {
             shape = VoxelUtils.combine(shape, SHAPE_UP);
         }
-        if (state.get(DOWN)) {
+        if (state.getValue(DOWN)) {
             shape = VoxelUtils.combine(shape, SHAPE_DOWN);
         }
-        switch (state.get(FACING)) {
+        switch (state.getValue(FACING)) {
             case NORTH:
                 shape = VoxelUtils.combine(shape, SHAPE_EXTRACTOR_NORTH, SHAPE_NORTH);
                 break;
@@ -185,17 +185,17 @@ public class BlockFluidExtractor extends BlockBase implements ITileEntityProvide
 
     @Override
     public FluidState getFluidState(BlockState state) {
-        return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
+        return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
     }
 
     @Override
-    public BlockRenderType getRenderType(BlockState state) {
+    public BlockRenderType getRenderShape(BlockState state) {
         return BlockRenderType.MODEL;
     }
 
     @Nullable
     @Override
-    public TileEntity createNewTileEntity(IBlockReader worldIn) {
+    public TileEntity newBlockEntity(IBlockReader worldIn) {
         return new TileEntityFluidExtractor();
     }
 

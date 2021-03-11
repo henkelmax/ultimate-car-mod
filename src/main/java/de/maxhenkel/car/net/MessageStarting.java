@@ -24,7 +24,7 @@ public class MessageStarting implements Message<MessageStarting> {
     public MessageStarting(boolean start, boolean playSound, PlayerEntity player) {
         this.start = start;
         this.playSound = playSound;
-        this.uuid = player.getUniqueID();
+        this.uuid = player.getUUID();
     }
 
     @Override
@@ -34,12 +34,12 @@ public class MessageStarting implements Message<MessageStarting> {
 
     @Override
     public void executeServerSide(NetworkEvent.Context context) {
-        if (!context.getSender().getUniqueID().equals(uuid)) {
+        if (!context.getSender().getUUID().equals(uuid)) {
             Main.LOGGER.error("The UUID of the sender was not equal to the packet UUID");
             return;
         }
 
-        Entity riding = context.getSender().getRidingEntity();
+        Entity riding = context.getSender().getVehicle();
 
         if (!(riding instanceof EntityCarBatteryBase)) {
             return;
@@ -56,7 +56,7 @@ public class MessageStarting implements Message<MessageStarting> {
         this.start = buf.readBoolean();
         this.playSound = buf.readBoolean();
 
-        this.uuid = buf.readUniqueId();
+        this.uuid = buf.readUUID();
 
         return this;
     }
@@ -66,7 +66,7 @@ public class MessageStarting implements Message<MessageStarting> {
         buf.writeBoolean(start);
         buf.writeBoolean(playSound);
 
-        buf.writeUniqueId(uuid);
+        buf.writeUUID(uuid);
     }
 
 }

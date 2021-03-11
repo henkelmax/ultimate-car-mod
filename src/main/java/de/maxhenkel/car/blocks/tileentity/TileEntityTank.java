@@ -31,8 +31,8 @@ public class TileEntityTank extends TileEntityBase implements IFluidHandler, ITi
 
     @Override
     public void tick() {
-        if (!world.isRemote) {
-            if (world.getGameTime() % 20 == 0) {
+        if (!level.isClientSide) {
+            if (level.getGameTime() % 20 == 0) {
                 synchronize();
             }
         } else {
@@ -54,7 +54,7 @@ public class TileEntityTank extends TileEntityBase implements IFluidHandler, ITi
     }
 
     public void checkSide(Direction side) {
-        TileEntity te = world.getTileEntity(pos.offset(side));
+        TileEntity te = level.getBlockEntity(worldPosition.relative(side));
 
         if (!(te instanceof TileEntityTank)) {
             return;
@@ -78,7 +78,7 @@ public class TileEntityTank extends TileEntityBase implements IFluidHandler, ITi
     }
 
     public void checkDown() {
-        TileEntity te = world.getTileEntity(pos.down());
+        TileEntity te = level.getBlockEntity(worldPosition.below());
 
         if (!(te instanceof TileEntityTank)) {
             return;
@@ -110,7 +110,7 @@ public class TileEntityTank extends TileEntityBase implements IFluidHandler, ITi
     }
 
     @Override
-    public CompoundNBT write(CompoundNBT compound) {
+    public CompoundNBT save(CompoundNBT compound) {
         if (!fluid.isEmpty() && fluid.getAmount() > 0) {
             CompoundNBT comp = new CompoundNBT();
 
@@ -118,18 +118,18 @@ public class TileEntityTank extends TileEntityBase implements IFluidHandler, ITi
 
             compound.put("fluid", comp);
         }
-        return super.write(compound);
+        return super.save(compound);
     }
 
     @Override
-    public void read(BlockState blockState, CompoundNBT compound) {
+    public void load(BlockState blockState, CompoundNBT compound) {
         if (compound.contains("fluid")) {
             CompoundNBT comp = compound.getCompound("fluid");
             fluid = FluidStack.loadFluidStackFromNBT(comp);
         } else {
             fluid = FluidStack.EMPTY;
         }
-        super.read(blockState, compound);
+        super.load(blockState, compound);
     }
 
     public void setFluid(FluidStack fluid) {
@@ -154,14 +154,14 @@ public class TileEntityTank extends TileEntityBase implements IFluidHandler, ITi
     @OnlyIn(Dist.CLIENT)
     private void recalculateSides() {
         for (Direction facing : Direction.values()) {
-            sides[facing.getIndex()] = isTankConnectedCalc(facing);
-            sidesFluid[facing.getIndex()] = isFluidConnectedCalc(facing);
+            sides[facing.get3DDataValue()] = isTankConnectedCalc(facing);
+            sidesFluid[facing.get3DDataValue()] = isFluidConnectedCalc(facing);
         }
     }
 
     @OnlyIn(Dist.CLIENT)
     private boolean isFluidConnectedCalc(Direction facing) {
-        TileEntity te = world.getTileEntity(pos.offset(facing));
+        TileEntity te = level.getBlockEntity(worldPosition.relative(facing));
         if (te instanceof TileEntityTank) {
             TileEntityTank tank = (TileEntityTank) te;
             if (tank.fluid.isEmpty() || fluid.isEmpty()) {
@@ -180,8 +180,8 @@ public class TileEntityTank extends TileEntityBase implements IFluidHandler, ITi
             }
         }
 
-        BlockState s = world.getBlockState(pos.offset(facing));
-        if (s.isNormalCube(world, pos.offset(facing))) {
+        BlockState s = level.getBlockState(worldPosition.relative(facing));
+        if (s.isRedstoneConductor(level, worldPosition.relative(facing))) {
             if (facing.equals(Direction.UP)) {
                 return fluid.getAmount() >= CAPACITY;
             }
@@ -193,7 +193,7 @@ public class TileEntityTank extends TileEntityBase implements IFluidHandler, ITi
 
     @OnlyIn(Dist.CLIENT)
     private boolean isTankConnectedCalc(Direction facing) {
-        TileEntity te = world.getTileEntity(pos.offset(facing));
+        TileEntity te = level.getBlockEntity(worldPosition.relative(facing));
         if (te instanceof TileEntityTank) {
             TileEntityTank tank = (TileEntityTank) te;
             if (tank.fluid.isEmpty() && fluid.isEmpty()) {
@@ -216,12 +216,12 @@ public class TileEntityTank extends TileEntityBase implements IFluidHandler, ITi
 
     @OnlyIn(Dist.CLIENT)
     public boolean isTankConnectedTo(Direction facing) {
-        return sides[facing.getIndex()];
+        return sides[facing.get3DDataValue()];
     }
 
     @OnlyIn(Dist.CLIENT)
     public boolean isFluidConnected(Direction facing) {
-        return sidesFluid[facing.getIndex()];
+        return sidesFluid[facing.get3DDataValue()];
     }
 
     @Override
@@ -252,7 +252,7 @@ public class TileEntityTank extends TileEntityBase implements IFluidHandler, ITi
 
             if (action.execute()) {
                 fluid = new FluidStack(resource.getFluid(), amount);
-                markDirty();
+                setChanged();
             }
 
             return amount;
@@ -261,7 +261,7 @@ public class TileEntityTank extends TileEntityBase implements IFluidHandler, ITi
 
             if (action.execute()) {
                 fluid.setAmount(fluid.getAmount() + amount);
-                markDirty();
+                setChanged();
             }
 
             return amount;
@@ -286,7 +286,7 @@ public class TileEntityTank extends TileEntityBase implements IFluidHandler, ITi
                 if (fluid.getAmount() <= 0) {
                     fluid = FluidStack.EMPTY;
                 }
-                markDirty();
+                setChanged();
             }
 
             return new FluidStack(f, amount);
@@ -311,7 +311,7 @@ public class TileEntityTank extends TileEntityBase implements IFluidHandler, ITi
             if (fluid.getAmount() <= 0) {
                 fluid = FluidStack.EMPTY;
             }
-            markDirty();
+            setChanged();
         }
 
         return new FluidStack(f, amount);

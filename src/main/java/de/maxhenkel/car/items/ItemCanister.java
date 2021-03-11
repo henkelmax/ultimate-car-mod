@@ -31,35 +31,35 @@ import javax.annotation.Nullable;
 public class ItemCanister extends Item {
 
     public ItemCanister() {
-        super(new Item.Properties().maxStackSize(1).group(ModItemGroups.TAB_CAR));
+        super(new Item.Properties().stacksTo(1).tab(ModItemGroups.TAB_CAR));
         setRegistryName(new ResourceLocation(Main.MODID, "canister"));
     }
 
     @Override
-    public ActionResultType onItemUse(ItemUseContext context) {
-        if (!context.getPlayer().isSneaking()) {
-            return super.onItemUse(context);
+    public ActionResultType useOn(ItemUseContext context) {
+        if (!context.getPlayer().isShiftKeyDown()) {
+            return super.useOn(context);
         }
 
-        BlockState state = context.getWorld().getBlockState(context.getPos());
+        BlockState state = context.getLevel().getBlockState(context.getClickedPos());
 
         TileEntity te;
 
         if (state.getBlock().equals(ModBlocks.FUEL_STATION_TOP)) {
-            te = context.getWorld().getTileEntity(context.getPos().down());
+            te = context.getLevel().getBlockEntity(context.getClickedPos().below());
         } else {
-            te = context.getWorld().getTileEntity(context.getPos());
+            te = context.getLevel().getBlockEntity(context.getClickedPos());
         }
 
         if (te == null) {
-            return super.onItemUse(context);
+            return super.useOn(context);
         }
 
         if (te instanceof TileEntityGasStation) {
             TileEntityGasStation fuel = (TileEntityGasStation) te;
-            boolean success = fillCanister(context.getPlayer().getHeldItem(context.getHand()), fuel);
+            boolean success = fillCanister(context.getPlayer().getItemInHand(context.getHand()), fuel);
             if (success) {
-                ModSounds.playSound(SoundEvents.BLOCK_BREWING_STAND_BREW, context.getWorld(), context.getPos(), null, SoundCategory.BLOCKS);
+                ModSounds.playSound(SoundEvents.BREWING_STAND_BREW, context.getLevel(), context.getClickedPos(), null, SoundCategory.BLOCKS);
             }
             return ActionResultType.SUCCESS;
         }
@@ -67,17 +67,17 @@ public class ItemCanister extends Item {
         if (te instanceof IFluidHandler) {
             IFluidHandler handler = (IFluidHandler) te;
 
-            boolean success = fuelFluidHandler(context.getPlayer().getHeldItem(context.getHand()), handler);
+            boolean success = fuelFluidHandler(context.getPlayer().getItemInHand(context.getHand()), handler);
             if (success) {
-                ModSounds.playSound(SoundEvents.BLOCK_BREWING_STAND_BREW, context.getWorld(), context.getPos(), null, SoundCategory.BLOCKS);
+                ModSounds.playSound(SoundEvents.BREWING_STAND_BREW, context.getLevel(), context.getClickedPos(), null, SoundCategory.BLOCKS);
             }
             return ActionResultType.SUCCESS;
         }
-        return super.onItemUse(context);
+        return super.useOn(context);
     }
 
     @Override
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+    public void appendHoverText(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         if (stack.hasTag()) {
             CompoundNBT comp = stack.getTag();
 
@@ -87,26 +87,26 @@ public class ItemCanister extends Item {
                 FluidStack fluidStack = FluidStack.loadFluidStackFromNBT(fuel);
                 if (fluidStack == null || fluidStack.isEmpty()) {
                     addInfo("-", 0, tooltip);
-                    super.addInformation(stack, worldIn, tooltip, flagIn);
+                    super.appendHoverText(stack, worldIn, tooltip, flagIn);
                     return;
                 }
 
                 addInfo(fluidStack.getDisplayName().getString(), fluidStack.getAmount(), tooltip);
-                super.addInformation(stack, worldIn, tooltip, flagIn);
+                super.appendHoverText(stack, worldIn, tooltip, flagIn);
                 return;
             }
             addInfo("-", 0, tooltip);
-            super.addInformation(stack, worldIn, tooltip, flagIn);
+            super.appendHoverText(stack, worldIn, tooltip, flagIn);
             return;
         }
         addInfo("-", 0, tooltip);
 
-        super.addInformation(stack, worldIn, tooltip, flagIn);
+        super.appendHoverText(stack, worldIn, tooltip, flagIn);
     }
 
     private void addInfo(String fluid, int amount, List<ITextComponent> tooltip) {
-        tooltip.add(new TranslationTextComponent("canister.fluid", new StringTextComponent(fluid).mergeStyle(TextFormatting.DARK_GRAY)).mergeStyle(TextFormatting.GRAY));
-        tooltip.add(new TranslationTextComponent("canister.amount", new StringTextComponent(String.valueOf(amount)).mergeStyle(TextFormatting.DARK_GRAY)).mergeStyle(TextFormatting.GRAY));
+        tooltip.add(new TranslationTextComponent("canister.fluid", new StringTextComponent(fluid).withStyle(TextFormatting.DARK_GRAY)).withStyle(TextFormatting.GRAY));
+        tooltip.add(new TranslationTextComponent("canister.amount", new StringTextComponent(String.valueOf(amount)).withStyle(TextFormatting.DARK_GRAY)).withStyle(TextFormatting.GRAY));
     }
 
     public static boolean fillCanister(ItemStack canister, IFluidHandler handler) {

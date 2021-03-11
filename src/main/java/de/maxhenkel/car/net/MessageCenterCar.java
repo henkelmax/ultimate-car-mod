@@ -21,7 +21,7 @@ public class MessageCenterCar implements Message<MessageCenterCar> {
     }
 
     public MessageCenterCar(PlayerEntity player) {
-        this.uuid = player.getUniqueID();
+        this.uuid = player.getUUID();
     }
 
     @Override
@@ -31,12 +31,12 @@ public class MessageCenterCar implements Message<MessageCenterCar> {
 
     @Override
     public void executeServerSide(NetworkEvent.Context context) {
-        if (!context.getSender().getUniqueID().equals(uuid)) {
+        if (!context.getSender().getUUID().equals(uuid)) {
             Main.LOGGER.error("The UUID of the sender was not equal to the packet UUID");
             return;
         }
 
-        Entity riding = context.getSender().getRidingEntity();
+        Entity riding = context.getSender().getVehicle();
 
         if (!(riding instanceof EntityCarBatteryBase)) {
             return;
@@ -48,18 +48,18 @@ public class MessageCenterCar implements Message<MessageCenterCar> {
         }
 
         MessageCenterCarClient msg = new MessageCenterCarClient(uuid);
-        context.getSender().getServerWorld().getPlayers(player -> player.getDistance(car) <= 128F).forEach(player -> Main.SIMPLE_CHANNEL.sendTo(msg, player.connection.netManager, NetworkDirection.PLAY_TO_CLIENT));
+        context.getSender().getLevel().getPlayers(player -> player.distanceTo(car) <= 128F).forEach(player -> Main.SIMPLE_CHANNEL.sendTo(msg, player.connection.connection, NetworkDirection.PLAY_TO_CLIENT));
     }
 
     @Override
     public MessageCenterCar fromBytes(PacketBuffer buf) {
-        this.uuid = buf.readUniqueId();
+        this.uuid = buf.readUUID();
         return this;
     }
 
     @Override
     public void toBytes(PacketBuffer buf) {
-        buf.writeUniqueId(uuid);
+        buf.writeUUID(uuid);
     }
 
 }

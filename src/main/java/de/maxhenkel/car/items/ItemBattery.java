@@ -23,18 +23,18 @@ import java.util.List;
 public class ItemBattery extends Item {
 
     public ItemBattery() {
-        super(new Item.Properties().maxStackSize(1).group(ModItemGroups.TAB_CAR).maxDamage(500));
+        super(new Item.Properties().stacksTo(1).tab(ModItemGroups.TAB_CAR).durability(500));
         setRegistryName(new ResourceLocation(Main.MODID, "battery"));
     }
 
     @Override
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+    public void appendHoverText(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         int damage = getMaxDamage(stack) - getDamage(stack);
 
-        tooltip.add(new TranslationTextComponent("tooltip.battery_energy", new StringTextComponent(String.valueOf(damage)).mergeStyle(TextFormatting.DARK_GRAY)).mergeStyle(TextFormatting.GRAY));
-        tooltip.add(new TranslationTextComponent("tooltip.battery").mergeStyle(TextFormatting.GRAY));
+        tooltip.add(new TranslationTextComponent("tooltip.battery_energy", new StringTextComponent(String.valueOf(damage)).withStyle(TextFormatting.DARK_GRAY)).withStyle(TextFormatting.GRAY));
+        tooltip.add(new TranslationTextComponent("tooltip.battery").withStyle(TextFormatting.GRAY));
 
-        super.addInformation(stack, worldIn, tooltip, flagIn);
+        super.appendHoverText(stack, worldIn, tooltip, flagIn);
     }
 
     @Override
@@ -43,23 +43,23 @@ public class ItemBattery extends Item {
     }
 
     @Override
-    public ActionResultType onItemUse(ItemUseContext context) {
-        if (context.getWorld().getBlockState(context.getPos()).getBlock().equals(ModBlocks.GENERATOR)) {
-            IEnergyStorage storage = EnergyUtils.getEnergyStorage(context.getWorld(), context.getPos(), context.getFace());
+    public ActionResultType useOn(ItemUseContext context) {
+        if (context.getLevel().getBlockState(context.getClickedPos()).getBlock().equals(ModBlocks.GENERATOR)) {
+            IEnergyStorage storage = EnergyUtils.getEnergyStorage(context.getLevel(), context.getClickedPos(), context.getClickedFace());
             if (storage != null) {
-                ItemStack stack = context.getPlayer().getHeldItem(context.getHand());
+                ItemStack stack = context.getPlayer().getItemInHand(context.getHand());
 
-                int energyToFill = stack.getDamage();
+                int energyToFill = stack.getDamageValue();
 
                 int amount = storage.extractEnergy(energyToFill, false);
 
-                stack.setDamage(energyToFill - amount);
-                context.getPlayer().setHeldItem(context.getHand(), stack);
+                stack.setDamageValue(energyToFill - amount);
+                context.getPlayer().setItemInHand(context.getHand(), stack);
                 return ActionResultType.SUCCESS;
             }
         }
 
-        return super.onItemUse(context);
+        return super.useOn(context);
     }
 
 }

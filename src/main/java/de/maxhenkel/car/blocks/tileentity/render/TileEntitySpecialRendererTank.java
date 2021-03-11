@@ -28,32 +28,32 @@ public class TileEntitySpecialRendererTank extends TileEntityRenderer<TileEntity
 
     @Override
     public void render(TileEntityTank te, float partialTicks, MatrixStack matrixStack, IRenderTypeBuffer buffer, int light, int overlay) {
-        matrixStack.push();
+        matrixStack.pushPose();
         float amount = te.getFillPercent();
         FluidStack stack = te.getFluid();
         if (amount > 0 && stack != null) {
             renderFluid(te, stack, amount, 0.0F, matrixStack, buffer, light, overlay);
         }
         renderLines(te, matrixStack, buffer, light, overlay);
-        matrixStack.pop();
+        matrixStack.popPose();
     }
 
     public void renderFluid(TileEntityTank tank, FluidStack fluid, float amount, float yStart, MatrixStack matrixStack, IRenderTypeBuffer buffer, int light, int overlay) {
-        matrixStack.push();
-        IVertexBuilder builder = buffer.getBuffer(Atlases.getTranslucentCullBlockType());
+        matrixStack.pushPose();
+        IVertexBuilder builder = buffer.getBuffer(Atlases.translucentCullBlockSheet());
 
-        TextureAtlasSprite texture = Minecraft.getInstance().getModelManager().getAtlasTexture(PlayerContainer.LOCATION_BLOCKS_TEXTURE).getSprite(fluid.getFluid().getAttributes().getStillTexture());
+        TextureAtlasSprite texture = Minecraft.getInstance().getModelManager().getAtlas(PlayerContainer.BLOCK_ATLAS).getSprite(fluid.getFluid().getAttributes().getStillTexture());
 
-        float uMin = texture.getMinU();
-        float uMax = texture.getMaxU();
-        float vMin = texture.getMinV();
-        float vMax = texture.getMaxV();
+        float uMin = texture.getU0();
+        float uMax = texture.getU1();
+        float vMin = texture.getV0();
+        float vMax = texture.getV1();
 
         float vHeight = vMax - vMin;
 
         int i;
-        if (tank.hasWorld()) {
-            i = fluid.getFluid().getAttributes().getColor(tank.getWorld(), tank.getPos());
+        if (tank.hasLevel()) {
+            i = fluid.getFluid().getAttributes().getColor(tank.getLevel(), tank.getBlockPos());
         } else {
             i = fluid.getFluid().getAttributes().getColor();
         }
@@ -112,11 +112,11 @@ public class TileEntitySpecialRendererTank extends TileEntityRenderer<TileEntity
             RenderUtils.vertex(builder, matrixStack, 1F - s, yStart + amount - s * 2F, 0F + s, uMax, vMin, red, green, blue, light, overlay);
         }
 
-        matrixStack.pop();
+        matrixStack.popPose();
     }
 
     public static void renderLines(TileEntityTank te, MatrixStack matrixStack, IRenderTypeBuffer buffer, int light, int overlay) {
-        IVertexBuilder builder = buffer.getBuffer(RenderType.getEntityCutout(LOCATION_TANK));
+        IVertexBuilder builder = buffer.getBuffer(RenderType.entityCutout(LOCATION_TANK));
         for (Direction facing : Direction.values()) {
             if (!te.isTankConnectedTo(facing)) {
                 for (EnumDirection direction : EnumDirection.values()) {
@@ -129,7 +129,7 @@ public class TileEntitySpecialRendererTank extends TileEntityRenderer<TileEntity
     }
 
     public static void drawLine(Direction side, EnumDirection line, MatrixStack matrixStack, IRenderTypeBuffer buffer, IVertexBuilder builder, int light, int overlay) {
-        matrixStack.push();
+        matrixStack.pushPose();
 
         rotate(side, matrixStack);
 
@@ -137,7 +137,7 @@ public class TileEntitySpecialRendererTank extends TileEntityRenderer<TileEntity
 
         drawSide(line, side, matrixStack, buffer, builder, light, overlay);
 
-        matrixStack.pop();
+        matrixStack.popPose();
     }
 
     public static void rotate(Direction facing, MatrixStack matrixStack) {
@@ -145,21 +145,21 @@ public class TileEntitySpecialRendererTank extends TileEntityRenderer<TileEntity
 
         switch (facing) {
             case SOUTH:
-                matrixStack.rotate(Vector3f.YP.rotationDegrees(180F));
+                matrixStack.mulPose(Vector3f.YP.rotationDegrees(180F));
                 break;
             case EAST:
-                matrixStack.rotate(Vector3f.YP.rotationDegrees(270F));
+                matrixStack.mulPose(Vector3f.YP.rotationDegrees(270F));
                 break;
             case WEST:
-                matrixStack.rotate(Vector3f.YP.rotationDegrees(90F));
+                matrixStack.mulPose(Vector3f.YP.rotationDegrees(90F));
                 break;
             case UP:
-                matrixStack.rotate(Vector3f.YP.rotationDegrees(180F));
-                matrixStack.rotate(Vector3f.XP.rotationDegrees(90F));
+                matrixStack.mulPose(Vector3f.YP.rotationDegrees(180F));
+                matrixStack.mulPose(Vector3f.XP.rotationDegrees(90F));
                 break;
             case DOWN:
-                matrixStack.rotate(Vector3f.YP.rotationDegrees(180F));
-                matrixStack.rotate(Vector3f.XP.rotationDegrees(270F));
+                matrixStack.mulPose(Vector3f.YP.rotationDegrees(180F));
+                matrixStack.mulPose(Vector3f.XP.rotationDegrees(270F));
                 break;
             case NORTH:
             default:

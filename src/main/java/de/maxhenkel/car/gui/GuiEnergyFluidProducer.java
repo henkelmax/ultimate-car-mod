@@ -22,8 +22,8 @@ public abstract class GuiEnergyFluidProducer<T extends ContainerEnergyFluidProdu
         this.playerInv = playerInventory;
         this.tile = container.getTile();
 
-        xSize = 176;
-        ySize = 166;
+        imageWidth = 176;
+        imageHeight = 166;
     }
 
     public String getUnlocalizedTooltipEnergy() {
@@ -37,34 +37,34 @@ public abstract class GuiEnergyFluidProducer<T extends ContainerEnergyFluidProdu
     public abstract String getUnlocalizedTooltipLiquid();
 
     @Override
-    protected void drawGuiContainerForegroundLayer(MatrixStack matrixStack, int mouseX, int mouseY) {
-        super.drawGuiContainerForegroundLayer(matrixStack, mouseX, mouseY);
+    protected void renderLabels(MatrixStack matrixStack, int mouseX, int mouseY) {
+        super.renderLabels(matrixStack, mouseX, mouseY);
 
         // Titles
-        font.func_238422_b_(matrixStack, getTitle().func_241878_f(), 38, 6, FONT_COLOR);
-        font.func_238422_b_(matrixStack, playerInv.getDisplayName().func_241878_f(), 8, this.ySize - 96 + 2, FONT_COLOR);
+        font.draw(matrixStack, getTitle().getVisualOrderText(), 38, 6, FONT_COLOR);
+        font.draw(matrixStack, playerInv.getDisplayName().getVisualOrderText(), 8, this.imageHeight - 96 + 2, FONT_COLOR);
 
-        if (mouseX >= guiLeft + 11 && mouseX <= guiLeft + 16 + 11) {
-            if (mouseY >= guiTop + 8 && mouseY <= guiTop + 57 + 8) {
+        if (mouseX >= leftPos + 11 && mouseX <= leftPos + 16 + 11) {
+            if (mouseY >= topPos + 8 && mouseY <= topPos + 57 + 8) {
                 List<IReorderingProcessor> list = new ArrayList<>();
-                list.add(new TranslationTextComponent(getUnlocalizedTooltipEnergy(), tile.getStoredEnergy()).func_241878_f());
-                renderTooltip(matrixStack, list, mouseX - guiLeft, mouseY - guiTop);
+                list.add(new TranslationTextComponent(getUnlocalizedTooltipEnergy(), tile.getStoredEnergy()).getVisualOrderText());
+                renderTooltip(matrixStack, list, mouseX - leftPos, mouseY - topPos);
             }
         }
 
-        if (mouseX >= guiLeft + 148 && mouseX <= guiLeft + 16 + 148) {
-            if (mouseY >= guiTop + 8 && mouseY <= guiTop + 57 + 8) {
+        if (mouseX >= leftPos + 148 && mouseX <= leftPos + 16 + 148) {
+            if (mouseY >= topPos + 8 && mouseY <= topPos + 57 + 8) {
                 List<IReorderingProcessor> list = new ArrayList<>();
-                list.add(new TranslationTextComponent(getUnlocalizedTooltipLiquid(), tile.getCurrentMillibuckets()).func_241878_f());
-                renderTooltip(matrixStack, list, mouseX - guiLeft, mouseY - guiTop);
+                list.add(new TranslationTextComponent(getUnlocalizedTooltipLiquid(), tile.getCurrentMillibuckets()).getVisualOrderText());
+                renderTooltip(matrixStack, list, mouseX - leftPos, mouseY - topPos);
             }
         }
 
-        if (mouseX >= guiLeft + 79 && mouseX <= guiLeft + 24 + 79) {
-            if (mouseY >= guiTop + 34 && mouseY <= guiTop + 17 + 34) {
+        if (mouseX >= leftPos + 79 && mouseX <= leftPos + 24 + 79) {
+            if (mouseY >= topPos + 34 && mouseY <= topPos + 17 + 34) {
                 List<IReorderingProcessor> list = new ArrayList<>();
-                list.add(new TranslationTextComponent(getUnlocalizedTooltipProgress(), ((int) (getProgress() * 100F))).func_241878_f());
-                renderTooltip(matrixStack, list, mouseX - guiLeft, mouseY - guiTop);
+                list.add(new TranslationTextComponent(getUnlocalizedTooltipProgress(), ((int) (getProgress() * 100F))).getVisualOrderText());
+                renderTooltip(matrixStack, list, mouseX - leftPos, mouseY - topPos);
             }
         }
     }
@@ -80,8 +80,8 @@ public abstract class GuiEnergyFluidProducer<T extends ContainerEnergyFluidProdu
         int targetY = 8;
 
         int scHeight = (int) (texH * (1F - perc));
-        int i = this.guiLeft;
-        int j = this.guiTop;
+        int i = this.leftPos;
+        int j = this.topPos;
         blit(matrixStack, i + targetX, j + targetY + scHeight, texX, texY + scHeight, texW, texH - scHeight);
     }
 
@@ -96,8 +96,8 @@ public abstract class GuiEnergyFluidProducer<T extends ContainerEnergyFluidProdu
         int targetY = 8;
 
         int scHeight = (int) (texH * (1F - perc));
-        int i = this.guiLeft;
-        int j = this.guiTop;
+        int i = this.leftPos;
+        int j = this.topPos;
         blit(matrixStack, i + targetX, j + targetY + scHeight, texX, texY + scHeight, texW, texH - scHeight);
     }
 
@@ -112,8 +112,8 @@ public abstract class GuiEnergyFluidProducer<T extends ContainerEnergyFluidProdu
         int targetY = 34;
 
         int scWidth = (int) (texW * perc);
-        int i = this.guiLeft;
-        int j = this.guiTop;
+        int i = this.leftPos;
+        int j = this.topPos;
         blit(matrixStack, i + targetX, j + targetY, texX, texY, scWidth, texH);
     }
 
@@ -133,8 +133,8 @@ public abstract class GuiEnergyFluidProducer<T extends ContainerEnergyFluidProdu
     }
 
     @Override
-    protected void drawGuiContainerBackgroundLayer(MatrixStack matrixStack, float partialTicks, int mouseX, int mouseY) {
-        super.drawGuiContainerBackgroundLayer(matrixStack, partialTicks, mouseX, mouseY);
+    protected void renderBg(MatrixStack matrixStack, float partialTicks, int mouseX, int mouseY) {
+        super.renderBg(matrixStack, partialTicks, mouseX, mouseY);
         drawEnergy(matrixStack);
         drawFluid(matrixStack);
         drawProgress(matrixStack);

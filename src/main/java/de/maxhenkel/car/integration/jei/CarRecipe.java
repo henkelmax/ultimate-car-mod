@@ -31,7 +31,7 @@ public class CarRecipe {
     @OnlyIn(Dist.CLIENT)
     public EntityGenericCar getCar() {
         if (car == null) {
-            car = createCar(Minecraft.getInstance().world);
+            car = createCar(Minecraft.getInstance().level);
         }
         return car;
     }

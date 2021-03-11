@@ -25,38 +25,38 @@ public class GuiGenerator extends ScreenBase<ContainerGenerator> {
         this.playerInv = playerInv;
         this.tile = containerGenerator.getGenerator();
 
-        xSize = 176;
-        ySize = 166;
+        imageWidth = 176;
+        imageHeight = 166;
     }
 
     @Override
-    protected void drawGuiContainerForegroundLayer(MatrixStack matrixStack, int mouseX, int mouseY) {
-        super.drawGuiContainerForegroundLayer(matrixStack, mouseX, mouseY);
+    protected void renderLabels(MatrixStack matrixStack, int mouseX, int mouseY) {
+        super.renderLabels(matrixStack, mouseX, mouseY);
 
         // Title
-        font.func_238422_b_(matrixStack, playerInv.getDisplayName().func_241878_f(), 8, this.ySize - 96 + 2, FONT_COLOR);
-        font.func_238422_b_(matrixStack, tile.getDisplayName().func_241878_f(), 62, 6, FONT_COLOR);
+        font.draw(matrixStack, playerInv.getDisplayName().getVisualOrderText(), 8, this.imageHeight - 96 + 2, FONT_COLOR);
+        font.draw(matrixStack, tile.getDisplayName().getVisualOrderText(), 62, 6, FONT_COLOR);
 
-        if (mouseX >= guiLeft + 122 && mouseX <= guiLeft + 16 + 122) {
-            if (mouseY >= guiTop + 8 && mouseY <= guiTop + 57 + 8) {
+        if (mouseX >= leftPos + 122 && mouseX <= leftPos + 16 + 122) {
+            if (mouseY >= topPos + 8 && mouseY <= topPos + 57 + 8) {
                 List<IReorderingProcessor> list = new ArrayList<>();
-                list.add(new TranslationTextComponent("tooltip.energy", tile.getStoredEnergy()).func_241878_f());
-                renderTooltip(matrixStack, list, mouseX - guiLeft, mouseY - guiTop);
+                list.add(new TranslationTextComponent("tooltip.energy", tile.getStoredEnergy()).getVisualOrderText());
+                renderTooltip(matrixStack, list, mouseX - leftPos, mouseY - topPos);
             }
         }
 
-        if (mouseX >= guiLeft + 39 && mouseX <= guiLeft + 16 + 39) {
-            if (mouseY >= guiTop + 8 && mouseY <= guiTop + 57 + 8) {
+        if (mouseX >= leftPos + 39 && mouseX <= leftPos + 16 + 39) {
+            if (mouseY >= topPos + 8 && mouseY <= topPos + 57 + 8) {
                 List<IReorderingProcessor> list = new ArrayList<>();
-                list.add(new TranslationTextComponent("tooltip.fuel", tile.getCurrentMillibuckets()).func_241878_f());
-                renderTooltip(matrixStack, list, mouseX - guiLeft, mouseY - guiTop);
+                list.add(new TranslationTextComponent("tooltip.fuel", tile.getCurrentMillibuckets()).getVisualOrderText());
+                renderTooltip(matrixStack, list, mouseX - leftPos, mouseY - topPos);
             }
         }
     }
 
     @Override
-    protected void drawGuiContainerBackgroundLayer(MatrixStack matrixStack, float partialTicks, int mouseX, int mouseY) {
-        super.drawGuiContainerBackgroundLayer(matrixStack, partialTicks, mouseX, mouseY);
+    protected void renderBg(MatrixStack matrixStack, float partialTicks, int mouseX, int mouseY) {
+        super.renderBg(matrixStack, partialTicks, mouseX, mouseY);
         drawEnergy(matrixStack);
         drawFluid(matrixStack);
     }
@@ -72,8 +72,8 @@ public class GuiGenerator extends ScreenBase<ContainerGenerator> {
         int targetY = 8;
 
         int scHeight = (int) (texH * (1 - perc));
-        int i = this.guiLeft;
-        int j = this.guiTop;
+        int i = this.leftPos;
+        int j = this.topPos;
         blit(matrixStack, i + targetX, j + targetY + scHeight, texX, texY + scHeight, texW, texH - scHeight);
     }
 
@@ -88,8 +88,8 @@ public class GuiGenerator extends ScreenBase<ContainerGenerator> {
         int targetY = 8;
 
         int scHeight = (int) (texH * (1 - perc));
-        int i = this.guiLeft;
-        int j = this.guiTop;
+        int i = this.leftPos;
+        int j = this.topPos;
         blit(matrixStack, i + targetX, j + targetY + scHeight, texX, texY + scHeight, texW, texH - scHeight);
     }
 

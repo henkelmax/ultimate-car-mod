@@ -15,16 +15,16 @@ import java.util.function.Supplier;
 public class CarFluidBlock extends FlowingFluidBlock {
 
     public CarFluidBlock(Supplier<? extends FlowingFluid> fluidSupplier) {
-        super(fluidSupplier, Block.Properties.create(Material.WATER).doesNotBlockMovement().hardnessAndResistance(100F).noDrops());
+        super(fluidSupplier, Block.Properties.of(Material.WATER).noCollission().strength(100F).noDrops());
         setRegistryName(getFluid().getRegistryName());
     }
 
     @Override
-    public void onEntityCollision(BlockState state, World worldIn, BlockPos pos, Entity entityIn) {
+    public void entityInside(BlockState state, World worldIn, BlockPos pos, Entity entityIn) {
         FlowingFluid fluid = getFluid();
         if (fluid instanceof IEffectApplyable) {
             ((IEffectApplyable) fluid).applyEffects(entityIn, state, worldIn, pos);
         }
-        super.onEntityCollision(state, worldIn, pos, entityIn);
+        super.entityInside(state, worldIn, pos, entityIn);
     }
 }

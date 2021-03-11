@@ -39,9 +39,9 @@ import javax.annotation.Nullable;
 
 public class BlockSign extends BlockBase implements ITileEntityProvider, IItemBlock, IWaterLoggable {
 
-    private static final VoxelShape SHAPE_NORTH_SOUTH = Block.makeCuboidShape(0D, 3D, 7.5D, 16D, 13D, 8.5D);
-    private static final VoxelShape SHAPE_EAST_WEST = Block.makeCuboidShape(7.5D, 3D, 0D, 8.5D, 13D, 16D);
-    private static final VoxelShape SHAPE_POST = Block.makeCuboidShape(7.5D, 0D, 7.5D, 8.5D, 3D, 8.5D);
+    private static final VoxelShape SHAPE_NORTH_SOUTH = Block.box(0D, 3D, 7.5D, 16D, 13D, 8.5D);
+    private static final VoxelShape SHAPE_EAST_WEST = Block.box(7.5D, 3D, 0D, 8.5D, 13D, 16D);
+    private static final VoxelShape SHAPE_POST = Block.box(7.5D, 0D, 7.5D, 8.5D, 3D, 8.5D);
 
     private static final DirectionalVoxelShape SHAPES = new DirectionalVoxelShape.Builder()
             .direction(Direction.NORTH,
@@ -65,20 +65,20 @@ public class BlockSign extends BlockBase implements ITileEntityProvider, IItemBl
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
     public BlockSign() {
-        super(Properties.create(Material.IRON, MaterialColor.IRON).hardnessAndResistance(20F).sound(SoundType.METAL));
+        super(Properties.of(Material.METAL, MaterialColor.METAL).strength(20F).sound(SoundType.METAL));
         setRegistryName(new ResourceLocation(Main.MODID, "sign"));
 
-        setDefaultState(stateContainer.getBaseState().with(FACING, Direction.NORTH).with(WATERLOGGED, false));
+        registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(WATERLOGGED, false));
     }
 
     @Override
     public Item toItem() {
-        return new BlockItem(this, new Item.Properties().group(ModItemGroups.TAB_CAR)).setRegistryName(getRegistryName());
+        return new BlockItem(this, new Item.Properties().tab(ModItemGroups.TAB_CAR)).setRegistryName(getRegistryName());
     }
 
     @Override
-    public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
-        TileEntity te = worldIn.getTileEntity(pos);
+    public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
+        TileEntity te = worldIn.getBlockEntity(pos);
 
         if (!(te instanceof TileEntitySign)) {
             return ActionResultType.FAIL;
@@ -92,42 +92,42 @@ public class BlockSign extends BlockBase implements ITileEntityProvider, IItemBl
 
     @Override
     public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-        return SHAPES.get(state.get(FACING));
+        return SHAPES.get(state.getValue(FACING));
     }
 
     @Nullable
     @Override
     public BlockState getStateForPlacement(BlockItemUseContext context) {
-        FluidState ifluidstate = context.getWorld().getFluidState(context.getPos());
-        return getDefaultState().with(FACING, context.getPlacementHorizontalFacing()).with(WATERLOGGED, ifluidstate.isTagged(FluidTags.WATER) && ifluidstate.getLevel() == 8);
+        FluidState ifluidstate = context.getLevel().getFluidState(context.getClickedPos());
+        return defaultBlockState().setValue(FACING, context.getHorizontalDirection()).setValue(WATERLOGGED, ifluidstate.is(FluidTags.WATER) && ifluidstate.getAmount() == 8);
     }
 
     @Override
-    public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos) {
-        if (stateIn.get(WATERLOGGED)) {
-            worldIn.getPendingFluidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickRate(worldIn));
+    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos) {
+        if (stateIn.getValue(WATERLOGGED)) {
+            worldIn.getLiquidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(worldIn));
         }
-        return super.updatePostPlacement(stateIn, facing, facingState, worldIn, currentPos, facingPos);
+        return super.updateShape(stateIn, facing, facingState, worldIn, currentPos, facingPos);
     }
 
     @Override
-    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
         builder.add(FACING, WATERLOGGED);
     }
 
     @Override
     public FluidState getFluidState(BlockState state) {
-        return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
+        return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
     }
 
     @Override
-    public BlockRenderType getRenderType(BlockState state) {
+    public BlockRenderType getRenderShape(BlockState state) {
         return BlockRenderType.MODEL;
     }
 
     @Nullable
     @Override
-    public TileEntity createNewTileEntity(IBlockReader worldIn) {
+    public TileEntity newBlockEntity(IBlockReader worldIn) {
         return new TileEntitySign();
     }
 

@@ -21,7 +21,7 @@ public class MessageCenterCarClient implements Message<MessageCenterCarClient> {
     }
 
     public MessageCenterCarClient(PlayerEntity player) {
-        this.uuid = player.getUniqueID();
+        this.uuid = player.getUUID();
     }
 
     public MessageCenterCarClient(UUID uuid) {
@@ -31,8 +31,8 @@ public class MessageCenterCarClient implements Message<MessageCenterCarClient> {
     @OnlyIn(Dist.CLIENT)
     public void centerClient() {
         PlayerEntity player = Minecraft.getInstance().player;
-        PlayerEntity ridingPlayer = player.world.getPlayerByUuid(uuid);
-        Entity riding = ridingPlayer.getRidingEntity();
+        PlayerEntity ridingPlayer = player.level.getPlayerByUUID(uuid);
+        Entity riding = ridingPlayer.getVehicle();
 
         if (!(riding instanceof EntityCarBase)) {
             return;
@@ -56,13 +56,13 @@ public class MessageCenterCarClient implements Message<MessageCenterCarClient> {
 
     @Override
     public MessageCenterCarClient fromBytes(PacketBuffer buf) {
-        this.uuid = buf.readUniqueId();
+        this.uuid = buf.readUUID();
         return this;
     }
 
     @Override
     public void toBytes(PacketBuffer buf) {
-        buf.writeUniqueId(uuid);
+        buf.writeUUID(uuid);
     }
 
 }

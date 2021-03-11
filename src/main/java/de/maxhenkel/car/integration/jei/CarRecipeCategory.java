@@ -43,7 +43,7 @@ public class CarRecipeCategory implements IRecipeCategory<CarRecipe> {
 
     @Override
     public String getTitle() {
-        return ModBlocks.CAR_WORKSHOP.getTranslatedName().getString();
+        return ModBlocks.CAR_WORKSHOP.getName().getString();
     }
 
     @Override

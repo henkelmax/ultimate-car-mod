@@ -27,40 +27,40 @@ public class GenericCarModel extends OBJEntityRenderer<EntityGenericCar> {
     @Override
     public void render(EntityGenericCar entity, float yaw, float partialTicks, MatrixStack matrixStack, IRenderTypeBuffer buffer, int packedLight) {
         super.render(entity, yaw, partialTicks, matrixStack, buffer, packedLight);
-        matrixStack.push();
+        matrixStack.pushPose();
 
         String text = entity.getLicensePlate();
         if (text != null && !text.isEmpty()) {
-            matrixStack.push();
+            matrixStack.pushPose();
             RenderSystem.color4f(1F, 1F, 1F, 1F);
             drawLicensePlate(entity, text, matrixStack, buffer, partialTicks, packedLight);
-            matrixStack.pop();
+            matrixStack.popPose();
         }
 
-        matrixStack.pop();
+        matrixStack.popPose();
     }
 
     private void drawLicensePlate(EntityGenericCar car, String txt, MatrixStack matrixStack, IRenderTypeBuffer buffer, float partialTicks, int packedLight) {
-        matrixStack.push();
+        matrixStack.pushPose();
         matrixStack.scale(1F, -1F, 1F);
 
         translateLicensePlate(car, matrixStack, partialTicks);
 
-        int textWidth = Minecraft.getInstance().fontRenderer.getStringWidth(txt);
+        int textWidth = Minecraft.getInstance().font.width(txt);
         float textScale = 0.01F;
 
         matrixStack.translate(-(textScale * textWidth) / 2F, 0F, 0F);
 
         matrixStack.scale(textScale, textScale, textScale);
 
-        Minecraft.getInstance().fontRenderer.renderString(txt, 0F, 0F, 0xFFFFFF, false, matrixStack.getLast().getMatrix(), buffer, false, 0, packedLight);
+        Minecraft.getInstance().font.drawInBatch(txt, 0F, 0F, 0xFFFFFF, false, matrixStack.last().pose(), buffer, false, 0, packedLight);
 
-        matrixStack.pop();
+        matrixStack.popPose();
     }
 
     protected void translateLicensePlate(EntityGenericCar entity, MatrixStack matrixStack, float partialTicks) {
         Vector3d offset = entity.getLicensePlateOffset();
-        matrixStack.rotate(Vector3f.YP.rotationDegrees(180F - entity.getYaw(partialTicks)));
+        matrixStack.mulPose(Vector3f.YP.rotationDegrees(180F - entity.getViewYRot(partialTicks)));
         matrixStack.translate(offset.x, offset.y, offset.z);
     }
 

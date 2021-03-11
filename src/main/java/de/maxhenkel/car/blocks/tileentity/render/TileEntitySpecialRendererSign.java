@@ -17,14 +17,14 @@ public class TileEntitySpecialRendererSign extends TileEntityRenderer<TileEntity
 
     @Override
     public void render(TileEntitySign te, float partialTicks, MatrixStack matrixStack, IRenderTypeBuffer buffer, int light, int i) {
-        matrixStack.push();
+        matrixStack.pushPose();
 
         matrixStack.translate(0.5D, 1D, 0.5D);
-        matrixStack.rotate(Vector3f.XP.rotationDegrees(180F));
-        matrixStack.rotate(Vector3f.YP.rotationDegrees(-te.getBlockState().get(BlockSign.FACING).getHorizontalAngle()));
+        matrixStack.mulPose(Vector3f.XP.rotationDegrees(180F));
+        matrixStack.mulPose(Vector3f.YP.rotationDegrees(-te.getBlockState().getValue(BlockSign.FACING).toYRot()));
 
         //----------Front-----------
-        matrixStack.push();
+        matrixStack.pushPose();
 
         matrixStack.translate(0D, 0.27D, -0.51D / 16D);
         drawText(te.getText(0), matrixStack, buffer, light);
@@ -35,12 +35,12 @@ public class TileEntitySpecialRendererSign extends TileEntityRenderer<TileEntity
         matrixStack.translate(0D, 0.116D, 0D);
         drawText(te.getText(3), matrixStack, buffer, light);
 
-        matrixStack.pop();
+        matrixStack.popPose();
 
         //----------Back-----------
-        matrixStack.push();
+        matrixStack.pushPose();
 
-        matrixStack.rotate(Vector3f.YP.rotationDegrees(180F));
+        matrixStack.mulPose(Vector3f.YP.rotationDegrees(180F));
         matrixStack.translate(0D, 0.27D, -0.51D / 16D);
         drawText(te.getText(4), matrixStack, buffer, light);
         matrixStack.translate(0D, 0.116D, 0D);
@@ -50,25 +50,25 @@ public class TileEntitySpecialRendererSign extends TileEntityRenderer<TileEntity
         matrixStack.translate(0D, 0.116D, 0D);
         drawText(te.getText(7), matrixStack, buffer, light);
 
-        matrixStack.pop();
+        matrixStack.popPose();
         //-------------------------
 
-        matrixStack.pop();
+        matrixStack.popPose();
     }
 
     private void drawText(String txt, MatrixStack matrixStack, IRenderTypeBuffer buffer, int light) {
-        FontRenderer renderer = renderDispatcher.getFontRenderer();
-        matrixStack.push();
+        FontRenderer font = renderer.getFont();
+        matrixStack.pushPose();
 
-        int textWidth = renderer.getStringWidth(txt);
+        int textWidth = font.width(txt);
         float textScale = 0.008F;
 
         matrixStack.translate(-(textScale * textWidth) / 2D, 0D, 0D);
         matrixStack.scale(textScale, textScale, textScale);
 
-        renderer.renderString(txt, 0F, 0F, 0x0, false, matrixStack.getLast().getMatrix(), buffer, false, 0, light);
+        font.drawInBatch(txt, 0F, 0F, 0x0, false, matrixStack.last().pose(), buffer, false, 0, light);
 
-        matrixStack.pop();
+        matrixStack.popPose();
     }
 
 }

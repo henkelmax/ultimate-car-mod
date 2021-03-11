@@ -39,28 +39,28 @@ public class MessageSyncTileEntity implements Message<MessageSyncTileEntity> {
     private void sync() {
         PlayerEntity player = Minecraft.getInstance().player;
 
-        if (player == null || player.world == null) {
+        if (player == null || player.level == null) {
             return;
         }
 
-        TileEntity te = player.world.getTileEntity(pos);
+        TileEntity te = player.level.getBlockEntity(pos);
 
         if (te != null) {
-            te.read(te.getBlockState(), tag);
+            te.load(te.getBlockState(), tag);
         }
     }
 
     @Override
     public MessageSyncTileEntity fromBytes(PacketBuffer buf) {
         this.pos = buf.readBlockPos();
-        this.tag = buf.readCompoundTag();
+        this.tag = buf.readNbt();
         return this;
     }
 
     @Override
     public void toBytes(PacketBuffer buf) {
         buf.writeBlockPos(pos);
-        buf.writeCompoundTag(tag);
+        buf.writeNbt(tag);
     }
 
 }

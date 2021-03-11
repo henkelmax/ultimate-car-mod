@@ -23,24 +23,24 @@ public class BlockEvents {
             return;
         }
 
-        if (!(event.getPlayer().world instanceof ServerWorld)) {
+        if (!(event.getPlayer().level instanceof ServerWorld)) {
             return;
         }
 
-        ServerWorld serverWorld = (ServerWorld) event.getPlayer().world;
+        ServerWorld serverWorld = (ServerWorld) event.getPlayer().level;
 
         LootContext.Builder builder = new LootContext.Builder(serverWorld)
-                .withRandom(serverWorld.rand)
-                .withParameter(LootParameters.field_237457_g_, new Vector3d(event.getPos().getX(), event.getPos().getY(), event.getPos().getZ()))
-                .withParameter(LootParameters.TOOL, event.getPlayer().getHeldItemMainhand())
+                .withRandom(serverWorld.random)
+                .withParameter(LootParameters.ORIGIN, new Vector3d(event.getPos().getX(), event.getPos().getY(), event.getPos().getZ()))
+                .withParameter(LootParameters.TOOL, event.getPlayer().getMainHandItem())
                 .withParameter(LootParameters.THIS_ENTITY, event.getPlayer())
                 .withParameter(LootParameters.BLOCK_STATE, event.getState());
 
-        LootContext lootContext = builder.build(LootParameterSets.BLOCK);
+        LootContext lootContext = builder.create(LootParameterSets.BLOCK);
 
-        LootTable lootTable = serverWorld.getServer().getLootTableManager().getLootTableFromLocation(GRASS_LOOT_TABLE);
+        LootTable lootTable = serverWorld.getServer().getLootTables().get(GRASS_LOOT_TABLE);
 
-        lootTable.generate(lootContext).forEach((stack) -> Block.spawnAsEntity(serverWorld, event.getPos(), stack));
+        lootTable.getRandomItems(lootContext).forEach((stack) -> Block.popResource(serverWorld, event.getPos(), stack));
     }
 
 }

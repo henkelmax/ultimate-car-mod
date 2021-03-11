@@ -20,7 +20,7 @@ public class FluidMethanol extends CarFluidSource {
         super(
                 FluidAttributes.builder(
                         new ResourceLocation(Main.MODID, "block/methanol_still"),
-                        new ResourceLocation(Main.MODID, "block/methanol_flowing")).sound(SoundEvents.ITEM_BUCKET_FILL),
+                        new ResourceLocation(Main.MODID, "block/methanol_flowing")).sound(SoundEvents.BUCKET_FILL),
                 () -> ModBlocks.METHANOL,
                 () -> ModFluids.METHANOL,
                 () -> ModFluids.METHANOL_FLOWING,
@@ -33,8 +33,8 @@ public class FluidMethanol extends CarFluidSource {
     public void applyEffects(Entity entity, BlockState state, World worldIn, BlockPos pos) {
         if (entity instanceof PlayerEntity) {
             PlayerEntity player = (PlayerEntity) entity;
-            if (!player.abilities.isCreativeMode && player.areEyesInFluid(ModFluidTags.BLINDING)) {
-                player.addPotionEffect(new EffectInstance(Effects.BLINDNESS, 1200, 0, true, false));
+            if (!player.abilities.instabuild && player.isEyeInFluid(ModFluidTags.BLINDING)) {
+                player.addEffect(new EffectInstance(Effects.BLINDNESS, 1200, 0, true, false));
             }
         }
     }

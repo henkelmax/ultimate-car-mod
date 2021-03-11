@@ -23,7 +23,7 @@ public class MessageRepairCar implements Message<MessageRepairCar> {
 
     public MessageRepairCar(BlockPos pos, PlayerEntity player) {
         this.pos = pos;
-        this.uuid = player.getUniqueID();
+        this.uuid = player.getUUID();
     }
 
     @Override
@@ -33,12 +33,12 @@ public class MessageRepairCar implements Message<MessageRepairCar> {
 
     @Override
     public void executeServerSide(NetworkEvent.Context context) {
-        if (!context.getSender().getUniqueID().equals(uuid)) {
+        if (!context.getSender().getUUID().equals(uuid)) {
             Main.LOGGER.error("The UUID of the sender was not equal to the packet UUID");
             return;
         }
 
-        TileEntity te = context.getSender().world.getTileEntity(pos);
+        TileEntity te = context.getSender().level.getBlockEntity(pos);
 
         if (te instanceof TileEntityCarWorkshop) {
             ((TileEntityCarWorkshop) te).repairCar(context.getSender());
@@ -48,14 +48,14 @@ public class MessageRepairCar implements Message<MessageRepairCar> {
     @Override
     public MessageRepairCar fromBytes(PacketBuffer buf) {
         pos = buf.readBlockPos();
-        uuid = buf.readUniqueId();
+        uuid = buf.readUUID();
         return this;
     }
 
     @Override
     public void toBytes(PacketBuffer buf) {
         buf.writeBlockPos(pos);
-        buf.writeUniqueId(uuid);
+        buf.writeUUID(uuid);
     }
 
 }

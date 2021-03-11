@@ -19,15 +19,15 @@ public class GuiCarInventory extends ScreenBase<ContainerCarInventory> {
         super(carInventory.getRows() == 3 ? GUI_TEXTURE_3 : GUI_TEXTURE_6, carInventory, playerInventory, title);
         this.car = carInventory.getCar();
         this.playerInventory = playerInventory;
-        xSize = 176;
-        ySize = carInventory.getRows() == 3 ? 166 : 222;
+        imageWidth = 176;
+        imageHeight = carInventory.getRows() == 3 ? 166 : 222;
     }
 
     @Override
-    protected void drawGuiContainerForegroundLayer(MatrixStack matrixStack, int mouseX, int mouseY) {
-        super.drawGuiContainerForegroundLayer(matrixStack, mouseX, mouseY);
-        font.func_238422_b_(matrixStack, car.getDisplayName().func_241878_f(), 8, 6, FONT_COLOR);
-        font.func_238422_b_(matrixStack, playerInventory.getDisplayName().func_241878_f(), 8, ySize - 96 + 3, FONT_COLOR);
+    protected void renderLabels(MatrixStack matrixStack, int mouseX, int mouseY) {
+        super.renderLabels(matrixStack, mouseX, mouseY);
+        font.draw(matrixStack, car.getDisplayName().getVisualOrderText(), 8, 6, FONT_COLOR);
+        font.draw(matrixStack, playerInventory.getDisplayName().getVisualOrderText(), 8, imageHeight - 96 + 3, FONT_COLOR);
     }
 
     @Override

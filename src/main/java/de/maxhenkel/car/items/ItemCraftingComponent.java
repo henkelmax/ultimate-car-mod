@@ -8,7 +8,7 @@ import net.minecraft.util.ResourceLocation;
 public class ItemCraftingComponent extends Item {
 
     public ItemCraftingComponent(String name) {
-        super(new Item.Properties().group(ModItemGroups.TAB_CAR));
+        super(new Item.Properties().tab(ModItemGroups.TAB_CAR));
         setRegistryName(new ResourceLocation(Main.MODID, name));
     }
 

@@ -10,7 +10,7 @@ public abstract class ContainerBase extends de.maxhenkel.corelib.inventory.Conta
     public ContainerBase(ContainerType type, int id, PlayerInventory playerInventory, IInventory tileInventory) {
         super(type, id, playerInventory, tileInventory);
         if (tileInventory instanceof TileEntityBase) {
-            trackIntArray(((TileEntityBase) tileInventory).getFields());
+            addDataSlots(((TileEntityBase) tileInventory).getFields());
         }
     }
 

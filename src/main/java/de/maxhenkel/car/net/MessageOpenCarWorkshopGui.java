@@ -27,7 +27,7 @@ public class MessageOpenCarWorkshopGui implements Message<MessageOpenCarWorkshop
 
     public MessageOpenCarWorkshopGui(BlockPos pos, PlayerEntity player, boolean reapir) {
         this.pos = pos;
-        this.uuid = player.getUniqueID();
+        this.uuid = player.getUUID();
         this.repair = reapir;
     }
 
@@ -38,12 +38,12 @@ public class MessageOpenCarWorkshopGui implements Message<MessageOpenCarWorkshop
 
     @Override
     public void executeServerSide(NetworkEvent.Context context) {
-        if (!context.getSender().getUniqueID().equals(uuid)) {
+        if (!context.getSender().getUUID().equals(uuid)) {
             Main.LOGGER.error("The UUID of the sender was not equal to the packet UUID");
             return;
         }
 
-        TileEntity te = context.getSender().world.getTileEntity(pos);
+        TileEntity te = context.getSender().level.getBlockEntity(pos);
 
         if (!(te instanceof TileEntityCarWorkshop)) {
             return;
@@ -60,7 +60,7 @@ public class MessageOpenCarWorkshopGui implements Message<MessageOpenCarWorkshop
     @Override
     public MessageOpenCarWorkshopGui fromBytes(PacketBuffer buf) {
         this.pos = buf.readBlockPos();
-        this.uuid = buf.readUniqueId();
+        this.uuid = buf.readUUID();
         this.repair = buf.readBoolean();
 
         return this;
@@ -69,7 +69,7 @@ public class MessageOpenCarWorkshopGui implements Message<MessageOpenCarWorkshop
     @Override
     public void toBytes(PacketBuffer buf) {
         buf.writeBlockPos(pos);
-        buf.writeUniqueId(uuid);
+        buf.writeUUID(uuid);
         buf.writeBoolean(repair);
     }
 

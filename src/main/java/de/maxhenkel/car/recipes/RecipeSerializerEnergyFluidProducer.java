@@ -21,24 +21,24 @@ public abstract class RecipeSerializerEnergyFluidProducer<T extends EnergyFluidP
     }
 
     @Override
-    public T read(ResourceLocation recipeId, JsonObject json) {
-        String group = JSONUtils.getString(json, "group", "");
-        JsonElement jsonelement = JSONUtils.isJsonArray(json, "ingredient") ? JSONUtils.getJsonArray(json, "ingredient") : JSONUtils.getJsonObject(json, "ingredient");
-        ItemStack output = ShapedRecipe.deserializeItem(JSONUtils.getJsonObject(json, "result"));
-        return factory.create(recipeId, group, Ingredient.deserialize(jsonelement), output, JSONUtils.getInt(json, "fluidamount"), JSONUtils.getInt(json, "energy"), JSONUtils.getInt(json, "duration"));
+    public T fromJson(ResourceLocation recipeId, JsonObject json) {
+        String group = JSONUtils.getAsString(json, "group", "");
+        JsonElement jsonelement = JSONUtils.isArrayNode(json, "ingredient") ? JSONUtils.convertToJsonArray(json, "ingredient") : JSONUtils.getAsJsonObject(json, "ingredient");
+        ItemStack output = ShapedRecipe.itemFromJson(JSONUtils.getAsJsonObject(json, "result"));
+        return factory.create(recipeId, group, Ingredient.fromJson(jsonelement), output, JSONUtils.getAsInt(json, "fluidamount"), JSONUtils.getAsInt(json, "energy"), JSONUtils.getAsInt(json, "duration"));
     }
 
     @Nullable
     @Override
-    public T read(ResourceLocation recipeId, PacketBuffer buffer) {
-        return factory.create(recipeId, buffer.readString(32767), Ingredient.read(buffer), buffer.readItemStack(), buffer.readVarInt(), buffer.readVarInt(), buffer.readVarInt());
+    public T fromNetwork(ResourceLocation recipeId, PacketBuffer buffer) {
+        return factory.create(recipeId, buffer.readUtf(32767), Ingredient.fromNetwork(buffer), buffer.readItem(), buffer.readVarInt(), buffer.readVarInt(), buffer.readVarInt());
     }
 
     @Override
-    public void write(PacketBuffer buffer, T recipe) {
-        buffer.writeString(recipe.group);
-        recipe.ingredient.write(buffer);
-        buffer.writeItemStack(recipe.result);
+    public void toNetwork(PacketBuffer buffer, T recipe) {
+        buffer.writeUtf(recipe.group);
+        recipe.ingredient.toNetwork(buffer);
+        buffer.writeItem(recipe.result);
         buffer.writeVarInt(recipe.fluidAmount);
         buffer.writeVarInt(recipe.energy);
         buffer.writeVarInt(recipe.duration);

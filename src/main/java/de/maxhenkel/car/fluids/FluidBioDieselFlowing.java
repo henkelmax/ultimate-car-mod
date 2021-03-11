@@ -17,7 +17,7 @@ public class FluidBioDieselFlowing extends CarFluidFlowing {
         super(
                 FluidAttributes.builder(
                         new ResourceLocation(Main.MODID, "block/bio_diesel_still"),
-                        new ResourceLocation(Main.MODID, "block/bio_diesel_flowing")).sound(SoundEvents.ITEM_BUCKET_FILL),
+                        new ResourceLocation(Main.MODID, "block/bio_diesel_flowing")).sound(SoundEvents.BUCKET_FILL),
                 () -> ModBlocks.BIO_DIESEL,
                 () -> ModFluids.BIO_DIESEL,
                 () -> ModFluids.BIO_DIESEL_FLOWING,

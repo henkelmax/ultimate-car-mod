@@ -30,30 +30,30 @@ public class ItemLicensePlate extends ItemCraftingComponent {
     }
 
     @Override
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+    public void appendHoverText(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         String text = getText(stack);
 
         if (!text.isEmpty()) {
-            tooltip.add(new TranslationTextComponent("tooltip.license_plate_text", new StringTextComponent(text).mergeStyle(TextFormatting.DARK_GRAY)).mergeStyle(TextFormatting.GRAY));
+            tooltip.add(new TranslationTextComponent("tooltip.license_plate_text", new StringTextComponent(text).withStyle(TextFormatting.DARK_GRAY)).withStyle(TextFormatting.GRAY));
         }
 
-        super.addInformation(stack, worldIn, tooltip, flagIn);
+        super.appendHoverText(stack, worldIn, tooltip, flagIn);
     }
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
-        ItemStack stack = playerIn.getHeldItem(handIn);
+    public ActionResult<ItemStack> use(World worldIn, PlayerEntity playerIn, Hand handIn) {
+        ItemStack stack = playerIn.getItemInHand(handIn);
         if (playerIn instanceof ServerPlayerEntity) {
             NetworkHooks.openGui((ServerPlayerEntity) playerIn, new INamedContainerProvider() {
                 @Override
                 public ITextComponent getDisplayName() {
-                    return ItemLicensePlate.this.getDisplayName(playerIn.getHeldItem(handIn));
+                    return ItemLicensePlate.this.getName(playerIn.getItemInHand(handIn));
                 }
 
                 @Nullable
                 @Override
                 public Container createMenu(int i, PlayerInventory playerInventory, PlayerEntity playerEntity) {
-                    return new ContainerLicensePlate(i, playerIn.getHeldItem(handIn));
+                    return new ContainerLicensePlate(i, playerIn.getItemInHand(handIn));
                 }
             });
         }

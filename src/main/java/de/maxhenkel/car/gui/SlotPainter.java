@@ -21,16 +21,16 @@ public class SlotPainter extends Slot {
     }
 
     @Override
-    public boolean canTakeStack(PlayerEntity player) {
+    public boolean mayPickup(PlayerEntity player) {
         setPainterID(index);
-        if (player.world.isRemote) {
-            Minecraft.getInstance().displayGuiScreen(null);
+        if (player.level.isClientSide) {
+            Minecraft.getInstance().setScreen(null);
         }
         return false;
     }
 
     public void setPainterID(int index) {
-        ItemStack stack = player.getHeldItemMainhand();
+        ItemStack stack = player.getMainHandItem();
 
         Item i = stack.getItem();
 
@@ -58,7 +58,7 @@ public class SlotPainter extends Slot {
     }
 
     public static ItemStack getPainterStack(PlayerEntity player) {
-        ItemStack stack = player.getHeldItemMainhand();
+        ItemStack stack = player.getMainHandItem();
 
         Item i = stack.getItem();
 

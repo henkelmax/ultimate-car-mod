@@ -20,7 +20,7 @@ public class FluidGlycerin extends CarFluidSource {
         super(
                 FluidAttributes.builder(
                         new ResourceLocation(Main.MODID, "block/glycerin_still"),
-                        new ResourceLocation(Main.MODID, "block/glycerin_flowing")).sound(SoundEvents.ITEM_BUCKET_FILL).density(5000).viscosity(100),
+                        new ResourceLocation(Main.MODID, "block/glycerin_flowing")).sound(SoundEvents.BUCKET_FILL).density(5000).viscosity(100),
                 () -> ModBlocks.GLYCERIN,
                 () -> ModFluids.GLYCERIN,
                 () -> ModFluids.GLYCERIN_FLOWING,
@@ -33,8 +33,8 @@ public class FluidGlycerin extends CarFluidSource {
     public void applyEffects(Entity entity, BlockState state, World worldIn, BlockPos pos) {
         if (entity instanceof PlayerEntity) {
             PlayerEntity player = (PlayerEntity) entity;
-            if (!player.abilities.isCreativeMode) {
-                player.addPotionEffect(new EffectInstance(Effects.NAUSEA, 100, 0, true, false));
+            if (!player.abilities.instabuild) {
+                player.addEffect(new EffectInstance(Effects.CONFUSION, 100, 0, true, false));
             }
         }
     }
