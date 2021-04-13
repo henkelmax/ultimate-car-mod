@@ -24,6 +24,10 @@ public class TileentitySpecialRendererGasStation extends TileEntityRenderer<Tile
 
     @Override
     public void render(TileEntityGasStation target, float partialTicks, MatrixStack matrixStack, IRenderTypeBuffer buffer, int combinedLightIn, int combinedOverlayIn) {
+        if (!target.hasLevel()) {
+            return;
+        }
+
         String name = target.getRenderText();
 
         if (name == null || name.isEmpty()) {

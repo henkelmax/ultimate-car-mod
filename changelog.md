@@ -1,1 +1,1 @@
-- Fixed asphalt slab block drops
+- Fixed potential crash when rendering the gas station
