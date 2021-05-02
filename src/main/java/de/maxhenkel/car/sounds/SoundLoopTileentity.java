@@ -37,6 +37,7 @@ public class SoundLoopTileentity extends TickableSound {
 
         if (tileEntity == null || tileEntity.getLevel() == null) {
             stop();
+            return;
         }
 
         if (tileEntity.getLevel().isClientSide) {
