@@ -1,1 +1,1 @@
-- Fixed crash when breaking gas station
+- Fixed missing arrow texture
