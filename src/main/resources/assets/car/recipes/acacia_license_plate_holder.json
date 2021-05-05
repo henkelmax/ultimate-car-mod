@@ -11,7 +11,8 @@
       "data": 4
     },
     "I": {
-      "item": "car:iron_stick"
+      "type": "forge:ore_dict",
+      "ore": "stickIron"
     }
   },
   "result": {
