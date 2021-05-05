@@ -7,7 +7,7 @@ buildscript {
     }
     dependencies {
         classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
-        classpath group: 'de.maxhenkel.forge-update', name: 'forge-update', version: '1.0.1'
+//        classpath group: 'de.maxhenkel.forge-update', name: 'forge-update', version: '1.0.1'
     }
 }
 
@@ -17,7 +17,7 @@ plugins {
 }
 
 apply plugin: 'net.minecraftforge.gradle.forge'
-apply plugin: 'forge-update'
+//apply plugin: 'forge-update'
 
 version = mod_version
 group = mod_packagename
@@ -71,7 +71,6 @@ repositories {
 }
 
 curseforge {
-    apiKey = System.env.CURSEFORGE_API_KEY != null ? System.env.CURSEFORGE_API_KEY : file('curseforge_api_key.txt').text
     project {
         id = curse_id
         changelogType = 'markdown'
@@ -84,20 +83,20 @@ curseforge {
     }
 }
 
-forgeUpdate {
-    def messages = []
-    file('changelog.md').eachLine { String line ->
-        if (line.trim().startsWith('-')) {
-            messages.add(line.replaceFirst('-', '').trim())
-        }
-    }
-
-    serverURL = 'https://update.maxhenkel.de/'
-    apiKey = System.env.FORGE_UPDATE_API_KEY != null ? System.env.FORGE_UPDATE_API_KEY : file('forge_update_api_key.txt').text
-    modID = mod_id
-    gameVersion = mod_minecraft_version
-    modVersion = mod_version
-    updateMessages = messages
-    releaseType = curse_release_type
-    tags = recommended == 'true' ? ['recommended'] : []
-}
+//forgeUpdate {
+//    def messages = []
+//    file('changelog.md').eachLine { String line ->
+//        if (line.trim().startsWith('-')) {
+//            messages.add(line.replaceFirst('-', '').trim())
+//        }
+//    }
+//
+//    serverURL = 'https://update.maxhenkel.de/'
+//    apiKey = System.env.FORGE_UPDATE_API_KEY != null ? System.env.FORGE_UPDATE_API_KEY : file('forge_update_api_key.txt').text
+//    modID = mod_id
+//    gameVersion = mod_minecraft_version
+//    modVersion = mod_version
+//    updateMessages = messages
+//    releaseType = curse_release_type
+//    tags = recommended == 'true' ? ['recommended'] : []
+//}
