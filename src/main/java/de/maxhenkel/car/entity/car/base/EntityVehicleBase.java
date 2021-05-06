@@ -3,11 +3,16 @@ package de.maxhenkel.car.entity.car.base;
 import de.maxhenkel.car.Main;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.Pose;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.IPacket;
 import net.minecraft.util.ActionResultType;
+import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
+import net.minecraft.util.TransportationHelper;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
@@ -236,6 +241,27 @@ public abstract class EntityVehicleBase extends Entity {
     @Override
     public IPacket<?> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
+    }
+
+    @Override
+    public Vector3d getDismountLocationForPassenger(LivingEntity entity) {
+        Direction direction = getMotionDirection();
+        if (direction.getAxis() == Direction.Axis.Y) {
+            return super.getDismountLocationForPassenger(entity);
+        }
+        int[][] offsets = TransportationHelper.offsetsForDirection(direction);
+        AxisAlignedBB bb = entity.getLocalBoundsForPose(Pose.STANDING);
+        AxisAlignedBB carBB = getBoundingBox();
+        for (int[] offset : offsets) {
+            Vector3d dismountPos = new Vector3d(getX() + (double) offset[0] * (carBB.getXsize() / 2D + bb.getXsize() / 2D + 1D / 16D), getY(), getZ() + (double) offset[1] * (carBB.getXsize() / 2D + bb.getXsize() / 2D + 1D / 16D));
+            double y = level.getBlockFloorHeight(new BlockPos(dismountPos));
+            if (TransportationHelper.isBlockFloorValid(y)) {
+                if (TransportationHelper.canDismountTo(level, entity, bb.move(dismountPos))) {
+                    return dismountPos;
+                }
+            }
+        }
+        return super.getDismountLocationForPassenger(entity);
     }
 
 }
