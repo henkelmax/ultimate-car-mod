@@ -1,1 +1,1 @@
-- Fixed car dismounting
+- Added zoomable third person view

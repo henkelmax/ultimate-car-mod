@@ -1,8 +1,8 @@
 package de.maxhenkel.car.events;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import de.maxhenkel.car.entity.car.base.EntityCarBase;
-import de.maxhenkel.car.entity.car.base.EntityCarFuelBase;
+import de.maxhenkel.car.Main;
+import de.maxhenkel.car.entity.car.base.EntityGenericCar;
 import de.maxhenkel.car.entity.car.base.EntityVehicleBase;
 import de.maxhenkel.corelib.math.MathUtils;
 import net.minecraft.client.Minecraft;
@@ -14,36 +14,54 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.client.event.*;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
-import net.minecraftforge.client.event.RenderPlayerEvent;
-import net.minecraftforge.client.event.RenderTooltipEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 @OnlyIn(Dist.CLIENT)
 public class RenderEvents {
+
+    private Minecraft mc;
+
+    public RenderEvents() {
+        mc = Minecraft.getInstance();
+    }
+
+    @SubscribeEvent
+    public void onRender(EntityViewRenderEvent.CameraSetup evt) {
+        if (getCar() != null && !mc.options.getCameraType().isFirstPerson()) {
+            evt.getInfo().move(-evt.getInfo().getMaxZoom(Main.CLIENT_CONFIG.carZoom.get()) + 4D, 0D, 0D);
+        }
+    }
+
+    @SubscribeEvent
+    public void onRender(InputEvent.MouseScrollEvent evt) {
+        if (getCar() != null && !mc.options.getCameraType().isFirstPerson()) {
+            Main.CLIENT_CONFIG.carZoom.set(Math.max(1D, Math.min(20D, Main.CLIENT_CONFIG.carZoom.get() - evt.getScrollDelta())));
+            Main.CLIENT_CONFIG.carZoom.save();
+            evt.setCanceled(true);
+        }
+    }
+
+    private EntityGenericCar getCar() {
+        Entity e = mc.player.getVehicle();
+        if (e instanceof EntityGenericCar) {
+            return (EntityGenericCar) e;
+        }
+        return null;
+    }
 
     @SubscribeEvent
     public void onRender(RenderGameOverlayEvent evt) {
         if (!evt.getType().equals(ElementType.EXPERIENCE)) {
             return;
         }
-
-        Minecraft mc = Minecraft.getInstance();
-
         PlayerEntity player = mc.player;
+        EntityGenericCar car = getCar();
 
-        Entity e = player.getVehicle();
-
-        if (e == null) {
+        if (car == null) {
             return;
         }
-
-        if (!(e instanceof EntityCarFuelBase)) {
-            return;
-        }
-
-        EntityCarFuelBase car = (EntityCarFuelBase) e;
 
         if (player.equals(car.getDriver())) {
             evt.setCanceled(true);
@@ -55,7 +73,6 @@ public class RenderEvents {
 
     public void renderFuelBar(MatrixStack matrixStack, float percent) {
         percent = MathHelper.clamp(percent, 0F, 1F);
-        Minecraft mc = Minecraft.getInstance();
         int x = mc.getWindow().getGuiScaledWidth() / 2 - 91;
 
         mc.getTextureManager().bind(AbstractGui.GUI_ICONS_LOCATION);
@@ -71,8 +88,6 @@ public class RenderEvents {
     }
 
     public void renderSpeed(MatrixStack matrixStack, float speed) {
-        Minecraft mc = Minecraft.getInstance();
-
         String s = String.valueOf(MathUtils.round(Math.abs(speed), 2));
         int i1 = (mc.getWindow().getGuiScaledWidth() - mc.gui.getFont().width(s)) / 2;
         int j1 = mc.getWindow().getGuiScaledHeight() - 31 - 4;
@@ -100,9 +115,8 @@ public class RenderEvents {
 
     @SubscribeEvent
     public void renderPlayerPre(RenderPlayerEvent.Pre event) {
-        PlayerEntity player = event.getPlayer();
-        if (player.getVehicle() instanceof EntityCarBase) {
-            EntityCarBase car = (EntityCarBase) event.getPlayer().getVehicle();
+        EntityGenericCar car = getCar();
+        if (car != null) {
             event.getMatrixStack().pushPose();
             event.getMatrixStack().scale(EntityVehicleBase.SCALE_FACTOR, EntityVehicleBase.SCALE_FACTOR, EntityVehicleBase.SCALE_FACTOR);
             event.getMatrixStack().translate(0D, (event.getPlayer().getBbHeight() - (event.getPlayer().getBbHeight() * EntityVehicleBase.SCALE_FACTOR)) / 1.5D + car.getPlayerYOffset(), 0D);
@@ -111,7 +125,7 @@ public class RenderEvents {
 
     @SubscribeEvent
     public void renderPlayerPost(RenderPlayerEvent.Post event) {
-        if (event.getPlayer().getVehicle() instanceof EntityCarBase) {
+        if (getCar() != null) {
             event.getMatrixStack().popPose();
         }
     }
