@@ -36,6 +36,7 @@ import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.merchant.villager.VillagerEntity;
 import net.minecraft.entity.merchant.villager.VillagerProfession;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.inventory.container.ContainerType;
@@ -74,7 +75,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.lwjgl.glfw.GLFW;
 
-import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 
 @Mod(Main.MODID)
@@ -496,33 +496,27 @@ public class Main {
     @SubscribeEvent
     public void registerPointsOfInterest(RegistryEvent.Register<PointOfInterestType> event) {
         POINT_OF_INTEREST_TYPE_GAS_STATION_ATTENDANT = new PointOfInterestType("gas_station_attendant", ImmutableSet.copyOf(ModBlocks.GAS_STATION.getStateDefinition().getPossibleStates()), 1, 1);
-
         POINT_OF_INTEREST_TYPE_GAS_STATION_ATTENDANT.setRegistryName(Main.MODID, "gas_station_attendant");
-        event.getRegistry().registerAll(
-                POINT_OF_INTEREST_TYPE_GAS_STATION_ATTENDANT
-        );
-        try {
-            Method register = ObfuscationReflectionHelper.findMethod(PointOfInterestType.class, "func_221052_a", PointOfInterestType.class);
-            register.invoke(null, POINT_OF_INTEREST_TYPE_GAS_STATION_ATTENDANT);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        event.getRegistry().register(POINT_OF_INTEREST_TYPE_GAS_STATION_ATTENDANT);
     }
 
     @SubscribeEvent
     public void registerVillagerProfessions(RegistryEvent.Register<VillagerProfession> event) {
-        try {
-            Constructor<VillagerProfession> constructor = VillagerProfession.class.getDeclaredConstructor(String.class, PointOfInterestType.class, ImmutableSet.class, ImmutableSet.class, SoundEvent.class);
-            constructor.setAccessible(true);
-            VILLAGER_PROFESSION_GAS_STATION_ATTENDANT = constructor.newInstance("gas_station_attendant", POINT_OF_INTEREST_TYPE_GAS_STATION_ATTENDANT, ImmutableSet.of(/*ModItems.CANOLA, ModItems.CANOLA_SEEDS*/), ImmutableSet.of(/*Blocks.FARMLAND*/), ModSounds.GAS_STATION_ATTENDANT);
+        VILLAGER_PROFESSION_GAS_STATION_ATTENDANT = new VillagerProfession("gas_station_attendant", POINT_OF_INTEREST_TYPE_GAS_STATION_ATTENDANT, ImmutableSet.of(), ImmutableSet.of(), ModSounds.GAS_STATION_ATTENDANT);
+        VILLAGER_PROFESSION_GAS_STATION_ATTENDANT.setRegistryName(Main.MODID, "gas_station_attendant");
+        event.getRegistry().register(VILLAGER_PROFESSION_GAS_STATION_ATTENDANT);
 
-            VILLAGER_PROFESSION_GAS_STATION_ATTENDANT.setRegistryName(Main.MODID, "gas_station_attendant");
-            event.getRegistry().registerAll(
-                    VILLAGER_PROFESSION_GAS_STATION_ATTENDANT
-            );
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        VillagerProfession.FARMER.requestedItems = ImmutableSet.<Item>builder()
+                .addAll(VillagerProfession.FARMER.requestedItems)
+                .add(ModItems.CANOLA_SEEDS)
+                .add(ModItems.CANOLA)
+                .build();
+
+        VillagerEntity.WANTED_ITEMS = ImmutableSet.<Item>builder()
+                .addAll(VillagerEntity.WANTED_ITEMS)
+                .add(ModItems.CANOLA_SEEDS)
+                .add(ModItems.CANOLA)
+                .build();
     }
 
 }

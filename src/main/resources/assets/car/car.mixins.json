@@ -1,0 +1,13 @@
+{
+  "required": true,
+  "package": "de.maxhenkel.car.mixins",
+  "compatibilityLevel": "JAVA_8",
+  "refmap": "car.refmap.json",
+  "minVersion": "0.8",
+  "mixins": [
+    "VillagerEntityMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
