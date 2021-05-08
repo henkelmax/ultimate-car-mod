@@ -48,7 +48,6 @@ import net.minecraft.item.crafting.SpecialRecipeSerializer;
 import net.minecraft.loot.LootFunctionType;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Hand;
-import net.minecraft.util.IItemProvider;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.registry.Registry;
@@ -62,7 +61,6 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -74,8 +72,6 @@ import net.minecraftforge.registries.DataSerializerEntry;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.lwjgl.glfw.GLFW;
-
-import java.lang.reflect.Method;
 
 @Mod(Main.MODID)
 public class Main {
@@ -150,14 +146,9 @@ public class Main {
         CommonRegistry.registerMessage(SIMPLE_CHANNEL, 14, MessageCenterCarClient.class);
         CommonRegistry.registerMessage(SIMPLE_CHANNEL, 15, MessageEditLicensePlate.class);
 
-        try {
-            Method registerCompostable = ObfuscationReflectionHelper.findMethod(ComposterBlock.class, "func_220290_a", float.class, IItemProvider.class);
-            registerCompostable.invoke(null, 0.3F, ModItems.CANOLA_SEEDS);
-            registerCompostable.invoke(null, 0.5F, ModItems.CANOLA_CAKE);
-            registerCompostable.invoke(null, 0.65F, ModItems.CANOLA);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        ComposterBlock.add(0.3F, ModItems.CANOLA_SEEDS);
+        ComposterBlock.add(0.5F, ModItems.CANOLA_CAKE);
+        ComposterBlock.add(0.65F, ModItems.CANOLA);
     }
 
     public static KeyBinding FORWARD_KEY;
