@@ -30,7 +30,7 @@ public class RenderEvents {
     @SubscribeEvent
     public void onRender(EntityViewRenderEvent.CameraSetup evt) {
         if (getCar() != null && !mc.options.getCameraType().isFirstPerson()) {
-            evt.getInfo().move(-evt.getInfo().getMaxZoom(Main.CLIENT_CONFIG.carZoom.get()) + 4D, 0D, 0D);
+            evt.getInfo().move(-evt.getInfo().getMaxZoom(Main.CLIENT_CONFIG.carZoom.get() - 4D), 0D, 0D);
         }
     }
 

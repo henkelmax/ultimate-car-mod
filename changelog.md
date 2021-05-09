@@ -1,1 +1,1 @@
-- Made car tank size configurable
+- Fixed third person view distance clipping
