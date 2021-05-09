@@ -28,6 +28,11 @@ public class ContainerCarWorkshopRepair extends ContainerBase {
         return 56;
     }
 
+    @Override
+    public int getInventorySize() {
+        return 3;
+    }
+
     public PlayerEntity getPlayer() {
         return playerInventory.player;
     }
