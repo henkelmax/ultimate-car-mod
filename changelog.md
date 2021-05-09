@@ -1,1 +1,1 @@
-- Fixed shift clicking items into workshop
+- Made car tank size configurable

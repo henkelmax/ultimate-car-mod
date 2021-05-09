@@ -142,9 +142,9 @@ public class PartRegistry {
     public static final Part CRIMSON_BUMPER = new PartBumper(new ResourceLocation("textures/block/crimson_planks.png"));
     public static final Part WARPED_BUMPER = new PartBumper(new ResourceLocation("textures/block/warped_planks.png"));
 
-    public static final Part SMALL_TANK = new PartTank(500);
-    public static final Part MEDIUM_TANK = new PartTank(1000);
-    public static final Part LARGE_TANK = new PartTank(1500);
+    public static final Part SMALL_TANK = new PartTank(() -> Main.SERVER_CONFIG.tankSmallMaxFuel.get());
+    public static final Part MEDIUM_TANK = new PartTank(() -> Main.SERVER_CONFIG.tankMediumMaxFuel.get());
+    public static final Part LARGE_TANK = new PartTank(() -> Main.SERVER_CONFIG.tankLargeMaxFuel.get());
 
     public static final Part WHEEL = new PartWheel(
             new OBJModel(new ResourceLocation(Main.MODID, "models/entity/wheel.obj")),

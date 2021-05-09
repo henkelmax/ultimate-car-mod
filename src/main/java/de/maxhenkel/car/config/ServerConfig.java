@@ -64,6 +64,10 @@ public class ServerConfig extends ConfigBase {
     public final ForgeConfigSpec.BooleanValue hornFlee;
     public final ForgeConfigSpec.BooleanValue useBattery;
 
+    public final ForgeConfigSpec.IntValue tankSmallMaxFuel;
+    public final ForgeConfigSpec.IntValue tankMediumMaxFuel;
+    public final ForgeConfigSpec.IntValue tankLargeMaxFuel;
+
     public final ForgeConfigSpec.DoubleValue engine6CylinderFuelEfficiency;
     public final ForgeConfigSpec.DoubleValue engine3CylinderFuelEfficiency;
     public final ForgeConfigSpec.DoubleValue engineTruckFuelEfficiency;
@@ -153,6 +157,10 @@ public class ServerConfig extends ConfigBase {
         carOffroadSpeed = builder.comment("The speed modifier for cars on non road blocks").defineInRange("car.offroad_speed_modifier", 1D, 0.001D, 10D);
         carOnroadSpeed = builder.comment("The speed modifier for cars on road blocks", "On road blocks are defined in the config section 'road_blocks'").defineInRange("car.onroad_speed_modifier", 1D, 0.001D, 10D);
         carDriveBlocks = builder.comment("If it starts with '#' it is a tag").defineList("car.road_blocks.blocks", Collections.singletonList("#car:drivable_blocks"), Objects::nonNull);
+
+        tankSmallMaxFuel = builder.defineInRange("car.parts.small_tank.max_fuel", 500, 100, 100_000);
+        tankMediumMaxFuel = builder.defineInRange("car.parts.medium_tank.max_fuel", 1000, 100, 100_000);
+        tankLargeMaxFuel = builder.defineInRange("car.parts.large_tank.max_fuel", 1500, 100, 100_000);
 
         engine6CylinderFuelEfficiency = builder.defineInRange("car.parts.engine_6_cylinder.fuel_efficiency", 0.25D, 0.001D, 10D);
         engine3CylinderFuelEfficiency = builder.defineInRange("car.parts.engine_3_cylinder.fuel_efficiency", 0.5D, 0.001D, 10D);

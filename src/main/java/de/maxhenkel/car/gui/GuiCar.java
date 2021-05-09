@@ -107,6 +107,7 @@ public class GuiCar extends ScreenBase<ContainerCar> {
     }
 
     public void drawFuel(MatrixStack matrixStack, float percent) {
+        percent = Math.min(100F, percent);
         //72x10
         int scaled = (int) (72F * percent / 100D);
         int i = this.leftPos;
@@ -115,6 +116,7 @@ public class GuiCar extends ScreenBase<ContainerCar> {
     }
 
     public void drawDamage(MatrixStack matrixStack, float percent) {
+        percent = Math.min(100F, percent);
         int scaled = (int) (72F * percent / 100D);
         int i = this.leftPos;
         int j = this.topPos;
@@ -122,6 +124,7 @@ public class GuiCar extends ScreenBase<ContainerCar> {
     }
 
     public void drawTemp(MatrixStack matrixStack, float percent) {
+        percent = Math.min(100F, percent);
         int scaled = (int) (72F * percent);
         int i = this.leftPos;
         int j = this.topPos;
@@ -129,6 +132,7 @@ public class GuiCar extends ScreenBase<ContainerCar> {
     }
 
     public void drawBattery(MatrixStack matrixStack, float percent) {
+        percent = Math.min(100F, percent);
         int scaled = (int) (72F * percent);
         int i = this.leftPos;
         int j = this.topPos;
