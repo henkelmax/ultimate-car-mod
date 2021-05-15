@@ -1,1 +1,1 @@
-- Fixed third person view distance clipping
+- Make battery chargeable with other mods
