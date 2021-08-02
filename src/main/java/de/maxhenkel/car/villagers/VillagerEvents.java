@@ -4,13 +4,13 @@ import com.google.common.collect.ImmutableList;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.blocks.ModBlocks;
 import de.maxhenkel.car.items.ModItems;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.merchant.villager.VillagerTrades;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.item.MerchantOffer;
-import net.minecraft.util.IItemProvider;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.npc.VillagerTrades;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.trading.MerchantOffer;
+import net.minecraft.world.level.ItemLike;
 import net.minecraftforge.event.village.VillagerTradesEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
@@ -51,15 +51,15 @@ public class VillagerEvents {
     }
 
     static class EmeraldForItemsTrade extends Trade {
-        public EmeraldForItemsTrade(IItemProvider buyingItem, int buyingAmount, int maxUses, int givenExp) {
+        public EmeraldForItemsTrade(ItemLike buyingItem, int buyingAmount, int maxUses, int givenExp) {
             super(buyingItem, buyingAmount, Items.EMERALD, 1, maxUses, givenExp);
         }
     }
 
-    static class MultiTrade implements VillagerTrades.ITrade {
-        private final VillagerTrades.ITrade[] trades;
+    static class MultiTrade implements VillagerTrades.ItemListing {
+        private final VillagerTrades.ItemListing[] trades;
 
-        public MultiTrade(VillagerTrades.ITrade... trades) {
+        public MultiTrade(VillagerTrades.ItemListing... trades) {
             this.trades = trades;
         }
 
@@ -70,7 +70,7 @@ public class VillagerEvents {
         }
     }
 
-    static class Trade implements VillagerTrades.ITrade {
+    static class Trade implements VillagerTrades.ItemListing {
         private final Item buyingItem;
         private final Item sellingItem;
         private final int buyingAmount;
@@ -79,7 +79,7 @@ public class VillagerEvents {
         private final int givenExp;
         private final float priceMultiplier;
 
-        public Trade(IItemProvider buyingItem, int buyingAmount, IItemProvider sellingItem, int sellingAmount, int maxUses, int givenExp) {
+        public Trade(ItemLike buyingItem, int buyingAmount, ItemLike sellingItem, int sellingAmount, int maxUses, int givenExp) {
             this.buyingItem = buyingItem.asItem();
             this.buyingAmount = buyingAmount;
             this.sellingItem = sellingItem.asItem();

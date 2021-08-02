@@ -1,33 +1,35 @@
 package de.maxhenkel.car.blocks.tileentity.render;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Vector3f;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.blocks.tileentity.TileEntityTank;
 import de.maxhenkel.corelib.client.RenderUtils;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.Atlases;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.Sheets;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
+import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
-import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
-import net.minecraft.inventory.container.PlayerContainer;
-import net.minecraft.util.Direction;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.vector.Vector3f;
+import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraftforge.fluids.FluidStack;
 
-public class TileEntitySpecialRendererTank extends TileEntityRenderer<TileEntityTank> {
+public class TileEntitySpecialRendererTank implements BlockEntityRenderer<TileEntityTank> {
 
     public static final ResourceLocation LOCATION_TANK = new ResourceLocation(Main.MODID, "textures/block/tank_line.png");
 
-    public TileEntitySpecialRendererTank(TileEntityRendererDispatcher tileEntityRendererDispatcher) {
-        super(tileEntityRendererDispatcher);
+    protected BlockEntityRendererProvider.Context renderer;
+
+    public TileEntitySpecialRendererTank(BlockEntityRendererProvider.Context renderer) {
+        this.renderer = renderer;
     }
 
     @Override
-    public void render(TileEntityTank te, float partialTicks, MatrixStack matrixStack, IRenderTypeBuffer buffer, int light, int overlay) {
+    public void render(TileEntityTank te, float partialTicks, PoseStack matrixStack, MultiBufferSource buffer, int light, int overlay) {
         matrixStack.pushPose();
         float amount = te.getFillPercent();
         FluidStack stack = te.getFluid();
@@ -38,11 +40,11 @@ public class TileEntitySpecialRendererTank extends TileEntityRenderer<TileEntity
         matrixStack.popPose();
     }
 
-    public void renderFluid(TileEntityTank tank, FluidStack fluid, float amount, float yStart, MatrixStack matrixStack, IRenderTypeBuffer buffer, int light, int overlay) {
+    public void renderFluid(TileEntityTank tank, FluidStack fluid, float amount, float yStart, PoseStack matrixStack, MultiBufferSource buffer, int light, int overlay) {
         matrixStack.pushPose();
-        IVertexBuilder builder = buffer.getBuffer(Atlases.translucentCullBlockSheet());
+        VertexConsumer builder = buffer.getBuffer(Sheets.translucentCullBlockSheet());
 
-        TextureAtlasSprite texture = Minecraft.getInstance().getModelManager().getAtlas(PlayerContainer.BLOCK_ATLAS).getSprite(fluid.getFluid().getAttributes().getStillTexture());
+        TextureAtlasSprite texture = Minecraft.getInstance().getModelManager().getAtlas(InventoryMenu.BLOCK_ATLAS).getSprite(fluid.getFluid().getAttributes().getStillTexture());
 
         float uMin = texture.getU0();
         float uMax = texture.getU1();
@@ -115,8 +117,8 @@ public class TileEntitySpecialRendererTank extends TileEntityRenderer<TileEntity
         matrixStack.popPose();
     }
 
-    public static void renderLines(TileEntityTank te, MatrixStack matrixStack, IRenderTypeBuffer buffer, int light, int overlay) {
-        IVertexBuilder builder = buffer.getBuffer(RenderType.entityCutout(LOCATION_TANK));
+    public static void renderLines(TileEntityTank te, PoseStack matrixStack, MultiBufferSource buffer, int light, int overlay) {
+        VertexConsumer builder = buffer.getBuffer(RenderType.entityCutout(LOCATION_TANK));
         for (Direction facing : Direction.values()) {
             if (!te.isTankConnectedTo(facing)) {
                 for (EnumDirection direction : EnumDirection.values()) {
@@ -128,7 +130,7 @@ public class TileEntitySpecialRendererTank extends TileEntityRenderer<TileEntity
         }
     }
 
-    public static void drawLine(Direction side, EnumDirection line, MatrixStack matrixStack, IRenderTypeBuffer buffer, IVertexBuilder builder, int light, int overlay) {
+    public static void drawLine(Direction side, EnumDirection line, PoseStack matrixStack, MultiBufferSource buffer, VertexConsumer builder, int light, int overlay) {
         matrixStack.pushPose();
 
         rotate(side, matrixStack);
@@ -140,7 +142,7 @@ public class TileEntitySpecialRendererTank extends TileEntityRenderer<TileEntity
         matrixStack.popPose();
     }
 
-    public static void rotate(Direction facing, MatrixStack matrixStack) {
+    public static void rotate(Direction facing, PoseStack matrixStack) {
         matrixStack.translate(0.5D, 0.5D, 0.5D);
 
         switch (facing) {
@@ -168,7 +170,7 @@ public class TileEntitySpecialRendererTank extends TileEntityRenderer<TileEntity
         matrixStack.translate(-0.5D, -0.5D, -0.5D);
     }
 
-    public static void drawSide(EnumDirection line, Direction side, MatrixStack matrixStack, IRenderTypeBuffer buffer, IVertexBuilder builder, int light, int overlay) {
+    public static void drawSide(EnumDirection line, Direction side, PoseStack matrixStack, MultiBufferSource buffer, VertexConsumer builder, int light, int overlay) {
         switch (line) {
             case UP:
                 // Top

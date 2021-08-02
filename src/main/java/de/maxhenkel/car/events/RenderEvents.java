@@ -1,21 +1,24 @@
 package de.maxhenkel.car.events;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.PoseStack;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.entity.car.base.EntityGenericCar;
 import de.maxhenkel.car.entity.car.base.EntityVehicleBase;
 import de.maxhenkel.corelib.math.MathUtils;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.AbstractGui;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.client.gui.GuiComponent;
+import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.*;
-import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
+import net.minecraftforge.client.event.EntityViewRenderEvent;
+import net.minecraftforge.client.event.InputEvent;
+import net.minecraftforge.client.event.RenderPlayerEvent;
+import net.minecraftforge.client.event.RenderTooltipEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 @OnlyIn(Dist.CLIENT)
@@ -51,12 +54,13 @@ public class RenderEvents {
         return null;
     }
 
-    @SubscribeEvent
+    // TODO prevent experience bar to render
+    /*@SubscribeEvent
     public void onRender(RenderGameOverlayEvent evt) {
-        if (!evt.getType().equals(ElementType.EXPERIENCE)) {
+        if (!evt.getType().equals(ElementType.ALL)) {
             return;
         }
-        PlayerEntity player = mc.player;
+        Player player = mc.player;
         EntityGenericCar car = getCar();
 
         if (car == null) {
@@ -69,13 +73,15 @@ public class RenderEvents {
             renderSpeed(evt.getMatrixStack(), car.getKilometerPerHour());
         }
 
-    }
+    }*/
 
-    public void renderFuelBar(MatrixStack matrixStack, float percent) {
-        percent = MathHelper.clamp(percent, 0F, 1F);
+    public void renderFuelBar(PoseStack matrixStack, float percent) {
+        percent = Mth.clamp(percent, 0F, 1F);
         int x = mc.getWindow().getGuiScaledWidth() / 2 - 91;
 
-        mc.getTextureManager().bind(AbstractGui.GUI_ICONS_LOCATION);
+        RenderSystem.setShader(GameRenderer::getPositionTexShader);
+        RenderSystem.setShaderColor(1F, 1F, 1F, 1F);
+        RenderSystem.setShaderTexture(0, GuiComponent.GUI_ICONS_LOCATION);
 
         int k = mc.getWindow().getGuiScaledHeight() - 32 + 3;
         mc.gui.blit(matrixStack, x, k, 0, 64, 182, 5);
@@ -87,7 +93,7 @@ public class RenderEvents {
         }
     }
 
-    public void renderSpeed(MatrixStack matrixStack, float speed) {
+    public void renderSpeed(PoseStack matrixStack, float speed) {
         String s = String.valueOf(MathUtils.round(Math.abs(speed), 2));
         int i1 = (mc.getWindow().getGuiScaledWidth() - mc.gui.getFont().width(s)) / 2;
         int j1 = mc.getWindow().getGuiScaledHeight() - 31 - 4;
@@ -106,7 +112,7 @@ public class RenderEvents {
         if (!stack.hasTag()) {
             return;
         }
-        CompoundNBT compound = stack.getTag();
+        CompoundTag compound = stack.getTag();
         if (!compound.contains("trading_item") && !compound.getBoolean("trading_item")) {
             return;
         }

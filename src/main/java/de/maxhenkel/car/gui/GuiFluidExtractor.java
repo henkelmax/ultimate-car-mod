@@ -1,23 +1,27 @@
 package de.maxhenkel.car.gui;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.blocks.tileentity.TileEntityFluidExtractor;
 import de.maxhenkel.corelib.inventory.ScreenBase;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.*;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
 public class GuiFluidExtractor extends ScreenBase<ContainerFluidExtractor> {
 
     private static final ResourceLocation GUI_TEXTURE = new ResourceLocation(Main.MODID, "textures/gui/gui_fluid_extractor.png");
 
-    private PlayerInventory playerInv;
+    private Inventory playerInv;
     private TileEntityFluidExtractor tile;
 
-    public GuiFluidExtractor(ContainerFluidExtractor container, PlayerInventory player, ITextComponent title) {
+    public GuiFluidExtractor(ContainerFluidExtractor container, Inventory player, Component title) {
         super(GUI_TEXTURE, container, player, title);
         this.playerInv = player;
         this.tile = container.getTile();
@@ -27,7 +31,7 @@ public class GuiFluidExtractor extends ScreenBase<ContainerFluidExtractor> {
     }
 
     @Override
-    protected void renderLabels(MatrixStack matrixStack, int mouseX, int mouseY) {
+    protected void renderLabels(PoseStack matrixStack, int mouseX, int mouseY) {
         super.renderLabels(matrixStack, mouseX, mouseY);
 
         // Title
@@ -37,18 +41,18 @@ public class GuiFluidExtractor extends ScreenBase<ContainerFluidExtractor> {
         drawFilter(matrixStack);
     }
 
-    private void drawFilter(MatrixStack matrixStack) {
-        IFormattableTextComponent name;
+    private void drawFilter(PoseStack matrixStack) {
+        MutableComponent name;
 
         Fluid f = tile.getFilterFluid();
 
         if (f == null) {
-            name = new StringTextComponent("-");
+            name = new TextComponent("-");
         } else {
-            name = new StringTextComponent(new FluidStack(f, 1).getDisplayName().getString());
+            name = new TextComponent(new FluidStack(f, 1).getDisplayName().getString());
         }
 
-        font.draw(matrixStack, new TranslationTextComponent("filter.fluid", name.withStyle(TextFormatting.WHITE)).getVisualOrderText(), 46, 28, FONT_COLOR);
+        font.draw(matrixStack, new TranslatableComponent("filter.fluid", name.withStyle(ChatFormatting.WHITE)).getVisualOrderText(), 46, 28, FONT_COLOR);
     }
 
 }

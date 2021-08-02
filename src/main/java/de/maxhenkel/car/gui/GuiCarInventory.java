@@ -1,11 +1,11 @@
 package de.maxhenkel.car.gui;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import de.maxhenkel.car.entity.car.base.EntityCarInventoryBase;
 import de.maxhenkel.corelib.inventory.ScreenBase;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Inventory;
 
 public class GuiCarInventory extends ScreenBase<ContainerCarInventory> {
 
@@ -13,9 +13,9 @@ public class GuiCarInventory extends ScreenBase<ContainerCarInventory> {
     private static final ResourceLocation GUI_TEXTURE_6 = new ResourceLocation("textures/gui/container/generic_54.png");
 
     private EntityCarInventoryBase car;
-    private PlayerInventory playerInventory;
+    private Inventory playerInventory;
 
-    public GuiCarInventory(ContainerCarInventory carInventory, PlayerInventory playerInventory, ITextComponent title) {
+    public GuiCarInventory(ContainerCarInventory carInventory, Inventory playerInventory, Component title) {
         super(carInventory.getRows() == 3 ? GUI_TEXTURE_3 : GUI_TEXTURE_6, carInventory, playerInventory, title);
         this.car = carInventory.getCar();
         this.playerInventory = playerInventory;
@@ -24,7 +24,7 @@ public class GuiCarInventory extends ScreenBase<ContainerCarInventory> {
     }
 
     @Override
-    protected void renderLabels(MatrixStack matrixStack, int mouseX, int mouseY) {
+    protected void renderLabels(PoseStack matrixStack, int mouseX, int mouseY) {
         super.renderLabels(matrixStack, mouseX, mouseY);
         font.draw(matrixStack, car.getDisplayName().getVisualOrderText(), 8, 6, FONT_COLOR);
         font.draw(matrixStack, playerInventory.getDisplayName().getVisualOrderText(), 8, imageHeight - 96 + 3, FONT_COLOR);

@@ -3,22 +3,23 @@ package de.maxhenkel.car.blocks.tileentity;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.blocks.ModBlocks;
 import de.maxhenkel.car.fluids.ModFluids;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tileentity.ITickableTileEntity;
-import net.minecraft.util.IIntArray;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import de.maxhenkel.corelib.blockentity.ITickableBlockEntity;
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.Container;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.ContainerData;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 
 import javax.annotation.Nonnull;
 
-public class TileEntityBackmixReactor extends TileEntityBase implements ITickableTileEntity, IFluidHandler, IEnergyStorage, IInventory {
+public class TileEntityBackmixReactor extends TileEntityBase implements ITickableBlockEntity, IFluidHandler, IEnergyStorage, Container {
 
     public final int maxStorage;
     protected int storedEnergy;
@@ -40,8 +41,8 @@ public class TileEntityBackmixReactor extends TileEntityBase implements ITickabl
     public final int generatingTime;
     protected int timeToGenerate;
 
-    public TileEntityBackmixReactor() {
-        super(Main.BACKMIX_REACTOR_TILE_ENTITY_TYPE);
+    public TileEntityBackmixReactor(BlockPos pos, BlockState state) {
+        super(Main.BACKMIX_REACTOR_TILE_ENTITY_TYPE, pos, state);
         this.maxStorage = Main.SERVER_CONFIG.backmixReactorEnergyStorage.get();
         this.storedEnergy = 0;
         this.energyUsage = Main.SERVER_CONFIG.backmixReactorEnergyUsage.get();
@@ -62,7 +63,7 @@ public class TileEntityBackmixReactor extends TileEntityBase implements ITickabl
         this.canolaUsage = Main.SERVER_CONFIG.backmixReactorCanolaUsage.get();
     }
 
-    public final IIntArray FIELDS = new IIntArray() {
+    public final ContainerData FIELDS = new ContainerData() {
         @Override
         public int get(int index) {
             switch (index) {
@@ -157,7 +158,7 @@ public class TileEntityBackmixReactor extends TileEntityBase implements ITickabl
     }
 
     @Override
-    public CompoundNBT save(CompoundNBT compound) {
+    public CompoundTag save(CompoundTag compound) {
         compound.putInt("stored_endergy", storedEnergy);
         compound.putInt("canola", currentCanola);
         compound.putInt("methanol", currentMethanol);
@@ -167,13 +168,13 @@ public class TileEntityBackmixReactor extends TileEntityBase implements ITickabl
     }
 
     @Override
-    public void load(BlockState blockState, CompoundNBT compound) {
+    public void load(CompoundTag compound) {
         storedEnergy = compound.getInt("stored_endergy");
         currentCanola = compound.getInt("canola");
         currentMethanol = compound.getInt("methanol");
         currentMix = compound.getInt("mix");
         timeToGenerate = compound.getInt("time");
-        super.load(blockState, compound);
+        super.load(compound);
     }
 
     @Override
@@ -207,17 +208,17 @@ public class TileEntityBackmixReactor extends TileEntityBase implements ITickabl
     }
 
     @Override
-    public boolean stillValid(PlayerEntity player) {
+    public boolean stillValid(Player player) {
         return true;
     }
 
     @Override
-    public void startOpen(PlayerEntity player) {
+    public void startOpen(Player player) {
 
     }
 
     @Override
-    public void stopOpen(PlayerEntity player) {
+    public void stopOpen(Player player) {
 
     }
 
@@ -294,12 +295,12 @@ public class TileEntityBackmixReactor extends TileEntityBase implements ITickabl
     }
 
     @Override
-    public ITextComponent getTranslatedName() {
-        return new TranslationTextComponent("block.car.backmix_reactor");
+    public Component getTranslatedName() {
+        return new TranslatableComponent("block.car.backmix_reactor");
     }
 
     @Override
-    public IIntArray getFields() {
+    public ContainerData getFields() {
         return FIELDS;
     }
 

@@ -1,9 +1,9 @@
 package de.maxhenkel.tools;
 
+import net.minecraft.core.BlockPos;
+
 import java.util.LinkedList;
 import java.util.List;
-
-import net.minecraft.util.math.BlockPos;
 
 public class BlockPosList {
 

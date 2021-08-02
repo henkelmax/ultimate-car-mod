@@ -1,22 +1,24 @@
 package de.maxhenkel.car.blocks.tileentity.render;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Vector3f;
 import de.maxhenkel.car.blocks.BlockSign;
 import de.maxhenkel.car.blocks.tileentity.TileEntitySign;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
-import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
-import net.minecraft.util.math.vector.Vector3f;
+import net.minecraft.client.gui.Font;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
+import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 
-public class TileEntitySpecialRendererSign extends TileEntityRenderer<TileEntitySign> {
+public class TileEntitySpecialRendererSign implements BlockEntityRenderer<TileEntitySign> {
 
-    public TileEntitySpecialRendererSign(TileEntityRendererDispatcher tileEntityRendererDispatcher) {
-        super(tileEntityRendererDispatcher);
+    protected BlockEntityRendererProvider.Context renderer;
+
+    public TileEntitySpecialRendererSign(BlockEntityRendererProvider.Context renderer) {
+        this.renderer = renderer;
     }
 
     @Override
-    public void render(TileEntitySign te, float partialTicks, MatrixStack matrixStack, IRenderTypeBuffer buffer, int light, int i) {
+    public void render(TileEntitySign te, float partialTicks, PoseStack matrixStack, MultiBufferSource buffer, int light, int i) {
         matrixStack.pushPose();
 
         matrixStack.translate(0.5D, 1D, 0.5D);
@@ -56,8 +58,8 @@ public class TileEntitySpecialRendererSign extends TileEntityRenderer<TileEntity
         matrixStack.popPose();
     }
 
-    private void drawText(String txt, MatrixStack matrixStack, IRenderTypeBuffer buffer, int light) {
-        FontRenderer font = renderer.getFont();
+    private void drawText(String txt, PoseStack matrixStack, MultiBufferSource buffer, int light) {
+        Font font = renderer.getFont();
         matrixStack.pushPose();
 
         int textWidth = font.width(txt);

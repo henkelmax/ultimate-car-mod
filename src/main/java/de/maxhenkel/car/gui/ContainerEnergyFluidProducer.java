@@ -1,15 +1,15 @@
 package de.maxhenkel.car.gui;
 
 import de.maxhenkel.car.blocks.tileentity.TileEntityEnergyFluidProducer;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.container.ContainerType;
-import net.minecraft.inventory.container.Slot;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.inventory.Slot;
 
 public abstract class ContainerEnergyFluidProducer extends ContainerBase {
 
     private TileEntityEnergyFluidProducer tile;
 
-    public ContainerEnergyFluidProducer(ContainerType containerType, int id, TileEntityEnergyFluidProducer tile, PlayerInventory playerInv) {
+    public ContainerEnergyFluidProducer(MenuType containerType, int id, TileEntityEnergyFluidProducer tile, Inventory playerInv) {
         super(containerType, id, playerInv, tile);
         this.tile = tile;
 

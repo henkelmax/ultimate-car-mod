@@ -3,24 +3,24 @@ package de.maxhenkel.car.entity.car.base;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.sounds.ModSounds;
 import de.maxhenkel.car.sounds.SoundLoopStarting;
-import net.minecraft.entity.EntityType;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.particles.IParticleData;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
+import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 public abstract class EntityCarBatteryBase extends EntityCarTemperatureBase {
 
-    private static final DataParameter<Integer> BATTERY_LEVEL = EntityDataManager.defineId(EntityCarBatteryBase.class, DataSerializers.INT);
-    private static final DataParameter<Integer> STARTING_TIME = EntityDataManager.defineId(EntityCarBatteryBase.class, DataSerializers.INT);
-    private static final DataParameter<Boolean> STARTING = EntityDataManager.defineId(EntityCarBatteryBase.class, DataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Integer> BATTERY_LEVEL = SynchedEntityData.defineId(EntityCarBatteryBase.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> STARTING_TIME = SynchedEntityData.defineId(EntityCarBatteryBase.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Boolean> STARTING = SynchedEntityData.defineId(EntityCarBatteryBase.class, EntityDataSerializers.BOOLEAN);
 
     @OnlyIn(Dist.CLIENT)
     private SoundLoopStarting startingLoop;
@@ -34,7 +34,7 @@ public abstract class EntityCarBatteryBase extends EntityCarTemperatureBase {
 
     private int timeToStart;
 
-    public EntityCarBatteryBase(EntityType type, World worldIn) {
+    public EntityCarBatteryBase(EntityType type, Level worldIn) {
         super(type, worldIn);
     }
 
@@ -101,7 +101,7 @@ public abstract class EntityCarBatteryBase extends EntityCarTemperatureBase {
         if (!level.isClientSide) {
             return;
         }
-        Vector3d lookVec = getLookAngle().normalize();
+        Vec3 lookVec = getLookAngle().normalize();
         double offX = lookVec.x * -1D;
         double offY = lookVec.y;
         double offZ = lookVec.z * -1D;
@@ -143,7 +143,7 @@ public abstract class EntityCarBatteryBase extends EntityCarTemperatureBase {
 
     }
 
-    private void spawnParticle(IParticleData particleTypes, double offX, double offY, double offZ, double speedX, double speedZ, double r) {
+    private void spawnParticle(ParticleOptions particleTypes, double offX, double offY, double offZ, double speedX, double speedZ, double r) {
         level.addParticle(particleTypes,
                 getX() + offX + (random.nextDouble() * r - r / 2D),
                 getY() + offY + (random.nextDouble() * r - r / 2D) + getCarHeight() / 8F,
@@ -151,7 +151,7 @@ public abstract class EntityCarBatteryBase extends EntityCarTemperatureBase {
                 speedX, 0.0D, speedZ);
     }
 
-    private void spawnParticle(IParticleData particleTypes, double offX, double offY, double offZ, double speedX, double speedZ) {
+    private void spawnParticle(ParticleOptions particleTypes, double offX, double offY, double offZ, double speedX, double speedZ) {
         spawnParticle(particleTypes, offX, offY, offZ, speedX, speedZ, 0.1D);
     }
 
@@ -299,13 +299,13 @@ public abstract class EntityCarBatteryBase extends EntityCarTemperatureBase {
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundNBT compound) {
+    public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
         setBatteryLevel(compound.getInt("battery"));
     }
 
     @Override
-    protected void addAdditionalSaveData(CompoundNBT compound) {
+    protected void addAdditionalSaveData(CompoundTag compound) {
         super.addAdditionalSaveData(compound);
         compound.putInt("battery", getBatteryLevel());
     }
@@ -313,14 +313,14 @@ public abstract class EntityCarBatteryBase extends EntityCarTemperatureBase {
     @OnlyIn(Dist.CLIENT)
     public void checkStartingLoop() {
         if (!isSoundPlaying(startingLoop)) {
-            startingLoop = new SoundLoopStarting(this, getStartingSound(), SoundCategory.MASTER);
+            startingLoop = new SoundLoopStarting(this, getStartingSound(), SoundSource.MASTER);
             ModSounds.playSoundLoop(startingLoop, level);
         }
     }
 
     @Override
     public void playFailSound() {
-        ModSounds.playSound(getFailSound(), level, blockPosition(), null, SoundCategory.MASTER, 1F, getBatterySoundPitchLevel());
+        ModSounds.playSound(getFailSound(), level, blockPosition(), null, SoundSource.MASTER, 1F, getBatterySoundPitchLevel());
     }
 
 }

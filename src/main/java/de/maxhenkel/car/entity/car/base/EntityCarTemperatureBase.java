@@ -1,18 +1,18 @@
 package de.maxhenkel.car.entity.car.base;
 
 import de.maxhenkel.corelib.math.MathUtils;
-import net.minecraft.entity.EntityType;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.world.World;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.level.Level;
 
 public abstract class EntityCarTemperatureBase extends EntityCarBase {
 
-    private static final DataParameter<Float> TEMPERATURE = EntityDataManager.defineId(EntityCarTemperatureBase.class, DataSerializers.FLOAT);
+    private static final EntityDataAccessor<Float> TEMPERATURE = SynchedEntityData.defineId(EntityCarTemperatureBase.class, EntityDataSerializers.FLOAT);
 
-    public EntityCarTemperatureBase(EntityType type, World worldIn) {
+    public EntityCarTemperatureBase(EntityType type, Level worldIn) {
         super(type, worldIn);
     }
 
@@ -88,13 +88,13 @@ public abstract class EntityCarTemperatureBase extends EntityCarBase {
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundNBT compound) {
+    public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
         setTemperature(compound.getFloat("temperature"));
     }
 
     @Override
-    protected void addAdditionalSaveData(CompoundNBT compound) {
+    protected void addAdditionalSaveData(CompoundTag compound) {
         super.addAdditionalSaveData(compound);
         compound.putFloat("temperature", getTemperature());
     }

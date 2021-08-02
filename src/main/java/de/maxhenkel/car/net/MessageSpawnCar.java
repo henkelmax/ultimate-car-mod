@@ -2,11 +2,11 @@ package de.maxhenkel.car.net;
 
 import de.maxhenkel.car.blocks.tileentity.TileEntityCarWorkshop;
 import de.maxhenkel.corelib.net.Message;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraftforge.fmllegacy.network.NetworkEvent;
 
 public class MessageSpawnCar implements Message<MessageSpawnCar> {
 
@@ -26,7 +26,7 @@ public class MessageSpawnCar implements Message<MessageSpawnCar> {
 
     @Override
     public void executeServerSide(NetworkEvent.Context context) {
-        TileEntity te = context.getSender().level.getBlockEntity(pos);
+        BlockEntity te = context.getSender().level.getBlockEntity(pos);
 
         if (te instanceof TileEntityCarWorkshop) {
             ((TileEntityCarWorkshop) te).spawnCar(context.getSender());
@@ -34,13 +34,13 @@ public class MessageSpawnCar implements Message<MessageSpawnCar> {
     }
 
     @Override
-    public MessageSpawnCar fromBytes(PacketBuffer buf) {
+    public MessageSpawnCar fromBytes(FriendlyByteBuf buf) {
         this.pos = buf.readBlockPos();
         return this;
     }
 
     @Override
-    public void toBytes(PacketBuffer buf) {
+    public void toBytes(FriendlyByteBuf buf) {
         buf.writeBlockPos(pos);
     }
 

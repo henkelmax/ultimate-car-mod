@@ -1,16 +1,16 @@
 package de.maxhenkel.car.recipes;
 
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.item.crafting.IRecipeType;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
+import net.minecraft.core.NonNullList;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.Container;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.level.Level;
 
-public abstract class EnergyFluidProducerRecipe implements IRecipe<IInventory> {
-    protected final IRecipeType<?> type;
+public abstract class EnergyFluidProducerRecipe implements Recipe<Container> {
+    protected final RecipeType<?> type;
     protected final ResourceLocation id;
     protected final Ingredient ingredient;
     protected final ItemStack result;
@@ -19,7 +19,7 @@ public abstract class EnergyFluidProducerRecipe implements IRecipe<IInventory> {
     protected final int energy;
     protected final int duration;
 
-    public EnergyFluidProducerRecipe(IRecipeType<?> type, ResourceLocation idIn, String group, Ingredient ingredientIn, ItemStack result, int fluidAmount, int energy, int duration) {
+    public EnergyFluidProducerRecipe(RecipeType<?> type, ResourceLocation idIn, String group, Ingredient ingredientIn, ItemStack result, int fluidAmount, int energy, int duration) {
         this.type = type;
         this.id = idIn;
         this.group = group;
@@ -31,12 +31,12 @@ public abstract class EnergyFluidProducerRecipe implements IRecipe<IInventory> {
     }
 
     @Override
-    public boolean matches(IInventory inv, World worldIn) {
+    public boolean matches(Container inv, Level worldIn) {
         return ingredient.test(inv.getItem(0));
     }
 
     @Override
-    public ItemStack assemble(IInventory inv) {
+    public ItemStack assemble(Container inv) {
         return result.copy();
     }
 
@@ -67,7 +67,7 @@ public abstract class EnergyFluidProducerRecipe implements IRecipe<IInventory> {
     }
 
     @Override
-    public NonNullList<ItemStack> getRemainingItems(IInventory inv) {
+    public NonNullList<ItemStack> getRemainingItems(Container inv) {
         return null;
     }
 
@@ -94,7 +94,7 @@ public abstract class EnergyFluidProducerRecipe implements IRecipe<IInventory> {
     }
 
     @Override
-    public IRecipeType<?> getType() {
+    public RecipeType<?> getType() {
         return type;
     }
 }

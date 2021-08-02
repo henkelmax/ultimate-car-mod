@@ -1,12 +1,12 @@
 package de.maxhenkel.car.gui;
 
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.fml.network.IContainerFactory;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraftforge.fmllegacy.network.IContainerFactory;
 
-public class ContainerFactoryTileEntity<T extends Container, U extends TileEntity> implements IContainerFactory<T> {
+public class ContainerFactoryTileEntity<T extends AbstractContainerMenu, U extends BlockEntity> implements IContainerFactory<T> {
 
     private final ContainerCreator<T, U> containerCreator;
 
@@ -15,8 +15,8 @@ public class ContainerFactoryTileEntity<T extends Container, U extends TileEntit
     }
 
     @Override
-    public T create(int windowId, PlayerInventory inv, PacketBuffer data) {
-        TileEntity te = inv.player.level.getBlockEntity(data.readBlockPos());
+    public T create(int windowId, Inventory inv, FriendlyByteBuf data) {
+        BlockEntity te = inv.player.level.getBlockEntity(data.readBlockPos());
         try {
             return containerCreator.create(windowId, (U) te, inv);
         } catch (ClassCastException e) {
@@ -24,7 +24,7 @@ public class ContainerFactoryTileEntity<T extends Container, U extends TileEntit
         }
     }
 
-    public interface ContainerCreator<T extends Container, U extends TileEntity> {
-        T create(int windowId,  U tileEntity, PlayerInventory inv);
+    public interface ContainerCreator<T extends AbstractContainerMenu, U extends BlockEntity> {
+        T create(int windowId, U tileEntity, Inventory inv);
     }
 }

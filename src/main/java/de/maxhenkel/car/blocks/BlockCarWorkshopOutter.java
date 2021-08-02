@@ -4,27 +4,27 @@ import de.maxhenkel.car.Main;
 import de.maxhenkel.car.ModItemGroups;
 import de.maxhenkel.car.blocks.tileentity.TileEntityCarWorkshop;
 import de.maxhenkel.corelib.block.IItemBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockRenderType;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.material.MaterialColor;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.state.IntegerProperty;
-import net.minecraft.state.StateContainer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.material.MaterialColor;
+import net.minecraft.world.phys.BlockHitResult;
 
 import javax.annotation.Nullable;
 
@@ -45,35 +45,35 @@ public class BlockCarWorkshopOutter extends BlockBase implements IItemBlock {
     }
 
     @Override
-    public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
+    public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
         BlockPos tePos = findCenter(worldIn, pos);
 
         if (tePos == null) {
-            return ActionResultType.FAIL;
+            return InteractionResult.FAIL;
         }
         return ModBlocks.CAR_WORKSHOP.use(worldIn.getBlockState(tePos), worldIn, tePos, player, handIn, hit);
     }
 
     @Override
-    public void setPlacedBy(World worldIn, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
+    public void setPlacedBy(Level worldIn, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
         super.setPlacedBy(worldIn, pos, state, placer, stack);
         validate(worldIn, pos);
     }
 
     @Override
-    public void onRemove(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
+    public void onRemove(BlockState state, Level worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
         super.onRemove(state, worldIn, pos, newState, isMoving);
         validate(worldIn, pos);
     }
 
-    private void validate(World worldIn, BlockPos pos) {
+    private void validate(Level worldIn, BlockPos pos) {
         BlockPos tePos = findCenter(worldIn, pos);
 
         if (tePos == null) {
             return;
         }
 
-        TileEntity te = worldIn.getBlockEntity(tePos);
+        BlockEntity te = worldIn.getBlockEntity(tePos);
 
         if (!(te instanceof TileEntityCarWorkshop)) {
             return;
@@ -84,7 +84,7 @@ public class BlockCarWorkshopOutter extends BlockBase implements IItemBlock {
         workshop.checkValidity();
     }
 
-    private static BlockPos findCenter(World world, BlockPos pos) {
+    private static BlockPos findCenter(Level world, BlockPos pos) {
         if (isCenter(world, pos.offset(0, 0, 1))) {
             return pos.offset(0, 0, 1);
         }
@@ -112,25 +112,24 @@ public class BlockCarWorkshopOutter extends BlockBase implements IItemBlock {
         return null;
     }
 
-    private static boolean isCenter(World world, BlockPos pos) {
+    private static boolean isCenter(Level world, BlockPos pos) {
         return world.getBlockState(pos).getBlock().equals(ModBlocks.CAR_WORKSHOP);
     }
 
     @Nullable
     @Override
-    public BlockState getStateForPlacement(BlockItemUseContext context) {
+    public BlockState getStateForPlacement(BlockPlaceContext context) {
         return this.defaultBlockState().setValue(POSITION, 0);
     }
 
     @Override
-    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(POSITION);
     }
 
-
     @Override
-    public BlockRenderType getRenderShape(BlockState state) {
-        return BlockRenderType.MODEL;
+    public RenderShape getRenderShape(BlockState state) {
+        return RenderShape.MODEL;
     }
 
 }

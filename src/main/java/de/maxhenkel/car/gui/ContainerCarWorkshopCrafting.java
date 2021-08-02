@@ -2,16 +2,16 @@ package de.maxhenkel.car.gui;
 
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.blocks.tileentity.TileEntityCarWorkshop;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.container.Slot;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.Slot;
 
 public class ContainerCarWorkshopCrafting extends ContainerBase {
 
-    protected PlayerInventory playerInventory;
+    protected Inventory playerInventory;
     protected TileEntityCarWorkshop tile;
 
-    public ContainerCarWorkshopCrafting(int id, TileEntityCarWorkshop tile, PlayerInventory playerInventory) {
+    public ContainerCarWorkshopCrafting(int id, TileEntityCarWorkshop tile, Inventory playerInventory) {
         super(Main.CAR_WORKSHOP_CRAFTING_CONTAINER_TYPE, id, playerInventory, tile);
         this.playerInventory = playerInventory;
         this.tile = tile;
@@ -30,7 +30,7 @@ public class ContainerCarWorkshopCrafting extends ContainerBase {
         return 56;
     }
 
-    public PlayerEntity getPlayer() {
+    public Player getPlayer() {
         return playerInventory.player;
     }
 

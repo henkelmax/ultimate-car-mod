@@ -1,20 +1,20 @@
 package de.maxhenkel.car.sounds;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.audio.TickableSound;
-import net.minecraft.client.entity.player.ClientPlayerEntity;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.client.resources.sounds.AbstractTickableSoundInstance;
+import net.minecraft.core.BlockPos;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
 
-public class SoundLoopTileentity extends TickableSound {
+public class SoundLoopTileentity extends AbstractTickableSoundInstance {
 
-    protected World world;
+    protected Level world;
     protected BlockPos pos;
 
-    public SoundLoopTileentity(SoundEvent event, SoundCategory category, TileEntity tileEntity) {
+    public SoundLoopTileentity(SoundEvent event, SoundSource category, BlockEntity tileEntity) {
         super(event, category);
         this.world = tileEntity.getLevel();
         this.pos = tileEntity.getBlockPos();
@@ -33,7 +33,7 @@ public class SoundLoopTileentity extends TickableSound {
             return;
         }
 
-        TileEntity tileEntity = getTileEntity();
+        BlockEntity tileEntity = getTileEntity();
 
         if (tileEntity == null || tileEntity.getLevel() == null) {
             stop();
@@ -41,7 +41,7 @@ public class SoundLoopTileentity extends TickableSound {
         }
 
         if (tileEntity.getLevel().isClientSide) {
-            ClientPlayerEntity player = Minecraft.getInstance().player;
+            LocalPlayer player = Minecraft.getInstance().player;
             if (player == null || !player.isAlive()) {
                 stop();
                 return;
@@ -61,7 +61,7 @@ public class SoundLoopTileentity extends TickableSound {
         }
     }
 
-    public TileEntity getTileEntity() {
+    public BlockEntity getTileEntity() {
         return world.getBlockEntity(pos);
     }
 

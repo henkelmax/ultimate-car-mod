@@ -2,27 +2,38 @@ package de.maxhenkel.car.entity.car.base;
 
 import de.maxhenkel.car.DamageSourceCar;
 import de.maxhenkel.car.Main;
-import de.maxhenkel.car.net.*;
-import de.maxhenkel.car.sounds.SoundLoopStart;
-import de.maxhenkel.corelib.math.MathUtils;
+import de.maxhenkel.car.net.MessageCarGui;
+import de.maxhenkel.car.net.MessageCarHorn;
+import de.maxhenkel.car.net.MessageControlCar;
+import de.maxhenkel.car.net.MessageCrash;
 import de.maxhenkel.car.sounds.ModSounds;
 import de.maxhenkel.car.sounds.SoundLoopHigh;
 import de.maxhenkel.car.sounds.SoundLoopIdle;
-import net.minecraft.block.BlockState;
+import de.maxhenkel.car.sounds.SoundLoopStart;
+import de.maxhenkel.corelib.math.MathUtils;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.audio.ISound;
-import net.minecraft.entity.*;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.*;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
+import net.minecraft.client.resources.sounds.SoundInstance;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MoverType;
+import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -42,14 +53,14 @@ public abstract class EntityCarBase extends EntityVehicleBase {
     @OnlyIn(Dist.CLIENT)
     private SoundLoopHigh highLoop;
 
-    private static final DataParameter<Float> SPEED = EntityDataManager.defineId(EntityCarBase.class, DataSerializers.FLOAT);
-    private static final DataParameter<Boolean> STARTED = EntityDataManager.defineId(EntityCarBase.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> FORWARD = EntityDataManager.defineId(EntityCarBase.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> BACKWARD = EntityDataManager.defineId(EntityCarBase.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> LEFT = EntityDataManager.defineId(EntityCarBase.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> RIGHT = EntityDataManager.defineId(EntityCarBase.class, DataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Float> SPEED = SynchedEntityData.defineId(EntityCarBase.class, EntityDataSerializers.FLOAT);
+    private static final EntityDataAccessor<Boolean> STARTED = SynchedEntityData.defineId(EntityCarBase.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> FORWARD = SynchedEntityData.defineId(EntityCarBase.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> BACKWARD = SynchedEntityData.defineId(EntityCarBase.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> LEFT = SynchedEntityData.defineId(EntityCarBase.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> RIGHT = SynchedEntityData.defineId(EntityCarBase.class, EntityDataSerializers.BOOLEAN);
 
-    public EntityCarBase(EntityType type, World worldIn) {
+    public EntityCarBase(EntityType type, Level worldIn) {
         super(type, worldIn);
         this.maxUpStep = 0.5F;
     }
@@ -95,16 +106,16 @@ public abstract class EntityCarBase extends EntityVehicleBase {
         Direction facing = getDirection();
         switch (facing) {
             case SOUTH:
-                yRot = 0F;
+                setYRot(0F);
                 break;
             case NORTH:
-                yRot = 180F;
+                setYRot(180F);
                 break;
             case EAST:
-                yRot = -90F;
+                setYRot(-90F);
                 break;
             case WEST:
-                yRot = 90F;
+                setYRot(90F);
                 break;
         }
     }
@@ -126,13 +137,13 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 
 
     public void checkPush() {
-        List<PlayerEntity> list = level.getEntitiesOfClass(PlayerEntity.class, getBoundingBox().expandTowards(0.2, 0, 0.2).expandTowards(-0.2, 0, -0.2));
+        List<Player> list = level.getEntitiesOfClass(Player.class, getBoundingBox().expandTowards(0.2, 0, 0.2).expandTowards(-0.2, 0, -0.2));
 
-        for (PlayerEntity player : list) {
+        for (Player player : list) {
             if (!player.hasPassenger(this) && player.isShiftKeyDown()) {
-                double motX = calculateMotionX(0.05F, player.yRot);
-                double motZ = calculateMotionZ(0.05F, player.yRot);
-                move(MoverType.PLAYER, new Vector3d(motX, 0, motZ));
+                double motX = calculateMotionX(0.05F, player.getYRot());
+                double motZ = calculateMotionZ(0.05F, player.getYRot());
+                move(MoverType.PLAYER, new Vec3(motX, 0, motZ));
                 return;
             }
         }
@@ -168,15 +179,15 @@ public abstract class EntityCarBase extends EntityVehicleBase {
     }
 
     @OnlyIn(Dist.CLIENT)
-    public boolean isSoundPlaying(ISound sound) {
+    public boolean isSoundPlaying(SoundInstance sound) {
         if (sound == null) {
             return false;
         }
         return Minecraft.getInstance().getSoundManager().isActive(sound);
     }
 
-    public void destroyCar(PlayerEntity player, boolean dropParts) {
-        remove();
+    public void destroyCar(Player player, boolean dropParts) {
+        kill();
     }
 
     private void controlCar() {
@@ -211,9 +222,9 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 
         float rotationSpeed = 0;
         if (Math.abs(speed) > 0.02F) {
-            rotationSpeed = MathHelper.abs(getRotationModifier() / (float) Math.pow(speed, 2));
+            rotationSpeed = Mth.abs(getRotationModifier() / (float) Math.pow(speed, 2));
 
-            rotationSpeed = MathHelper.clamp(rotationSpeed, getMinRotationSpeed(), getMaxRotationSpeed());
+            rotationSpeed = Mth.clamp(rotationSpeed, getMinRotationSpeed(), getMaxRotationSpeed());
         }
 
         deltaRotation = 0;
@@ -229,15 +240,15 @@ public abstract class EntityCarBase extends EntityVehicleBase {
             deltaRotation += rotationSpeed;
         }
 
-        yRot += deltaRotation;
-        float delta = Math.abs(yRot - yRotO);
-        while (yRot > 180F) {
-            yRot -= 360F;
-            yRotO = yRot - delta;
+        setYRot(getYRot() + deltaRotation);
+        float delta = Math.abs(getYRot() - yRotO);
+        while (getYRot() > 180F) {
+            setYRot(getYRot() - 360F);
+            yRotO = getYRot() - delta;
         }
-        while (yRot <= -180F) {
-            yRot += 360F;
-            yRotO = delta + yRot;
+        while (getYRot() <= -180F) {
+            setYRot(getYRot() + 360F);
+            yRotO = delta + getYRot();
         }
 
         if (horizontalCollision) {
@@ -246,7 +257,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
                 collidedLastTick = true;
             }
         } else {
-            setDeltaMovement(calculateMotionX(getSpeed(), yRot), getDeltaMovement().y, calculateMotionZ(getSpeed(), yRot));
+            setDeltaMovement(calculateMotionX(getSpeed(), getYRot()), getDeltaMovement().y, calculateMotionZ(getSpeed(), getYRot()));
             if (level.isClientSide) {
                 collidedLastTick = false;
             }
@@ -257,7 +268,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
         BlockPos pos = new BlockPos(getX(), getY() - 0.1D, getZ());
         BlockState state = level.getBlockState(pos);
 
-        if (state.isAir(level, pos) || Main.SERVER_CONFIG.carDriveBlockList.stream().anyMatch(tag -> state.getBlock().is(tag))) {
+        if (state.isAir() || Main.SERVER_CONFIG.carDriveBlockList.stream().anyMatch(tag -> tag.contains(state.getBlock()))) {
             return Main.SERVER_CONFIG.carOnroadSpeed.get().floatValue();
         } else {
             return Main.SERVER_CONFIG.carOffroadSpeed.get().floatValue();
@@ -272,7 +283,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
         setDeltaMovement(0D, getDeltaMovement().y, 0D);
     }
 
-    public boolean canPlayerDriveCar(PlayerEntity player) {
+    public boolean canPlayerDriveCar(Player player) {
         if (player.equals(getDriver()) && isStarted()) {
             return true;
         } else if (isInWater() || isInLava()) {
@@ -290,7 +301,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
         setDeltaMovement(getDeltaMovement().x, getDeltaMovement().y - 0.2D, getDeltaMovement().z);
     }
 
-    public void updateControls(boolean forward, boolean backward, boolean left, boolean right, PlayerEntity player) {
+    public void updateControls(boolean forward, boolean backward, boolean left, boolean right, Player player) {
         boolean needsUpdate = false;
 
         if (isForward() != forward) {
@@ -318,13 +329,13 @@ public abstract class EntityCarBase extends EntityVehicleBase {
     }
 
     public void startCarEngine() {
-        PlayerEntity player = getDriver();
+        Player player = getDriver();
         if (player != null && canStartCarEngine(player)) {
             setStarted(true);
         }
     }
 
-    public boolean canStartCarEngine(PlayerEntity player) {
+    public boolean canStartCarEngine(Player player) {
         if (isInWater() || isInLava()) {
             return false;
         }
@@ -334,14 +345,14 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 
     public abstract double getPlayerYOffset();
 
-    public boolean canPlayerEnterCar(PlayerEntity player) {
+    public boolean canPlayerEnterCar(Player player) {
         return true;
     }
 
     @Override
-    public ActionResultType interact(PlayerEntity player, Hand hand) {
+    public InteractionResult interact(Player player, InteractionHand hand) {
         if (!canPlayerEnterCar(player)) {
-            return ActionResultType.FAIL;
+            return InteractionResult.FAIL;
         }
         return super.interact(player, hand);
     }
@@ -362,7 +373,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
         return wheelRotation + getWheelRotationAmount() * partialTicks;
     }
 
-    public void openCarGUI(PlayerEntity player) {
+    public void openCarGUI(Player player) {
         if (level.isClientSide) {
             Main.SIMPLE_CHANNEL.sendToServer(new MessageCarGui(player));
         }
@@ -453,29 +464,29 @@ public abstract class EntityCarBase extends EntityVehicleBase {
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundNBT compound) {
+    public void readAdditionalSaveData(CompoundTag compound) {
         setStarted(compound.getBoolean("started"), false, false);
     }
 
     @Override
-    protected void addAdditionalSaveData(CompoundNBT compound) {
+    protected void addAdditionalSaveData(CompoundTag compound) {
         compound.putBoolean("started", isStarted());
     }
 
     public void playStopSound() {
-        ModSounds.playSound(getStopSound(), level, blockPosition(), null, SoundCategory.MASTER, 1F);
+        ModSounds.playSound(getStopSound(), level, blockPosition(), null, SoundSource.MASTER, 1F);
     }
 
     public void playFailSound() {
-        ModSounds.playSound(getFailSound(), level, blockPosition(), null, SoundCategory.MASTER, 1F);
+        ModSounds.playSound(getFailSound(), level, blockPosition(), null, SoundSource.MASTER, 1F);
     }
 
     public void playCrashSound() {
-        ModSounds.playSound(getCrashSound(), level, blockPosition(), null, SoundCategory.MASTER, 1F);
+        ModSounds.playSound(getCrashSound(), level, blockPosition(), null, SoundSource.MASTER, 1F);
     }
 
     public void playHornSound() {
-        ModSounds.playSound(getHornSound(), level, blockPosition(), null, SoundCategory.MASTER, 1F);
+        ModSounds.playSound(getHornSound(), level, blockPosition(), null, SoundSource.MASTER, 1F);
     }
 
     public abstract SoundEvent getStopSound();
@@ -497,7 +508,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
     @OnlyIn(Dist.CLIENT)
     public void checkIdleLoop() {
         if (!isSoundPlaying(idleLoop)) {
-            idleLoop = new SoundLoopIdle(this, getIdleSound(), SoundCategory.MASTER);
+            idleLoop = new SoundLoopIdle(this, getIdleSound(), SoundSource.MASTER);
             ModSounds.playSoundLoop(idleLoop, level);
         }
     }
@@ -505,7 +516,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
     @OnlyIn(Dist.CLIENT)
     public void checkHighLoop() {
         if (!isSoundPlaying(highLoop)) {
-            highLoop = new SoundLoopHigh(this, getHighSound(), SoundCategory.MASTER);
+            highLoop = new SoundLoopHigh(this, getHighSound(), SoundSource.MASTER);
             ModSounds.playSoundLoop(highLoop, level);
         }
     }
@@ -513,12 +524,12 @@ public abstract class EntityCarBase extends EntityVehicleBase {
     @OnlyIn(Dist.CLIENT)
     public void checkStartLoop() {
         if (!isSoundPlaying(startLoop)) {
-            startLoop = new SoundLoopStart(this, getStartSound(), SoundCategory.MASTER);
+            startLoop = new SoundLoopStart(this, getStartSound(), SoundSource.MASTER);
             ModSounds.playSoundLoop(startLoop, level);
         }
     }
 
-    public void onHornPressed(PlayerEntity player) {
+    public void onHornPressed(Player player) {
         if (level.isClientSide) {
             Main.SIMPLE_CHANNEL.sendToServer(new MessageCarHorn(true, player));
         } else {
@@ -534,23 +545,21 @@ public abstract class EntityCarBase extends EntityVehicleBase {
             playHornSound();
             if (Main.SERVER_CONFIG.hornFlee.get()) {
                 double radius = 15;
-                List<MobEntity> list = level.getEntitiesOfClass(MobEntity.class, new AxisAlignedBB(getX() - radius, getY() - radius, getZ() - radius, getX() + radius, getY() + radius, getZ() + radius));
-                for (MobEntity ent : list) {
+                List<Monster> list = level.getEntitiesOfClass(Monster.class, new AABB(getX() - radius, getY() - radius, getZ() - radius, getX() + radius, getY() + radius, getZ() + radius));
+                for (Monster ent : list) {
                     fleeEntity(ent);
                 }
             }
         }
     }
 
-    public void fleeEntity(MobEntity entity) {
+    public void fleeEntity(Monster entity) {
         double fleeDistance = 10;
-        Vector3d vecCar = new Vector3d(getX(), getY(), getZ());
-        Vector3d vecEntity = new Vector3d(entity.getX(), entity.getY(), entity.getZ());
-        Vector3d fleeDir = vecEntity.subtract(vecCar);
+        Vec3 vecCar = new Vec3(getX(), getY(), getZ());
+        Vec3 vecEntity = new Vec3(entity.getX(), entity.getY(), entity.getZ());
+        Vec3 fleeDir = vecEntity.subtract(vecCar);
         fleeDir = fleeDir.normalize();
-        Vector3d fleePos = new Vector3d(vecEntity.x + fleeDir.x * fleeDistance, vecEntity.y + fleeDir.y * fleeDistance, vecEntity.z + fleeDir.z * fleeDistance);
-
-        entity.getNavigation().moveTo(fleePos.x, fleePos.y, fleePos.z, 2.5);
+        entity.getNavigation().moveTo(vecEntity.x + fleeDir.x * fleeDistance, vecEntity.y + fleeDir.y * fleeDistance, vecEntity.z + fleeDir.z * fleeDistance, 2.5);
     }
 
 }

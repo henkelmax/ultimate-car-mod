@@ -8,12 +8,12 @@ import de.maxhenkel.car.gui.ContainerCarWorkshopCrafting;
 import de.maxhenkel.car.gui.ContainerCarWorkshopRepair;
 import de.maxhenkel.car.gui.TileEntityContainerProvider;
 import de.maxhenkel.corelib.net.Message;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraftforge.fmllegacy.network.NetworkEvent;
 
 public class MessageOpenCarWorkshopGui implements Message<MessageOpenCarWorkshopGui> {
 
@@ -25,7 +25,7 @@ public class MessageOpenCarWorkshopGui implements Message<MessageOpenCarWorkshop
 
     }
 
-    public MessageOpenCarWorkshopGui(BlockPos pos, PlayerEntity player, boolean reapir) {
+    public MessageOpenCarWorkshopGui(BlockPos pos, Player player, boolean reapir) {
         this.pos = pos;
         this.uuid = player.getUUID();
         this.repair = reapir;
@@ -43,7 +43,7 @@ public class MessageOpenCarWorkshopGui implements Message<MessageOpenCarWorkshop
             return;
         }
 
-        TileEntity te = context.getSender().level.getBlockEntity(pos);
+        BlockEntity te = context.getSender().level.getBlockEntity(pos);
 
         if (!(te instanceof TileEntityCarWorkshop)) {
             return;
@@ -58,7 +58,7 @@ public class MessageOpenCarWorkshopGui implements Message<MessageOpenCarWorkshop
     }
 
     @Override
-    public MessageOpenCarWorkshopGui fromBytes(PacketBuffer buf) {
+    public MessageOpenCarWorkshopGui fromBytes(FriendlyByteBuf buf) {
         this.pos = buf.readBlockPos();
         this.uuid = buf.readUUID();
         this.repair = buf.readBoolean();
@@ -67,7 +67,7 @@ public class MessageOpenCarWorkshopGui implements Message<MessageOpenCarWorkshop
     }
 
     @Override
-    public void toBytes(PacketBuffer buf) {
+    public void toBytes(FriendlyByteBuf buf) {
         buf.writeBlockPos(pos);
         buf.writeUUID(uuid);
         buf.writeBoolean(repair);

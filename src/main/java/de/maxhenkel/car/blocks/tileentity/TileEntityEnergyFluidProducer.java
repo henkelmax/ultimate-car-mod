@@ -2,29 +2,30 @@ package de.maxhenkel.car.blocks.tileentity;
 
 import de.maxhenkel.car.blocks.BlockGui;
 import de.maxhenkel.car.recipes.EnergyFluidProducerRecipe;
+import de.maxhenkel.corelib.blockentity.ITickableBlockEntity;
 import de.maxhenkel.corelib.item.ItemUtils;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.inventory.ISidedInventory;
-import net.minecraft.inventory.Inventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipeType;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tileentity.ITickableTileEntity;
-import net.minecraft.tileentity.TileEntityType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.IIntArray;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.WorldlyContainer;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.ContainerData;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 
 import javax.annotation.Nonnull;
 
-public abstract class TileEntityEnergyFluidProducer extends TileEntityBase implements IEnergyStorage, ISidedInventory, ITickableTileEntity, IFluidHandler {
+public abstract class TileEntityEnergyFluidProducer extends TileEntityBase implements IEnergyStorage, WorldlyContainer, ITickableBlockEntity, IFluidHandler {
 
-    protected IRecipeType<? extends EnergyFluidProducerRecipe> recipeType;
-    protected Inventory inventory;
+    protected RecipeType<? extends EnergyFluidProducerRecipe> recipeType;
+    protected SimpleContainer inventory;
 
     protected int maxEnergy;
     protected int storedEnergy;
@@ -34,10 +35,10 @@ public abstract class TileEntityEnergyFluidProducer extends TileEntityBase imple
     protected int fluidAmount;
     protected int currentMillibuckets;
 
-    public TileEntityEnergyFluidProducer(TileEntityType<?> tileEntityTypeIn, IRecipeType<? extends EnergyFluidProducerRecipe> recipeType) {
-        super(tileEntityTypeIn);
+    public TileEntityEnergyFluidProducer(BlockEntityType<?> tileEntityTypeIn, RecipeType<? extends EnergyFluidProducerRecipe> recipeType, BlockPos pos, BlockState state) {
+        super(tileEntityTypeIn, pos, state);
         this.recipeType = recipeType;
-        this.inventory = new Inventory(2);
+        this.inventory = new SimpleContainer(2);
         this.maxEnergy = 10000;
         this.storedEnergy = 0;
         this.time = 0;
@@ -45,7 +46,7 @@ public abstract class TileEntityEnergyFluidProducer extends TileEntityBase imple
         this.currentMillibuckets = 0;
     }
 
-    public final IIntArray FIELDS = new IIntArray() {
+    public final ContainerData FIELDS = new ContainerData() {
         @Override
         public int get(int index) {
             switch (index) {
@@ -157,7 +158,7 @@ public abstract class TileEntityEnergyFluidProducer extends TileEntityBase imple
     }
 
     @Override
-    public CompoundNBT save(CompoundNBT compound) {
+    public CompoundTag save(CompoundTag compound) {
         compound.putInt("energy_stored", storedEnergy);
         compound.putInt("time", time);
         compound.putInt("fluid_stored", currentMillibuckets);
@@ -168,13 +169,13 @@ public abstract class TileEntityEnergyFluidProducer extends TileEntityBase imple
     }
 
     @Override
-    public void load(BlockState blockState, CompoundNBT compound) {
+    public void load(CompoundTag compound) {
         storedEnergy = compound.getInt("energy_stored");
         time = compound.getInt("time");
         currentMillibuckets = compound.getInt("fluid_stored");
 
         ItemUtils.readInventory(compound, "slots", inventory);
-        super.load(blockState, compound);
+        super.load(compound);
     }
 
     @Override
@@ -208,17 +209,17 @@ public abstract class TileEntityEnergyFluidProducer extends TileEntityBase imple
     }
 
     @Override
-    public boolean stillValid(PlayerEntity player) {
+    public boolean stillValid(Player player) {
         return inventory.stillValid(player);
     }
 
     @Override
-    public void startOpen(PlayerEntity player) {
+    public void startOpen(Player player) {
         inventory.startOpen(player);
     }
 
     @Override
-    public void stopOpen(PlayerEntity player) {
+    public void stopOpen(Player player) {
         inventory.stopOpen(player);
     }
 
@@ -253,7 +254,7 @@ public abstract class TileEntityEnergyFluidProducer extends TileEntityBase imple
     }
 
 
-    public Inventory getInventory() {
+    public SimpleContainer getInventory() {
         return inventory;
     }
 
@@ -325,7 +326,7 @@ public abstract class TileEntityEnergyFluidProducer extends TileEntityBase imple
     }
 
     @Override
-    public IIntArray getFields() {
+    public ContainerData getFields() {
         return FIELDS;
     }
 

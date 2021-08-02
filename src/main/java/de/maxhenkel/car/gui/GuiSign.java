@@ -1,17 +1,17 @@
 package de.maxhenkel.car.gui;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.blocks.tileentity.TileEntitySign;
 import de.maxhenkel.car.net.MessageEditSign;
 import de.maxhenkel.corelib.inventory.ScreenBase;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.widget.TextFieldWidget;
-import net.minecraft.client.gui.widget.button.Button;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.EditBox;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
 import org.lwjgl.glfw.GLFW;
 
 public class GuiSign extends ScreenBase<ContainerSign> {
@@ -27,16 +27,16 @@ public class GuiSign extends ScreenBase<ContainerSign> {
     protected Button buttonSubmit;
     protected Button buttonCancel;
 
-    protected TextFieldWidget text1;
-    protected TextFieldWidget text2;
-    protected TextFieldWidget text3;
-    protected TextFieldWidget text4;
+    protected EditBox text1;
+    protected EditBox text2;
+    protected EditBox text3;
+    protected EditBox text4;
 
     protected String[] text;
 
     protected boolean front = true;
 
-    public GuiSign(ContainerSign containerSign, ITextComponent title) {
+    public GuiSign(ContainerSign containerSign, Component title) {
         super(GUI_TEXTURE, containerSign, null, title);
         this.sign = containerSign.getSign();
         this.imageWidth = 176;
@@ -60,15 +60,15 @@ public class GuiSign extends ScreenBase<ContainerSign> {
 
         setInitialFocus(text1);
 
-        buttonSubmit = addButton(new Button(guiLeft + 20, guiTop + imageHeight - 25, 50, 20, new TranslationTextComponent("button.car.submit"), button -> {
+        buttonSubmit = addRenderableWidget(new Button(guiLeft + 20, guiTop + imageHeight - 25, 50, 20, new TranslatableComponent("button.car.submit"), button -> {
             save();
             Main.SIMPLE_CHANNEL.sendToServer(new MessageEditSign(sign.getBlockPos(), text));
             Minecraft.getInstance().setScreen(null);
         }));
-        buttonCancel = addButton(new Button(guiLeft + imageWidth - 50 - 15, guiTop + imageHeight - 25, 50, 20, new TranslationTextComponent("button.car.cancel"), button -> {
+        buttonCancel = addRenderableWidget(new Button(guiLeft + imageWidth - 50 - 15, guiTop + imageHeight - 25, 50, 20, new TranslatableComponent("button.car.cancel"), button -> {
             Minecraft.getInstance().setScreen(null);
         }));
-        buttonSwitch = addButton(new Button(guiLeft + 5, guiTop + 49 + 10, 46, 20, new TranslationTextComponent("button.car.back"), button -> {
+        buttonSwitch = addRenderableWidget(new Button(guiLeft + 5, guiTop + 49 + 10, 46, 20, new TranslatableComponent("button.car.back"), button -> {
             save();
             front = !front;
 
@@ -77,40 +77,40 @@ public class GuiSign extends ScreenBase<ContainerSign> {
                 text2.setValue(text[1]);
                 text3.setValue(text[2]);
                 text4.setValue(text[3]);
-                buttonSwitch.setMessage(new TranslationTextComponent("button.car.back"));
+                buttonSwitch.setMessage(new TranslatableComponent("button.car.back"));
             } else {
                 text1.setValue(text[4]);
                 text2.setValue(text[5]);
                 text3.setValue(text[6]);
                 text4.setValue(text[7]);
-                buttonSwitch.setMessage(new TranslationTextComponent("button.car.front"));
+                buttonSwitch.setMessage(new TranslatableComponent("button.car.front"));
             }
         }));
     }
 
-    private TextFieldWidget initTextField(int id, int height) {
-        TextFieldWidget field = new TextFieldWidget(font, guiLeft + 54, guiTop + 30 + height, 114, 16, new StringTextComponent(""));
+    private EditBox initTextField(int id, int height) {
+        EditBox field = new EditBox(font, guiLeft + 54, guiTop + 30 + height, 114, 16, new TextComponent(""));
         field.setTextColor(-1);
         field.setTextColorUneditable(-1);
         field.setBordered(true);
         field.setMaxLength(20);
         field.setValue(text[id]);
-        addButton(field);
+        addRenderableWidget(field);
         return field;
     }
 
     @Override
-    protected void renderLabels(MatrixStack matrixStack, int mouseX, int mouseY) {
+    protected void renderLabels(PoseStack matrixStack, int mouseX, int mouseY) {
         super.renderLabels(matrixStack, mouseX, mouseY);
 
         String s;
         if (front) {
-            s = new TranslationTextComponent("gui.sign.front").getString();
+            s = new TranslatableComponent("gui.sign.front").getString();
         } else {
-            s = new TranslationTextComponent("gui.sign.back").getString();
+            s = new TranslatableComponent("gui.sign.back").getString();
         }
 
-        font.draw(matrixStack, new TranslationTextComponent("gui.sign", s).getVisualOrderText(), 54, 10, FONT_COLOR);
+        font.draw(matrixStack, new TranslatableComponent("gui.sign", s).getVisualOrderText(), 54, 10, FONT_COLOR);
     }
 
     @Override

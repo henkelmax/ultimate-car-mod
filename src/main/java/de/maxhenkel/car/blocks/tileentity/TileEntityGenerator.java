@@ -3,27 +3,27 @@ package de.maxhenkel.car.blocks.tileentity;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.blocks.BlockGui;
 import de.maxhenkel.car.blocks.ModBlocks;
-import de.maxhenkel.car.fluids.ModFluids;
+import de.maxhenkel.corelib.blockentity.ITickableBlockEntity;
 import de.maxhenkel.corelib.energy.EnergyUtils;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.Inventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tileentity.ITickableTileEntity;
-import net.minecraft.util.Direction;
-import net.minecraft.util.IIntArray;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.Container;
+import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.ContainerData;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 
 import javax.annotation.Nonnull;
 
-public class TileEntityGenerator extends TileEntityBase implements ITickableTileEntity, IFluidHandler, IEnergyStorage, IInventory {
+public class TileEntityGenerator extends TileEntityBase implements ITickableBlockEntity, IFluidHandler, IEnergyStorage, Container {
 
     public final int maxStorage;
     public int storedEnergy;
@@ -34,11 +34,11 @@ public class TileEntityGenerator extends TileEntityBase implements ITickableTile
 
     protected Fluid currentFluid;
 
-    protected Inventory inventory;
+    protected SimpleContainer inventory;
 
-    public TileEntityGenerator() {
-        super(Main.GENERATOR_TILE_ENTITY_TYPE);
-        this.inventory = new Inventory(0);
+    public TileEntityGenerator(BlockPos pos, BlockState state) {
+        super(Main.GENERATOR_TILE_ENTITY_TYPE, pos, state);
+        this.inventory = new SimpleContainer(0);
         this.maxStorage = Main.SERVER_CONFIG.generatorEnergyStorage.get();
         this.storedEnergy = 0;
         this.maxMillibuckets = Main.SERVER_CONFIG.generatorFluidStorage.get();
@@ -46,7 +46,7 @@ public class TileEntityGenerator extends TileEntityBase implements ITickableTile
         this.energyGeneration = Main.SERVER_CONFIG.generatorEnergyGeneration.get();
     }
 
-    public final IIntArray FIELDS = new IIntArray() {
+    public final ContainerData FIELDS = new ContainerData() {
         @Override
         public int get(int index) {
             switch (index) {
@@ -137,17 +137,17 @@ public class TileEntityGenerator extends TileEntityBase implements ITickableTile
     }
 
     @Override
-    public ITextComponent getTranslatedName() {
-        return new TranslationTextComponent("block.car.generator");
+    public Component getTranslatedName() {
+        return new TranslatableComponent("block.car.generator");
     }
 
 
     @Override
-    public CompoundNBT save(CompoundNBT compound) {
+    public CompoundTag save(CompoundTag compound) {
         compound.putInt("stored_energy", storedEnergy);
         if (currentFluid != null) {
             FluidStack stack = new FluidStack(currentFluid, currentMillibuckets);
-            CompoundNBT comp = new CompoundNBT();
+            CompoundTag comp = new CompoundTag();
             stack.writeToNBT(comp);
             compound.put("fluid", comp);
         }
@@ -155,14 +155,14 @@ public class TileEntityGenerator extends TileEntityBase implements ITickableTile
     }
 
     @Override
-    public void load(BlockState blockState, CompoundNBT compound) {
+    public void load(CompoundTag compound) {
         storedEnergy = compound.getInt("stored_energy");
         if (compound.contains("fluid")) {
             FluidStack stack = FluidStack.loadFluidStackFromNBT(compound.getCompound("fluid"));
             currentFluid = stack.getFluid();
             currentMillibuckets = stack.getAmount();
         }
-        super.load(blockState, compound);
+        super.load(compound);
     }
 
     @Override
@@ -196,7 +196,7 @@ public class TileEntityGenerator extends TileEntityBase implements ITickableTile
     }
 
     @Override
-    public boolean stillValid(PlayerEntity player) {
+    public boolean stillValid(Player player) {
         return inventory.stillValid(player);
     }
 
@@ -206,12 +206,12 @@ public class TileEntityGenerator extends TileEntityBase implements ITickableTile
     }
 
     @Override
-    public void startOpen(PlayerEntity player) {
+    public void startOpen(Player player) {
         inventory.startOpen(player);
     }
 
     @Override
-    public void stopOpen(PlayerEntity player) {
+    public void stopOpen(Player player) {
         inventory.stopOpen(player);
     }
 
@@ -272,7 +272,7 @@ public class TileEntityGenerator extends TileEntityBase implements ITickableTile
     }
 
     @Override
-    public IIntArray getFields() {
+    public ContainerData getFields() {
         return FIELDS;
     }
 

@@ -2,11 +2,11 @@ package de.maxhenkel.car.net;
 
 import de.maxhenkel.car.blocks.tileentity.TileEntityGasStation;
 import de.maxhenkel.corelib.net.Message;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraftforge.fmllegacy.network.NetworkEvent;
 
 public class MessageGasStationAdminAmount implements Message<MessageGasStationAdminAmount> {
 
@@ -29,7 +29,7 @@ public class MessageGasStationAdminAmount implements Message<MessageGasStationAd
 
     @Override
     public void executeServerSide(NetworkEvent.Context context) {
-        TileEntity te = context.getSender().level.getBlockEntity(pos);
+        BlockEntity te = context.getSender().level.getBlockEntity(pos);
 
         if (te instanceof TileEntityGasStation) {
             ((TileEntityGasStation) te).setTradeAmount(amount);
@@ -37,7 +37,7 @@ public class MessageGasStationAdminAmount implements Message<MessageGasStationAd
     }
 
     @Override
-    public MessageGasStationAdminAmount fromBytes(PacketBuffer buf) {
+    public MessageGasStationAdminAmount fromBytes(FriendlyByteBuf buf) {
         this.pos = buf.readBlockPos();
         this.amount = buf.readInt();
 
@@ -45,7 +45,7 @@ public class MessageGasStationAdminAmount implements Message<MessageGasStationAd
     }
 
     @Override
-    public void toBytes(PacketBuffer buf) {
+    public void toBytes(FriendlyByteBuf buf) {
         buf.writeBlockPos(pos);
         buf.writeInt(amount);
     }

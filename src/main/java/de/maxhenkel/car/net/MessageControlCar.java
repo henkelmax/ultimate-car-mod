@@ -5,11 +5,11 @@ import java.util.UUID;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.entity.car.base.EntityCarBase;
 import de.maxhenkel.corelib.net.Message;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.network.PacketBuffer;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraftforge.fmllegacy.network.NetworkEvent;
 
 public class MessageControlCar implements Message<MessageControlCar> {
 
@@ -20,7 +20,7 @@ public class MessageControlCar implements Message<MessageControlCar> {
 
     }
 
-    public MessageControlCar(boolean forward, boolean backward, boolean left, boolean right, PlayerEntity player) {
+    public MessageControlCar(boolean forward, boolean backward, boolean left, boolean right, Player player) {
         this.forward = forward;
         this.backward = backward;
         this.left = left;
@@ -52,7 +52,7 @@ public class MessageControlCar implements Message<MessageControlCar> {
     }
 
     @Override
-    public MessageControlCar fromBytes(PacketBuffer buf) {
+    public MessageControlCar fromBytes(FriendlyByteBuf buf) {
         this.forward = buf.readBoolean();
         this.backward = buf.readBoolean();
         this.left = buf.readBoolean();
@@ -62,7 +62,7 @@ public class MessageControlCar implements Message<MessageControlCar> {
     }
 
     @Override
-    public void toBytes(PacketBuffer buf) {
+    public void toBytes(FriendlyByteBuf buf) {
         buf.writeBoolean(forward);
         buf.writeBoolean(backward);
         buf.writeBoolean(left);

@@ -2,26 +2,26 @@ package de.maxhenkel.car.gui;
 
 import de.maxhenkel.car.items.ItemPainter;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.container.Slot;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.Container;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 
 public class SlotPainter extends Slot {
 
-    private PlayerEntity player;
+    private Player player;
     private int index;
 
-    public SlotPainter(PlayerEntity player, IInventory inventoryIn, int index, int xPosition, int yPosition) {
+    public SlotPainter(Player player, Container inventoryIn, int index, int xPosition, int yPosition) {
         super(inventoryIn, index, xPosition, yPosition);
         this.player = player;
         this.index = index;
     }
 
     @Override
-    public boolean mayPickup(PlayerEntity player) {
+    public boolean mayPickup(Player player) {
         setPainterID(index);
         if (player.level.isClientSide) {
             Minecraft.getInstance().setScreen(null);
@@ -38,7 +38,7 @@ public class SlotPainter extends Slot {
             return;
         }
 
-        CompoundNBT compound = stack.getOrCreateTag();
+        CompoundTag compound = stack.getOrCreateTag();
 
         compound.putInt("index", index);
     }
@@ -48,7 +48,7 @@ public class SlotPainter extends Slot {
             return 0;
         }
 
-        CompoundNBT compound = stack.getOrCreateTag();
+        CompoundTag compound = stack.getOrCreateTag();
 
         if (!compound.contains("index")) {
             return 0;
@@ -57,7 +57,7 @@ public class SlotPainter extends Slot {
         return compound.getInt("index");
     }
 
-    public static ItemStack getPainterStack(PlayerEntity player) {
+    public static ItemStack getPainterStack(Player player) {
         ItemStack stack = player.getMainHandItem();
 
         Item i = stack.getItem();

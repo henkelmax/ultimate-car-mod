@@ -2,11 +2,11 @@ package de.maxhenkel.car.gui;
 
 import de.maxhenkel.car.blocks.tileentity.TileEntityFluidExtractor;
 import de.maxhenkel.corelib.item.ItemUtils;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.container.Slot;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.Container;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
 
@@ -15,7 +15,7 @@ public class SlotFluidFilter extends Slot {
     private TileEntityFluidExtractor tile;
     private int index;
 
-    public SlotFluidFilter(IInventory inv, int index, int xPosition, int yPosition, TileEntityFluidExtractor tile) {
+    public SlotFluidFilter(Container inv, int index, int xPosition, int yPosition, TileEntityFluidExtractor tile) {
         super(inv, index, xPosition, yPosition);
         this.tile = tile;
         this.index = index;
@@ -24,7 +24,7 @@ public class SlotFluidFilter extends Slot {
     }
 
     @Override
-    public boolean mayPickup(PlayerEntity playerIn) {
+    public boolean mayPickup(Player playerIn) {
         tile.setFilter(null);
         ItemUtils.removeStackFromSlot(container, index);
         setChanged();

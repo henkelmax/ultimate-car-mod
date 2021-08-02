@@ -5,11 +5,11 @@ import java.util.UUID;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.entity.car.base.EntityCarBase;
 import de.maxhenkel.corelib.net.Message;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.network.PacketBuffer;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraftforge.fmllegacy.network.NetworkEvent;
 
 public class MessageCarGui implements Message<MessageCarGui> {
 
@@ -19,7 +19,7 @@ public class MessageCarGui implements Message<MessageCarGui> {
 
     }
 
-    public MessageCarGui(PlayerEntity player) {
+    public MessageCarGui(Player player) {
         this.uuid = player.getUUID();
     }
 
@@ -43,13 +43,13 @@ public class MessageCarGui implements Message<MessageCarGui> {
     }
 
     @Override
-    public MessageCarGui fromBytes(PacketBuffer buf) {
+    public MessageCarGui fromBytes(FriendlyByteBuf buf) {
         this.uuid = buf.readUUID();
         return this;
     }
 
     @Override
-    public void toBytes(PacketBuffer buf) {
+    public void toBytes(FriendlyByteBuf buf) {
         buf.writeUUID(uuid);
     }
 

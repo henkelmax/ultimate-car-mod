@@ -4,25 +4,25 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import de.maxhenkel.car.fluids.ModFluids;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public abstract class EntityCarFuelBase extends EntityCarDamageBase implements IFluidHandler {
 
-    private static final DataParameter<Integer> FUEL_AMOUNT = EntityDataManager.defineId(EntityCarFuelBase.class, DataSerializers.INT);
-    private static final DataParameter<String> FUEL_TYPE = EntityDataManager.defineId(EntityCarFuelBase.class, DataSerializers.STRING);
+    private static final EntityDataAccessor<Integer> FUEL_AMOUNT = SynchedEntityData.defineId(EntityCarFuelBase.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<String> FUEL_TYPE = SynchedEntityData.defineId(EntityCarFuelBase.class, EntityDataSerializers.STRING);
 
-    public EntityCarFuelBase(EntityType type, World worldIn) {
+    public EntityCarFuelBase(EntityType type, Level worldIn) {
         super(type, worldIn);
     }
 
@@ -67,7 +67,7 @@ public abstract class EntityCarFuelBase extends EntityCarDamageBase implements I
     }
 
     @Override
-    public boolean canPlayerDriveCar(PlayerEntity player) {
+    public boolean canPlayerDriveCar(Player player) {
 
         if (getFuelAmount() <= 0) {
             return false;
@@ -77,7 +77,7 @@ public abstract class EntityCarFuelBase extends EntityCarDamageBase implements I
     }
 
     @Override
-    public boolean canStartCarEngine(PlayerEntity player) {
+    public boolean canStartCarEngine(Player player) {
         if (getFuelAmount() <= 0) {
             return false;
         }
@@ -143,14 +143,14 @@ public abstract class EntityCarFuelBase extends EntityCarDamageBase implements I
     public abstract int getEfficiency(@Nullable Fluid fluid);
 
     @Override
-    protected void addAdditionalSaveData(CompoundNBT compound) {
+    protected void addAdditionalSaveData(CompoundTag compound) {
         super.addAdditionalSaveData(compound);
         compound.putInt("fuel", getFuelAmount());
         compound.putString("fuel_type", getFuelType());
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundNBT compound) {
+    public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
         setFuelAmount(compound.getInt("fuel"));
         if (compound.contains("fuel_type")) {

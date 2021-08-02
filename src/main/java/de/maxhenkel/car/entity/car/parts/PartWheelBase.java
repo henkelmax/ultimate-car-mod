@@ -1,14 +1,14 @@
 package de.maxhenkel.car.entity.car.parts;
 
+import com.mojang.math.Vector3d;
+import com.mojang.math.Vector3f;
 import de.maxhenkel.car.entity.car.base.EntityGenericCar;
 import de.maxhenkel.corelib.client.obj.OBJModel;
 import de.maxhenkel.corelib.client.obj.OBJModelInstance;
 import de.maxhenkel.corelib.client.obj.OBJModelOptions;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.math.vector.Vector3f;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,12 +33,12 @@ public class PartWheelBase extends PartModel {
     }
 
     @Override
-    public boolean validate(List<Part> parts, List<ITextComponent> messages) {
+    public boolean validate(List<Part> parts, List<Component> messages) {
         for (Part part : parts) {
             if (part instanceof PartBody) {
                 PartBody body = (PartBody) part;
                 if (!body.canFitWheel(this)) {
-                    messages.add(new TranslationTextComponent("message.parts.wrong_wheel_type"));
+                    messages.add(new TranslatableComponent("message.parts.wrong_wheel_type"));
                     return false;
                 }
             }

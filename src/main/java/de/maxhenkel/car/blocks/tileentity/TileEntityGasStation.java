@@ -10,25 +10,25 @@ import de.maxhenkel.car.sounds.ModSounds;
 import de.maxhenkel.car.sounds.SoundLoopTileentity;
 import de.maxhenkel.car.sounds.SoundLoopTileentity.ISoundLoopable;
 import de.maxhenkel.corelib.CachedValue;
+import de.maxhenkel.corelib.blockentity.ITickableBlockEntity;
 import de.maxhenkel.corelib.item.ItemUtils;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.Inventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tileentity.ITickableTileEntity;
-import net.minecraft.util.Direction;
-import net.minecraft.util.IIntArray;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.Container;
+import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.ContainerData;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fluids.FluidStack;
@@ -39,7 +39,7 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 import javax.annotation.Nonnull;
 import java.util.*;
 
-public class TileEntityGasStation extends TileEntityBase implements ITickableTileEntity, IFluidHandler, ISoundLoopable {
+public class TileEntityGasStation extends TileEntityBase implements ITickableBlockEntity, IFluidHandler, ISoundLoopable {
 
     private FluidStack storage;
 
@@ -51,25 +51,25 @@ public class TileEntityGasStation extends TileEntityBase implements ITickableTil
     private boolean isFueling;
     private boolean wasFueling;
 
-    private Inventory inventory;
-    private Inventory trading;
+    private SimpleContainer inventory;
+    private SimpleContainer trading;
     private int tradeAmount;
 
     private int freeAmountLeft;
 
     private UUID owner;
 
-    public TileEntityGasStation() {
-        super(Main.GAS_STATION_TILE_ENTITY_TYPE);
+    public TileEntityGasStation(BlockPos pos, BlockState state) {
+        super(Main.GAS_STATION_TILE_ENTITY_TYPE, pos, state);
         this.transferRate = Main.SERVER_CONFIG.gasStationTransferRate.get();
         this.fuelCounter = 0;
-        this.inventory = new Inventory(27);
-        this.trading = new Inventory(2);
+        this.inventory = new SimpleContainer(27);
+        this.trading = new SimpleContainer(2);
         this.owner = new UUID(0L, 0L);
         this.storage = FluidStack.EMPTY;
     }
 
-    public final IIntArray FIELDS = new IIntArray() {
+    public final ContainerData FIELDS = new ContainerData() {
         @Override
         public int get(int index) {
             switch (index) {
@@ -111,20 +111,20 @@ public class TileEntityGasStation extends TileEntityBase implements ITickableTil
     };
 
     @Override
-    public ITextComponent getTranslatedName() {
-        return new TranslationTextComponent("block.car.fuel_station");
+    public Component getTranslatedName() {
+        return new TranslatableComponent("block.car.fuel_station");
     }
 
     private void fixTop() {
         BlockState top = level.getBlockState(worldPosition.above());
         BlockState bottom = level.getBlockState(worldPosition);
         Direction facing = bottom.getValue(BlockOrientableHorizontal.FACING);
-        if (top.getBlock().equals(ModBlocks.FUEL_STATION_TOP)) {
+        if (top.getBlock().equals(ModBlocks.GAS_STATION_TOP)) {
             if (!top.getValue(BlockGasStationTop.FACING).equals(facing)) {
-                level.setBlockAndUpdate(worldPosition.above(), ModBlocks.FUEL_STATION_TOP.defaultBlockState().setValue(BlockGasStationTop.FACING, facing));
+                level.setBlockAndUpdate(worldPosition.above(), ModBlocks.GAS_STATION_TOP.defaultBlockState().setValue(BlockGasStationTop.FACING, facing));
             }
         } else if (level.isEmptyBlock(worldPosition.above())) {
-            level.setBlockAndUpdate(worldPosition.above(), ModBlocks.FUEL_STATION_TOP.defaultBlockState().setValue(BlockGasStationTop.FACING, facing));
+            level.setBlockAndUpdate(worldPosition.above(), ModBlocks.GAS_STATION_TOP.defaultBlockState().setValue(BlockGasStationTop.FACING, facing));
         }
 
     }
@@ -238,11 +238,11 @@ public class TileEntityGasStation extends TileEntityBase implements ITickableTil
         return true;
     }
 
-    public IInventory getInventory() {
+    public Container getInventory() {
         return inventory;
     }
 
-    public IInventory getTradingInventory() {
+    public Container getTradingInventory() {
         return trading;
     }
 
@@ -255,7 +255,7 @@ public class TileEntityGasStation extends TileEntityBase implements ITickableTil
         setChanged();
     }
 
-    public void setOwner(PlayerEntity player) {
+    public void setOwner(Player player) {
         this.owner = new UUID(player.getUUID().getMostSignificantBits(), player.getUUID().getLeastSignificantBits());
         setChanged();
     }
@@ -263,9 +263,9 @@ public class TileEntityGasStation extends TileEntityBase implements ITickableTil
     /**
      * OPs are also owners
      */
-    public boolean isOwner(PlayerEntity player) {
-        if (player instanceof ServerPlayerEntity) {
-            ServerPlayerEntity p = (ServerPlayerEntity) player;
+    public boolean isOwner(Player player) {
+        if (player instanceof ServerPlayer) {
+            ServerPlayer p = (ServerPlayer) player;
 
             boolean isOp = p.hasPermissions(p.server.getOperatorUserPermissionLevel());
             if (isOp) {
@@ -280,11 +280,11 @@ public class TileEntityGasStation extends TileEntityBase implements ITickableTil
     }
 
     @Override
-    public CompoundNBT save(CompoundNBT compound) {
+    public CompoundTag save(CompoundTag compound) {
         compound.putInt("counter", fuelCounter);
 
         if (!storage.isEmpty()) {
-            CompoundNBT comp = new CompoundNBT();
+            CompoundTag comp = new CompoundTag();
             storage.writeToNBT(comp);
             compound.put("fluid", comp);
         }
@@ -302,11 +302,11 @@ public class TileEntityGasStation extends TileEntityBase implements ITickableTil
     }
 
     @Override
-    public void load(BlockState blockState, CompoundNBT compound) {
+    public void load(CompoundTag compound) {
         fuelCounter = compound.getInt("counter");
 
         if (compound.contains("fluid")) {
-            CompoundNBT comp = compound.getCompound("fluid");
+            CompoundTag comp = compound.getCompound("fluid");
             storage = FluidStack.loadFluidStackFromNBT(comp);
         }
 
@@ -321,7 +321,7 @@ public class TileEntityGasStation extends TileEntityBase implements ITickableTil
         } else {
             owner = new UUID(0L, 0L);
         }
-        super.load(blockState, compound);
+        super.load(compound);
     }
 
     public boolean isFueling() {
@@ -365,15 +365,15 @@ public class TileEntityGasStation extends TileEntityBase implements ITickableTil
     public String getRenderText() {
         IFluidHandler fluidHandler = getFluidHandlerInFront();
         if (fluidHandler == null) {
-            return new TranslationTextComponent("gas_station.no_car").getString();
+            return new TranslatableComponent("gas_station.no_car").getString();
         } else if (fuelCounter <= 0) {
-            return new TranslationTextComponent("gas_station.ready").getString();
+            return new TranslatableComponent("gas_station.ready").getString();
         } else {
-            return new TranslationTextComponent("gas_station.fuel_amount", fuelCounter).getString();
+            return new TranslatableComponent("gas_station.fuel_amount", fuelCounter).getString();
         }
     }
 
-    private CachedValue<Vector3d> center = new CachedValue<>(() -> new Vector3d(worldPosition.getX() + 0.5D, worldPosition.getY() + 1.5D, worldPosition.getZ() + 0.5D));
+    private CachedValue<Vec3> center = new CachedValue<>(() -> new Vec3(worldPosition.getX() + 0.5D, worldPosition.getY() + 1.5D, worldPosition.getZ() + 0.5D));
 
     public IFluidHandler getFluidHandlerInFront() {
         return level.getEntitiesOfClass(Entity.class, getDetectionBox())
@@ -385,9 +385,9 @@ public class TileEntityGasStation extends TileEntityBase implements ITickableTil
                 .orElse(null);
     }
 
-    private CachedValue<AxisAlignedBB> detectionBox = new CachedValue<>(this::createDetectionBox);
+    private CachedValue<AABB> detectionBox = new CachedValue<>(this::createDetectionBox);
 
-    private AxisAlignedBB createDetectionBox() {
+    private AABB createDetectionBox() {
         BlockState ownState = level.getBlockState(worldPosition);
 
         if (!ownState.getBlock().equals(ModBlocks.GAS_STATION)) {
@@ -395,12 +395,12 @@ public class TileEntityGasStation extends TileEntityBase implements ITickableTil
         }
         Direction facing = ownState.getValue(BlockGasStation.FACING);
         BlockPos start = worldPosition.relative(facing);
-        return new AxisAlignedBB(start.getX(), start.getY(), start.getZ(), start.getX() + 1D, start.getY() + 2.5D, start.getZ() + 1D)
+        return new AABB(start.getX(), start.getY(), start.getZ(), start.getX() + 1D, start.getY() + 2.5D, start.getZ() + 1D)
                 .expandTowards(facing.getStepX(), 0D, facing.getStepZ())
                 .inflate(facing.getStepX() == 0 ? 0.5D : 0D, 0D, facing.getStepZ() == 0 ? 0.5D : 0D);
     }
 
-    public AxisAlignedBB getDetectionBox() {
+    public AABB getDetectionBox() {
         return detectionBox.get();
     }
 
@@ -448,7 +448,7 @@ public class TileEntityGasStation extends TileEntityBase implements ITickableTil
 
     @OnlyIn(Dist.CLIENT)
     public void playSound() {
-        ModSounds.playSoundLoop(new SoundLoopTileentity(ModSounds.GAS_STATION, SoundCategory.BLOCKS, this), level);
+        ModSounds.playSoundLoop(new SoundLoopTileentity(ModSounds.GAS_STATION, SoundSource.BLOCKS, this), level);
     }
 
     @Override
@@ -457,8 +457,8 @@ public class TileEntityGasStation extends TileEntityBase implements ITickableTil
     }
 
     @Override
-    public AxisAlignedBB getRenderBoundingBox() {
-        return new AxisAlignedBB(worldPosition, worldPosition.offset(1, 2, 1));
+    public AABB getRenderBoundingBox() {
+        return new AABB(worldPosition, worldPosition.offset(1, 2, 1));
     }
 
     public int getTradeAmount() {
@@ -477,7 +477,7 @@ public class TileEntityGasStation extends TileEntityBase implements ITickableTil
     }
 
     @Override
-    public IIntArray getFields() {
+    public ContainerData getFields() {
         return FIELDS;
     }
 

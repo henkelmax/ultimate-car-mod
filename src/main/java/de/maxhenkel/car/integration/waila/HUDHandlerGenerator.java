@@ -1,44 +1,38 @@
 package de.maxhenkel.car.integration.waila;
 
 import de.maxhenkel.car.blocks.tileentity.TileEntityGenerator;
+import mcp.mobius.waila.api.BlockAccessor;
 import mcp.mobius.waila.api.IComponentProvider;
-import mcp.mobius.waila.api.IDataAccessor;
-import mcp.mobius.waila.api.IPluginConfig;
 import mcp.mobius.waila.api.IServerDataProvider;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
+import mcp.mobius.waila.api.ITooltip;
+import mcp.mobius.waila.api.config.IPluginConfig;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
 
-import java.util.List;
+public class HUDHandlerGenerator implements IComponentProvider, IServerDataProvider<BlockEntity> {
 
-public class HUDHandlerGenerator implements IComponentProvider, IServerDataProvider<TileEntity> {
-
-    static final HUDHandlerGenerator INSTANCE = new HUDHandlerGenerator();
+    public static final HUDHandlerGenerator INSTANCE = new HUDHandlerGenerator();
 
     @Override
-    public void appendBody(List<ITextComponent> tooltip, IDataAccessor accessor, IPluginConfig config) {
-        int energy = accessor.getServerData().getInt("energy");
-        int maxEnergy = accessor.getServerData().getInt("max_energy");
-        int fluid = accessor.getServerData().getInt("fluid");
-        int maxFluid = accessor.getServerData().getInt("max_fluid");
+    public void appendTooltip(ITooltip iTooltip, BlockAccessor blockAccessor, IPluginConfig iPluginConfig) {
+        int energy = blockAccessor.getServerData().getInt("energy");
+        int maxEnergy = blockAccessor.getServerData().getInt("max_energy");
+        int fluid = blockAccessor.getServerData().getInt("fluid");
+        int maxFluid = blockAccessor.getServerData().getInt("max_fluid");
 
-        ITextComponent energyComponent = new TranslationTextComponent("tooltip.waila.generator.energy", energy, maxEnergy);
-        ITextComponent fluidComponent = new TranslationTextComponent("tooltip.waila.generator.fluid", fluid, maxFluid);
-        tooltip.add(energyComponent);
-        tooltip.add(fluidComponent);
+        iTooltip.add(new TranslatableComponent("tooltip.waila.generator.energy", energy, maxEnergy));
+        iTooltip.add(new TranslatableComponent("tooltip.waila.generator.fluid", fluid, maxFluid));
     }
 
     @Override
-    public void appendServerData(CompoundNBT data, ServerPlayerEntity player, World world, TileEntity blockEntity) {
+    public void appendServerData(CompoundTag compoundTag, ServerPlayer serverPlayer, Level level, BlockEntity blockEntity, boolean b) {
         TileEntityGenerator generator = (TileEntityGenerator) blockEntity;
-
-        data.putInt("energy", generator.getEnergyStored());
-        data.putInt("max_energy", generator.getMaxEnergyStored());
-        data.putInt("fluid", generator.getFluidInTank(0).getAmount());
-        data.putInt("max_fluid", generator.getTankCapacity(0));
+        compoundTag.putInt("energy", generator.getEnergyStored());
+        compoundTag.putInt("max_energy", generator.getMaxEnergyStored());
+        compoundTag.putInt("fluid", generator.getFluidInTank(0).getAmount());
+        compoundTag.putInt("max_fluid", generator.getTankCapacity(0));
     }
-
 }

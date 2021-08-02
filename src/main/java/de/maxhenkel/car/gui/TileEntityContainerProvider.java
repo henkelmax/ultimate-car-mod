@@ -1,17 +1,17 @@
 package de.maxhenkel.car.gui;
 
 import de.maxhenkel.car.blocks.tileentity.TileEntityBase;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.inventory.container.INamedContainerProvider;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraftforge.fml.network.NetworkHooks;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.MenuProvider;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraftforge.fmllegacy.network.NetworkHooks;
 
 import javax.annotation.Nullable;
 
-public class TileEntityContainerProvider implements INamedContainerProvider {
+public class TileEntityContainerProvider implements MenuProvider {
 
     private ContainerCreator container;
     private TileEntityBase tileEntity;
@@ -22,21 +22,21 @@ public class TileEntityContainerProvider implements INamedContainerProvider {
     }
 
     @Override
-    public ITextComponent getDisplayName() {
+    public Component getDisplayName() {
         return tileEntity.getDisplayName();
     }
 
-    public static void openGui(ServerPlayerEntity player, TileEntityBase tileEntity, ContainerCreator containerCreator) {
+    public static void openGui(ServerPlayer player, TileEntityBase tileEntity, ContainerCreator containerCreator) {
         NetworkHooks.openGui(player, new TileEntityContainerProvider(containerCreator, tileEntity), packetBuffer -> packetBuffer.writeBlockPos(tileEntity.getBlockPos()));
     }
 
     @Nullable
     @Override
-    public Container createMenu(int i, PlayerInventory playerInventory, PlayerEntity playerEntity) {
+    public AbstractContainerMenu createMenu(int i, Inventory playerInventory, Player playerEntity) {
         return container.create(i, playerInventory, playerEntity);
     }
 
     public interface ContainerCreator {
-        Container create(int i, PlayerInventory playerInventory, PlayerEntity playerEntity);
+        AbstractContainerMenu create(int i, Inventory playerInventory, Player playerEntity);
     }
 }

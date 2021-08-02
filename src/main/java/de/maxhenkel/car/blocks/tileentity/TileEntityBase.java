@@ -4,33 +4,34 @@ import de.maxhenkel.car.Main;
 import de.maxhenkel.car.net.MessageSyncTileEntity;
 import de.maxhenkel.corelib.entity.EntityUtils;
 import de.maxhenkel.corelib.net.NetUtils;
-import net.minecraft.block.BlockState;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.SUpdateTileEntityPacket;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityType;
-import net.minecraft.util.IIntArray;
-import net.minecraft.util.INameable;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.Connection;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.Nameable;
+import net.minecraft.world.inventory.ContainerData;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
 
 import javax.annotation.Nullable;
 
-public abstract class TileEntityBase extends TileEntity implements INameable {
+public abstract class TileEntityBase extends BlockEntity implements Nameable {
 
-    private ITextComponent name;
-    private CompoundNBT compoundLast;
+    private Component name;
+    private CompoundTag compoundLast;
 
-    public TileEntityBase(TileEntityType<?> tileEntityTypeIn) {
-        super(tileEntityTypeIn);
+    public TileEntityBase(BlockEntityType<?> tileEntityTypeIn, BlockPos pos, BlockState state) {
+        super(tileEntityTypeIn, pos, state);
     }
 
     public void synchronize() {
-        if (!level.isClientSide && level instanceof ServerWorld) {
-            CompoundNBT last = save(new CompoundNBT());
+        if (!level.isClientSide && level instanceof ServerLevel) {
+            CompoundTag last = save(new CompoundTag());
             if (compoundLast == null || !compoundLast.equals(last)) {
-                ServerWorld serverWorld = (ServerWorld) level;
+                ServerLevel serverWorld = (ServerLevel) level;
 
                 MessageSyncTileEntity msg = new MessageSyncTileEntity(worldPosition, last);
                 EntityUtils.forEachPlayerAround(serverWorld, worldPosition, 128D, playerEntity -> NetUtils.sendTo(Main.SIMPLE_CHANNEL, playerEntity, msg));
@@ -46,47 +47,47 @@ public abstract class TileEntityBase extends TileEntity implements INameable {
     }
 
     @Override
-    public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
-        load(getBlockState(), pkt.getTag());
+    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
+        load(pkt.getTag());
     }
 
     @Override
-    public CompoundNBT getUpdateTag() {
-        return this.save(new CompoundNBT());
+    public CompoundTag getUpdateTag() {
+        return this.save(new CompoundTag());
     }
 
-    public abstract ITextComponent getTranslatedName();
+    public abstract Component getTranslatedName();
 
-    public void setCustomName(ITextComponent name) {
+    public void setCustomName(Component name) {
         this.name = name;
     }
 
     @Override
-    public ITextComponent getName() {
+    public Component getName() {
         return name != null ? name : getTranslatedName();
     }
 
     @Override
     @Nullable
-    public ITextComponent getCustomName() {
+    public Component getCustomName() {
         return name;
     }
 
-    public abstract IIntArray getFields();
+    public abstract ContainerData getFields();
 
     @Override
-    public CompoundNBT save(CompoundNBT compound) {
+    public CompoundTag save(CompoundTag compound) {
         if (name != null) {
-            compound.putString("CustomName", ITextComponent.Serializer.toJson(name));
+            compound.putString("CustomName", Component.Serializer.toJson(name));
         }
         return super.save(compound);
     }
 
     @Override
-    public void load(BlockState blockState, CompoundNBT compound) {
+    public void load(CompoundTag compound) {
         if (compound.contains("CustomName")) {
-            name = ITextComponent.Serializer.fromJson(compound.getString("CustomName"));
+            name = Component.Serializer.fromJson(compound.getString("CustomName"));
         }
-        super.load(blockState, compound);
+        super.load(compound);
     }
 }

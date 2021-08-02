@@ -6,29 +6,32 @@ import de.maxhenkel.car.gui.ContainerGasStation;
 import de.maxhenkel.car.gui.ContainerGasStationAdmin;
 import de.maxhenkel.car.gui.TileEntityContainerProvider;
 import de.maxhenkel.corelib.block.DirectionalVoxelShape;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.material.MaterialColor;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.inventory.InventoryHelper;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.World;
+import de.maxhenkel.corelib.blockentity.SimpleBlockEntityTicker;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.Containers;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.material.MaterialColor;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.IFluidHandler;
@@ -67,7 +70,7 @@ public class BlockGasStation extends BlockOrientableHorizontal {
     public Item toItem() {
         return new BlockItem(this, new Item.Properties().tab(ModItemGroups.TAB_CAR)) {
             @Override
-            protected boolean canPlace(BlockItemUseContext context, BlockState state) {
+            protected boolean canPlace(BlockPlaceContext context, BlockState state) {
                 if (!context.getLevel().isEmptyBlock(context.getClickedPos().above())) {
                     return false;
                 }
@@ -76,12 +79,18 @@ public class BlockGasStation extends BlockOrientableHorizontal {
         }.setRegistryName(getRegistryName());
     }
 
+    @Nullable
     @Override
-    public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
-        TileEntity te = worldIn.getBlockEntity(pos);
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
+        return new SimpleBlockEntityTicker<>();
+    }
+
+    @Override
+    public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
+        BlockEntity te = worldIn.getBlockEntity(pos);
 
         if (!(te instanceof TileEntityGasStation)) {
-            return ActionResultType.FAIL;
+            return InteractionResult.FAIL;
         }
 
         TileEntityGasStation station = (TileEntityGasStation) te;
@@ -94,7 +103,7 @@ public class BlockGasStation extends BlockOrientableHorizontal {
             if (!fluidStack.isEmpty()) {
                 boolean success = BlockTank.handleEmpty(stack, worldIn, pos, player, handIn);
                 if (success) {
-                    return ActionResultType.SUCCESS;
+                    return InteractionResult.SUCCESS;
                 }
             }
             IFluidHandler handler = FluidUtil.getFluidHandler(stack).orElse(null);
@@ -102,74 +111,74 @@ public class BlockGasStation extends BlockOrientableHorizontal {
             if (handler != null) {
                 boolean success1 = BlockTank.handleFill(stack, worldIn, pos, player, handIn);
                 if (success1) {
-                    return ActionResultType.SUCCESS;
+                    return InteractionResult.SUCCESS;
                 }
             }
         }
 
         if (!player.isShiftKeyDown()) {
-            if (player instanceof ServerPlayerEntity) {
-                TileEntityContainerProvider.openGui((ServerPlayerEntity) player, station, (i, playerInventory, playerEntity) -> new ContainerGasStation(i, station, playerInventory));
+            if (player instanceof ServerPlayer) {
+                TileEntityContainerProvider.openGui((ServerPlayer) player, station, (i, playerInventory, playerEntity) -> new ContainerGasStation(i, station, playerInventory));
             }
-            return ActionResultType.SUCCESS;
+            return InteractionResult.SUCCESS;
         } else if (station.isOwner(player)) {
-            if (player instanceof ServerPlayerEntity) {
-                TileEntityContainerProvider.openGui((ServerPlayerEntity) player, station, (i, playerInventory, playerEntity) -> new ContainerGasStationAdmin(i, station, playerInventory));
+            if (player instanceof ServerPlayer) {
+                TileEntityContainerProvider.openGui((ServerPlayer) player, station, (i, playerInventory, playerEntity) -> new ContainerGasStationAdmin(i, station, playerInventory));
             }
-            return ActionResultType.SUCCESS;
+            return InteractionResult.SUCCESS;
         }
-        return ActionResultType.FAIL;
+        return InteractionResult.FAIL;
     }
 
 
     @Override
-    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
+    public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
         return SHAPES.get(state.getValue(FACING));
     }
 
     @Override
-    public void setPlacedBy(World worldIn, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
+    public void setPlacedBy(Level worldIn, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
         if (worldIn.isEmptyBlock(pos.above())) {
-            worldIn.setBlockAndUpdate(pos.above(), ModBlocks.FUEL_STATION_TOP.defaultBlockState().setValue(ModBlocks.FUEL_STATION_TOP.FACING, state.getValue(FACING)));
+            worldIn.setBlockAndUpdate(pos.above(), ModBlocks.GAS_STATION_TOP.defaultBlockState().setValue(ModBlocks.GAS_STATION_TOP.FACING, state.getValue(FACING)));
         }
 
-        TileEntity te = worldIn.getBlockEntity(pos);
+        BlockEntity te = worldIn.getBlockEntity(pos);
 
-        if (te instanceof TileEntityGasStation && placer instanceof PlayerEntity) {
+        if (te instanceof TileEntityGasStation && placer instanceof Player) {
             TileEntityGasStation station = (TileEntityGasStation) te;
-            station.setOwner((PlayerEntity) placer);
+            station.setOwner((Player) placer);
         }
 
         super.setPlacedBy(worldIn, pos, state, placer, stack);
     }
 
     @Override
-    public void onRemove(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
+    public void onRemove(BlockState state, Level worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
         super.onRemove(state, worldIn, pos, newState, isMoving);
 
         BlockState stateUp = worldIn.getBlockState(pos.above());
         stateUp.getBlock();
-        if (stateUp.getBlock().equals(ModBlocks.FUEL_STATION_TOP)) {
+        if (stateUp.getBlock().equals(ModBlocks.GAS_STATION_TOP)) {
             worldIn.destroyBlock(pos.above(), false);
         }
 
         dropItems(worldIn, pos);
     }
 
-    public static void dropItems(World worldIn, BlockPos pos) {
-        TileEntity te = worldIn.getBlockEntity(pos);
+    public static void dropItems(Level worldIn, BlockPos pos) {
+        BlockEntity te = worldIn.getBlockEntity(pos);
 
         if (te instanceof TileEntityGasStation) {
             TileEntityGasStation station = (TileEntityGasStation) te;
-            InventoryHelper.dropContents(worldIn, pos, station.getInventory());
-            InventoryHelper.dropContents(worldIn, pos, station.getTradingInventory());
+            Containers.dropContents(worldIn, pos, station.getInventory());
+            Containers.dropContents(worldIn, pos, station.getTradingInventory());
         }
     }
 
     @Nullable
     @Override
-    public TileEntity newBlockEntity(IBlockReader worldIn) {
-        return new TileEntityGasStation();
+    public BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
+        return new TileEntityGasStation(blockPos, blockState);
     }
 
 }

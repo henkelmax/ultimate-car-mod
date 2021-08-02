@@ -1,29 +1,30 @@
 package de.maxhenkel.car.blocks.tileentity.render;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Vector3f;
 import de.maxhenkel.car.blocks.tileentity.TileEntityGasStation;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.gui.Font;
+import net.minecraft.client.renderer.LevelRenderer;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.WorldRenderer;
-import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
-import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.vector.Vector3f;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
+import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
+import net.minecraft.core.Direction;
+import net.minecraft.world.phys.AABB;
 
-public class TileentitySpecialRendererGasStation extends TileEntityRenderer<TileEntityGasStation> {
+public class TileentitySpecialRendererGasStation implements BlockEntityRenderer<TileEntityGasStation> {
 
     private Minecraft minecraft;
+    protected BlockEntityRendererProvider.Context renderer;
 
-    public TileentitySpecialRendererGasStation(TileEntityRendererDispatcher tileEntityRendererDispatcher) {
-        super(tileEntityRendererDispatcher);
+    public TileentitySpecialRendererGasStation(BlockEntityRendererProvider.Context renderer) {
+        this.renderer = renderer;
         minecraft = Minecraft.getInstance();
     }
 
     @Override
-    public void render(TileEntityGasStation target, float partialTicks, MatrixStack matrixStack, IRenderTypeBuffer buffer, int combinedLightIn, int combinedOverlayIn) {
+    public void render(TileEntityGasStation target, float partialTicks, PoseStack matrixStack, MultiBufferSource buffer, int combinedLightIn, int combinedOverlayIn) {
         if (!target.hasLevel()) {
             return;
         }
@@ -42,7 +43,7 @@ public class TileentitySpecialRendererGasStation extends TileEntityRenderer<Tile
 
         matrixStack.mulPose(Vector3f.YP.rotationDegrees(dir.toYRot()));
 
-        FontRenderer font = renderer.getFont();
+        Font font = renderer.getFont();
 
         int textWidth = font.width(name);
         float textScale = 0.36F / textWidth;
@@ -64,9 +65,9 @@ public class TileentitySpecialRendererGasStation extends TileEntityRenderer<Tile
         }
     }
 
-    public void renderBoundingBox(TileEntityGasStation target, float partialTicks, MatrixStack matrixStack, IRenderTypeBuffer buffer, int combinedLightIn, int combinedOverlayIn) {
-        AxisAlignedBB axisalignedbb = target.getDetectionBox().move(-target.getBlockPos().getX(), -target.getBlockPos().getY(), -target.getBlockPos().getZ());
-        WorldRenderer.renderLineBox(matrixStack, buffer.getBuffer(RenderType.lines()), axisalignedbb, 0F, 0F, 1F, 1F);
+    public void renderBoundingBox(TileEntityGasStation target, float partialTicks, PoseStack matrixStack, MultiBufferSource buffer, int combinedLightIn, int combinedOverlayIn) {
+        AABB axisalignedbb = target.getDetectionBox().move(-target.getBlockPos().getX(), -target.getBlockPos().getY(), -target.getBlockPos().getZ());
+        LevelRenderer.renderLineBox(matrixStack, buffer.getBuffer(RenderType.lines()), axisalignedbb, 0F, 0F, 1F, 1F);
     }
 
 }

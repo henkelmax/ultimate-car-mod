@@ -1,34 +1,34 @@
 package de.maxhenkel.car.gui;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.items.ItemLicensePlate;
 import de.maxhenkel.car.net.MessageEditLicensePlate;
 import de.maxhenkel.corelib.inventory.ScreenBase;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.widget.TextFieldWidget;
-import net.minecraft.client.gui.widget.button.Button;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.EditBox;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
 import org.lwjgl.glfw.GLFW;
 
 public class GuiLicensePlate extends ScreenBase<ContainerLicensePlate> {
 
     private static final ResourceLocation GUI_TEXTURE = new ResourceLocation(Main.MODID, "textures/gui/gui_license_plate.png");
 
-    private static final int TITLE_COLOR = TextFormatting.WHITE.getColor();
+    private static final int TITLE_COLOR = ChatFormatting.WHITE.getColor();
 
     private ContainerLicensePlate containerLicensePlate;
-    private PlayerEntity player;
+    private Player player;
 
-    private TextFieldWidget textField;
+    private EditBox textField;
 
-    public GuiLicensePlate(ContainerLicensePlate containerLicensePlate, PlayerInventory playerInventory, ITextComponent title) {
+    public GuiLicensePlate(ContainerLicensePlate containerLicensePlate, Inventory playerInventory, Component title) {
         super(GUI_TEXTURE, containerLicensePlate, playerInventory, title);
         this.containerLicensePlate = containerLicensePlate;
         this.player = playerInventory.player;
@@ -42,23 +42,23 @@ public class GuiLicensePlate extends ScreenBase<ContainerLicensePlate> {
 
         minecraft.keyboardHandler.setSendRepeatsToGui(true);
 
-        addButton(new Button(leftPos + 20, topPos + imageHeight - 25, 50, 20, new TranslationTextComponent("button.car.submit"), button -> {
+        addRenderableWidget(new Button(leftPos + 20, topPos + imageHeight - 25, 50, 20, new TranslatableComponent("button.car.submit"), button -> {
             Main.SIMPLE_CHANNEL.sendToServer(new MessageEditLicensePlate(player, textField.getValue()));
             MessageEditLicensePlate.setItemText(player, textField.getValue());
             Minecraft.getInstance().setScreen(null);
         }));
-        addButton(new Button(leftPos + imageWidth - 50 - 15, topPos + imageHeight - 25, 50, 20, new TranslationTextComponent("button.car.cancel"), button -> {
+        addRenderableWidget(new Button(leftPos + imageWidth - 50 - 15, topPos + imageHeight - 25, 50, 20, new TranslatableComponent("button.car.cancel"), button -> {
             Minecraft.getInstance().setScreen(null);
         }));
 
-        textField = new TextFieldWidget(font, leftPos + 30, topPos + 30, 116, 16, new StringTextComponent(""));
+        textField = new EditBox(font, leftPos + 30, topPos + 30, 116, 16, new TextComponent(""));
         textField.setTextColor(-1);
         textField.setTextColorUneditable(-1);
         textField.setBordered(true);
         textField.setMaxLength(10);
         textField.setValue(ItemLicensePlate.getText(containerLicensePlate.getLicensePlate()));
 
-        addButton(textField);
+        addRenderableWidget(textField);
         setInitialFocus(textField);
     }
 
@@ -80,7 +80,7 @@ public class GuiLicensePlate extends ScreenBase<ContainerLicensePlate> {
     }
 
     @Override
-    protected void renderLabels(MatrixStack matrixStack, int mouseX, int mouseY) {
+    protected void renderLabels(PoseStack matrixStack, int mouseX, int mouseY) {
         super.renderLabels(matrixStack, mouseX, mouseY);
         drawCenteredString(matrixStack, font, containerLicensePlate.getLicensePlate().getHoverName().getString(), imageWidth / 2, 5, TITLE_COLOR);
     }

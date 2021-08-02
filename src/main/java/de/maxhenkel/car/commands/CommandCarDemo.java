@@ -5,24 +5,24 @@ import com.mojang.brigadier.CommandDispatcher;
 import de.maxhenkel.car.entity.car.base.EntityGenericCar;
 import de.maxhenkel.car.integration.jei.CarRecipeBuilder;
 import de.maxhenkel.car.items.ModItems;
-import net.minecraft.command.CommandSource;
-import net.minecraft.command.Commands;
-import net.minecraft.command.arguments.Vec3Argument;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
+import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.commands.Commands;
+import net.minecraft.commands.arguments.coordinates.Vec3Argument;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 
 import java.util.List;
 
 public class CommandCarDemo {
 
-    public static void register(CommandDispatcher<CommandSource> dispatcher) {
+    public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
         dispatcher.register(Commands.literal("cardemo")
                 .requires((source) -> source.hasPermission(2))
                 .then(Commands.argument("pos", Vec3Argument.vec3()).executes((context) -> spawnCars(context.getSource().getLevel(), Vec3Argument.getVec3(context, "pos")))));
     }
 
-    public static int spawnCars(World world, Vector3d pos) {
+    public static int spawnCars(Level world, Vec3 pos) {
         ItemStack wheel = new ItemStack(ModItems.WHEEL);
         ItemStack engine = new ItemStack(ModItems.ENGINE_6_CYLINDER);
         ItemStack tank = new ItemStack(ModItems.LARGE_TANK);
@@ -98,7 +98,7 @@ public class CommandCarDemo {
         return Command.SINGLE_SUCCESS;
     }
 
-    private static void createCar(World world, double posX, double posY, double posZ, ItemStack... items) {
+    private static void createCar(Level world, double posX, double posY, double posZ, ItemStack... items) {
         EntityGenericCar car = new EntityGenericCar(world);
         car.absMoveTo(posX, posY, posZ, 180F, 0F);
         for (int i = 0; i < items.length; i++) {

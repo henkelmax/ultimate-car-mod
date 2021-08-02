@@ -2,17 +2,17 @@ package de.maxhenkel.car.recipes;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipeSerializer;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.item.crafting.ShapedRecipe;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.JSONUtils;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.ShapedRecipe;
 
 import javax.annotation.Nullable;
 
-public abstract class RecipeSerializerEnergyFluidProducer<T extends EnergyFluidProducerRecipe> extends net.minecraftforge.registries.ForgeRegistryEntry<IRecipeSerializer<?>> implements IRecipeSerializer<T> {
+public abstract class RecipeSerializerEnergyFluidProducer<T extends EnergyFluidProducerRecipe> extends net.minecraftforge.registries.ForgeRegistryEntry<RecipeSerializer<?>> implements RecipeSerializer<T> {
 
     private final RecipeSerializerEnergyFluidProducer.IFactory<T> factory;
 
@@ -22,20 +22,20 @@ public abstract class RecipeSerializerEnergyFluidProducer<T extends EnergyFluidP
 
     @Override
     public T fromJson(ResourceLocation recipeId, JsonObject json) {
-        String group = JSONUtils.getAsString(json, "group", "");
-        JsonElement jsonelement = JSONUtils.isArrayNode(json, "ingredient") ? JSONUtils.convertToJsonArray(json, "ingredient") : JSONUtils.getAsJsonObject(json, "ingredient");
-        ItemStack output = ShapedRecipe.itemFromJson(JSONUtils.getAsJsonObject(json, "result"));
-        return factory.create(recipeId, group, Ingredient.fromJson(jsonelement), output, JSONUtils.getAsInt(json, "fluidamount"), JSONUtils.getAsInt(json, "energy"), JSONUtils.getAsInt(json, "duration"));
+        String group = GsonHelper.getAsString(json, "group", "");
+        JsonElement jsonelement = GsonHelper.isArrayNode(json, "ingredient") ? GsonHelper.convertToJsonArray(json, "ingredient") : GsonHelper.getAsJsonObject(json, "ingredient");
+        ItemStack output = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(json, "result"));
+        return factory.create(recipeId, group, Ingredient.fromJson(jsonelement), output, GsonHelper.getAsInt(json, "fluidamount"), GsonHelper.getAsInt(json, "energy"), GsonHelper.getAsInt(json, "duration"));
     }
 
     @Nullable
     @Override
-    public T fromNetwork(ResourceLocation recipeId, PacketBuffer buffer) {
+    public T fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer) {
         return factory.create(recipeId, buffer.readUtf(32767), Ingredient.fromNetwork(buffer), buffer.readItem(), buffer.readVarInt(), buffer.readVarInt(), buffer.readVarInt());
     }
 
     @Override
-    public void toNetwork(PacketBuffer buffer, T recipe) {
+    public void toNetwork(FriendlyByteBuf buffer, T recipe) {
         buffer.writeUtf(recipe.group);
         recipe.ingredient.toNetwork(buffer);
         buffer.writeItem(recipe.result);

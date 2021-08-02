@@ -3,15 +3,15 @@ package de.maxhenkel.car.gui;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.blocks.tileentity.TileEntityCarWorkshop;
 import de.maxhenkel.car.items.ModItems;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
 
 public class ContainerCarWorkshopRepair extends ContainerBase {
 
-    protected PlayerInventory playerInventory;
+    protected Inventory playerInventory;
     protected TileEntityCarWorkshop tile;
 
-    public ContainerCarWorkshopRepair(int id, TileEntityCarWorkshop tile, PlayerInventory playerInventory) {
+    public ContainerCarWorkshopRepair(int id, TileEntityCarWorkshop tile, Inventory playerInventory) {
         super(Main.CAR_WORKSHOP_REPAIR_CONTAINER_TYPE, id, playerInventory, tile);
         this.playerInventory = playerInventory;
         this.tile = tile;
@@ -33,7 +33,7 @@ public class ContainerCarWorkshopRepair extends ContainerBase {
         return 3;
     }
 
-    public PlayerEntity getPlayer() {
+    public Player getPlayer() {
         return playerInventory.player;
     }
 

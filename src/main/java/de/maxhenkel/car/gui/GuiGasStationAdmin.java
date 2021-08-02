@@ -1,16 +1,16 @@
 package de.maxhenkel.car.gui;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.blocks.tileentity.TileEntityGasStation;
 import de.maxhenkel.car.net.MessageGasStationAdminAmount;
 import de.maxhenkel.corelib.inventory.ScreenBase;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.widget.TextFieldWidget;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.client.gui.components.EditBox;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Inventory;
 import org.lwjgl.glfw.GLFW;
 
 import java.awt.*;
@@ -20,14 +20,14 @@ public class GuiGasStationAdmin extends ScreenBase<ContainerGasStationAdmin> {
     private static final ResourceLocation GUI_TEXTURE = new ResourceLocation(Main.MODID, "textures/gui/gui_gas_station_admin.png");
 
     private TileEntityGasStation gasStation;
-    private PlayerInventory inventoryPlayer;
+    private Inventory inventoryPlayer;
 
     private static final int TITLE_COLOR = Color.WHITE.getRGB();
     private static final int FONT_COLOR = Color.DARK_GRAY.getRGB();
 
-    protected TextFieldWidget textField;
+    protected EditBox textField;
 
-    public GuiGasStationAdmin(ContainerGasStationAdmin gasStation, PlayerInventory playerInventory, ITextComponent title) {
+    public GuiGasStationAdmin(ContainerGasStationAdmin gasStation, Inventory playerInventory, Component title) {
         super(GUI_TEXTURE, gasStation, playerInventory, title);
         this.gasStation = gasStation.getGasStation();
         this.inventoryPlayer = playerInventory;
@@ -41,14 +41,14 @@ public class GuiGasStationAdmin extends ScreenBase<ContainerGasStationAdmin> {
         super.init();
 
         minecraft.keyboardHandler.setSendRepeatsToGui(true);
-        textField = new TextFieldWidget(font, leftPos + 54, topPos + 22, 100, 16, new TranslationTextComponent("gas_station.admin.amount_text_field"));
+        textField = new EditBox(font, leftPos + 54, topPos + 22, 100, 16, new TranslatableComponent("gas_station.admin.amount_text_field"));
         textField.setTextColor(-1);
         textField.setTextColorUneditable(-1);
         textField.setMaxLength(20);
         textField.setValue(String.valueOf(gasStation.getTradeAmount()));
         textField.setResponder(this::onTextChanged);
 
-        addButton(textField);
+        addRenderableWidget(textField);
     }
 
     public void onTextChanged(String text) {
@@ -84,10 +84,10 @@ public class GuiGasStationAdmin extends ScreenBase<ContainerGasStationAdmin> {
     }
 
     @Override
-    protected void renderLabels(MatrixStack matrixStack, int mouseX, int mouseY) {
+    protected void renderLabels(PoseStack matrixStack, int mouseX, int mouseY) {
         super.renderLabels(matrixStack, mouseX, mouseY);
 
-        drawCenteredString(matrixStack, font, new TranslationTextComponent("gui.gas_station").getString(), imageWidth / 2, 5, TITLE_COLOR);
+        drawCenteredString(matrixStack, font, new TranslatableComponent("gui.gas_station").getString(), imageWidth / 2, 5, TITLE_COLOR);
 
         font.draw(matrixStack, inventoryPlayer.getDisplayName().getVisualOrderText(), 8, imageHeight - 93, FONT_COLOR);
     }

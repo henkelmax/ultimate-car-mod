@@ -1,7 +1,7 @@
 package de.maxhenkel.car.integration.jei;
 
 import de.maxhenkel.car.blocks.BlockPaint;
-import net.minecraft.item.Item;
+import net.minecraft.world.item.Item;
 
 public class PainterRecipe {
 

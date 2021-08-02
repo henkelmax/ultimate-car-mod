@@ -1,9 +1,9 @@
 package de.maxhenkel.car.gui;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.container.Slot;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.ItemStack;
 
 public class SlotPresent extends Slot {
 
@@ -12,7 +12,7 @@ public class SlotPresent extends Slot {
     public SlotPresent(ItemStack s, int xPosition, int yPosition) {
         super(null, 0, xPosition, yPosition);
         this.stack = s.copy();
-        CompoundNBT compound = stack.getOrCreateTag();
+        CompoundTag compound = stack.getOrCreateTag();
 
         compound.putBoolean("trading_item", true);
     }
@@ -48,7 +48,7 @@ public class SlotPresent extends Slot {
     }
 
     @Override
-    public boolean mayPickup(PlayerEntity playerIn) {
+    public boolean mayPickup(Player playerIn) {
         return false;
     }
 }

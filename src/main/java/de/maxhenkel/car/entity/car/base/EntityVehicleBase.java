@@ -1,24 +1,25 @@
 package de.maxhenkel.car.entity.car.base;
 
+import com.mojang.math.Vector3d;
 import de.maxhenkel.car.Main;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.Pose;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.network.IPacket;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
-import net.minecraft.util.TransportationHelper;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Pose;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.vehicle.DismountHelper;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.network.NetworkHooks;
+import net.minecraftforge.fmllegacy.network.NetworkHooks;
 
 import java.util.List;
 
@@ -35,9 +36,7 @@ public abstract class EntityVehicleBase extends Entity {
 
     protected float deltaRotation;
 
-    protected AxisAlignedBB boundingBox;
-
-    public EntityVehicleBase(EntityType type, World worldIn) {
+    public EntityVehicleBase(EntityType type, Level worldIn) {
         super(type, worldIn);
         this.blocksBuilding = true;
         this.maxUpStep = 0.6F;
@@ -53,8 +52,6 @@ public abstract class EntityVehicleBase extends Entity {
             this.zo = getZ();
         }
 
-        checkAndResetForcedChunkAdditionFlag(); //TODO check
-
         super.tick();
         tickLerp();
 
@@ -64,7 +61,7 @@ public abstract class EntityVehicleBase extends Entity {
     public void recalculateBoundingBox() {
         double width = getCarWidth();
         double height = getCarHeight();
-        boundingBox = new AxisAlignedBB(getX() - width / 2D, getY(), getZ() - width / 2D, getX() + width / 2D, getY() + height, getZ() + width / 2D);
+        setBoundingBox(new AABB(getX() - width / 2D, getY(), getZ() - width / 2D, getX() + width / 2D, getY() + height, getZ() + width / 2D));
     }
 
     public double getCarWidth() {
@@ -75,14 +72,14 @@ public abstract class EntityVehicleBase extends Entity {
         return 1.6D;
     }
 
-    public PlayerEntity getDriver() {
+    public Player getDriver() {
         List<Entity> passengers = getPassengers();
         if (passengers.size() <= 0) {
             return null;
         }
 
-        if (passengers.get(0) instanceof PlayerEntity) {
-            return (PlayerEntity) passengers.get(0);
+        if (passengers.get(0) instanceof Player) {
+            return (Player) passengers.get(0);
         }
 
         return null;
@@ -96,12 +93,12 @@ public abstract class EntityVehicleBase extends Entity {
     }
 
     protected void applyYawToEntity(Entity entityToUpdate) {
-        entityToUpdate.setYBodyRot(this.yRot);
-        float f = MathHelper.wrapDegrees(entityToUpdate.yRot - this.yRot);
-        float f1 = MathHelper.clamp(f, -130.0F, 130.0F);
+        entityToUpdate.setYBodyRot(getYRot());
+        float f = Mth.wrapDegrees(entityToUpdate.getYRot() - getYRot());
+        float f1 = Mth.clamp(f, -130.0F, 130.0F);
         entityToUpdate.yRotO += f1 - f;
-        entityToUpdate.yRot += f1 - f;
-        entityToUpdate.setYHeadRot(entityToUpdate.yRot);
+        entityToUpdate.setYRot(entityToUpdate.getYRot() + f1 - f);
+        entityToUpdate.setYHeadRot(entityToUpdate.getYRot());
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -133,9 +130,9 @@ public abstract class EntityVehicleBase extends Entity {
             height = offset.y;
         }
 
-        Vector3d vec3d = (new Vector3d(front, height, side)).yRot(-this.yRot * 0.017453292F - ((float) Math.PI / 2F));
+        Vec3 vec3d = (new Vec3(front, height, side)).yRot(-getYRot() * 0.017453292F - ((float) Math.PI / 2F));
         passenger.setPos(getX() + vec3d.x, getY() + vec3d.y, getZ() + vec3d.z);
-        passenger.yRot += deltaRotation;
+        passenger.setYRot(passenger.getYRot() + deltaRotation);
         passenger.setYHeadRot(passenger.getYHeadRot() + this.deltaRotation);
         applyYawToEntity(passenger);
     }
@@ -158,16 +155,6 @@ public abstract class EntityVehicleBase extends Entity {
     @Override
     public boolean canBeCollidedWith() {
         return true;
-    }
-
-    @Override
-    public AxisAlignedBB getBoundingBox() {
-        return boundingBox;
-    }
-
-    @Override
-    public void setBoundingBox(AxisAlignedBB boundingBox) {
-        this.boundingBox = boundingBox;
     }
 
     @Override
@@ -195,12 +182,12 @@ public abstract class EntityVehicleBase extends Entity {
             double d0 = getX() + (clientX - getX()) / (double) steps;
             double d1 = getY() + (clientY - getY()) / (double) steps;
             double d2 = getZ() + (clientZ - getZ()) / (double) steps;
-            double d3 = MathHelper.wrapDegrees(clientYaw - (double) yRot);
-            yRot = (float) ((double) yRot + d3 / (double) steps);
-            xRot = (float) ((double) xRot + (clientPitch - (double) xRot) / (double) steps);
+            double d3 = Mth.wrapDegrees(clientYaw - (double) getYRot());
+            setYRot((float) ((double) getYRot() + d3 / (double) steps));
+            setXRot((float) ((double) getXRot() + (clientPitch - (double) getXRot()) / (double) steps));
             --steps;
-            this.setPos(d0, d1, d2);
-            this.setRot(yRot, xRot);
+            setPos(d0, d1, d2);
+            setRot(getYRot(), getXRot());
         }
     }
 
@@ -216,47 +203,47 @@ public abstract class EntityVehicleBase extends Entity {
     }
 
     public static double calculateMotionX(float speed, float rotationYaw) {
-        return MathHelper.sin(-rotationYaw * 0.017453292F) * speed;
+        return Mth.sin(-rotationYaw * 0.017453292F) * speed;
     }
 
     public static double calculateMotionZ(float speed, float rotationYaw) {
-        return MathHelper.cos(rotationYaw * 0.017453292F) * speed;
+        return Mth.cos(rotationYaw * 0.017453292F) * speed;
     }
 
     @Override
-    public ActionResultType interact(PlayerEntity player, Hand hand) {
+    public InteractionResult interact(Player player, InteractionHand hand) {
         if (!player.isShiftKeyDown()) {
             if (player.getVehicle() != this) {
                 if (!level.isClientSide) {
                     player.startRiding(this);
                 }
             }
-            return ActionResultType.SUCCESS;
+            return InteractionResult.SUCCESS;
         }
-        return ActionResultType.FAIL;
+        return InteractionResult.FAIL;
     }
 
     public abstract boolean doesEnterThirdPerson();
 
     @Override
-    public IPacket<?> getAddEntityPacket() {
+    public Packet<?> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 
     @Override
-    public Vector3d getDismountLocationForPassenger(LivingEntity entity) {
+    public Vec3 getDismountLocationForPassenger(LivingEntity entity) {
         Direction direction = getMotionDirection();
         if (direction.getAxis() == Direction.Axis.Y) {
             return super.getDismountLocationForPassenger(entity);
         }
-        int[][] offsets = TransportationHelper.offsetsForDirection(direction);
-        AxisAlignedBB bb = entity.getLocalBoundsForPose(Pose.STANDING);
-        AxisAlignedBB carBB = getBoundingBox();
+        int[][] offsets = DismountHelper.offsetsForDirection(direction);
+        AABB bb = entity.getLocalBoundsForPose(Pose.STANDING);
+        AABB carBB = getBoundingBox();
         for (int[] offset : offsets) {
-            Vector3d dismountPos = new Vector3d(getX() + (double) offset[0] * (carBB.getXsize() / 2D + bb.getXsize() / 2D + 1D / 16D), getY(), getZ() + (double) offset[1] * (carBB.getXsize() / 2D + bb.getXsize() / 2D + 1D / 16D));
+            Vec3 dismountPos = new Vec3(getX() + (double) offset[0] * (carBB.getXsize() / 2D + bb.getXsize() / 2D + 1D / 16D), getY(), getZ() + (double) offset[1] * (carBB.getXsize() / 2D + bb.getXsize() / 2D + 1D / 16D));
             double y = level.getBlockFloorHeight(new BlockPos(dismountPos));
-            if (TransportationHelper.isBlockFloorValid(y)) {
-                if (TransportationHelper.canDismountTo(level, entity, bb.move(dismountPos))) {
+            if (DismountHelper.isBlockFloorValid(y)) {
+                if (DismountHelper.canDismountTo(level, entity, bb.move(dismountPos))) {
                     return dismountPos;
                 }
             }

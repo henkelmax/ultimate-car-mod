@@ -3,11 +3,11 @@ package de.maxhenkel.car.net;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.entity.car.base.EntityCarBatteryBase;
 import de.maxhenkel.corelib.net.Message;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.network.PacketBuffer;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraftforge.fmllegacy.network.NetworkEvent;
 
 import java.util.UUID;
 
@@ -21,7 +21,7 @@ public class MessageStarting implements Message<MessageStarting> {
 
     }
 
-    public MessageStarting(boolean start, boolean playSound, PlayerEntity player) {
+    public MessageStarting(boolean start, boolean playSound, Player player) {
         this.start = start;
         this.playSound = playSound;
         this.uuid = player.getUUID();
@@ -52,7 +52,7 @@ public class MessageStarting implements Message<MessageStarting> {
     }
 
     @Override
-    public MessageStarting fromBytes(PacketBuffer buf) {
+    public MessageStarting fromBytes(FriendlyByteBuf buf) {
         this.start = buf.readBoolean();
         this.playSound = buf.readBoolean();
 
@@ -62,7 +62,7 @@ public class MessageStarting implements Message<MessageStarting> {
     }
 
     @Override
-    public void toBytes(PacketBuffer buf) {
+    public void toBytes(FriendlyByteBuf buf) {
         buf.writeBoolean(start);
         buf.writeBoolean(playSound);
 

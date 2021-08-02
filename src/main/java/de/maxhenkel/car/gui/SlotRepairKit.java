@@ -4,20 +4,20 @@ import de.maxhenkel.car.Main;
 import de.maxhenkel.car.entity.car.base.EntityCarDamageBase;
 import de.maxhenkel.car.items.ModItems;
 import de.maxhenkel.car.sounds.ModSounds;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.Inventory;
-import net.minecraft.inventory.InventoryHelper;
-import net.minecraft.inventory.container.Slot;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.SoundCategory;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.Containers;
+import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.ItemStack;
 
 public class SlotRepairKit extends Slot {
 
     private EntityCarDamageBase car;
-    private PlayerEntity player;
+    private Player player;
 
-    public SlotRepairKit(EntityCarDamageBase car, int index, int xPosition, int yPosition, PlayerEntity player) {
-        super(new Inventory(1), index, xPosition, yPosition);
+    public SlotRepairKit(EntityCarDamageBase car, int index, int xPosition, int yPosition, Player player) {
+        super(new SimpleContainer(1), index, xPosition, yPosition);
         this.car = car;
         this.player = player;
     }
@@ -36,11 +36,11 @@ public class SlotRepairKit extends Slot {
             if (damage >= 0) {
                 car.setDamage(damage);
             }
-            ModSounds.playSound(ModSounds.RATCHET, car.level, car.blockPosition(), null, SoundCategory.BLOCKS);
+            ModSounds.playSound(ModSounds.RATCHET, car.level, car.blockPosition(), null, SoundSource.BLOCKS);
         }
 
-        if (!player.inventory.add(stack)) {
-            InventoryHelper.dropItemStack(car.level, car.getX(), car.getY(), car.getZ(), stack);
+        if (!player.getInventory().add(stack)) {
+            Containers.dropItemStack(car.level, car.getX(), car.getY(), car.getZ(), stack);
         }
     }
 

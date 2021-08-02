@@ -1,9 +1,9 @@
 package de.maxhenkel.car.entity.car.parts;
 
+import com.mojang.math.Vector3d;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.corelib.client.obj.OBJModel;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.resources.ResourceLocation;
 
 public class PartBodyWood extends PartBodyWoodBase {
 

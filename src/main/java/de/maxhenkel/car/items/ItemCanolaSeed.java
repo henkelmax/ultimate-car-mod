@@ -4,23 +4,23 @@ import de.maxhenkel.car.Main;
 import de.maxhenkel.car.ModItemGroups;
 import de.maxhenkel.car.blocks.ModBlocks;
 import de.maxhenkel.corelib.item.ItemUtils;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.passive.AnimalEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.BlockNamedItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockReader;
+import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemNameBlockItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.PlantType;
 
-public class ItemCanolaSeed extends BlockNamedItem implements IPlantable {
+public class ItemCanolaSeed extends ItemNameBlockItem implements IPlantable {
 
     public ItemCanolaSeed() {
         super(ModBlocks.CANOLA_CROP, new Item.Properties().tab(ModItemGroups.TAB_CAR));
@@ -28,22 +28,22 @@ public class ItemCanolaSeed extends BlockNamedItem implements IPlantable {
     }
 
     @Override
-    public BlockState getPlant(IBlockReader world, BlockPos pos) {
+    public BlockState getPlant(BlockGetter world, BlockPos pos) {
         return ModBlocks.CANOLA_CROP.defaultBlockState();
     }
 
     @Override
-    public PlantType getPlantType(IBlockReader world, BlockPos pos) {
+    public PlantType getPlantType(BlockGetter world, BlockPos pos) {
         return PlantType.CROP;
     }
 
     @Override
-    public ActionResultType interactLivingEntity(ItemStack stack, PlayerEntity playerIn, LivingEntity target, Hand hand) {
-        if (!(target instanceof AnimalEntity)) {
+    public InteractionResult interactLivingEntity(ItemStack stack, Player playerIn, LivingEntity target, InteractionHand hand) {
+        if (!(target instanceof Animal)) {
             return super.interactLivingEntity(stack, playerIn, target, hand);
         }
 
-        AnimalEntity animal = (AnimalEntity) target;
+        Animal animal = (Animal) target;
 
         if (!animal.isFood(new ItemStack(Items.WHEAT_SEEDS))) {
             return super.interactLivingEntity(stack, playerIn, target, hand);
@@ -52,13 +52,13 @@ public class ItemCanolaSeed extends BlockNamedItem implements IPlantable {
         if (animal.getAge() == 0 && !animal.isInLove()) {
             ItemUtils.decrItemStack(stack, playerIn);
             animal.setInLove(playerIn);
-            return ActionResultType.CONSUME;
+            return InteractionResult.CONSUME;
         }
 
         if (animal.isBaby()) {
             ItemUtils.decrItemStack(stack, playerIn);
             animal.ageUp((int) ((float) (-animal.getAge() / 20) * 0.1F), true);
-            return ActionResultType.CONSUME;
+            return InteractionResult.CONSUME;
         }
         return super.interactLivingEntity(stack, playerIn, target, hand);
     }

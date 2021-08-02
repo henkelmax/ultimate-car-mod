@@ -3,9 +3,9 @@ package de.maxhenkel.car.entity.car.parts;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.entity.car.base.EntityGenericCar;
 import de.maxhenkel.corelib.client.obj.OBJModel;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
 
 import java.util.Collections;
 import java.util.List;
@@ -160,17 +160,17 @@ public class PartRegistry {
             1F
     );
 
-    public static boolean isValid(EntityGenericCar car, List<ITextComponent> messages) {
+    public static boolean isValid(EntityGenericCar car, List<Component> messages) {
         return isValid(car.getModelParts(), messages);
     }
 
-    public static boolean isValid(List<Part> modelParts, List<ITextComponent> messages) {
+    public static boolean isValid(List<Part> modelParts, List<Component> messages) {
         int bodyAmount = Part.getAmount(modelParts, part -> part instanceof PartBody);
         if (bodyAmount <= 0) {
-            messages.add(new TranslationTextComponent("message.parts.no_body"));
+            messages.add(new TranslatableComponent("message.parts.no_body"));
             return false;
         } else if (bodyAmount > 1) {
-            messages.add(new TranslationTextComponent("message.parts.too_many_bodies"));
+            messages.add(new TranslatableComponent("message.parts.too_many_bodies"));
             return false;
         }
 

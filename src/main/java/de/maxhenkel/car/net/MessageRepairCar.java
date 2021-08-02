@@ -5,12 +5,12 @@ import java.util.UUID;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.blocks.tileentity.TileEntityCarWorkshop;
 import de.maxhenkel.corelib.net.Message;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraftforge.fmllegacy.network.NetworkEvent;
 
 public class MessageRepairCar implements Message<MessageRepairCar> {
 
@@ -21,7 +21,7 @@ public class MessageRepairCar implements Message<MessageRepairCar> {
 
     }
 
-    public MessageRepairCar(BlockPos pos, PlayerEntity player) {
+    public MessageRepairCar(BlockPos pos, Player player) {
         this.pos = pos;
         this.uuid = player.getUUID();
     }
@@ -38,7 +38,7 @@ public class MessageRepairCar implements Message<MessageRepairCar> {
             return;
         }
 
-        TileEntity te = context.getSender().level.getBlockEntity(pos);
+        BlockEntity te = context.getSender().level.getBlockEntity(pos);
 
         if (te instanceof TileEntityCarWorkshop) {
             ((TileEntityCarWorkshop) te).repairCar(context.getSender());
@@ -46,14 +46,14 @@ public class MessageRepairCar implements Message<MessageRepairCar> {
     }
 
     @Override
-    public MessageRepairCar fromBytes(PacketBuffer buf) {
+    public MessageRepairCar fromBytes(FriendlyByteBuf buf) {
         pos = buf.readBlockPos();
         uuid = buf.readUUID();
         return this;
     }
 
     @Override
-    public void toBytes(PacketBuffer buf) {
+    public void toBytes(FriendlyByteBuf buf) {
         buf.writeBlockPos(pos);
         buf.writeUUID(uuid);
     }

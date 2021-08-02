@@ -1,15 +1,15 @@
 package de.maxhenkel.car.gui;
 
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.container.Slot;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.Container;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 
 public class SlotOneItem extends Slot {
 
     private Item item;
 
-    public SlotOneItem(IInventory inventoryIn, int index, int xPosition, int yPosition, Item item) {
+    public SlotOneItem(Container inventoryIn, int index, int xPosition, int yPosition, Item item) {
         super(inventoryIn, index, xPosition, yPosition);
         this.item = item;
     }

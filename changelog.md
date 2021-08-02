@@ -1,1 +1,1 @@
-- Make battery chargeable with other mods
+- Updated to 1.17.1

@@ -2,7 +2,7 @@ package de.maxhenkel.car.entity.car.parts;
 
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.sounds.ModSounds;
-import net.minecraft.util.SoundEvent;
+import net.minecraft.sounds.SoundEvent;
 
 public class PartEngineTruck extends PartEngine {
 

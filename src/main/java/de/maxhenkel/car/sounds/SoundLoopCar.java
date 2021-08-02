@@ -3,25 +3,24 @@ package de.maxhenkel.car.sounds;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.entity.car.base.EntityCarBase;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.audio.TickableSound;
-import net.minecraft.client.entity.player.ClientPlayerEntity;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvent;
+import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.client.resources.sounds.AbstractTickableSoundInstance;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundSource;
 
-public abstract class SoundLoopCar extends TickableSound {
+public abstract class SoundLoopCar extends AbstractTickableSoundInstance {
 
     protected EntityCarBase car;
 
-    public SoundLoopCar(EntityCarBase car, SoundEvent event, SoundCategory category) {
+    public SoundLoopCar(EntityCarBase car, SoundEvent event, SoundSource category) {
         super(event, category);
         this.car = car;
         this.looping = true;
         this.delay = 0;
         this.volume = Main.CLIENT_CONFIG.carVolume.get().floatValue();
         this.pitch = 1F;
-        this.priority = true;
         this.relative = false;
-        this.attenuation = AttenuationType.LINEAR;
+        this.attenuation = Attenuation.LINEAR;
         this.updatePos();
     }
 
@@ -42,7 +41,7 @@ public abstract class SoundLoopCar extends TickableSound {
             return;
         }
 
-        ClientPlayerEntity player = Minecraft.getInstance().player;
+        LocalPlayer player = Minecraft.getInstance().player;
         if (player == null || !player.isAlive()) {
             setDonePlaying();
             return;

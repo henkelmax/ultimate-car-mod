@@ -3,43 +3,43 @@ package de.maxhenkel.car.entity.car.base;
 import de.maxhenkel.car.items.ItemKey;
 import de.maxhenkel.car.items.ModItems;
 import de.maxhenkel.car.sounds.ModSounds;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 
 import java.util.UUID;
 
 public abstract class EntityCarLockBase extends EntityCarInventoryBase {
 
-    private static final DataParameter<Boolean> LOCKED = EntityDataManager.defineId(EntityCarInventoryBase.class, DataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> LOCKED = SynchedEntityData.defineId(EntityCarInventoryBase.class, EntityDataSerializers.BOOLEAN);
 
-    public EntityCarLockBase(EntityType type, World worldIn) {
+    public EntityCarLockBase(EntityType type, Level worldIn) {
         super(type, worldIn);
     }
 
     @Override
-    public boolean canPlayerEnterCar(PlayerEntity player) {
+    public boolean canPlayerEnterCar(Player player) {
         if (isLocked()) {
-            player.displayClientMessage(new TranslationTextComponent("message.car_locked"), true);
+            player.displayClientMessage(new TranslatableComponent("message.car_locked"), true);
             return false;
         }
         return super.canPlayerEnterCar(player);
     }
 
     @Override
-    public void destroyCar(PlayerEntity player, boolean dropParts) {
+    public void destroyCar(Player player, boolean dropParts) {
         if (isLocked() && !player.hasPermissions(2)) {
-            player.displayClientMessage(new TranslationTextComponent("message.car_locked"), true);
+            player.displayClientMessage(new TranslatableComponent("message.car_locked"), true);
             return;
         }
 
@@ -47,7 +47,7 @@ public abstract class EntityCarLockBase extends EntityCarInventoryBase {
     }
 
     @Override
-    public boolean canPlayerAccessInventoryExternal(PlayerEntity player) {
+    public boolean canPlayerAccessInventoryExternal(Player player) {
         if (isLocked()) {
             return false;
         }
@@ -76,11 +76,11 @@ public abstract class EntityCarLockBase extends EntityCarInventoryBase {
     }
 
     public void playLockSound() {
-        ModSounds.playSound(getLockSound(), level, blockPosition(), null, SoundCategory.MASTER, 1F);
+        ModSounds.playSound(getLockSound(), level, blockPosition(), null, SoundSource.MASTER, 1F);
     }
 
     public void playUnLockSound() {
-        ModSounds.playSound(getUnLockSound(), level, blockPosition(), null, SoundCategory.MASTER, 1F);
+        ModSounds.playSound(getUnLockSound(), level, blockPosition(), null, SoundSource.MASTER, 1F);
     }
 
     public SoundEvent getLockSound() {
@@ -92,25 +92,25 @@ public abstract class EntityCarLockBase extends EntityCarInventoryBase {
     }
 
     @Override
-    protected void addAdditionalSaveData(CompoundNBT compound) {
+    protected void addAdditionalSaveData(CompoundTag compound) {
         super.addAdditionalSaveData(compound);
         compound.putBoolean("locked", isLocked());
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundNBT compound) {
+    public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
         setLocked(compound.getBoolean("locked"), false);
     }
 
     @Override
-    public ActionResultType interact(PlayerEntity player, Hand hand) {
+    public InteractionResult interact(Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
-        if (!isLocked() && player.isShiftKeyDown() && player.abilities.instabuild && !stack.isEmpty() && stack.getItem().equals(ModItems.KEY)) {
+        if (!isLocked() && player.isShiftKeyDown() && player.getAbilities().instabuild && !stack.isEmpty() && stack.getItem().equals(ModItems.KEY)) {
             UUID uuid = ItemKey.getCar(stack);
             if (uuid == null) {
                 ItemKey.setCar(stack, getUUID());
-                return ActionResultType.CONSUME;
+                return InteractionResult.CONSUME;
             }
         }
         return super.interact(player, hand);

@@ -15,34 +15,38 @@ import de.maxhenkel.car.entity.car.base.EntityCarBase;
 import de.maxhenkel.car.entity.car.base.EntityCarDamageBase;
 import de.maxhenkel.car.sounds.ModSounds;
 import de.maxhenkel.corelib.item.ItemUtils;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.Inventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.*;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
+import net.minecraft.Util;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.Container;
+import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.ContainerData;
+import net.minecraft.world.inventory.SimpleContainerData;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
 
-public class TileEntityCarWorkshop extends TileEntityBase implements IInventory {
+public class TileEntityCarWorkshop extends TileEntityBase implements Container {
 
-    private Inventory craftingMatrix;
-    private Inventory repairInventory;
+    private SimpleContainer craftingMatrix;
+    private SimpleContainer repairInventory;
     private EntityGenericCar currentCraftingCar;
-    private List<ITextComponent> messages;
+    private List<Component> messages;
 
-    public TileEntityCarWorkshop() {
-        super(Main.CAR_WORKSHOP_TILE_ENTITY_TYPE);
-        this.craftingMatrix = new Inventory(15);
-        this.repairInventory = new Inventory(3);
+    public TileEntityCarWorkshop(BlockPos pos, BlockState state) {
+        super(Main.CAR_WORKSHOP_TILE_ENTITY_TYPE, pos, state);
+        this.craftingMatrix = new SimpleContainer(15);
+        this.repairInventory = new SimpleContainer(3);
         this.messages = new ArrayList<>();
     }
 
-    public Inventory getRepairInventory() {
+    public SimpleContainer getRepairInventory() {
         return repairInventory;
     }
 
@@ -55,7 +59,7 @@ public class TileEntityCarWorkshop extends TileEntityBase implements IInventory 
 
         BlockPos start = worldPosition.relative(Direction.UP);
 
-        AxisAlignedBB aabb = new AxisAlignedBB(start.getX(), start.getY(), start.getZ(), start.getX() + 1,
+        AABB aabb = new AABB(start.getX(), start.getY(), start.getZ(), start.getX() + 1,
                 start.getY() + 1, start.getZ() + 1);
 
         List<EntityCarBase> cars = level.getEntitiesOfClass(EntityCarBase.class, aabb);
@@ -66,14 +70,14 @@ public class TileEntityCarWorkshop extends TileEntityBase implements IInventory 
         return cars.get(0);
     }
 
-    public void spawnCar(PlayerEntity player) {
+    public void spawnCar(Player player) {
         if (!areBlocksAround()) {
-            player.sendMessage(new TranslationTextComponent("message.incomplete_structure"), Util.NIL_UUID);
+            player.sendMessage(new TranslatableComponent("message.incomplete_structure"), Util.NIL_UUID);
             return;
         }
 
         if (!isTopFree()) {
-            player.sendMessage(new TranslationTextComponent("message.blocks_on_top"), Util.NIL_UUID);
+            player.sendMessage(new TranslatableComponent("message.blocks_on_top"), Util.NIL_UUID);
             return;
         }
 
@@ -82,7 +86,7 @@ public class TileEntityCarWorkshop extends TileEntityBase implements IInventory 
         EntityGenericCar car = currentCraftingCar;
 
         if (car == null || !isCurrentCraftingCarValid()) {
-            player.sendMessage(new TranslationTextComponent("message.no_reciepe"), Util.NIL_UUID);
+            player.sendMessage(new TranslatableComponent("message.no_reciepe"), Util.NIL_UUID);
             return;
         }
         BlockPos spawnPos = worldPosition.above();
@@ -183,7 +187,7 @@ public class TileEntityCarWorkshop extends TileEntityBase implements IInventory 
     }
 
     @Override
-    public CompoundNBT save(CompoundNBT compound) {
+    public CompoundTag save(CompoundTag compound) {
         ItemUtils.saveInventory(compound, "crafting", craftingMatrix);
 
         ItemUtils.saveInventory(compound, "repair", repairInventory);
@@ -192,10 +196,10 @@ public class TileEntityCarWorkshop extends TileEntityBase implements IInventory 
     }
 
     @Override
-    public void load(BlockState blockState, CompoundNBT compound) {
+    public void load(CompoundTag compound) {
         ItemUtils.readInventory(compound, "crafting", craftingMatrix);
         ItemUtils.readInventory(compound, "repair", repairInventory);
-        super.load(blockState, compound);
+        super.load(compound);
     }
 
     public void updateRecipe() {
@@ -210,20 +214,20 @@ public class TileEntityCarWorkshop extends TileEntityBase implements IInventory 
                     }
                 } else {
                     currentCraftingCar = null;
-                    messages = Arrays.asList(new TranslationTextComponent("message.parts.no_car_part", stack.getHoverName()));
+                    messages = Arrays.asList(new TranslatableComponent("message.parts.no_car_part", stack.getHoverName()));
                     return;
                 }
             }
         }
 
-        List<ITextComponent> messages = new ArrayList<>();
+        List<Component> messages = new ArrayList<>();
 
         currentCraftingCar = createCar(level, items, messages);
 
         this.messages = messages;
     }
 
-    public static EntityGenericCar createCar(World world, List<ItemStack> partStacks, List<ITextComponent> messages) {
+    public static EntityGenericCar createCar(Level world, List<ItemStack> partStacks, List<Component> messages) {
         EntityGenericCar car = new EntityGenericCar(world);
 
         //Put keys in inventory
@@ -251,7 +255,7 @@ public class TileEntityCarWorkshop extends TileEntityBase implements IInventory 
         return car;
     }
 
-    public static EntityGenericCar createCar(World world, List<ItemStack> partStacks) {
+    public static EntityGenericCar createCar(Level world, List<ItemStack> partStacks) {
         return createCar(world, partStacks, new ArrayList<>());
     }
 
@@ -300,7 +304,7 @@ public class TileEntityCarWorkshop extends TileEntityBase implements IInventory 
     }
 
     @Override
-    public boolean stillValid(PlayerEntity player) {
+    public boolean stillValid(Player player) {
         return craftingMatrix.stillValid(player);
     }
 
@@ -310,12 +314,12 @@ public class TileEntityCarWorkshop extends TileEntityBase implements IInventory 
     }
 
     @Override
-    public void startOpen(PlayerEntity player) {
+    public void startOpen(Player player) {
         craftingMatrix.startOpen(player);
     }
 
     @Override
-    public void stopOpen(PlayerEntity player) {
+    public void stopOpen(Player player) {
         craftingMatrix.startOpen(player);
     }
 
@@ -338,25 +342,25 @@ public class TileEntityCarWorkshop extends TileEntityBase implements IInventory 
         return messages.size() <= 0;
     }
 
-    public List<ITextComponent> getMessages() {
+    public List<Component> getMessages() {
         return messages;
     }
 
-    public void repairCar(PlayerEntity player) {
+    public void repairCar(Player player) {
         if (!areBlocksAround()) {
-            player.sendMessage(new TranslationTextComponent("message.incomplete_structure"), Util.NIL_UUID);
+            player.sendMessage(new TranslatableComponent("message.incomplete_structure"), Util.NIL_UUID);
             return;
         }
 
         if (!areRepairItemsInside()) {
-            player.sendMessage(new TranslationTextComponent("message.no_repair_items"), Util.NIL_UUID);
+            player.sendMessage(new TranslatableComponent("message.no_repair_items"), Util.NIL_UUID);
             return;
         }
 
         EntityCarBase carBase = getCarOnTop();
 
         if (!(carBase instanceof EntityCarDamageBase)) {
-            player.sendMessage(new TranslationTextComponent("message.no_car"), Util.NIL_UUID);
+            player.sendMessage(new TranslatableComponent("message.no_car"), Util.NIL_UUID);
             return;
         }
 
@@ -370,7 +374,7 @@ public class TileEntityCarWorkshop extends TileEntityBase implements IInventory 
 
         car.setDamage(car.getDamage() - 10F);
 
-        ModSounds.playSound(ModSounds.RATCHET, level, worldPosition, null, SoundCategory.BLOCKS);
+        ModSounds.playSound(ModSounds.RATCHET, level, worldPosition, null, SoundSource.BLOCKS);
     }
 
     public boolean areRepairItemsInside() {
@@ -383,7 +387,7 @@ public class TileEntityCarWorkshop extends TileEntityBase implements IInventory 
         return true;
     }
 
-    public void damageRepairItemsInside(PlayerEntity player) {
+    public void damageRepairItemsInside(Player player) {
         for (int i = 0; i < repairInventory.getContainerSize(); i++) {
             ItemStack stack = repairInventory.getItem(i);
             if (!stack.isEmpty()) {
@@ -394,13 +398,13 @@ public class TileEntityCarWorkshop extends TileEntityBase implements IInventory 
     }
 
     @Override
-    public ITextComponent getTranslatedName() {
-        return new TranslationTextComponent(ModBlocks.CAR_WORKSHOP.getDescriptionId());
+    public Component getTranslatedName() {
+        return new TranslatableComponent(ModBlocks.CAR_WORKSHOP.getDescriptionId());
     }
 
     @Override
-    public IIntArray getFields() {
-        return new IntArray(0);
+    public ContainerData getFields() {
+        return new SimpleContainerData(0);
     }
 
 }

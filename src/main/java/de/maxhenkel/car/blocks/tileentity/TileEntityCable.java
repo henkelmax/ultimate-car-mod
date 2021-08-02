@@ -1,33 +1,33 @@
 package de.maxhenkel.car.blocks.tileentity;
 
 import de.maxhenkel.car.Main;
+import de.maxhenkel.corelib.blockentity.ITickableBlockEntity;
 import de.maxhenkel.corelib.energy.EnergyUtils;
 import de.maxhenkel.tools.BlockPosList;
 import de.maxhenkel.car.blocks.ModBlocks;
-import net.minecraft.block.BlockState;
-import net.minecraft.tileentity.ITickableTileEntity;
-import net.minecraft.util.Direction;
-import net.minecraft.util.IIntArray;
-import net.minecraft.util.IntArray;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.inventory.ContainerData;
+import net.minecraft.world.inventory.SimpleContainerData;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.energy.IEnergyStorage;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class TileEntityCable extends TileEntityBase implements ITickableTileEntity, IEnergyStorage {
+public class TileEntityCable extends TileEntityBase implements ITickableBlockEntity, IEnergyStorage {
 
     private final int transferRate;
 
-    public TileEntityCable(int transferRate) {
-        super(Main.CABLE_TILE_ENTITY_TYPE);
+    public TileEntityCable(int transferRate, BlockPos pos, BlockState state) {
+        super(Main.CABLE_TILE_ENTITY_TYPE, pos, state);
         this.transferRate = transferRate;
     }
 
-    public TileEntityCable() {
-        this(Main.SERVER_CONFIG.cableTransferRate.get());
+    public TileEntityCable(BlockPos pos, BlockState state) {
+        this(Main.SERVER_CONFIG.cableTransferRate.get(), pos, state);
     }
 
     @Override
@@ -155,12 +155,12 @@ public class TileEntityCable extends TileEntityBase implements ITickableTileEnti
     }
 
     @Override
-    public ITextComponent getTranslatedName() {
-        return new TranslationTextComponent("block.car.cable");
+    public Component getTranslatedName() {
+        return new TranslatableComponent("block.car.cable");
     }
 
     @Override
-    public IIntArray getFields() {
-        return new IntArray(0);
+    public ContainerData getFields() {
+        return new SimpleContainerData(0);
     }
 }

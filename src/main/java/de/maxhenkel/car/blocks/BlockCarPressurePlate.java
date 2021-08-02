@@ -4,24 +4,23 @@ import de.maxhenkel.car.Main;
 import de.maxhenkel.car.ModItemGroups;
 import de.maxhenkel.car.entity.car.base.EntityGenericCar;
 import de.maxhenkel.corelib.block.IItemBlock;
-import net.minecraft.block.AbstractPressurePlateBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.material.Material;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.Item;
-import net.minecraft.state.BooleanProperty;
-import net.minecraft.state.StateContainer;
-import net.minecraft.state.properties.BlockStateProperties;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.block.BasePressurePlateBlock;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.material.Material;
 
-public class BlockCarPressurePlate extends AbstractPressurePlateBlock implements IItemBlock {
+public class BlockCarPressurePlate extends BasePressurePlateBlock implements IItemBlock {
 
     public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 
@@ -37,18 +36,18 @@ public class BlockCarPressurePlate extends AbstractPressurePlateBlock implements
     }
 
     @Override
-    protected void playOnSound(IWorld worldIn, BlockPos pos) {
-        worldIn.playSound(null, pos, SoundEvents.STONE_PRESSURE_PLATE_CLICK_ON, SoundCategory.BLOCKS, 0.3F, 0.6F);
+    protected void playOnSound(LevelAccessor worldIn, BlockPos pos) {
+        worldIn.playSound(null, pos, SoundEvents.STONE_PRESSURE_PLATE_CLICK_ON, SoundSource.BLOCKS, 0.3F, 0.6F);
     }
 
     @Override
-    protected void playOffSound(IWorld worldIn, BlockPos pos) {
-        worldIn.playSound(null, pos, SoundEvents.STONE_PRESSURE_PLATE_CLICK_OFF, SoundCategory.BLOCKS, 0.3F, 0.5F);
+    protected void playOffSound(LevelAccessor worldIn, BlockPos pos) {
+        worldIn.playSound(null, pos, SoundEvents.STONE_PRESSURE_PLATE_CLICK_OFF, SoundSource.BLOCKS, 0.3F, 0.5F);
     }
 
     @Override
-    protected int getSignalStrength(World worldIn, BlockPos pos) {
-        AxisAlignedBB axisalignedbb = TOUCH_AABB.move(pos);
+    protected int getSignalStrength(Level worldIn, BlockPos pos) {
+        net.minecraft.world.phys.AABB axisalignedbb = TOUCH_AABB.move(pos);
         return worldIn.getEntitiesOfClass(EntityGenericCar.class, axisalignedbb).size() > 0 ? 15 : 0;
     }
 
@@ -63,7 +62,7 @@ public class BlockCarPressurePlate extends AbstractPressurePlateBlock implements
     }
 
     @Override
-    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(POWERED);
     }
 }

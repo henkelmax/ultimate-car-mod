@@ -1,25 +1,26 @@
 package de.maxhenkel.car.blocks.tileentity;
 
 import de.maxhenkel.car.Main;
+import de.maxhenkel.corelib.blockentity.ITickableBlockEntity;
 import de.maxhenkel.corelib.energy.EnergyUtils;
-import net.minecraft.block.BlockState;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tileentity.ITickableTileEntity;
-import net.minecraft.util.Direction;
-import net.minecraft.util.IIntArray;
-import net.minecraft.util.IntArray;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.inventory.ContainerData;
+import net.minecraft.world.inventory.SimpleContainerData;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.energy.IEnergyStorage;
 
-public class TileEntityDynamo extends TileEntityBase implements IEnergyStorage, ITickableTileEntity {
+public class TileEntityDynamo extends TileEntityBase implements IEnergyStorage, ITickableBlockEntity {
 
     private int storedEnergy;
     public final int maxStorage;
     public final int generation;
 
-    public TileEntityDynamo() {
-        super(Main.DYNAMO_TILE_ENTITY_TYPE);
+    public TileEntityDynamo(BlockPos pos, BlockState state) {
+        super(Main.DYNAMO_TILE_ENTITY_TYPE, pos, state);
         this.maxStorage = Main.SERVER_CONFIG.dynamoEnergyStorage.get();
         this.generation = Main.SERVER_CONFIG.dynamoEnergyGeneration.get();
         this.storedEnergy = 0;
@@ -48,15 +49,15 @@ public class TileEntityDynamo extends TileEntityBase implements IEnergyStorage, 
     }
 
     @Override
-    public CompoundNBT save(CompoundNBT compound) {
+    public CompoundTag save(CompoundTag compound) {
         compound.putInt("stored_energy", storedEnergy);
         return super.save(compound);
     }
 
     @Override
-    public void load(BlockState blockState, CompoundNBT compound) {
+    public void load(CompoundTag compound) {
         storedEnergy = compound.getInt("stored_energy");
-        super.load(blockState, compound);
+        super.load(compound);
     }
 
     @Override
@@ -97,13 +98,13 @@ public class TileEntityDynamo extends TileEntityBase implements IEnergyStorage, 
     }
 
     @Override
-    public ITextComponent getTranslatedName() {
-        return new TranslationTextComponent("block.car.dynamo");
+    public Component getTranslatedName() {
+        return new TranslatableComponent("block.car.dynamo");
     }
 
     @Override
-    public IIntArray getFields() {
-        return new IntArray(0);
+    public ContainerData getFields() {
+        return new SimpleContainerData(0);
     }
 
 }

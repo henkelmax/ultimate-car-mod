@@ -1,12 +1,12 @@
 package de.maxhenkel.car.entity.car.parts;
 
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.network.chat.Component;
 
 import java.util.List;
 
 public abstract class Part {
 
-    public boolean validate(List<Part> parts, List<ITextComponent> messages) {
+    public boolean validate(List<Part> parts, List<Component> messages) {
         return true;
     }
 

@@ -2,10 +2,10 @@ package de.maxhenkel.car.events;
 
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.entity.car.base.EntityVehicleBase;
+import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.player.ClientPlayerEntity;
-import net.minecraft.client.settings.PointOfView;
-import net.minecraft.entity.Entity;
+import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.world.entity.Entity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.TickEvent;
@@ -53,14 +53,14 @@ public class PlayerEvents {
         }
 
         if (third) {
-            minecraft.options.setCameraType(PointOfView.THIRD_PERSON_BACK);
+            minecraft.options.setCameraType(CameraType.THIRD_PERSON_BACK);
         } else {
-            minecraft.options.setCameraType(PointOfView.FIRST_PERSON);
+            minecraft.options.setCameraType(CameraType.FIRST_PERSON);
         }
 
     }
 
-    private ClientPlayerEntity getPlayer() {
+    private LocalPlayer getPlayer() {
         return minecraft.player;
     }
 

@@ -1,8 +1,8 @@
 package de.maxhenkel.car.integration.jei;
 
 import de.maxhenkel.car.items.ModItems;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 
 import java.util.ArrayList;
 import java.util.Arrays;

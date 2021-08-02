@@ -4,13 +4,13 @@ import de.maxhenkel.car.Main;
 import de.maxhenkel.corelib.reflection.ReflectionUtils;
 import de.maxhenkel.tools.NoRegister;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.audio.TickableSound;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.client.resources.sounds.AbstractTickableSoundInstance;
+import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -72,11 +72,11 @@ public class ModSounds {
         return event;
     }
 
-    public static void playSound(SoundEvent evt, World world, BlockPos pos, PlayerEntity entity, SoundCategory category, float volume) {
+    public static void playSound(SoundEvent evt, Level world, BlockPos pos, Player entity, SoundSource category, float volume) {
         playSound(evt, world, pos, entity, category, volume, 1.0F);
     }
 
-    public static void playSound(SoundEvent evt, World world, BlockPos pos, PlayerEntity entity, SoundCategory category, float volume, float pitch) {
+    public static void playSound(SoundEvent evt, Level world, BlockPos pos, Player entity, SoundSource category, float volume, float pitch) {
         if (entity != null) {
             world.playSound(entity, pos, evt, category, volume, pitch);
         } else {
@@ -86,7 +86,7 @@ public class ModSounds {
         }
     }
 
-    public static void playSound(SoundEvent evt, World world, BlockPos pos, PlayerEntity entity, SoundCategory category) {
+    public static void playSound(SoundEvent evt, Level world, BlockPos pos, Player entity, SoundSource category) {
         playSound(evt, world, pos, entity, category, 0.15F);
     }
 
@@ -120,7 +120,7 @@ public class ModSounds {
     }
 
     @OnlyIn(Dist.CLIENT)
-    public static void playSoundLoop(TickableSound loop, World world) {
+    public static void playSoundLoop(AbstractTickableSoundInstance loop, Level world) {
         if (world.isClientSide) {
             Minecraft.getInstance().getSoundManager().play(loop);
         }

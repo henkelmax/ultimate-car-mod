@@ -1,45 +1,39 @@
 package de.maxhenkel.car.integration.waila;
 
 import de.maxhenkel.car.blocks.tileentity.TileEntityFluidExtractor;
+import mcp.mobius.waila.api.BlockAccessor;
 import mcp.mobius.waila.api.IComponentProvider;
-import mcp.mobius.waila.api.IDataAccessor;
-import mcp.mobius.waila.api.IPluginConfig;
 import mcp.mobius.waila.api.IServerDataProvider;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
+import mcp.mobius.waila.api.ITooltip;
+import mcp.mobius.waila.api.config.IPluginConfig;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.registries.ForgeRegistries;
 
-import java.util.List;
+public class HUDHandlerFluidExtractor implements IComponentProvider, IServerDataProvider<BlockEntity> {
 
-public class HUDHandlerFluidExtractor implements IComponentProvider, IServerDataProvider<TileEntity> {
-
-    static final HUDHandlerFluidExtractor INSTANCE = new HUDHandlerFluidExtractor();
+    public static final HUDHandlerFluidExtractor INSTANCE = new HUDHandlerFluidExtractor();
 
     @Override
-    public void appendBody(List<ITextComponent> tooltip, IDataAccessor accessor, IPluginConfig config) {
-        if (accessor.getServerData().contains("filter")) {
-            Fluid fluid = ForgeRegistries.FLUIDS.getValue(new ResourceLocation(accessor.getServerData().getString("filter")));
-
-            ITextComponent fluidComponent = new TranslationTextComponent("tooltip.waila.fluid_extractor.filter", new FluidStack(fluid, 1).getDisplayName());
-            tooltip.add(fluidComponent);
+    public void appendTooltip(ITooltip iTooltip, BlockAccessor blockAccessor, IPluginConfig iPluginConfig) {
+        if (blockAccessor.getServerData().contains("filter")) {
+            Fluid fluid = ForgeRegistries.FLUIDS.getValue(new ResourceLocation(blockAccessor.getServerData().getString("filter")));
+            iTooltip.add(new TranslatableComponent("tooltip.waila.fluid_extractor.filter", new FluidStack(fluid, 1).getDisplayName()));
         }
     }
 
     @Override
-    public void appendServerData(CompoundNBT data, ServerPlayerEntity player, World world, TileEntity blockEntity) {
+    public void appendServerData(CompoundTag compoundTag, ServerPlayer serverPlayer, Level level, BlockEntity blockEntity, boolean b) {
         TileEntityFluidExtractor extractor = (TileEntityFluidExtractor) blockEntity;
-
         Fluid filter = extractor.getFilterFluid();
         if (filter != null) {
-            data.putString("filter", extractor.getFilterFluid().getRegistryName().toString());
+            compoundTag.putString("filter", extractor.getFilterFluid().getRegistryName().toString());
         }
     }
-
 }

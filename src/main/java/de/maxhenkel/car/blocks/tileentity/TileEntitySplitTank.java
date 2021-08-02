@@ -2,22 +2,23 @@ package de.maxhenkel.car.blocks.tileentity;
 
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.fluids.ModFluids;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.Inventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tileentity.ITickableTileEntity;
-import net.minecraft.util.IIntArray;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import de.maxhenkel.corelib.blockentity.ITickableBlockEntity;
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.Container;
+import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.ContainerData;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 
 import javax.annotation.Nonnull;
 
-public class TileEntitySplitTank extends TileEntityBase implements ITickableTileEntity, IFluidHandler, IInventory {
+public class TileEntitySplitTank extends TileEntityBase implements ITickableBlockEntity, IFluidHandler, Container {
 
     private int currentMix;
     public int maxMix;
@@ -34,11 +35,11 @@ public class TileEntitySplitTank extends TileEntityBase implements ITickableTile
     public int generatingTime;
     private int timeToGenerate;
 
-    protected Inventory inventory;
+    protected SimpleContainer inventory;
 
-    public TileEntitySplitTank() {
-        super(Main.SPLIT_TANK_TILE_ENTITY_TYPE);
-        this.inventory = new Inventory(0);
+    public TileEntitySplitTank(BlockPos pos, BlockState state) {
+        super(Main.SPLIT_TANK_TILE_ENTITY_TYPE, pos, state);
+        this.inventory = new SimpleContainer(0);
         this.currentMix = 0;
         this.maxMix = Main.SERVER_CONFIG.splitTankFluidStorage.get();
 
@@ -56,7 +57,7 @@ public class TileEntitySplitTank extends TileEntityBase implements ITickableTile
         this.bioDieselGeneration = Main.SERVER_CONFIG.splitTankBioDieselGeneration.get();
     }
 
-    public final IIntArray FIELDS = new IIntArray() {
+    public final ContainerData FIELDS = new ContainerData() {
         @Override
         public int get(int index) {
             switch (index) {
@@ -146,7 +147,7 @@ public class TileEntitySplitTank extends TileEntityBase implements ITickableTile
     }
 
     @Override
-    public CompoundNBT save(CompoundNBT compound) {
+    public CompoundTag save(CompoundTag compound) {
         compound.putInt("mix", currentMix);
         compound.putInt("bio_diesel", currentBioDiesel);
         compound.putInt("glycerin", currentGlycerin);
@@ -155,12 +156,12 @@ public class TileEntitySplitTank extends TileEntityBase implements ITickableTile
     }
 
     @Override
-    public void load(BlockState blockState, CompoundNBT compound) {
+    public void load(CompoundTag compound) {
         currentMix = compound.getInt("mix");
         currentBioDiesel = compound.getInt("bio_diesel");
         currentGlycerin = compound.getInt("glycerin");
         timeToGenerate = compound.getInt("timeToGenerate");
-        super.load(blockState, compound);
+        super.load(compound);
     }
 
     @Override
@@ -194,7 +195,7 @@ public class TileEntitySplitTank extends TileEntityBase implements ITickableTile
     }
 
     @Override
-    public boolean stillValid(PlayerEntity player) {
+    public boolean stillValid(Player player) {
         return inventory.stillValid(player);
     }
 
@@ -204,12 +205,12 @@ public class TileEntitySplitTank extends TileEntityBase implements ITickableTile
     }
 
     @Override
-    public void startOpen(PlayerEntity player) {
+    public void startOpen(Player player) {
         inventory.startOpen(player);
     }
 
     @Override
-    public void stopOpen(PlayerEntity player) {
+    public void stopOpen(Player player) {
         inventory.stopOpen(player);
     }
 
@@ -240,12 +241,12 @@ public class TileEntitySplitTank extends TileEntityBase implements ITickableTile
     }
 
     @Override
-    public ITextComponent getTranslatedName() {
-        return new TranslationTextComponent("block.car.split_tank");
+    public Component getTranslatedName() {
+        return new TranslatableComponent("block.car.split_tank");
     }
 
     @Override
-    public IIntArray getFields() {
+    public ContainerData getFields() {
         return FIELDS;
     }
 

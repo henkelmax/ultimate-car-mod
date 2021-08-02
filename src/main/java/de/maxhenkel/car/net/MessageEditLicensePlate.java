@@ -2,12 +2,12 @@ package de.maxhenkel.car.net;
 
 import de.maxhenkel.car.items.ItemLicensePlate;
 import de.maxhenkel.corelib.net.Message;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.Hand;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraftforge.fmllegacy.network.NetworkEvent;
 
 import java.util.UUID;
 
@@ -20,7 +20,7 @@ public class MessageEditLicensePlate implements Message<MessageEditLicensePlate>
 
     }
 
-    public MessageEditLicensePlate(PlayerEntity player, String text) {
+    public MessageEditLicensePlate(Player player, String text) {
         this.uuid = player.getUUID();
         this.text = text;
     }
@@ -38,29 +38,29 @@ public class MessageEditLicensePlate implements Message<MessageEditLicensePlate>
         setItemText(context.getSender(), text);
     }
 
-    public static void setItemText(PlayerEntity player, String text) {
-        ItemStack stack = player.getItemInHand(Hand.MAIN_HAND);
+    public static void setItemText(Player player, String text) {
+        ItemStack stack = player.getItemInHand(InteractionHand.MAIN_HAND);
         if (stack.getItem() instanceof ItemLicensePlate) {
             ItemLicensePlate.setText(stack, text);
-            player.setItemInHand(Hand.MAIN_HAND, stack);
+            player.setItemInHand(InteractionHand.MAIN_HAND, stack);
         } else {
-            stack = player.getItemInHand(Hand.OFF_HAND);
+            stack = player.getItemInHand(InteractionHand.OFF_HAND);
             if (stack.getItem() instanceof ItemLicensePlate) {
                 ItemLicensePlate.setText(stack, text);
-                player.setItemInHand(Hand.OFF_HAND, stack);
+                player.setItemInHand(InteractionHand.OFF_HAND, stack);
             }
         }
     }
 
     @Override
-    public MessageEditLicensePlate fromBytes(PacketBuffer buf) {
+    public MessageEditLicensePlate fromBytes(FriendlyByteBuf buf) {
         uuid = buf.readUUID();
         text = buf.readUtf(128);
         return this;
     }
 
     @Override
-    public void toBytes(PacketBuffer buf) {
+    public void toBytes(FriendlyByteBuf buf) {
         buf.writeUUID(uuid);
         buf.writeUtf(text);
     }

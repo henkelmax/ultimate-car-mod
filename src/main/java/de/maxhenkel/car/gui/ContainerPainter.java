@@ -2,13 +2,13 @@ package de.maxhenkel.car.gui;
 
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.blocks.BlockPaint;
-import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.world.entity.player.Inventory;
 
 public class ContainerPainter extends ContainerBase {
 
-    protected PlayerInventory playerInventory;
+    protected Inventory playerInventory;
 
-    public ContainerPainter(int id, PlayerInventory playerInventory, boolean isYellow) {
+    public ContainerPainter(int id, Inventory playerInventory, boolean isYellow) {
         super(Main.PAINTER_CONTAINER_TYPE, id, null, new InventoryPainter(isYellow));
         this.playerInventory = playerInventory;
 

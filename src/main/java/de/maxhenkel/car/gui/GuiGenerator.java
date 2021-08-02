@@ -1,14 +1,14 @@
 package de.maxhenkel.car.gui;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.blocks.tileentity.TileEntityGenerator;
 import de.maxhenkel.corelib.inventory.ScreenBase;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.util.IReorderingProcessor;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.FormattedCharSequence;
+import net.minecraft.world.entity.player.Inventory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,10 +17,10 @@ public class GuiGenerator extends ScreenBase<ContainerGenerator> {
 
     private static final ResourceLocation GUI_TEXTURE = new ResourceLocation(Main.MODID, "textures/gui/gui_generator.png");
 
-    private PlayerInventory playerInv;
+    private Inventory playerInv;
     private TileEntityGenerator tile;
 
-    public GuiGenerator(ContainerGenerator containerGenerator, PlayerInventory playerInv, ITextComponent title) {
+    public GuiGenerator(ContainerGenerator containerGenerator, Inventory playerInv, Component title) {
         super(GUI_TEXTURE, containerGenerator, playerInv, title);
         this.playerInv = playerInv;
         this.tile = containerGenerator.getGenerator();
@@ -30,7 +30,7 @@ public class GuiGenerator extends ScreenBase<ContainerGenerator> {
     }
 
     @Override
-    protected void renderLabels(MatrixStack matrixStack, int mouseX, int mouseY) {
+    protected void renderLabels(PoseStack matrixStack, int mouseX, int mouseY) {
         super.renderLabels(matrixStack, mouseX, mouseY);
 
         // Title
@@ -39,29 +39,29 @@ public class GuiGenerator extends ScreenBase<ContainerGenerator> {
 
         if (mouseX >= leftPos + 122 && mouseX <= leftPos + 16 + 122) {
             if (mouseY >= topPos + 8 && mouseY <= topPos + 57 + 8) {
-                List<IReorderingProcessor> list = new ArrayList<>();
-                list.add(new TranslationTextComponent("tooltip.energy", tile.getStoredEnergy()).getVisualOrderText());
+                List<FormattedCharSequence> list = new ArrayList<>();
+                list.add(new TranslatableComponent("tooltip.energy", tile.getStoredEnergy()).getVisualOrderText());
                 renderTooltip(matrixStack, list, mouseX - leftPos, mouseY - topPos);
             }
         }
 
         if (mouseX >= leftPos + 39 && mouseX <= leftPos + 16 + 39) {
             if (mouseY >= topPos + 8 && mouseY <= topPos + 57 + 8) {
-                List<IReorderingProcessor> list = new ArrayList<>();
-                list.add(new TranslationTextComponent("tooltip.fuel", tile.getCurrentMillibuckets()).getVisualOrderText());
+                List<FormattedCharSequence> list = new ArrayList<>();
+                list.add(new TranslatableComponent("tooltip.fuel", tile.getCurrentMillibuckets()).getVisualOrderText());
                 renderTooltip(matrixStack, list, mouseX - leftPos, mouseY - topPos);
             }
         }
     }
 
     @Override
-    protected void renderBg(MatrixStack matrixStack, float partialTicks, int mouseX, int mouseY) {
+    protected void renderBg(PoseStack matrixStack, float partialTicks, int mouseX, int mouseY) {
         super.renderBg(matrixStack, partialTicks, mouseX, mouseY);
         drawEnergy(matrixStack);
         drawFluid(matrixStack);
     }
 
-    public void drawEnergy(MatrixStack matrixStack) {
+    public void drawEnergy(PoseStack matrixStack) {
         float perc = getEnergy();
 
         int texX = 176;
@@ -77,7 +77,7 @@ public class GuiGenerator extends ScreenBase<ContainerGenerator> {
         blit(matrixStack, i + targetX, j + targetY + scHeight, texX, texY + scHeight, texW, texH - scHeight);
     }
 
-    public void drawFluid(MatrixStack matrixStack) {
+    public void drawFluid(PoseStack matrixStack) {
         float perc = getFluid();
 
         int texX = 192;

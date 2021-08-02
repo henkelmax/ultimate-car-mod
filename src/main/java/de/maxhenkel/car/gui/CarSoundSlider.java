@@ -1,25 +1,25 @@
 package de.maxhenkel.car.gui;
 
 import de.maxhenkel.car.Main;
-import net.minecraft.client.gui.widget.AbstractSlider;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.client.gui.components.AbstractSliderButton;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class CarSoundSlider extends AbstractSlider {
+public class CarSoundSlider extends AbstractSliderButton {
 
     public CarSoundSlider(int x, int y, int width) {
-        super(x, y, width, 20, new StringTextComponent(""), Main.CLIENT_CONFIG.carVolume.get());
+        super(x, y, width, 20, TextComponent.EMPTY, Main.CLIENT_CONFIG.carVolume.get());
         updateMessage();
     }
 
     @Override
     protected void updateMessage() {
-        TextComponent amount = value <= 0D ? new TranslationTextComponent("options.off") : new StringTextComponent((int) ((float) value * 100F) + "%");
-        setMessage(new TranslationTextComponent("soundCategory.car").append(": ").append(amount));
+        Component amount = value <= 0D ? new TranslatableComponent("options.off") : new TextComponent((int) ((float) value * 100F) + "%");
+        setMessage(new TranslatableComponent("soundCategory.car").append(": ").append(amount));
     }
 
     @Override

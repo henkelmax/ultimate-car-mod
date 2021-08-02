@@ -1,15 +1,15 @@
 package de.maxhenkel.car.events;
 
 import de.maxhenkel.car.Main;
-import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
-import net.minecraft.loot.LootContext;
-import net.minecraft.loot.LootParameterSets;
-import net.minecraft.loot.LootParameters;
-import net.minecraft.loot.LootTable;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
@@ -23,24 +23,20 @@ public class BlockEvents {
             return;
         }
 
-        if (!(event.getPlayer().level instanceof ServerWorld)) {
-            return;
+        if (event.getPlayer().level instanceof ServerLevel level) {
+            LootContext.Builder builder = new LootContext.Builder(level)
+                    .withRandom(level.random)
+                    .withParameter(LootContextParams.ORIGIN, new Vec3(event.getPos().getX(), event.getPos().getY(), event.getPos().getZ()))
+                    .withParameter(LootContextParams.TOOL, event.getPlayer().getMainHandItem())
+                    .withParameter(LootContextParams.THIS_ENTITY, event.getPlayer())
+                    .withParameter(LootContextParams.BLOCK_STATE, event.getState());
+
+            LootContext lootContext = builder.create(LootContextParamSets.BLOCK);
+
+            LootTable lootTable = level.getServer().getLootTables().get(GRASS_LOOT_TABLE);
+
+            lootTable.getRandomItems(lootContext).forEach((stack) -> Block.popResource(level, event.getPos(), stack));
         }
-
-        ServerWorld serverWorld = (ServerWorld) event.getPlayer().level;
-
-        LootContext.Builder builder = new LootContext.Builder(serverWorld)
-                .withRandom(serverWorld.random)
-                .withParameter(LootParameters.ORIGIN, new Vector3d(event.getPos().getX(), event.getPos().getY(), event.getPos().getZ()))
-                .withParameter(LootParameters.TOOL, event.getPlayer().getMainHandItem())
-                .withParameter(LootParameters.THIS_ENTITY, event.getPlayer())
-                .withParameter(LootParameters.BLOCK_STATE, event.getState());
-
-        LootContext lootContext = builder.create(LootParameterSets.BLOCK);
-
-        LootTable lootTable = serverWorld.getServer().getLootTables().get(GRASS_LOOT_TABLE);
-
-        lootTable.getRandomItems(lootContext).forEach((stack) -> Block.popResource(serverWorld, event.getPos(), stack));
     }
 
 }

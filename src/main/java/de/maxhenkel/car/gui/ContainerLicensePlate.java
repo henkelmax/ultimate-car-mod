@@ -1,15 +1,15 @@
 package de.maxhenkel.car.gui;
 
 import de.maxhenkel.car.Main;
-import net.minecraft.inventory.Inventory;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.item.ItemStack;
 
 public class ContainerLicensePlate extends ContainerBase {
 
     private ItemStack licensePlate;
 
     public ContainerLicensePlate(int id, ItemStack licensePlate) {
-        super(Main.LICENSE_PLATE_CONTAINER_TYPE, id, null, new Inventory(0));
+        super(Main.LICENSE_PLATE_CONTAINER_TYPE, id, null, new SimpleContainer(0));
         this.licensePlate = licensePlate;
     }
 

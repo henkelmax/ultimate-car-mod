@@ -2,16 +2,16 @@ package de.maxhenkel.car.gui;
 
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.blocks.tileentity.TileEntityFluidExtractor;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.Inventory;
+import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.entity.player.Inventory;
 
 public class ContainerFluidExtractor extends ContainerBase {
 
     protected TileEntityFluidExtractor tile;
-    protected PlayerInventory playerInventory;
+    protected Inventory playerInventory;
 
-    public ContainerFluidExtractor(int id, TileEntityFluidExtractor tile, PlayerInventory playerInventory) {
-        super(Main.FLUID_EXTRACTOR_CONTAINER_TYPE, id, playerInventory, new Inventory(1));
+    public ContainerFluidExtractor(int id, TileEntityFluidExtractor tile, Inventory playerInventory) {
+        super(Main.FLUID_EXTRACTOR_CONTAINER_TYPE, id, playerInventory, new SimpleContainer(1));
         this.tile = tile;
         this.playerInventory = playerInventory;
 

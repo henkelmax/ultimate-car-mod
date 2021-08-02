@@ -1,30 +1,32 @@
 package de.maxhenkel.car.blocks.tileentity.render;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import de.maxhenkel.car.blocks.tileentity.TileEntitySplitTank;
 import de.maxhenkel.car.fluids.ModFluids;
 import de.maxhenkel.corelib.client.RenderUtils;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.Atlases;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.Sheets;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
+import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
-import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
-import net.minecraft.inventory.container.PlayerContainer;
+import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraftforge.fluids.FluidStack;
 
-public class TileEntitySpecialRendererSplitTank extends TileEntityRenderer<TileEntitySplitTank> {
+public class TileEntitySpecialRendererSplitTank implements BlockEntityRenderer<TileEntitySplitTank> {
 
     private static final FluidStack BIO_DIESEL_STACK = new FluidStack(ModFluids.BIO_DIESEL, 1);
     private static final FluidStack GLYCERIN_STACK = new FluidStack(ModFluids.GLYCERIN, 1);
 
-    public TileEntitySpecialRendererSplitTank(TileEntityRendererDispatcher tileEntityRendererDispatcher) {
-        super(tileEntityRendererDispatcher);
+    protected BlockEntityRendererProvider.Context renderer;
+
+    public TileEntitySpecialRendererSplitTank(BlockEntityRendererProvider.Context renderer) {
+        this.renderer = renderer;
     }
 
     @Override
-    public void render(TileEntitySplitTank te, float partialTicks, MatrixStack matrixStack, IRenderTypeBuffer buffer, int light, int overlay) {
+    public void render(TileEntitySplitTank te, float partialTicks, PoseStack matrixStack, MultiBufferSource buffer, int light, int overlay) {
         matrixStack.pushPose();
         float bioDiesel = te.getBioDieselPerc() / 2F;
         float glycerin = te.getGlycerinPerc() / 2F;
@@ -39,13 +41,13 @@ public class TileEntitySpecialRendererSplitTank extends TileEntityRenderer<TileE
         matrixStack.popPose();
     }
 
-    public void renderFluid(FluidStack fluid, float amount, float yStart, MatrixStack matrixStack, IRenderTypeBuffer buffer, int light, int overlay) {
+    public void renderFluid(FluidStack fluid, float amount, float yStart, PoseStack matrixStack, MultiBufferSource buffer, int light, int overlay) {
         matrixStack.pushPose();
         matrixStack.scale(0.98F, 0.98F, 0.98F);
         matrixStack.translate(0.01F, 0.01F, 0.01F);
 
-        IVertexBuilder builder = buffer.getBuffer(Atlases.translucentItemSheet());
-        TextureAtlasSprite texture = Minecraft.getInstance().getModelManager().getAtlas(PlayerContainer.BLOCK_ATLAS).getSprite(fluid.getFluid().getAttributes().getStillTexture());
+        VertexConsumer builder = buffer.getBuffer(Sheets.translucentItemSheet());
+        TextureAtlasSprite texture = Minecraft.getInstance().getModelManager().getAtlas(InventoryMenu.BLOCK_ATLAS).getSprite(fluid.getFluid().getAttributes().getStillTexture());
 
         float uMin = texture.getU0();
         float uMax = texture.getU1();

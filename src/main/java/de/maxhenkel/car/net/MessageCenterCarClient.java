@@ -3,12 +3,12 @@ package de.maxhenkel.car.net;
 import de.maxhenkel.car.entity.car.base.EntityCarBase;
 import de.maxhenkel.corelib.net.Message;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.network.PacketBuffer;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraftforge.fmllegacy.network.NetworkEvent;
 
 import java.util.UUID;
 
@@ -20,7 +20,7 @@ public class MessageCenterCarClient implements Message<MessageCenterCarClient> {
 
     }
 
-    public MessageCenterCarClient(PlayerEntity player) {
+    public MessageCenterCarClient(Player player) {
         this.uuid = player.getUUID();
     }
 
@@ -30,8 +30,8 @@ public class MessageCenterCarClient implements Message<MessageCenterCarClient> {
 
     @OnlyIn(Dist.CLIENT)
     public void centerClient() {
-        PlayerEntity player = Minecraft.getInstance().player;
-        PlayerEntity ridingPlayer = player.level.getPlayerByUUID(uuid);
+        Player player = Minecraft.getInstance().player;
+        Player ridingPlayer = player.level.getPlayerByUUID(uuid);
         Entity riding = ridingPlayer.getVehicle();
 
         if (!(riding instanceof EntityCarBase)) {
@@ -55,13 +55,13 @@ public class MessageCenterCarClient implements Message<MessageCenterCarClient> {
     }
 
     @Override
-    public MessageCenterCarClient fromBytes(PacketBuffer buf) {
+    public MessageCenterCarClient fromBytes(FriendlyByteBuf buf) {
         this.uuid = buf.readUUID();
         return this;
     }
 
     @Override
-    public void toBytes(PacketBuffer buf) {
+    public void toBytes(FriendlyByteBuf buf) {
         buf.writeUUID(uuid);
     }
 

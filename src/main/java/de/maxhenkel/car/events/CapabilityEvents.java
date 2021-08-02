@@ -1,10 +1,10 @@
 package de.maxhenkel.car.events;
 
 import de.maxhenkel.car.Main;
-import net.minecraft.entity.Entity;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Direction;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
@@ -21,7 +21,7 @@ import javax.annotation.Nullable;
 public class CapabilityEvents {
 
     @SubscribeEvent
-    public void capabilityAttachTileEntity(AttachCapabilitiesEvent<TileEntity> event) {
+    public void capabilityAttachTileEntity(AttachCapabilitiesEvent<BlockEntity> event) {
         if (event.getObject().getType().getRegistryName() == null || !event.getObject().getType().getRegistryName().getNamespace().equals(Main.MODID)) {
             return;
         }

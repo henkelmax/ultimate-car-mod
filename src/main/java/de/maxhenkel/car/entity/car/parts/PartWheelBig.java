@@ -1,7 +1,7 @@
 package de.maxhenkel.car.entity.car.parts;
 
 import de.maxhenkel.corelib.client.obj.OBJModel;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 
 public class PartWheelBig extends PartWheelBase {
 

@@ -1,23 +1,23 @@
 package de.maxhenkel.car.entity.car.base;
 
 import de.maxhenkel.car.items.ItemRepairTool;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.Hand;
-import net.minecraft.world.World;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 
 public abstract class EntityCarDamageBase extends EntityCarBatteryBase {
 
-    private static final DataParameter<Float> DAMAGE = EntityDataManager.defineId(EntityCarDamageBase.class, DataSerializers.FLOAT);
+    private static final EntityDataAccessor<Float> DAMAGE = SynchedEntityData.defineId(EntityCarDamageBase.class, EntityDataSerializers.FLOAT);
 
-    public EntityCarDamageBase(EntityType type, World worldIn) {
+    public EntityCarDamageBase(EntityType type, Level worldIn) {
         super(type, worldIn);
 
     }
@@ -100,10 +100,10 @@ public abstract class EntityCarDamageBase extends EntityCarBatteryBase {
             return false;
         }
 
-        if (!(source.getDirectEntity() instanceof PlayerEntity)) {
+        if (!(source.getDirectEntity() instanceof Player)) {
             return false;
         }
-        PlayerEntity player = (PlayerEntity) source.getDirectEntity();
+        Player player = (Player) source.getDirectEntity();
 
         if (player == null) {
             return false;
@@ -120,7 +120,7 @@ public abstract class EntityCarDamageBase extends EntityCarBatteryBase {
             long time = player.level.getGameTime();
             if (time - lastDamage < 10L) {
                 destroyCar(player, true);
-                stack.hurtAndBreak(50, player, playerEntity -> playerEntity.broadcastBreakEvent(Hand.MAIN_HAND));
+                stack.hurtAndBreak(50, player, playerEntity -> playerEntity.broadcastBreakEvent(InteractionHand.MAIN_HAND));
             } else {
                 lastDamage = time;
             }
@@ -136,7 +136,7 @@ public abstract class EntityCarDamageBase extends EntityCarBatteryBase {
     }
 
     @Override
-    public boolean canStartCarEngine(PlayerEntity player) {
+    public boolean canStartCarEngine(Player player) {
         boolean b = true;
         if (getDamage() >= 100F) {
             return false;
@@ -197,13 +197,13 @@ public abstract class EntityCarDamageBase extends EntityCarBatteryBase {
     }
 
     @Override
-    protected void addAdditionalSaveData(CompoundNBT compound) {
+    protected void addAdditionalSaveData(CompoundTag compound) {
         super.addAdditionalSaveData(compound);
         compound.putFloat("damage", getDamage());
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundNBT compound) {
+    public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
         setDamage(compound.getFloat("damage"));
     }

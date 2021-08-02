@@ -1,16 +1,17 @@
 package de.maxhenkel.car.blocks.tileentity;
 
 import de.maxhenkel.car.Main;
-import net.minecraft.block.BlockState;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tileentity.ITickableTileEntity;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Direction;
-import net.minecraft.util.IIntArray;
-import net.minecraft.util.IntArray;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import de.maxhenkel.corelib.blockentity.ITickableBlockEntity;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.inventory.ContainerData;
+import net.minecraft.world.inventory.SimpleContainerData;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fluids.FluidStack;
@@ -19,13 +20,13 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 
 import javax.annotation.Nonnull;
 
-public class TileEntityTank extends TileEntityBase implements IFluidHandler, ITickableTileEntity {
+public class TileEntityTank extends TileEntityBase implements IFluidHandler, ITickableBlockEntity {
 
     private FluidStack fluid;
     public static final int CAPACITY = 16000;
 
-    public TileEntityTank() {
-        super(Main.TANK_TILE_ENTITY_TYPE);
+    public TileEntityTank(BlockPos pos, BlockState state) {
+        super(Main.TANK_TILE_ENTITY_TYPE, pos, state);
         this.fluid = FluidStack.EMPTY;
     }
 
@@ -54,7 +55,7 @@ public class TileEntityTank extends TileEntityBase implements IFluidHandler, ITi
     }
 
     public void checkSide(Direction side) {
-        TileEntity te = level.getBlockEntity(worldPosition.relative(side));
+        BlockEntity te = level.getBlockEntity(worldPosition.relative(side));
 
         if (!(te instanceof TileEntityTank)) {
             return;
@@ -78,7 +79,7 @@ public class TileEntityTank extends TileEntityBase implements IFluidHandler, ITi
     }
 
     public void checkDown() {
-        TileEntity te = level.getBlockEntity(worldPosition.below());
+        BlockEntity te = level.getBlockEntity(worldPosition.below());
 
         if (!(te instanceof TileEntityTank)) {
             return;
@@ -110,9 +111,9 @@ public class TileEntityTank extends TileEntityBase implements IFluidHandler, ITi
     }
 
     @Override
-    public CompoundNBT save(CompoundNBT compound) {
+    public CompoundTag save(CompoundTag compound) {
         if (!fluid.isEmpty() && fluid.getAmount() > 0) {
-            CompoundNBT comp = new CompoundNBT();
+            CompoundTag comp = new CompoundTag();
 
             fluid.writeToNBT(comp);
 
@@ -122,14 +123,14 @@ public class TileEntityTank extends TileEntityBase implements IFluidHandler, ITi
     }
 
     @Override
-    public void load(BlockState blockState, CompoundNBT compound) {
+    public void load(CompoundTag compound) {
         if (compound.contains("fluid")) {
-            CompoundNBT comp = compound.getCompound("fluid");
+            CompoundTag comp = compound.getCompound("fluid");
             fluid = FluidStack.loadFluidStackFromNBT(comp);
         } else {
             fluid = FluidStack.EMPTY;
         }
-        super.load(blockState, compound);
+        super.load(compound);
     }
 
     public void setFluid(FluidStack fluid) {
@@ -138,13 +139,13 @@ public class TileEntityTank extends TileEntityBase implements IFluidHandler, ITi
 
 
     @Override
-    public ITextComponent getTranslatedName() {
-        return new TranslationTextComponent("block.car.tank");
+    public Component getTranslatedName() {
+        return new TranslatableComponent("block.car.tank");
     }
 
     @Override
-    public IIntArray getFields() {
-        return new IntArray(0);
+    public ContainerData getFields() {
+        return new SimpleContainerData(0);
     }
 
     private boolean[] sides = new boolean[Direction.values().length];
@@ -161,7 +162,7 @@ public class TileEntityTank extends TileEntityBase implements IFluidHandler, ITi
 
     @OnlyIn(Dist.CLIENT)
     private boolean isFluidConnectedCalc(Direction facing) {
-        TileEntity te = level.getBlockEntity(worldPosition.relative(facing));
+        BlockEntity te = level.getBlockEntity(worldPosition.relative(facing));
         if (te instanceof TileEntityTank) {
             TileEntityTank tank = (TileEntityTank) te;
             if (tank.fluid.isEmpty() || fluid.isEmpty()) {
@@ -193,7 +194,7 @@ public class TileEntityTank extends TileEntityBase implements IFluidHandler, ITi
 
     @OnlyIn(Dist.CLIENT)
     private boolean isTankConnectedCalc(Direction facing) {
-        TileEntity te = level.getBlockEntity(worldPosition.relative(facing));
+        BlockEntity te = level.getBlockEntity(worldPosition.relative(facing));
         if (te instanceof TileEntityTank) {
             TileEntityTank tank = (TileEntityTank) te;
             if (tank.fluid.isEmpty() && fluid.isEmpty()) {

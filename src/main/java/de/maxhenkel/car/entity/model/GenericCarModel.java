@@ -1,21 +1,21 @@
 package de.maxhenkel.car.entity.model;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Vector3d;
+import com.mojang.math.Vector3f;
 import de.maxhenkel.car.entity.car.base.EntityGenericCar;
 import de.maxhenkel.corelib.client.obj.OBJEntityRenderer;
 import de.maxhenkel.corelib.client.obj.OBJModelInstance;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.client.renderer.entity.EntityRendererManager;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.math.vector.Vector3f;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 
 import java.util.List;
 
 public class GenericCarModel extends OBJEntityRenderer<EntityGenericCar> {
 
-    public GenericCarModel(EntityRendererManager renderManager) {
+    public GenericCarModel(EntityRendererProvider.Context renderManager) {
         super(renderManager);
     }
 
@@ -25,14 +25,14 @@ public class GenericCarModel extends OBJEntityRenderer<EntityGenericCar> {
     }
 
     @Override
-    public void render(EntityGenericCar entity, float yaw, float partialTicks, MatrixStack matrixStack, IRenderTypeBuffer buffer, int packedLight) {
+    public void render(EntityGenericCar entity, float yaw, float partialTicks, PoseStack matrixStack, MultiBufferSource buffer, int packedLight) {
         super.render(entity, yaw, partialTicks, matrixStack, buffer, packedLight);
         matrixStack.pushPose();
 
         String text = entity.getLicensePlate();
         if (text != null && !text.isEmpty()) {
             matrixStack.pushPose();
-            RenderSystem.color4f(1F, 1F, 1F, 1F);
+            RenderSystem.setShaderColor(1F, 1F, 1F, 1F);
             drawLicensePlate(entity, text, matrixStack, buffer, partialTicks, packedLight);
             matrixStack.popPose();
         }
@@ -40,7 +40,7 @@ public class GenericCarModel extends OBJEntityRenderer<EntityGenericCar> {
         matrixStack.popPose();
     }
 
-    private void drawLicensePlate(EntityGenericCar car, String txt, MatrixStack matrixStack, IRenderTypeBuffer buffer, float partialTicks, int packedLight) {
+    private void drawLicensePlate(EntityGenericCar car, String txt, PoseStack matrixStack, MultiBufferSource buffer, float partialTicks, int packedLight) {
         matrixStack.pushPose();
         matrixStack.scale(1F, -1F, 1F);
 
@@ -58,7 +58,7 @@ public class GenericCarModel extends OBJEntityRenderer<EntityGenericCar> {
         matrixStack.popPose();
     }
 
-    protected void translateLicensePlate(EntityGenericCar entity, MatrixStack matrixStack, float partialTicks) {
+    protected void translateLicensePlate(EntityGenericCar entity, PoseStack matrixStack, float partialTicks) {
         Vector3d offset = entity.getLicensePlateOffset();
         matrixStack.mulPose(Vector3f.YP.rotationDegrees(180F - entity.getViewYRot(partialTicks)));
         matrixStack.translate(offset.x, offset.y, offset.z);

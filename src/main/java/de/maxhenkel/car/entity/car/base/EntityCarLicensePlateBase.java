@@ -1,25 +1,25 @@
 package de.maxhenkel.car.entity.car.base;
 
+import com.mojang.math.Vector3d;
 import de.maxhenkel.car.entity.car.parts.PartLicensePlateHolder;
 import de.maxhenkel.car.items.ItemLicensePlate;
 import de.maxhenkel.corelib.item.ItemUtils;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 
 public abstract class EntityCarLicensePlateBase extends EntityCarLockBase {
 
-    private static final DataParameter<String> LICENSE_PLATE = EntityDataManager.defineId(EntityCarLicensePlateBase.class, DataSerializers.STRING);
+    private static final EntityDataAccessor<String> LICENSE_PLATE = SynchedEntityData.defineId(EntityCarLicensePlateBase.class, EntityDataSerializers.STRING);
 
-    public EntityCarLicensePlateBase(EntityType type, World worldIn) {
+    public EntityCarLicensePlateBase(EntityType type, Level worldIn) {
         super(type, worldIn);
     }
 
@@ -30,7 +30,7 @@ public abstract class EntityCarLicensePlateBase extends EntityCarLockBase {
     }
 
     @Override
-    public ActionResultType interact(PlayerEntity player, Hand hand) {
+    public InteractionResult interact(Player player, InteractionHand hand) {
         if (player.isShiftKeyDown() && !isLocked()) {
             if (hasLicensePlateHolder()) {
                 ItemStack stack = player.getItemInHand(hand);
@@ -40,7 +40,7 @@ public abstract class EntityCarLicensePlateBase extends EntityCarLockBase {
                         ItemUtils.decrItemStack(stack, player);
                         player.setItemInHand(hand, stack);
                         setLicensePlate(text);
-                        return ActionResultType.CONSUME;
+                        return InteractionResult.CONSUME;
                     }
                 }
             }
@@ -71,13 +71,13 @@ public abstract class EntityCarLicensePlateBase extends EntityCarLockBase {
     }
 
     @Override
-    protected void addAdditionalSaveData(CompoundNBT compound) {
+    protected void addAdditionalSaveData(CompoundTag compound) {
         super.addAdditionalSaveData(compound);
         compound.putString("license_plate", getLicensePlate());
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundNBT compound) {
+    public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
         setLicensePlate(compound.getString("license_plate"));
     }

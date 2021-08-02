@@ -5,26 +5,26 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import de.maxhenkel.car.Main;
+import de.maxhenkel.corelib.blockentity.ITickableBlockEntity;
 import de.maxhenkel.corelib.fluid.FluidUtils;
 import de.maxhenkel.tools.BlockPosList;
 import de.maxhenkel.car.blocks.BlockFluidExtractor;
 import de.maxhenkel.car.blocks.ModBlocks;
-import net.minecraft.block.BlockState;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tileentity.ITickableTileEntity;
-import net.minecraft.util.Direction;
-import net.minecraft.util.IIntArray;
-import net.minecraft.util.IntArray;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.inventory.ContainerData;
+import net.minecraft.world.inventory.SimpleContainerData;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 
-public class TileEntityFluidExtractor extends TileEntityBase implements ITickableTileEntity {
+public class TileEntityFluidExtractor extends TileEntityBase implements ITickableBlockEntity {
 
     private IFluidHandler extractHandler;
 
@@ -32,8 +32,8 @@ public class TileEntityFluidExtractor extends TileEntityBase implements ITickabl
 
     private ItemStack filter;
 
-    public TileEntityFluidExtractor() {
-        super(Main.FLUID_EXTRACTOR_TILE_ENTITY_TYPE);
+    public TileEntityFluidExtractor(BlockPos pos, BlockState state) {
+        super(Main.FLUID_EXTRACTOR_TILE_ENTITY_TYPE, pos, state);
         this.drainSpeed = Main.SERVER_CONFIG.fluidExtractorDrainSpeed.get();
         filter = null;
     }
@@ -141,10 +141,9 @@ public class TileEntityFluidExtractor extends TileEntityBase implements ITickabl
     }
 
     @Override
-    public CompoundNBT save(CompoundNBT compound) {
-
+    public CompoundTag save(CompoundTag compound) {
         if (filter != null) {
-            CompoundNBT tag = new CompoundNBT();
+            CompoundTag tag = new CompoundTag();
             filter.save(tag);
             compound.put("filter", tag);
         }
@@ -153,19 +152,19 @@ public class TileEntityFluidExtractor extends TileEntityBase implements ITickabl
     }
 
     @Override
-    public void load(BlockState blockState, CompoundNBT compound) {
+    public void load(CompoundTag compound) {
         if (compound.contains("filter")) {
-            CompoundNBT tag = compound.getCompound("filter");
+            CompoundTag tag = compound.getCompound("filter");
             filter = ItemStack.of(tag);
         } else {
             filter = null;
         }
-        super.load(blockState, compound);
+        super.load(compound);
     }
 
     @Override
-    public ITextComponent getTranslatedName() {
-        return new TranslationTextComponent("block.car.fluid_extractor");
+    public Component getTranslatedName() {
+        return new TranslatableComponent("block.car.fluid_extractor");
     }
 
     public ItemStack getFilter() {
@@ -188,8 +187,8 @@ public class TileEntityFluidExtractor extends TileEntityBase implements ITickabl
     }
 
     @Override
-    public IIntArray getFields() {
-        return new IntArray(0);
+    public ContainerData getFields() {
+        return new SimpleContainerData(0);
     }
 
 }

@@ -1,5 +1,6 @@
 package de.maxhenkel.car.entity.car.base;
 
+import com.mojang.math.Vector3d;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.config.Fuel;
 import de.maxhenkel.car.entity.car.parts.*;
@@ -10,19 +11,18 @@ import de.maxhenkel.car.items.ItemKey;
 import de.maxhenkel.car.sounds.ModSounds;
 import de.maxhenkel.corelib.client.obj.OBJModelInstance;
 import de.maxhenkel.corelib.dataserializers.DataSerializerItemList;
-import net.minecraft.entity.EntityType;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.inventory.Inventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
+import net.minecraft.core.NonNullList;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.material.Fluid;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -32,15 +32,15 @@ import java.util.Random;
 
 public class EntityGenericCar extends EntityCarLicensePlateBase {
 
-    private static final DataParameter<NonNullList<ItemStack>> PARTS = EntityDataManager.defineId(EntityGenericCar.class, DataSerializerItemList.ITEM_LIST);
+    private static final EntityDataAccessor<NonNullList<ItemStack>> PARTS = SynchedEntityData.defineId(EntityGenericCar.class, DataSerializerItemList.ITEM_LIST);
 
     private List<Part> parts;
 
-    public EntityGenericCar(EntityType type, World worldIn) {
+    public EntityGenericCar(EntityType type, Level worldIn) {
         super(type, worldIn);
     }
 
-    public EntityGenericCar(World worldIn) {
+    public EntityGenericCar(Level worldIn) {
         this(Main.CAR_ENTITY_TYPE, worldIn);
     }
 
@@ -290,20 +290,20 @@ public class EntityGenericCar extends EntityCarLicensePlateBase {
     }
 
     @Override
-    protected ITextComponent getTypeName() {
+    protected Component getTypeName() {
         PartBody body = getPartByClass(PartBody.class);
         if (body == null) {
             return super.getTypeName();
         }
-        return new TranslationTextComponent("car_name." + body.getTranslationKey(), new TranslationTextComponent("car_variant." + body.getMaterialTranslationKey()));
+        return new TranslatableComponent("car_name." + body.getTranslationKey(), new TranslatableComponent("car_variant." + body.getMaterialTranslationKey()));
     }
 
-    public ITextComponent getShortName() {
+    public Component getShortName() {
         PartBody body = getPartByClass(PartBody.class);
         if (body == null) {
             return getTypeName();
         }
-        return new TranslationTextComponent("car_short_name." + body.getTranslationKey());
+        return new TranslatableComponent("car_short_name." + body.getTranslationKey());
     }
 
     @Override
@@ -343,7 +343,7 @@ public class EntityGenericCar extends EntityCarLicensePlateBase {
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundNBT compound) {
+    public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
 
         if (compound.getAllKeys().stream().allMatch(s -> s.equals("id"))) {
@@ -438,9 +438,9 @@ public class EntityGenericCar extends EntityCarLicensePlateBase {
             PartContainer container = getPartByClass(PartContainer.class);
             if (externalInventory.getContainerSize() <= 0) {
                 if (container != null) {
-                    externalInventory = new Inventory(54);
+                    externalInventory = new SimpleContainer(54);
                 } else {
-                    externalInventory = new Inventory(27);
+                    externalInventory = new SimpleContainer(27);
                 }
             }
         }

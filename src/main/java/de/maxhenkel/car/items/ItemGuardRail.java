@@ -3,21 +3,21 @@ package de.maxhenkel.car.items;
 import de.maxhenkel.car.ModItemGroups;
 import de.maxhenkel.car.blocks.ModBlocks;
 import net.minecraft.advancements.CriteriaTriggers;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.SoundType;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.state.BooleanProperty;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
 
 public class ItemGuardRail extends BlockItem {
 
@@ -27,13 +27,13 @@ public class ItemGuardRail extends BlockItem {
     }
 
     @Override
-    public ActionResultType place(BlockItemUseContext context) {
-        BlockItemUseContext bc = updatePlacementContext(context);
+    public InteractionResult place(BlockPlaceContext context) {
+        BlockPlaceContext bc = updatePlacementContext(context);
         if (bc == null) {
             return super.place(context);
         }
 
-        World world = context.getLevel();
+        Level world = context.getLevel();
         Direction face = bc.getClickedFace();
 
         if (face.getStepY() != 0) {
@@ -53,29 +53,29 @@ public class ItemGuardRail extends BlockItem {
 
         BlockState place = clickedBlock.setValue(property, true);
         if (!placeBlock(bc, place)) {
-            return ActionResultType.FAIL;
+            return InteractionResult.FAIL;
         }
 
         BlockPos blockpos = bc.getClickedPos();
-        PlayerEntity playerentity = bc.getPlayer();
+        Player playerentity = bc.getPlayer();
         ItemStack itemstack = bc.getItemInHand();
         BlockState placed = world.getBlockState(blockpos);
         Block block = placed.getBlock();
         if (block == place.getBlock()) {
             updateCustomBlockEntityTag(blockpos, world, playerentity, itemstack, placed);
             block.setPlacedBy(world, blockpos, placed, playerentity, itemstack);
-            if (playerentity instanceof ServerPlayerEntity) {
-                CriteriaTriggers.PLACED_BLOCK.trigger((ServerPlayerEntity) playerentity, blockpos, itemstack);
+            if (playerentity instanceof ServerPlayer) {
+                CriteriaTriggers.PLACED_BLOCK.trigger((ServerPlayer) playerentity, blockpos, itemstack);
             }
         }
 
         SoundType soundtype = placed.getSoundType(world, blockpos, context.getPlayer());
-        world.playSound(playerentity, blockpos, this.getPlaceSound(placed, world, blockpos, context.getPlayer()), SoundCategory.BLOCKS, (soundtype.getVolume() + 1.0F) / 2.0F, soundtype.getPitch() * 0.8F);
-        if (playerentity == null || !playerentity.abilities.instabuild) {
+        world.playSound(playerentity, blockpos, this.getPlaceSound(placed, world, blockpos, context.getPlayer()), SoundSource.BLOCKS, (soundtype.getVolume() + 1.0F) / 2.0F, soundtype.getPitch() * 0.8F);
+        if (playerentity == null || !playerentity.getAbilities().instabuild) {
             itemstack.shrink(1);
         }
 
-        return ActionResultType.sidedSuccess(world.isClientSide);
+        return InteractionResult.sidedSuccess(world.isClientSide);
     }
 
 }

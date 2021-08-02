@@ -6,22 +6,26 @@ import de.maxhenkel.car.blocks.BlockPaint;
 import de.maxhenkel.car.blocks.ModBlocks;
 import de.maxhenkel.car.gui.ContainerPainter;
 import de.maxhenkel.car.gui.SlotPainter;
-import net.minecraft.block.BlockState;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.inventory.container.INamedContainerProvider;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUseContext;
-import net.minecraft.util.*;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.network.NetworkHooks;
+import net.minecraft.ChatFormatting;
+import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.MenuProvider;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.fmllegacy.network.NetworkHooks;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -46,18 +50,18 @@ public class ItemPainter extends Item {
     }
 
     @Override
-    public ActionResult<ItemStack> use(World worldIn, PlayerEntity playerIn, Hand handIn) {
+    public InteractionResultHolder<ItemStack> use(Level worldIn, Player playerIn, InteractionHand handIn) {
         if (playerIn.isShiftKeyDown()) {
-            if (playerIn instanceof ServerPlayerEntity) {
-                NetworkHooks.openGui((ServerPlayerEntity) playerIn, new INamedContainerProvider() {
+            if (playerIn instanceof ServerPlayer) {
+                NetworkHooks.openGui((ServerPlayer) playerIn, new MenuProvider() {
                     @Override
-                    public ITextComponent getDisplayName() {
+                    public Component getDisplayName() {
                         return ItemPainter.this.getName(playerIn.getItemInHand(handIn));
                     }
 
                     @Nullable
                     @Override
-                    public Container createMenu(int i, PlayerInventory playerInventory, PlayerEntity playerEntity) {
+                    public AbstractContainerMenu createMenu(int i, Inventory playerInventory, Player playerEntity) {
                         return new ContainerPainter(i, playerInventory, isYellow);
                     }
                 }, packetBuffer -> packetBuffer.writeBoolean(isYellow));
@@ -67,33 +71,33 @@ public class ItemPainter extends Item {
     }
 
     @Override
-    public ActionResultType useOn(ItemUseContext context) {
+    public InteractionResult useOn(UseOnContext context) {
         if (context.getPlayer().isShiftKeyDown()) {
-            return ActionResultType.PASS;
+            return InteractionResult.PASS;
         }
 
         if (!context.getClickedFace().equals(Direction.UP)) {
-            return ActionResultType.FAIL;
+            return InteractionResult.FAIL;
         }
 
         if (!BlockPaint.canPlaceBlockAt(context.getLevel(), context.getClickedPos().above())) {
-            return ActionResultType.FAIL;
+            return InteractionResult.FAIL;
         }
 
         if (!context.getLevel().isEmptyBlock(context.getClickedPos().above())) {
-            return ActionResultType.FAIL;
+            return InteractionResult.FAIL;
         }
 
         ItemStack stack1 = SlotPainter.getPainterStack(context.getPlayer());
 
         if (stack1.isEmpty()) {
-            return ActionResultType.FAIL;
+            return InteractionResult.FAIL;
         }
 
         BlockPaint block = getSelectedPaint(SlotPainter.getPainterID(stack1));
 
         if (block == null) {
-            return ActionResultType.FAIL;
+            return InteractionResult.FAIL;
         }
 
         BlockState state = block.defaultBlockState().setValue(BlockPaint.FACING, context.getPlayer().getDirection());
@@ -102,7 +106,7 @@ public class ItemPainter extends Item {
 
         stack1.hurtAndBreak(1, context.getPlayer(), playerEntity -> playerEntity.broadcastBreakEvent(context.getHand()));
 
-        return ActionResultType.SUCCESS;
+        return InteractionResult.SUCCESS;
     }
 
     private BlockPaint getSelectedPaint(int id) {
@@ -121,10 +125,10 @@ public class ItemPainter extends Item {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, @Nullable World world, List<ITextComponent> textComponents, ITooltipFlag tooltipFlag) {
+    public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> textComponents, TooltipFlag tooltipFlag) {
         BlockPaint paint = getSelectedPaint(SlotPainter.getPainterID(stack));
         if (paint != null) {
-            textComponents.add(new TranslationTextComponent("tooltip.painter", new TranslationTextComponent(paint.getDescriptionId()).withStyle(TextFormatting.DARK_GRAY)).withStyle(TextFormatting.GRAY));
+            textComponents.add(new TranslatableComponent("tooltip.painter", new TranslatableComponent(paint.getDescriptionId()).withStyle(ChatFormatting.DARK_GRAY)).withStyle(ChatFormatting.GRAY));
         }
         super.appendHoverText(stack, world, textComponents, tooltipFlag);
     }

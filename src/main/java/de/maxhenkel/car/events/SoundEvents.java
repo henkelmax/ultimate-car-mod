@@ -4,8 +4,8 @@ import de.maxhenkel.car.Main;
 import de.maxhenkel.car.gui.CarOptionsSoundsScreen;
 import de.maxhenkel.car.sounds.ModSounds;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screen.OptionsSoundsScreen;
-import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.screens.SoundOptionsScreen;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.entity.PlaySoundAtEntityEvent;
@@ -19,13 +19,13 @@ public class SoundEvents {
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void onOpenGUI(net.minecraftforge.client.event.GuiOpenEvent event) {
-        if (!(event.getGui() instanceof OptionsSoundsScreen)) {
+        if (!(event.getGui() instanceof SoundOptionsScreen)) {
             return;
         }
 
-        OptionsSoundsScreen sounds = (OptionsSoundsScreen) event.getGui();
+        SoundOptionsScreen sounds = (SoundOptionsScreen) event.getGui();
 
-        if (!sounds.getClass().equals(OptionsSoundsScreen.class)) {
+        if (!sounds.getClass().equals(SoundOptionsScreen.class)) {
             return;
         }
 

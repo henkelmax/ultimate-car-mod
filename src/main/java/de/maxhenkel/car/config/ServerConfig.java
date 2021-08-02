@@ -2,11 +2,11 @@ package de.maxhenkel.car.config;
 
 import de.maxhenkel.corelib.config.ConfigBase;
 import de.maxhenkel.corelib.tag.TagUtils;
-import net.minecraft.block.Block;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.tags.ITag;
+import net.minecraft.tags.Tag;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.fml.config.ModConfig;
+import net.minecraftforge.fml.event.config.ModConfigEvent;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -104,9 +104,9 @@ public class ServerConfig extends ConfigBase {
     public final ForgeConfigSpec.DoubleValue bodyTransporterAcceleration;
     public final ForgeConfigSpec.DoubleValue bodyTransporterMaxSpeed;
 
-    public List<ITag<Fluid>> gasStationValidFuelList = new ArrayList<>();
-    public List<ITag<Fluid>> generatorValidFuelList = new ArrayList<>();
-    public List<ITag<Block>> carDriveBlockList = new ArrayList<>();
+    public List<Tag<Fluid>> gasStationValidFuelList = new ArrayList<>();
+    public List<Tag<Fluid>> generatorValidFuelList = new ArrayList<>();
+    public List<Tag<Block>> carDriveBlockList = new ArrayList<>();
 
     public ServerConfig(ForgeConfigSpec.Builder builder) {
         super(builder);
@@ -193,7 +193,7 @@ public class ServerConfig extends ConfigBase {
     }
 
     @Override
-    public void onReload(ModConfig.ModConfigEvent event) {
+    public void onReload(ModConfigEvent event) {
         super.onReload(event);
         gasStationValidFuelList = gasStationValidFuels.get().stream().map(TagUtils::getFluid).filter(Objects::nonNull).collect(Collectors.toList());
         generatorValidFuelList = generatorValidFuels.get().stream().map(TagUtils::getFluid).filter(Objects::nonNull).collect(Collectors.toList());

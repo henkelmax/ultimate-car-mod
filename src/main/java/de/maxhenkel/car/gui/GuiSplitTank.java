@@ -1,14 +1,14 @@
 package de.maxhenkel.car.gui;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.blocks.tileentity.TileEntitySplitTank;
 import de.maxhenkel.corelib.inventory.ScreenBase;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.util.IReorderingProcessor;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.FormattedCharSequence;
+import net.minecraft.world.entity.player.Inventory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,10 +17,10 @@ public class GuiSplitTank extends ScreenBase<ContainerSplitTank> {
 
     private static final ResourceLocation GUI_TEXTURE = new ResourceLocation(Main.MODID, "textures/gui/gui_split_tank.png");
 
-    private PlayerInventory playerInv;
+    private Inventory playerInv;
     private TileEntitySplitTank tile;
 
-    public GuiSplitTank(ContainerSplitTank containerSplitTank, PlayerInventory playerInv, ITextComponent title) {
+    public GuiSplitTank(ContainerSplitTank containerSplitTank, Inventory playerInv, Component title) {
         super(GUI_TEXTURE, containerSplitTank, playerInv, title);
         this.playerInv = playerInv;
         this.tile = containerSplitTank.getSplitTank();
@@ -30,7 +30,7 @@ public class GuiSplitTank extends ScreenBase<ContainerSplitTank> {
     }
 
     @Override
-    protected void renderLabels(MatrixStack matrixStack, int mouseX, int mouseY) {
+    protected void renderLabels(PoseStack matrixStack, int mouseX, int mouseY) {
         super.renderLabels(matrixStack, mouseX, mouseY);
 
         // Title
@@ -38,39 +38,39 @@ public class GuiSplitTank extends ScreenBase<ContainerSplitTank> {
 
         if (mouseX >= leftPos + 50 && mouseX <= leftPos + 16 + 50) {
             if (mouseY >= topPos + 8 && mouseY <= topPos + 57 + 8) {
-                List<IReorderingProcessor> list = new ArrayList<>();
-                list.add(new TranslationTextComponent("tooltip.mix", tile.getCurrentMix()).getVisualOrderText());
+                List<FormattedCharSequence> list = new ArrayList<>();
+                list.add(new TranslatableComponent("tooltip.mix", tile.getCurrentMix()).getVisualOrderText());
                 renderTooltip(matrixStack, list, mouseX - leftPos, mouseY - topPos);
             }
         }
 
         if (mouseX >= leftPos + 120 && mouseX <= leftPos + 16 + 120) {
             if (mouseY >= topPos + 8 && mouseY <= topPos + 57 + 8) {
-                List<IReorderingProcessor> list = new ArrayList<>();
-                list.add(new TranslationTextComponent("tooltip.glycerin", tile.getCurrentGlycerin()).getVisualOrderText());
+                List<FormattedCharSequence> list = new ArrayList<>();
+                list.add(new TranslatableComponent("tooltip.glycerin", tile.getCurrentGlycerin()).getVisualOrderText());
                 renderTooltip(matrixStack, list, mouseX - leftPos, mouseY - topPos);
             }
         }
 
         if (mouseX >= leftPos + 141 && mouseX <= leftPos + 16 + 141) {
             if (mouseY >= topPos + 8 && mouseY <= topPos + 57 + 8) {
-                List<IReorderingProcessor> list = new ArrayList<>();
-                list.add(new TranslationTextComponent("tooltip.bio_diesel", tile.getCurrentBioDiesel()).getVisualOrderText());
+                List<FormattedCharSequence> list = new ArrayList<>();
+                list.add(new TranslatableComponent("tooltip.bio_diesel", tile.getCurrentBioDiesel()).getVisualOrderText());
                 renderTooltip(matrixStack, list, mouseX - leftPos, mouseY - topPos);
             }
         }
 
         if (mouseX >= leftPos + 79 && mouseX <= leftPos + 24 + 79) {
             if (mouseY >= topPos + 34 && mouseY <= topPos + 17 + 34) {
-                List<IReorderingProcessor> list = new ArrayList<>();
-                list.add(new TranslationTextComponent("tooltip.progress", ((int) (getProgress() * 100F))).getVisualOrderText());
+                List<FormattedCharSequence> list = new ArrayList<>();
+                list.add(new TranslatableComponent("tooltip.progress", ((int) (getProgress() * 100F))).getVisualOrderText());
                 renderTooltip(matrixStack, list, mouseX - leftPos, mouseY - topPos);
             }
         }
     }
 
     @Override
-    protected void renderBg(MatrixStack matrixStack, float partialTicks, int mouseX, int mouseY) {
+    protected void renderBg(PoseStack matrixStack, float partialTicks, int mouseX, int mouseY) {
         super.renderBg(matrixStack, partialTicks, mouseX, mouseY);
         drawProgress(matrixStack);
         drawMix(matrixStack);
@@ -78,7 +78,7 @@ public class GuiSplitTank extends ScreenBase<ContainerSplitTank> {
         drawGlycerin(matrixStack);
     }
 
-    public void drawGlycerin(MatrixStack matrixStack) {
+    public void drawGlycerin(PoseStack matrixStack) {
         float perc = getGlycerin();
 
         int texX = 192;
@@ -94,7 +94,7 @@ public class GuiSplitTank extends ScreenBase<ContainerSplitTank> {
         blit(matrixStack, i + targetX, j + targetY + scHeight, texX, texY + scHeight, texW, texH - scHeight);
     }
 
-    public void drawBioDiesel(MatrixStack matrixStack) {
+    public void drawBioDiesel(PoseStack matrixStack) {
         float perc = getBioDiesel();
 
         int texX = 208;
@@ -110,7 +110,7 @@ public class GuiSplitTank extends ScreenBase<ContainerSplitTank> {
         blit(matrixStack, i + targetX, j + targetY + scHeight, texX, texY + scHeight, texW, texH - scHeight);
     }
 
-    public void drawMix(MatrixStack matrixStack) {
+    public void drawMix(PoseStack matrixStack) {
         float perc = getMix();
 
         int texX = 176;
@@ -126,7 +126,7 @@ public class GuiSplitTank extends ScreenBase<ContainerSplitTank> {
         blit(matrixStack, i + targetX, j + targetY + scHeight, texX, texY + scHeight, texW, texH - scHeight);
     }
 
-    public void drawProgress(MatrixStack matrixStack) {
+    public void drawProgress(PoseStack matrixStack) {
         float perc = getProgress();
 
         int texX = 176;

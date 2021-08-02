@@ -1,44 +1,37 @@
 package de.maxhenkel.car.integration.waila;
 
 import de.maxhenkel.car.blocks.tileentity.TileEntityTank;
+import mcp.mobius.waila.api.BlockAccessor;
 import mcp.mobius.waila.api.IComponentProvider;
-import mcp.mobius.waila.api.IDataAccessor;
-import mcp.mobius.waila.api.IPluginConfig;
 import mcp.mobius.waila.api.IServerDataProvider;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
+import mcp.mobius.waila.api.ITooltip;
+import mcp.mobius.waila.api.config.IPluginConfig;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.fluids.FluidStack;
 
-import java.util.List;
+public class HUDHandlerTank implements IComponentProvider, IServerDataProvider<BlockEntity> {
 
-public class HUDHandlerTank implements IComponentProvider, IServerDataProvider<TileEntity> {
-
-    static final HUDHandlerTank INSTANCE = new HUDHandlerTank();
+    public static final HUDHandlerTank INSTANCE = new HUDHandlerTank();
 
     @Override
-    public void appendBody(List<ITextComponent> tooltip, IDataAccessor accessor, IPluginConfig config) {
-        FluidStack stack = FluidStack.loadFluidStackFromNBT(accessor.getServerData().getCompound("fluid"));
+    public void appendTooltip(ITooltip iTooltip, BlockAccessor blockAccessor, IPluginConfig iPluginConfig) {
+        FluidStack stack = FluidStack.loadFluidStackFromNBT(blockAccessor.getServerData().getCompound("fluid"));
 
         if (stack.isEmpty()) {
-            ITextComponent componentEmpty = new TranslationTextComponent("tooltip.waila.tank.no_fluid");
-            tooltip.add(componentEmpty);
+            iTooltip.add(new TranslatableComponent("tooltip.waila.tank.no_fluid"));
         } else {
-            ITextComponent componentFluid = new TranslationTextComponent("tooltip.waila.tank.fluid", stack.getDisplayName());
-            ITextComponent componentAmount = new TranslationTextComponent("tooltip.waila.tank.amount", stack.getAmount(), TileEntityTank.CAPACITY);
-            tooltip.add(componentFluid);
-            tooltip.add(componentAmount);
+            iTooltip.add(new TranslatableComponent("tooltip.waila.tank.fluid", stack.getDisplayName()));
+            iTooltip.add(new TranslatableComponent("tooltip.waila.tank.amount", stack.getAmount(), TileEntityTank.CAPACITY));
         }
     }
 
     @Override
-    public void appendServerData(CompoundNBT data, ServerPlayerEntity player, World world, TileEntity blockEntity) {
+    public void appendServerData(CompoundTag compoundTag, ServerPlayer serverPlayer, Level level, BlockEntity blockEntity, boolean b) {
         TileEntityTank tank = (TileEntityTank) blockEntity;
-
-        data.put("fluid", tank.getFluid().writeToNBT(new CompoundNBT()));
+        compoundTag.put("fluid", tank.getFluid().writeToNBT(new CompoundTag()));
     }
-
 }

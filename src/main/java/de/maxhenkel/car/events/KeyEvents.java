@@ -4,14 +4,14 @@ import de.maxhenkel.car.Main;
 import de.maxhenkel.car.entity.car.base.EntityCarBatteryBase;
 import de.maxhenkel.car.net.MessageCenterCar;
 import de.maxhenkel.car.net.MessageStarting;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.Entity;
 
 @OnlyIn(Dist.CLIENT)
 public class KeyEvents {
@@ -29,7 +29,7 @@ public class KeyEvents {
     public void onKeyInput(InputEvent.KeyInputEvent event) {
         Minecraft minecraft = Minecraft.getInstance();
 
-        PlayerEntity player = minecraft.player;
+        Player player = minecraft.player;
 
         if (player == null) {
             return;
@@ -70,7 +70,7 @@ public class KeyEvents {
             if (Main.CENTER_KEY.isDown()) {
                 if (!wasCenterPressed) {
                     Main.SIMPLE_CHANNEL.sendToServer(new MessageCenterCar(player));
-                    player.displayClientMessage(new TranslationTextComponent("message.center_car"), true);
+                    player.displayClientMessage(new TranslatableComponent("message.center_car"), true);
                     wasCenterPressed = true;
                 }
             } else {

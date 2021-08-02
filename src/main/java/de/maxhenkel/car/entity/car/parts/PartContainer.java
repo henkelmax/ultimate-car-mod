@@ -1,11 +1,11 @@
 package de.maxhenkel.car.entity.car.parts;
 
+import com.mojang.math.Vector3d;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.corelib.client.obj.OBJModel;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
 
 import java.util.List;
 
@@ -17,9 +17,9 @@ public class PartContainer extends PartTransporterBack {
     }
 
     @Override
-    public boolean validate(List<Part> parts, List<ITextComponent> messages) {
+    public boolean validate(List<Part> parts, List<Component> messages) {
         if (Part.getAmount(parts, part -> part instanceof PartBodyTransporter) != 1) {
-            messages.add(new TranslationTextComponent("message.parts.no_body_for_container"));
+            messages.add(new TranslatableComponent("message.parts.no_body_for_container"));
             return false;
         }
         return true;

@@ -3,8 +3,8 @@ package de.maxhenkel.car.integration.jei;
 import de.maxhenkel.car.blocks.tileentity.TileEntityCarWorkshop;
 import de.maxhenkel.car.entity.car.base.EntityGenericCar;
 import net.minecraft.client.Minecraft;
-import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -36,7 +36,7 @@ public class CarRecipe {
         return car;
     }
 
-    private EntityGenericCar createCar(World world) {
+    private EntityGenericCar createCar(Level world) {
         return TileEntityCarWorkshop.createCar(world, inputs);
     }
 }

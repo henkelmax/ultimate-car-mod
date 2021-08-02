@@ -1,23 +1,23 @@
 package de.maxhenkel.car.gui;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import de.maxhenkel.car.blocks.tileentity.TileEntityEnergyFluidProducer;
 import de.maxhenkel.corelib.inventory.ScreenBase;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.util.IReorderingProcessor;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.FormattedCharSequence;
+import net.minecraft.world.entity.player.Inventory;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public abstract class GuiEnergyFluidProducer<T extends ContainerEnergyFluidProducer> extends ScreenBase<T> {
 
-    private PlayerInventory playerInv;
+    private Inventory playerInv;
     private TileEntityEnergyFluidProducer tile;
 
-    public GuiEnergyFluidProducer(ResourceLocation texture, T container, PlayerInventory playerInventory, ITextComponent title) {
+    public GuiEnergyFluidProducer(ResourceLocation texture, T container, Inventory playerInventory, Component title) {
         super(texture, container, playerInventory, title);
         this.playerInv = playerInventory;
         this.tile = container.getTile();
@@ -37,7 +37,7 @@ public abstract class GuiEnergyFluidProducer<T extends ContainerEnergyFluidProdu
     public abstract String getUnlocalizedTooltipLiquid();
 
     @Override
-    protected void renderLabels(MatrixStack matrixStack, int mouseX, int mouseY) {
+    protected void renderLabels(PoseStack matrixStack, int mouseX, int mouseY) {
         super.renderLabels(matrixStack, mouseX, mouseY);
 
         // Titles
@@ -46,30 +46,30 @@ public abstract class GuiEnergyFluidProducer<T extends ContainerEnergyFluidProdu
 
         if (mouseX >= leftPos + 11 && mouseX <= leftPos + 16 + 11) {
             if (mouseY >= topPos + 8 && mouseY <= topPos + 57 + 8) {
-                List<IReorderingProcessor> list = new ArrayList<>();
-                list.add(new TranslationTextComponent(getUnlocalizedTooltipEnergy(), tile.getStoredEnergy()).getVisualOrderText());
+                List<FormattedCharSequence> list = new ArrayList<>();
+                list.add(new TranslatableComponent(getUnlocalizedTooltipEnergy(), tile.getStoredEnergy()).getVisualOrderText());
                 renderTooltip(matrixStack, list, mouseX - leftPos, mouseY - topPos);
             }
         }
 
         if (mouseX >= leftPos + 148 && mouseX <= leftPos + 16 + 148) {
             if (mouseY >= topPos + 8 && mouseY <= topPos + 57 + 8) {
-                List<IReorderingProcessor> list = new ArrayList<>();
-                list.add(new TranslationTextComponent(getUnlocalizedTooltipLiquid(), tile.getCurrentMillibuckets()).getVisualOrderText());
+                List<FormattedCharSequence> list = new ArrayList<>();
+                list.add(new TranslatableComponent(getUnlocalizedTooltipLiquid(), tile.getCurrentMillibuckets()).getVisualOrderText());
                 renderTooltip(matrixStack, list, mouseX - leftPos, mouseY - topPos);
             }
         }
 
         if (mouseX >= leftPos + 79 && mouseX <= leftPos + 24 + 79) {
             if (mouseY >= topPos + 34 && mouseY <= topPos + 17 + 34) {
-                List<IReorderingProcessor> list = new ArrayList<>();
-                list.add(new TranslationTextComponent(getUnlocalizedTooltipProgress(), ((int) (getProgress() * 100F))).getVisualOrderText());
+                List<FormattedCharSequence> list = new ArrayList<>();
+                list.add(new TranslatableComponent(getUnlocalizedTooltipProgress(), ((int) (getProgress() * 100F))).getVisualOrderText());
                 renderTooltip(matrixStack, list, mouseX - leftPos, mouseY - topPos);
             }
         }
     }
 
-    public void drawEnergy(MatrixStack matrixStack) {
+    public void drawEnergy(PoseStack matrixStack) {
         float perc = getEnergy();
 
         int texX = 176;
@@ -85,7 +85,7 @@ public abstract class GuiEnergyFluidProducer<T extends ContainerEnergyFluidProdu
         blit(matrixStack, i + targetX, j + targetY + scHeight, texX, texY + scHeight, texW, texH - scHeight);
     }
 
-    public void drawFluid(MatrixStack matrixStack) {
+    public void drawFluid(PoseStack matrixStack) {
         float perc = getFluid();
 
         int texX = 192;
@@ -101,7 +101,7 @@ public abstract class GuiEnergyFluidProducer<T extends ContainerEnergyFluidProdu
         blit(matrixStack, i + targetX, j + targetY + scHeight, texX, texY + scHeight, texW, texH - scHeight);
     }
 
-    public void drawProgress(MatrixStack matrixStack) {
+    public void drawProgress(PoseStack matrixStack) {
         float perc = getProgress();
 
         int texX = 176;
@@ -133,7 +133,7 @@ public abstract class GuiEnergyFluidProducer<T extends ContainerEnergyFluidProdu
     }
 
     @Override
-    protected void renderBg(MatrixStack matrixStack, float partialTicks, int mouseX, int mouseY) {
+    protected void renderBg(PoseStack matrixStack, float partialTicks, int mouseX, int mouseY) {
         super.renderBg(matrixStack, partialTicks, mouseX, mouseY);
         drawEnergy(matrixStack);
         drawFluid(matrixStack);

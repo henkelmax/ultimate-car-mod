@@ -2,10 +2,10 @@ package de.maxhenkel.car.recipes;
 
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.blocks.ModBlocks;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipeSerializer;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.RecipeSerializer;
 
 public class BlastFurnaceRecipe extends EnergyFluidProducerRecipe {
 
@@ -18,9 +18,8 @@ public class BlastFurnaceRecipe extends EnergyFluidProducerRecipe {
         return new ItemStack(ModBlocks.BLAST_FURNACE);
     }
 
-
     @Override
-    public IRecipeSerializer<?> getSerializer() {
+    public RecipeSerializer<?> getSerializer() {
         return Main.CRAFTING_BLAST_FURNACE;
     }
 }

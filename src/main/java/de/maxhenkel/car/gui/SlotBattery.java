@@ -2,19 +2,19 @@ package de.maxhenkel.car.gui;
 
 import de.maxhenkel.car.entity.car.base.EntityCarBatteryBase;
 import de.maxhenkel.car.items.ModItems;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.Inventory;
-import net.minecraft.inventory.InventoryHelper;
-import net.minecraft.inventory.container.Slot;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.Containers;
+import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.ItemStack;
 
 public class SlotBattery extends Slot {
 
     private EntityCarBatteryBase car;
-    private PlayerEntity player;
+    private Player player;
 
-    public SlotBattery(EntityCarBatteryBase car, int index, int xPosition, int yPosition, PlayerEntity player) {
-        super(new Inventory(1), index, xPosition, yPosition);
+    public SlotBattery(EntityCarBatteryBase car, int index, int xPosition, int yPosition, Player player) {
+        super(new SimpleContainer(1), index, xPosition, yPosition);
         this.car = car;
         this.player = player;
     }
@@ -35,8 +35,8 @@ public class SlotBattery extends Slot {
 
         car.setBatteryLevel(car.getBatteryLevel() + fill);
 
-        if (!player.inventory.add(stack)) {
-            InventoryHelper.dropItemStack(car.level, car.getX(), car.getY(), car.getZ(), stack);
+        if (!player.getInventory().add(stack)) {
+            Containers.dropItemStack(car.level, car.getX(), car.getY(), car.getZ(), stack);
         }
     }
 

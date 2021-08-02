@@ -5,11 +5,11 @@ import java.util.UUID;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.entity.car.base.EntityCarBase;
 import de.maxhenkel.corelib.net.Message;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.network.PacketBuffer;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraftforge.fmllegacy.network.NetworkEvent;
 
 public class MessageCarHorn implements Message<MessageCarHorn> {
 
@@ -20,7 +20,7 @@ public class MessageCarHorn implements Message<MessageCarHorn> {
 
     }
 
-    public MessageCarHorn(boolean pressed, PlayerEntity player) {
+    public MessageCarHorn(boolean pressed, Player player) {
         this.pressed = pressed;
         this.uuid = player.getUUID();
     }
@@ -54,14 +54,14 @@ public class MessageCarHorn implements Message<MessageCarHorn> {
     }
 
     @Override
-    public MessageCarHorn fromBytes(PacketBuffer buf) {
+    public MessageCarHorn fromBytes(FriendlyByteBuf buf) {
         this.pressed = buf.readBoolean();
         this.uuid = buf.readUUID();
         return this;
     }
 
     @Override
-    public void toBytes(PacketBuffer buf) {
+    public void toBytes(FriendlyByteBuf buf) {
         buf.writeBoolean(pressed);
         buf.writeUUID(uuid);
     }

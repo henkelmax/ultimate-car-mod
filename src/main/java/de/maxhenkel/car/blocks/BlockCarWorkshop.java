@@ -6,31 +6,34 @@ import de.maxhenkel.car.blocks.tileentity.TileEntityCarWorkshop;
 import de.maxhenkel.car.gui.ContainerCarWorkshopCrafting;
 import de.maxhenkel.car.gui.TileEntityContainerProvider;
 import de.maxhenkel.corelib.block.IItemBlock;
-import net.minecraft.block.*;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.material.MaterialColor;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.inventory.InventoryHelper;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.state.BooleanProperty;
-import net.minecraft.state.StateContainer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.Containers;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.EntityBlock;
+import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.material.MaterialColor;
+import net.minecraft.world.phys.BlockHitResult;
 
 import javax.annotation.Nullable;
 
-public class BlockCarWorkshop extends BlockBase implements ITileEntityProvider, IItemBlock {
+public class BlockCarWorkshop extends BlockBase implements EntityBlock, IItemBlock {
 
     public static final BooleanProperty VALID = BooleanProperty.create("valid");
 
@@ -46,25 +49,25 @@ public class BlockCarWorkshop extends BlockBase implements ITileEntityProvider, 
     }
 
     @Override
-    public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
+    public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
         TileEntityCarWorkshop workshop = getOwnTileEntity(worldIn, pos);
 
         if (workshop == null) {
-            return ActionResultType.FAIL;
+            return InteractionResult.FAIL;
         }
 
         if (!workshop.areBlocksAround()) {
-            return ActionResultType.FAIL;
+            return InteractionResult.FAIL;
         }
-        if (player instanceof ServerPlayerEntity) {
-            TileEntityContainerProvider.openGui((ServerPlayerEntity) player, workshop, (i, playerInventory, playerEntity) -> new ContainerCarWorkshopCrafting(i, workshop, playerInventory));
+        if (player instanceof ServerPlayer) {
+            TileEntityContainerProvider.openGui((ServerPlayer) player, workshop, (i, playerInventory, playerEntity) -> new ContainerCarWorkshopCrafting(i, workshop, playerInventory));
         }
 
-        return ActionResultType.SUCCESS;
+        return InteractionResult.SUCCESS;
     }
 
-    public TileEntityCarWorkshop getOwnTileEntity(World world, BlockPos pos) {
-        TileEntity tile = world.getBlockEntity(pos);
+    public TileEntityCarWorkshop getOwnTileEntity(Level world, BlockPos pos) {
+        BlockEntity tile = world.getBlockEntity(pos);
         if (tile == null) {
             return null;
         }
@@ -77,7 +80,7 @@ public class BlockCarWorkshop extends BlockBase implements ITileEntityProvider, 
     }
 
     @Override
-    public void setPlacedBy(World worldIn, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
+    public void setPlacedBy(Level worldIn, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
         super.setPlacedBy(worldIn, pos, state, placer, stack);
 
         TileEntityCarWorkshop workshop = getOwnTileEntity(worldIn, pos);
@@ -90,44 +93,44 @@ public class BlockCarWorkshop extends BlockBase implements ITileEntityProvider, 
     }
 
     @Override
-    public BlockRenderType getRenderShape(BlockState state) {
-        return BlockRenderType.MODEL;
+    public RenderShape getRenderShape(BlockState state) {
+        return RenderShape.MODEL;
     }
 
 
     @Nullable
     @Override
-    public BlockState getStateForPlacement(BlockItemUseContext context) {
+    public BlockState getStateForPlacement(BlockPlaceContext context) {
         return this.defaultBlockState().setValue(VALID, false);
     }
 
     @Override
-    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(VALID);
     }
 
 
-    public void setValid(World world, BlockPos pos, BlockState state, boolean valid) {
+    public void setValid(Level world, BlockPos pos, BlockState state, boolean valid) {
         if (state.getValue(VALID).equals(valid)) {
             return;
         }
 
-        TileEntity tileentity = world.getBlockEntity(pos);
+        BlockEntity tileentity = world.getBlockEntity(pos);
 
         world.setBlock(pos, state.setValue(VALID, valid), 2);
 
         if (tileentity != null) {
             tileentity.clearRemoved();
-            world.setBlockEntity(pos, tileentity);
+            world.setBlockEntity(tileentity);
         }
     }
 
     @Override
-    public void onRemove(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
+    public void onRemove(BlockState state, Level worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
         TileEntityCarWorkshop workshop = getOwnTileEntity(worldIn, pos);
 
         if (workshop != null) {
-            InventoryHelper.dropContents(worldIn, pos, workshop);
+            Containers.dropContents(worldIn, pos, workshop);
         }
 
         super.onRemove(state, worldIn, pos, newState, isMoving);
@@ -135,7 +138,8 @@ public class BlockCarWorkshop extends BlockBase implements ITileEntityProvider, 
 
     @Nullable
     @Override
-    public TileEntity newBlockEntity(IBlockReader worldIn) {
-        return new TileEntityCarWorkshop();
+    public BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
+        return new TileEntityCarWorkshop(blockPos, blockState);
     }
+
 }

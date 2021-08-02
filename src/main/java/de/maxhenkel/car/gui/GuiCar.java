@@ -1,15 +1,14 @@
 package de.maxhenkel.car.gui;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.corelib.inventory.ScreenBase;
 import de.maxhenkel.corelib.math.MathUtils;
 import de.maxhenkel.car.entity.car.base.EntityCarInventoryBase;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Inventory;
 
 public class GuiCar extends ScreenBase<ContainerCar> {
 
@@ -17,10 +16,10 @@ public class GuiCar extends ScreenBase<ContainerCar> {
 
     private static final int fontColor = 4210752;
 
-    private PlayerInventory playerInv;
+    private Inventory playerInv;
     private EntityCarInventoryBase car;
 
-    public GuiCar(ContainerCar containerCar, PlayerInventory playerInv, ITextComponent title) {
+    public GuiCar(ContainerCar containerCar, Inventory playerInv, Component title) {
         super(CAR_GUI_TEXTURE, containerCar, playerInv, title);
         this.playerInv = playerInv;
         this.car = containerCar.getCar();
@@ -30,7 +29,7 @@ public class GuiCar extends ScreenBase<ContainerCar> {
     }
 
     @Override
-    protected void renderLabels(MatrixStack matrixStack, int mouseX, int mouseY) {
+    protected void renderLabels(PoseStack matrixStack, int mouseX, int mouseY) {
         super.renderLabels(matrixStack, mouseX, mouseY);
 
         //Titles
@@ -77,28 +76,28 @@ public class GuiCar extends ScreenBase<ContainerCar> {
         return MathUtils.round(dmg, 2);
     }
 
-    public TextComponent getFuelString() {
-        return new TranslationTextComponent("gui.car_fuel", String.valueOf(getFuelPercent()));
+    public Component getFuelString() {
+        return new TranslatableComponent("gui.car_fuel", String.valueOf(getFuelPercent()));
     }
 
-    public TextComponent getDamageString() {
-        return new TranslationTextComponent("gui.car_damage", String.valueOf(getDamagePercent()));
+    public Component getDamageString() {
+        return new TranslatableComponent("gui.car_damage", String.valueOf(getDamagePercent()));
     }
 
-    public TextComponent getBatteryString() {
-        return new TranslationTextComponent("gui.car_battery", String.valueOf(getBatteryPercent()));
+    public Component getBatteryString() {
+        return new TranslatableComponent("gui.car_battery", String.valueOf(getBatteryPercent()));
     }
 
-    public TextComponent getTempString() {
+    public Component getTempString() {
         if (Main.CLIENT_CONFIG.tempInFarenheit.get()) {
-            return new TranslationTextComponent("gui.car_temperature_farenheit", String.valueOf(getTemperatureFarenheit()));
+            return new TranslatableComponent("gui.car_temperature_farenheit", String.valueOf(getTemperatureFarenheit()));
         } else {
-            return new TranslationTextComponent("gui.car_temperature_celsius", String.valueOf(getTemperatureCelsius()));
+            return new TranslatableComponent("gui.car_temperature_celsius", String.valueOf(getTemperatureCelsius()));
         }
     }
 
     @Override
-    protected void renderBg(MatrixStack matrixStack, float partialTicks, int mouseX, int mouseY) {
+    protected void renderBg(PoseStack matrixStack, float partialTicks, int mouseX, int mouseY) {
         super.renderBg(matrixStack, partialTicks, mouseX, mouseY);
         drawFuel(matrixStack, getFuelPercent());
         drawDamage(matrixStack, 100F - getDamagePercent());
@@ -106,7 +105,7 @@ public class GuiCar extends ScreenBase<ContainerCar> {
         drawTemp(matrixStack, getTemperaturePercent());
     }
 
-    public void drawFuel(MatrixStack matrixStack, float percent) {
+    public void drawFuel(PoseStack matrixStack, float percent) {
         percent = Math.min(100F, percent);
         //72x10
         int scaled = (int) (72F * percent / 100D);
@@ -115,7 +114,7 @@ public class GuiCar extends ScreenBase<ContainerCar> {
         blit(matrixStack, i + 8, j + 20, 176, 0, scaled, 10);
     }
 
-    public void drawDamage(MatrixStack matrixStack, float percent) {
+    public void drawDamage(PoseStack matrixStack, float percent) {
         percent = Math.min(100F, percent);
         int scaled = (int) (72F * percent / 100D);
         int i = this.leftPos;
@@ -123,7 +122,7 @@ public class GuiCar extends ScreenBase<ContainerCar> {
         blit(matrixStack, i + 8, j + 46, 176, 10, scaled, 10);
     }
 
-    public void drawTemp(MatrixStack matrixStack, float percent) {
+    public void drawTemp(PoseStack matrixStack, float percent) {
         percent = Math.min(100F, percent);
         int scaled = (int) (72F * percent);
         int i = this.leftPos;
@@ -131,7 +130,7 @@ public class GuiCar extends ScreenBase<ContainerCar> {
         blit(matrixStack, i + 96, j + 46, 176, 30, scaled, 10);
     }
 
-    public void drawBattery(MatrixStack matrixStack, float percent) {
+    public void drawBattery(PoseStack matrixStack, float percent) {
         percent = Math.min(100F, percent);
         int scaled = (int) (72F * percent);
         int i = this.leftPos;

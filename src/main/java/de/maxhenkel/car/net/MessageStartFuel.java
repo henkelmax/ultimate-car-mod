@@ -2,11 +2,11 @@ package de.maxhenkel.car.net;
 
 import de.maxhenkel.car.blocks.tileentity.TileEntityGasStation;
 import de.maxhenkel.corelib.net.Message;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraftforge.fmllegacy.network.NetworkEvent;
 
 public class MessageStartFuel implements Message<MessageStartFuel> {
 
@@ -28,7 +28,7 @@ public class MessageStartFuel implements Message<MessageStartFuel> {
 
     @Override
     public void executeServerSide(NetworkEvent.Context context) {
-        TileEntity te = context.getSender().level.getBlockEntity(pos);
+        BlockEntity te = context.getSender().level.getBlockEntity(pos);
 
         if (te instanceof TileEntityGasStation) {
             TileEntityGasStation tank = (TileEntityGasStation) te;
@@ -38,14 +38,14 @@ public class MessageStartFuel implements Message<MessageStartFuel> {
     }
 
     @Override
-    public MessageStartFuel fromBytes(PacketBuffer buf) {
+    public MessageStartFuel fromBytes(FriendlyByteBuf buf) {
         this.start = buf.readBoolean();
         this.pos = buf.readBlockPos();
         return this;
     }
 
     @Override
-    public void toBytes(PacketBuffer buf) {
+    public void toBytes(FriendlyByteBuf buf) {
         buf.writeBoolean(start);
         buf.writeBlockPos(pos);
     }

@@ -1,6 +1,6 @@
 package de.maxhenkel.car.fluids;
 
-import net.minecraft.fluid.FlowingFluid;
+import net.minecraft.world.level.material.FlowingFluid;
 
 public class ModFluids {
 
