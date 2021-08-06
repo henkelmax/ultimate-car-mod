@@ -7,6 +7,7 @@ import de.maxhenkel.car.blocks.tileentity.render.item.TankItemTileEntityRenderer
 import de.maxhenkel.corelib.block.IItemBlock;
 import de.maxhenkel.corelib.blockentity.SimpleBlockEntityTicker;
 import de.maxhenkel.corelib.client.CustomRendererBlockItem;
+import de.maxhenkel.corelib.client.ItemRenderer;
 import de.maxhenkel.corelib.fluid.FluidUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -55,7 +56,13 @@ public class BlockTank extends BlockBase implements EntityBlock, IItemBlock {
 
     @Override
     public Item toItem() {
-        return new CustomRendererBlockItem(this, new Item.Properties().tab(ModItemGroups.TAB_CAR).stacksTo(1), TankItemTileEntityRenderer::new).setRegistryName(getRegistryName());
+        return new CustomRendererBlockItem(this, new Item.Properties().tab(ModItemGroups.TAB_CAR).stacksTo(1)) {
+            @OnlyIn(Dist.CLIENT)
+            @Override
+            public ItemRenderer createItemRenderer() {
+                return new TankItemTileEntityRenderer();
+            }
+        }.setRegistryName(getRegistryName());
     }
 
     @Nullable
