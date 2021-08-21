@@ -1,1 +1,1 @@
-- Fixed crash on servers
+- Fixed crash when closing the gas station GUI
