@@ -143,6 +143,8 @@ curseforge {
         changelog = file('changelog.md')
         releaseType = curse_release_type
         addGameVersion mod_minecraft_version
+        addGameVersion 'Forge'
+        addGameVersion 'Java 16'
         mainArtifact(jar) {
             displayName = "[${mod_minecraft_version}] ${mod_name} ${mod_version}"
         }
@@ -182,10 +184,6 @@ repositories {
     maven {
         name = "ModMaven"
         url = "https://modmaven.k-4u.nl"
-    }
-    maven {
-        name = "Hwyla"
-        url = "https://maven.tehnut.info"
     }
     maven {
         name = "henkelmax.public"
