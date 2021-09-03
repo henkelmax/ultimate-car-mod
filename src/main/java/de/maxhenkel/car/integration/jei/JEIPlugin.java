@@ -7,13 +7,15 @@ import de.maxhenkel.car.Main;
 import de.maxhenkel.car.blocks.ModBlocks;
 import de.maxhenkel.car.items.ModItems;
 import mezz.jei.api.IModPlugin;
+import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.registration.*;
 import mezz.jei.api.runtime.IJeiRuntime;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
 
-@mezz.jei.api.JeiPlugin
+@JeiPlugin
 public class JEIPlugin implements IModPlugin {
 
     public static final ResourceLocation CATEGORY_CAR_WORKSHOP = new ResourceLocation(Main.MODID, "car_workshop");
@@ -39,21 +41,21 @@ public class JEIPlugin implements IModPlugin {
 
         registration.addRecipes(CarRecipeBuilder.getAllRecipes(), JEIPlugin.CATEGORY_CAR_WORKSHOP);
 
-        registration.addIngredientInfo(new ItemStack(ModItems.PAINTER), VanillaTypes.ITEM, "description.painter_white");
+        registration.addIngredientInfo(new ItemStack(ModItems.PAINTER), VanillaTypes.ITEM, new TranslatableComponent("description.painter_white"));
 
-        registration.addIngredientInfo(new ItemStack(ModItems.PAINTER_YELLOW), VanillaTypes.ITEM, "description.painter_yellow");
-        registration.addIngredientInfo(new ItemStack(ModItems.CANISTER), VanillaTypes.ITEM, "description.canister");
-        registration.addIngredientInfo(new ItemStack(ModItems.REPAIR_KIT), VanillaTypes.ITEM, "description.repair_kit");
-        registration.addIngredientInfo(new ItemStack(ModBlocks.CRANK), VanillaTypes.ITEM, "description.crank");
-        registration.addIngredientInfo(new ItemStack(ModBlocks.DYNAMO), VanillaTypes.ITEM, "description.dynamo");
-        registration.addIngredientInfo(new ItemStack(ModBlocks.GAS_STATION), VanillaTypes.ITEM, "description.fuel_station");
-        registration.addIngredientInfo(new ItemStack(ModBlocks.GAS_STATION), VanillaTypes.ITEM, "description.fuel_station_admin");
-        registration.addIngredientInfo(new ItemStack(ModBlocks.TANK), VanillaTypes.ITEM, "description.tank");
-        registration.addIngredientInfo(new ItemStack(ModBlocks.FLUID_EXTRACTOR), VanillaTypes.ITEM, "description.fluid_extractor");
-        registration.addIngredientInfo(new ItemStack(ModItems.BATTERY), VanillaTypes.ITEM, "description.battery");
-        registration.addIngredientInfo(Arrays.stream(ModItems.CONTAINERS).map(ItemStack::new).collect(Collectors.toList()), VanillaTypes.ITEM, "description.container");
-        registration.addIngredientInfo(Arrays.stream(ModItems.TANK_CONTAINERS).map(ItemStack::new).collect(Collectors.toList()), VanillaTypes.ITEM, "description.tank_container");
-        registration.addIngredientInfo(new ItemStack(ModItems.LICENSE_PLATE), VanillaTypes.ITEM, "description.license_plate");
+        registration.addIngredientInfo(new ItemStack(ModItems.PAINTER_YELLOW), VanillaTypes.ITEM, new TranslatableComponent("description.painter_yellow"));
+        registration.addIngredientInfo(new ItemStack(ModItems.CANISTER), VanillaTypes.ITEM, new TranslatableComponent("description.canister"));
+        registration.addIngredientInfo(new ItemStack(ModItems.REPAIR_KIT), VanillaTypes.ITEM, new TranslatableComponent("description.repair_kit"));
+        registration.addIngredientInfo(new ItemStack(ModBlocks.CRANK), VanillaTypes.ITEM, new TranslatableComponent("description.crank"));
+        registration.addIngredientInfo(new ItemStack(ModBlocks.DYNAMO), VanillaTypes.ITEM, new TranslatableComponent("description.dynamo"));
+        registration.addIngredientInfo(new ItemStack(ModBlocks.GAS_STATION), VanillaTypes.ITEM, new TranslatableComponent("description.fuel_station"));
+        registration.addIngredientInfo(new ItemStack(ModBlocks.GAS_STATION), VanillaTypes.ITEM, new TranslatableComponent("description.fuel_station_admin"));
+        registration.addIngredientInfo(new ItemStack(ModBlocks.TANK), VanillaTypes.ITEM, new TranslatableComponent("description.tank"));
+        registration.addIngredientInfo(new ItemStack(ModBlocks.FLUID_EXTRACTOR), VanillaTypes.ITEM, new TranslatableComponent("description.fluid_extractor"));
+        registration.addIngredientInfo(new ItemStack(ModItems.BATTERY), VanillaTypes.ITEM, new TranslatableComponent("description.battery"));
+        registration.addIngredientInfo(Arrays.stream(ModItems.CONTAINERS).map(ItemStack::new).collect(Collectors.toList()), VanillaTypes.ITEM, new TranslatableComponent("description.container"));
+        registration.addIngredientInfo(Arrays.stream(ModItems.TANK_CONTAINERS).map(ItemStack::new).collect(Collectors.toList()), VanillaTypes.ITEM, new TranslatableComponent("description.tank_container"));
+        registration.addIngredientInfo(new ItemStack(ModItems.LICENSE_PLATE), VanillaTypes.ITEM, new TranslatableComponent("description.license_plate"));
     }
 
     @Override

@@ -1,1 +1,1 @@
-- Fixed crash when closing the gas station GUI
+- Re added JEI support

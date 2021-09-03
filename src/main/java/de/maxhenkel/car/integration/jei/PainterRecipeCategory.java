@@ -9,8 +9,9 @@ import mezz.jei.api.gui.ingredient.IGuiItemStackGroup;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.category.IRecipeCategory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
 
 public class PainterRecipeCategory implements IRecipeCategory<PainterRecipe> {
 
@@ -38,8 +39,8 @@ public class PainterRecipeCategory implements IRecipeCategory<PainterRecipe> {
     }
 
     @Override
-    public String getTitle() {
-        return ModItems.PAINTER.getDescription().getString();
+    public Component getTitle() {
+        return ModItems.PAINTER.getDescription();
     }
 
     @Override
