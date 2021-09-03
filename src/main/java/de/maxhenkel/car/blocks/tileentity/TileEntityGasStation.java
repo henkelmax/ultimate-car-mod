@@ -413,22 +413,8 @@ public class TileEntityGasStation extends TileEntityBase implements ITickableBlo
         return !result.isEmpty();
     }
 
-    public BlockState getBlockState() {
-        BlockState ownState = level.getBlockState(worldPosition);
-
-        if (!ownState.getBlock().equals(ModBlocks.GAS_STATION)) {
-            return null;
-        }
-        return ownState;
-    }
-
     public Direction getDirection() {
-        BlockState state = getBlockState();
-        if (state == null) {
-            return Direction.NORTH;
-        }
-
-        return state.getValue(BlockGasStation.FACING);
+        return getBlockState().getValue(BlockGasStation.FACING);
     }
 
     public void sendStartFuelPacket(boolean start) {
