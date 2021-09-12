@@ -6,9 +6,9 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.18', changing: true
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.22', changing: true
         classpath group: 'de.maxhenkel.forge-update', name: 'forge-update', version: '1.0.4'
-//        classpath group: 'org.spongepowered', name: 'mixingradle', version: '0.7-SNAPSHOT'
+        classpath group: 'org.spongepowered', name: 'mixingradle', version: '0.7-SNAPSHOT'
     }
 }
 
@@ -21,7 +21,7 @@ plugins {
 apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'forge-update'
 apply plugin: 'idea'
-//apply plugin: 'org.spongepowered.mixin'
+apply plugin: 'org.spongepowered.mixin'
 
 idea {
     module {
@@ -101,12 +101,12 @@ dependencies {
     implementation fg.deobf("curse.maven:jade-324717:${jade_id}")
 
     implementation 'com.google.code.findbugs:jsr305:3.0.2'
-//    annotationProcessor 'org.spongepowered:mixin:0.8:processor'
+    annotationProcessor 'org.spongepowered:mixin:0.8.4:processor'
 }
 
-/*mixin {
+mixin {
     add sourceSets.main, "car.refmap.json"
-}*/
+}
 
 jar {
     manifest {
@@ -129,6 +129,7 @@ processResources {
                 'mod_vendor': mod_vendor,
                 'mod_name': mod_name,
                 'mod_forge_version': mod_forge_version,
+                'mod_loader_version': mod_loader_version,
                 'mod_minecraft_version': mod_minecraft_version
     }
 }
@@ -250,17 +251,4 @@ shadowJar {
 
 reobf {
     shadowJar {}
-}
-
-sourceSets {
-    main {
-        java {
-            exclude 'de/maxhenkel/car/mixins/**/*'
-            exclude 'de/maxhenkel/car/MixinConnector.java'
-        }
-        resources {
-            exclude 'META-INF/MANIFEST.MF'
-            exclude 'assets/car/car.mixins.json'
-        }
-    }
 }
