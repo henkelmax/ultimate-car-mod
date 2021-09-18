@@ -1,1 +1,1 @@
-- Re added mixins
+- Added italian translation
