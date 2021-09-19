@@ -33,7 +33,7 @@
     "gui.car_temperature_celsius": "%s °C",
     "gui.car_temperature_farenheit": "%s °F",
     "gui.painter": "Rullo",
-    "gui.gas_station": "Distributore di benzina"",
+    "gui.gas_station": "Distributore di benzina",
     "gui.sign": "Modifica il testo del cartello (%s)",
     "gui.sign.front": "Anteriore",
     "gui.sign.back": "Posteriore",
