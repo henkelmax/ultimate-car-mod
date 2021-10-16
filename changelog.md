@@ -1,1 +1,1 @@
-- Fixed italian translation
+- Added spanish translation
