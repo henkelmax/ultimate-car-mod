@@ -117,7 +117,7 @@ public class TileEntityGasStation extends TileEntityBase implements ITickableBlo
 
     private void fixTop() {
         BlockState top = level.getBlockState(worldPosition.above());
-        BlockState bottom = level.getBlockState(worldPosition);
+        BlockState bottom = getBlockState();
         Direction facing = bottom.getValue(BlockOrientableHorizontal.FACING);
         if (top.getBlock().equals(ModBlocks.GAS_STATION_TOP)) {
             if (!top.getValue(BlockGasStationTop.FACING).equals(facing)) {

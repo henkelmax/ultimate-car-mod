@@ -1,1 +1,1 @@
-- Added spanish translation
+- Fixed crash with gas station
