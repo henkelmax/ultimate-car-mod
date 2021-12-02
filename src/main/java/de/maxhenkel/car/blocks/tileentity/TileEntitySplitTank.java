@@ -147,12 +147,13 @@ public class TileEntitySplitTank extends TileEntityBase implements ITickableBloc
     }
 
     @Override
-    public CompoundTag save(CompoundTag compound) {
+    protected void saveAdditional(CompoundTag compound) {
+        super.saveAdditional(compound);
+
         compound.putInt("mix", currentMix);
         compound.putInt("bio_diesel", currentBioDiesel);
         compound.putInt("glycerin", currentGlycerin);
         compound.putInt("time", timeToGenerate);
-        return super.save(compound);
     }
 
     @Override

@@ -111,7 +111,8 @@ public class TileEntityTank extends TileEntityBase implements IFluidHandler, ITi
     }
 
     @Override
-    public CompoundTag save(CompoundTag compound) {
+    protected void saveAdditional(CompoundTag compound) {
+        super.saveAdditional(compound);
         if (!fluid.isEmpty() && fluid.getAmount() > 0) {
             CompoundTag comp = new CompoundTag();
 
@@ -119,7 +120,6 @@ public class TileEntityTank extends TileEntityBase implements IFluidHandler, ITi
 
             compound.put("fluid", comp);
         }
-        return super.save(compound);
     }
 
     @Override

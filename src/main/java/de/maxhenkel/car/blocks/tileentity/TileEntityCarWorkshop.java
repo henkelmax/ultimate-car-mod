@@ -187,12 +187,11 @@ public class TileEntityCarWorkshop extends TileEntityBase implements Container {
     }
 
     @Override
-    public CompoundTag save(CompoundTag compound) {
+    protected void saveAdditional(CompoundTag compound) {
+        super.saveAdditional(compound);
+
         ItemUtils.saveInventory(compound, "crafting", craftingMatrix);
-
         ItemUtils.saveInventory(compound, "repair", repairInventory);
-
-        return super.save(compound);
     }
 
     @Override

@@ -141,14 +141,14 @@ public class TileEntityFluidExtractor extends TileEntityBase implements ITickabl
     }
 
     @Override
-    public CompoundTag save(CompoundTag compound) {
+    protected void saveAdditional(CompoundTag compound) {
+        super.saveAdditional(compound);
+
         if (filter != null) {
             CompoundTag tag = new CompoundTag();
             filter.save(tag);
             compound.put("filter", tag);
         }
-
-        return super.save(compound);
     }
 
     @Override

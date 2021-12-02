@@ -2,12 +2,12 @@ package de.maxhenkel.car.blocks.tileentity;
 
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.net.MessageSyncTileEntity;
-import de.maxhenkel.corelib.entity.EntityUtils;
-import de.maxhenkel.corelib.net.NetUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Nameable;
@@ -15,6 +15,7 @@ import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.network.PacketDistributor;
 
 import javax.annotation.Nullable;
 
@@ -29,12 +30,9 @@ public abstract class TileEntityBase extends BlockEntity implements Nameable {
 
     public void synchronize() {
         if (!level.isClientSide && level instanceof ServerLevel) {
-            CompoundTag last = save(new CompoundTag());
+            CompoundTag last = getUpdateTag();
             if (compoundLast == null || !compoundLast.equals(last)) {
-                ServerLevel serverWorld = (ServerLevel) level;
-
-                MessageSyncTileEntity msg = new MessageSyncTileEntity(worldPosition, last);
-                EntityUtils.forEachPlayerAround(serverWorld, worldPosition, 128D, playerEntity -> NetUtils.sendTo(Main.SIMPLE_CHANNEL, playerEntity, msg));
+                Main.SIMPLE_CHANNEL.send(PacketDistributor.TRACKING_CHUNK.with(() -> level.getChunkAt(getBlockPos())), new MessageSyncTileEntity(worldPosition, last));
                 compoundLast = last;
             }
         }
@@ -47,13 +45,15 @@ public abstract class TileEntityBase extends BlockEntity implements Nameable {
     }
 
     @Override
-    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
-        load(pkt.getTag());
+    public CompoundTag getUpdateTag() {
+        CompoundTag updateTag = super.getUpdateTag();
+        saveAdditional(updateTag);
+        return updateTag;
     }
 
     @Override
-    public CompoundTag getUpdateTag() {
-        return this.save(new CompoundTag());
+    public Packet<ClientGamePacketListener> getUpdatePacket() {
+        return ClientboundBlockEntityDataPacket.create(this);
     }
 
     public abstract Component getTranslatedName();
@@ -76,11 +76,12 @@ public abstract class TileEntityBase extends BlockEntity implements Nameable {
     public abstract ContainerData getFields();
 
     @Override
-    public CompoundTag save(CompoundTag compound) {
+    protected void saveAdditional(CompoundTag compound) {
+        super.saveAdditional(compound);
+
         if (name != null) {
             compound.putString("CustomName", Component.Serializer.toJson(name));
         }
-        return super.save(compound);
     }
 
     @Override

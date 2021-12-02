@@ -21,11 +21,12 @@ public class TileEntitySign extends TileEntityBase {
     }
 
     @Override
-    public CompoundTag save(CompoundTag compound) {
+    protected void saveAdditional(CompoundTag compound) {
+        super.saveAdditional(compound);
+
         for (int i = 0; i < text.length; i++) {
             compound.putString("text" + i, text[i]);
         }
-        return super.save(compound);
     }
 
     @Override

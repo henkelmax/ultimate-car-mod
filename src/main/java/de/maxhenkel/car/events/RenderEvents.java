@@ -33,7 +33,7 @@ public class RenderEvents {
     @SubscribeEvent
     public void onRender(EntityViewRenderEvent.CameraSetup evt) {
         if (getCar() != null && !mc.options.getCameraType().isFirstPerson()) {
-            evt.getInfo().move(-evt.getInfo().getMaxZoom(Main.CLIENT_CONFIG.carZoom.get() - 4D), 0D, 0D);
+            evt.getCamera().move(-evt.getCamera().getMaxZoom(Main.CLIENT_CONFIG.carZoom.get() - 4D), 0D, 0D);
         }
     }
 
@@ -107,7 +107,7 @@ public class RenderEvents {
 
     @SubscribeEvent
     public void renderToolTip(RenderTooltipEvent.Pre event) {
-        ItemStack stack = event.getStack();
+        ItemStack stack = event.getItemStack();
 
         if (!stack.hasTag()) {
             return;
@@ -123,16 +123,16 @@ public class RenderEvents {
     public void renderPlayerPre(RenderPlayerEvent.Pre event) {
         EntityGenericCar car = getCar();
         if (car != null) {
-            event.getMatrixStack().pushPose();
-            event.getMatrixStack().scale(EntityVehicleBase.SCALE_FACTOR, EntityVehicleBase.SCALE_FACTOR, EntityVehicleBase.SCALE_FACTOR);
-            event.getMatrixStack().translate(0D, (event.getPlayer().getBbHeight() - (event.getPlayer().getBbHeight() * EntityVehicleBase.SCALE_FACTOR)) / 1.5D + car.getPlayerYOffset(), 0D);
+            event.getPoseStack().pushPose();
+            event.getPoseStack().scale(EntityVehicleBase.SCALE_FACTOR, EntityVehicleBase.SCALE_FACTOR, EntityVehicleBase.SCALE_FACTOR);
+            event.getPoseStack().translate(0D, (event.getPlayer().getBbHeight() - (event.getPlayer().getBbHeight() * EntityVehicleBase.SCALE_FACTOR)) / 1.5D + car.getPlayerYOffset(), 0D);
         }
     }
 
     @SubscribeEvent
     public void renderPlayerPost(RenderPlayerEvent.Post event) {
         if (getCar() != null) {
-            event.getMatrixStack().popPose();
+            event.getPoseStack().popPose();
         }
     }
 

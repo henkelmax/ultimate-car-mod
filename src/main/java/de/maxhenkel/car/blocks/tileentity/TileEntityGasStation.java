@@ -280,7 +280,9 @@ public class TileEntityGasStation extends TileEntityBase implements ITickableBlo
     }
 
     @Override
-    public CompoundTag save(CompoundTag compound) {
+    protected void saveAdditional(CompoundTag compound) {
+        super.saveAdditional(compound);
+
         compound.putInt("counter", fuelCounter);
 
         if (!storage.isEmpty()) {
@@ -297,8 +299,6 @@ public class TileEntityGasStation extends TileEntityBase implements ITickableBlo
         compound.putInt("free_amount", freeAmountLeft);
 
         compound.putUUID("owner", owner);
-
-        return super.save(compound);
     }
 
     @Override

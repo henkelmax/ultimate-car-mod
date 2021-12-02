@@ -8,6 +8,7 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.SoundOptionsScreen;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.event.ScreenOpenEvent;
 import net.minecraftforge.event.entity.PlaySoundAtEntityEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -18,12 +19,12 @@ import java.lang.reflect.Field;
 public class SoundEvents {
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
-    public void onOpenGUI(net.minecraftforge.client.event.GuiOpenEvent event) {
-        if (!(event.getGui() instanceof SoundOptionsScreen)) {
+    public void onOpenGUI(ScreenOpenEvent event) {
+        if (!(event.getScreen() instanceof SoundOptionsScreen)) {
             return;
         }
 
-        SoundOptionsScreen sounds = (SoundOptionsScreen) event.getGui();
+        SoundOptionsScreen sounds = (SoundOptionsScreen) event.getScreen();
 
         if (!sounds.getClass().equals(SoundOptionsScreen.class)) {
             return;
@@ -46,7 +47,7 @@ public class SoundEvents {
 
             Screen parent = (Screen) parentField.get(sounds);
 
-            event.setGui(new CarOptionsSoundsScreen(parent, Minecraft.getInstance().options));
+            event.setScreen(new CarOptionsSoundsScreen(parent, Minecraft.getInstance().options));
         } catch (Exception e) {
             e.printStackTrace();
         }

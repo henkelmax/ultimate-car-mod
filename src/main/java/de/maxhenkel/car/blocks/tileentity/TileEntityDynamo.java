@@ -49,9 +49,10 @@ public class TileEntityDynamo extends TileEntityBase implements IEnergyStorage, 
     }
 
     @Override
-    public CompoundTag save(CompoundTag compound) {
+    protected void saveAdditional(CompoundTag compound) {
+        super.saveAdditional(compound);
+
         compound.putInt("stored_energy", storedEnergy);
-        return super.save(compound);
     }
 
     @Override

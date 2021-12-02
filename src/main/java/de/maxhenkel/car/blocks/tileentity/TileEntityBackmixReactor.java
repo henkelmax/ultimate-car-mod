@@ -158,13 +158,14 @@ public class TileEntityBackmixReactor extends TileEntityBase implements ITickabl
     }
 
     @Override
-    public CompoundTag save(CompoundTag compound) {
+    protected void saveAdditional(CompoundTag compound) {
+        super.saveAdditional(compound);
+
         compound.putInt("stored_endergy", storedEnergy);
         compound.putInt("canola", currentCanola);
         compound.putInt("methanol", currentMethanol);
         compound.putInt("mix", currentMix);
         compound.putInt("time", timeToGenerate);
-        return super.save(compound);
     }
 
     @Override

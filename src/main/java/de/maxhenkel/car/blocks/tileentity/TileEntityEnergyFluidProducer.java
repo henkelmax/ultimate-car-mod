@@ -158,14 +158,14 @@ public abstract class TileEntityEnergyFluidProducer extends TileEntityBase imple
     }
 
     @Override
-    public CompoundTag save(CompoundTag compound) {
+    protected void saveAdditional(CompoundTag compound) {
+        super.saveAdditional(compound);
+
         compound.putInt("energy_stored", storedEnergy);
         compound.putInt("time", time);
         compound.putInt("fluid_stored", currentMillibuckets);
 
         ItemUtils.saveInventory(compound, "slots", inventory);
-
-        return super.save(compound);
     }
 
     @Override

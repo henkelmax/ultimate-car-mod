@@ -106,23 +106,23 @@ public class BlockGasStationTop extends BlockBase {
     }
 
     @Override
-    public boolean removedByPlayer(BlockState state, Level world, BlockPos pos, Player player, boolean willHarvest, FluidState fluid) {
+    public boolean onDestroyedByPlayer(BlockState state, Level world, BlockPos pos, Player player, boolean willHarvest, FluidState fluid) {
         BlockState stateDown = world.getBlockState(pos.below());
         stateDown.getBlock();
         if (stateDown.getBlock().equals(ModBlocks.GAS_STATION) && !player.getAbilities().instabuild) {
             ModBlocks.GAS_STATION.playerDestroy(world, player, pos.below(), world.getBlockState(pos.below()), world.getBlockEntity(pos.below()), player.getMainHandItem());
         }
-        return super.removedByPlayer(state, world, pos, player, willHarvest, fluid);
+        return super.onDestroyedByPlayer(state, world, pos, player, willHarvest, fluid);
     }
 
     @Override
-    public ItemStack getPickBlock(BlockState state, HitResult target, BlockGetter world, BlockPos pos, Player player) {
+    public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter world, BlockPos pos, Player player) {
         BlockState stateDown = world.getBlockState(pos.below());
         stateDown.getBlock();
         if (stateDown.getBlock().equals(ModBlocks.GAS_STATION)) {
-            return ModBlocks.GAS_STATION.getPickBlock(stateDown, target, world, pos.below(), player);
+            return ModBlocks.GAS_STATION.getCloneItemStack(stateDown, target, world, pos.below(), player);
         }
-        return super.getPickBlock(state, target, world, pos, player);
+        return super.getCloneItemStack(state, target, world, pos, player);
     }
 
 }

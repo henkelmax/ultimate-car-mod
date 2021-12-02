@@ -141,9 +141,10 @@ public class TileEntityGenerator extends TileEntityBase implements ITickableBloc
         return new TranslatableComponent("block.car.generator");
     }
 
-
     @Override
-    public CompoundTag save(CompoundTag compound) {
+    protected void saveAdditional(CompoundTag compound) {
+        super.saveAdditional(compound);
+
         compound.putInt("stored_energy", storedEnergy);
         if (currentFluid != null) {
             FluidStack stack = new FluidStack(currentFluid, currentMillibuckets);
@@ -151,7 +152,6 @@ public class TileEntityGenerator extends TileEntityBase implements ITickableBloc
             stack.writeToNBT(comp);
             compound.put("fluid", comp);
         }
-        return super.save(compound);
     }
 
     @Override
