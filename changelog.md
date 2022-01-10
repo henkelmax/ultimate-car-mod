@@ -1,1 +1,1 @@
-- Fixed crash with gas station
+- Fixed crash when running over entities

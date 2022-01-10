@@ -38,6 +38,8 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.util.List;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 public abstract class EntityCarBase extends EntityVehicleBase {
 
@@ -85,6 +87,11 @@ public abstract class EntityCarBase extends EntityVehicleBase {
     public void tick() {
         super.tick();
 
+        Runnable task;
+        while ((task = tasks.poll()) != null) {
+            task.run();
+        }
+
         if (isStarted() && !canEngineStayOn()) {
             setStarted(false);
         }
@@ -120,16 +127,17 @@ public abstract class EntityCarBase extends EntityVehicleBase {
         }
     }
 
+    private final BlockingQueue<Runnable> tasks = new LinkedBlockingQueue<>();
+
     @Override
     public boolean canCollideWith(Entity entityIn) {
-        if (Main.SERVER_CONFIG.damageEntities.get() && entityIn instanceof LivingEntity && !getPassengers().contains(entityIn)) {
+        if (!level.isClientSide && Main.SERVER_CONFIG.damageEntities.get() && entityIn instanceof LivingEntity && !getPassengers().contains(entityIn)) {
             if (entityIn.getBoundingBox().intersects(getBoundingBox())) {
                 float speed = getSpeed();
                 if (speed > 0.35F) {
                     float damage = speed * 10;
-                    entityIn.hurt(DamageSourceCar.DAMAGE_CAR, damage);
+                    tasks.add(() -> entityIn.hurt(DamageSourceCar.DAMAGE_CAR, damage));
                 }
-
             }
         }
         return super.canCollideWith(entityIn);
