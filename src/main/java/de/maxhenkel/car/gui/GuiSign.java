@@ -12,6 +12,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Inventory;
 import org.lwjgl.glfw.GLFW;
 
 public class GuiSign extends ScreenBase<ContainerSign> {
@@ -36,8 +37,8 @@ public class GuiSign extends ScreenBase<ContainerSign> {
 
     protected boolean front = true;
 
-    public GuiSign(ContainerSign containerSign, Component title) {
-        super(GUI_TEXTURE, containerSign, null, title);
+    public GuiSign(ContainerSign containerSign, Inventory playerInventory, Component title) {
+        super(GUI_TEXTURE, containerSign, playerInventory, title);
         this.sign = containerSign.getSign();
         this.imageWidth = 176;
         this.imageHeight = 142;

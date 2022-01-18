@@ -1,1 +1,1 @@
-- Fixed crash when running over entities
+- Fixed crash when interacting with signs

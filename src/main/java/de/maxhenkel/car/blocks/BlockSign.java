@@ -86,7 +86,7 @@ public class BlockSign extends BlockBase implements EntityBlock, IItemBlock, Sim
         }
         TileEntitySign sign = (TileEntitySign) te;
         if (player instanceof ServerPlayer) {
-            TileEntityContainerProvider.openGui((ServerPlayer) player, sign, (i, playerInventory, playerEntity) -> new ContainerSign(i, sign));
+            TileEntityContainerProvider.openGui((ServerPlayer) player, sign, (i, playerInventory, playerEntity) -> new ContainerSign(i, sign, playerInventory));
         }
         return InteractionResult.SUCCESS;
     }
