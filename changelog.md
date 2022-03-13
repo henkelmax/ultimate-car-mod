@@ -1,1 +1,1 @@
-- Fixed crash when interacting with signs
+- Updated to 1.18.2

@@ -425,6 +425,10 @@ public class Main {
     public static RecipeSerializer<BlastFurnaceRecipe> CRAFTING_BLAST_FURNACE;
     public static RecipeSerializer<OilMillRecipe> CRAFTING_OIL_MILL;
 
+    public static RecipeType<BlastFurnaceRecipe> RECIPE_TYPE_BLAST_FURNACE;
+
+    public static RecipeType<BlastFurnaceRecipe> RECIPE_TYPE_OIL_MILL;
+
     @SubscribeEvent
     public void registerRecipes(RegistryEvent.Register<RecipeSerializer<?>> event) {
         CRAFTING_SPECIAL_KEY = new SimpleRecipeSerializer<>(KeyRecipe::new);
@@ -438,21 +442,21 @@ public class Main {
         CRAFTING_OIL_MILL = new RecipeSerializerOilMill(OilMillRecipe::new);
         CRAFTING_OIL_MILL.setRegistryName(new ResourceLocation(MODID, "oil_mill"));
         event.getRegistry().register(CRAFTING_OIL_MILL);
+
+        RECIPE_TYPE_BLAST_FURNACE = Registry.register(Registry.RECIPE_TYPE, new ResourceLocation(Main.MODID, "blast_furnace"), new RecipeType<BlastFurnaceRecipe>() {
+            @Override
+            public String toString() {
+                return "blast_furnace";
+            }
+        });
+
+        RECIPE_TYPE_OIL_MILL = Registry.register(Registry.RECIPE_TYPE, new ResourceLocation(Main.MODID, "oil_mill"), new RecipeType<BlastFurnaceRecipe>() {
+            @Override
+            public String toString() {
+                return "oil_mill";
+            }
+        });
     }
-
-    public static RecipeType<BlastFurnaceRecipe> RECIPE_TYPE_BLAST_FURNACE = Registry.register(Registry.RECIPE_TYPE, new ResourceLocation(Main.MODID, "blast_furnace"), new RecipeType<BlastFurnaceRecipe>() {
-        @Override
-        public String toString() {
-            return "blast_furnace";
-        }
-    });
-
-    public static RecipeType<BlastFurnaceRecipe> RECIPE_TYPE_OIL_MILL = Registry.register(Registry.RECIPE_TYPE, new ResourceLocation(Main.MODID, "oil_mill"), new RecipeType<BlastFurnaceRecipe>() {
-        @Override
-        public String toString() {
-            return "oil_mill";
-        }
-    });
 
     @SubscribeEvent
     public void registerSerializers(RegistryEvent.Register<DataSerializerEntry> event) {

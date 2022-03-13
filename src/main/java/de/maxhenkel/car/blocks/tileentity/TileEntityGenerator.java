@@ -109,7 +109,7 @@ public class TileEntityGenerator extends TileEntityBase implements ITickableBloc
     }
 
     public boolean isValidFuel(Fluid f) {
-        return Main.SERVER_CONFIG.generatorValidFuelList.stream().anyMatch(f::is);
+        return Main.SERVER_CONFIG.generatorValidFuelList.stream().anyMatch(fluidTag -> fluidTag.contains(f));
     }
 
     private void handlePushEnergy() {
