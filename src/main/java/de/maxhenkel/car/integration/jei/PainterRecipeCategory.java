@@ -3,11 +3,12 @@ package de.maxhenkel.car.integration.jei;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.items.ModItems;
 import mezz.jei.api.constants.VanillaTypes;
-import mezz.jei.api.gui.IRecipeLayout;
+import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
-import mezz.jei.api.gui.ingredient.IGuiItemStackGroup;
 import mezz.jei.api.helpers.IGuiHelper;
-import mezz.jei.api.ingredients.IIngredients;
+import mezz.jei.api.recipe.IFocusGroup;
+import mezz.jei.api.recipe.RecipeIngredientRole;
+import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -22,20 +23,24 @@ public class PainterRecipeCategory implements IRecipeCategory<PainterRecipe> {
     }
 
     @Override
+    public RecipeType<PainterRecipe> getRecipeType() {
+        return JEIPlugin.CATEGORY_PAINTER;
+    }
+
+    @Override
     public IDrawable getBackground() {
-        return helper.createDrawable(new ResourceLocation(Main.MODID,
-                "textures/gui/jei_painter.png"), 0, 0, 80, 54);
+        return helper.createDrawable(new ResourceLocation(Main.MODID, "textures/gui/jei_painter.png"), 0, 0, 80, 54);
     }
 
     @Override
     public IDrawable getIcon() {
-        return helper.createDrawableIngredient(new ItemStack(ModItems.PAINTER));
+        return helper.createDrawableIngredient(VanillaTypes.ITEM, new ItemStack(ModItems.PAINTER));
     }
 
     @Override
-    public void setIngredients(PainterRecipe recipe, IIngredients iIngredients) {
-        iIngredients.setInput(VanillaTypes.ITEM, new ItemStack(recipe.getInput()));
-        iIngredients.setOutput(VanillaTypes.ITEM, new ItemStack(recipe.getOutput()));
+    public void setRecipe(IRecipeLayoutBuilder builder, PainterRecipe recipe, IFocusGroup focuses) {
+        builder.addSlot(RecipeIngredientRole.INPUT, 1, 19).addIngredient(VanillaTypes.ITEM, new ItemStack(recipe.getInput()));
+        builder.addSlot(RecipeIngredientRole.OUTPUT, 59, 19).addIngredient(VanillaTypes.ITEM, new ItemStack(recipe.getOutput()));
     }
 
     @Override
@@ -45,7 +50,7 @@ public class PainterRecipeCategory implements IRecipeCategory<PainterRecipe> {
 
     @Override
     public ResourceLocation getUid() {
-        return JEIPlugin.CATEGORY_PAINTER;
+        return new ResourceLocation(Main.MODID, "painter");
     }
 
     @Override
@@ -53,15 +58,4 @@ public class PainterRecipeCategory implements IRecipeCategory<PainterRecipe> {
         return PainterRecipe.class;
     }
 
-    @Override
-    public void setRecipe(IRecipeLayout layout, PainterRecipe wrapper, IIngredients ingredients) {
-        IGuiItemStackGroup group = layout.getItemStacks();
-
-        group.init(0, true, 0, 18);
-        group.set(0, new ItemStack(wrapper.getInput()));
-
-        group.init(1, true, 58, 18);
-        group.set(1, new ItemStack(wrapper.getOutput()));
-
-    }
 }

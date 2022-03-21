@@ -5,11 +5,14 @@ import de.maxhenkel.car.Main;
 import de.maxhenkel.car.blocks.ModBlocks;
 import de.maxhenkel.tools.EntityTools;
 import mezz.jei.api.constants.VanillaTypes;
-import mezz.jei.api.gui.IRecipeLayout;
+import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
+import mezz.jei.api.gui.builder.IRecipeSlotBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
-import mezz.jei.api.gui.ingredient.IGuiItemStackGroup;
+import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.helpers.IGuiHelper;
-import mezz.jei.api.ingredients.IIngredients;
+import mezz.jei.api.recipe.IFocusGroup;
+import mezz.jei.api.recipe.RecipeIngredientRole;
+import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -27,19 +30,35 @@ public class CarRecipeCategory implements IRecipeCategory<CarRecipe> {
     }
 
     @Override
+    public RecipeType<CarRecipe> getRecipeType() {
+        return JEIPlugin.CATEGORY_CAR_WORKSHOP;
+    }
+
+    @Override
     public IDrawable getBackground() {
         return helper.createDrawable(new ResourceLocation(Main.MODID, "textures/gui/jei_car_workshop_crafting.png"), 0, 0, RECIPE_WIDTH, RECIPE_HEIGHT);
     }
 
     @Override
     public IDrawable getIcon() {
-        return helper.createDrawableIngredient(new ItemStack(ModBlocks.CAR_WORKSHOP));
+        return helper.createDrawableIngredient(VanillaTypes.ITEM, new ItemStack(ModBlocks.CAR_WORKSHOP));
     }
 
-
     @Override
-    public void setIngredients(CarRecipe recipe, IIngredients iIngredients) {
-        iIngredients.setInputs(VanillaTypes.ITEM, recipe.getInputs());
+    public void setRecipe(IRecipeLayoutBuilder builder, CarRecipe recipe, IFocusGroup focuses) {
+        for (int y = 0; y < 3; y++) {
+            for (int x = 0; x < 5; x++) {
+                IRecipeSlotBuilder slot = builder.addSlot(RecipeIngredientRole.INPUT, x * 18 + 1, y * 18 + 1);
+                int index = x + y * 5;
+                if (index >= recipe.getInputs().size()) {
+                    continue;
+                }
+                ItemStack stack = recipe.getInputs().get(index);
+                if (!stack.isEmpty()) {
+                    slot.addIngredient(VanillaTypes.ITEM, stack);
+                }
+            }
+        }
     }
 
     @Override
@@ -49,7 +68,7 @@ public class CarRecipeCategory implements IRecipeCategory<CarRecipe> {
 
     @Override
     public ResourceLocation getUid() {
-        return JEIPlugin.CATEGORY_CAR_WORKSHOP;
+        return new ResourceLocation(Main.MODID, "car_workshop");
     }
 
     @Override
@@ -57,29 +76,10 @@ public class CarRecipeCategory implements IRecipeCategory<CarRecipe> {
         return CarRecipe.class;
     }
 
-    @Override
-    public void setRecipe(IRecipeLayout layout, CarRecipe wrapper, IIngredients ingredients) {
-        IGuiItemStackGroup group = layout.getItemStacks();
-
-        for (int y = 0; y < 3; y++) {
-            for (int x = 0; x < 5; x++) {
-                group.init(x + y * 5, true, x * 18, y * 18);
-                int index = x + y * 5;
-                if (index >= wrapper.getInputs().size()) {
-                    continue;
-                }
-                ItemStack stack = wrapper.getInputs().get(index);
-                if (!stack.isEmpty()) {
-                    group.set(index, stack);
-                }
-            }
-        }
-    }
-
     private EntityTools.SimulatedCarRenderer renderer = new EntityTools.SimulatedCarRenderer();
 
     @Override
-    public void draw(CarRecipe recipe, PoseStack matrixStack, double mouseX, double mouseY) {
-        renderer.render(matrixStack, recipe.getCar(), RECIPE_WIDTH - 30, RECIPE_HEIGHT - 54 / 4, 18);
+    public void draw(CarRecipe recipe, IRecipeSlotsView recipeSlotsView, PoseStack stack, double mouseX, double mouseY) {
+        renderer.render(stack, recipe.getCar(), RECIPE_WIDTH - 30, RECIPE_HEIGHT - 54 / 4, 18);
     }
 }

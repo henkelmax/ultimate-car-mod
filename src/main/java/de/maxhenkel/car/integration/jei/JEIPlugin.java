@@ -1,45 +1,42 @@
 package de.maxhenkel.car.integration.jei;
 
-import java.util.Arrays;
-import java.util.stream.Collectors;
-
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.blocks.ModBlocks;
 import de.maxhenkel.car.items.ModItems;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.constants.VanillaTypes;
-import mezz.jei.api.registration.*;
-import mezz.jei.api.runtime.IJeiRuntime;
+import mezz.jei.api.recipe.RecipeType;
+import mezz.jei.api.registration.IRecipeCatalystRegistration;
+import mezz.jei.api.registration.IRecipeCategoryRegistration;
+import mezz.jei.api.registration.IRecipeRegistration;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 
+import java.util.Arrays;
+import java.util.stream.Collectors;
+
 @JeiPlugin
 public class JEIPlugin implements IModPlugin {
 
-    public static final ResourceLocation CATEGORY_CAR_WORKSHOP = new ResourceLocation(Main.MODID, "car_workshop");
-    public static final ResourceLocation CATEGORY_PAINTER = new ResourceLocation(Main.MODID, "painter");
-    public static final ResourceLocation CATEGORY_PAINTER_YELLOW = new ResourceLocation(Main.MODID, "painter_yellow");
-
-    @Override
-    public void onRuntimeAvailable(IJeiRuntime runtime) {
-
-    }
+    public static final RecipeType<CarRecipe> CATEGORY_CAR_WORKSHOP = RecipeType.create(Main.MODID, "car_workshop", CarRecipe.class);
+    public static final RecipeType<PainterRecipe> CATEGORY_PAINTER = RecipeType.create(Main.MODID, "painter", PainterRecipe.class);
+    public static final RecipeType<PainterRecipe> CATEGORY_PAINTER_YELLOW = RecipeType.create(Main.MODID, "painter_yellow", PainterRecipe.class);
 
     @Override
     public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
-        registration.addRecipeCatalyst(new ItemStack(ModItems.PAINTER), JEIPlugin.CATEGORY_PAINTER);
+        registration.addRecipeCatalyst(VanillaTypes.ITEM, new ItemStack(ModItems.PAINTER), JEIPlugin.CATEGORY_PAINTER);
         registration.addRecipeCatalyst(new ItemStack(ModItems.PAINTER_YELLOW), JEIPlugin.CATEGORY_PAINTER_YELLOW);
         registration.addRecipeCatalyst(new ItemStack(ModBlocks.CAR_WORKSHOP), JEIPlugin.CATEGORY_CAR_WORKSHOP);
     }
 
     @Override
     public void registerRecipes(IRecipeRegistration registration) {
-        registration.addRecipes(Arrays.stream(ModBlocks.PAINTS).map(paint -> new PainterRecipe(ModItems.PAINTER, paint)).collect(Collectors.toList()), JEIPlugin.CATEGORY_PAINTER);
-        registration.addRecipes(Arrays.stream(ModBlocks.YELLOW_PAINTS).map(paint -> new PainterRecipe(ModItems.PAINTER_YELLOW, paint)).collect(Collectors.toList()), JEIPlugin.CATEGORY_PAINTER_YELLOW);
+        registration.addRecipes(JEIPlugin.CATEGORY_PAINTER, Arrays.stream(ModBlocks.PAINTS).map(paint -> new PainterRecipe(ModItems.PAINTER, paint)).toList());
+        registration.addRecipes(JEIPlugin.CATEGORY_PAINTER_YELLOW, Arrays.stream(ModBlocks.YELLOW_PAINTS).map(paint -> new PainterRecipe(ModItems.PAINTER_YELLOW, paint)).toList());
 
-        registration.addRecipes(CarRecipeBuilder.getAllRecipes(), JEIPlugin.CATEGORY_CAR_WORKSHOP);
+        registration.addRecipes(JEIPlugin.CATEGORY_CAR_WORKSHOP, CarRecipeBuilder.getAllRecipes());
 
         registration.addIngredientInfo(new ItemStack(ModItems.PAINTER), VanillaTypes.ITEM, new TranslatableComponent("description.painter_white"));
 
@@ -56,11 +53,6 @@ public class JEIPlugin implements IModPlugin {
         registration.addIngredientInfo(Arrays.stream(ModItems.CONTAINERS).map(ItemStack::new).collect(Collectors.toList()), VanillaTypes.ITEM, new TranslatableComponent("description.container"));
         registration.addIngredientInfo(Arrays.stream(ModItems.TANK_CONTAINERS).map(ItemStack::new).collect(Collectors.toList()), VanillaTypes.ITEM, new TranslatableComponent("description.tank_container"));
         registration.addIngredientInfo(new ItemStack(ModItems.LICENSE_PLATE), VanillaTypes.ITEM, new TranslatableComponent("description.license_plate"));
-    }
-
-    @Override
-    public void registerIngredients(IModIngredientRegistration registry) {
-
     }
 
     @Override
