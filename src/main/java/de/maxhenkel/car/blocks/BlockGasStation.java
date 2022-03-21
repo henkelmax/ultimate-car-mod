@@ -41,7 +41,7 @@ import javax.annotation.Nullable;
 public class BlockGasStation extends BlockOrientableHorizontal {
 
     public static VoxelShape SHAPE_NORTH_SOUTH = Block.box(2D, 0D, 5D, 14D, 31D, 11D);
-    public static VoxelShape SHAPE_NEAST_WEST = Block.box(5D, 0D, 2D, 11D, 31D, 14D);
+    public static VoxelShape SHAPE_EAST_WEST = Block.box(5D, 0D, 2D, 11D, 31D, 14D);
     public static VoxelShape SHAPE_SLAB = Block.box(0D, 0D, 0D, 16D, 8.01D, 16D);
 
     private static final DirectionalVoxelShape SHAPES = new DirectionalVoxelShape.Builder()
@@ -54,11 +54,11 @@ public class BlockGasStation extends BlockOrientableHorizontal {
                     SHAPE_SLAB
             )
             .direction(Direction.EAST,
-                    SHAPE_NEAST_WEST,
+                    SHAPE_EAST_WEST,
                     SHAPE_SLAB
             )
             .direction(Direction.WEST,
-                    SHAPE_NEAST_WEST,
+                    SHAPE_EAST_WEST,
                     SHAPE_SLAB
             ).build();
 
