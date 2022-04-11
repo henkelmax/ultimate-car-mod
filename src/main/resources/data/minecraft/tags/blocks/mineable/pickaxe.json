@@ -1,0 +1,27 @@
+{
+  "replace": false,
+  "values": [
+    "car:asphalt",
+    "car:asphalt_slab",
+    "car:asphalt_slope",
+    "car:asphalt_slope_flat_lower",
+    "car:asphalt_slope_flat_upper",
+    "car:backmix_reactor",
+    "car:blastfurnace",
+    "car:car_pressure_plate",
+    "car:car_workshop",
+    "car:car_workshop_outter",
+    "car:dynamo",
+    "car:fluid_extractor",
+    "car:fluid_pipe",
+    "car:gas_station",
+    "car:gas_station_top",
+    "car:generator",
+    "car:guard_rail",
+    "car:oilmill",
+    "car:sign",
+    "car:sign_post",
+    "car:split_tank",
+    "car:split_tank_top"
+  ]
+}

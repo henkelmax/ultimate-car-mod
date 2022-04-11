@@ -66,7 +66,7 @@ public class BlockSign extends BlockBase implements EntityBlock, IItemBlock, Sim
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
     public BlockSign() {
-        super(Properties.of(Material.METAL, MaterialColor.METAL).strength(20F).sound(SoundType.METAL));
+        super(Properties.of(Material.METAL, MaterialColor.METAL).strength(4F).sound(SoundType.METAL));
         setRegistryName(new ResourceLocation(Main.MODID, "sign"));
 
         registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(WATERLOGGED, false));

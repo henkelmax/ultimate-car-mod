@@ -1,1 +1,1 @@
-- Updated JEI plugin
+- Fixed block breaking speeds
