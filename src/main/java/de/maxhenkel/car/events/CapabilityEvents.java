@@ -22,7 +22,7 @@ public class CapabilityEvents {
 
     @SubscribeEvent
     public void capabilityAttachTileEntity(AttachCapabilitiesEvent<BlockEntity> event) {
-        if (event.getObject().getType().getRegistryName() == null || !event.getObject().getType().getRegistryName().getNamespace().equals(Main.MODID)) {
+        if (event.getObject() == null || event.getObject().getType().getRegistryName() == null || !event.getObject().getType().getRegistryName().getNamespace().equals(Main.MODID)) {
             return;
         }
         if (event.getObject() instanceof IFluidHandler) {
@@ -56,7 +56,7 @@ public class CapabilityEvents {
 
     @SubscribeEvent
     public void capabilityAttachEntity(AttachCapabilitiesEvent<Entity> event) {
-        if (event.getObject().getType().getRegistryName() == null || !event.getObject().getType().getRegistryName().getNamespace().equals(Main.MODID)) {
+        if (event.getObject() == null || event.getObject().getType().getRegistryName() == null || !event.getObject().getType().getRegistryName().getNamespace().equals(Main.MODID)) {
             return;
         }
         if (event.getObject() instanceof IFluidHandler) {
