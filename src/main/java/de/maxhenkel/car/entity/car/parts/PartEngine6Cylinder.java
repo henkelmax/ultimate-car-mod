@@ -15,42 +15,42 @@ public class PartEngine6Cylinder extends PartEngine {
 
     @Override
     public SoundEvent getStopSound() {
-        return ModSounds.SPORT_ENGINE_STOP;
+        return ModSounds.SPORT_ENGINE_STOP.get();
     }
 
     @Override
     public SoundEvent getFailSound() {
-        return ModSounds.SPORT_ENGINE_FAIL;
+        return ModSounds.SPORT_ENGINE_FAIL.get();
     }
 
     @Override
     public SoundEvent getCrashSound() {
-        return ModSounds.CAR_CRASH;
+        return ModSounds.CAR_CRASH.get();
     }
 
     @Override
     public SoundEvent getStartSound() {
-        return ModSounds.SPORT_ENGINE_START;
+        return ModSounds.SPORT_ENGINE_START.get();
     }
 
     @Override
     public SoundEvent getStartingSound() {
-        return ModSounds.SPORT_ENGINE_STARTING;
+        return ModSounds.SPORT_ENGINE_STARTING.get();
     }
 
     @Override
     public SoundEvent getIdleSound() {
-        return ModSounds.SPORT_ENGINE_IDLE;
+        return ModSounds.SPORT_ENGINE_IDLE.get();
     }
 
     @Override
     public SoundEvent getHighSound() {
-        return ModSounds.SPORT_ENGINE_HIGH;
+        return ModSounds.SPORT_ENGINE_HIGH.get();
     }
 
     @Override
     public SoundEvent getHornSound() {
-        return ModSounds.CAR_HORN;
+        return ModSounds.CAR_HORN.get();
     }
 
 }

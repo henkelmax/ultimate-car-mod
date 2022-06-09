@@ -1,11 +1,9 @@
 package de.maxhenkel.car.blocks;
 
-import de.maxhenkel.car.Main;
 import de.maxhenkel.car.ModItemGroups;
 import de.maxhenkel.corelib.block.IItemBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -34,14 +32,13 @@ public class BlockSignPost extends BlockBase implements IItemBlock, SimpleWaterl
 
     public BlockSignPost() {
         super(Properties.of(Material.METAL, MaterialColor.METAL).strength(2F).sound(SoundType.METAL));
-        setRegistryName(new ResourceLocation(Main.MODID, "sign_post"));
 
         registerDefaultState(stateDefinition.any().setValue(WATERLOGGED, false));
     }
 
     @Override
     public Item toItem() {
-        return new BlockItem(this, new Item.Properties().tab(ModItemGroups.TAB_CAR)).setRegistryName(getRegistryName());
+        return new BlockItem(this, new Item.Properties().tab(ModItemGroups.TAB_CAR));
     }
 
     @Nullable

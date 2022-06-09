@@ -18,12 +18,11 @@ public class FluidCanolaMethanolMix extends CarFluidSource {
                 FluidAttributes.builder(
                         new ResourceLocation(Main.MODID, "block/canola_methanol_mix_still"),
                         new ResourceLocation(Main.MODID, "block/canola_methanol_mix_flowing")).sound(SoundEvents.BUCKET_FILL),
-                () -> ModBlocks.CANOLA_METHANOL_MIX,
-                () -> ModFluids.CANOLA_METHANOL_MIX,
-                () -> ModFluids.CANOLA_METHANOL_MIX_FLOWING,
-                () -> ModItems.CANOLA_METHANOL_MIX_BUCKET
+                () -> ModBlocks.CANOLA_METHANOL_MIX.get(),
+                () -> ModFluids.CANOLA_METHANOL_MIX.get(),
+                () -> ModFluids.CANOLA_METHANOL_MIX_FLOWING.get(),
+                () -> ModItems.CANOLA_METHANOL_MIX_BUCKET.get()
         );
-        setRegistryName(new ResourceLocation(Main.MODID, "canola_methanol_mix"));
     }
 
     @Override

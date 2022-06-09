@@ -1,10 +1,9 @@
 package de.maxhenkel.car.blocks;
 
-import de.maxhenkel.car.Main;
 import de.maxhenkel.car.items.ModItems;
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
@@ -20,8 +19,6 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-import java.util.Random;
-
 public class BlockCanolaCrop extends CropBlock {
     public static final IntegerProperty CANOLA_AGE = BlockStateProperties.AGE_3;
 
@@ -33,8 +30,6 @@ public class BlockCanolaCrop extends CropBlock {
 
     public BlockCanolaCrop() {
         super(Properties.of(Material.PLANT).noCollission().randomTicks().strength(0F).sound(SoundType.CROP));
-
-        setRegistryName(new ResourceLocation(Main.MODID, "canola"));
     }
 
     public IntegerProperty getAgeProperty() {
@@ -48,11 +43,11 @@ public class BlockCanolaCrop extends CropBlock {
 
     @Override
     protected ItemLike getBaseSeedId() {
-        return ModItems.CANOLA_SEEDS;
+        return ModItems.CANOLA_SEEDS.get();
     }
 
     @Override
-    public void tick(BlockState state, ServerLevel worldIn, BlockPos pos, Random random) {
+    public void tick(BlockState state, ServerLevel worldIn, BlockPos pos, RandomSource random) {
         if (random.nextInt(3) != 0) {
             super.tick(state, worldIn, pos, random);
         }

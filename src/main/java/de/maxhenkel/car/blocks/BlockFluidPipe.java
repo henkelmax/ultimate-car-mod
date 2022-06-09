@@ -1,13 +1,11 @@
 package de.maxhenkel.car.blocks;
 
-import de.maxhenkel.car.Main;
 import de.maxhenkel.car.ModItemGroups;
 import de.maxhenkel.corelib.block.IItemBlock;
 import de.maxhenkel.corelib.block.VoxelUtils;
 import de.maxhenkel.corelib.fluid.FluidUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -44,7 +42,6 @@ public class BlockFluidPipe extends BlockBase implements IItemBlock, SimpleWater
 
     public BlockFluidPipe() {
         super(Properties.of(Material.WOOL, MaterialColor.COLOR_GRAY).strength(0.25F).sound(SoundType.METAL));
-        setRegistryName(new ResourceLocation(Main.MODID, "fluid_pipe"));
 
         registerDefaultState(stateDefinition.any()
                 .setValue(UP, false)
@@ -59,7 +56,7 @@ public class BlockFluidPipe extends BlockBase implements IItemBlock, SimpleWater
 
     @Override
     public Item toItem() {
-        return new BlockItem(this, new Item.Properties().tab(ModItemGroups.TAB_CAR)).setRegistryName(getRegistryName());
+        return new BlockItem(this, new Item.Properties().tab(ModItemGroups.TAB_CAR));
     }
 
     @Nullable
@@ -140,7 +137,7 @@ public class BlockFluidPipe extends BlockBase implements IItemBlock, SimpleWater
     public static boolean isConnectedTo(LevelAccessor world, BlockPos pos, Direction facing) {
         BlockState state = world.getBlockState(pos.relative(facing));
 
-        if (state.getBlock().equals(ModBlocks.FLUID_PIPE) || state.getBlock().equals(ModBlocks.FLUID_EXTRACTOR)) {
+        if (state.getBlock().equals(ModBlocks.FLUID_PIPE.get()) || state.getBlock().equals(ModBlocks.FLUID_EXTRACTOR.get())) {
             return true;
         }
 

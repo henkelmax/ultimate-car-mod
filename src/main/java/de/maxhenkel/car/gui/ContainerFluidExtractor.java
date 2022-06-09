@@ -11,7 +11,7 @@ public class ContainerFluidExtractor extends ContainerBase {
     protected Inventory playerInventory;
 
     public ContainerFluidExtractor(int id, TileEntityFluidExtractor tile, Inventory playerInventory) {
-        super(Main.FLUID_EXTRACTOR_CONTAINER_TYPE, id, playerInventory, new SimpleContainer(1));
+        super(Main.FLUID_EXTRACTOR_CONTAINER_TYPE.get(), id, playerInventory, new SimpleContainer(1));
         this.tile = tile;
         this.playerInventory = playerInventory;
 

@@ -112,7 +112,7 @@ public abstract class EntityCarFuelBase extends EntityCarDamageBase implements I
     }
 
     public void setFuelType(Fluid fluid) {
-        setFuelType(fluid.getRegistryName().toString());
+        setFuelType(ForgeRegistries.FLUIDS.getKey(fluid).toString());
     }
 
     public String getFuelType() {
@@ -168,7 +168,7 @@ public abstract class EntityCarFuelBase extends EntityCarDamageBase implements I
     public FluidStack getFluidInTank(int tank) {
         Fluid f = getFluid();
         if (f == null) {
-            return new FluidStack(ModFluids.BIO_DIESEL, getFuelAmount());
+            return new FluidStack(ModFluids.BIO_DIESEL.get(), getFuelAmount());
         } else {
             return new FluidStack(f, getFuelAmount());
         }

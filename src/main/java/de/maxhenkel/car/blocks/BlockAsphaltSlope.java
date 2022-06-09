@@ -86,7 +86,6 @@ public class BlockAsphaltSlope extends BlockSlope {
             ).build();
 
     public BlockAsphaltSlope() {
-        super("asphalt_slope");
     }
 
     @Override

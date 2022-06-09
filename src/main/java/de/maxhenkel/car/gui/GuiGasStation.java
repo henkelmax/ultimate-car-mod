@@ -12,8 +12,6 @@ import de.maxhenkel.corelib.inventory.ScreenBase;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.entity.Entity;
@@ -48,11 +46,11 @@ public class GuiGasStation extends ScreenBase<ContainerGasStation> {
     protected void init() {
         super.init();
 
-        buttonStart = addRenderableWidget(new Button((width / 2) - 20, topPos + 100, 40, 20, new TranslatableComponent("button.car.start"), button -> {
+        buttonStart = addRenderableWidget(new Button((width / 2) - 20, topPos + 100, 40, 20, Component.translatable("button.car.start"), button -> {
             gasStation.setFueling(true);
             gasStation.sendStartFuelPacket(true);
         }));
-        buttonStop = addRenderableWidget(new Button(leftPos + imageWidth - 40 - 7, topPos + 100, 40, 20, new TranslatableComponent("button.car.stop"), button -> {
+        buttonStop = addRenderableWidget(new Button(leftPos + imageWidth - 40 - 7, topPos + 100, 40, 20, Component.translatable("button.car.stop"), button -> {
             gasStation.setFueling(false);
             gasStation.sendStartFuelPacket(false);
         }));
@@ -66,7 +64,7 @@ public class GuiGasStation extends ScreenBase<ContainerGasStation> {
         buttonStop.active = gasStation.isFueling();
 
         // text
-        drawCenteredString(matrixStack, font, new TranslatableComponent("gui.gas_station").getString(), width / 2, topPos + 5, TITLE_COLOR);
+        drawCenteredString(matrixStack, font, Component.translatable("gui.gas_station").getString(), width / 2, topPos + 5, TITLE_COLOR);
 
         // Car name
         IFluidHandler fluidHandler = gasStation.getFluidHandlerInFront();
@@ -96,7 +94,7 @@ public class GuiGasStation extends ScreenBase<ContainerGasStation> {
         if (mouseX >= leftPos + 18 && mouseX <= leftPos + 33) {
             if (mouseY >= topPos + 99 && mouseY <= topPos + 114) {
                 List<FormattedCharSequence> list = new ArrayList<>();
-                list.add(new TranslatableComponent("tooltip.trade", stack.getCount(), stack.getHoverName(), gasStation.getTradeAmount()).getVisualOrderText());
+                list.add(Component.translatable("tooltip.trade", stack.getCount(), stack.getHoverName(), gasStation.getTradeAmount()).getVisualOrderText());
                 renderTooltip(matrixStack, list, mouseX - leftPos, mouseY - topPos);
             }
         }
@@ -109,53 +107,53 @@ public class GuiGasStation extends ScreenBase<ContainerGasStation> {
         } else {
             name = entity.getDisplayName().getString();
         }
-        font.draw(matrixStack, new TranslatableComponent("gas_station.car_info", new TextComponent(name).withStyle(ChatFormatting.WHITE)).getVisualOrderText(), leftPos + 63, topPos + 20, FONT_COLOR);
+        font.draw(matrixStack, Component.translatable("gas_station.car_info", Component.literal(name).withStyle(ChatFormatting.WHITE)).getVisualOrderText(), leftPos + 63, topPos + 20, FONT_COLOR);
     }
 
     private void drawCarFuel(PoseStack matrixStack, IFluidHandler handler) {
         if (handler == null) {
-            font.draw(matrixStack, new TranslatableComponent("gas_station.no_car").getVisualOrderText(), leftPos + 63, topPos + 30, FONT_COLOR);
+            font.draw(matrixStack, Component.translatable("gas_station.no_car").getVisualOrderText(), leftPos + 63, topPos + 30, FONT_COLOR);
             return;
         }
         if (handler.getTanks() <= 0) {
-            font.draw(matrixStack, new TranslatableComponent("gas_station.fuel_empty").getVisualOrderText(), leftPos + 63, topPos + 30, FONT_COLOR);
+            font.draw(matrixStack, Component.translatable("gas_station.fuel_empty").getVisualOrderText(), leftPos + 63, topPos + 30, FONT_COLOR);
             return;
         }
         FluidStack tank = handler.getFluidInTank(0);
-        Component fuelText = new TranslatableComponent("gas_station.car_fuel_amount",
-                new TextComponent(String.valueOf(tank.getAmount())).withStyle(ChatFormatting.WHITE),
-                new TextComponent(String.valueOf(handler.getTankCapacity(0))).withStyle(ChatFormatting.WHITE)
+        Component fuelText = Component.translatable("gas_station.car_fuel_amount",
+                Component.literal(String.valueOf(tank.getAmount())).withStyle(ChatFormatting.WHITE),
+                Component.literal(String.valueOf(handler.getTankCapacity(0))).withStyle(ChatFormatting.WHITE)
         );
         font.draw(matrixStack, fuelText.getVisualOrderText(), leftPos + 63, topPos + 30, FONT_COLOR);
 
         if (!tank.isEmpty()) {
-            font.draw(matrixStack, new TranslatableComponent("gas_station.car_fuel_type", new TextComponent(tank.getDisplayName().getString()).withStyle(ChatFormatting.WHITE)).getVisualOrderText(), leftPos + 63, topPos + 40, FONT_COLOR);
+            font.draw(matrixStack, Component.translatable("gas_station.car_fuel_type", Component.literal(tank.getDisplayName().getString()).withStyle(ChatFormatting.WHITE)).getVisualOrderText(), leftPos + 63, topPos + 40, FONT_COLOR);
         }
     }
 
     private void drawRefueled(PoseStack matrixStack) {
-        font.draw(matrixStack, new TranslatableComponent("gas_station.refueled", new TextComponent(String.valueOf(gasStation.getFuelCounter())).withStyle(ChatFormatting.WHITE)).getVisualOrderText(), leftPos + 63, topPos + 60, FONT_COLOR);
+        font.draw(matrixStack, Component.translatable("gas_station.refueled", Component.literal(String.valueOf(gasStation.getFuelCounter())).withStyle(ChatFormatting.WHITE)).getVisualOrderText(), leftPos + 63, topPos + 60, FONT_COLOR);
     }
 
     private void drawBuffer(PoseStack matrixStack) {
         FluidStack stack = gasStation.getStorage();
 
         if (stack.isEmpty()) {
-            font.draw(matrixStack, new TranslatableComponent("gas_station.fuel_empty").getVisualOrderText(), leftPos + 63, topPos + 70, FONT_COLOR);
+            font.draw(matrixStack, Component.translatable("gas_station.fuel_empty").getVisualOrderText(), leftPos + 63, topPos + 70, FONT_COLOR);
             return;
         }
 
         int amount = gasStation.getFuelAmount();
 
-        Component amountText = new TranslatableComponent("gas_station.fuel_buffer_amount",
-                new TextComponent(String.valueOf(amount)).withStyle(ChatFormatting.WHITE),
-                new TextComponent(String.valueOf(gasStation.maxStorageAmount)).withStyle(ChatFormatting.WHITE)
+        Component amountText = Component.translatable("gas_station.fuel_buffer_amount",
+                Component.literal(String.valueOf(amount)).withStyle(ChatFormatting.WHITE),
+                Component.literal(String.valueOf(gasStation.maxStorageAmount)).withStyle(ChatFormatting.WHITE)
         );
 
         font.draw(matrixStack, amountText.getVisualOrderText(), leftPos + 63, topPos + 70, FONT_COLOR);
 
-        Component bufferText = new TranslatableComponent("gas_station.fuel_buffer_type",
-                new TextComponent(stack.getDisplayName().getString()).withStyle(ChatFormatting.WHITE)
+        Component bufferText = Component.translatable("gas_station.fuel_buffer_type",
+                Component.literal(stack.getDisplayName().getString()).withStyle(ChatFormatting.WHITE)
         );
 
         font.draw(matrixStack, bufferText.getVisualOrderText(), leftPos + 63, topPos + 80, FONT_COLOR);

@@ -9,7 +9,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Player;
@@ -37,7 +36,7 @@ public class TileEntityGenerator extends TileEntityBase implements ITickableBloc
     protected SimpleContainer inventory;
 
     public TileEntityGenerator(BlockPos pos, BlockState state) {
-        super(Main.GENERATOR_TILE_ENTITY_TYPE, pos, state);
+        super(Main.GENERATOR_TILE_ENTITY_TYPE.get(), pos, state);
         this.inventory = new SimpleContainer(0);
         this.maxStorage = Main.SERVER_CONFIG.generatorEnergyStorage.get();
         this.storedEnergy = 0;
@@ -129,16 +128,16 @@ public class TileEntityGenerator extends TileEntityBase implements ITickableBloc
 
     public void setBlockEnabled(boolean enabled) {
         BlockState state = level.getBlockState(worldPosition);
-        if (state.getBlock().equals(ModBlocks.GENERATOR)) {
+        if (state.getBlock().equals(ModBlocks.GENERATOR.get())) {
             if (state.getValue(BlockGui.POWERED) != enabled) {
-                ModBlocks.GENERATOR.setPowered(level, worldPosition, state, enabled);
+                ModBlocks.GENERATOR.get().setPowered(level, worldPosition, state, enabled);
             }
         }
     }
 
     @Override
     public Component getTranslatedName() {
-        return new TranslatableComponent("block.car.generator");
+        return Component.translatable("block.car.generator");
     }
 
     @Override

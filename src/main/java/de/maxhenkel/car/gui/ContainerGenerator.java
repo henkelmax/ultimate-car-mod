@@ -11,7 +11,7 @@ public class ContainerGenerator extends ContainerBase {
     private TileEntityGenerator generator;
 
     public ContainerGenerator(int id, TileEntityGenerator generator, Inventory playerInv, ContainerData fields) {
-        super(Main.GENERATOR_CONTAINER_TYPE, id, playerInv, generator);
+        super(Main.GENERATOR_CONTAINER_TYPE.get(), id, playerInv, generator);
         this.generator = generator;
 
         addPlayerInventorySlots();

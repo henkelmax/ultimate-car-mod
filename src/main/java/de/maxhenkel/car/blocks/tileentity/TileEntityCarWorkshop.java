@@ -1,26 +1,20 @@
 package de.maxhenkel.car.blocks.tileentity;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import de.maxhenkel.car.Main;
-import de.maxhenkel.car.entity.car.base.EntityGenericCar;
-import de.maxhenkel.car.entity.car.parts.PartRegistry;
-import de.maxhenkel.car.items.ICarPart;
-import de.maxhenkel.car.items.ItemKey;
 import de.maxhenkel.car.blocks.BlockCarWorkshopOutter;
 import de.maxhenkel.car.blocks.ModBlocks;
 import de.maxhenkel.car.entity.car.base.EntityCarBase;
 import de.maxhenkel.car.entity.car.base.EntityCarDamageBase;
+import de.maxhenkel.car.entity.car.base.EntityGenericCar;
+import de.maxhenkel.car.entity.car.parts.PartRegistry;
+import de.maxhenkel.car.items.ICarPart;
+import de.maxhenkel.car.items.ItemKey;
 import de.maxhenkel.car.sounds.ModSounds;
 import de.maxhenkel.corelib.item.ItemUtils;
-import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
@@ -32,6 +26,10 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 public class TileEntityCarWorkshop extends TileEntityBase implements Container {
 
     private SimpleContainer craftingMatrix;
@@ -40,7 +38,7 @@ public class TileEntityCarWorkshop extends TileEntityBase implements Container {
     private List<Component> messages;
 
     public TileEntityCarWorkshop(BlockPos pos, BlockState state) {
-        super(Main.CAR_WORKSHOP_TILE_ENTITY_TYPE, pos, state);
+        super(Main.CAR_WORKSHOP_TILE_ENTITY_TYPE.get(), pos, state);
         this.craftingMatrix = new SimpleContainer(15);
         this.repairInventory = new SimpleContainer(3);
         this.messages = new ArrayList<>();
@@ -53,7 +51,7 @@ public class TileEntityCarWorkshop extends TileEntityBase implements Container {
     public EntityCarBase getCarOnTop() {
         BlockState ownState = level.getBlockState(worldPosition);
 
-        if (!ownState.getBlock().equals(ModBlocks.CAR_WORKSHOP)) {
+        if (!ownState.getBlock().equals(ModBlocks.CAR_WORKSHOP.get())) {
             return null;
         }
 
@@ -72,12 +70,12 @@ public class TileEntityCarWorkshop extends TileEntityBase implements Container {
 
     public void spawnCar(Player player) {
         if (!areBlocksAround()) {
-            player.sendMessage(new TranslatableComponent("message.incomplete_structure"), Util.NIL_UUID);
+            player.sendSystemMessage(Component.translatable("message.incomplete_structure"));
             return;
         }
 
         if (!isTopFree()) {
-            player.sendMessage(new TranslatableComponent("message.blocks_on_top"), Util.NIL_UUID);
+            player.sendSystemMessage(Component.translatable("message.blocks_on_top"));
             return;
         }
 
@@ -86,7 +84,7 @@ public class TileEntityCarWorkshop extends TileEntityBase implements Container {
         EntityGenericCar car = currentCraftingCar;
 
         if (car == null || !isCurrentCraftingCarValid()) {
-            player.sendMessage(new TranslatableComponent("message.no_reciepe"), Util.NIL_UUID);
+            player.sendSystemMessage(Component.translatable("message.no_reciepe"));
             return;
         }
         BlockPos spawnPos = worldPosition.above();
@@ -126,14 +124,14 @@ public class TileEntityCarWorkshop extends TileEntityBase implements Container {
 
     private void setOwnBlockValid(boolean valid) {
         BlockState state = level.getBlockState(worldPosition);
-        if (!state.getBlock().equals(ModBlocks.CAR_WORKSHOP)) {
+        if (!state.getBlock().equals(ModBlocks.CAR_WORKSHOP.get())) {
             return;
         }
-        ModBlocks.CAR_WORKSHOP.setValid(level, worldPosition, state, valid);
+        ModBlocks.CAR_WORKSHOP.get().setValid(level, worldPosition, state, valid);
     }
 
     private BlockState getState(int meta) {
-        return ModBlocks.CAR_WORKSHOP_OUTTER.defaultBlockState().setValue(BlockCarWorkshopOutter.POSITION, meta);
+        return ModBlocks.CAR_WORKSHOP_OUTTER.get().defaultBlockState().setValue(BlockCarWorkshopOutter.POSITION, meta);
     }
 
     public boolean areBlocksAround() {
@@ -183,7 +181,7 @@ public class TileEntityCarWorkshop extends TileEntityBase implements Container {
     }
 
     private boolean checkSideBlock(BlockPos p) {
-        return level.getBlockState(p).getBlock().equals(ModBlocks.CAR_WORKSHOP_OUTTER);
+        return level.getBlockState(p).getBlock().equals(ModBlocks.CAR_WORKSHOP_OUTTER.get());
     }
 
     @Override
@@ -213,7 +211,7 @@ public class TileEntityCarWorkshop extends TileEntityBase implements Container {
                     }
                 } else {
                     currentCraftingCar = null;
-                    messages = Arrays.asList(new TranslatableComponent("message.parts.no_car_part", stack.getHoverName()));
+                    messages = Arrays.asList(Component.translatable("message.parts.no_car_part", stack.getHoverName()));
                     return;
                 }
             }
@@ -347,19 +345,19 @@ public class TileEntityCarWorkshop extends TileEntityBase implements Container {
 
     public void repairCar(Player player) {
         if (!areBlocksAround()) {
-            player.sendMessage(new TranslatableComponent("message.incomplete_structure"), Util.NIL_UUID);
+            player.sendSystemMessage(Component.translatable("message.incomplete_structure"));
             return;
         }
 
         if (!areRepairItemsInside()) {
-            player.sendMessage(new TranslatableComponent("message.no_repair_items"), Util.NIL_UUID);
+            player.sendSystemMessage(Component.translatable("message.no_repair_items"));
             return;
         }
 
         EntityCarBase carBase = getCarOnTop();
 
         if (!(carBase instanceof EntityCarDamageBase)) {
-            player.sendMessage(new TranslatableComponent("message.no_car"), Util.NIL_UUID);
+            player.sendSystemMessage(Component.translatable("message.no_car"));
             return;
         }
 
@@ -373,7 +371,7 @@ public class TileEntityCarWorkshop extends TileEntityBase implements Container {
 
         car.setDamage(car.getDamage() - 10F);
 
-        ModSounds.playSound(ModSounds.RATCHET, level, worldPosition, null, SoundSource.BLOCKS);
+        ModSounds.playSound(ModSounds.RATCHET.get(), level, worldPosition, null, SoundSource.BLOCKS);
     }
 
     public boolean areRepairItemsInside() {
@@ -398,7 +396,7 @@ public class TileEntityCarWorkshop extends TileEntityBase implements Container {
 
     @Override
     public Component getTranslatedName() {
-        return new TranslatableComponent(ModBlocks.CAR_WORKSHOP.getDescriptionId());
+        return Component.translatable(ModBlocks.CAR_WORKSHOP.get().getDescriptionId());
     }
 
     @Override

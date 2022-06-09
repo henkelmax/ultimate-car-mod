@@ -4,7 +4,7 @@ import de.maxhenkel.car.items.ItemKey;
 import de.maxhenkel.car.items.ModItems;
 import de.maxhenkel.car.sounds.ModSounds;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -30,7 +30,7 @@ public abstract class EntityCarLockBase extends EntityCarInventoryBase {
     @Override
     public boolean canPlayerEnterCar(Player player) {
         if (isLocked()) {
-            player.displayClientMessage(new TranslatableComponent("message.car_locked"), true);
+            player.displayClientMessage(Component.translatable("message.car_locked"), true);
             return false;
         }
         return super.canPlayerEnterCar(player);
@@ -39,7 +39,7 @@ public abstract class EntityCarLockBase extends EntityCarInventoryBase {
     @Override
     public void destroyCar(Player player, boolean dropParts) {
         if (isLocked() && !player.hasPermissions(2)) {
-            player.displayClientMessage(new TranslatableComponent("message.car_locked"), true);
+            player.displayClientMessage(Component.translatable("message.car_locked"), true);
             return;
         }
 
@@ -84,11 +84,11 @@ public abstract class EntityCarLockBase extends EntityCarInventoryBase {
     }
 
     public SoundEvent getLockSound() {
-        return ModSounds.CAR_LOCK;
+        return ModSounds.CAR_LOCK.get();
     }
 
     public SoundEvent getUnLockSound() {
-        return ModSounds.CAR_UNLOCK;
+        return ModSounds.CAR_UNLOCK.get();
     }
 
     @Override
@@ -106,7 +106,7 @@ public abstract class EntityCarLockBase extends EntityCarInventoryBase {
     @Override
     public InteractionResult interact(Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
-        if (!isLocked() && player.isShiftKeyDown() && player.getAbilities().instabuild && !stack.isEmpty() && stack.getItem().equals(ModItems.KEY)) {
+        if (!isLocked() && player.isShiftKeyDown() && player.getAbilities().instabuild && !stack.isEmpty() && stack.getItem().equals(ModItems.KEY.get())) {
             UUID uuid = ItemKey.getCar(stack);
             if (uuid == null) {
                 ItemKey.setCar(stack, getUUID());

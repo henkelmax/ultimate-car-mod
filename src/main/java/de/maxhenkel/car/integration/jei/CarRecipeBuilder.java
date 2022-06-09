@@ -3,6 +3,7 @@ package de.maxhenkel.car.integration.jei;
 import de.maxhenkel.car.items.ModItems;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.registries.RegistryObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -15,8 +16,8 @@ public class CarRecipeBuilder {
     public static List<CarRecipe> getAllRecipes() {
         List<CarRecipe> recipes = new ArrayList<>();
 
-        ItemStack wheel = new ItemStack(ModItems.WHEEL);
-        ItemStack largeWheel = new ItemStack(ModItems.BIG_WHEEL);
+        ItemStack wheel = new ItemStack(ModItems.WHEEL.get());
+        ItemStack largeWheel = new ItemStack(ModItems.BIG_WHEEL.get());
 
         for (ItemStack tank : getAllTanks()) {
             for (ItemStack engine : getAllEngines()) {
@@ -95,23 +96,23 @@ public class CarRecipeBuilder {
 
     public static List<ItemStack> getAllLicensePlateHolders() {
         List<ItemStack> bumpers = concatItems(ModItems.WOODEN_LICENSE_PLATE_HOLDERS);
-        bumpers.add(new ItemStack(ModItems.IRON_LICENSE_PLATE_HOLDER));
-        bumpers.add(new ItemStack(ModItems.GOLD_LICENSE_PLATE_HOLDER));
-        bumpers.add(new ItemStack(ModItems.EMERALD_LICENSE_PLATE_HOLDER));
-        bumpers.add(new ItemStack(ModItems.DIAMOND_LICENSE_PLATE_HOLDER));
+        bumpers.add(new ItemStack(ModItems.IRON_LICENSE_PLATE_HOLDER.get()));
+        bumpers.add(new ItemStack(ModItems.GOLD_LICENSE_PLATE_HOLDER.get()));
+        bumpers.add(new ItemStack(ModItems.EMERALD_LICENSE_PLATE_HOLDER.get()));
+        bumpers.add(new ItemStack(ModItems.DIAMOND_LICENSE_PLATE_HOLDER.get()));
         return bumpers;
     }
 
     public static List<ItemStack> getAllEngines() {
-        return Arrays.asList(new ItemStack(ModItems.ENGINE_3_CYLINDER), new ItemStack(ModItems.ENGINE_6_CYLINDER), new ItemStack(ModItems.ENGINE_TRUCK));
+        return Arrays.asList(new ItemStack(ModItems.ENGINE_3_CYLINDER.get()), new ItemStack(ModItems.ENGINE_6_CYLINDER.get()), new ItemStack(ModItems.ENGINE_TRUCK.get()));
     }
 
     public static List<ItemStack> getAllTanks() {
-        return Arrays.asList(new ItemStack(ModItems.SMALL_TANK), new ItemStack(ModItems.MEDIUM_TANK), new ItemStack(ModItems.LARGE_TANK));
+        return Arrays.asList(new ItemStack(ModItems.SMALL_TANK.get()), new ItemStack(ModItems.MEDIUM_TANK.get()), new ItemStack(ModItems.LARGE_TANK.get()));
     }
 
-    public static List<ItemStack> concatItems(Item[]... items) {
-        return concatArrays(items).stream().map(ItemStack::new).collect(Collectors.toList());
+    public static <T extends Item> List<ItemStack> concatItems(RegistryObject<T>[]... items) {
+        return concatArrays(items).stream().map(RegistryObject::get).map(ItemStack::new).collect(Collectors.toList());
     }
 
     private static <T> List<T> concatArrays(T[]... arrays) {

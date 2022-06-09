@@ -4,7 +4,6 @@ import de.maxhenkel.car.Main;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.level.block.state.BlockState;
@@ -16,7 +15,7 @@ public class TileEntitySign extends TileEntityBase {
     private String[] text = new String[8];
 
     public TileEntitySign(BlockPos pos, BlockState state) {
-        super(Main.SIGN_TILE_ENTITY_TYPE, pos, state);
+        super(Main.SIGN_TILE_ENTITY_TYPE.get(), pos, state);
         Arrays.fill(text, "");
     }
 
@@ -68,7 +67,7 @@ public class TileEntitySign extends TileEntityBase {
 
     @Override
     public Component getTranslatedName() {
-        return new TranslatableComponent("block.car.sign");
+        return Component.translatable("block.car.sign");
     }
 
     @Override

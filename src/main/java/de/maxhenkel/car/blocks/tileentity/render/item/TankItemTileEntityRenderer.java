@@ -24,7 +24,7 @@ public class TankItemTileEntityRenderer extends ItemRenderer {
     @Override
     public void renderByItem(ItemStack itemStack, ItemTransforms.TransformType transformType, PoseStack stack, MultiBufferSource source, int light, int overlay) {
         if (tileEntityTank == null) {
-            tileEntityTank = new TileEntityTank(BlockPos.ZERO, ModBlocks.TANK.defaultBlockState());
+            tileEntityTank = new TileEntityTank(BlockPos.ZERO, ModBlocks.TANK.get().defaultBlockState());
             tankRenderer = new TileEntitySpecialRendererTank(RendererProviders.createBlockEntityRendererContext());
         }
 

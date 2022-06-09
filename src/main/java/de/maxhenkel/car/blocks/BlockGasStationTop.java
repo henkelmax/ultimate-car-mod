@@ -1,10 +1,8 @@
 package de.maxhenkel.car.blocks;
 
-import de.maxhenkel.car.Main;
 import de.maxhenkel.corelib.block.DirectionalVoxelShape;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -56,13 +54,12 @@ public class BlockGasStationTop extends BlockBase {
 
     public BlockGasStationTop() {
         super(Properties.of(Material.METAL).strength(4F).sound(SoundType.METAL));
-        setRegistryName(new ResourceLocation(Main.MODID, "gas_station_top"));
         registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH));
     }
 
     @Override
     public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
-        return ModBlocks.GAS_STATION.use(worldIn.getBlockState(pos.below()), worldIn, pos.below(), player, handIn, hit);
+        return ModBlocks.GAS_STATION.get().use(worldIn.getBlockState(pos.below()), worldIn, pos.below(), player, handIn, hit);
     }
 
     @Override
@@ -98,7 +95,7 @@ public class BlockGasStationTop extends BlockBase {
             super.onRemove(state, worldIn, pos, newState, isMoving);
 
             BlockState stateDown = worldIn.getBlockState(pos.below());
-            if (stateDown.getBlock().equals(ModBlocks.GAS_STATION)) {
+            if (stateDown.getBlock().equals(ModBlocks.GAS_STATION.get())) {
                 worldIn.destroyBlock(pos.below(), false);
             }
         }
@@ -109,8 +106,8 @@ public class BlockGasStationTop extends BlockBase {
     public boolean onDestroyedByPlayer(BlockState state, Level world, BlockPos pos, Player player, boolean willHarvest, FluidState fluid) {
         BlockState stateDown = world.getBlockState(pos.below());
         stateDown.getBlock();
-        if (stateDown.getBlock().equals(ModBlocks.GAS_STATION) && !player.getAbilities().instabuild) {
-            ModBlocks.GAS_STATION.playerDestroy(world, player, pos.below(), world.getBlockState(pos.below()), world.getBlockEntity(pos.below()), player.getMainHandItem());
+        if (stateDown.getBlock().equals(ModBlocks.GAS_STATION.get()) && !player.getAbilities().instabuild) {
+            ModBlocks.GAS_STATION.get().playerDestroy(world, player, pos.below(), world.getBlockState(pos.below()), world.getBlockEntity(pos.below()), player.getMainHandItem());
         }
         return super.onDestroyedByPlayer(state, world, pos, player, willHarvest, fluid);
     }
@@ -119,8 +116,8 @@ public class BlockGasStationTop extends BlockBase {
     public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter world, BlockPos pos, Player player) {
         BlockState stateDown = world.getBlockState(pos.below());
         stateDown.getBlock();
-        if (stateDown.getBlock().equals(ModBlocks.GAS_STATION)) {
-            return ModBlocks.GAS_STATION.getCloneItemStack(stateDown, target, world, pos.below(), player);
+        if (stateDown.getBlock().equals(ModBlocks.GAS_STATION.get())) {
+            return ModBlocks.GAS_STATION.get().getCloneItemStack(stateDown, target, world, pos.below(), player);
         }
         return super.getCloneItemStack(state, target, world, pos, player);
     }

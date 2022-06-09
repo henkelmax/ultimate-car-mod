@@ -34,7 +34,7 @@ public class PainterRecipeCategoryYellow implements IRecipeCategory<PainterRecip
 
     @Override
     public IDrawable getIcon() {
-        return helper.createDrawableIngredient(VanillaTypes.ITEM, new ItemStack(ModItems.PAINTER_YELLOW));
+        return helper.createDrawableIngredient(VanillaTypes.ITEM, new ItemStack(ModItems.PAINTER_YELLOW.get()));
     }
 
     @Override
@@ -45,7 +45,7 @@ public class PainterRecipeCategoryYellow implements IRecipeCategory<PainterRecip
 
     @Override
     public Component getTitle() {
-        return ModItems.PAINTER.getDescription();
+        return ModItems.PAINTER.get().getDescription();
     }
 
     @Override

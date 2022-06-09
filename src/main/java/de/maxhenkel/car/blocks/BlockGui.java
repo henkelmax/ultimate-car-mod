@@ -1,11 +1,9 @@
 package de.maxhenkel.car.blocks;
 
-import de.maxhenkel.car.Main;
 import de.maxhenkel.car.ModItemGroups;
 import de.maxhenkel.corelib.block.IItemBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
 import net.minecraft.world.Containers;
@@ -36,19 +34,18 @@ public abstract class BlockGui<T extends BlockEntity> extends BlockBase implemen
     public static final BooleanProperty POWERED = BooleanProperty.create("powered");
     public static final DirectionProperty FACING = DirectionProperty.create("facing", Direction.Plane.HORIZONTAL);
 
-    protected BlockGui(String name, Material material, SoundType soundType, float hardness, float resistance) {
-        this(name, Properties.of(material, MaterialColor.METAL).strength(hardness, resistance).sound(soundType));
+    protected BlockGui(Material material, SoundType soundType, float hardness, float resistance) {
+        this(Properties.of(material, MaterialColor.METAL).strength(hardness, resistance).sound(soundType));
     }
 
-    protected BlockGui(String name, Block.Properties properties) {
+    protected BlockGui(Block.Properties properties) {
         super(properties);
-        setRegistryName(new ResourceLocation(Main.MODID, name));
         registerDefaultState(stateDefinition.any().setValue(POWERED, false).setValue(FACING, Direction.NORTH));
     }
 
     @Override
     public Item toItem() {
-        return new BlockItem(this, new Item.Properties().tab(ModItemGroups.TAB_CAR)).setRegistryName(getRegistryName());
+        return new BlockItem(this, new Item.Properties().tab(ModItemGroups.TAB_CAR));
     }
 
     @Override

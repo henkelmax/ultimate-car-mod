@@ -9,7 +9,7 @@ import net.minecraft.client.gui.screens.SoundOptionsScreen;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.ScreenOpenEvent;
-import net.minecraftforge.event.entity.PlaySoundAtEntityEvent;
+import net.minecraftforge.event.PlayLevelSoundEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
@@ -54,9 +54,16 @@ public class SoundEvents {
     }
 
     @SubscribeEvent
-    public void onSound(PlaySoundAtEntityEvent event) {
+    public void onSound(PlayLevelSoundEvent.AtEntity event) {
         if (ModSounds.isCarSoundCategory(event.getSound())) {
-            event.setVolume(Main.CLIENT_CONFIG.carVolume.get().floatValue());
+            event.setNewVolume(Main.CLIENT_CONFIG.carVolume.get().floatValue());
+        }
+    }
+
+    @SubscribeEvent
+    public void onSound(PlayLevelSoundEvent.AtPosition event) {
+        if (ModSounds.isCarSoundCategory(event.getSound())) {
+            event.setNewVolume(Main.CLIENT_CONFIG.carVolume.get().floatValue());
         }
     }
 

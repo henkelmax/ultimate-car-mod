@@ -23,10 +23,10 @@ public class CommandCarDemo {
     }
 
     public static int spawnCars(Level world, Vec3 pos) {
-        ItemStack wheel = new ItemStack(ModItems.WHEEL);
-        ItemStack engine = new ItemStack(ModItems.ENGINE_6_CYLINDER);
-        ItemStack tank = new ItemStack(ModItems.LARGE_TANK);
-        ItemStack largeWheel = new ItemStack(ModItems.BIG_WHEEL);
+        ItemStack wheel = new ItemStack(ModItems.WHEEL.get());
+        ItemStack engine = new ItemStack(ModItems.ENGINE_6_CYLINDER.get());
+        ItemStack tank = new ItemStack(ModItems.LARGE_TANK.get());
+        ItemStack largeWheel = new ItemStack(ModItems.BIG_WHEEL.get());
         double posZ = pos.z;
         List<ItemStack> transporters = CarRecipeBuilder.getTransporters();
         List<ItemStack> containers = CarRecipeBuilder.getAllContainers();

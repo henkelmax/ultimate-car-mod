@@ -23,9 +23,9 @@ public class InventoryPainter implements Container {
     public ItemStack getItem(int index) {
         if (index >= 0 && index < ModBlocks.PAINTS.length) {
             if (isYellow) {
-                return new ItemStack(ModBlocks.YELLOW_PAINTS[index]);
+                return new ItemStack(ModBlocks.YELLOW_PAINTS[index].get());
             } else {
-                return new ItemStack(ModBlocks.PAINTS[index]);
+                return new ItemStack(ModBlocks.PAINTS[index].get());
             }
         }
         return null;

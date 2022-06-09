@@ -22,12 +22,12 @@ public class KeyRecipe extends CustomRecipe {
 
     @Override
     public ItemStack getResultItem() {
-        return new ItemStack(ModItems.KEY);
+        return new ItemStack(ModItems.KEY.get());
     }
 
     @Override
     public RecipeSerializer<?> getSerializer() {
-        return Main.CRAFTING_SPECIAL_KEY;
+        return Main.CRAFTING_SPECIAL_KEY.get();
     }
 
     @Override
@@ -67,7 +67,7 @@ public class KeyRecipe extends CustomRecipe {
                 continue;
             }
 
-            if (stack.getItem().equals(ModItems.KEY)) {
+            if (stack.getItem().equals(ModItems.KEY.get())) {
                 if (key != null) {
                     return null;
                 }
@@ -87,7 +87,7 @@ public class KeyRecipe extends CustomRecipe {
         UUID uuid = ItemKey.getCar(key);
 
         if (uuid == null) {
-            return new ItemStack(ModItems.KEY);
+            return new ItemStack(ModItems.KEY.get());
         }
 
         ItemStack out = ItemKey.getKeyForCar(uuid);

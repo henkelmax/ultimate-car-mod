@@ -13,7 +13,6 @@ import de.maxhenkel.tools.EntityTools;
 import net.minecraft.Util;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -44,17 +43,17 @@ public class GuiCarWorkshopCrafting extends ScreenBase<ContainerCarWorkshopCraft
     protected void init() {
         super.init();
 
-        buttonRepair = addRenderableWidget(new Button(leftPos + 105, topPos + 72, 60, 20, new TranslatableComponent("button.car.repair_car"), button -> {
+        buttonRepair = addRenderableWidget(new Button(leftPos + 105, topPos + 72, 60, 20, Component.translatable("button.car.repair_car"), button -> {
             Main.SIMPLE_CHANNEL.sendToServer(new MessageOpenCarWorkshopGui(tile.getBlockPos(), player, true));
         }));
 
-        buttonSpawn = addRenderableWidget(new Button(leftPos + 105, topPos + 106, 60, 20, new TranslatableComponent("button.car.spawn_car"), button -> {
+        buttonSpawn = addRenderableWidget(new Button(leftPos + 105, topPos + 106, 60, 20, Component.translatable("button.car.spawn_car"), button -> {
             if (tile.getLevel().isClientSide) {
                 if (tile.isCurrentCraftingCarValid()) {
                     Main.SIMPLE_CHANNEL.sendToServer(new MessageSpawnCar(tile.getBlockPos()));
                 } else {
                     for (Component message : tile.getMessages()) {
-                        player.sendMessage(message, Util.NIL_UUID);
+                        player.sendSystemMessage(message);
                     }
                 }
             }

@@ -1,6 +1,5 @@
 package de.maxhenkel.car.blocks;
 
-import de.maxhenkel.car.Main;
 import de.maxhenkel.car.ModItemGroups;
 import de.maxhenkel.car.blocks.tileentity.TileEntityTank;
 import de.maxhenkel.car.blocks.tileentity.render.item.TankItemTileEntityRenderer;
@@ -13,9 +12,6 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
@@ -51,7 +47,6 @@ public class BlockTank extends BlockBase implements EntityBlock, IItemBlock {
 
     protected BlockTank() {
         super(Block.Properties.of(Material.GLASS).strength(0.5F).sound(SoundType.GLASS).noOcclusion());
-        setRegistryName(new ResourceLocation(Main.MODID, "tank"));
     }
 
     @Override
@@ -62,7 +57,7 @@ public class BlockTank extends BlockBase implements EntityBlock, IItemBlock {
             public ItemRenderer createItemRenderer() {
                 return new TankItemTileEntityRenderer();
             }
-        }.setRegistryName(getRegistryName());
+        };
     }
 
     @Nullable
@@ -78,8 +73,8 @@ public class BlockTank extends BlockBase implements EntityBlock, IItemBlock {
             FluidStack fluidStack = FluidStack.loadFluidStackFromNBT(fluidComp);
 
             if (fluidStack != null) {
-                tooltip.add(new TranslatableComponent("tooltip.fluid", new TextComponent(fluidStack.getDisplayName().getString()).withStyle(ChatFormatting.DARK_GRAY)).withStyle(ChatFormatting.GRAY));
-                tooltip.add(new TranslatableComponent("tooltip.amount", new TextComponent(String.valueOf(fluidStack.getAmount())).withStyle(ChatFormatting.DARK_GRAY)).withStyle(ChatFormatting.GRAY));
+                tooltip.add(Component.translatable("tooltip.fluid", Component.literal(fluidStack.getDisplayName().getString()).withStyle(ChatFormatting.DARK_GRAY)).withStyle(ChatFormatting.GRAY));
+                tooltip.add(Component.translatable("tooltip.amount", Component.literal(String.valueOf(fluidStack.getAmount())).withStyle(ChatFormatting.DARK_GRAY)).withStyle(ChatFormatting.GRAY));
             }
         }
         super.appendHoverText(stack, worldIn, tooltip, flagIn);

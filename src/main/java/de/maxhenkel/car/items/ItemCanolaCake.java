@@ -1,9 +1,7 @@
 package de.maxhenkel.car.items;
 
-import de.maxhenkel.car.Main;
-import de.maxhenkel.corelib.item.ItemUtils;
 import de.maxhenkel.car.ModItemGroups;
-import net.minecraft.resources.ResourceLocation;
+import de.maxhenkel.corelib.item.ItemUtils;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
@@ -17,8 +15,6 @@ public class ItemCanolaCake extends Item {
 
     public ItemCanolaCake() {
         super(new Item.Properties().tab(ModItemGroups.TAB_CAR));
-        setRegistryName(new ResourceLocation(Main.MODID, "canola_cake"));
-
     }
 
     @Override

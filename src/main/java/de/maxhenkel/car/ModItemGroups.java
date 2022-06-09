@@ -10,14 +10,14 @@ public class ModItemGroups {
     public static final CreativeModeTab TAB_CAR = new CreativeModeTab("car") {
         @Override
         public ItemStack makeIcon() {
-            return new ItemStack(ModBlocks.ASPHALT);
+            return new ItemStack(ModBlocks.ASPHALT.get());
         }
     };
 
     public static final CreativeModeTab TAB_CAR_PARTS = new CreativeModeTab("car_parts") {
         @Override
         public ItemStack makeIcon() {
-            return new ItemStack(ModItems.OAK_BODY);
+            return new ItemStack(ModItems.OAK_BODY.get());
         }
     };
 

@@ -1,10 +1,8 @@
 package de.maxhenkel.car.blocks;
 
-import de.maxhenkel.car.Main;
 import de.maxhenkel.corelib.block.IItemBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -28,9 +26,13 @@ public class BlockPaint extends BlockBase implements IItemBlock {
 
     public static final DirectionProperty FACING = DirectionProperty.create("facing", Direction.Plane.HORIZONTAL);
 
-    public BlockPaint(EnumPaintType type, boolean isYellow) {
+    private final EnumPaintType paintType;
+    private final boolean yellow;
+
+    public BlockPaint(EnumPaintType type, boolean yellow) {
         super(Properties.of(new Material.Builder(MaterialColor.NONE).build()).strength(2F).sound(SoundType.STONE).noOcclusion());
-        setRegistryName(new ResourceLocation(Main.MODID, type.name + (isYellow ? "_yellow" : "")));
+        this.paintType = type;
+        this.yellow = yellow;
 
         registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH));
     }
@@ -45,9 +47,8 @@ public class BlockPaint extends BlockBase implements IItemBlock {
                 }
                 return super.canPlace(context, state);
             }
-        }.setRegistryName(getRegistryName());
+        };
     }
-
 
     @Nullable
     @Override
@@ -158,6 +159,10 @@ public class BlockPaint extends BlockBase implements IItemBlock {
 
         EnumPaintType(String name) {
             this.name = name;
+        }
+
+        public String getPaintName() {
+            return name;
         }
     }
 

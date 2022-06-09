@@ -16,8 +16,8 @@ import net.minecraftforge.fluids.FluidStack;
 
 public class TileEntitySpecialRendererSplitTank implements BlockEntityRenderer<TileEntitySplitTank> {
 
-    private static final FluidStack BIO_DIESEL_STACK = new FluidStack(ModFluids.BIO_DIESEL, 1);
-    private static final FluidStack GLYCERIN_STACK = new FluidStack(ModFluids.GLYCERIN, 1);
+    private static final FluidStack BIO_DIESEL_STACK = new FluidStack(ModFluids.BIO_DIESEL.get(), 1);
+    private static final FluidStack GLYCERIN_STACK = new FluidStack(ModFluids.GLYCERIN.get(), 1);
 
     protected BlockEntityRendererProvider.Context renderer;
 

@@ -10,7 +10,7 @@ public class ContainerSign extends ContainerBase {
     private TileEntitySign sign;
 
     public ContainerSign(int id, TileEntitySign sign, Inventory playerInv) {
-        super(Main.SIGN_CONTAINER_TYPE, id, playerInv, new SimpleContainer(0));
+        super(Main.SIGN_CONTAINER_TYPE.get(), id, playerInv, new SimpleContainer(0));
         this.sign = sign;
     }
 

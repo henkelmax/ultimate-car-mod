@@ -18,16 +18,15 @@ public class FluidGlycerinFlowing extends CarFluidFlowing {
                 FluidAttributes.builder(
                         new ResourceLocation(Main.MODID, "block/glycerin_still"),
                         new ResourceLocation(Main.MODID, "block/glycerin_flowing")).sound(SoundEvents.BUCKET_FILL).density(5000).viscosity(100),
-                () -> ModBlocks.GLYCERIN,
-                () -> ModFluids.GLYCERIN,
-                () -> ModFluids.GLYCERIN_FLOWING,
-                () -> ModItems.GLYCERIN_BUCKET
+                () -> ModBlocks.GLYCERIN.get(),
+                () -> ModFluids.GLYCERIN.get(),
+                () -> ModFluids.GLYCERIN_FLOWING.get(),
+                () -> ModItems.GLYCERIN_BUCKET.get()
         );
-        setRegistryName(new ResourceLocation(Main.MODID, "glycerin_flowing"));
     }
 
     @Override
     public void applyEffects(Entity entity, BlockState state, Level worldIn, BlockPos pos) {
-        ModFluids.GLYCERIN.applyEffects(entity, state, worldIn, pos);
+        ModFluids.GLYCERIN.get().applyEffects(entity, state, worldIn, pos);
     }
 }

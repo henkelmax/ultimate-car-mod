@@ -29,7 +29,7 @@ import javax.annotation.Nullable;
 public class BlockGenerator extends BlockGui<TileEntityGenerator> {
 
     protected BlockGenerator() {
-        super("generator", Properties.of(Material.METAL, MaterialColor.METAL).strength(3F, 3F).sound(SoundType.STONE).noOcclusion());
+        super(Properties.of(Material.METAL, MaterialColor.METAL).strength(3F, 3F).sound(SoundType.STONE).noOcclusion());
     }
 
     @Nullable

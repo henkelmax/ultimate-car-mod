@@ -24,7 +24,7 @@ public class SlotRepairKit extends Slot {
 
     @Override
     public void set(ItemStack stack) {
-        if (!stack.getItem().equals(ModItems.REPAIR_KIT)) {
+        if (!stack.getItem().equals(ModItems.REPAIR_KIT.get())) {
             return;
         }
 
@@ -36,7 +36,7 @@ public class SlotRepairKit extends Slot {
             if (damage >= 0) {
                 car.setDamage(damage);
             }
-            ModSounds.playSound(ModSounds.RATCHET, car.level, car.blockPosition(), null, SoundSource.BLOCKS);
+            ModSounds.playSound(ModSounds.RATCHET.get(), car.level, car.blockPosition(), null, SoundSource.BLOCKS);
         }
 
         if (!player.getInventory().add(stack)) {
@@ -46,7 +46,7 @@ public class SlotRepairKit extends Slot {
 
     @Override
     public boolean mayPlace(ItemStack stack) {
-        return stack.getItem().equals(ModItems.REPAIR_KIT);
+        return stack.getItem().equals(ModItems.REPAIR_KIT.get());
     }
 
 }

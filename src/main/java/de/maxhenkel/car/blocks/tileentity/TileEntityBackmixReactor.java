@@ -7,7 +7,6 @@ import de.maxhenkel.corelib.blockentity.ITickableBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ContainerData;
@@ -42,7 +41,7 @@ public class TileEntityBackmixReactor extends TileEntityBase implements ITickabl
     protected int timeToGenerate;
 
     public TileEntityBackmixReactor(BlockPos pos, BlockState state) {
-        super(Main.BACKMIX_REACTOR_TILE_ENTITY_TYPE, pos, state);
+        super(Main.BACKMIX_REACTOR_TILE_ENTITY_TYPE.get(), pos, state);
         this.maxStorage = Main.SERVER_CONFIG.backmixReactorEnergyStorage.get();
         this.storedEnergy = 0;
         this.energyUsage = Main.SERVER_CONFIG.backmixReactorEnergyUsage.get();
@@ -152,8 +151,8 @@ public class TileEntityBackmixReactor extends TileEntityBase implements ITickabl
 
     public void setBlockEnabled(boolean enabled) {
         BlockState state = level.getBlockState(getBlockPos());
-        if (state.getBlock().equals(ModBlocks.BACKMIX_REACTOR)) {
-            ModBlocks.BACKMIX_REACTOR.setPowered(level, worldPosition, state, enabled);
+        if (state.getBlock().equals(ModBlocks.BACKMIX_REACTOR.get())) {
+            ModBlocks.BACKMIX_REACTOR.get().setPowered(level, worldPosition, state, enabled);
         }
     }
 
@@ -297,7 +296,7 @@ public class TileEntityBackmixReactor extends TileEntityBase implements ITickabl
 
     @Override
     public Component getTranslatedName() {
-        return new TranslatableComponent("block.car.backmix_reactor");
+        return Component.translatable("block.car.backmix_reactor");
     }
 
     @Override
@@ -314,11 +313,11 @@ public class TileEntityBackmixReactor extends TileEntityBase implements ITickabl
     @Override
     public FluidStack getFluidInTank(int tank) {
         if (tank == 0) {
-            return new FluidStack(ModFluids.CANOLA_OIL, currentCanola);
+            return new FluidStack(ModFluids.CANOLA_OIL.get(), currentCanola);
         } else if (tank == 1) {
-            return new FluidStack(ModFluids.METHANOL, currentMethanol);
+            return new FluidStack(ModFluids.METHANOL.get(), currentMethanol);
         } else {
-            return new FluidStack(ModFluids.CANOLA_METHANOL_MIX, currentMix);
+            return new FluidStack(ModFluids.CANOLA_METHANOL_MIX.get(), currentMix);
         }
     }
 
@@ -376,7 +375,7 @@ public class TileEntityBackmixReactor extends TileEntityBase implements ITickabl
             setChanged();
         }
 
-        return new FluidStack(ModFluids.CANOLA_METHANOL_MIX, amount);
+        return new FluidStack(ModFluids.CANOLA_METHANOL_MIX.get(), amount);
     }
 
     @Nonnull
@@ -389,6 +388,6 @@ public class TileEntityBackmixReactor extends TileEntityBase implements ITickabl
             setChanged();
         }
 
-        return new FluidStack(ModFluids.CANOLA_METHANOL_MIX, amount);
+        return new FluidStack(ModFluids.CANOLA_METHANOL_MIX.get(), amount);
     }
 }

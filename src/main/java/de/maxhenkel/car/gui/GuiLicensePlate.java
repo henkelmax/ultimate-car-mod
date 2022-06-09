@@ -10,8 +10,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -42,16 +40,16 @@ public class GuiLicensePlate extends ScreenBase<ContainerLicensePlate> {
 
         minecraft.keyboardHandler.setSendRepeatsToGui(true);
 
-        addRenderableWidget(new Button(leftPos + 20, topPos + imageHeight - 25, 50, 20, new TranslatableComponent("button.car.submit"), button -> {
+        addRenderableWidget(new Button(leftPos + 20, topPos + imageHeight - 25, 50, 20, Component.translatable("button.car.submit"), button -> {
             Main.SIMPLE_CHANNEL.sendToServer(new MessageEditLicensePlate(player, textField.getValue()));
             MessageEditLicensePlate.setItemText(player, textField.getValue());
             Minecraft.getInstance().setScreen(null);
         }));
-        addRenderableWidget(new Button(leftPos + imageWidth - 50 - 15, topPos + imageHeight - 25, 50, 20, new TranslatableComponent("button.car.cancel"), button -> {
+        addRenderableWidget(new Button(leftPos + imageWidth - 50 - 15, topPos + imageHeight - 25, 50, 20, Component.translatable("button.car.cancel"), button -> {
             Minecraft.getInstance().setScreen(null);
         }));
 
-        textField = new EditBox(font, leftPos + 30, topPos + 30, 116, 16, new TextComponent(""));
+        textField = new EditBox(font, leftPos + 30, topPos + 30, 116, 16, Component.empty());
         textField.setTextColor(-1);
         textField.setTextColorUneditable(-1);
         textField.setBordered(true);

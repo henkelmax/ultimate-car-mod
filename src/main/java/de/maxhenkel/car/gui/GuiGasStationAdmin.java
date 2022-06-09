@@ -8,7 +8,6 @@ import de.maxhenkel.corelib.inventory.ScreenBase;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import org.lwjgl.glfw.GLFW;
@@ -41,7 +40,7 @@ public class GuiGasStationAdmin extends ScreenBase<ContainerGasStationAdmin> {
         super.init();
 
         minecraft.keyboardHandler.setSendRepeatsToGui(true);
-        textField = new EditBox(font, leftPos + 54, topPos + 22, 100, 16, new TranslatableComponent("gas_station.admin.amount_text_field"));
+        textField = new EditBox(font, leftPos + 54, topPos + 22, 100, 16, Component.translatable("gas_station.admin.amount_text_field"));
         textField.setTextColor(-1);
         textField.setTextColorUneditable(-1);
         textField.setMaxLength(20);
@@ -87,7 +86,7 @@ public class GuiGasStationAdmin extends ScreenBase<ContainerGasStationAdmin> {
     protected void renderLabels(PoseStack matrixStack, int mouseX, int mouseY) {
         super.renderLabels(matrixStack, mouseX, mouseY);
 
-        drawCenteredString(matrixStack, font, new TranslatableComponent("gui.gas_station").getString(), imageWidth / 2, 5, TITLE_COLOR);
+        drawCenteredString(matrixStack, font, Component.translatable("gui.gas_station").getString(), imageWidth / 2, 5, TITLE_COLOR);
 
         font.draw(matrixStack, inventoryPlayer.getDisplayName().getVisualOrderText(), 8, imageHeight - 93, FONT_COLOR);
     }

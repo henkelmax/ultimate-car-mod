@@ -1,12 +1,10 @@
 package de.maxhenkel.car.blocks;
 
-import de.maxhenkel.car.Main;
 import de.maxhenkel.car.ModItemGroups;
 import de.maxhenkel.car.blocks.tileentity.TileEntityDynamo;
 import de.maxhenkel.corelib.block.IItemBlock;
 import de.maxhenkel.corelib.blockentity.SimpleBlockEntityTicker;
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
@@ -26,12 +24,11 @@ public class BlockDynamo extends BlockBase implements EntityBlock, IItemBlock {
 
     protected BlockDynamo() {
         super(Properties.of(Material.METAL, MaterialColor.COLOR_BLACK).strength(3F).sound(SoundType.METAL));
-        setRegistryName(new ResourceLocation(Main.MODID, "dynamo"));
     }
 
     @Override
     public Item toItem() {
-        return new BlockItem(this, new Item.Properties().tab(ModItemGroups.TAB_CAR)).setRegistryName(getRegistryName());
+        return new BlockItem(this, new Item.Properties().tab(ModItemGroups.TAB_CAR));
     }
 
     @Nullable

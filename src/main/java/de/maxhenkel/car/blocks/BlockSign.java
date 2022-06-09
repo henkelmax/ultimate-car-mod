@@ -1,6 +1,5 @@
 package de.maxhenkel.car.blocks;
 
-import de.maxhenkel.car.Main;
 import de.maxhenkel.car.ModItemGroups;
 import de.maxhenkel.car.blocks.tileentity.TileEntitySign;
 import de.maxhenkel.car.gui.ContainerSign;
@@ -9,7 +8,6 @@ import de.maxhenkel.corelib.block.DirectionalVoxelShape;
 import de.maxhenkel.corelib.block.IItemBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.InteractionHand;
@@ -67,14 +65,13 @@ public class BlockSign extends BlockBase implements EntityBlock, IItemBlock, Sim
 
     public BlockSign() {
         super(Properties.of(Material.METAL, MaterialColor.METAL).strength(4F).sound(SoundType.METAL));
-        setRegistryName(new ResourceLocation(Main.MODID, "sign"));
 
         registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(WATERLOGGED, false));
     }
 
     @Override
     public Item toItem() {
-        return new BlockItem(this, new Item.Properties().tab(ModItemGroups.TAB_CAR)).setRegistryName(getRegistryName());
+        return new BlockItem(this, new Item.Properties().tab(ModItemGroups.TAB_CAR));
     }
 
     @Override

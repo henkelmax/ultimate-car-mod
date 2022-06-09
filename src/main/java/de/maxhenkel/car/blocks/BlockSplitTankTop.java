@@ -1,8 +1,6 @@
 package de.maxhenkel.car.blocks;
 
-import de.maxhenkel.car.Main;
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -25,12 +23,11 @@ public class BlockSplitTankTop extends BlockBase {
 
     public BlockSplitTankTop() {
         super(Properties.of(Material.METAL).strength(3F).sound(SoundType.STONE));
-        setRegistryName(new ResourceLocation(Main.MODID, "split_tank_top"));
     }
 
     @Override
     public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
-        return ModBlocks.SPLIT_TANK.use(worldIn.getBlockState(pos.below()), worldIn, pos.below(), player, handIn, hit);
+        return ModBlocks.SPLIT_TANK.get().use(worldIn.getBlockState(pos.below()), worldIn, pos.below(), player, handIn, hit);
     }
 
     @Override
@@ -56,7 +53,7 @@ public class BlockSplitTankTop extends BlockBase {
             super.onRemove(state, worldIn, pos, newState, isMoving);
 
             BlockState stateDown = worldIn.getBlockState(pos.below());
-            if (stateDown != null && stateDown.getBlock().equals(ModBlocks.SPLIT_TANK)) {
+            if (stateDown != null && stateDown.getBlock().equals(ModBlocks.SPLIT_TANK.get())) {
                 worldIn.destroyBlock(pos.below(), false);
             }
         }
@@ -66,8 +63,8 @@ public class BlockSplitTankTop extends BlockBase {
     @Override
     public boolean onDestroyedByPlayer(BlockState state, Level world, BlockPos pos, Player player, boolean willHarvest, FluidState fluid) {
         BlockState stateDown = world.getBlockState(pos.below());
-        if (stateDown != null && stateDown.getBlock() != null && stateDown.getBlock().equals(ModBlocks.SPLIT_TANK) && !player.getAbilities().instabuild) {
-            ModBlocks.SPLIT_TANK.playerDestroy(world, player, pos.below(), world.getBlockState(pos.below()), world.getBlockEntity(pos.below()), player.getMainHandItem());
+        if (stateDown != null && stateDown.getBlock() != null && stateDown.getBlock().equals(ModBlocks.SPLIT_TANK.get()) && !player.getAbilities().instabuild) {
+            ModBlocks.SPLIT_TANK.get().playerDestroy(world, player, pos.below(), world.getBlockState(pos.below()), world.getBlockEntity(pos.below()), player.getMainHandItem());
         }
         return super.onDestroyedByPlayer(state, world, pos, player, willHarvest, fluid);
     }
@@ -75,8 +72,8 @@ public class BlockSplitTankTop extends BlockBase {
     @Override
     public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter world, BlockPos pos, Player player) {
         BlockState stateDown = world.getBlockState(pos.below());
-        if (stateDown.getBlock().equals(ModBlocks.SPLIT_TANK)) {
-            return ModBlocks.SPLIT_TANK.getCloneItemStack(stateDown, target, world, pos.below(), player);
+        if (stateDown.getBlock().equals(ModBlocks.SPLIT_TANK.get())) {
+            return ModBlocks.SPLIT_TANK.get().getCloneItemStack(stateDown, target, world, pos.below(), player);
         }
         return super.getCloneItemStack(stateDown, target, world, pos, player);
     }

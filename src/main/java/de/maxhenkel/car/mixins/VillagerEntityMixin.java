@@ -20,7 +20,7 @@ public abstract class VillagerEntityMixin extends AbstractVillager {
 
     @Inject(method = "hasFarmSeeds", at = @At("HEAD"), cancellable = true)
     public void hasFarmSeeds(CallbackInfoReturnable<Boolean> cir) {
-        if (getInventory().hasAnyOf(ImmutableSet.of(ModItems.CANOLA_SEEDS))) {
+        if (getInventory().hasAnyOf(ImmutableSet.of(ModItems.CANOLA_SEEDS.get()))) {
             cir.setReturnValue(true);
         }
     }

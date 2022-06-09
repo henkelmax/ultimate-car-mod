@@ -14,7 +14,6 @@ import de.maxhenkel.tools.EntityTools;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.entity.player.Inventory;
@@ -49,14 +48,14 @@ public class GuiCarWorkshopRepair extends ScreenBase<ContainerCarWorkshopRepair>
     protected void init() {
         super.init();
 
-        this.buttonRepair = addRenderableWidget(new Button(leftPos + imageWidth - 7 - 60, topPos + 105, 60, 20, new TranslatableComponent("button.car.repair_car"), button -> {
+        this.buttonRepair = addRenderableWidget(new Button(leftPos + imageWidth - 7 - 60, topPos + 105, 60, 20, Component.translatable("button.car.repair_car"), button -> {
             if (tile.getLevel().isClientSide) {
                 Main.SIMPLE_CHANNEL.sendToServer(new MessageRepairCar(tile.getBlockPos(), player));
             }
         }));
         this.buttonRepair.active = false;
 
-        this.buttonBack = addRenderableWidget(new Button(leftPos + 7, topPos + 105, 60, 20, new TranslatableComponent("button.car.back"), button -> {
+        this.buttonBack = addRenderableWidget(new Button(leftPos + 7, topPos + 105, 60, 20, Component.translatable("button.car.back"), button -> {
             if (tile.getLevel().isClientSide) {
                 Main.SIMPLE_CHANNEL.sendToServer(new MessageOpenCarWorkshopGui(tile.getBlockPos(), player, false));
             }
@@ -84,7 +83,7 @@ public class GuiCarWorkshopRepair extends ScreenBase<ContainerCarWorkshopRepair>
         if (mouseX >= leftPos + 52 && mouseX <= leftPos + 123) {
             if (mouseY >= topPos + 81 && mouseY <= topPos + 90) {
                 List<FormattedCharSequence> list = new ArrayList<>();
-                list.add(new TranslatableComponent("tooltip.damage", MathUtils.round(car.getDamage(), 2)).getVisualOrderText());
+                list.add(Component.translatable("tooltip.damage", MathUtils.round(car.getDamage(), 2)).getVisualOrderText());
                 renderTooltip(matrixStack, list, mouseX - leftPos, mouseY - topPos);
             }
         }

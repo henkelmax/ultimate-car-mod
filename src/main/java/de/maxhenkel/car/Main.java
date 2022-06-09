@@ -1,6 +1,7 @@
 package de.maxhenkel.car;
 
 import com.google.common.collect.ImmutableSet;
+import de.maxhenkel.car.blocks.BlockPaint;
 import de.maxhenkel.car.blocks.ModBlocks;
 import de.maxhenkel.car.blocks.tileentity.*;
 import de.maxhenkel.car.blocks.tileentity.render.TileEntitySpecialRendererSign;
@@ -26,7 +27,6 @@ import de.maxhenkel.car.sounds.ModSounds;
 import de.maxhenkel.car.villagers.VillagerEvents;
 import de.maxhenkel.corelib.ClientRegistry;
 import de.maxhenkel.corelib.CommonRegistry;
-import de.maxhenkel.corelib.block.IItemBlock;
 import de.maxhenkel.corelib.config.DynamicConfig;
 import de.maxhenkel.corelib.dataserializers.DataSerializerItemList;
 import de.maxhenkel.tools.EntityTools;
@@ -35,9 +35,10 @@ import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.client.renderer.entity.EntityRenderers;
+import net.minecraft.core.NonNullList;
 import net.minecraft.core.Registry;
+import net.minecraft.network.syncher.EntityDataSerializer;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
@@ -50,16 +51,14 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.SimpleRecipeSerializer;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.ComposterBlock;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.storage.loot.functions.LootItemFunctionType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.extensions.IForgeMenuType;
 import net.minecraftforge.event.RegisterCommandsEvent;
-import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
@@ -67,10 +66,11 @@ import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.minecraftforge.network.IContainerFactory;
 import net.minecraftforge.network.simple.SimpleChannel;
-import net.minecraftforge.registries.DataSerializerEntry;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.lwjgl.glfw.GLFW;
@@ -84,29 +84,39 @@ public class Main {
 
     public static SimpleChannel SIMPLE_CHANNEL;
 
-    public static EntityType<EntityGenericCar> CAR_ENTITY_TYPE;
+    private static final DeferredRegister<EntityType<?>> ENTITY_REGISTER = DeferredRegister.create(ForgeRegistries.ENTITIES, Main.MODID);
+    public static final RegistryObject<EntityType<EntityGenericCar>> CAR_ENTITY_TYPE = ENTITY_REGISTER.register("car", Main::createCarEntityType);
 
     public static LootItemFunctionType COPY_FLUID;
 
-    public static PoiType POINT_OF_INTEREST_TYPE_GAS_STATION_ATTENDANT;
-    public static VillagerProfession VILLAGER_PROFESSION_GAS_STATION_ATTENDANT;
+    private static final DeferredRegister<PoiType> POI_TYPE_REGISTER = DeferredRegister.create(ForgeRegistries.POI_TYPES, Main.MODID);
+    public static final RegistryObject<PoiType> POINT_OF_INTEREST_TYPE_GAS_STATION_ATTENDANT = POI_TYPE_REGISTER.register("gas_station_attendant", () ->
+            new PoiType(ImmutableSet.copyOf(ModBlocks.GAS_STATION.get().getStateDefinition().getPossibleStates()), 1, 1)
+    );
+
+    private static final DeferredRegister<VillagerProfession> VILLAGER_PROFESSION_REGISTER = DeferredRegister.create(ForgeRegistries.PROFESSIONS, Main.MODID);
+    public static final RegistryObject<VillagerProfession> VILLAGER_PROFESSION_GAS_STATION_ATTENDANT = VILLAGER_PROFESSION_REGISTER.register("gas_station_attendant", () ->
+            new VillagerProfession("gas_station_attendant", poi -> poi.is(POINT_OF_INTEREST_TYPE_GAS_STATION_ATTENDANT.getKey()), poi -> poi.is(POINT_OF_INTEREST_TYPE_GAS_STATION_ATTENDANT.getKey()), ImmutableSet.of(), ImmutableSet.of(), ModSounds.GAS_STATION_ATTENDANT.get())
+    );
+
+    private static final DeferredRegister<RecipeType<?>> RECIPE_TYPE_REGISTER = DeferredRegister.create(ForgeRegistries.RECIPE_TYPES, Main.MODID);
+    public static final RegistryObject<RecipeType<BlastFurnaceRecipe>> RECIPE_TYPE_BLAST_FURNACE = RECIPE_TYPE_REGISTER.register("blast_furnace", () ->
+            new RecipeType<BlastFurnaceRecipe>() {
+            }
+    );
+    public static final RegistryObject<RecipeType<OilMillRecipe>> RECIPE_TYPE_OIL_MILL = RECIPE_TYPE_REGISTER.register("oil_mill", () ->
+            new RecipeType<OilMillRecipe>() {
+            }
+    );
+
+    private static final DeferredRegister<EntityDataSerializer<?>> ENTITY_DATA_SERIALIZER_REGISTER = DeferredRegister.create(ForgeRegistries.Keys.DATA_SERIALIZERS, Main.MODID);
+    public static final RegistryObject<EntityDataSerializer<NonNullList<ItemStack>>> ITEM_LIST = ENTITY_DATA_SERIALIZER_REGISTER.register("serializer_item_list", () -> DataSerializerItemList.create());
 
     public static ServerConfig SERVER_CONFIG;
     public static FuelConfig FUEL_CONFIG;
     public static ClientConfig CLIENT_CONFIG;
 
     public Main() {
-        FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(Item.class, this::registerItems);
-        FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(Block.class, this::registerBlocks);
-        FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(SoundEvent.class, this::registerSounds);
-        FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(EntityType.class, this::registerEntities);
-        FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(MenuType.class, this::registerContainers);
-        FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(BlockEntityType.class, this::registerTileEntities);
-        FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(RecipeSerializer.class, this::registerRecipes);
-        FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(DataSerializerEntry.class, this::registerSerializers);
-        FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(Fluid.class, this::registerFluids);
-        FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(PoiType.class, this::registerPointsOfInterest);
-        FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(VillagerProfession.class, this::registerVillagerProfessions);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::commonSetup);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(IMC::enqueueIMC);
 
@@ -115,6 +125,19 @@ public class Main {
         CLIENT_CONFIG = CommonRegistry.registerConfig(ModConfig.Type.CLIENT, ClientConfig.class);
 
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> FMLJavaModLoadingContext.get().getModEventBus().addListener(Main.this::clientSetup));
+
+        ModFluids.init();
+        ModBlocks.init();
+        ModItems.init();
+        ModSounds.init();
+        MENU_TYPE_REGISTER.register(FMLJavaModLoadingContext.get().getModEventBus());
+        BLOCK_ENTITY_REGISTER.register(FMLJavaModLoadingContext.get().getModEventBus());
+        ENTITY_REGISTER.register(FMLJavaModLoadingContext.get().getModEventBus());
+        RECIPE_TYPE_REGISTER.register(FMLJavaModLoadingContext.get().getModEventBus());
+        RECIPE_SERIALIZER_REGISTER.register(FMLJavaModLoadingContext.get().getModEventBus());
+        POI_TYPE_REGISTER.register(FMLJavaModLoadingContext.get().getModEventBus());
+        VILLAGER_PROFESSION_REGISTER.register(FMLJavaModLoadingContext.get().getModEventBus());
+        ENTITY_DATA_SERIALIZER_REGISTER.register(FMLJavaModLoadingContext.get().getModEventBus());
     }
 
     @SubscribeEvent
@@ -149,9 +172,15 @@ public class Main {
         CommonRegistry.registerMessage(SIMPLE_CHANNEL, 14, MessageCenterCarClient.class);
         CommonRegistry.registerMessage(SIMPLE_CHANNEL, 15, MessageEditLicensePlate.class);
 
-        ComposterBlock.COMPOSTABLES.put(ModItems.CANOLA_SEEDS, 0.3F);
-        ComposterBlock.COMPOSTABLES.put(ModItems.CANOLA_CAKE, 0.5F);
-        ComposterBlock.COMPOSTABLES.put(ModItems.CANOLA, 0.65F);
+        ComposterBlock.COMPOSTABLES.put(ModItems.CANOLA_SEEDS.get(), 0.3F);
+        ComposterBlock.COMPOSTABLES.put(ModItems.CANOLA_CAKE.get(), 0.5F);
+        ComposterBlock.COMPOSTABLES.put(ModItems.CANOLA.get(), 0.65F);
+
+        Villager.WANTED_ITEMS = ImmutableSet.<Item>builder()
+                .addAll(Villager.WANTED_ITEMS)
+                .add(ModItems.CANOLA_SEEDS.get())
+                .add(ModItems.CANOLA.get())
+                .build();
     }
 
     public static KeyMapping FORWARD_KEY;
@@ -167,26 +196,26 @@ public class Main {
     @SubscribeEvent
     @OnlyIn(Dist.CLIENT)
     public void clientSetup(FMLClientSetupEvent event) {
-        BlockEntityRenderers.register(GAS_STATION_TILE_ENTITY_TYPE, TileentitySpecialRendererGasStation::new);
-        BlockEntityRenderers.register(SPLIT_TANK_TILE_ENTITY_TYPE, TileEntitySpecialRendererSplitTank::new);
-        BlockEntityRenderers.register(TANK_TILE_ENTITY_TYPE, TileEntitySpecialRendererTank::new);
-        BlockEntityRenderers.register(SIGN_TILE_ENTITY_TYPE, TileEntitySpecialRendererSign::new);
+        BlockEntityRenderers.register(GAS_STATION_TILE_ENTITY_TYPE.get(), TileentitySpecialRendererGasStation::new);
+        BlockEntityRenderers.register(SPLIT_TANK_TILE_ENTITY_TYPE.get(), TileEntitySpecialRendererSplitTank::new);
+        BlockEntityRenderers.register(TANK_TILE_ENTITY_TYPE.get(), TileEntitySpecialRendererTank::new);
+        BlockEntityRenderers.register(SIGN_TILE_ENTITY_TYPE.get(), TileEntitySpecialRendererSign::new);
 
-        ClientRegistry.<ContainerBackmixReactor, GuiBackmixReactor>registerScreen(Main.BACKMIX_REACTOR_CONTAINER_TYPE, GuiBackmixReactor::new);
-        ClientRegistry.<ContainerBlastFurnace, GuiBlastFurnace>registerScreen(Main.BLAST_FURNACE_CONTAINER_TYPE, GuiBlastFurnace::new);
-        ClientRegistry.<ContainerCar, GuiCar>registerScreen(Main.CAR_CONTAINER_TYPE, GuiCar::new);
-        ClientRegistry.<ContainerCarInventory, GuiCarInventory>registerScreen(Main.CAR_INVENTORY_CONTAINER_TYPE, GuiCarInventory::new);
-        ClientRegistry.<ContainerCarWorkshopCrafting, GuiCarWorkshopCrafting>registerScreen(Main.CAR_WORKSHOP_CRAFTING_CONTAINER_TYPE, GuiCarWorkshopCrafting::new);
-        ClientRegistry.<ContainerCarWorkshopRepair, GuiCarWorkshopRepair>registerScreen(Main.CAR_WORKSHOP_REPAIR_CONTAINER_TYPE, GuiCarWorkshopRepair::new);
-        ClientRegistry.<ContainerFluidExtractor, GuiFluidExtractor>registerScreen(Main.FLUID_EXTRACTOR_CONTAINER_TYPE, GuiFluidExtractor::new);
-        ClientRegistry.<ContainerGasStation, GuiGasStation>registerScreen(Main.GAS_STATION_CONTAINER_TYPE, GuiGasStation::new);
-        ClientRegistry.<ContainerGasStationAdmin, GuiGasStationAdmin>registerScreen(Main.GAS_STATION_ADMIN_CONTAINER_TYPE, GuiGasStationAdmin::new);
-        ClientRegistry.<ContainerGenerator, GuiGenerator>registerScreen(Main.GENERATOR_CONTAINER_TYPE, GuiGenerator::new);
-        ClientRegistry.<ContainerLicensePlate, GuiLicensePlate>registerScreen(Main.LICENSE_PLATE_CONTAINER_TYPE, GuiLicensePlate::new);
-        ClientRegistry.<ContainerOilMill, GuiOilMill>registerScreen(Main.OIL_MILL_CONTAINER_TYPE, GuiOilMill::new);
-        ClientRegistry.<ContainerPainter, GuiPainter>registerScreen(Main.PAINTER_CONTAINER_TYPE, GuiPainter::new);
-        ClientRegistry.<ContainerSign, GuiSign>registerScreen(Main.SIGN_CONTAINER_TYPE, GuiSign::new);
-        ClientRegistry.<ContainerSplitTank, GuiSplitTank>registerScreen(Main.SPLIT_TANK_CONTAINER_TYPE, GuiSplitTank::new);
+        ClientRegistry.<ContainerBackmixReactor, GuiBackmixReactor>registerScreen(Main.BACKMIX_REACTOR_CONTAINER_TYPE.get(), GuiBackmixReactor::new);
+        ClientRegistry.<ContainerBlastFurnace, GuiBlastFurnace>registerScreen(Main.BLAST_FURNACE_CONTAINER_TYPE.get(), GuiBlastFurnace::new);
+        ClientRegistry.<ContainerCar, GuiCar>registerScreen(Main.CAR_CONTAINER_TYPE.get(), GuiCar::new);
+        ClientRegistry.<ContainerCarInventory, GuiCarInventory>registerScreen(Main.CAR_INVENTORY_CONTAINER_TYPE.get(), GuiCarInventory::new);
+        ClientRegistry.<ContainerCarWorkshopCrafting, GuiCarWorkshopCrafting>registerScreen(Main.CAR_WORKSHOP_CRAFTING_CONTAINER_TYPE.get(), GuiCarWorkshopCrafting::new);
+        ClientRegistry.<ContainerCarWorkshopRepair, GuiCarWorkshopRepair>registerScreen(Main.CAR_WORKSHOP_REPAIR_CONTAINER_TYPE.get(), GuiCarWorkshopRepair::new);
+        ClientRegistry.<ContainerFluidExtractor, GuiFluidExtractor>registerScreen(Main.FLUID_EXTRACTOR_CONTAINER_TYPE.get(), GuiFluidExtractor::new);
+        ClientRegistry.<ContainerGasStation, GuiGasStation>registerScreen(Main.GAS_STATION_CONTAINER_TYPE.get(), GuiGasStation::new);
+        ClientRegistry.<ContainerGasStationAdmin, GuiGasStationAdmin>registerScreen(Main.GAS_STATION_ADMIN_CONTAINER_TYPE.get(), GuiGasStationAdmin::new);
+        ClientRegistry.<ContainerGenerator, GuiGenerator>registerScreen(Main.GENERATOR_CONTAINER_TYPE.get(), GuiGenerator::new);
+        ClientRegistry.<ContainerLicensePlate, GuiLicensePlate>registerScreen(Main.LICENSE_PLATE_CONTAINER_TYPE.get(), GuiLicensePlate::new);
+        ClientRegistry.<ContainerOilMill, GuiOilMill>registerScreen(Main.OIL_MILL_CONTAINER_TYPE.get(), GuiOilMill::new);
+        ClientRegistry.<ContainerPainter, GuiPainter>registerScreen(Main.PAINTER_CONTAINER_TYPE.get(), GuiPainter::new);
+        ClientRegistry.<ContainerSign, GuiSign>registerScreen(Main.SIGN_CONTAINER_TYPE.get(), GuiSign::new);
+        ClientRegistry.<ContainerSplitTank, GuiSplitTank>registerScreen(Main.SPLIT_TANK_CONTAINER_TYPE.get(), GuiSplitTank::new);
 
         FORWARD_KEY = ClientRegistry.registerKeyBinding("key.car_forward", "category.car", GLFW.GLFW_KEY_W);
         BACK_KEY = ClientRegistry.registerKeyBinding("key.car_back", "category.car", GLFW.GLFW_KEY_S);
@@ -202,319 +231,160 @@ public class Main {
         MinecraftForge.EVENT_BUS.register(new KeyEvents());
         MinecraftForge.EVENT_BUS.register(new PlayerEvents());
 
-        EntityRenderers.register(CAR_ENTITY_TYPE, GenericCarModel::new);
-    }
+        EntityRenderers.register(CAR_ENTITY_TYPE.get(), GenericCarModel::new);
 
-    @SubscribeEvent
-    public void registerItems(RegistryEvent.Register<Item> event) {
-        event.getRegistry().registerAll(
-                ModBlocks.getBlocksWithItems().stream().map(IItemBlock::toItem).toArray(Item[]::new)
-        );
-
-        event.getRegistry().registerAll(
-                ModItems.getAll().toArray(new Item[0])
-        );
-    }
-
-    @SubscribeEvent
-    public void registerBlocks(RegistryEvent.Register<Block> event) {
-        event.getRegistry().registerAll(
-                ModBlocks.getAll().toArray(new Block[0])
-        );
-
-        if (FMLEnvironment.dist == Dist.CLIENT) {
-            ItemBlockRenderTypes.setRenderLayer(ModBlocks.CANOLA_CROP, RenderType.cutout());
-            ItemBlockRenderTypes.setRenderLayer(ModBlocks.SPLIT_TANK, RenderType.cutout());
-            for (Block block : ModBlocks.PAINTS) {
-                ItemBlockRenderTypes.setRenderLayer(block, RenderType.cutout());
-            }
-            for (Block block : ModBlocks.YELLOW_PAINTS) {
-                ItemBlockRenderTypes.setRenderLayer(block, RenderType.cutout());
-            }
+        ItemBlockRenderTypes.setRenderLayer(ModBlocks.CANOLA_CROP.get(), RenderType.cutout());
+        ItemBlockRenderTypes.setRenderLayer(ModBlocks.SPLIT_TANK.get(), RenderType.cutout());
+        for (RegistryObject<BlockPaint> block : ModBlocks.PAINTS) {
+            ItemBlockRenderTypes.setRenderLayer(block.get(), RenderType.cutout());
         }
+        for (RegistryObject<BlockPaint> block : ModBlocks.YELLOW_PAINTS) {
+            ItemBlockRenderTypes.setRenderLayer(block.get(), RenderType.cutout());
+        }
+
+        ItemBlockRenderTypes.setRenderLayer(ModFluids.CANOLA_OIL.get(), RenderType.translucent());
+        ItemBlockRenderTypes.setRenderLayer(ModFluids.CANOLA_OIL_FLOWING.get(), RenderType.translucent());
+        ItemBlockRenderTypes.setRenderLayer(ModFluids.METHANOL.get(), RenderType.translucent());
+        ItemBlockRenderTypes.setRenderLayer(ModFluids.METHANOL_FLOWING.get(), RenderType.translucent());
+        ItemBlockRenderTypes.setRenderLayer(ModFluids.CANOLA_METHANOL_MIX.get(), RenderType.translucent());
+        ItemBlockRenderTypes.setRenderLayer(ModFluids.CANOLA_METHANOL_MIX_FLOWING.get(), RenderType.translucent());
+        ItemBlockRenderTypes.setRenderLayer(ModFluids.GLYCERIN.get(), RenderType.translucent());
+        ItemBlockRenderTypes.setRenderLayer(ModFluids.GLYCERIN_FLOWING.get(), RenderType.translucent());
+        ItemBlockRenderTypes.setRenderLayer(ModFluids.BIO_DIESEL.get(), RenderType.translucent());
+        ItemBlockRenderTypes.setRenderLayer(ModFluids.BIO_DIESEL_FLOWING.get(), RenderType.translucent());
     }
 
-    @SubscribeEvent
-    public void registerSounds(RegistryEvent.Register<SoundEvent> event) {
-        event.getRegistry().registerAll(
-                ModSounds.getAll().toArray(new SoundEvent[0])
-        );
-    }
-
-    @SubscribeEvent
-    public void registerEntities(RegistryEvent.Register<EntityType<?>> event) {
-        CAR_ENTITY_TYPE = CommonRegistry.registerEntity(Main.MODID, "car", MobCategory.MISC, EntityGenericCar.class, builder -> {
+    private static EntityType<EntityGenericCar> createCarEntityType() {
+        return CommonRegistry.registerEntity(Main.MODID, "car", MobCategory.MISC, EntityGenericCar.class, builder -> {
             builder.setTrackingRange(128)
                     .setUpdateInterval(1)
                     .setShouldReceiveVelocityUpdates(true)
                     .sized(1F, 1F)
                     .setCustomClientFactory((spawnEntity, world) -> new EntityGenericCar(world));
         });
-        event.getRegistry().register(CAR_ENTITY_TYPE);
     }
 
-    public static MenuType<ContainerBackmixReactor> BACKMIX_REACTOR_CONTAINER_TYPE;
-    public static MenuType<ContainerBlastFurnace> BLAST_FURNACE_CONTAINER_TYPE;
-    public static MenuType<ContainerCar> CAR_CONTAINER_TYPE;
-    public static MenuType<ContainerCarInventory> CAR_INVENTORY_CONTAINER_TYPE;
-    public static MenuType<ContainerCarWorkshopCrafting> CAR_WORKSHOP_CRAFTING_CONTAINER_TYPE;
-    public static MenuType<ContainerCarWorkshopRepair> CAR_WORKSHOP_REPAIR_CONTAINER_TYPE;
-    public static MenuType<ContainerFluidExtractor> FLUID_EXTRACTOR_CONTAINER_TYPE;
-    public static MenuType<ContainerGasStation> GAS_STATION_CONTAINER_TYPE;
-    public static MenuType<ContainerGasStationAdmin> GAS_STATION_ADMIN_CONTAINER_TYPE;
-    public static MenuType<ContainerGenerator> GENERATOR_CONTAINER_TYPE;
-    public static MenuType<ContainerLicensePlate> LICENSE_PLATE_CONTAINER_TYPE;
-    public static MenuType<ContainerOilMill> OIL_MILL_CONTAINER_TYPE;
-    public static MenuType<ContainerPainter> PAINTER_CONTAINER_TYPE;
-    public static MenuType<ContainerSign> SIGN_CONTAINER_TYPE;
-    public static MenuType<ContainerSplitTank> SPLIT_TANK_CONTAINER_TYPE;
+    private static final DeferredRegister<MenuType<?>> MENU_TYPE_REGISTER = DeferredRegister.create(ForgeRegistries.CONTAINERS, Main.MODID);
 
-    @SubscribeEvent
-    public void registerContainers(RegistryEvent.Register<MenuType<?>> event) {
-        BACKMIX_REACTOR_CONTAINER_TYPE = new MenuType<>(new ContainerFactoryTileEntity((ContainerFactoryTileEntity.ContainerCreator<ContainerBackmixReactor, TileEntityBackmixReactor>) ContainerBackmixReactor::new));
-        BACKMIX_REACTOR_CONTAINER_TYPE.setRegistryName(new ResourceLocation(Main.MODID, "backmix_reactor"));
-        event.getRegistry().register(BACKMIX_REACTOR_CONTAINER_TYPE);
-
-        BLAST_FURNACE_CONTAINER_TYPE = new MenuType<>(new ContainerFactoryTileEntity((ContainerFactoryTileEntity.ContainerCreator<ContainerBlastFurnace, TileEntityBlastFurnace>) ContainerBlastFurnace::new));
-        BLAST_FURNACE_CONTAINER_TYPE.setRegistryName(new ResourceLocation(Main.MODID, "blast_furnace"));
-        event.getRegistry().register(BLAST_FURNACE_CONTAINER_TYPE);
-
-        CAR_CONTAINER_TYPE = new MenuType<>((IContainerFactory<ContainerCar>) (windowId, inv, data) -> {
-            EntityGenericCar car = EntityTools.getCarByUUID(inv.player, data.readUUID());
-            if (car == null) {
-                return null;
-            }
-            return new ContainerCar(windowId, car, inv);
-        });
-        CAR_CONTAINER_TYPE.setRegistryName(new ResourceLocation(Main.MODID, "car"));
-        event.getRegistry().register(CAR_CONTAINER_TYPE);
-
-        CAR_INVENTORY_CONTAINER_TYPE = new MenuType<>((IContainerFactory<ContainerCarInventory>) (windowId, inv, data) -> {
-            EntityGenericCar car = EntityTools.getCarByUUID(inv.player, data.readUUID());
-            if (car == null) {
-                return null;
-            }
-            return new ContainerCarInventory(windowId, car, inv);
-        });
-        CAR_INVENTORY_CONTAINER_TYPE.setRegistryName(new ResourceLocation(Main.MODID, "car_inventory"));
-        event.getRegistry().register(CAR_INVENTORY_CONTAINER_TYPE);
-
-        CAR_WORKSHOP_CRAFTING_CONTAINER_TYPE = new MenuType<>(new ContainerFactoryTileEntity((ContainerFactoryTileEntity.ContainerCreator<ContainerCarWorkshopCrafting, TileEntityCarWorkshop>) ContainerCarWorkshopCrafting::new));
-        CAR_WORKSHOP_CRAFTING_CONTAINER_TYPE.setRegistryName(new ResourceLocation(Main.MODID, "car_workshop_crafting"));
-        event.getRegistry().register(CAR_WORKSHOP_CRAFTING_CONTAINER_TYPE);
-
-        CAR_WORKSHOP_REPAIR_CONTAINER_TYPE = new MenuType<>(new ContainerFactoryTileEntity((ContainerFactoryTileEntity.ContainerCreator<ContainerCarWorkshopRepair, TileEntityCarWorkshop>) ContainerCarWorkshopRepair::new));
-        CAR_WORKSHOP_REPAIR_CONTAINER_TYPE.setRegistryName(new ResourceLocation(Main.MODID, "car_workshop_repair"));
-        event.getRegistry().register(CAR_WORKSHOP_REPAIR_CONTAINER_TYPE);
-
-        FLUID_EXTRACTOR_CONTAINER_TYPE = new MenuType<>(new ContainerFactoryTileEntity((ContainerFactoryTileEntity.ContainerCreator<ContainerFluidExtractor, TileEntityFluidExtractor>) ContainerFluidExtractor::new));
-        FLUID_EXTRACTOR_CONTAINER_TYPE.setRegistryName(new ResourceLocation(Main.MODID, "fluid_extractor"));
-        event.getRegistry().register(FLUID_EXTRACTOR_CONTAINER_TYPE);
-
-        GAS_STATION_CONTAINER_TYPE = new MenuType<>(new ContainerFactoryTileEntity((ContainerFactoryTileEntity.ContainerCreator<ContainerGasStation, TileEntityGasStation>) ContainerGasStation::new));
-        GAS_STATION_CONTAINER_TYPE.setRegistryName(new ResourceLocation(Main.MODID, "fuel_station"));
-        event.getRegistry().register(GAS_STATION_CONTAINER_TYPE);
-
-        GAS_STATION_ADMIN_CONTAINER_TYPE = new MenuType<>(new ContainerFactoryTileEntity((ContainerFactoryTileEntity.ContainerCreator<ContainerGasStationAdmin, TileEntityGasStation>) ContainerGasStationAdmin::new));
-        GAS_STATION_ADMIN_CONTAINER_TYPE.setRegistryName(new ResourceLocation(Main.MODID, "fuel_station_admin"));
-        event.getRegistry().register(GAS_STATION_ADMIN_CONTAINER_TYPE);
-
-        GENERATOR_CONTAINER_TYPE = new MenuType<>(new ContainerFactoryTileEntity((ContainerFactoryTileEntity.ContainerCreator<ContainerGenerator, TileEntityGenerator>) ContainerGenerator::new));
-        GENERATOR_CONTAINER_TYPE.setRegistryName(new ResourceLocation(Main.MODID, "generator"));
-        event.getRegistry().register(GENERATOR_CONTAINER_TYPE);
-
-        LICENSE_PLATE_CONTAINER_TYPE = new MenuType<>((id, inv) -> {
-            ItemStack licensePlate = null;
-            for (InteractionHand hand : InteractionHand.values()) {
-                ItemStack stack = inv.player.getItemInHand(hand);
-                if (stack.getItem() instanceof ItemLicensePlate) {
-                    licensePlate = stack;
-                    break;
+    public static final RegistryObject<MenuType<ContainerBackmixReactor>> BACKMIX_REACTOR_CONTAINER_TYPE = MENU_TYPE_REGISTER.register("backmix_reactor", () ->
+            IForgeMenuType.create(new ContainerFactoryTileEntity((ContainerFactoryTileEntity.ContainerCreator<ContainerBackmixReactor, TileEntityBackmixReactor>) ContainerBackmixReactor::new))
+    );
+    public static final RegistryObject<MenuType<ContainerBlastFurnace>> BLAST_FURNACE_CONTAINER_TYPE = MENU_TYPE_REGISTER.register("blast_furnace", () ->
+            IForgeMenuType.create(new ContainerFactoryTileEntity((ContainerFactoryTileEntity.ContainerCreator<ContainerBlastFurnace, TileEntityBlastFurnace>) ContainerBlastFurnace::new))
+    );
+    public static final RegistryObject<MenuType<ContainerCar>> CAR_CONTAINER_TYPE = MENU_TYPE_REGISTER.register("car", () ->
+            IForgeMenuType.create((IContainerFactory<ContainerCar>) (windowId, inv, data) -> {
+                EntityGenericCar car = EntityTools.getCarByUUID(inv.player, data.readUUID());
+                if (car == null) {
+                    return null;
                 }
-            }
-            if (licensePlate != null) {
-                return new ContainerLicensePlate(id, licensePlate);
-            }
-            return null;
-        });
-        LICENSE_PLATE_CONTAINER_TYPE.setRegistryName(new ResourceLocation(Main.MODID, "license_plate"));
-        event.getRegistry().register(LICENSE_PLATE_CONTAINER_TYPE);
+                return new ContainerCar(windowId, car, inv);
+            })
+    );
+    public static final RegistryObject<MenuType<ContainerCarInventory>> CAR_INVENTORY_CONTAINER_TYPE = MENU_TYPE_REGISTER.register("car_inventory", () ->
+            IForgeMenuType.create((IContainerFactory<ContainerCarInventory>) (windowId, inv, data) -> {
+                EntityGenericCar car = EntityTools.getCarByUUID(inv.player, data.readUUID());
+                if (car == null) {
+                    return null;
+                }
+                return new ContainerCarInventory(windowId, car, inv);
+            })
+    );
+    public static final RegistryObject<MenuType<ContainerCarWorkshopCrafting>> CAR_WORKSHOP_CRAFTING_CONTAINER_TYPE = MENU_TYPE_REGISTER.register("car_workshop_crafting", () ->
+            IForgeMenuType.create(new ContainerFactoryTileEntity((ContainerFactoryTileEntity.ContainerCreator<ContainerCarWorkshopCrafting, TileEntityCarWorkshop>) ContainerCarWorkshopCrafting::new))
+    );
+    public static final RegistryObject<MenuType<ContainerCarWorkshopRepair>> CAR_WORKSHOP_REPAIR_CONTAINER_TYPE = MENU_TYPE_REGISTER.register("car_workshop_repair", () ->
+            IForgeMenuType.create(new ContainerFactoryTileEntity((ContainerFactoryTileEntity.ContainerCreator<ContainerCarWorkshopRepair, TileEntityCarWorkshop>) ContainerCarWorkshopRepair::new))
+    );
+    public static final RegistryObject<MenuType<ContainerFluidExtractor>> FLUID_EXTRACTOR_CONTAINER_TYPE = MENU_TYPE_REGISTER.register("fluid_extractor", () ->
+            IForgeMenuType.create(new ContainerFactoryTileEntity((ContainerFactoryTileEntity.ContainerCreator<ContainerFluidExtractor, TileEntityFluidExtractor>) ContainerFluidExtractor::new))
+    );
+    public static final RegistryObject<MenuType<ContainerGasStation>> GAS_STATION_CONTAINER_TYPE = MENU_TYPE_REGISTER.register("gas_station", () ->
+            IForgeMenuType.create(new ContainerFactoryTileEntity((ContainerFactoryTileEntity.ContainerCreator<ContainerGasStation, TileEntityGasStation>) ContainerGasStation::new))
+    );
+    public static final RegistryObject<MenuType<ContainerGasStationAdmin>> GAS_STATION_ADMIN_CONTAINER_TYPE = MENU_TYPE_REGISTER.register("gas_station_admin", () ->
+            IForgeMenuType.create(new ContainerFactoryTileEntity((ContainerFactoryTileEntity.ContainerCreator<ContainerGasStationAdmin, TileEntityGasStation>) ContainerGasStationAdmin::new))
+    );
+    public static final RegistryObject<MenuType<ContainerGenerator>> GENERATOR_CONTAINER_TYPE = MENU_TYPE_REGISTER.register("generator", () ->
+            IForgeMenuType.create(new ContainerFactoryTileEntity((ContainerFactoryTileEntity.ContainerCreator<ContainerGenerator, TileEntityGenerator>) ContainerGenerator::new))
+    );
+    public static final RegistryObject<MenuType<ContainerLicensePlate>> LICENSE_PLATE_CONTAINER_TYPE = MENU_TYPE_REGISTER.register("license_plate", () ->
+            IForgeMenuType.create((windowId, inv, data) -> {
+                ItemStack licensePlate = null;
+                for (InteractionHand hand : InteractionHand.values()) {
+                    ItemStack stack = inv.player.getItemInHand(hand);
+                    if (stack.getItem() instanceof ItemLicensePlate) {
+                        licensePlate = stack;
+                        break;
+                    }
+                }
+                if (licensePlate != null) {
+                    return new ContainerLicensePlate(windowId, licensePlate);
+                }
+                return null;
+            })
+    );
+    public static final RegistryObject<MenuType<ContainerOilMill>> OIL_MILL_CONTAINER_TYPE = MENU_TYPE_REGISTER.register("oil_mill", () ->
+            IForgeMenuType.create(new ContainerFactoryTileEntity((ContainerFactoryTileEntity.ContainerCreator<ContainerOilMill, TileEntityOilMill>) ContainerOilMill::new))
+    );
+    public static final RegistryObject<MenuType<ContainerPainter>> PAINTER_CONTAINER_TYPE = MENU_TYPE_REGISTER.register("painter", () ->
+            IForgeMenuType.create((IContainerFactory<ContainerPainter>) (windowId, inv, data) -> new ContainerPainter(windowId, inv, data.readBoolean()))
+    );
+    public static final RegistryObject<MenuType<ContainerSign>> SIGN_CONTAINER_TYPE = MENU_TYPE_REGISTER.register("sign", () ->
+            IForgeMenuType.create(new ContainerFactoryTileEntity((ContainerFactoryTileEntity.ContainerCreator<ContainerSign, TileEntitySign>) ContainerSign::new))
+    );
+    public static final RegistryObject<MenuType<ContainerSplitTank>> SPLIT_TANK_CONTAINER_TYPE = MENU_TYPE_REGISTER.register("split_tank", () ->
+            IForgeMenuType.create(new ContainerFactoryTileEntity((ContainerFactoryTileEntity.ContainerCreator<ContainerSplitTank, TileEntitySplitTank>) ContainerSplitTank::new))
+    );
 
-        OIL_MILL_CONTAINER_TYPE = new MenuType<>(new ContainerFactoryTileEntity((ContainerFactoryTileEntity.ContainerCreator<ContainerOilMill, TileEntityOilMill>) ContainerOilMill::new));
-        OIL_MILL_CONTAINER_TYPE.setRegistryName(new ResourceLocation(Main.MODID, "oil_mill"));
-        event.getRegistry().register(OIL_MILL_CONTAINER_TYPE);
+    private static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITY_REGISTER = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITIES, Main.MODID);
 
-        PAINTER_CONTAINER_TYPE = new MenuType<>((IContainerFactory<ContainerPainter>) (windowId, inv, data) -> new ContainerPainter(windowId, inv, data.readBoolean()));
-        PAINTER_CONTAINER_TYPE.setRegistryName(new ResourceLocation(Main.MODID, "painter"));
-        event.getRegistry().register(PAINTER_CONTAINER_TYPE);
+    public static final RegistryObject<BlockEntityType<TileEntityGenerator>> GENERATOR_TILE_ENTITY_TYPE = BLOCK_ENTITY_REGISTER.register("generator", () ->
+            BlockEntityType.Builder.of(TileEntityGenerator::new, ModBlocks.GENERATOR.get()).build(null)
+    );
+    public static final RegistryObject<BlockEntityType<TileEntityBackmixReactor>> BACKMIX_REACTOR_TILE_ENTITY_TYPE = BLOCK_ENTITY_REGISTER.register("backmix_reactor", () ->
+            BlockEntityType.Builder.of(TileEntityBackmixReactor::new, ModBlocks.BACKMIX_REACTOR.get()).build(null)
+    );
+    public static final RegistryObject<BlockEntityType<TileEntityBlastFurnace>> BLAST_FURNACE_TILE_ENTITY_TYPE = BLOCK_ENTITY_REGISTER.register("blast_furnace", () ->
+            BlockEntityType.Builder.of(TileEntityBlastFurnace::new, ModBlocks.BLAST_FURNACE.get()).build(null)
+    );
+    public static final RegistryObject<BlockEntityType<TileEntityCable>> CABLE_TILE_ENTITY_TYPE = BLOCK_ENTITY_REGISTER.register("cable", () ->
+            BlockEntityType.Builder.of(TileEntityCable::new, ModBlocks.CABLE.get()).build(null)
+    );
+    public static final RegistryObject<BlockEntityType<TileEntityCarWorkshop>> CAR_WORKSHOP_TILE_ENTITY_TYPE = BLOCK_ENTITY_REGISTER.register("car_workshop", () ->
+            BlockEntityType.Builder.of(TileEntityCarWorkshop::new, ModBlocks.CAR_WORKSHOP.get()).build(null)
+    );
+    public static final RegistryObject<BlockEntityType<TileEntityDynamo>> DYNAMO_TILE_ENTITY_TYPE = BLOCK_ENTITY_REGISTER.register("dynamo", () ->
+            BlockEntityType.Builder.of(TileEntityDynamo::new, ModBlocks.DYNAMO.get()).build(null)
+    );
+    public static final RegistryObject<BlockEntityType<TileEntityFluidExtractor>> FLUID_EXTRACTOR_TILE_ENTITY_TYPE = BLOCK_ENTITY_REGISTER.register("fluid_extractor", () ->
+            BlockEntityType.Builder.of(TileEntityFluidExtractor::new, ModBlocks.FLUID_EXTRACTOR.get()).build(null)
+    );
+    public static final RegistryObject<BlockEntityType<TileEntityOilMill>> OIL_MILL_TILE_ENTITY_TYPE = BLOCK_ENTITY_REGISTER.register("oil_mill", () ->
+            BlockEntityType.Builder.of(TileEntityOilMill::new, ModBlocks.OIL_MILL.get()).build(null)
+    );
+    public static final RegistryObject<BlockEntityType<TileEntitySign>> SIGN_TILE_ENTITY_TYPE = BLOCK_ENTITY_REGISTER.register("sign", () ->
+            BlockEntityType.Builder.of(TileEntitySign::new, ModBlocks.SIGN.get()).build(null)
+    );
+    public static final RegistryObject<BlockEntityType<TileEntitySplitTank>> SPLIT_TANK_TILE_ENTITY_TYPE = BLOCK_ENTITY_REGISTER.register("split_tank", () ->
+            BlockEntityType.Builder.of(TileEntitySplitTank::new, ModBlocks.SPLIT_TANK.get()).build(null)
+    );
+    public static final RegistryObject<BlockEntityType<TileEntityTank>> TANK_TILE_ENTITY_TYPE = BLOCK_ENTITY_REGISTER.register("tank", () ->
+            BlockEntityType.Builder.of(TileEntityTank::new, ModBlocks.TANK.get()).build(null)
+    );
+    public static final RegistryObject<BlockEntityType<TileEntityGasStation>> GAS_STATION_TILE_ENTITY_TYPE = BLOCK_ENTITY_REGISTER.register("gas_station", () ->
+            BlockEntityType.Builder.of(TileEntityGasStation::new, ModBlocks.GAS_STATION.get()).build(null)
+    );
 
-        SIGN_CONTAINER_TYPE = new MenuType<>(new ContainerFactoryTileEntity((ContainerFactoryTileEntity.ContainerCreator<ContainerSign, TileEntitySign>) ContainerSign::new));
-        SIGN_CONTAINER_TYPE.setRegistryName(new ResourceLocation(Main.MODID, "sign"));
-        event.getRegistry().register(SIGN_CONTAINER_TYPE);
-
-        SPLIT_TANK_CONTAINER_TYPE = new MenuType<>(new ContainerFactoryTileEntity((ContainerFactoryTileEntity.ContainerCreator<ContainerSplitTank, TileEntitySplitTank>) ContainerSplitTank::new));
-        SPLIT_TANK_CONTAINER_TYPE.setRegistryName(new ResourceLocation(Main.MODID, "split_tank"));
-        event.getRegistry().register(SPLIT_TANK_CONTAINER_TYPE);
-    }
-
-    public static BlockEntityType<TileEntityGenerator> GENERATOR_TILE_ENTITY_TYPE;
-    public static BlockEntityType<TileEntityBackmixReactor> BACKMIX_REACTOR_TILE_ENTITY_TYPE;
-    public static BlockEntityType<TileEntityBlastFurnace> BLAST_FURNACE_TILE_ENTITY_TYPE;
-    public static BlockEntityType<TileEntityCable> CABLE_TILE_ENTITY_TYPE;
-    public static BlockEntityType<TileEntityCarWorkshop> CAR_WORKSHOP_TILE_ENTITY_TYPE;
-    public static BlockEntityType<TileEntityDynamo> DYNAMO_TILE_ENTITY_TYPE;
-    public static BlockEntityType<TileEntityFluidExtractor> FLUID_EXTRACTOR_TILE_ENTITY_TYPE;
-    public static BlockEntityType<TileEntityOilMill> OIL_MILL_TILE_ENTITY_TYPE;
-    public static BlockEntityType<TileEntitySign> SIGN_TILE_ENTITY_TYPE;
-    public static BlockEntityType<TileEntitySplitTank> SPLIT_TANK_TILE_ENTITY_TYPE;
-    public static BlockEntityType<TileEntityTank> TANK_TILE_ENTITY_TYPE;
-    public static BlockEntityType<TileEntityGasStation> GAS_STATION_TILE_ENTITY_TYPE;
-
-    @SubscribeEvent
-    public void registerTileEntities(RegistryEvent.Register<BlockEntityType<?>> event) {
-        GENERATOR_TILE_ENTITY_TYPE = BlockEntityType.Builder.of(TileEntityGenerator::new, ModBlocks.GENERATOR).build(null);
-        GENERATOR_TILE_ENTITY_TYPE.setRegistryName(new ResourceLocation(MODID, "generator"));
-        event.getRegistry().register(GENERATOR_TILE_ENTITY_TYPE);
-
-        BACKMIX_REACTOR_TILE_ENTITY_TYPE = BlockEntityType.Builder.of(TileEntityBackmixReactor::new, ModBlocks.BACKMIX_REACTOR).build(null);
-        BACKMIX_REACTOR_TILE_ENTITY_TYPE.setRegistryName(new ResourceLocation(MODID, "backmix_reactor"));
-        event.getRegistry().register(BACKMIX_REACTOR_TILE_ENTITY_TYPE);
-
-        BLAST_FURNACE_TILE_ENTITY_TYPE = BlockEntityType.Builder.of(TileEntityBlastFurnace::new, ModBlocks.BLAST_FURNACE).build(null);
-        BLAST_FURNACE_TILE_ENTITY_TYPE.setRegistryName(new ResourceLocation(MODID, "blast_furnace"));
-        event.getRegistry().register(BLAST_FURNACE_TILE_ENTITY_TYPE);
-
-        CABLE_TILE_ENTITY_TYPE = BlockEntityType.Builder.of(TileEntityCable::new, ModBlocks.CABLE).build(null);
-        CABLE_TILE_ENTITY_TYPE.setRegistryName(new ResourceLocation(MODID, "cable"));
-        event.getRegistry().register(CABLE_TILE_ENTITY_TYPE);
-
-        CAR_WORKSHOP_TILE_ENTITY_TYPE = BlockEntityType.Builder.of(TileEntityCarWorkshop::new, ModBlocks.CAR_WORKSHOP).build(null);
-        CAR_WORKSHOP_TILE_ENTITY_TYPE.setRegistryName(new ResourceLocation(MODID, "car_workshop"));
-        event.getRegistry().register(CAR_WORKSHOP_TILE_ENTITY_TYPE);
-
-        DYNAMO_TILE_ENTITY_TYPE = BlockEntityType.Builder.of(TileEntityDynamo::new, ModBlocks.DYNAMO).build(null);
-        DYNAMO_TILE_ENTITY_TYPE.setRegistryName(new ResourceLocation(MODID, "dynamo"));
-        event.getRegistry().register(DYNAMO_TILE_ENTITY_TYPE);
-
-        FLUID_EXTRACTOR_TILE_ENTITY_TYPE = BlockEntityType.Builder.of(TileEntityFluidExtractor::new, ModBlocks.FLUID_EXTRACTOR).build(null);
-        FLUID_EXTRACTOR_TILE_ENTITY_TYPE.setRegistryName(new ResourceLocation(MODID, "fluid_extractor"));
-        event.getRegistry().register(FLUID_EXTRACTOR_TILE_ENTITY_TYPE);
-
-        OIL_MILL_TILE_ENTITY_TYPE = BlockEntityType.Builder.of(TileEntityOilMill::new, ModBlocks.OIL_MILL).build(null);
-        OIL_MILL_TILE_ENTITY_TYPE.setRegistryName(new ResourceLocation(MODID, "oil_mill"));
-        event.getRegistry().register(OIL_MILL_TILE_ENTITY_TYPE);
-
-        SIGN_TILE_ENTITY_TYPE = BlockEntityType.Builder.of(TileEntitySign::new, ModBlocks.SIGN).build(null);
-        SIGN_TILE_ENTITY_TYPE.setRegistryName(new ResourceLocation(MODID, "sign"));
-        event.getRegistry().register(SIGN_TILE_ENTITY_TYPE);
-
-        SPLIT_TANK_TILE_ENTITY_TYPE = BlockEntityType.Builder.of(TileEntitySplitTank::new, ModBlocks.SPLIT_TANK).build(null);
-        SPLIT_TANK_TILE_ENTITY_TYPE.setRegistryName(new ResourceLocation(MODID, "split_tank"));
-        event.getRegistry().register(SPLIT_TANK_TILE_ENTITY_TYPE);
-
-        TANK_TILE_ENTITY_TYPE = BlockEntityType.Builder.of(TileEntityTank::new, ModBlocks.TANK).build(null);
-        TANK_TILE_ENTITY_TYPE.setRegistryName(new ResourceLocation(MODID, "tank"));
-        event.getRegistry().register(TANK_TILE_ENTITY_TYPE);
-
-        GAS_STATION_TILE_ENTITY_TYPE = BlockEntityType.Builder.of(TileEntityGasStation::new, ModBlocks.GAS_STATION).build(null);
-        GAS_STATION_TILE_ENTITY_TYPE.setRegistryName(new ResourceLocation(MODID, "gas_station"));
-        event.getRegistry().register(GAS_STATION_TILE_ENTITY_TYPE);
-    }
-
-    public static RecipeSerializer<KeyRecipe> CRAFTING_SPECIAL_KEY;
-    public static RecipeSerializer<BlastFurnaceRecipe> CRAFTING_BLAST_FURNACE;
-    public static RecipeSerializer<OilMillRecipe> CRAFTING_OIL_MILL;
-
-    public static RecipeType<BlastFurnaceRecipe> RECIPE_TYPE_BLAST_FURNACE;
-
-    public static RecipeType<BlastFurnaceRecipe> RECIPE_TYPE_OIL_MILL;
-
-    @SubscribeEvent
-    public void registerRecipes(RegistryEvent.Register<RecipeSerializer<?>> event) {
-        CRAFTING_SPECIAL_KEY = new SimpleRecipeSerializer<>(KeyRecipe::new);
-        CRAFTING_SPECIAL_KEY.setRegistryName(new ResourceLocation(MODID, "crafting_special_key"));
-        event.getRegistry().register(CRAFTING_SPECIAL_KEY);
-
-        CRAFTING_BLAST_FURNACE = new RecipeSerializerBlastFurnace(BlastFurnaceRecipe::new);
-        CRAFTING_BLAST_FURNACE.setRegistryName(new ResourceLocation(MODID, "blast_furnace"));
-        event.getRegistry().register(CRAFTING_BLAST_FURNACE);
-
-        CRAFTING_OIL_MILL = new RecipeSerializerOilMill(OilMillRecipe::new);
-        CRAFTING_OIL_MILL.setRegistryName(new ResourceLocation(MODID, "oil_mill"));
-        event.getRegistry().register(CRAFTING_OIL_MILL);
-
-        RECIPE_TYPE_BLAST_FURNACE = Registry.register(Registry.RECIPE_TYPE, new ResourceLocation(Main.MODID, "blast_furnace"), new RecipeType<BlastFurnaceRecipe>() {
-            @Override
-            public String toString() {
-                return "blast_furnace";
-            }
-        });
-
-        RECIPE_TYPE_OIL_MILL = Registry.register(Registry.RECIPE_TYPE, new ResourceLocation(Main.MODID, "oil_mill"), new RecipeType<BlastFurnaceRecipe>() {
-            @Override
-            public String toString() {
-                return "oil_mill";
-            }
-        });
-    }
-
-    @SubscribeEvent
-    public void registerSerializers(RegistryEvent.Register<DataSerializerEntry> event) {
-        DataSerializerItemList.register(event, new ResourceLocation(MODID, "serializer_item_list"));
-    }
-
-    @SubscribeEvent
-    public void registerFluids(RegistryEvent.Register<Fluid> event) {
-        event.getRegistry().registerAll(
-                ModFluids.CANOLA_OIL,
-                ModFluids.CANOLA_OIL_FLOWING,
-                ModFluids.METHANOL,
-                ModFluids.METHANOL_FLOWING,
-                ModFluids.CANOLA_METHANOL_MIX,
-                ModFluids.CANOLA_METHANOL_MIX_FLOWING,
-                ModFluids.GLYCERIN,
-                ModFluids.GLYCERIN_FLOWING,
-                ModFluids.BIO_DIESEL,
-                ModFluids.BIO_DIESEL_FLOWING
-        );
-        if (FMLEnvironment.dist == Dist.CLIENT) {
-            ItemBlockRenderTypes.setRenderLayer(ModFluids.CANOLA_OIL, RenderType.translucent());
-            ItemBlockRenderTypes.setRenderLayer(ModFluids.CANOLA_OIL_FLOWING, RenderType.translucent());
-            ItemBlockRenderTypes.setRenderLayer(ModFluids.METHANOL, RenderType.translucent());
-            ItemBlockRenderTypes.setRenderLayer(ModFluids.METHANOL_FLOWING, RenderType.translucent());
-            ItemBlockRenderTypes.setRenderLayer(ModFluids.CANOLA_METHANOL_MIX, RenderType.translucent());
-            ItemBlockRenderTypes.setRenderLayer(ModFluids.CANOLA_METHANOL_MIX_FLOWING, RenderType.translucent());
-            ItemBlockRenderTypes.setRenderLayer(ModFluids.GLYCERIN, RenderType.translucent());
-            ItemBlockRenderTypes.setRenderLayer(ModFluids.GLYCERIN_FLOWING, RenderType.translucent());
-            ItemBlockRenderTypes.setRenderLayer(ModFluids.BIO_DIESEL, RenderType.translucent());
-            ItemBlockRenderTypes.setRenderLayer(ModFluids.BIO_DIESEL_FLOWING, RenderType.translucent());
-        }
-    }
-
-    @SubscribeEvent
-    public void registerPointsOfInterest(RegistryEvent.Register<PoiType> event) {
-        POINT_OF_INTEREST_TYPE_GAS_STATION_ATTENDANT = new PoiType("gas_station_attendant", ImmutableSet.copyOf(ModBlocks.GAS_STATION.getStateDefinition().getPossibleStates()), 1, 1);
-        POINT_OF_INTEREST_TYPE_GAS_STATION_ATTENDANT.setRegistryName(Main.MODID, "gas_station_attendant");
-        event.getRegistry().register(POINT_OF_INTEREST_TYPE_GAS_STATION_ATTENDANT);
-    }
-
-    @SubscribeEvent
-    public void registerVillagerProfessions(RegistryEvent.Register<VillagerProfession> event) {
-        VILLAGER_PROFESSION_GAS_STATION_ATTENDANT = new VillagerProfession("gas_station_attendant", POINT_OF_INTEREST_TYPE_GAS_STATION_ATTENDANT, ImmutableSet.of(), ImmutableSet.of(), ModSounds.GAS_STATION_ATTENDANT);
-        VILLAGER_PROFESSION_GAS_STATION_ATTENDANT.setRegistryName(Main.MODID, "gas_station_attendant");
-        event.getRegistry().register(VILLAGER_PROFESSION_GAS_STATION_ATTENDANT);
-
-        VillagerProfession.FARMER.requestedItems = ImmutableSet.<Item>builder()
-                .addAll(VillagerProfession.FARMER.getRequestedItems())
-                .add(ModItems.CANOLA_SEEDS)
-                .add(ModItems.CANOLA)
-                .build();
-
-        Villager.WANTED_ITEMS = ImmutableSet.<Item>builder()
-                .addAll(Villager.WANTED_ITEMS)
-                .add(ModItems.CANOLA_SEEDS)
-                .add(ModItems.CANOLA)
-                .build();
-    }
+    private static final DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZER_REGISTER = DeferredRegister.create(ForgeRegistries.RECIPE_SERIALIZERS, Main.MODID);
+    public static final RegistryObject<RecipeSerializer<KeyRecipe>> CRAFTING_SPECIAL_KEY = RECIPE_SERIALIZER_REGISTER.register("crafting_special_key", () ->
+            new SimpleRecipeSerializer<>(KeyRecipe::new)
+    );
+    public static final RegistryObject<RecipeSerializer<BlastFurnaceRecipe>> CRAFTING_BLAST_FURNACE = RECIPE_SERIALIZER_REGISTER.register("blast_furnace", () ->
+            new RecipeSerializerBlastFurnace(BlastFurnaceRecipe::new)
+    );
+    public static final RegistryObject<RecipeSerializer<OilMillRecipe>> CRAFTING_OIL_MILL = RECIPE_SERIALIZER_REGISTER.register("oil_mill", () ->
+            new RecipeSerializerOilMill(OilMillRecipe::new)
+    );
 
 }

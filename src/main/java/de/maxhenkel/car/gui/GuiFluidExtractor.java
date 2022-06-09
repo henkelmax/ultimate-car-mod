@@ -7,8 +7,6 @@ import de.maxhenkel.corelib.inventory.ScreenBase;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.level.material.Fluid;
@@ -47,12 +45,12 @@ public class GuiFluidExtractor extends ScreenBase<ContainerFluidExtractor> {
         Fluid f = tile.getFilterFluid();
 
         if (f == null) {
-            name = new TextComponent("-");
+            name = Component.literal("-");
         } else {
-            name = new TextComponent(new FluidStack(f, 1).getDisplayName().getString());
+            name = Component.literal(new FluidStack(f, 1).getDisplayName().getString());
         }
 
-        font.draw(matrixStack, new TranslatableComponent("filter.fluid", name.withStyle(ChatFormatting.WHITE)).getVisualOrderText(), 46, 28, FONT_COLOR);
+        font.draw(matrixStack, Component.translatable("filter.fluid", name.withStyle(ChatFormatting.WHITE)).getVisualOrderText(), 46, 28, FONT_COLOR);
     }
 
 }

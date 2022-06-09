@@ -21,7 +21,7 @@ public class SlotBattery extends Slot {
 
     @Override
     public void set(ItemStack stack) {
-        if (!stack.getItem().equals(ModItems.BATTERY)) {
+        if (!stack.getItem().equals(ModItems.BATTERY.get())) {
             return;
         }
 
@@ -42,7 +42,7 @@ public class SlotBattery extends Slot {
 
     @Override
     public boolean mayPlace(ItemStack stack) {
-        return stack.getItem().equals(ModItems.BATTERY);
+        return stack.getItem().equals(ModItems.BATTERY.get());
     }
 
 }

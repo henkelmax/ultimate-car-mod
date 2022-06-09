@@ -3,6 +3,7 @@ package de.maxhenkel.car.sounds;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.resources.sounds.AbstractTickableSoundInstance;
+import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
@@ -15,7 +16,7 @@ public class SoundLoopTileentity extends AbstractTickableSoundInstance {
     protected BlockPos pos;
 
     public SoundLoopTileentity(SoundEvent event, SoundSource category, BlockEntity tileEntity) {
-        super(event, category);
+        super(event, category, SoundInstance.createUnseededRandom());
         this.world = tileEntity.getLevel();
         this.pos = tileEntity.getBlockPos();
         this.looping = true;

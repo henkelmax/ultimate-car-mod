@@ -5,10 +5,9 @@ import net.minecraft.world.item.ItemStack;
 
 public class ItemCarPart extends AbstractItemCarPart {
 
-    private Part part;
+    private final Part part;
 
-    public ItemCarPart(String name, Part part) {
-        super(name);
+    public ItemCarPart(Part part) {
         this.part = part;
     }
 

@@ -6,7 +6,6 @@ import de.maxhenkel.corelib.client.obj.OBJModel;
 import de.maxhenkel.corelib.client.obj.OBJModelInstance;
 import de.maxhenkel.corelib.client.obj.OBJModelOptions;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 
 import java.util.ArrayList;
@@ -36,7 +35,7 @@ public class PartBumper extends PartModel {
     public boolean validate(List<Part> parts, List<Component> messages) {
 
         if (Part.getAmount(parts, part -> part instanceof PartBodyWoodBase) != 1) {
-            messages.add(new TranslatableComponent("message.parts.no_body_for_bumper"));
+            messages.add(Component.translatable("message.parts.no_body_for_bumper"));
             return false;
         }
 

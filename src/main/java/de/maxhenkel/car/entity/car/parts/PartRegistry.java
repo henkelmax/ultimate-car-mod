@@ -4,7 +4,6 @@ import de.maxhenkel.car.Main;
 import de.maxhenkel.car.entity.car.base.EntityGenericCar;
 import de.maxhenkel.corelib.client.obj.OBJModel;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 
 import java.util.Collections;
@@ -167,10 +166,10 @@ public class PartRegistry {
     public static boolean isValid(List<Part> modelParts, List<Component> messages) {
         int bodyAmount = Part.getAmount(modelParts, part -> part instanceof PartBody);
         if (bodyAmount <= 0) {
-            messages.add(new TranslatableComponent("message.parts.no_body"));
+            messages.add(Component.translatable("message.parts.no_body"));
             return false;
         } else if (bodyAmount > 1) {
-            messages.add(new TranslatableComponent("message.parts.too_many_bodies"));
+            messages.add(Component.translatable("message.parts.too_many_bodies"));
             return false;
         }
 

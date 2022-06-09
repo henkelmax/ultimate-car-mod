@@ -7,7 +7,6 @@ import de.maxhenkel.corelib.client.obj.OBJModel;
 import de.maxhenkel.corelib.client.obj.OBJModelInstance;
 import de.maxhenkel.corelib.client.obj.OBJModelOptions;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 
 import java.util.ArrayList;
@@ -38,7 +37,7 @@ public class PartWheelBase extends PartModel {
             if (part instanceof PartBody) {
                 PartBody body = (PartBody) part;
                 if (!body.canFitWheel(this)) {
-                    messages.add(new TranslatableComponent("message.parts.wrong_wheel_type"));
+                    messages.add(Component.translatable("message.parts.wrong_wheel_type"));
                     return false;
                 }
             }

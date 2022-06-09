@@ -12,7 +12,7 @@ import net.minecraft.world.item.crafting.ShapedRecipe;
 
 import javax.annotation.Nullable;
 
-public abstract class RecipeSerializerEnergyFluidProducer<T extends EnergyFluidProducerRecipe> extends net.minecraftforge.registries.ForgeRegistryEntry<RecipeSerializer<?>> implements RecipeSerializer<T> {
+public abstract class RecipeSerializerEnergyFluidProducer<T extends EnergyFluidProducerRecipe> implements RecipeSerializer<T> {
 
     private final RecipeSerializerEnergyFluidProducer.IFactory<T> factory;
 

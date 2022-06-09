@@ -24,7 +24,7 @@ import javax.annotation.Nullable;
 public class BlockBlastFurnace extends BlockGui<TileEntityBlastFurnace> {
 
     protected BlockBlastFurnace() {
-        super("blastfurnace", Material.METAL, SoundType.METAL, 3F, 3F);
+        super(Material.METAL, SoundType.METAL, 3F, 3F);
     }
 
     @Nullable

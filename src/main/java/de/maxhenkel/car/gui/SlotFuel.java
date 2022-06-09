@@ -25,7 +25,7 @@ public class SlotFuel extends Slot {
 
     @Override
     public void set(ItemStack stack) {
-        if (!stack.getItem().equals(ModItems.CANISTER)) {
+        if (!stack.getItem().equals(ModItems.CANISTER.get())) {
             return;
         }
 
@@ -42,7 +42,7 @@ public class SlotFuel extends Slot {
 
     @Override
     public boolean mayPlace(ItemStack stack) {
-        return stack.getItem().equals(ModItems.CANISTER);
+        return stack.getItem().equals(ModItems.CANISTER.get());
     }
 
 }

@@ -1,11 +1,9 @@
 package de.maxhenkel.car.blocks;
 
-import de.maxhenkel.car.Main;
 import de.maxhenkel.car.ModItemGroups;
 import de.maxhenkel.car.entity.car.base.EntityGenericCar;
 import de.maxhenkel.corelib.block.IItemBlock;
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.item.BlockItem;
@@ -26,13 +24,12 @@ public class BlockCarPressurePlate extends BasePressurePlateBlock implements IIt
 
     protected BlockCarPressurePlate() {
         super(Block.Properties.of(Material.STONE).noCollission().strength(0.5F));
-        setRegistryName(new ResourceLocation(Main.MODID, "car_pressure_plate"));
         registerDefaultState(stateDefinition.any().setValue(POWERED, false));
     }
 
     @Override
     public Item toItem() {
-        return new BlockItem(this, new Item.Properties().tab(ModItemGroups.TAB_CAR)).setRegistryName(getRegistryName());
+        return new BlockItem(this, new Item.Properties().tab(ModItemGroups.TAB_CAR));
     }
 
     @Override

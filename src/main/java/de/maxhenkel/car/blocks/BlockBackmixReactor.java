@@ -24,7 +24,7 @@ import javax.annotation.Nullable;
 public class BlockBackmixReactor extends BlockGui<TileEntityBackmixReactor> {
 
     protected BlockBackmixReactor() {
-        super("backmix_reactor", Material.METAL, SoundType.METAL, 3F, 3F);
+        super(Material.METAL, SoundType.METAL, 3F, 3F);
     }
 
     @Override

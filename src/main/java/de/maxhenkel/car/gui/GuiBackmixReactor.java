@@ -5,7 +5,6 @@ import de.maxhenkel.car.Main;
 import de.maxhenkel.car.blocks.tileentity.TileEntityBackmixReactor;
 import de.maxhenkel.corelib.inventory.ScreenBase;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.Container;
@@ -40,7 +39,7 @@ public class GuiBackmixReactor extends ScreenBase<ContainerBackmixReactor> {
         if (mouseX >= leftPos + 11 && mouseX <= leftPos + 16 + 11) {
             if (mouseY >= topPos + 8 && mouseY <= topPos + 57 + 8) {
                 List<FormattedCharSequence> list = new ArrayList<>();
-                list.add(new TranslatableComponent("tooltip.energy", tile.getStoredEnergy()).getVisualOrderText());
+                list.add(Component.translatable("tooltip.energy", tile.getStoredEnergy()).getVisualOrderText());
                 renderTooltip(matrixStack, list, mouseX - leftPos, mouseY - topPos);
             }
         }
@@ -48,7 +47,7 @@ public class GuiBackmixReactor extends ScreenBase<ContainerBackmixReactor> {
         if (mouseX >= leftPos + 33 && mouseX <= leftPos + 16 + 33) {
             if (mouseY >= topPos + 8 && mouseY <= topPos + 57 + 8) {
                 List<FormattedCharSequence> list = new ArrayList<>();
-                list.add(new TranslatableComponent("tooltip.oil", tile.getCurrentCanola()).getVisualOrderText());
+                list.add(Component.translatable("tooltip.oil", tile.getCurrentCanola()).getVisualOrderText());
                 renderTooltip(matrixStack, list, mouseX - leftPos, mouseY - topPos);
             }
         }
@@ -56,7 +55,7 @@ public class GuiBackmixReactor extends ScreenBase<ContainerBackmixReactor> {
         if (mouseX >= leftPos + 55 && mouseX <= leftPos + 16 + 55) {
             if (mouseY >= topPos + 8 && mouseY <= topPos + 57 + 8) {
                 List<FormattedCharSequence> list = new ArrayList<>();
-                list.add(new TranslatableComponent("tooltip.methanol", tile.getCurrentMethanol()).getVisualOrderText());
+                list.add(Component.translatable("tooltip.methanol", tile.getCurrentMethanol()).getVisualOrderText());
                 renderTooltip(matrixStack, list, mouseX - leftPos, mouseY - topPos);
             }
         }
@@ -64,7 +63,7 @@ public class GuiBackmixReactor extends ScreenBase<ContainerBackmixReactor> {
         if (mouseX >= leftPos + 122 && mouseX <= leftPos + 16 + 122) {
             if (mouseY >= topPos + 8 && mouseY <= topPos + 57 + 8) {
                 List<FormattedCharSequence> list = new ArrayList<>();
-                list.add(new TranslatableComponent("tooltip.mix", tile.getCurrentMix()).getVisualOrderText());
+                list.add(Component.translatable("tooltip.mix", tile.getCurrentMix()).getVisualOrderText());
                 renderTooltip(matrixStack, list, mouseX - leftPos, mouseY - topPos);
             }
         }
@@ -72,7 +71,7 @@ public class GuiBackmixReactor extends ScreenBase<ContainerBackmixReactor> {
         if (mouseX >= leftPos + 79 && mouseX <= leftPos + 24 + 79) {
             if (mouseY >= topPos + 34 && mouseY <= topPos + 17 + 34) {
                 List<FormattedCharSequence> list = new ArrayList<>();
-                list.add(new TranslatableComponent("tooltip.progress", ((int) (getProgress() * 100F))).getVisualOrderText());
+                list.add(Component.translatable("tooltip.progress", ((int) (getProgress() * 100F))).getVisualOrderText());
                 renderTooltip(matrixStack, list, mouseX - leftPos, mouseY - topPos);
             }
         }

@@ -5,7 +5,6 @@ import de.maxhenkel.car.Main;
 import de.maxhenkel.car.blocks.tileentity.TileEntitySplitTank;
 import de.maxhenkel.corelib.inventory.ScreenBase;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.entity.player.Inventory;
@@ -39,7 +38,7 @@ public class GuiSplitTank extends ScreenBase<ContainerSplitTank> {
         if (mouseX >= leftPos + 50 && mouseX <= leftPos + 16 + 50) {
             if (mouseY >= topPos + 8 && mouseY <= topPos + 57 + 8) {
                 List<FormattedCharSequence> list = new ArrayList<>();
-                list.add(new TranslatableComponent("tooltip.mix", tile.getCurrentMix()).getVisualOrderText());
+                list.add(Component.translatable("tooltip.mix", tile.getCurrentMix()).getVisualOrderText());
                 renderTooltip(matrixStack, list, mouseX - leftPos, mouseY - topPos);
             }
         }
@@ -47,7 +46,7 @@ public class GuiSplitTank extends ScreenBase<ContainerSplitTank> {
         if (mouseX >= leftPos + 120 && mouseX <= leftPos + 16 + 120) {
             if (mouseY >= topPos + 8 && mouseY <= topPos + 57 + 8) {
                 List<FormattedCharSequence> list = new ArrayList<>();
-                list.add(new TranslatableComponent("tooltip.glycerin", tile.getCurrentGlycerin()).getVisualOrderText());
+                list.add(Component.translatable("tooltip.glycerin", tile.getCurrentGlycerin()).getVisualOrderText());
                 renderTooltip(matrixStack, list, mouseX - leftPos, mouseY - topPos);
             }
         }
@@ -55,7 +54,7 @@ public class GuiSplitTank extends ScreenBase<ContainerSplitTank> {
         if (mouseX >= leftPos + 141 && mouseX <= leftPos + 16 + 141) {
             if (mouseY >= topPos + 8 && mouseY <= topPos + 57 + 8) {
                 List<FormattedCharSequence> list = new ArrayList<>();
-                list.add(new TranslatableComponent("tooltip.bio_diesel", tile.getCurrentBioDiesel()).getVisualOrderText());
+                list.add(Component.translatable("tooltip.bio_diesel", tile.getCurrentBioDiesel()).getVisualOrderText());
                 renderTooltip(matrixStack, list, mouseX - leftPos, mouseY - topPos);
             }
         }
@@ -63,7 +62,7 @@ public class GuiSplitTank extends ScreenBase<ContainerSplitTank> {
         if (mouseX >= leftPos + 79 && mouseX <= leftPos + 24 + 79) {
             if (mouseY >= topPos + 34 && mouseY <= topPos + 17 + 34) {
                 List<FormattedCharSequence> list = new ArrayList<>();
-                list.add(new TranslatableComponent("tooltip.progress", ((int) (getProgress() * 100F))).getVisualOrderText());
+                list.add(Component.translatable("tooltip.progress", ((int) (getProgress() * 100F))).getVisualOrderText());
                 renderTooltip(matrixStack, list, mouseX - leftPos, mouseY - topPos);
             }
         }

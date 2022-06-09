@@ -1,6 +1,5 @@
 package de.maxhenkel.car.blocks;
 
-import de.maxhenkel.car.Main;
 import de.maxhenkel.car.ModItemGroups;
 import de.maxhenkel.car.blocks.tileentity.TileEntityFluidExtractor;
 import de.maxhenkel.car.gui.ContainerFluidExtractor;
@@ -10,7 +9,6 @@ import de.maxhenkel.corelib.block.VoxelUtils;
 import de.maxhenkel.corelib.blockentity.SimpleBlockEntityTicker;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.InteractionHand;
@@ -54,7 +52,6 @@ public class BlockFluidExtractor extends BlockBase implements EntityBlock, IItem
 
     protected BlockFluidExtractor() {
         super(Properties.of(Material.WOOL, MaterialColor.COLOR_GRAY).strength(0.5F).sound(SoundType.METAL));
-        setRegistryName(new ResourceLocation(Main.MODID, "fluid_extractor"));
 
         registerDefaultState(stateDefinition.any()
                 .setValue(FACING, Direction.NORTH)
@@ -70,7 +67,7 @@ public class BlockFluidExtractor extends BlockBase implements EntityBlock, IItem
 
     @Override
     public Item toItem() {
-        return new BlockItem(this, new Item.Properties().tab(ModItemGroups.TAB_CAR)).setRegistryName(getRegistryName());
+        return new BlockItem(this, new Item.Properties().tab(ModItemGroups.TAB_CAR));
     }
 
     @Nullable

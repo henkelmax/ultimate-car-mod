@@ -21,12 +21,11 @@ public class FluidGlycerin extends CarFluidSource {
                 FluidAttributes.builder(
                         new ResourceLocation(Main.MODID, "block/glycerin_still"),
                         new ResourceLocation(Main.MODID, "block/glycerin_flowing")).sound(SoundEvents.BUCKET_FILL).density(5000).viscosity(100),
-                () -> ModBlocks.GLYCERIN,
-                () -> ModFluids.GLYCERIN,
-                () -> ModFluids.GLYCERIN_FLOWING,
-                () -> ModItems.GLYCERIN_BUCKET
+                () -> ModBlocks.GLYCERIN.get(),
+                () -> ModFluids.GLYCERIN.get(),
+                () -> ModFluids.GLYCERIN_FLOWING.get(),
+                () -> ModItems.GLYCERIN_BUCKET.get()
         );
-        setRegistryName(new ResourceLocation(Main.MODID, "glycerin"));
     }
 
     @Override

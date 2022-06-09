@@ -21,12 +21,11 @@ public class FluidBioDiesel extends CarFluidSource {
                 FluidAttributes.builder(
                         new ResourceLocation(Main.MODID, "block/bio_diesel_still"),
                         new ResourceLocation(Main.MODID, "block/bio_diesel_flowing")).sound(SoundEvents.BUCKET_FILL),
-                () -> ModBlocks.BIO_DIESEL,
-                () -> ModFluids.BIO_DIESEL,
-                () -> ModFluids.BIO_DIESEL_FLOWING,
-                () -> ModItems.BIO_DIESEL_BUCKET
+                () -> ModBlocks.BIO_DIESEL.get(),
+                () -> ModFluids.BIO_DIESEL.get(),
+                () -> ModFluids.BIO_DIESEL_FLOWING.get(),
+                () -> ModItems.BIO_DIESEL_BUCKET.get()
         );
-        setRegistryName(new ResourceLocation(Main.MODID, "bio_diesel"));
     }
 
     @Override

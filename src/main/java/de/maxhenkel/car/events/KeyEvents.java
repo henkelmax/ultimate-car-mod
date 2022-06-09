@@ -4,7 +4,7 @@ import de.maxhenkel.car.Main;
 import de.maxhenkel.car.entity.car.base.EntityCarBatteryBase;
 import de.maxhenkel.car.net.MessageCenterCar;
 import de.maxhenkel.car.net.MessageStarting;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
@@ -70,7 +70,7 @@ public class KeyEvents {
             if (Main.CENTER_KEY.isDown()) {
                 if (!wasCenterPressed) {
                     Main.SIMPLE_CHANNEL.sendToServer(new MessageCenterCar(player));
-                    player.displayClientMessage(new TranslatableComponent("message.center_car"), true);
+                    player.displayClientMessage(Component.translatable("message.center_car"), true);
                     wasCenterPressed = true;
                 }
             } else {

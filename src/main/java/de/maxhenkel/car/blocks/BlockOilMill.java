@@ -24,7 +24,7 @@ import javax.annotation.Nullable;
 public class BlockOilMill extends BlockGui<TileEntityOilMill> {
 
     protected BlockOilMill() {
-        super("oilmill", Material.METAL, SoundType.STONE, 3F, 3F);
+        super(Material.METAL, SoundType.STONE, 3F, 3F);
     }
 
     @Nullable

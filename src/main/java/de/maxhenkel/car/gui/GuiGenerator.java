@@ -5,7 +5,6 @@ import de.maxhenkel.car.Main;
 import de.maxhenkel.car.blocks.tileentity.TileEntityGenerator;
 import de.maxhenkel.corelib.inventory.ScreenBase;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.entity.player.Inventory;
@@ -40,7 +39,7 @@ public class GuiGenerator extends ScreenBase<ContainerGenerator> {
         if (mouseX >= leftPos + 122 && mouseX <= leftPos + 16 + 122) {
             if (mouseY >= topPos + 8 && mouseY <= topPos + 57 + 8) {
                 List<FormattedCharSequence> list = new ArrayList<>();
-                list.add(new TranslatableComponent("tooltip.energy", tile.getStoredEnergy()).getVisualOrderText());
+                list.add(Component.translatable("tooltip.energy", tile.getStoredEnergy()).getVisualOrderText());
                 renderTooltip(matrixStack, list, mouseX - leftPos, mouseY - topPos);
             }
         }
@@ -48,7 +47,7 @@ public class GuiGenerator extends ScreenBase<ContainerGenerator> {
         if (mouseX >= leftPos + 39 && mouseX <= leftPos + 16 + 39) {
             if (mouseY >= topPos + 8 && mouseY <= topPos + 57 + 8) {
                 List<FormattedCharSequence> list = new ArrayList<>();
-                list.add(new TranslatableComponent("tooltip.fuel", tile.getCurrentMillibuckets()).getVisualOrderText());
+                list.add(Component.translatable("tooltip.fuel", tile.getCurrentMillibuckets()).getVisualOrderText());
                 renderTooltip(matrixStack, list, mouseX - leftPos, mouseY - topPos);
             }
         }

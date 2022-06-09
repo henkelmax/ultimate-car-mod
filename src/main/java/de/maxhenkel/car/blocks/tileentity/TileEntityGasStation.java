@@ -12,11 +12,11 @@ import de.maxhenkel.car.sounds.SoundLoopTileentity.ISoundLoopable;
 import de.maxhenkel.corelib.CachedValue;
 import de.maxhenkel.corelib.blockentity.ITickableBlockEntity;
 import de.maxhenkel.corelib.item.ItemUtils;
+import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Container;
@@ -60,7 +60,7 @@ public class TileEntityGasStation extends TileEntityBase implements ITickableBlo
     private UUID owner;
 
     public TileEntityGasStation(BlockPos pos, BlockState state) {
-        super(Main.GAS_STATION_TILE_ENTITY_TYPE, pos, state);
+        super(Main.GAS_STATION_TILE_ENTITY_TYPE.get(), pos, state);
         this.transferRate = Main.SERVER_CONFIG.gasStationTransferRate.get();
         this.fuelCounter = 0;
         this.inventory = new SimpleContainer(27);
@@ -112,19 +112,19 @@ public class TileEntityGasStation extends TileEntityBase implements ITickableBlo
 
     @Override
     public Component getTranslatedName() {
-        return new TranslatableComponent("block.car.fuel_station");
+        return Component.translatable("block.car.fuel_station");
     }
 
     private void fixTop() {
         BlockState top = level.getBlockState(worldPosition.above());
         BlockState bottom = getBlockState();
         Direction facing = bottom.getValue(BlockOrientableHorizontal.FACING);
-        if (top.getBlock().equals(ModBlocks.GAS_STATION_TOP)) {
+        if (top.getBlock().equals(ModBlocks.GAS_STATION_TOP.get())) {
             if (!top.getValue(BlockGasStationTop.FACING).equals(facing)) {
-                level.setBlockAndUpdate(worldPosition.above(), ModBlocks.GAS_STATION_TOP.defaultBlockState().setValue(BlockGasStationTop.FACING, facing));
+                level.setBlockAndUpdate(worldPosition.above(), ModBlocks.GAS_STATION_TOP.get().defaultBlockState().setValue(BlockGasStationTop.FACING, facing));
             }
         } else if (level.isEmptyBlock(worldPosition.above())) {
-            level.setBlockAndUpdate(worldPosition.above(), ModBlocks.GAS_STATION_TOP.defaultBlockState().setValue(BlockGasStationTop.FACING, facing));
+            level.setBlockAndUpdate(worldPosition.above(), ModBlocks.GAS_STATION_TOP.get().defaultBlockState().setValue(BlockGasStationTop.FACING, facing));
         }
 
     }
@@ -365,11 +365,11 @@ public class TileEntityGasStation extends TileEntityBase implements ITickableBlo
     public String getRenderText() {
         IFluidHandler fluidHandler = getFluidHandlerInFront();
         if (fluidHandler == null) {
-            return new TranslatableComponent("gas_station.no_car").getString();
+            return Component.translatable("gas_station.no_car").getString();
         } else if (fuelCounter <= 0) {
-            return new TranslatableComponent("gas_station.ready").getString();
+            return Component.translatable("gas_station.ready").getString();
         } else {
-            return new TranslatableComponent("gas_station.fuel_amount", fuelCounter).getString();
+            return Component.translatable("gas_station.fuel_amount", fuelCounter).getString();
         }
     }
 
@@ -390,7 +390,7 @@ public class TileEntityGasStation extends TileEntityBase implements ITickableBlo
     private AABB createDetectionBox() {
         BlockState ownState = level.getBlockState(worldPosition);
 
-        if (!ownState.getBlock().equals(ModBlocks.GAS_STATION)) {
+        if (!ownState.getBlock().equals(ModBlocks.GAS_STATION.get())) {
             return null;
         }
         Direction facing = ownState.getValue(BlockGasStation.FACING);
@@ -434,7 +434,7 @@ public class TileEntityGasStation extends TileEntityBase implements ITickableBlo
 
     @OnlyIn(Dist.CLIENT)
     public void playSound() {
-        ModSounds.playSoundLoop(new SoundLoopTileentity(ModSounds.GAS_STATION, SoundSource.BLOCKS, this), level);
+        ModSounds.playSoundLoop(new SoundLoopTileentity(ModSounds.GAS_STATION.get(), SoundSource.BLOCKS, this), level);
     }
 
     @Override

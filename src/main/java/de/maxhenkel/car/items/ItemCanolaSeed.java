@@ -1,11 +1,9 @@
 package de.maxhenkel.car.items;
 
-import de.maxhenkel.car.Main;
 import de.maxhenkel.car.ModItemGroups;
 import de.maxhenkel.car.blocks.ModBlocks;
 import de.maxhenkel.corelib.item.ItemUtils;
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
@@ -23,13 +21,12 @@ import net.minecraftforge.common.PlantType;
 public class ItemCanolaSeed extends ItemNameBlockItem implements IPlantable {
 
     public ItemCanolaSeed() {
-        super(ModBlocks.CANOLA_CROP, new Item.Properties().tab(ModItemGroups.TAB_CAR));
-        setRegistryName(new ResourceLocation(Main.MODID, "canola_seeds"));
+        super(ModBlocks.CANOLA_CROP.get(), new Item.Properties().tab(ModItemGroups.TAB_CAR));
     }
 
     @Override
     public BlockState getPlant(BlockGetter world, BlockPos pos) {
-        return ModBlocks.CANOLA_CROP.defaultBlockState();
+        return ModBlocks.CANOLA_CROP.get().defaultBlockState();
     }
 
     @Override

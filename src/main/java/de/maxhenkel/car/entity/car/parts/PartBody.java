@@ -3,7 +3,6 @@ package de.maxhenkel.car.entity.car.parts;
 import com.mojang.math.Vector3d;
 import de.maxhenkel.corelib.client.obj.OBJModel;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 
 import java.util.List;
@@ -90,28 +89,28 @@ public class PartBody extends PartModel {
     public boolean validate(List<Part> parts, List<Component> messages) {
         int wheelAmount = getAmount(parts, part -> part instanceof PartWheelBase);
         if (wheelAmount < getWheelAmount()) {
-            messages.add(new TranslatableComponent("message.parts.too_few_wheels", getWheelAmount()));
+            messages.add(Component.translatable("message.parts.too_few_wheels", getWheelAmount()));
         } else if (wheelAmount > getWheelAmount()) {
-            messages.add(new TranslatableComponent("message.parts.too_many_wheels", getWheelAmount()));
+            messages.add(Component.translatable("message.parts.too_many_wheels", getWheelAmount()));
         }
 
         int engineAmount = getAmount(parts, part -> part instanceof PartEngine);
         if (engineAmount <= 0) {
-            messages.add(new TranslatableComponent("message.parts.no_engine"));
+            messages.add(Component.translatable("message.parts.no_engine"));
         } else if (engineAmount > 1) {
-            messages.add(new TranslatableComponent("message.parts.too_many_engines"));
+            messages.add(Component.translatable("message.parts.too_many_engines"));
         }
 
         if (getAmount(parts, part -> part instanceof PartLicensePlateHolder) > 1) {
-            messages.add(new TranslatableComponent("message.parts.too_many_license_plates"));
+            messages.add(Component.translatable("message.parts.too_many_license_plates"));
         }
 
         if (getAmount(parts, part -> part instanceof PartBumper) > 1) {
-            messages.add(new TranslatableComponent("message.parts.too_many_bumpers"));
+            messages.add(Component.translatable("message.parts.too_many_bumpers"));
         }
 
         if (getAmount(parts, part -> part instanceof PartContainer) > 1) {
-            messages.add(new TranslatableComponent("message.parts.too_many_containers"));
+            messages.add(Component.translatable("message.parts.too_many_containers"));
         }
 
         return true;

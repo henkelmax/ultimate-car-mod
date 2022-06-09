@@ -14,7 +14,6 @@ import de.maxhenkel.corelib.dataserializers.DataSerializerItemList;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
@@ -32,7 +31,7 @@ import java.util.Random;
 
 public class EntityGenericCar extends EntityCarLicensePlateBase {
 
-    private static final EntityDataAccessor<NonNullList<ItemStack>> PARTS = SynchedEntityData.defineId(EntityGenericCar.class, DataSerializerItemList.ITEM_LIST);
+    private static final EntityDataAccessor<NonNullList<ItemStack>> PARTS = SynchedEntityData.defineId(EntityGenericCar.class, Main.ITEM_LIST.get());
 
     private List<Part> parts;
 
@@ -41,7 +40,7 @@ public class EntityGenericCar extends EntityCarLicensePlateBase {
     }
 
     public EntityGenericCar(Level worldIn) {
-        this(Main.CAR_ENTITY_TYPE, worldIn);
+        this(Main.CAR_ENTITY_TYPE.get(), worldIn);
     }
 
     private List<Part> getCarParts() {
@@ -228,7 +227,7 @@ public class EntityGenericCar extends EntityCarLicensePlateBase {
     public SoundEvent getStopSound() {
         PartEngine engine = getPartByClass(PartEngine.class);
         if (engine == null) {
-            return ModSounds.ENGINE_STOP;
+            return ModSounds.ENGINE_STOP.get();
         }
         return engine.getStopSound();
     }
@@ -236,7 +235,7 @@ public class EntityGenericCar extends EntityCarLicensePlateBase {
     public SoundEvent getFailSound() {
         PartEngine engine = getPartByClass(PartEngine.class);
         if (engine == null) {
-            return ModSounds.ENGINE_FAIL;
+            return ModSounds.ENGINE_FAIL.get();
         }
         return engine.getFailSound();
     }
@@ -244,7 +243,7 @@ public class EntityGenericCar extends EntityCarLicensePlateBase {
     public SoundEvent getCrashSound() {
         PartEngine engine = getPartByClass(PartEngine.class);
         if (engine == null) {
-            return ModSounds.CAR_CRASH;
+            return ModSounds.CAR_CRASH.get();
         }
         return engine.getCrashSound();
     }
@@ -252,7 +251,7 @@ public class EntityGenericCar extends EntityCarLicensePlateBase {
     public SoundEvent getStartSound() {
         PartEngine engine = getPartByClass(PartEngine.class);
         if (engine == null) {
-            return ModSounds.ENGINE_START;
+            return ModSounds.ENGINE_START.get();
         }
         return engine.getStartSound();
     }
@@ -260,7 +259,7 @@ public class EntityGenericCar extends EntityCarLicensePlateBase {
     public SoundEvent getStartingSound() {
         PartEngine engine = getPartByClass(PartEngine.class);
         if (engine == null) {
-            return ModSounds.ENGINE_STARTING;
+            return ModSounds.ENGINE_STARTING.get();
         }
         return engine.getStartingSound();
     }
@@ -268,7 +267,7 @@ public class EntityGenericCar extends EntityCarLicensePlateBase {
     public SoundEvent getIdleSound() {
         PartEngine engine = getPartByClass(PartEngine.class);
         if (engine == null) {
-            return ModSounds.ENGINE_IDLE;
+            return ModSounds.ENGINE_IDLE.get();
         }
         return engine.getIdleSound();
     }
@@ -276,7 +275,7 @@ public class EntityGenericCar extends EntityCarLicensePlateBase {
     public SoundEvent getHighSound() {
         PartEngine engine = getPartByClass(PartEngine.class);
         if (engine == null) {
-            return ModSounds.ENGINE_HIGH;
+            return ModSounds.ENGINE_HIGH.get();
         }
         return engine.getHighSound();
     }
@@ -284,7 +283,7 @@ public class EntityGenericCar extends EntityCarLicensePlateBase {
     public SoundEvent getHornSound() {
         PartEngine engine = getPartByClass(PartEngine.class);
         if (engine == null) {
-            return ModSounds.CAR_HORN;
+            return ModSounds.CAR_HORN.get();
         }
         return engine.getHornSound();
     }
@@ -295,7 +294,7 @@ public class EntityGenericCar extends EntityCarLicensePlateBase {
         if (body == null) {
             return super.getTypeName();
         }
-        return new TranslatableComponent("car_name." + body.getTranslationKey(), new TranslatableComponent("car_variant." + body.getMaterialTranslationKey()));
+        return Component.translatable("car_name." + body.getTranslationKey(), Component.translatable("car_variant." + body.getMaterialTranslationKey()));
     }
 
     public Component getShortName() {
@@ -303,7 +302,7 @@ public class EntityGenericCar extends EntityCarLicensePlateBase {
         if (body == null) {
             return getTypeName();
         }
-        return new TranslatableComponent("car_short_name." + body.getTranslationKey());
+        return Component.translatable("car_short_name." + body.getTranslationKey());
     }
 
     @Override

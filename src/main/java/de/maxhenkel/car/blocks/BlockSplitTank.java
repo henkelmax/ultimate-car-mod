@@ -1,6 +1,5 @@
 package de.maxhenkel.car.blocks;
 
-import de.maxhenkel.car.Main;
 import de.maxhenkel.car.ModItemGroups;
 import de.maxhenkel.car.blocks.tileentity.TileEntitySplitTank;
 import de.maxhenkel.car.gui.ContainerSplitTank;
@@ -9,7 +8,6 @@ import de.maxhenkel.corelib.block.IItemBlock;
 import de.maxhenkel.corelib.blockentity.SimpleBlockEntityTicker;
 import de.maxhenkel.corelib.fluid.FluidUtils;
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
 import net.minecraft.world.Containers;
@@ -44,7 +42,6 @@ public class BlockSplitTank extends BlockBase implements EntityBlock, IItemBlock
 
     protected BlockSplitTank() {
         super(Properties.of(Material.METAL).strength(3F).sound(SoundType.STONE).noOcclusion());
-        setRegistryName(new ResourceLocation(Main.MODID, "split_tank"));
     }
 
     @Override
@@ -57,7 +54,7 @@ public class BlockSplitTank extends BlockBase implements EntityBlock, IItemBlock
                 }
                 return super.canPlace(context, state);
             }
-        }.setRegistryName(getRegistryName());
+        };
     }
 
     @Nullable
@@ -122,7 +119,7 @@ public class BlockSplitTank extends BlockBase implements EntityBlock, IItemBlock
     @Override
     public void setPlacedBy(Level worldIn, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
         if (worldIn.isEmptyBlock(pos.above())) {
-            worldIn.setBlockAndUpdate(pos.above(), ModBlocks.SPLIT_TANK_TOP.defaultBlockState());
+            worldIn.setBlockAndUpdate(pos.above(), ModBlocks.SPLIT_TANK_TOP.get().defaultBlockState());
         }
 
         BlockEntity tileentity = worldIn.getBlockEntity(pos);
@@ -141,7 +138,7 @@ public class BlockSplitTank extends BlockBase implements EntityBlock, IItemBlock
 
         BlockState stateUp = worldIn.getBlockState(pos.above());
         stateUp.getBlock();
-        if (stateUp.getBlock().equals(ModBlocks.SPLIT_TANK_TOP)) {
+        if (stateUp.getBlock().equals(ModBlocks.SPLIT_TANK_TOP.get())) {
             worldIn.destroyBlock(pos.above(), false);
         }
     }

@@ -22,8 +22,7 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 public class ItemGuardRail extends BlockItem {
 
     public ItemGuardRail() {
-        super(ModBlocks.GUARD_RAIL, new Item.Properties().tab(ModItemGroups.TAB_CAR));
-        setRegistryName(ModBlocks.GUARD_RAIL.getRegistryName());
+        super(ModBlocks.GUARD_RAIL.get(), new Item.Properties().tab(ModItemGroups.TAB_CAR));
     }
 
     @Override
@@ -46,7 +45,7 @@ public class ItemGuardRail extends BlockItem {
             return super.place(context);
         }
 
-        BooleanProperty property = ModBlocks.GUARD_RAIL.getProperty(face);
+        BooleanProperty property = ModBlocks.GUARD_RAIL.get().getProperty(face);
         if (clickedBlock.getValue(property)) {
             return super.place(context);
         }

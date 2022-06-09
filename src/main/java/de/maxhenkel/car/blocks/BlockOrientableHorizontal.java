@@ -1,10 +1,8 @@
 package de.maxhenkel.car.blocks;
 
-import de.maxhenkel.car.Main;
 import de.maxhenkel.car.ModItemGroups;
 import de.maxhenkel.corelib.block.IItemBlock;
 import net.minecraft.core.Direction;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -24,15 +22,14 @@ public abstract class BlockOrientableHorizontal extends BlockBase implements Ent
 
     public static final DirectionProperty FACING = DirectionProperty.create("facing", Direction.Plane.HORIZONTAL);
 
-    public BlockOrientableHorizontal(String name, Material material, MaterialColor color, SoundType soundType, float hardness, float resistance) {
+    public BlockOrientableHorizontal(Material material, MaterialColor color, SoundType soundType, float hardness, float resistance) {
         super(Properties.of(material, color).strength(hardness, resistance).sound(soundType));
-        setRegistryName(new ResourceLocation(Main.MODID, name));
         registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH));
     }
 
     @Override
     public Item toItem() {
-        return new BlockItem(this, new Item.Properties().tab(ModItemGroups.TAB_CAR)).setRegistryName(getRegistryName());
+        return new BlockItem(this, new Item.Properties().tab(ModItemGroups.TAB_CAR));
     }
 
     @Nullable

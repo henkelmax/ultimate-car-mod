@@ -101,7 +101,6 @@ public class BlockAsphaltSlopeFlat extends BlockSlope {
     private boolean isUpper;
 
     public BlockAsphaltSlopeFlat(boolean isUpper) {
-        super(isUpper ? "asphalt_slope_flat_upper" : "asphalt_slope_flat_lower");
         this.isUpper = isUpper;
     }
 

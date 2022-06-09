@@ -1,7 +1,6 @@
 package de.maxhenkel.car.entity.car.parts;
 
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.sounds.SoundEvent;
 
 import java.util.List;
@@ -53,9 +52,9 @@ public abstract class PartEngine extends Part {
     @Override
     public boolean validate(List<Part> parts, List<Component> messages) {
         if (getAmount(parts, part -> part instanceof PartTank) > 1) {
-            messages.add(new TranslatableComponent("message.parts.too_many_tanks"));
+            messages.add(Component.translatable("message.parts.too_many_tanks"));
         } else if (getAmount(parts, part -> part instanceof PartTank) <= 0) {
-            messages.add(new TranslatableComponent("message.parts.no_tank"));
+            messages.add(Component.translatable("message.parts.no_tank"));
         }
         return super.validate(parts, messages);
     }

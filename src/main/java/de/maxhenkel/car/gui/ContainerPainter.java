@@ -9,7 +9,7 @@ public class ContainerPainter extends ContainerBase {
     protected Inventory playerInventory;
 
     public ContainerPainter(int id, Inventory playerInventory, boolean isYellow) {
-        super(Main.PAINTER_CONTAINER_TYPE, id, null, new InventoryPainter(isYellow));
+        super(Main.PAINTER_CONTAINER_TYPE.get(), id, null, new InventoryPainter(isYellow));
         this.playerInventory = playerInventory;
 
         for (int j = 0; j < 5; j++) {

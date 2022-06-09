@@ -4,8 +4,6 @@ import de.maxhenkel.car.gui.ContainerLicensePlate;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -25,8 +23,7 @@ import java.util.List;
 
 public class ItemLicensePlate extends ItemCraftingComponent {
 
-    public ItemLicensePlate(String name) {
-        super(name);
+    public ItemLicensePlate() {
     }
 
     @Override
@@ -34,7 +31,7 @@ public class ItemLicensePlate extends ItemCraftingComponent {
         String text = getText(stack);
 
         if (!text.isEmpty()) {
-            tooltip.add(new TranslatableComponent("tooltip.license_plate_text", new TextComponent(text).withStyle(ChatFormatting.DARK_GRAY)).withStyle(ChatFormatting.GRAY));
+            tooltip.add(Component.translatable("tooltip.license_plate_text", Component.literal(text).withStyle(ChatFormatting.DARK_GRAY)).withStyle(ChatFormatting.GRAY));
         }
 
         super.appendHoverText(stack, worldIn, tooltip, flagIn);

@@ -10,7 +10,7 @@ public class ContainerGasStation extends ContainerBase {
     private TileEntityGasStation gasStation;
 
     public ContainerGasStation(int id, TileEntityGasStation gasStation, Inventory playerInv) {
-        super(Main.GAS_STATION_CONTAINER_TYPE, id, playerInv, null);
+        super(Main.GAS_STATION_CONTAINER_TYPE.get(), id, playerInv, null);
         this.gasStation = gasStation;
 
         addSlot(new SlotPresent(gasStation.getTradingInventory().getItem(0), 18, 99));

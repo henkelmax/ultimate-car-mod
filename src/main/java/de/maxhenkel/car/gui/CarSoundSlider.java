@@ -3,8 +3,6 @@ package de.maxhenkel.car.gui;
 import de.maxhenkel.car.Main;
 import net.minecraft.client.gui.components.AbstractSliderButton;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -12,14 +10,14 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class CarSoundSlider extends AbstractSliderButton {
 
     public CarSoundSlider(int x, int y, int width) {
-        super(x, y, width, 20, TextComponent.EMPTY, Main.CLIENT_CONFIG.carVolume.get());
+        super(x, y, width, 20, Component.empty(), Main.CLIENT_CONFIG.carVolume.get());
         updateMessage();
     }
 
     @Override
     protected void updateMessage() {
-        Component amount = value <= 0D ? new TranslatableComponent("options.off") : new TextComponent((int) ((float) value * 100F) + "%");
-        setMessage(new TranslatableComponent("soundCategory.car").append(": ").append(amount));
+        Component amount = value <= 0D ? Component.translatable("options.off") : Component.literal((int) ((float) value * 100F) + "%");
+        setMessage(Component.translatable("soundCategory.car").append(": ").append(amount));
     }
 
     @Override

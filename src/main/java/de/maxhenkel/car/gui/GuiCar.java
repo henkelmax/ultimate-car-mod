@@ -6,7 +6,6 @@ import de.maxhenkel.corelib.inventory.ScreenBase;
 import de.maxhenkel.corelib.math.MathUtils;
 import de.maxhenkel.car.entity.car.base.EntityCarInventoryBase;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
@@ -77,22 +76,22 @@ public class GuiCar extends ScreenBase<ContainerCar> {
     }
 
     public Component getFuelString() {
-        return new TranslatableComponent("gui.car_fuel", String.valueOf(getFuelPercent()));
+        return Component.translatable("gui.car_fuel", String.valueOf(getFuelPercent()));
     }
 
     public Component getDamageString() {
-        return new TranslatableComponent("gui.car_damage", String.valueOf(getDamagePercent()));
+        return Component.translatable("gui.car_damage", String.valueOf(getDamagePercent()));
     }
 
     public Component getBatteryString() {
-        return new TranslatableComponent("gui.car_battery", String.valueOf(getBatteryPercent()));
+        return Component.translatable("gui.car_battery", String.valueOf(getBatteryPercent()));
     }
 
     public Component getTempString() {
         if (Main.CLIENT_CONFIG.tempInFarenheit.get()) {
-            return new TranslatableComponent("gui.car_temperature_farenheit", String.valueOf(getTemperatureFarenheit()));
+            return Component.translatable("gui.car_temperature_farenheit", String.valueOf(getTemperatureFarenheit()));
         } else {
-            return new TranslatableComponent("gui.car_temperature_celsius", String.valueOf(getTemperatureCelsius()));
+            return Component.translatable("gui.car_temperature_celsius", String.valueOf(getTemperatureCelsius()));
         }
     }
 

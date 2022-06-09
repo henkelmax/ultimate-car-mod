@@ -12,7 +12,7 @@ public class ContainerCarWorkshopCrafting extends ContainerBase {
     protected TileEntityCarWorkshop tile;
 
     public ContainerCarWorkshopCrafting(int id, TileEntityCarWorkshop tile, Inventory playerInventory) {
-        super(Main.CAR_WORKSHOP_CRAFTING_CONTAINER_TYPE, id, playerInventory, tile);
+        super(Main.CAR_WORKSHOP_CRAFTING_CONTAINER_TYPE.get(), id, playerInventory, tile);
         this.playerInventory = playerInventory;
         this.tile = tile;
 

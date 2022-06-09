@@ -14,6 +14,7 @@ import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -22,7 +23,11 @@ public class CapabilityEvents {
 
     @SubscribeEvent
     public void capabilityAttachTileEntity(AttachCapabilitiesEvent<BlockEntity> event) {
-        if (event.getObject() == null || event.getObject().getType().getRegistryName() == null || !event.getObject().getType().getRegistryName().getNamespace().equals(Main.MODID)) {
+        if (event.getObject() == null) {
+            return;
+        }
+        ResourceLocation key = ForgeRegistries.BLOCK_ENTITIES.getKey(event.getObject().getType());
+        if (key == null || !key.getNamespace().equals(Main.MODID)) {
             return;
         }
         if (event.getObject() instanceof IFluidHandler) {
@@ -56,7 +61,11 @@ public class CapabilityEvents {
 
     @SubscribeEvent
     public void capabilityAttachEntity(AttachCapabilitiesEvent<Entity> event) {
-        if (event.getObject() == null || event.getObject().getType().getRegistryName() == null || !event.getObject().getType().getRegistryName().getNamespace().equals(Main.MODID)) {
+        if (event.getObject() == null) {
+            return;
+        }
+        ResourceLocation key = ForgeRegistries.ENTITIES.getKey(event.getObject().getType());
+        if (key == null || !key.getNamespace().equals(Main.MODID)) {
             return;
         }
         if (event.getObject() instanceof IFluidHandler) {

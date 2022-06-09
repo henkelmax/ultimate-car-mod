@@ -1,6 +1,5 @@
 package de.maxhenkel.car.items;
 
-import de.maxhenkel.car.Main;
 import de.maxhenkel.car.ModItemGroups;
 import de.maxhenkel.car.blocks.BlockPaint;
 import de.maxhenkel.car.blocks.ModBlocks;
@@ -9,8 +8,6 @@ import de.maxhenkel.car.gui.SlotPainter;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -32,13 +29,11 @@ import java.util.List;
 
 public class ItemPainter extends Item {
 
-    private boolean isYellow;
+    private final boolean isYellow;
 
     public ItemPainter(boolean isYellow) {
         super(new Item.Properties().stacksTo(1).durability(1024).tab(ModItemGroups.TAB_CAR));
-        setRegistryName(new ResourceLocation(Main.MODID, "painter" + (isYellow ? "_yellow" : "")));
         this.isYellow = isYellow;
-
     }
 
     @Override
@@ -117,9 +112,9 @@ public class ItemPainter extends Item {
         BlockPaint block;
 
         if (isYellow) {
-            block = ModBlocks.YELLOW_PAINTS[id];
+            block = ModBlocks.YELLOW_PAINTS[id].get();
         } else {
-            block = ModBlocks.PAINTS[id];
+            block = ModBlocks.PAINTS[id].get();
         }
         return block;
     }
@@ -128,7 +123,7 @@ public class ItemPainter extends Item {
     public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> textComponents, TooltipFlag tooltipFlag) {
         BlockPaint paint = getSelectedPaint(SlotPainter.getPainterID(stack));
         if (paint != null) {
-            textComponents.add(new TranslatableComponent("tooltip.painter", new TranslatableComponent(paint.getDescriptionId()).withStyle(ChatFormatting.DARK_GRAY)).withStyle(ChatFormatting.GRAY));
+            textComponents.add(Component.translatable("tooltip.painter", Component.translatable(paint.getDescriptionId()).withStyle(ChatFormatting.DARK_GRAY)).withStyle(ChatFormatting.GRAY));
         }
         super.appendHoverText(stack, world, textComponents, tooltipFlag);
     }

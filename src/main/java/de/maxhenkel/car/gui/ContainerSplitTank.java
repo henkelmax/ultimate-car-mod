@@ -9,7 +9,7 @@ public class ContainerSplitTank extends ContainerBase {
     private TileEntitySplitTank splitTank;
 
     public ContainerSplitTank(int id, TileEntitySplitTank splitTank, Inventory playerInv) {
-        super(Main.SPLIT_TANK_CONTAINER_TYPE, id, playerInv, splitTank);
+        super(Main.SPLIT_TANK_CONTAINER_TYPE.get(), id, playerInv, splitTank);
         this.splitTank = splitTank;
         addPlayerInventorySlots();
     }

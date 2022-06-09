@@ -9,8 +9,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import org.lwjgl.glfw.GLFW;
@@ -61,15 +59,15 @@ public class GuiSign extends ScreenBase<ContainerSign> {
 
         setInitialFocus(text1);
 
-        buttonSubmit = addRenderableWidget(new Button(guiLeft + 20, guiTop + imageHeight - 25, 50, 20, new TranslatableComponent("button.car.submit"), button -> {
+        buttonSubmit = addRenderableWidget(new Button(guiLeft + 20, guiTop + imageHeight - 25, 50, 20, Component.translatable("button.car.submit"), button -> {
             save();
             Main.SIMPLE_CHANNEL.sendToServer(new MessageEditSign(sign.getBlockPos(), text));
             Minecraft.getInstance().setScreen(null);
         }));
-        buttonCancel = addRenderableWidget(new Button(guiLeft + imageWidth - 50 - 15, guiTop + imageHeight - 25, 50, 20, new TranslatableComponent("button.car.cancel"), button -> {
+        buttonCancel = addRenderableWidget(new Button(guiLeft + imageWidth - 50 - 15, guiTop + imageHeight - 25, 50, 20, Component.translatable("button.car.cancel"), button -> {
             Minecraft.getInstance().setScreen(null);
         }));
-        buttonSwitch = addRenderableWidget(new Button(guiLeft + 5, guiTop + 49 + 10, 46, 20, new TranslatableComponent("button.car.back"), button -> {
+        buttonSwitch = addRenderableWidget(new Button(guiLeft + 5, guiTop + 49 + 10, 46, 20, Component.translatable("button.car.back"), button -> {
             save();
             front = !front;
 
@@ -78,19 +76,19 @@ public class GuiSign extends ScreenBase<ContainerSign> {
                 text2.setValue(text[1]);
                 text3.setValue(text[2]);
                 text4.setValue(text[3]);
-                buttonSwitch.setMessage(new TranslatableComponent("button.car.back"));
+                buttonSwitch.setMessage(Component.translatable("button.car.back"));
             } else {
                 text1.setValue(text[4]);
                 text2.setValue(text[5]);
                 text3.setValue(text[6]);
                 text4.setValue(text[7]);
-                buttonSwitch.setMessage(new TranslatableComponent("button.car.front"));
+                buttonSwitch.setMessage(Component.translatable("button.car.front"));
             }
         }));
     }
 
     private EditBox initTextField(int id, int height) {
-        EditBox field = new EditBox(font, guiLeft + 54, guiTop + 30 + height, 114, 16, new TextComponent(""));
+        EditBox field = new EditBox(font, guiLeft + 54, guiTop + 30 + height, 114, 16, Component.empty());
         field.setTextColor(-1);
         field.setTextColorUneditable(-1);
         field.setBordered(true);
@@ -106,12 +104,12 @@ public class GuiSign extends ScreenBase<ContainerSign> {
 
         String s;
         if (front) {
-            s = new TranslatableComponent("gui.sign.front").getString();
+            s = Component.translatable("gui.sign.front").getString();
         } else {
-            s = new TranslatableComponent("gui.sign.back").getString();
+            s = Component.translatable("gui.sign.back").getString();
         }
 
-        font.draw(matrixStack, new TranslatableComponent("gui.sign", s).getVisualOrderText(), 54, 10, FONT_COLOR);
+        font.draw(matrixStack, Component.translatable("gui.sign", s).getVisualOrderText(), 54, 10, FONT_COLOR);
     }
 
     @Override

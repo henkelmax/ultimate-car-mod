@@ -12,13 +12,13 @@ public class ContainerCarWorkshopRepair extends ContainerBase {
     protected TileEntityCarWorkshop tile;
 
     public ContainerCarWorkshopRepair(int id, TileEntityCarWorkshop tile, Inventory playerInventory) {
-        super(Main.CAR_WORKSHOP_REPAIR_CONTAINER_TYPE, id, playerInventory, tile);
+        super(Main.CAR_WORKSHOP_REPAIR_CONTAINER_TYPE.get(), id, playerInventory, tile);
         this.playerInventory = playerInventory;
         this.tile = tile;
 
-        this.addSlot(new SlotOneItem(tile.getRepairInventory(), 0, 50, 61, ModItems.SCREW_DRIVER));
-        this.addSlot(new SlotOneItem(tile.getRepairInventory(), 1, 80, 61, ModItems.WRENCH));
-        this.addSlot(new SlotOneItem(tile.getRepairInventory(), 2, 110, 61, ModItems.HAMMER));
+        this.addSlot(new SlotOneItem(tile.getRepairInventory(), 0, 50, 61, ModItems.SCREW_DRIVER.get()));
+        this.addSlot(new SlotOneItem(tile.getRepairInventory(), 1, 80, 61, ModItems.WRENCH.get()));
+        this.addSlot(new SlotOneItem(tile.getRepairInventory(), 2, 110, 61, ModItems.HAMMER.get()));
 
         addPlayerInventorySlots();
     }

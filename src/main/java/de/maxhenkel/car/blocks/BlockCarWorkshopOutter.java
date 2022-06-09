@@ -1,11 +1,9 @@
 package de.maxhenkel.car.blocks;
 
-import de.maxhenkel.car.Main;
 import de.maxhenkel.car.ModItemGroups;
 import de.maxhenkel.car.blocks.tileentity.TileEntityCarWorkshop;
 import de.maxhenkel.corelib.block.IItemBlock;
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
@@ -34,14 +32,13 @@ public class BlockCarWorkshopOutter extends BlockBase implements IItemBlock {
 
     public BlockCarWorkshopOutter() {
         super(Properties.of(Material.METAL, MaterialColor.COLOR_GRAY).strength(3F).sound(SoundType.METAL));
-        setRegistryName(new ResourceLocation(Main.MODID, "car_workshop_outter"));
 
         this.registerDefaultState(stateDefinition.any().setValue(POSITION, 0));
     }
 
     @Override
     public Item toItem() {
-        return new BlockItem(this, new Item.Properties().tab(ModItemGroups.TAB_CAR)).setRegistryName(getRegistryName());
+        return new BlockItem(this, new Item.Properties().tab(ModItemGroups.TAB_CAR));
     }
 
     @Override
@@ -51,7 +48,7 @@ public class BlockCarWorkshopOutter extends BlockBase implements IItemBlock {
         if (tePos == null) {
             return InteractionResult.FAIL;
         }
-        return ModBlocks.CAR_WORKSHOP.use(worldIn.getBlockState(tePos), worldIn, tePos, player, handIn, hit);
+        return ModBlocks.CAR_WORKSHOP.get().use(worldIn.getBlockState(tePos), worldIn, tePos, player, handIn, hit);
     }
 
     @Override
@@ -113,7 +110,7 @@ public class BlockCarWorkshopOutter extends BlockBase implements IItemBlock {
     }
 
     private static boolean isCenter(Level world, BlockPos pos) {
-        return world.getBlockState(pos).getBlock().equals(ModBlocks.CAR_WORKSHOP);
+        return world.getBlockState(pos).getBlock().equals(ModBlocks.CAR_WORKSHOP.get());
     }
 
     @Nullable

@@ -6,7 +6,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -26,7 +25,7 @@ public class TileEntityTank extends TileEntityBase implements IFluidHandler, ITi
     public static final int CAPACITY = 16000;
 
     public TileEntityTank(BlockPos pos, BlockState state) {
-        super(Main.TANK_TILE_ENTITY_TYPE, pos, state);
+        super(Main.TANK_TILE_ENTITY_TYPE.get(), pos, state);
         this.fluid = FluidStack.EMPTY;
     }
 
@@ -140,7 +139,7 @@ public class TileEntityTank extends TileEntityBase implements IFluidHandler, ITi
 
     @Override
     public Component getTranslatedName() {
-        return new TranslatableComponent("block.car.tank");
+        return Component.translatable("block.car.tank");
     }
 
     @Override

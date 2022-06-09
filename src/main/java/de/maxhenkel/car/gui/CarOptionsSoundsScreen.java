@@ -24,7 +24,7 @@ public class CarOptionsSoundsScreen extends SoundOptionsScreen {
             }
         }
 
-        addRenderableWidget(new CarSoundSlider(width / 2 - 155 + posX % 2 * 160, height / 6 - 12 + 24 * (posX >> 1), 150));
+        addRenderableWidget(new CarSoundSlider(width / 2 - 155 + posX % 2 * 160, height / 6 - 12 + 22 * (posX >> 1), 150));
     }
 
 }

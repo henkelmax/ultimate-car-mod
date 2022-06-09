@@ -1,11 +1,9 @@
 package de.maxhenkel.car.blocks;
 
-import de.maxhenkel.car.Main;
 import de.maxhenkel.car.items.ModItems;
 import de.maxhenkel.corelib.block.VoxelUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -47,7 +45,6 @@ public class BlockGuardRail extends BlockBase implements SimpleWaterloggedBlock 
 
     public BlockGuardRail() {
         super(Properties.of(Material.METAL, MaterialColor.METAL).strength(2F).sound(SoundType.LANTERN).noOcclusion());
-        setRegistryName(new ResourceLocation(Main.MODID, "guard_rail"));
 
         registerDefaultState(stateDefinition
                 .any()
@@ -128,7 +125,7 @@ public class BlockGuardRail extends BlockBase implements SimpleWaterloggedBlock 
     @Override
     public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
         List<ItemStack> drops = super.getDrops(state, builder);
-        drops.stream().filter(itemStack -> itemStack.getItem() == ModItems.GUARD_RAIL).forEach(itemStack -> {
+        drops.stream().filter(itemStack -> itemStack.getItem() == ModItems.GUARD_RAIL.get()).forEach(itemStack -> {
             if (itemStack.getCount() == 1) {
                 int amount = 0;
                 if (state.getValue(NORTH)) {

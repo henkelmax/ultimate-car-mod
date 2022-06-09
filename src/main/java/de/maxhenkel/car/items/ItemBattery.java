@@ -8,8 +8,6 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.Item;
@@ -31,13 +29,12 @@ public class ItemBattery extends Item {
 
     public ItemBattery() {
         super(new Item.Properties().stacksTo(1).tab(ModItemGroups.TAB_CAR).durability(500));
-        setRegistryName(new ResourceLocation(Main.MODID, "battery"));
     }
 
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
-        tooltip.add(new TranslatableComponent("tooltip.battery_energy", new TextComponent(String.valueOf(getEnergy(stack))).withStyle(ChatFormatting.DARK_GRAY)).withStyle(ChatFormatting.GRAY));
-        tooltip.add(new TranslatableComponent("tooltip.battery").withStyle(ChatFormatting.GRAY));
+        tooltip.add(Component.translatable("tooltip.battery_energy", Component.literal(String.valueOf(getEnergy(stack))).withStyle(ChatFormatting.DARK_GRAY)).withStyle(ChatFormatting.GRAY));
+        tooltip.add(Component.translatable("tooltip.battery").withStyle(ChatFormatting.GRAY));
 
         super.appendHoverText(stack, worldIn, tooltip, flagIn);
     }
@@ -49,7 +46,7 @@ public class ItemBattery extends Item {
 
     @Override
     public InteractionResult useOn(UseOnContext context) {
-        if (context.getLevel().getBlockState(context.getClickedPos()).getBlock().equals(ModBlocks.GENERATOR)) {
+        if (context.getLevel().getBlockState(context.getClickedPos()).getBlock().equals(ModBlocks.GENERATOR.get())) {
             IEnergyStorage storage = EnergyUtils.getEnergyStorage(context.getLevel(), context.getClickedPos(), context.getClickedFace());
             if (storage != null) {
                 ItemStack stack = context.getPlayer().getItemInHand(context.getHand());

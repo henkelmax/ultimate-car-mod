@@ -8,7 +8,6 @@ import de.maxhenkel.car.blocks.ModBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.level.block.state.BlockState;
@@ -22,7 +21,7 @@ public class TileEntityCable extends TileEntityBase implements ITickableBlockEnt
     private final int transferRate;
 
     public TileEntityCable(int transferRate, BlockPos pos, BlockState state) {
-        super(Main.CABLE_TILE_ENTITY_TYPE, pos, state);
+        super(Main.CABLE_TILE_ENTITY_TYPE.get(), pos, state);
         this.transferRate = transferRate;
     }
 
@@ -100,7 +99,7 @@ public class TileEntityCable extends TileEntityBase implements ITickableBlockEnt
 
             BlockState state = level.getBlockState(p);
 
-            if (state.getBlock().equals(ModBlocks.CABLE)) {
+            if (state.getBlock().equals(ModBlocks.CABLE.get())) {
                 positions.add(p);
                 getConnectedReceivers(sources, receivers, positions, p);
                 continue;
@@ -156,7 +155,7 @@ public class TileEntityCable extends TileEntityBase implements ITickableBlockEnt
 
     @Override
     public Component getTranslatedName() {
-        return new TranslatableComponent("block.car.cable");
+        return Component.translatable("block.car.cable");
     }
 
     @Override

@@ -1,6 +1,5 @@
 package de.maxhenkel.car.blocks;
 
-import de.maxhenkel.car.Main;
 import de.maxhenkel.car.ModItemGroups;
 import de.maxhenkel.car.blocks.tileentity.TileEntityCable;
 import de.maxhenkel.corelib.block.IItemBlock;
@@ -8,7 +7,6 @@ import de.maxhenkel.corelib.block.VoxelUtils;
 import de.maxhenkel.corelib.blockentity.SimpleBlockEntityTicker;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -46,7 +44,6 @@ public class BlockCable extends BlockBase implements EntityBlock, IItemBlock, Si
 
     protected BlockCable() {
         super(Block.Properties.of(Material.WOOL, MaterialColor.COLOR_GRAY).strength(0.25F).sound(SoundType.WOOL));
-        setRegistryName(new ResourceLocation(Main.MODID, "cable"));
 
         registerDefaultState(stateDefinition.any()
                 .setValue(UP, false)
@@ -61,7 +58,7 @@ public class BlockCable extends BlockBase implements EntityBlock, IItemBlock, Si
 
     @Override
     public Item toItem() {
-        return new BlockItem(this, new Item.Properties().tab(ModItemGroups.TAB_CAR)).setRegistryName(getRegistryName());
+        return new BlockItem(this, new Item.Properties().tab(ModItemGroups.TAB_CAR));
     }
 
     @Nullable
@@ -149,7 +146,7 @@ public class BlockCable extends BlockBase implements EntityBlock, IItemBlock, Si
     public static boolean isConnectedTo(LevelAccessor world, BlockPos pos, Direction facing) {
         BlockState state = world.getBlockState(pos.relative(facing));
 
-        if (state.getBlock().equals(ModBlocks.CABLE)) {
+        if (state.getBlock().equals(ModBlocks.CABLE.get())) {
             return true;
         }
 

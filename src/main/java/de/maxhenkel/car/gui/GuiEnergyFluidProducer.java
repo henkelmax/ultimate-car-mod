@@ -4,7 +4,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import de.maxhenkel.car.blocks.tileentity.TileEntityEnergyFluidProducer;
 import de.maxhenkel.corelib.inventory.ScreenBase;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.entity.player.Inventory;
@@ -47,7 +46,7 @@ public abstract class GuiEnergyFluidProducer<T extends ContainerEnergyFluidProdu
         if (mouseX >= leftPos + 11 && mouseX <= leftPos + 16 + 11) {
             if (mouseY >= topPos + 8 && mouseY <= topPos + 57 + 8) {
                 List<FormattedCharSequence> list = new ArrayList<>();
-                list.add(new TranslatableComponent(getUnlocalizedTooltipEnergy(), tile.getStoredEnergy()).getVisualOrderText());
+                list.add(Component.translatable(getUnlocalizedTooltipEnergy(), tile.getStoredEnergy()).getVisualOrderText());
                 renderTooltip(matrixStack, list, mouseX - leftPos, mouseY - topPos);
             }
         }
@@ -55,7 +54,7 @@ public abstract class GuiEnergyFluidProducer<T extends ContainerEnergyFluidProdu
         if (mouseX >= leftPos + 148 && mouseX <= leftPos + 16 + 148) {
             if (mouseY >= topPos + 8 && mouseY <= topPos + 57 + 8) {
                 List<FormattedCharSequence> list = new ArrayList<>();
-                list.add(new TranslatableComponent(getUnlocalizedTooltipLiquid(), tile.getCurrentMillibuckets()).getVisualOrderText());
+                list.add(Component.translatable(getUnlocalizedTooltipLiquid(), tile.getCurrentMillibuckets()).getVisualOrderText());
                 renderTooltip(matrixStack, list, mouseX - leftPos, mouseY - topPos);
             }
         }
@@ -63,7 +62,7 @@ public abstract class GuiEnergyFluidProducer<T extends ContainerEnergyFluidProdu
         if (mouseX >= leftPos + 79 && mouseX <= leftPos + 24 + 79) {
             if (mouseY >= topPos + 34 && mouseY <= topPos + 17 + 34) {
                 List<FormattedCharSequence> list = new ArrayList<>();
-                list.add(new TranslatableComponent(getUnlocalizedTooltipProgress(), ((int) (getProgress() * 100F))).getVisualOrderText());
+                list.add(Component.translatable(getUnlocalizedTooltipProgress(), ((int) (getProgress() * 100F))).getVisualOrderText());
                 renderTooltip(matrixStack, list, mouseX - leftPos, mouseY - topPos);
             }
         }

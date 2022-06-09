@@ -6,14 +6,13 @@ import de.maxhenkel.car.blocks.ModBlocks;
 import de.maxhenkel.car.fluids.ModFluids;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 
 public class TileEntityOilMill extends TileEntityEnergyFluidProducer {
 
     public TileEntityOilMill(BlockPos pos, BlockState state) {
-        super(Main.OIL_MILL_TILE_ENTITY_TYPE, Main.RECIPE_TYPE_OIL_MILL, pos, state);
+        super(Main.OIL_MILL_TILE_ENTITY_TYPE.get(), Main.RECIPE_TYPE_OIL_MILL.get(), pos, state);
         this.maxEnergy = Main.SERVER_CONFIG.oilMillEnergyStorage.get();
         this.storedEnergy = 0;
         this.fluidAmount = Main.SERVER_CONFIG.oilMillFluidStorage.get();
@@ -22,17 +21,17 @@ public class TileEntityOilMill extends TileEntityEnergyFluidProducer {
 
     @Override
     public Component getTranslatedName() {
-        return new TranslatableComponent("block.car.oilmill");
+        return Component.translatable("block.car.oilmill");
     }
 
     @Override
     public BlockGui<TileEntityOilMill> getOwnBlock() {
-        return ModBlocks.OIL_MILL;
+        return ModBlocks.OIL_MILL.get();
     }
 
     @Override
     public Fluid getProducingFluid() {
-        return ModFluids.CANOLA_OIL;
+        return ModFluids.CANOLA_OIL.get();
     }
 
 }

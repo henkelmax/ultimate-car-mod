@@ -4,7 +4,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.corelib.inventory.ScreenBase;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
@@ -21,7 +20,7 @@ public class GuiPainter extends ScreenBase<ContainerPainter> {
     @Override
     protected void renderLabels(PoseStack matrixStack, int mouseX, int mouseY) {
         super.renderLabels(matrixStack, mouseX, mouseY);
-        font.draw(matrixStack, new TranslatableComponent("gui.painter").getVisualOrderText(), 8, 6, FONT_COLOR);
+        font.draw(matrixStack, Component.translatable("gui.painter").getVisualOrderText(), 8, 6, FONT_COLOR);
     }
 
     @Override

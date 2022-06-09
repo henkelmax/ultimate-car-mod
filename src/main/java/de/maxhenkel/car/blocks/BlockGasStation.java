@@ -63,7 +63,7 @@ public class BlockGasStation extends BlockOrientableHorizontal {
             ).build();
 
     public BlockGasStation() {
-        super("gas_station", Material.METAL, MaterialColor.METAL, SoundType.METAL, 4F, 50F);
+        super(Material.METAL, MaterialColor.METAL, SoundType.METAL, 4F, 50F);
     }
 
     @Override
@@ -76,7 +76,7 @@ public class BlockGasStation extends BlockOrientableHorizontal {
                 }
                 return super.canPlace(context, state);
             }
-        }.setRegistryName(getRegistryName());
+        };
     }
 
     @Nullable
@@ -139,7 +139,7 @@ public class BlockGasStation extends BlockOrientableHorizontal {
     @Override
     public void setPlacedBy(Level worldIn, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
         if (worldIn.isEmptyBlock(pos.above())) {
-            worldIn.setBlockAndUpdate(pos.above(), ModBlocks.GAS_STATION_TOP.defaultBlockState().setValue(ModBlocks.GAS_STATION_TOP.FACING, state.getValue(FACING)));
+            worldIn.setBlockAndUpdate(pos.above(), ModBlocks.GAS_STATION_TOP.get().defaultBlockState().setValue(ModBlocks.GAS_STATION_TOP.get().FACING, state.getValue(FACING)));
         }
 
         BlockEntity te = worldIn.getBlockEntity(pos);
@@ -158,7 +158,7 @@ public class BlockGasStation extends BlockOrientableHorizontal {
 
         BlockState stateUp = worldIn.getBlockState(pos.above());
         stateUp.getBlock();
-        if (stateUp.getBlock().equals(ModBlocks.GAS_STATION_TOP)) {
+        if (stateUp.getBlock().equals(ModBlocks.GAS_STATION_TOP.get())) {
             worldIn.destroyBlock(pos.above(), false);
         }
 

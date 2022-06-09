@@ -15,8 +15,7 @@ import java.util.function.Supplier;
 public class CarFluidBlock extends LiquidBlock {
 
     public CarFluidBlock(Supplier<? extends FlowingFluid> fluidSupplier) {
-        super(fluidSupplier, Block.Properties.of(Material.WATER).noCollission().strength(100F).noDrops());
-        setRegistryName(getFluid().getRegistryName());
+        super(fluidSupplier, Block.Properties.of(Material.WATER).noCollission().strength(100F));
     }
 
     @Override

@@ -9,7 +9,7 @@ public class ContainerLicensePlate extends ContainerBase {
     private ItemStack licensePlate;
 
     public ContainerLicensePlate(int id, ItemStack licensePlate) {
-        super(Main.LICENSE_PLATE_CONTAINER_TYPE, id, null, new SimpleContainer(0));
+        super(Main.LICENSE_PLATE_CONTAINER_TYPE.get(), id, null, new SimpleContainer(0));
         this.licensePlate = licensePlate;
     }
 

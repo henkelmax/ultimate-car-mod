@@ -18,12 +18,11 @@ public class FluidCanolaOil extends CarFluidSource {
                 FluidAttributes.builder(
                         new ResourceLocation(Main.MODID, "block/canola_oil_still"),
                         new ResourceLocation(Main.MODID, "block/canola_oil_flowing")).sound(SoundEvents.BUCKET_FILL),
-                () -> ModBlocks.CANOLA_OIL,
-                () -> ModFluids.CANOLA_OIL,
-                () -> ModFluids.CANOLA_OIL_FLOWING,
-                () -> ModItems.CANOLA_OIL_BUCKET
+                () -> ModBlocks.CANOLA_OIL.get(),
+                () -> ModFluids.CANOLA_OIL.get(),
+                () -> ModFluids.CANOLA_OIL_FLOWING.get(),
+                () -> ModItems.CANOLA_OIL_BUCKET.get()
         );
-        setRegistryName(new ResourceLocation(Main.MODID, "canola_oil"));
     }
 
     @Override

@@ -14,7 +14,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.item.ItemStack;
@@ -33,7 +32,7 @@ public class TileEntityFluidExtractor extends TileEntityBase implements ITickabl
     private ItemStack filter;
 
     public TileEntityFluidExtractor(BlockPos pos, BlockState state) {
-        super(Main.FLUID_EXTRACTOR_TILE_ENTITY_TYPE, pos, state);
+        super(Main.FLUID_EXTRACTOR_TILE_ENTITY_TYPE.get(), pos, state);
         this.drainSpeed = Main.SERVER_CONFIG.fluidExtractorDrainSpeed.get();
         filter = null;
     }
@@ -104,7 +103,7 @@ public class TileEntityFluidExtractor extends TileEntityBase implements ITickabl
     public void updateExtractHandler() {
         BlockState state = level.getBlockState(worldPosition);
 
-        if (!state.getBlock().equals(ModBlocks.FLUID_EXTRACTOR)) {
+        if (!state.getBlock().equals(ModBlocks.FLUID_EXTRACTOR.get())) {
             extractHandler = null;
             return;
         }
@@ -124,7 +123,7 @@ public class TileEntityFluidExtractor extends TileEntityBase implements ITickabl
 
             BlockState state = level.getBlockState(p);
 
-            if (state.getBlock().equals(ModBlocks.FLUID_PIPE) || state.getBlock().equals(ModBlocks.FLUID_EXTRACTOR)) {
+            if (state.getBlock().equals(ModBlocks.FLUID_PIPE.get()) || state.getBlock().equals(ModBlocks.FLUID_EXTRACTOR.get())) {
                 positions.add(p);
                 getConnectedHandlers(handlers, positions, p);
                 continue;
@@ -164,7 +163,7 @@ public class TileEntityFluidExtractor extends TileEntityBase implements ITickabl
 
     @Override
     public Component getTranslatedName() {
-        return new TranslatableComponent("block.car.fluid_extractor");
+        return Component.translatable("block.car.fluid_extractor");
     }
 
     public ItemStack getFilter() {

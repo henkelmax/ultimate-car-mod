@@ -41,7 +41,7 @@ public class CarRecipeCategory implements IRecipeCategory<CarRecipe> {
 
     @Override
     public IDrawable getIcon() {
-        return helper.createDrawableIngredient(VanillaTypes.ITEM, new ItemStack(ModBlocks.CAR_WORKSHOP));
+        return helper.createDrawableIngredient(VanillaTypes.ITEM, new ItemStack(ModBlocks.CAR_WORKSHOP.get()));
     }
 
     @Override
@@ -63,7 +63,7 @@ public class CarRecipeCategory implements IRecipeCategory<CarRecipe> {
 
     @Override
     public Component getTitle() {
-        return ModBlocks.CAR_WORKSHOP.getName();
+        return ModBlocks.CAR_WORKSHOP.get().getName();
     }
 
     @Override

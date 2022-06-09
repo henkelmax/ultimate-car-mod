@@ -18,16 +18,15 @@ public class FluidMethanolFlowing extends CarFluidFlowing {
                 FluidAttributes.builder(
                         new ResourceLocation(Main.MODID, "block/methanol_still"),
                         new ResourceLocation(Main.MODID, "block/methanol_flowing")).sound(SoundEvents.BUCKET_FILL),
-                () -> ModBlocks.METHANOL,
-                () -> ModFluids.METHANOL,
-                () -> ModFluids.METHANOL_FLOWING,
-                () -> ModItems.METHANOL_BUCKET
+                () -> ModBlocks.METHANOL.get(),
+                () -> ModFluids.METHANOL.get(),
+                () -> ModFluids.METHANOL_FLOWING.get(),
+                () -> ModItems.METHANOL_BUCKET.get()
         );
-        setRegistryName(new ResourceLocation(Main.MODID, "methanol_flowing"));
     }
 
     @Override
     public void applyEffects(Entity entity, BlockState state, Level worldIn, BlockPos pos) {
-        ModFluids.METHANOL.applyEffects(entity, state, worldIn, pos);
+        ModFluids.METHANOL.get().applyEffects(entity, state, worldIn, pos);
     }
 }

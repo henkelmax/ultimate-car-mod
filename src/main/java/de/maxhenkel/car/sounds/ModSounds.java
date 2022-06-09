@@ -1,8 +1,6 @@
 package de.maxhenkel.car.sounds;
 
 import de.maxhenkel.car.Main;
-import de.maxhenkel.corelib.reflection.ReflectionUtils;
-import de.maxhenkel.tools.NoRegister;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.sounds.AbstractTickableSoundInstance;
 import net.minecraft.core.BlockPos;
@@ -13,63 +11,48 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.List;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 
 public class ModSounds {
 
-    public static SoundEvent ENGINE_STOP = addSound("engine_stop");
-    public static SoundEvent ENGINE_STARTING = addSound("engine_starting");
-    public static SoundEvent ENGINE_START = addSound("engine_start");
-    public static SoundEvent ENGINE_IDLE = addSound("engine_idle");
-    public static SoundEvent ENGINE_HIGH = addSound("engine_high");
-    public static SoundEvent ENGINE_FAIL = addSound("engine_fail");
-    public static SoundEvent SPORT_ENGINE_STOP = addSound("sport_engine_stop");
-    public static SoundEvent SPORT_ENGINE_STARTING = addSound("sport_engine_starting");
-    public static SoundEvent SPORT_ENGINE_START = addSound("sport_engine_start");
-    public static SoundEvent SPORT_ENGINE_IDLE = addSound("sport_engine_idle");
-    public static SoundEvent SPORT_ENGINE_HIGH = addSound("sport_engine_high");
-    public static SoundEvent SPORT_ENGINE_FAIL = addSound("sport_engine_fail");
-    public static SoundEvent TRUCK_ENGINE_STOP = addSound("truck_engine_stop");
-    public static SoundEvent TRUCK_ENGINE_STARTING = addSound("truck_engine_starting");
-    public static SoundEvent TRUCK_ENGINE_START = addSound("truck_engine_start");
-    public static SoundEvent TRUCK_ENGINE_IDLE = addSound("truck_engine_idle");
-    public static SoundEvent TRUCK_ENGINE_HIGH = addSound("truck_engine_high");
-    public static SoundEvent TRUCK_ENGINE_FAIL = addSound("truck_engine_fail");
-    public static SoundEvent CAR_CRASH = addSound("car_crash");
-    public static SoundEvent GAS_STATION = addSound("gas_station");
-    public static SoundEvent GENERATOR = addSound("generator");
-    public static SoundEvent CAR_HORN = addSound("car_horn");
-    public static SoundEvent CAR_LOCK = addSound("car_lock");
-    public static SoundEvent CAR_UNLOCK = addSound("car_unlock");
-    public static SoundEvent RATCHET = addSound("ratchet");
-    public static SoundEvent GAS_STATION_ATTENDANT = addSound("gas_station_attendant");
+    private static final DeferredRegister<SoundEvent> SOUND_REGISTER = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, Main.MODID);
 
-    public static List<SoundEvent> getAll() {
-        List<SoundEvent> sounds = new ArrayList<>();
-        for (Field field : ModSounds.class.getFields()) {
-            if (ReflectionUtils.hasAnnotation(field, NoRegister.class)) {
-                continue;
-            }
-            try {
-                Object obj = field.get(null);
-                if (obj instanceof SoundEvent) {
-                    sounds.add((SoundEvent) obj);
-                }
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            }
-        }
+    public static RegistryObject<SoundEvent> ENGINE_STOP = addSound("engine_stop");
+    public static RegistryObject<SoundEvent> ENGINE_STARTING = addSound("engine_starting");
+    public static RegistryObject<SoundEvent> ENGINE_START = addSound("engine_start");
+    public static RegistryObject<SoundEvent> ENGINE_IDLE = addSound("engine_idle");
+    public static RegistryObject<SoundEvent> ENGINE_HIGH = addSound("engine_high");
+    public static RegistryObject<SoundEvent> ENGINE_FAIL = addSound("engine_fail");
+    public static RegistryObject<SoundEvent> SPORT_ENGINE_STOP = addSound("sport_engine_stop");
+    public static RegistryObject<SoundEvent> SPORT_ENGINE_STARTING = addSound("sport_engine_starting");
+    public static RegistryObject<SoundEvent> SPORT_ENGINE_START = addSound("sport_engine_start");
+    public static RegistryObject<SoundEvent> SPORT_ENGINE_IDLE = addSound("sport_engine_idle");
+    public static RegistryObject<SoundEvent> SPORT_ENGINE_HIGH = addSound("sport_engine_high");
+    public static RegistryObject<SoundEvent> SPORT_ENGINE_FAIL = addSound("sport_engine_fail");
+    public static RegistryObject<SoundEvent> TRUCK_ENGINE_STOP = addSound("truck_engine_stop");
+    public static RegistryObject<SoundEvent> TRUCK_ENGINE_STARTING = addSound("truck_engine_starting");
+    public static RegistryObject<SoundEvent> TRUCK_ENGINE_START = addSound("truck_engine_start");
+    public static RegistryObject<SoundEvent> TRUCK_ENGINE_IDLE = addSound("truck_engine_idle");
+    public static RegistryObject<SoundEvent> TRUCK_ENGINE_HIGH = addSound("truck_engine_high");
+    public static RegistryObject<SoundEvent> TRUCK_ENGINE_FAIL = addSound("truck_engine_fail");
+    public static RegistryObject<SoundEvent> CAR_CRASH = addSound("car_crash");
+    public static RegistryObject<SoundEvent> GAS_STATION = addSound("gas_station");
+    public static RegistryObject<SoundEvent> GENERATOR = addSound("generator");
+    public static RegistryObject<SoundEvent> CAR_HORN = addSound("car_horn");
+    public static RegistryObject<SoundEvent> CAR_LOCK = addSound("car_lock");
+    public static RegistryObject<SoundEvent> CAR_UNLOCK = addSound("car_unlock");
+    public static RegistryObject<SoundEvent> RATCHET = addSound("ratchet");
+    public static RegistryObject<SoundEvent> GAS_STATION_ATTENDANT = addSound("gas_station_attendant");
 
-        return sounds;
+    public static RegistryObject<SoundEvent> addSound(String soundName) {
+        return SOUND_REGISTER.register(soundName, () -> new SoundEvent(new ResourceLocation(Main.MODID, soundName)));
     }
 
-    public static SoundEvent addSound(String soundName) {
-        SoundEvent event = new SoundEvent(new ResourceLocation(Main.MODID, soundName));
-        event.setRegistryName(new ResourceLocation(Main.MODID, soundName));
-        return event;
+    public static void init() {
+        SOUND_REGISTER.register(FMLJavaModLoadingContext.get().getModEventBus());
     }
 
     public static void playSound(SoundEvent evt, Level world, BlockPos pos, Player entity, SoundSource category, float volume) {
@@ -94,28 +77,28 @@ public class ModSounds {
         if (event == null) {
             return false;
         }
-        return event.equals(ENGINE_STOP) ||
-                event.equals(ENGINE_STARTING) ||
-                event.equals(ENGINE_START) ||
-                event.equals(ENGINE_IDLE) ||
-                event.equals(ENGINE_HIGH) ||
-                event.equals(ENGINE_FAIL) ||
-                event.equals(SPORT_ENGINE_STOP) ||
-                event.equals(SPORT_ENGINE_STARTING) ||
-                event.equals(SPORT_ENGINE_START) ||
-                event.equals(SPORT_ENGINE_IDLE) ||
-                event.equals(SPORT_ENGINE_HIGH) ||
-                event.equals(SPORT_ENGINE_FAIL) ||
-                event.equals(TRUCK_ENGINE_STOP) ||
-                event.equals(TRUCK_ENGINE_STARTING) ||
-                event.equals(TRUCK_ENGINE_START) ||
-                event.equals(TRUCK_ENGINE_IDLE) ||
-                event.equals(TRUCK_ENGINE_HIGH) ||
-                event.equals(TRUCK_ENGINE_FAIL) ||
-                event.equals(CAR_CRASH) ||
-                event.equals(CAR_HORN) ||
-                event.equals(CAR_LOCK) ||
-                event.equals(CAR_UNLOCK);
+        return event.equals(ENGINE_STOP.get()) ||
+                event.equals(ENGINE_STARTING.get()) ||
+                event.equals(ENGINE_START.get()) ||
+                event.equals(ENGINE_IDLE.get()) ||
+                event.equals(ENGINE_HIGH.get()) ||
+                event.equals(ENGINE_FAIL.get()) ||
+                event.equals(SPORT_ENGINE_STOP.get()) ||
+                event.equals(SPORT_ENGINE_STARTING.get()) ||
+                event.equals(SPORT_ENGINE_START.get()) ||
+                event.equals(SPORT_ENGINE_IDLE.get()) ||
+                event.equals(SPORT_ENGINE_HIGH.get()) ||
+                event.equals(SPORT_ENGINE_FAIL.get()) ||
+                event.equals(TRUCK_ENGINE_STOP.get()) ||
+                event.equals(TRUCK_ENGINE_STARTING.get()) ||
+                event.equals(TRUCK_ENGINE_START.get()) ||
+                event.equals(TRUCK_ENGINE_IDLE.get()) ||
+                event.equals(TRUCK_ENGINE_HIGH.get()) ||
+                event.equals(TRUCK_ENGINE_FAIL.get()) ||
+                event.equals(CAR_CRASH.get()) ||
+                event.equals(CAR_HORN.get()) ||
+                event.equals(CAR_LOCK.get()) ||
+                event.equals(CAR_UNLOCK.get());
 
     }
 

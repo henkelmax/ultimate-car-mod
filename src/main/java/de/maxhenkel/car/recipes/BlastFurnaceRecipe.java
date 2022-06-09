@@ -10,16 +10,16 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 public class BlastFurnaceRecipe extends EnergyFluidProducerRecipe {
 
     public BlastFurnaceRecipe(ResourceLocation idIn, String group, Ingredient ingredientIn, ItemStack result, int fluidAmount, int energy, int duration) {
-        super(Main.RECIPE_TYPE_BLAST_FURNACE, idIn, group, ingredientIn, result, fluidAmount, energy, duration);
+        super(Main.RECIPE_TYPE_BLAST_FURNACE.get(), idIn, group, ingredientIn, result, fluidAmount, energy, duration);
     }
 
     @Override
     public ItemStack getToastSymbol() {
-        return new ItemStack(ModBlocks.BLAST_FURNACE);
+        return new ItemStack(ModBlocks.BLAST_FURNACE.get());
     }
 
     @Override
     public RecipeSerializer<?> getSerializer() {
-        return Main.CRAFTING_BLAST_FURNACE;
+        return Main.CRAFTING_BLAST_FURNACE.get();
     }
 }

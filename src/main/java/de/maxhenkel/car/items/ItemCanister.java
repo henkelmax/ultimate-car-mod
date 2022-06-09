@@ -10,9 +10,6 @@ import de.maxhenkel.car.sounds.ModSounds;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;
@@ -32,7 +29,6 @@ public class ItemCanister extends Item {
 
     public ItemCanister() {
         super(new Item.Properties().stacksTo(1).tab(ModItemGroups.TAB_CAR));
-        setRegistryName(new ResourceLocation(Main.MODID, "canister"));
     }
 
     @Override
@@ -45,7 +41,7 @@ public class ItemCanister extends Item {
 
         BlockEntity te;
 
-        if (state.getBlock().equals(ModBlocks.GAS_STATION_TOP)) {
+        if (state.getBlock().equals(ModBlocks.GAS_STATION_TOP.get())) {
             te = context.getLevel().getBlockEntity(context.getClickedPos().below());
         } else {
             te = context.getLevel().getBlockEntity(context.getClickedPos());
@@ -105,8 +101,8 @@ public class ItemCanister extends Item {
     }
 
     private void addInfo(String fluid, int amount, List<Component> tooltip) {
-        tooltip.add(new TranslatableComponent("canister.fluid", new TextComponent(fluid).withStyle(ChatFormatting.DARK_GRAY)).withStyle(ChatFormatting.GRAY));
-        tooltip.add(new TranslatableComponent("canister.amount", new TextComponent(String.valueOf(amount)).withStyle(ChatFormatting.DARK_GRAY)).withStyle(ChatFormatting.GRAY));
+        tooltip.add(Component.translatable("canister.fluid", Component.literal(fluid).withStyle(ChatFormatting.DARK_GRAY)).withStyle(ChatFormatting.GRAY));
+        tooltip.add(Component.translatable("canister.amount", Component.literal(String.valueOf(amount)).withStyle(ChatFormatting.DARK_GRAY)).withStyle(ChatFormatting.GRAY));
     }
 
     public static boolean fillCanister(ItemStack canister, IFluidHandler handler) {

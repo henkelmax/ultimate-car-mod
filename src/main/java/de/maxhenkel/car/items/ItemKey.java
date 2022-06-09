@@ -1,16 +1,10 @@
 package de.maxhenkel.car.items;
 
-import java.util.List;
-import java.util.UUID;
-
-import de.maxhenkel.car.Main;
 import de.maxhenkel.car.ModItemGroups;
 import de.maxhenkel.car.PredicateUUID;
 import de.maxhenkel.car.entity.car.base.EntityCarLockBase;
-import net.minecraft.Util;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
@@ -20,11 +14,13 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 
+import java.util.List;
+import java.util.UUID;
+
 public class ItemKey extends Item {
 
     public ItemKey() {
         super(new Item.Properties().stacksTo(1).tab(ModItemGroups.TAB_CAR));
-        setRegistryName(new ResourceLocation(Main.MODID, "key"));
     }
 
     @Override
@@ -34,7 +30,7 @@ public class ItemKey extends Item {
 
         if (carUUID == null) {
             if (worldIn.isClientSide) {
-                playerIn.displayClientMessage(new TranslatableComponent("message.key_no_car"), true);
+                playerIn.displayClientMessage(Component.translatable("message.key_no_car"), true);
             }
             return new InteractionResultHolder<>(InteractionResult.PASS, stack);
         } else if (worldIn.isClientSide) {
@@ -44,14 +40,14 @@ public class ItemKey extends Item {
         List<EntityCarLockBase> cars = worldIn.getEntitiesOfClass(EntityCarLockBase.class, new AABB(playerIn.getX() - 25D, playerIn.getY() - 25D, playerIn.getZ() - 25D, playerIn.getX() + 25D, playerIn.getY() + 25D, playerIn.getZ() + 25D), new PredicateUUID(carUUID));
 
         if (cars.isEmpty()) {
-            playerIn.displayClientMessage(new TranslatableComponent("message.car_out_of_range"), true);
+            playerIn.displayClientMessage(Component.translatable("message.car_out_of_range"), true);
             return new InteractionResultHolder<>(InteractionResult.SUCCESS, stack);
         }
 
         EntityCarLockBase car = cars.get(0);
 
         if (car == null) {
-            playerIn.sendMessage(new TranslatableComponent("message.car_out_of_range"), Util.NIL_UUID);
+            playerIn.sendSystemMessage(Component.translatable("message.car_out_of_range"));
             return new InteractionResultHolder<>(InteractionResult.SUCCESS, stack);
         }
 
@@ -89,7 +85,7 @@ public class ItemKey extends Item {
     }
 
     public static ItemStack getKeyForCar(UUID car) {
-        ItemStack stack = new ItemStack(ModItems.KEY);
+        ItemStack stack = new ItemStack(ModItems.KEY.get());
 
         setCar(stack, car);
 

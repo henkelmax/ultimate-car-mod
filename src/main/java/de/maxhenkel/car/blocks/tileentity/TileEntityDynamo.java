@@ -7,7 +7,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.level.block.state.BlockState;
@@ -20,7 +19,7 @@ public class TileEntityDynamo extends TileEntityBase implements IEnergyStorage, 
     public final int generation;
 
     public TileEntityDynamo(BlockPos pos, BlockState state) {
-        super(Main.DYNAMO_TILE_ENTITY_TYPE, pos, state);
+        super(Main.DYNAMO_TILE_ENTITY_TYPE.get(), pos, state);
         this.maxStorage = Main.SERVER_CONFIG.dynamoEnergyStorage.get();
         this.generation = Main.SERVER_CONFIG.dynamoEnergyGeneration.get();
         this.storedEnergy = 0;
@@ -100,7 +99,7 @@ public class TileEntityDynamo extends TileEntityBase implements IEnergyStorage, 
 
     @Override
     public Component getTranslatedName() {
-        return new TranslatableComponent("block.car.dynamo");
+        return Component.translatable("block.car.dynamo");
     }
 
     @Override

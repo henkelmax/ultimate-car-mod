@@ -1,13 +1,11 @@
 package de.maxhenkel.car.blocks;
 
-import de.maxhenkel.car.Main;
 import de.maxhenkel.car.ModItemGroups;
 import de.maxhenkel.car.blocks.tileentity.TileEntityCarWorkshop;
 import de.maxhenkel.car.gui.ContainerCarWorkshopCrafting;
 import de.maxhenkel.car.gui.TileEntityContainerProvider;
 import de.maxhenkel.corelib.block.IItemBlock;
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
@@ -39,13 +37,12 @@ public class BlockCarWorkshop extends BlockBase implements EntityBlock, IItemBlo
 
     protected BlockCarWorkshop() {
         super(Properties.of(Material.METAL, MaterialColor.COLOR_GRAY).strength(3F).sound(SoundType.METAL));
-        setRegistryName(new ResourceLocation(Main.MODID, "car_workshop"));
         this.registerDefaultState(stateDefinition.any().setValue(VALID, false));
     }
 
     @Override
     public Item toItem() {
-        return new BlockItem(this, new Item.Properties().tab(ModItemGroups.TAB_CAR)).setRegistryName(getRegistryName());
+        return new BlockItem(this, new Item.Properties().tab(ModItemGroups.TAB_CAR));
     }
 
     @Override
