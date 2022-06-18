@@ -335,9 +335,9 @@ public class TileEntityBackmixReactor extends TileEntityBase implements ITickabl
     @Override
     public boolean isFluidValid(int tank, @Nonnull FluidStack stack) {
         if (tank == 0) {
-            return stack.getFluid().equals(ModFluids.CANOLA_OIL);
+            return stack.getFluid().equals(ModFluids.CANOLA_OIL.get());
         } else if (tank == 1) {
-            return stack.getFluid().equals(ModFluids.METHANOL);
+            return stack.getFluid().equals(ModFluids.METHANOL.get());
         } else {
             return false;
         }
@@ -346,14 +346,14 @@ public class TileEntityBackmixReactor extends TileEntityBase implements ITickabl
 
     @Override
     public int fill(FluidStack resource, FluidAction action) {
-        if (resource.getFluid().equals(ModFluids.METHANOL)) {
+        if (resource.getFluid().equals(ModFluids.METHANOL.get())) {
             int amount = Math.min(maxMethanol - currentMethanol, resource.getAmount());
             if (action.execute()) {
                 currentMethanol += amount;
                 setChanged();
             }
             return amount;
-        } else if (resource.getFluid().equals(ModFluids.CANOLA_OIL)) {
+        } else if (resource.getFluid().equals(ModFluids.CANOLA_OIL.get())) {
             int amount = Math.min(maxCanola - currentCanola, resource.getAmount());
             if (action.execute()) {
                 currentCanola += amount;

@@ -16,6 +16,7 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.InventoryMenu;
+import net.minecraftforge.client.RenderProperties;
 import net.minecraftforge.fluids.FluidStack;
 
 public class TileEntitySpecialRendererTank implements BlockEntityRenderer<TileEntityTank> {
@@ -44,7 +45,17 @@ public class TileEntitySpecialRendererTank implements BlockEntityRenderer<TileEn
         matrixStack.pushPose();
         VertexConsumer builder = buffer.getBuffer(Sheets.translucentCullBlockSheet());
 
-        TextureAtlasSprite texture = Minecraft.getInstance().getModelManager().getAtlas(InventoryMenu.BLOCK_ATLAS).getSprite(fluid.getFluid().getAttributes().getStillTexture());
+        ResourceLocation stillTexture;
+        int tint;
+        if (tank.hasLevel()) {
+            tint = RenderProperties.get(fluid.getFluid()).getColorTint(fluid.getFluid().defaultFluidState(), tank.getLevel(), tank.getBlockPos());
+            stillTexture = RenderProperties.get(fluid.getFluid()).getStillTexture(fluid.getFluid().defaultFluidState(), tank.getLevel(), tank.getBlockPos());
+        } else {
+            tint = RenderProperties.get(fluid.getFluid()).getColorTint(fluid);
+            stillTexture = RenderProperties.get(fluid.getFluid()).getStillTexture(fluid);
+        }
+
+        TextureAtlasSprite texture = Minecraft.getInstance().getModelManager().getAtlas(InventoryMenu.BLOCK_ATLAS).getSprite(stillTexture);
 
         float uMin = texture.getU0();
         float uMax = texture.getU1();
@@ -53,18 +64,11 @@ public class TileEntitySpecialRendererTank implements BlockEntityRenderer<TileEn
 
         float vHeight = vMax - vMin;
 
-        int i;
-        if (tank.hasLevel()) {
-            i = fluid.getFluid().getAttributes().getColor(tank.getLevel(), tank.getBlockPos());
-        } else {
-            i = fluid.getFluid().getAttributes().getColor();
-        }
+        int red = tint >> 16 & 255;
+        int green = tint >> 8 & 255;
+        int blue = tint & 255;
 
-        int red = i >> 16 & 255;
-        int green = i >> 8 & 255;
-        int blue = i & 255;
-
-        float s = 0.0F;
+        float s = 0F;
 
         if (!tank.isFluidConnected(Direction.NORTH)) {
             // North

@@ -291,7 +291,7 @@ public class TileEntitySplitTank extends TileEntityBase implements ITickableBloc
 
     @Override
     public int fill(FluidStack resource, FluidAction action) {
-        if (resource.getFluid().equals(ModFluids.CANOLA_METHANOL_MIX)) {
+        if (resource.getFluid().equals(ModFluids.CANOLA_METHANOL_MIX.get())) {
             int amount = Math.min(maxMix - currentMix, resource.getAmount());
             if (action.execute()) {
                 currentMix += amount;

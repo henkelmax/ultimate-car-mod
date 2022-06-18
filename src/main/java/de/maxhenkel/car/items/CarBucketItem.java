@@ -14,8 +14,8 @@ import javax.annotation.Nullable;
 
 public class CarBucketItem extends BucketItem {
 
-    public CarBucketItem(Fluid containedFluidIn) {
-        super(() -> containedFluidIn, new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1).tab(ModItemGroups.TAB_CAR));
+    public CarBucketItem(Fluid fluid) {
+        super(fluid, new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1).tab(ModItemGroups.TAB_CAR));
     }
 
     @Override
