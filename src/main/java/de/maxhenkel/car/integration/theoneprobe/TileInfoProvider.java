@@ -9,7 +9,7 @@ import mcjty.theoneprobe.api.IProbeInfo;
 import mcjty.theoneprobe.api.IProbeInfoProvider;
 import mcjty.theoneprobe.api.ProbeMode;
 import mcjty.theoneprobe.apiimpl.styles.ProgressStyle;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -34,7 +34,7 @@ public class TileInfoProvider implements IProbeInfoProvider {
         if (te instanceof TileEntityFluidExtractor extractor) {
             Fluid fluid = extractor.getFilterFluid();
             if (fluid != null) {
-                iProbeInfo.text(new TranslatableComponent("tooltip.waila.fluid_extractor.filter", new FluidStack(fluid, 1).getDisplayName()));
+                iProbeInfo.text(Component.translatable("tooltip.waila.fluid_extractor.filter", new FluidStack(fluid, 1).getDisplayName()));
             }
         } else if (te instanceof TileEntityGenerator generator) {
             FluidStack fluid = generator.getFluidInTank(0);

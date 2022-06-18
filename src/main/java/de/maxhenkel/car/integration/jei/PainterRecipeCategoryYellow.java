@@ -34,28 +34,18 @@ public class PainterRecipeCategoryYellow implements IRecipeCategory<PainterRecip
 
     @Override
     public IDrawable getIcon() {
-        return helper.createDrawableIngredient(VanillaTypes.ITEM, new ItemStack(ModItems.PAINTER_YELLOW.get()));
+        return helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(ModItems.PAINTER_YELLOW.get()));
     }
 
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, PainterRecipe recipe, IFocusGroup focuses) {
-        builder.addSlot(RecipeIngredientRole.INPUT, 1, 19).addIngredient(VanillaTypes.ITEM, new ItemStack(recipe.getInput()));
-        builder.addSlot(RecipeIngredientRole.OUTPUT, 59, 19).addIngredient(VanillaTypes.ITEM, new ItemStack(recipe.getOutput()));
+        builder.addSlot(RecipeIngredientRole.INPUT, 1, 19).addIngredient(VanillaTypes.ITEM_STACK, new ItemStack(recipe.getInput()));
+        builder.addSlot(RecipeIngredientRole.OUTPUT, 59, 19).addIngredient(VanillaTypes.ITEM_STACK, new ItemStack(recipe.getOutput()));
     }
 
     @Override
     public Component getTitle() {
         return ModItems.PAINTER.get().getDescription();
-    }
-
-    @Override
-    public ResourceLocation getUid() {
-        return new ResourceLocation(Main.MODID, "painter_yellow");
-    }
-
-    @Override
-    public Class<? extends PainterRecipe> getRecipeClass() {
-        return PainterRecipe.class;
     }
 
 }

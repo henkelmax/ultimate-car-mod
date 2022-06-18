@@ -41,7 +41,7 @@ public class CarRecipeCategory implements IRecipeCategory<CarRecipe> {
 
     @Override
     public IDrawable getIcon() {
-        return helper.createDrawableIngredient(VanillaTypes.ITEM, new ItemStack(ModBlocks.CAR_WORKSHOP.get()));
+        return helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(ModBlocks.CAR_WORKSHOP.get()));
     }
 
     @Override
@@ -55,7 +55,7 @@ public class CarRecipeCategory implements IRecipeCategory<CarRecipe> {
                 }
                 ItemStack stack = recipe.getInputs().get(index);
                 if (!stack.isEmpty()) {
-                    slot.addIngredient(VanillaTypes.ITEM, stack);
+                    slot.addIngredient(VanillaTypes.ITEM_STACK, stack);
                 }
             }
         }
@@ -64,16 +64,6 @@ public class CarRecipeCategory implements IRecipeCategory<CarRecipe> {
     @Override
     public Component getTitle() {
         return ModBlocks.CAR_WORKSHOP.get().getName();
-    }
-
-    @Override
-    public ResourceLocation getUid() {
-        return new ResourceLocation(Main.MODID, "car_workshop");
-    }
-
-    @Override
-    public Class<? extends CarRecipe> getRecipeClass() {
-        return CarRecipe.class;
     }
 
     private EntityTools.SimulatedCarRenderer renderer = new EntityTools.SimulatedCarRenderer();

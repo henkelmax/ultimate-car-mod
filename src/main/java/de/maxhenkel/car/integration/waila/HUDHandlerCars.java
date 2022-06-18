@@ -1,41 +1,44 @@
 package de.maxhenkel.car.integration.waila;
 
+import de.maxhenkel.car.Main;
 import de.maxhenkel.car.entity.car.base.EntityGenericCar;
 import de.maxhenkel.corelib.math.MathUtils;
-import mcp.mobius.waila.Waila;
-import mcp.mobius.waila.api.EntityAccessor;
-import mcp.mobius.waila.api.IEntityComponentProvider;
-import mcp.mobius.waila.api.ITooltip;
-import mcp.mobius.waila.api.TooltipPosition;
-import mcp.mobius.waila.api.config.IPluginConfig;
 import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
+import snownee.jade.api.EntityAccessor;
+import snownee.jade.api.IEntityComponentProvider;
+import snownee.jade.api.ITooltip;
+import snownee.jade.api.config.IPluginConfig;
 
 public class HUDHandlerCars implements IEntityComponentProvider {
 
     public static final HUDHandlerCars INSTANCE = new HUDHandlerCars();
 
+    private static final ResourceLocation UID = new ResourceLocation(Main.MODID, "car");
+
     @Override
     public void appendTooltip(ITooltip iTooltip, EntityAccessor entityAccessor, IPluginConfig iPluginConfig) {
-        if (entityAccessor.getTooltipPosition().equals(TooltipPosition.HEAD)) {
-            iTooltip.remove(PluginCar.OBJECT_NAME_TAG);
-            iTooltip.add(new TextComponent(String.format(Waila.CONFIG.get().getFormatting().getBlockName(), entityAccessor.getEntity().getDisplayName().getString())).withStyle(ChatFormatting.WHITE));
-        } else if (entityAccessor.getTooltipPosition().equals(TooltipPosition.BODY)) {
-            if (entityAccessor.getEntity() instanceof EntityGenericCar car) {
-                FluidStack carFluid = car.getFluidInTank(0);
-                if (!carFluid.isEmpty()) {
-                    iTooltip.add(new TranslatableComponent("tooltip.waila.car.fuel", carFluid.getDisplayName()));
-                    iTooltip.add(new TranslatableComponent("tooltip.waila.car.fuel_amount", carFluid.getAmount(), car.getMaxFuel()));
-                }
+        iTooltip.remove(PluginCar.OBJECT_NAME_TAG);
+        iTooltip.add(entityAccessor.getEntity().getDisplayName().copy().withStyle(ChatFormatting.WHITE));
 
-                float damage = car.getDamage();
-                if (damage > 0F) {
-                    iTooltip.add(new TranslatableComponent("tooltip.waila.car.damage", MathUtils.round(damage, 2)));
-                }
+        if (entityAccessor.getEntity() instanceof EntityGenericCar car) {
+            FluidStack carFluid = car.getFluidInTank(0);
+            if (!carFluid.isEmpty()) {
+                iTooltip.add(Component.translatable("tooltip.waila.car.fuel", carFluid.getDisplayName()));
+                iTooltip.add(Component.translatable("tooltip.waila.car.fuel_amount", carFluid.getAmount(), car.getMaxFuel()));
+            }
+
+            float damage = car.getDamage();
+            if (damage > 0F) {
+                iTooltip.add(Component.translatable("tooltip.waila.car.damage", MathUtils.round(damage, 2)));
             }
         }
     }
 
+    @Override
+    public ResourceLocation getUid() {
+        return UID;
+    }
 }

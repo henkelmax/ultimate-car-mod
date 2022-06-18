@@ -446,5 +446,10 @@
     "sound.car.car_lock": "Car locking",
     "sound.car.car_unlock": "Car unlocking",
     "sound.car.ratchet": "Ratchet",
-    "sound.car.gas_station_attendant": "Gas Station Attendant working"
+    "sound.car.gas_station_attendant": "Gas Station Attendant working",
+
+    "config.jade.plugin_car.car": "Car",
+    "config.jade.plugin_car.fluid_extractor": "Fluid Extractor",
+    "config.jade.plugin_car.generator": "Generator",
+    "config.jade.plugin_car.tank": "Tank"
 }
