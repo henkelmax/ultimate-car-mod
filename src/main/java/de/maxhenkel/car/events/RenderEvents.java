@@ -47,6 +47,9 @@ public class RenderEvents {
     }
 
     private EntityGenericCar getCar() {
+        if (mc.player == null) {
+            return null;
+        }
         Entity e = mc.player.getVehicle();
         if (e instanceof EntityGenericCar) {
             return (EntityGenericCar) e;

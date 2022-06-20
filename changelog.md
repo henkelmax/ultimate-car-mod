@@ -1,3 +1,1 @@
-- Updated fluid API
-- Re added JEI integration
-- Re added Jade integration
+- Fixed potential crash
