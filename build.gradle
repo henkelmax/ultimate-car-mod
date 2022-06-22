@@ -97,6 +97,7 @@ dependencies {
 //    compileOnly fg.deobf("mcjty.theoneprobe:TheOneProbe-${theoneprobe_mc_version}:${theoneprobe_mc_version}-${theoneprobe_version}:api")
 //    runtimeMod fg.deobf("mcjty.theoneprobe:TheOneProbe-${theoneprobe_mc_version}:${theoneprobe_mc_version}-${theoneprobe_version}")
 
+    compileOnly fg.deobf("curse.maven:the-one-probe-245211:${theoneprobe_id}")
 //    implementation fg.deobf("curse.maven:the-one-probe-245211:${theoneprobe_id}")
 
     implementation fg.deobf("curse.maven:jade-324717:${jade_id}")
@@ -262,12 +263,4 @@ shadowJar {
 
 reobf {
     shadowJar {}
-}
-
-sourceSets {
-    main {
-        java {
-            exclude 'de/maxhenkel/car/integration/theoneprobe/*/**'
-        }
-    }
 }
