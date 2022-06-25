@@ -1,3 +1,5 @@
+<!-- modrinth_exclude.start -->
+
 # The Ultimate Car Mod ![](http://cf.way2muchnoise.eu/full_267458_downloads.svg) ![](http://cf.way2muchnoise.eu/versions/267458.svg)
 
 ## Links
@@ -9,6 +11,8 @@
 - [Credits](https://modrepo.de/minecraft/car/credits)
 
 ---
+
+<!-- modrinth_exclude.end -->
 
 ![car](https://i.imgur.com/OG5HlNP.png)
 
