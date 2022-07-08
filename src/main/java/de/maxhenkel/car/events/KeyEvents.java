@@ -26,7 +26,7 @@ public class KeyEvents {
     }
 
     @SubscribeEvent
-    public void onKeyInput(InputEvent.KeyInputEvent event) {
+    public void onKeyInput(InputEvent.Key event) {
         Minecraft minecraft = Minecraft.getInstance();
 
         Player player = minecraft.player;

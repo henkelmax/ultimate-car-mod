@@ -12,7 +12,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.world.inventory.InventoryMenu;
-import net.minecraftforge.client.RenderProperties;
+import net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.minecraftforge.fluids.FluidStack;
 
 public class TileEntitySpecialRendererSplitTank implements BlockEntityRenderer<TileEntitySplitTank> {
@@ -49,7 +49,9 @@ public class TileEntitySpecialRendererSplitTank implements BlockEntityRenderer<T
 
         VertexConsumer builder = buffer.getBuffer(Sheets.translucentItemSheet());
 
-        TextureAtlasSprite texture = Minecraft.getInstance().getModelManager().getAtlas(InventoryMenu.BLOCK_ATLAS).getSprite(RenderProperties.get(fluid.getFluid()).getStillTexture(fluid));
+        IClientFluidTypeExtensions type = IClientFluidTypeExtensions.of(fluid.getFluid());
+
+        TextureAtlasSprite texture = Minecraft.getInstance().getModelManager().getAtlas(InventoryMenu.BLOCK_ATLAS).getSprite(type.getStillTexture(fluid));
 
         float uMin = texture.getU0();
         float uMax = texture.getU1();

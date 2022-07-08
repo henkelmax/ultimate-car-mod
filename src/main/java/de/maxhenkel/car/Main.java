@@ -17,7 +17,7 @@ import de.maxhenkel.car.entity.model.GenericCarModel;
 import de.maxhenkel.car.events.*;
 import de.maxhenkel.car.fluids.ModFluids;
 import de.maxhenkel.car.gui.*;
-import de.maxhenkel.car.integration.IMC;
+//import de.maxhenkel.car.integration.IMC;
 import de.maxhenkel.car.items.ItemLicensePlate;
 import de.maxhenkel.car.items.ModItems;
 import de.maxhenkel.car.loottable.CopyFluid;
@@ -56,6 +56,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.storage.loot.functions.LootItemFunctionType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.extensions.IForgeMenuType;
 import net.minecraftforge.event.RegisterCommandsEvent;
@@ -118,13 +119,16 @@ public class Main {
 
     public Main() {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::commonSetup);
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(IMC::enqueueIMC);
+//        FMLJavaModLoadingContext.get().getModEventBus().addListener(IMC::enqueueIMC);
 
         SERVER_CONFIG = CommonRegistry.registerConfig(ModConfig.Type.SERVER, ServerConfig.class, true);
         FUEL_CONFIG = CommonRegistry.registerDynamicConfig(DynamicConfig.DynamicConfigType.SERVER, Main.MODID, "fuel", FuelConfig.class);
         CLIENT_CONFIG = CommonRegistry.registerConfig(ModConfig.Type.CLIENT, ClientConfig.class);
 
-        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> FMLJavaModLoadingContext.get().getModEventBus().addListener(Main.this::clientSetup));
+        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
+            FMLJavaModLoadingContext.get().getModEventBus().addListener(Main.this::clientSetup);
+            FMLJavaModLoadingContext.get().getModEventBus().addListener(Main.this::onRegisterKeyBinds);
+        });
 
         ModFluids.init();
         ModBlocks.init();
@@ -217,15 +221,6 @@ public class Main {
         ClientRegistry.<ContainerSign, GuiSign>registerScreen(Main.SIGN_CONTAINER_TYPE.get(), GuiSign::new);
         ClientRegistry.<ContainerSplitTank, GuiSplitTank>registerScreen(Main.SPLIT_TANK_CONTAINER_TYPE.get(), GuiSplitTank::new);
 
-        FORWARD_KEY = ClientRegistry.registerKeyBinding("key.car_forward", "category.car", GLFW.GLFW_KEY_W);
-        BACK_KEY = ClientRegistry.registerKeyBinding("key.car_back", "category.car", GLFW.GLFW_KEY_S);
-        LEFT_KEY = ClientRegistry.registerKeyBinding("key.car_left", "category.car", GLFW.GLFW_KEY_A);
-        RIGHT_KEY = ClientRegistry.registerKeyBinding("key.car_right", "category.car", GLFW.GLFW_KEY_D);
-        CAR_GUI_KEY = ClientRegistry.registerKeyBinding("key.car_gui", "category.car", GLFW.GLFW_KEY_I);
-        START_KEY = ClientRegistry.registerKeyBinding("key.car_start", "category.car", GLFW.GLFW_KEY_R);
-        HORN_KEY = ClientRegistry.registerKeyBinding("key.car_horn", "category.car", GLFW.GLFW_KEY_H);
-        CENTER_KEY = ClientRegistry.registerKeyBinding("key.center_car", "category.car", GLFW.GLFW_KEY_SPACE);
-
         MinecraftForge.EVENT_BUS.register(new RenderEvents());
         MinecraftForge.EVENT_BUS.register(new SoundEvents());
         MinecraftForge.EVENT_BUS.register(new KeyEvents());
@@ -252,6 +247,28 @@ public class Main {
         ItemBlockRenderTypes.setRenderLayer(ModFluids.GLYCERIN_FLOWING.get(), RenderType.translucent());
         ItemBlockRenderTypes.setRenderLayer(ModFluids.BIO_DIESEL.get(), RenderType.translucent());
         ItemBlockRenderTypes.setRenderLayer(ModFluids.BIO_DIESEL_FLOWING.get(), RenderType.translucent());
+    }
+
+    @SubscribeEvent
+    @OnlyIn(Dist.CLIENT)
+    public void onRegisterKeyBinds(RegisterKeyMappingsEvent event) {
+        FORWARD_KEY = new KeyMapping("key.car_forward", GLFW.GLFW_KEY_W, "category.car");
+        BACK_KEY = new KeyMapping("key.car_back", GLFW.GLFW_KEY_S, "category.car");
+        LEFT_KEY = new KeyMapping("key.car_left", GLFW.GLFW_KEY_A, "category.car");
+        RIGHT_KEY = new KeyMapping("key.car_right", GLFW.GLFW_KEY_D, "category.car");
+        CAR_GUI_KEY = new KeyMapping("key.car_gui", GLFW.GLFW_KEY_I, "category.car");
+        START_KEY = new KeyMapping("key.car_start", GLFW.GLFW_KEY_R, "category.car");
+        HORN_KEY = new KeyMapping("key.car_horn", GLFW.GLFW_KEY_H, "category.car");
+        CENTER_KEY = new KeyMapping("key.center_car", GLFW.GLFW_KEY_SPACE, "category.car");
+
+        event.register(FORWARD_KEY);
+        event.register(BACK_KEY);
+        event.register(LEFT_KEY);
+        event.register(RIGHT_KEY);
+        event.register(CAR_GUI_KEY);
+        event.register(START_KEY);
+        event.register(HORN_KEY);
+        event.register(CENTER_KEY);
     }
 
     private static EntityType<EntityGenericCar> createCarEntityType() {

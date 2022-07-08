@@ -3,7 +3,7 @@ package de.maxhenkel.car.fluids;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraftforge.client.IFluidTypeRenderProperties;
+import net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.minecraftforge.common.SoundActions;
 import net.minecraftforge.fluids.FluidType;
 
@@ -33,8 +33,8 @@ public class FluidTypeCar extends FluidType {
     }
 
     @Override
-    public void initializeClient(Consumer<IFluidTypeRenderProperties> consumer) {
-        consumer.accept(new IFluidTypeRenderProperties() {
+    public void initializeClient(Consumer<IClientFluidTypeExtensions> consumer) {
+        consumer.accept(new IClientFluidTypeExtensions() {
 
             private static final ResourceLocation UNDERWATER_LOCATION = new ResourceLocation("textures/misc/underwater.png");
             private static final ResourceLocation WATER_OVERLAY = new ResourceLocation("block/water_overlay");

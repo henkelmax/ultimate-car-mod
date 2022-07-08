@@ -15,10 +15,10 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.EntityViewRenderEvent;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.client.event.RenderTooltipEvent;
+import net.minecraftforge.client.event.ViewportEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 @OnlyIn(Dist.CLIENT)
@@ -31,14 +31,14 @@ public class RenderEvents {
     }
 
     @SubscribeEvent
-    public void onRender(EntityViewRenderEvent.CameraSetup evt) {
+    public void onRender(ViewportEvent.ComputeCameraAngles evt) {
         if (getCar() != null && !mc.options.getCameraType().isFirstPerson()) {
             evt.getCamera().move(-evt.getCamera().getMaxZoom(Main.CLIENT_CONFIG.carZoom.get() - 4D), 0D, 0D);
         }
     }
 
     @SubscribeEvent
-    public void onRender(InputEvent.MouseScrollEvent evt) {
+    public void onRender(InputEvent.MouseScrollingEvent evt) {
         if (getCar() != null && !mc.options.getCameraType().isFirstPerson()) {
             Main.CLIENT_CONFIG.carZoom.set(Math.max(1D, Math.min(20D, Main.CLIENT_CONFIG.carZoom.get() - evt.getScrollDelta())));
             Main.CLIENT_CONFIG.carZoom.save();

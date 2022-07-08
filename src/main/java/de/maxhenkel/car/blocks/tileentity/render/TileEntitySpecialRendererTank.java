@@ -16,7 +16,7 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.InventoryMenu;
-import net.minecraftforge.client.RenderProperties;
+import net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.minecraftforge.fluids.FluidStack;
 
 public class TileEntitySpecialRendererTank implements BlockEntityRenderer<TileEntityTank> {
@@ -45,14 +45,16 @@ public class TileEntitySpecialRendererTank implements BlockEntityRenderer<TileEn
         matrixStack.pushPose();
         VertexConsumer builder = buffer.getBuffer(Sheets.translucentCullBlockSheet());
 
+        IClientFluidTypeExtensions type = IClientFluidTypeExtensions.of(fluid.getFluid());
+
         ResourceLocation stillTexture;
         int tint;
         if (tank.hasLevel()) {
-            tint = RenderProperties.get(fluid.getFluid()).getColorTint(fluid.getFluid().defaultFluidState(), tank.getLevel(), tank.getBlockPos());
-            stillTexture = RenderProperties.get(fluid.getFluid()).getStillTexture(fluid.getFluid().defaultFluidState(), tank.getLevel(), tank.getBlockPos());
+            tint = type.getTintColor(fluid.getFluid().defaultFluidState(), tank.getLevel(), tank.getBlockPos());
+            stillTexture = type.getStillTexture(fluid.getFluid().defaultFluidState(), tank.getLevel(), tank.getBlockPos());
         } else {
-            tint = RenderProperties.get(fluid.getFluid()).getColorTint(fluid);
-            stillTexture = RenderProperties.get(fluid.getFluid()).getStillTexture(fluid);
+            tint = type.getTintColor(fluid);
+            stillTexture = type.getStillTexture(fluid);
         }
 
         TextureAtlasSprite texture = Minecraft.getInstance().getModelManager().getAtlas(InventoryMenu.BLOCK_ATLAS).getSprite(stillTexture);

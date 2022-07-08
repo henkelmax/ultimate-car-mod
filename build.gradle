@@ -84,7 +84,7 @@ dependencies {
 //    compileOnly fg.deobf("mezz.jei:jei-${jei_minecraft_version}:${jei_version}:api")
 //    runtimeOnly fg.deobf("mezz.jei:jei-${jei_minecraft_version}:${jei_version}")
 
-    implementation fg.deobf("curse.maven:jei-238222:3834070")
+//    implementation fg.deobf("curse.maven:jei-238222:3834070")
 
     shadow fg.deobf("de.maxhenkel.corelib:corelib:${mod_minecraft_version}-${corelib_version}:api")
     runtimeOnly fg.deobf("de.maxhenkel.corelib:corelib:${mod_minecraft_version}-${corelib_version}")
@@ -98,10 +98,10 @@ dependencies {
 //    compileOnly fg.deobf("mcjty.theoneprobe:TheOneProbe-${theoneprobe_mc_version}:${theoneprobe_mc_version}-${theoneprobe_version}:api")
 //    runtimeMod fg.deobf("mcjty.theoneprobe:TheOneProbe-${theoneprobe_mc_version}:${theoneprobe_mc_version}-${theoneprobe_version}")
 
-    compileOnly fg.deobf("curse.maven:the-one-probe-245211:${theoneprobe_id}")
+//    compileOnly fg.deobf("curse.maven:the-one-probe-245211:${theoneprobe_id}")
 //    implementation fg.deobf("curse.maven:the-one-probe-245211:${theoneprobe_id}")
 
-    implementation fg.deobf("curse.maven:jade-324717:${jade_id}")
+//    implementation fg.deobf("curse.maven:jade-324717:${jade_id}")
 
     implementation 'com.google.code.findbugs:jsr305:3.0.2'
     annotationProcessor 'org.spongepowered:mixin:0.8.4:processor'
@@ -285,4 +285,18 @@ shadowJar {
 
 reobf {
     shadowJar {}
+}
+
+sourceSets {
+    main {
+        java {
+            exclude 'de/maxhenkel/car/integration/jei/CarRecipeCategory.java'
+            exclude 'de/maxhenkel/car/integration/jei/JEIPlugin.java'
+            exclude 'de/maxhenkel/car/integration/jei/PainterRecipeCategory.java'
+            exclude 'de/maxhenkel/car/integration/jei/PainterRecipeCategoryYellow.java'
+            exclude 'de/maxhenkel/car/integration/theoneprobe/*/**'
+            exclude 'de/maxhenkel/car/integration/waila/*/**'
+            exclude 'de/maxhenkel/car/integration/IMC.java'
+        }
+    }
 }

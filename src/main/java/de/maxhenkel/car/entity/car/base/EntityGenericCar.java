@@ -10,7 +10,6 @@ import de.maxhenkel.car.items.ICarPart;
 import de.maxhenkel.car.items.ItemKey;
 import de.maxhenkel.car.sounds.ModSounds;
 import de.maxhenkel.corelib.client.obj.OBJModelInstance;
-import de.maxhenkel.corelib.dataserializers.DataSerializerItemList;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
