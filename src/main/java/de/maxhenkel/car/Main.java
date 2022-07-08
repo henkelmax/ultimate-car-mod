@@ -17,7 +17,7 @@ import de.maxhenkel.car.entity.model.GenericCarModel;
 import de.maxhenkel.car.events.*;
 import de.maxhenkel.car.fluids.ModFluids;
 import de.maxhenkel.car.gui.*;
-//import de.maxhenkel.car.integration.IMC;
+import de.maxhenkel.car.integration.IMC;
 import de.maxhenkel.car.items.ItemLicensePlate;
 import de.maxhenkel.car.items.ModItems;
 import de.maxhenkel.car.loottable.CopyFluid;
@@ -119,7 +119,7 @@ public class Main {
 
     public Main() {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::commonSetup);
-//        FMLJavaModLoadingContext.get().getModEventBus().addListener(IMC::enqueueIMC);
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(IMC::enqueueIMC);
 
         SERVER_CONFIG = CommonRegistry.registerConfig(ModConfig.Type.SERVER, ServerConfig.class, true);
         FUEL_CONFIG = CommonRegistry.registerDynamicConfig(DynamicConfig.DynamicConfigType.SERVER, Main.MODID, "fuel", FuelConfig.class);
