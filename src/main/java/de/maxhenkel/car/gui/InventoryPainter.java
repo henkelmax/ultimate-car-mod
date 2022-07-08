@@ -1,7 +1,7 @@
 package de.maxhenkel.car.gui;
 
 import de.maxhenkel.car.blocks.BlockPaint;
-import de.maxhenkel.car.blocks.ModBlocks;
+import de.maxhenkel.car.items.ModItems;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -21,11 +21,11 @@ public class InventoryPainter implements Container {
 
     @Override
     public ItemStack getItem(int index) {
-        if (index >= 0 && index < ModBlocks.PAINTS.length) {
+        if (index >= 0 && index < ModItems.PAINTS.length) {
             if (isYellow) {
-                return new ItemStack(ModBlocks.YELLOW_PAINTS[index].get());
+                return new ItemStack(ModItems.YELLOW_PAINTS[index].get());
             } else {
-                return new ItemStack(ModBlocks.PAINTS[index].get());
+                return new ItemStack(ModItems.PAINTS[index].get());
             }
         }
         return null;

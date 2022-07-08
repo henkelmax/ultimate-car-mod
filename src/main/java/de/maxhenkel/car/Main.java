@@ -1,7 +1,6 @@
 package de.maxhenkel.car;
 
 import com.google.common.collect.ImmutableSet;
-import de.maxhenkel.car.blocks.BlockPaint;
 import de.maxhenkel.car.blocks.ModBlocks;
 import de.maxhenkel.car.blocks.tileentity.*;
 import de.maxhenkel.car.blocks.tileentity.render.TileEntitySpecialRendererSign;
@@ -31,8 +30,6 @@ import de.maxhenkel.corelib.config.DynamicConfig;
 import de.maxhenkel.corelib.dataserializers.DataSerializerItemList;
 import de.maxhenkel.tools.EntityTools;
 import net.minecraft.client.KeyMapping;
-import net.minecraft.client.renderer.ItemBlockRenderTypes;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.core.NonNullList;
@@ -227,26 +224,6 @@ public class Main {
         MinecraftForge.EVENT_BUS.register(new PlayerEvents());
 
         EntityRenderers.register(CAR_ENTITY_TYPE.get(), GenericCarModel::new);
-
-        ItemBlockRenderTypes.setRenderLayer(ModBlocks.CANOLA_CROP.get(), RenderType.cutout());
-        ItemBlockRenderTypes.setRenderLayer(ModBlocks.SPLIT_TANK.get(), RenderType.cutout());
-        for (RegistryObject<BlockPaint> block : ModBlocks.PAINTS) {
-            ItemBlockRenderTypes.setRenderLayer(block.get(), RenderType.cutout());
-        }
-        for (RegistryObject<BlockPaint> block : ModBlocks.YELLOW_PAINTS) {
-            ItemBlockRenderTypes.setRenderLayer(block.get(), RenderType.cutout());
-        }
-
-        ItemBlockRenderTypes.setRenderLayer(ModFluids.CANOLA_OIL.get(), RenderType.translucent());
-        ItemBlockRenderTypes.setRenderLayer(ModFluids.CANOLA_OIL_FLOWING.get(), RenderType.translucent());
-        ItemBlockRenderTypes.setRenderLayer(ModFluids.METHANOL.get(), RenderType.translucent());
-        ItemBlockRenderTypes.setRenderLayer(ModFluids.METHANOL_FLOWING.get(), RenderType.translucent());
-        ItemBlockRenderTypes.setRenderLayer(ModFluids.CANOLA_METHANOL_MIX.get(), RenderType.translucent());
-        ItemBlockRenderTypes.setRenderLayer(ModFluids.CANOLA_METHANOL_MIX_FLOWING.get(), RenderType.translucent());
-        ItemBlockRenderTypes.setRenderLayer(ModFluids.GLYCERIN.get(), RenderType.translucent());
-        ItemBlockRenderTypes.setRenderLayer(ModFluids.GLYCERIN_FLOWING.get(), RenderType.translucent());
-        ItemBlockRenderTypes.setRenderLayer(ModFluids.BIO_DIESEL.get(), RenderType.translucent());
-        ItemBlockRenderTypes.setRenderLayer(ModFluids.BIO_DIESEL_FLOWING.get(), RenderType.translucent());
     }
 
     @SubscribeEvent

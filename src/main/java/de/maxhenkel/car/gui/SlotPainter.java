@@ -57,16 +57,4 @@ public class SlotPainter extends Slot {
         return compound.getInt("index");
     }
 
-    public static ItemStack getPainterStack(Player player) {
-        ItemStack stack = player.getMainHandItem();
-
-        Item i = stack.getItem();
-
-        if (!(i instanceof ItemPainter)) {
-            return ItemStack.EMPTY;
-        }
-
-        return stack;
-    }
-
 }

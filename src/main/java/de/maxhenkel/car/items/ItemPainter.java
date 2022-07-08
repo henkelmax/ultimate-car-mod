@@ -83,9 +83,9 @@ public class ItemPainter extends Item {
             return InteractionResult.FAIL;
         }
 
-        ItemStack stack1 = SlotPainter.getPainterStack(context.getPlayer());
+        ItemStack stack1 = context.getItemInHand();
 
-        if (stack1.isEmpty()) {
+        if (stack1.isEmpty() || !(stack1.getItem() instanceof ItemPainter)) {
             return InteractionResult.FAIL;
         }
 

@@ -1,5 +1,6 @@
 {
     "ambientocclusion": false,
+    "render_type": "cutout",
     "textures": {
         "particle": "car:block/line_long_yellow",
         "texture": "car:block/line_long_yellow"

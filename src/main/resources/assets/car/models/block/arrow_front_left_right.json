@@ -1,5 +1,6 @@
 {
     "ambientocclusion": false,
+    "render_type": "cutout",
     "textures": {
         "particle": "car:block/arrow_front_left_right",
         "texture": "car:block/arrow_front_left_right"

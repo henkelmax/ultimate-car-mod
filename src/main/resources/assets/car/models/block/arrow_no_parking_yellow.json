@@ -1,5 +1,6 @@
 {
     "ambientocclusion": false,
+    "render_type": "cutout",
     "textures": {
         "particle": "car:block/arrow_no_parking_yellow",
         "texture": "car:block/arrow_no_parking_yellow"

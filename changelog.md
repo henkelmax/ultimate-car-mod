@@ -1,1 +1,2 @@
-- Re-added mod integrations
+- Fixed transparent block rendering
+- Fixed painter GUI
