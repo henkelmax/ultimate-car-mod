@@ -1,2 +1,1 @@
-- Fixed transparent block rendering
-- Fixed painter GUI
+- Fixed car volume slider missing
