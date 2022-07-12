@@ -83,7 +83,7 @@ public abstract class EntityCarInventoryBase extends EntityCarFuelBase implement
                 if (externalInventory.getContainerSize() <= 0) {
                     openCarGUI(player);
                 } else {
-                    NetworkHooks.openGui((ServerPlayer) player, new MenuProvider() {
+                    NetworkHooks.openScreen((ServerPlayer) player, new MenuProvider() {
                         @Override
                         public Component getDisplayName() {
                             return EntityCarInventoryBase.this.getDisplayName();
@@ -155,7 +155,7 @@ public abstract class EntityCarInventoryBase extends EntityCarFuelBase implement
     public void openCarGUI(Player player) {
         super.openCarGUI(player);
         if (!level.isClientSide && player instanceof ServerPlayer) {
-            NetworkHooks.openGui((ServerPlayer) player, new MenuProvider() {
+            NetworkHooks.openScreen((ServerPlayer) player, new MenuProvider() {
                 @Override
                 public Component getDisplayName() {
                     return EntityCarInventoryBase.this.getDisplayName();

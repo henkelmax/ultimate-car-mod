@@ -41,7 +41,7 @@ public class ItemLicensePlate extends ItemCraftingComponent {
     public InteractionResultHolder<ItemStack> use(Level worldIn, Player playerIn, InteractionHand handIn) {
         ItemStack stack = playerIn.getItemInHand(handIn);
         if (playerIn instanceof ServerPlayer) {
-            NetworkHooks.openGui((ServerPlayer) playerIn, new MenuProvider() {
+            NetworkHooks.openScreen((ServerPlayer) playerIn, new MenuProvider() {
                 @Override
                 public Component getDisplayName() {
                     return ItemLicensePlate.this.getName(playerIn.getItemInHand(handIn));

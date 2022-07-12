@@ -48,7 +48,7 @@ public class ItemPainter extends Item {
     public InteractionResultHolder<ItemStack> use(Level worldIn, Player playerIn, InteractionHand handIn) {
         if (playerIn.isShiftKeyDown()) {
             if (playerIn instanceof ServerPlayer) {
-                NetworkHooks.openGui((ServerPlayer) playerIn, new MenuProvider() {
+                NetworkHooks.openScreen((ServerPlayer) playerIn, new MenuProvider() {
                     @Override
                     public Component getDisplayName() {
                         return ItemPainter.this.getName(playerIn.getItemInHand(handIn));

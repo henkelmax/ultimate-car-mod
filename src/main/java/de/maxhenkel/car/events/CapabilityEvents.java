@@ -26,7 +26,7 @@ public class CapabilityEvents {
         if (event.getObject() == null) {
             return;
         }
-        ResourceLocation key = ForgeRegistries.BLOCK_ENTITIES.getKey(event.getObject().getType());
+        ResourceLocation key = ForgeRegistries.BLOCK_ENTITY_TYPES.getKey(event.getObject().getType());
         if (key == null || !key.getNamespace().equals(Main.MODID)) {
             return;
         }
@@ -64,7 +64,7 @@ public class CapabilityEvents {
         if (event.getObject() == null) {
             return;
         }
-        ResourceLocation key = ForgeRegistries.ENTITIES.getKey(event.getObject().getType());
+        ResourceLocation key = ForgeRegistries.ENTITY_TYPES.getKey(event.getObject().getType());
         if (key == null || !key.getNamespace().equals(Main.MODID)) {
             return;
         }
