@@ -5,7 +5,8 @@
   "refmap": "car.refmap.json",
   "minVersion": "0.8",
   "mixins": [
-    "VillagerEntityMixin"
+    "VillagerEntityMixin",
+    "GuiMixin"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -12,6 +12,7 @@ import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -24,11 +25,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 @OnlyIn(Dist.CLIENT)
 public class RenderEvents {
 
-    private Minecraft mc;
-
-    public RenderEvents() {
-        mc = Minecraft.getInstance();
-    }
+    private static final Minecraft mc = Minecraft.getInstance();
 
     @SubscribeEvent
     public void onRender(ViewportEvent.ComputeCameraAngles evt) {
@@ -46,7 +43,7 @@ public class RenderEvents {
         }
     }
 
-    private EntityGenericCar getCar() {
+    private static EntityGenericCar getCar() {
         if (mc.player == null) {
             return null;
         }
@@ -57,28 +54,23 @@ public class RenderEvents {
         return null;
     }
 
-    // TODO prevent experience bar to render
-    /*@SubscribeEvent
-    public void onRender(RenderGameOverlayEvent evt) {
-        if (!evt.getType().equals(ElementType.ALL)) {
-            return;
-        }
+    public static boolean onRenderExperienceBar(PoseStack poseStack, int i) {
         Player player = mc.player;
         EntityGenericCar car = getCar();
 
-        if (car == null) {
-            return;
+        if (car == null || player == null) {
+            return false;
         }
 
-        if (player.equals(car.getDriver())) {
-            evt.setCanceled(true);
-            renderFuelBar(evt.getMatrixStack(), ((float) car.getFuelAmount()) / ((float) car.getMaxFuel()));
-            renderSpeed(evt.getMatrixStack(), car.getKilometerPerHour());
+        if (!player.equals(car.getDriver())) {
+            return false;
         }
+        renderFuelBar(poseStack, ((float) car.getFuelAmount()) / ((float) car.getMaxFuel()));
+        renderSpeed(poseStack, car.getKilometerPerHour());
+        return true;
+    }
 
-    }*/
-
-    public void renderFuelBar(PoseStack matrixStack, float percent) {
+    public static void renderFuelBar(PoseStack matrixStack, float percent) {
         percent = Mth.clamp(percent, 0F, 1F);
         int x = mc.getWindow().getGuiScaledWidth() / 2 - 91;
 
@@ -96,7 +88,7 @@ public class RenderEvents {
         }
     }
 
-    public void renderSpeed(PoseStack matrixStack, float speed) {
+    public static void renderSpeed(PoseStack matrixStack, float speed) {
         String s = String.valueOf(MathUtils.round(Math.abs(speed), 2));
         int i1 = (mc.getWindow().getGuiScaledWidth() - mc.gui.getFont().width(s)) / 2;
         int j1 = mc.getWindow().getGuiScaledHeight() - 31 - 4;
