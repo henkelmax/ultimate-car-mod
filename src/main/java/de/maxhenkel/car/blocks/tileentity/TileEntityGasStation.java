@@ -12,7 +12,6 @@ import de.maxhenkel.car.sounds.SoundLoopTileentity.ISoundLoopable;
 import de.maxhenkel.corelib.CachedValue;
 import de.maxhenkel.corelib.blockentity.ITickableBlockEntity;
 import de.maxhenkel.corelib.item.ItemUtils;
-import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -37,6 +36,7 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.*;
 
 public class TileEntityGasStation extends TileEntityBase implements ITickableBlockEntity, IFluidHandler, ISoundLoopable {
@@ -58,6 +58,9 @@ public class TileEntityGasStation extends TileEntityBase implements ITickableBlo
     private int freeAmountLeft;
 
     private UUID owner;
+
+    @Nullable
+    private IFluidHandler fluidHandlerInFront;
 
     public TileEntityGasStation(BlockPos pos, BlockState state) {
         super(Main.GAS_STATION_TILE_ENTITY_TYPE.get(), pos, state);
@@ -135,9 +138,9 @@ public class TileEntityGasStation extends TileEntityBase implements ITickableBlo
             fixTop();
         }
 
-        IFluidHandler handler = getFluidHandlerInFront();
+        fluidHandlerInFront = searchFluidHandlerInFront();
 
-        if (handler == null) {
+        if (fluidHandlerInFront == null) {
             if (fuelCounter > 0 || isFueling) {
                 fuelCounter = 0;
                 isFueling = false;
@@ -155,7 +158,7 @@ public class TileEntityGasStation extends TileEntityBase implements ITickableBlo
             return;
         }
 
-        FluidStack s = FluidUtil.tryFluidTransfer(handler, this, transferRate, false);
+        FluidStack s = FluidUtil.tryFluidTransfer(fluidHandlerInFront, this, transferRate, false);
         int amountCarCanTake = 0;
         if (!s.isEmpty()) {
             amountCarCanTake = s.getAmount();
@@ -179,7 +182,7 @@ public class TileEntityGasStation extends TileEntityBase implements ITickableBlo
             }
         }
 
-        FluidStack result = FluidUtil.tryFluidTransfer(handler, this, Math.min(transferRate, freeAmountLeft), true);
+        FluidStack result = FluidUtil.tryFluidTransfer(fluidHandlerInFront, this, Math.min(transferRate, freeAmountLeft), true);
 
         if (!result.isEmpty()) {
             fuelCounter += result.getAmount();
@@ -349,7 +352,7 @@ public class TileEntityGasStation extends TileEntityBase implements ITickableBlo
     }
 
     public void setFueling(boolean isFueling) {
-        if (getFluidHandlerInFront() == null) {
+        if (fluidHandlerInFront == null) {
             return;
         }
 
@@ -363,8 +366,7 @@ public class TileEntityGasStation extends TileEntityBase implements ITickableBlo
     }
 
     public String getRenderText() {
-        IFluidHandler fluidHandler = getFluidHandlerInFront();
-        if (fluidHandler == null) {
+        if (fluidHandlerInFront == null) {
             return Component.translatable("gas_station.no_car").getString();
         } else if (fuelCounter <= 0) {
             return Component.translatable("gas_station.ready").getString();
@@ -375,7 +377,7 @@ public class TileEntityGasStation extends TileEntityBase implements ITickableBlo
 
     private CachedValue<Vec3> center = new CachedValue<>(() -> new Vec3(worldPosition.getX() + 0.5D, worldPosition.getY() + 1.5D, worldPosition.getZ() + 0.5D));
 
-    public IFluidHandler getFluidHandlerInFront() {
+    private IFluidHandler searchFluidHandlerInFront() {
         return level.getEntitiesOfClass(Entity.class, getDetectionBox())
                 .stream()
                 .sorted(Comparator.comparingDouble(o -> o.distanceToSqr(center.get())))
@@ -383,6 +385,11 @@ public class TileEntityGasStation extends TileEntityBase implements ITickableBlo
                 .filter(Objects::nonNull)
                 .findFirst()
                 .orElse(null);
+    }
+
+    @Nullable
+    public IFluidHandler getFluidHandlerInFront() {
+        return fluidHandlerInFront;
     }
 
     private CachedValue<AABB> detectionBox = new CachedValue<>(this::createDetectionBox);
@@ -405,11 +412,10 @@ public class TileEntityGasStation extends TileEntityBase implements ITickableBlo
     }
 
     public boolean canEntityBeFueled() {
-        IFluidHandler handler = getFluidHandlerInFront();
-        if (handler == null) {
+        if (fluidHandlerInFront == null) {
             return false;
         }
-        FluidStack result = FluidUtil.tryFluidTransfer(handler, this, transferRate, false);
+        FluidStack result = FluidUtil.tryFluidTransfer(fluidHandlerInFront, this, transferRate, false);
         return !result.isEmpty();
     }
 

@@ -1,1 +1,1 @@
-- Updated to 1.19.2
+- Fix crash with gas station
