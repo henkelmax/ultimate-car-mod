@@ -50,8 +50,6 @@ public class GuiSign extends ScreenBase<ContainerSign> {
         guiLeft = (width - imageWidth) / 2;
         guiTop = (height - imageHeight) / 2;
 
-        minecraft.keyboardHandler.setSendRepeatsToGui(true);
-
         text1 = initTextField(0, 0);
         text2 = initTextField(1, 20);
         text3 = initTextField(2, 40);
@@ -59,15 +57,15 @@ public class GuiSign extends ScreenBase<ContainerSign> {
 
         setInitialFocus(text1);
 
-        buttonSubmit = addRenderableWidget(new Button(guiLeft + 20, guiTop + imageHeight - 25, 50, 20, Component.translatable("button.car.submit"), button -> {
+        buttonSubmit = addRenderableWidget(Button.builder(Component.translatable("button.car.submit"), button -> {
             save();
             Main.SIMPLE_CHANNEL.sendToServer(new MessageEditSign(sign.getBlockPos(), text));
             Minecraft.getInstance().setScreen(null);
-        }));
-        buttonCancel = addRenderableWidget(new Button(guiLeft + imageWidth - 50 - 15, guiTop + imageHeight - 25, 50, 20, Component.translatable("button.car.cancel"), button -> {
+        }).bounds(guiLeft + 20, guiTop + imageHeight - 25, 50, 20).build());
+        buttonCancel = addRenderableWidget(Button.builder(Component.translatable("button.car.cancel"), button -> {
             Minecraft.getInstance().setScreen(null);
-        }));
-        buttonSwitch = addRenderableWidget(new Button(guiLeft + 5, guiTop + 49 + 10, 46, 20, Component.translatable("button.car.back"), button -> {
+        }).bounds(guiLeft + imageWidth - 50 - 15, guiTop + imageHeight - 25, 50, 20).build());
+        buttonSwitch = addRenderableWidget(Button.builder(Component.translatable("button.car.back"), button -> {
             save();
             front = !front;
 
@@ -84,7 +82,7 @@ public class GuiSign extends ScreenBase<ContainerSign> {
                 text4.setValue(text[7]);
                 buttonSwitch.setMessage(Component.translatable("button.car.front"));
             }
-        }));
+        }).bounds(guiLeft + 5, guiTop + 49 + 10, 46, 20).build());
     }
 
     private EditBox initTextField(int id, int height) {
@@ -110,12 +108,6 @@ public class GuiSign extends ScreenBase<ContainerSign> {
         }
 
         font.draw(matrixStack, Component.translatable("gui.sign", s).getVisualOrderText(), 54, 10, FONT_COLOR);
-    }
-
-    @Override
-    public void onClose() {
-        super.onClose();
-        minecraft.keyboardHandler.setSendRepeatsToGui(false);
     }
 
     @Override

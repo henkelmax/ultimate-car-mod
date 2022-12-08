@@ -48,18 +48,18 @@ public class GuiCarWorkshopRepair extends ScreenBase<ContainerCarWorkshopRepair>
     protected void init() {
         super.init();
 
-        this.buttonRepair = addRenderableWidget(new Button(leftPos + imageWidth - 7 - 60, topPos + 105, 60, 20, Component.translatable("button.car.repair_car"), button -> {
+        this.buttonRepair = addRenderableWidget(Button.builder(Component.translatable("button.car.repair_car"), button -> {
             if (tile.getLevel().isClientSide) {
                 Main.SIMPLE_CHANNEL.sendToServer(new MessageRepairCar(tile.getBlockPos(), player));
             }
-        }));
+        }).bounds(leftPos + imageWidth - 7 - 60, topPos + 105, 60, 20).build());
         this.buttonRepair.active = false;
 
-        this.buttonBack = addRenderableWidget(new Button(leftPos + 7, topPos + 105, 60, 20, Component.translatable("button.car.back"), button -> {
+        this.buttonBack = addRenderableWidget(Button.builder(Component.translatable("button.car.back"), button -> {
             if (tile.getLevel().isClientSide) {
                 Main.SIMPLE_CHANNEL.sendToServer(new MessageOpenCarWorkshopGui(tile.getBlockPos(), player, false));
             }
-        }));
+        }).bounds(leftPos + 7, topPos + 105, 60, 20).build());
         this.buttonBack.active = true;
     }
 

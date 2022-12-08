@@ -46,14 +46,14 @@ public class GuiGasStation extends ScreenBase<ContainerGasStation> {
     protected void init() {
         super.init();
 
-        buttonStart = addRenderableWidget(new Button((width / 2) - 20, topPos + 100, 40, 20, Component.translatable("button.car.start"), button -> {
+        buttonStart = addRenderableWidget(Button.builder(Component.translatable("button.car.start"), button -> {
             gasStation.setFueling(true);
             gasStation.sendStartFuelPacket(true);
-        }));
-        buttonStop = addRenderableWidget(new Button(leftPos + imageWidth - 40 - 7, topPos + 100, 40, 20, Component.translatable("button.car.stop"), button -> {
+        }).bounds((width / 2) - 20, topPos + 100, 40, 20).build());
+        buttonStop = addRenderableWidget(Button.builder(Component.translatable("button.car.stop"), button -> {
             gasStation.setFueling(false);
             gasStation.sendStartFuelPacket(false);
-        }));
+        }).bounds(leftPos + imageWidth - 40 - 7, topPos + 100, 40, 20).build());
     }
 
     @Override

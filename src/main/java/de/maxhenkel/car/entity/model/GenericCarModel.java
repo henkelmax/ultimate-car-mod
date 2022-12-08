@@ -2,14 +2,14 @@ package de.maxhenkel.car.entity.model;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3d;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import de.maxhenkel.car.entity.car.base.EntityGenericCar;
 import de.maxhenkel.corelib.client.obj.OBJEntityRenderer;
 import de.maxhenkel.corelib.client.obj.OBJModelInstance;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import org.joml.Vector3d;
 
 import java.util.List;
 
@@ -60,7 +60,7 @@ public class GenericCarModel extends OBJEntityRenderer<EntityGenericCar> {
 
     protected void translateLicensePlate(EntityGenericCar entity, PoseStack matrixStack, float partialTicks) {
         Vector3d offset = entity.getLicensePlateOffset();
-        matrixStack.mulPose(Vector3f.YP.rotationDegrees(180F - entity.getViewYRot(partialTicks)));
+        matrixStack.mulPose(Axis.YP.rotationDegrees(180F - entity.getViewYRot(partialTicks)));
         matrixStack.translate(offset.x, offset.y, offset.z);
     }
 

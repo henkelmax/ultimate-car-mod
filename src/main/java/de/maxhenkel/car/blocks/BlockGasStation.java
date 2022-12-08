@@ -1,6 +1,5 @@
 package de.maxhenkel.car.blocks;
 
-import de.maxhenkel.car.ModItemGroups;
 import de.maxhenkel.car.blocks.tileentity.TileEntityGasStation;
 import de.maxhenkel.car.gui.ContainerGasStation;
 import de.maxhenkel.car.gui.ContainerGasStationAdmin;
@@ -68,7 +67,7 @@ public class BlockGasStation extends BlockOrientableHorizontal {
 
     @Override
     public Item toItem() {
-        return new BlockItem(this, new Item.Properties().tab(ModItemGroups.TAB_CAR)) {
+        return new BlockItem(this, new Item.Properties()/*.tab(ModItemGroups.TAB_CAR)*/) { // TODO Fix creative tab
             @Override
             protected boolean canPlace(BlockPlaceContext context, BlockState state) {
                 if (!context.getLevel().isEmptyBlock(context.getClickedPos().above())) {

@@ -48,7 +48,7 @@ public class ModSounds {
     public static RegistryObject<SoundEvent> GAS_STATION_ATTENDANT = addSound("gas_station_attendant");
 
     public static RegistryObject<SoundEvent> addSound(String soundName) {
-        return SOUND_REGISTER.register(soundName, () -> new SoundEvent(new ResourceLocation(Main.MODID, soundName)));
+        return SOUND_REGISTER.register(soundName, () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(Main.MODID, soundName)));
     }
 
     public static void init() {

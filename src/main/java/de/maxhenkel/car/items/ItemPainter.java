@@ -1,6 +1,5 @@
 package de.maxhenkel.car.items;
 
-import de.maxhenkel.car.ModItemGroups;
 import de.maxhenkel.car.blocks.BlockPaint;
 import de.maxhenkel.car.blocks.ModBlocks;
 import de.maxhenkel.car.gui.ContainerPainter;
@@ -32,7 +31,7 @@ public class ItemPainter extends Item {
     private final boolean isYellow;
 
     public ItemPainter(boolean isYellow) {
-        super(new Item.Properties().stacksTo(1).durability(1024).tab(ModItemGroups.TAB_CAR));
+        super(new Item.Properties().stacksTo(1).durability(1024)/*.tab(ModItemGroups.TAB_CAR)*/); // TODO Fix creative tab
         this.isYellow = isYellow;
     }
 

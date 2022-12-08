@@ -1,14 +1,11 @@
 package de.maxhenkel.car.items;
 
-import de.maxhenkel.car.Main;
-import de.maxhenkel.car.ModItemGroups;
 import de.maxhenkel.car.blocks.ModBlocks;
 import de.maxhenkel.corelib.energy.EnergyUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -16,9 +13,9 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 
 import javax.annotation.Nonnull;
@@ -28,7 +25,7 @@ import java.util.List;
 public class ItemBattery extends Item {
 
     public ItemBattery() {
-        super(new Item.Properties().stacksTo(1).tab(ModItemGroups.TAB_CAR).durability(500));
+        super(new Item.Properties().stacksTo(1)/*.tab(ModItemGroups.TAB_CAR)*/.durability(500)); // TODO Fix creative tab
     }
 
     @Override
@@ -79,7 +76,7 @@ public class ItemBattery extends Item {
             @Nonnull
             @Override
             public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-                if (cap == CapabilityEnergy.ENERGY) {
+                if (cap == ForgeCapabilities.ENERGY) {
                     return LazyOptional.of(() -> new BatteryEnergyStorage(stack)).cast();
                 }
                 return LazyOptional.empty();

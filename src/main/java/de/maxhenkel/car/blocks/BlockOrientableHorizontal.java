@@ -1,6 +1,5 @@
 package de.maxhenkel.car.blocks;
 
-import de.maxhenkel.car.ModItemGroups;
 import de.maxhenkel.corelib.block.IItemBlock;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.BlockItem;
@@ -29,7 +28,7 @@ public abstract class BlockOrientableHorizontal extends BlockBase implements Ent
 
     @Override
     public Item toItem() {
-        return new BlockItem(this, new Item.Properties().tab(ModItemGroups.TAB_CAR));
+        return new BlockItem(this, new Item.Properties()/*.tab(ModItemGroups.TAB_CAR)*/); // TODO Fix creative tab
     }
 
     @Nullable

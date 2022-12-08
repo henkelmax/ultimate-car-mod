@@ -1,6 +1,5 @@
 package de.maxhenkel.car.entity.car.base;
 
-import com.mojang.math.Vector3d;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.config.Fuel;
 import de.maxhenkel.car.entity.car.parts.*;
@@ -21,6 +20,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluid;
+import org.joml.Vector3d;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;

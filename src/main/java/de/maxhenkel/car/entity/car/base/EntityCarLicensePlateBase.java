@@ -1,6 +1,6 @@
 package de.maxhenkel.car.entity.car.base;
 
-import com.mojang.math.Vector3d;
+import org.joml.Vector3d;
 import de.maxhenkel.car.entity.car.parts.PartLicensePlateHolder;
 import de.maxhenkel.car.items.ItemLicensePlate;
 import de.maxhenkel.corelib.item.ItemUtils;

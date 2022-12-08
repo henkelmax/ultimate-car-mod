@@ -1,7 +1,7 @@
 package de.maxhenkel.tools;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import de.maxhenkel.car.entity.car.base.EntityCarBase;
 import de.maxhenkel.car.entity.car.base.EntityGenericCar;
 import net.minecraft.client.Minecraft;
@@ -34,8 +34,8 @@ public class EntityTools {
         matrixStack.scale(1F, 1F, -1F);
         matrixStack.scale(scale, scale, scale);
 
-        matrixStack.mulPose(Vector3f.YP.rotationDegrees(135F + rotation));
-        matrixStack.mulPose(Vector3f.ZP.rotationDegrees(180F));
+        matrixStack.mulPose(Axis.YP.rotationDegrees(135F + rotation));
+        matrixStack.mulPose(Axis.ZP.rotationDegrees(180F));
         EntityRenderDispatcher entityrenderermanager = Minecraft.getInstance().getEntityRenderDispatcher();
         entityrenderermanager.setRenderShadow(false);
 

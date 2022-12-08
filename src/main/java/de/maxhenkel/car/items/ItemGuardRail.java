@@ -1,6 +1,5 @@
 package de.maxhenkel.car.items;
 
-import de.maxhenkel.car.ModItemGroups;
 import de.maxhenkel.car.blocks.ModBlocks;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
@@ -22,7 +21,7 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 public class ItemGuardRail extends BlockItem {
 
     public ItemGuardRail() {
-        super(ModBlocks.GUARD_RAIL.get(), new Item.Properties().tab(ModItemGroups.TAB_CAR));
+        super(ModBlocks.GUARD_RAIL.get(), new Item.Properties()/*.tab(ModItemGroups.TAB_CAR)*/); // TODO Fix creative tab
     }
 
     @Override

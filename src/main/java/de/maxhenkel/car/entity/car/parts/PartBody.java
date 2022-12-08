@@ -1,9 +1,9 @@
 package de.maxhenkel.car.entity.car.parts;
 
-import com.mojang.math.Vector3d;
 import de.maxhenkel.corelib.client.obj.OBJModel;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import org.joml.Vector3d;
 
 import java.util.List;
 import java.util.function.Supplier;

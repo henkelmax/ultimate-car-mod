@@ -1,6 +1,5 @@
 package de.maxhenkel.car.items;
 
-import de.maxhenkel.car.ModItemGroups;
 import de.maxhenkel.corelib.item.ItemUtils;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -14,7 +13,7 @@ import net.minecraft.world.item.Items;
 public class ItemCanolaCake extends Item {
 
     public ItemCanolaCake() {
-        super(new Item.Properties().tab(ModItemGroups.TAB_CAR));
+        super(new Item.Properties()/*.tab(ModItemGroups.TAB_CAR)*/); // TODO Fix creative tab
     }
 
     @Override

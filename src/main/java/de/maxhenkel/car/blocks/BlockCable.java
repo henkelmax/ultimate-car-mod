@@ -28,6 +28,7 @@ import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.energy.CapabilityEnergy;
 
 import javax.annotation.Nullable;
@@ -58,7 +59,7 @@ public class BlockCable extends BlockBase implements EntityBlock, IItemBlock, Si
 
     @Override
     public Item toItem() {
-        return new BlockItem(this, new Item.Properties().tab(ModItemGroups.TAB_CAR));
+        return new BlockItem(this, new Item.Properties()/*.tab(ModItemGroups.TAB_CAR)*/); // TODO Fix creative tab
     }
 
     @Nullable
@@ -152,7 +153,7 @@ public class BlockCable extends BlockBase implements EntityBlock, IItemBlock, Si
 
         BlockEntity te = world.getBlockEntity(pos.relative(facing));
 
-        if (te == null || !te.getCapability(CapabilityEnergy.ENERGY, facing.getOpposite()).isPresent()) {
+        if (te == null || !te.getCapability(ForgeCapabilities.ENERGY, facing.getOpposite()).isPresent()) {
             return false;
         }
         return true;

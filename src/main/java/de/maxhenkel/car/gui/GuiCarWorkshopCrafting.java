@@ -10,7 +10,6 @@ import de.maxhenkel.car.net.MessageOpenCarWorkshopGui;
 import de.maxhenkel.car.net.MessageSpawnCar;
 import de.maxhenkel.corelib.inventory.ScreenBase;
 import de.maxhenkel.tools.EntityTools;
-import net.minecraft.Util;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -43,11 +42,11 @@ public class GuiCarWorkshopCrafting extends ScreenBase<ContainerCarWorkshopCraft
     protected void init() {
         super.init();
 
-        buttonRepair = addRenderableWidget(new Button(leftPos + 105, topPos + 72, 60, 20, Component.translatable("button.car.repair_car"), button -> {
+        buttonRepair = addRenderableWidget(Button.builder(Component.translatable("button.car.repair_car"), button -> {
             Main.SIMPLE_CHANNEL.sendToServer(new MessageOpenCarWorkshopGui(tile.getBlockPos(), player, true));
-        }));
+        }).bounds(leftPos + 105, topPos + 72, 60, 20).build());
 
-        buttonSpawn = addRenderableWidget(new Button(leftPos + 105, topPos + 106, 60, 20, Component.translatable("button.car.spawn_car"), button -> {
+        buttonSpawn = addRenderableWidget(Button.builder(Component.translatable("button.car.spawn_car"), button -> {
             if (tile.getLevel().isClientSide) {
                 if (tile.isCurrentCraftingCarValid()) {
                     Main.SIMPLE_CHANNEL.sendToServer(new MessageSpawnCar(tile.getBlockPos()));
@@ -57,7 +56,7 @@ public class GuiCarWorkshopCrafting extends ScreenBase<ContainerCarWorkshopCraft
                     }
                 }
             }
-        }));
+        }).bounds(leftPos + 105, topPos + 106, 60, 20).build());
         buttonSpawn.active = false;
     }
 

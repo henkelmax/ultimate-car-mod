@@ -1,6 +1,5 @@
 package de.maxhenkel.car.items;
 
-import de.maxhenkel.car.ModItemGroups;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.Item;
@@ -15,7 +14,7 @@ import javax.annotation.Nullable;
 public class CarBucketItem extends BucketItem {
 
     public CarBucketItem(Fluid fluid) {
-        super(fluid, new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1).tab(ModItemGroups.TAB_CAR));
+        super(fluid, new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1)/*.tab(ModItemGroups.TAB_CAR)*/); // TODO Fix creative tab
     }
 
     @Override

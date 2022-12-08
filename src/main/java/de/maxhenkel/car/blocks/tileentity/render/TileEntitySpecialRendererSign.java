@@ -1,7 +1,7 @@
 package de.maxhenkel.car.blocks.tileentity.render;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import de.maxhenkel.car.blocks.BlockSign;
 import de.maxhenkel.car.blocks.tileentity.TileEntitySign;
 import net.minecraft.client.gui.Font;
@@ -22,8 +22,8 @@ public class TileEntitySpecialRendererSign implements BlockEntityRenderer<TileEn
         matrixStack.pushPose();
 
         matrixStack.translate(0.5D, 1D, 0.5D);
-        matrixStack.mulPose(Vector3f.XP.rotationDegrees(180F));
-        matrixStack.mulPose(Vector3f.YP.rotationDegrees(-te.getBlockState().getValue(BlockSign.FACING).toYRot()));
+        matrixStack.mulPose(Axis.XP.rotationDegrees(180F));
+        matrixStack.mulPose(Axis.YP.rotationDegrees(-te.getBlockState().getValue(BlockSign.FACING).toYRot()));
 
         //----------Front-----------
         matrixStack.pushPose();
@@ -42,7 +42,7 @@ public class TileEntitySpecialRendererSign implements BlockEntityRenderer<TileEn
         //----------Back-----------
         matrixStack.pushPose();
 
-        matrixStack.mulPose(Vector3f.YP.rotationDegrees(180F));
+        matrixStack.mulPose(Axis.YP.rotationDegrees(180F));
         matrixStack.translate(0D, 0.27D, -0.51D / 16D);
         drawText(te.getText(4), matrixStack, buffer, light);
         matrixStack.translate(0D, 0.116D, 0D);

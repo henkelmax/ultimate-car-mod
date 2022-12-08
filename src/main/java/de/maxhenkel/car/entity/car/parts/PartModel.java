@@ -1,13 +1,13 @@
 package de.maxhenkel.car.entity.car.parts;
 
-import com.mojang.math.Vector3d;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import de.maxhenkel.car.entity.car.base.EntityGenericCar;
 import de.maxhenkel.corelib.client.obj.OBJModel;
 import de.maxhenkel.corelib.client.obj.OBJModelInstance;
 import de.maxhenkel.corelib.client.obj.OBJModelOptions;
 import de.maxhenkel.corelib.math.Rotation;
 import net.minecraft.resources.ResourceLocation;
+import org.joml.Vector3d;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +23,7 @@ public class PartModel extends Part {
         this.model = model;
         this.texture = texture;
         this.offset = offset;
-        this.rotation = new Rotation(-90F, Vector3f.XP).add(rotation);
+        this.rotation = new Rotation(-90F, Axis.XP).add(rotation);
     }
 
     public PartModel(OBJModel model, ResourceLocation texture, Vector3d offset) {

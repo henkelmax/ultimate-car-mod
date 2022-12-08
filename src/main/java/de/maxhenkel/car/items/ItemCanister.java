@@ -1,9 +1,6 @@
 package de.maxhenkel.car.items;
 
-import java.util.List;
-
 import de.maxhenkel.car.Main;
-import de.maxhenkel.car.ModItemGroups;
 import de.maxhenkel.car.blocks.ModBlocks;
 import de.maxhenkel.car.blocks.tileentity.TileEntityGasStation;
 import de.maxhenkel.car.sounds.ModSounds;
@@ -24,11 +21,12 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 
 import javax.annotation.Nullable;
+import java.util.List;
 
 public class ItemCanister extends Item {
 
     public ItemCanister() {
-        super(new Item.Properties().stacksTo(1).tab(ModItemGroups.TAB_CAR));
+        super(new Item.Properties().stacksTo(1)/*.tab(ModItemGroups.TAB_CAR)*/); // TODO Fix creative tab
     }
 
     @Override

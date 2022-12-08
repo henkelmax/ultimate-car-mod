@@ -30,9 +30,9 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 
 import javax.annotation.Nonnull;
@@ -381,7 +381,7 @@ public class TileEntityGasStation extends TileEntityBase implements ITickableBlo
         return level.getEntitiesOfClass(Entity.class, getDetectionBox())
                 .stream()
                 .sorted(Comparator.comparingDouble(o -> o.distanceToSqr(center.get())))
-                .map(entity -> entity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY).orElse(null))
+                .map(entity -> entity.getCapability(ForgeCapabilities.FLUID_HANDLER).orElse(null))
                 .filter(Objects::nonNull)
                 .findFirst()
                 .orElse(null);

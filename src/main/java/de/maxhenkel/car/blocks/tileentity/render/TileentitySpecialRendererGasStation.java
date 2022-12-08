@@ -1,7 +1,7 @@
 package de.maxhenkel.car.blocks.tileentity.render;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import de.maxhenkel.car.blocks.tileentity.TileEntityGasStation;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
@@ -37,11 +37,11 @@ public class TileentitySpecialRendererGasStation implements BlockEntityRenderer<
 
         matrixStack.pushPose();
         matrixStack.translate(0.5D, 1D, 0.5D);
-        matrixStack.mulPose(Vector3f.XP.rotationDegrees(180F));
+        matrixStack.mulPose(Axis.XP.rotationDegrees(180F));
 
         Direction dir = target.getDirection();
 
-        matrixStack.mulPose(Vector3f.YP.rotationDegrees(dir.toYRot()));
+        matrixStack.mulPose(Axis.YP.rotationDegrees(dir.toYRot()));
 
         Font font = renderer.getFont();
 

@@ -1,6 +1,5 @@
 package de.maxhenkel.car.items;
 
-import de.maxhenkel.car.ModItemGroups;
 import de.maxhenkel.car.blocks.ModBlocks;
 import de.maxhenkel.corelib.item.ItemUtils;
 import net.minecraft.core.BlockPos;
@@ -21,7 +20,7 @@ import net.minecraftforge.common.PlantType;
 public class ItemCanolaSeed extends ItemNameBlockItem implements IPlantable {
 
     public ItemCanolaSeed() {
-        super(ModBlocks.CANOLA_CROP.get(), new Item.Properties().tab(ModItemGroups.TAB_CAR));
+        super(ModBlocks.CANOLA_CROP.get(), new Item.Properties()/*.tab(ModItemGroups.TAB_CAR)*/); // TODO Fix creative tab
     }
 
     @Override

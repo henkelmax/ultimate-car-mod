@@ -1,6 +1,5 @@
 package de.maxhenkel.car.items;
 
-import de.maxhenkel.car.ModItemGroups;
 import de.maxhenkel.car.PredicateUUID;
 import de.maxhenkel.car.entity.car.base.EntityCarLockBase;
 import net.minecraft.nbt.CompoundTag;
@@ -20,7 +19,7 @@ import java.util.UUID;
 public class ItemKey extends Item {
 
     public ItemKey() {
-        super(new Item.Properties().stacksTo(1).tab(ModItemGroups.TAB_CAR));
+        super(new Item.Properties().stacksTo(1)/*.tab(ModItemGroups.TAB_CAR)*/); // TODO Fix creative tab
     }
 
     @Override

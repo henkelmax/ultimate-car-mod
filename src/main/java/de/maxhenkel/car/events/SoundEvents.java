@@ -55,14 +55,14 @@ public class SoundEvents {
 
     @SubscribeEvent
     public void onSound(PlayLevelSoundEvent.AtEntity event) {
-        if (ModSounds.isCarSoundCategory(event.getSound())) {
+        if (event.getSound() != null && ModSounds.isCarSoundCategory(event.getSound().get())) {
             event.setNewVolume(Main.CLIENT_CONFIG.carVolume.get().floatValue());
         }
     }
 
     @SubscribeEvent
     public void onSound(PlayLevelSoundEvent.AtPosition event) {
-        if (ModSounds.isCarSoundCategory(event.getSound())) {
+        if (event.getSound() != null && ModSounds.isCarSoundCategory(event.getSound().get())) {
             event.setNewVolume(Main.CLIENT_CONFIG.carVolume.get().floatValue());
         }
     }

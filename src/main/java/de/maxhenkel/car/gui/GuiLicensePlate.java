@@ -38,16 +38,14 @@ public class GuiLicensePlate extends ScreenBase<ContainerLicensePlate> {
     protected void init() {
         super.init();
 
-        minecraft.keyboardHandler.setSendRepeatsToGui(true);
-
-        addRenderableWidget(new Button(leftPos + 20, topPos + imageHeight - 25, 50, 20, Component.translatable("button.car.submit"), button -> {
+        addRenderableWidget(Button.builder(Component.translatable("button.car.submit"), button -> {
             Main.SIMPLE_CHANNEL.sendToServer(new MessageEditLicensePlate(player, textField.getValue()));
             MessageEditLicensePlate.setItemText(player, textField.getValue());
             Minecraft.getInstance().setScreen(null);
-        }));
-        addRenderableWidget(new Button(leftPos + imageWidth - 50 - 15, topPos + imageHeight - 25, 50, 20, Component.translatable("button.car.cancel"), button -> {
+        }).bounds(leftPos + 20, topPos + imageHeight - 25, 50, 20).build());
+        addRenderableWidget(Button.builder(Component.translatable("button.car.cancel"), button -> {
             Minecraft.getInstance().setScreen(null);
-        }));
+        }).bounds(leftPos + imageWidth - 50 - 15, topPos + imageHeight - 25, 50, 20).build());
 
         textField = new EditBox(font, leftPos + 30, topPos + 30, 116, 16, Component.empty());
         textField.setTextColor(-1);
@@ -81,12 +79,6 @@ public class GuiLicensePlate extends ScreenBase<ContainerLicensePlate> {
     protected void renderLabels(PoseStack matrixStack, int mouseX, int mouseY) {
         super.renderLabels(matrixStack, mouseX, mouseY);
         drawCenteredString(matrixStack, font, containerLicensePlate.getLicensePlate().getHoverName().getString(), imageWidth / 2, 5, TITLE_COLOR);
-    }
-
-    @Override
-    public void onClose() {
-        super.onClose();
-        minecraft.keyboardHandler.setSendRepeatsToGui(false);
     }
 
     @Override

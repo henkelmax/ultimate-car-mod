@@ -2,7 +2,7 @@ package de.maxhenkel.car.blocks.tileentity.render;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.blocks.tileentity.TileEntityTank;
 import de.maxhenkel.corelib.client.RenderUtils;
@@ -153,21 +153,21 @@ public class TileEntitySpecialRendererTank implements BlockEntityRenderer<TileEn
 
         switch (facing) {
             case SOUTH:
-                matrixStack.mulPose(Vector3f.YP.rotationDegrees(180F));
+                matrixStack.mulPose(Axis.YP.rotationDegrees(180F));
                 break;
             case EAST:
-                matrixStack.mulPose(Vector3f.YP.rotationDegrees(270F));
+                matrixStack.mulPose(Axis.YP.rotationDegrees(270F));
                 break;
             case WEST:
-                matrixStack.mulPose(Vector3f.YP.rotationDegrees(90F));
+                matrixStack.mulPose(Axis.YP.rotationDegrees(90F));
                 break;
             case UP:
-                matrixStack.mulPose(Vector3f.YP.rotationDegrees(180F));
-                matrixStack.mulPose(Vector3f.XP.rotationDegrees(90F));
+                matrixStack.mulPose(Axis.YP.rotationDegrees(180F));
+                matrixStack.mulPose(Axis.XP.rotationDegrees(90F));
                 break;
             case DOWN:
-                matrixStack.mulPose(Vector3f.YP.rotationDegrees(180F));
-                matrixStack.mulPose(Vector3f.XP.rotationDegrees(270F));
+                matrixStack.mulPose(Axis.YP.rotationDegrees(180F));
+                matrixStack.mulPose(Axis.XP.rotationDegrees(270F));
                 break;
             case NORTH:
             default:

@@ -1,6 +1,5 @@
 package de.maxhenkel.car.blocks;
 
-import de.maxhenkel.car.ModItemGroups;
 import de.maxhenkel.car.blocks.tileentity.TileEntityTank;
 import de.maxhenkel.car.blocks.tileentity.render.item.TankItemTileEntityRenderer;
 import de.maxhenkel.corelib.block.IItemBlock;
@@ -51,7 +50,7 @@ public class BlockTank extends BlockBase implements EntityBlock, IItemBlock {
 
     @Override
     public Item toItem() {
-        return new CustomRendererBlockItem(this, new Item.Properties().tab(ModItemGroups.TAB_CAR).stacksTo(1)) {
+        return new CustomRendererBlockItem(this, new Item.Properties()/*.tab(ModItemGroups.TAB_CAR)*/.stacksTo(1)) { // TODO Fix creative tab
             @OnlyIn(Dist.CLIENT)
             @Override
             public ItemRenderer createItemRenderer() {

@@ -39,7 +39,6 @@ public class GuiGasStationAdmin extends ScreenBase<ContainerGasStationAdmin> {
     protected void init() {
         super.init();
 
-        minecraft.keyboardHandler.setSendRepeatsToGui(true);
         textField = new EditBox(font, leftPos + 54, topPos + 22, 100, 16, Component.translatable("gas_station.admin.amount_text_field"));
         textField.setTextColor(-1);
         textField.setTextColorUneditable(-1);
@@ -58,11 +57,6 @@ public class GuiGasStationAdmin extends ScreenBase<ContainerGasStationAdmin> {
             } catch (Exception e) {
             }
         }
-    }
-
-    public void onClose() {
-        super.onClose();
-        minecraft.keyboardHandler.setSendRepeatsToGui(false);
     }
 
     @Override

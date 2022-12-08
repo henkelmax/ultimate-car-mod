@@ -1,13 +1,13 @@
 package de.maxhenkel.car.entity.car.parts;
 
-import com.mojang.math.Vector3d;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import de.maxhenkel.car.entity.car.base.EntityGenericCar;
 import de.maxhenkel.corelib.client.obj.OBJModel;
 import de.maxhenkel.corelib.client.obj.OBJModelInstance;
 import de.maxhenkel.corelib.client.obj.OBJModelOptions;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import org.joml.Vector3d;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,7 +68,7 @@ public class PartWheelBase extends PartModel {
 
         for (int i = 0; i < wheelOffsets.length && i < wheels.size(); i++) {
             list.add(new OBJModelInstance<>(wheels.get(i).model, new OBJModelOptions<>(wheels.get(i).texture, wheelOffsets[i], null, (c, matrixStack, partialTicks) -> {
-                matrixStack.mulPose(Vector3f.XP.rotationDegrees(-car.getWheelRotation(partialTicks)));
+                matrixStack.mulPose(Axis.XP.rotationDegrees(-car.getWheelRotation(partialTicks)));
             })));
         }
 

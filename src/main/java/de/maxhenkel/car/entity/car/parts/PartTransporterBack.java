@@ -1,6 +1,6 @@
 package de.maxhenkel.car.entity.car.parts;
 
-import com.mojang.math.Vector3d;
+import org.joml.Vector3d;
 import de.maxhenkel.corelib.client.obj.OBJModel;
 import net.minecraft.resources.ResourceLocation;
 

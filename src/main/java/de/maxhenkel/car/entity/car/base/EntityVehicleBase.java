@@ -1,6 +1,7 @@
 package de.maxhenkel.car.entity.car.base;
 
-import com.mojang.math.Vector3d;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import org.joml.Vector3d;
 import de.maxhenkel.car.Main;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -226,7 +227,7 @@ public abstract class EntityVehicleBase extends Entity {
     public abstract boolean doesEnterThirdPerson();
 
     @Override
-    public Packet<?> getAddEntityPacket() {
+    public Packet<ClientGamePacketListener> getAddEntityPacket() {
         return new ClientboundAddEntityPacket(this);
     }
 
