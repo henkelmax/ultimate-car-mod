@@ -26,7 +26,7 @@ import java.util.List;
 public class ItemCanister extends Item {
 
     public ItemCanister() {
-        super(new Item.Properties().stacksTo(1)/*.tab(ModItemGroups.TAB_CAR)*/); // TODO Fix creative tab
+        super(new Item.Properties().stacksTo(1));
     }
 
     @Override

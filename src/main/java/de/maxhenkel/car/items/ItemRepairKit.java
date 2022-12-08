@@ -13,7 +13,7 @@ import java.util.List;
 public class ItemRepairKit extends Item {
 
     public ItemRepairKit() {
-        super(new Item.Properties().stacksTo(1)/*.tab(ModItemGroups.TAB_CAR)*/); // TODO Fix creative tab
+        super(new Item.Properties().stacksTo(1));
     }
 
     @Override

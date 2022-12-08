@@ -31,7 +31,7 @@ public class ItemPainter extends Item {
     private final boolean isYellow;
 
     public ItemPainter(boolean isYellow) {
-        super(new Item.Properties().stacksTo(1).durability(1024)/*.tab(ModItemGroups.TAB_CAR)*/); // TODO Fix creative tab
+        super(new Item.Properties().stacksTo(1).durability(1024));
         this.isYellow = isYellow;
     }
 

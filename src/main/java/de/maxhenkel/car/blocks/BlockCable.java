@@ -1,6 +1,5 @@
 package de.maxhenkel.car.blocks;
 
-import de.maxhenkel.car.ModItemGroups;
 import de.maxhenkel.car.blocks.tileentity.TileEntityCable;
 import de.maxhenkel.corelib.block.IItemBlock;
 import de.maxhenkel.corelib.block.VoxelUtils;
@@ -29,7 +28,6 @@ import net.minecraft.world.level.material.MaterialColor;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.energy.CapabilityEnergy;
 
 import javax.annotation.Nullable;
 
@@ -59,7 +57,7 @@ public class BlockCable extends BlockBase implements EntityBlock, IItemBlock, Si
 
     @Override
     public Item toItem() {
-        return new BlockItem(this, new Item.Properties()/*.tab(ModItemGroups.TAB_CAR)*/); // TODO Fix creative tab
+        return new BlockItem(this, new Item.Properties());
     }
 
     @Nullable

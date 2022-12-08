@@ -37,7 +37,7 @@ public class BlockCarWorkshopOutter extends BlockBase implements IItemBlock {
 
     @Override
     public Item toItem() {
-        return new BlockItem(this, new Item.Properties()/*.tab(ModItemGroups.TAB_CAR)*/); // TODO Fix creative tab
+        return new BlockItem(this, new Item.Properties());
     }
 
     @Override

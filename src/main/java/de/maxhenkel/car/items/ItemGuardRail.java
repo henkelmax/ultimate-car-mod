@@ -21,7 +21,7 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 public class ItemGuardRail extends BlockItem {
 
     public ItemGuardRail() {
-        super(ModBlocks.GUARD_RAIL.get(), new Item.Properties()/*.tab(ModItemGroups.TAB_CAR)*/); // TODO Fix creative tab
+        super(ModBlocks.GUARD_RAIL.get(), new Item.Properties());
     }
 
     @Override

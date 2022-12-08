@@ -27,7 +27,7 @@ public class BlockDynamo extends BlockBase implements EntityBlock, IItemBlock {
 
     @Override
     public Item toItem() {
-        return new BlockItem(this, new Item.Properties()/*.tab(ModItemGroups.TAB_CAR)*/); // TODO Fix creative tab
+        return new BlockItem(this, new Item.Properties());
     }
 
     @Nullable

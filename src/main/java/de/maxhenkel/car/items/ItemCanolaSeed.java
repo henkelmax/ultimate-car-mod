@@ -20,7 +20,7 @@ import net.minecraftforge.common.PlantType;
 public class ItemCanolaSeed extends ItemNameBlockItem implements IPlantable {
 
     public ItemCanolaSeed() {
-        super(ModBlocks.CANOLA_CROP.get(), new Item.Properties()/*.tab(ModItemGroups.TAB_CAR)*/); // TODO Fix creative tab
+        super(ModBlocks.CANOLA_CROP.get(), new Item.Properties());
     }
 
     @Override

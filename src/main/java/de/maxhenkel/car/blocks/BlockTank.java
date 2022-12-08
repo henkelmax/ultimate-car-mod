@@ -50,7 +50,7 @@ public class BlockTank extends BlockBase implements EntityBlock, IItemBlock {
 
     @Override
     public Item toItem() {
-        return new CustomRendererBlockItem(this, new Item.Properties()/*.tab(ModItemGroups.TAB_CAR)*/.stacksTo(1)) { // TODO Fix creative tab
+        return new CustomRendererBlockItem(this, new Item.Properties().stacksTo(1)) {
             @OnlyIn(Dist.CLIENT)
             @Override
             public ItemRenderer createItemRenderer() {

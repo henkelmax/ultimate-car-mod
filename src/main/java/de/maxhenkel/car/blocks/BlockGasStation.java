@@ -67,7 +67,7 @@ public class BlockGasStation extends BlockOrientableHorizontal {
 
     @Override
     public Item toItem() {
-        return new BlockItem(this, new Item.Properties()/*.tab(ModItemGroups.TAB_CAR)*/) { // TODO Fix creative tab
+        return new BlockItem(this, new Item.Properties()) {
             @Override
             protected boolean canPlace(BlockPlaceContext context, BlockState state) {
                 if (!context.getLevel().isEmptyBlock(context.getClickedPos().above())) {

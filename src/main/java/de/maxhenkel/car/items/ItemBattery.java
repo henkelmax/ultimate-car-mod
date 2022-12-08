@@ -25,7 +25,7 @@ import java.util.List;
 public class ItemBattery extends Item {
 
     public ItemBattery() {
-        super(new Item.Properties().stacksTo(1)/*.tab(ModItemGroups.TAB_CAR)*/.durability(500)); // TODO Fix creative tab
+        super(new Item.Properties().stacksTo(1).durability(500));
     }
 
     @Override

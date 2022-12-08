@@ -13,7 +13,7 @@ import net.minecraft.world.item.Items;
 public class ItemCanolaCake extends Item {
 
     public ItemCanolaCake() {
-        super(new Item.Properties()/*.tab(ModItemGroups.TAB_CAR)*/); // TODO Fix creative tab
+        super(new Item.Properties());
     }
 
     @Override
