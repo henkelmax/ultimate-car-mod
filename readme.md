@@ -4,9 +4,7 @@
 
 ## Links
 - [CurseForge](https://www.curseforge.com/minecraft/mc-mods/ultimate-car-mod)
-- [Wiki](https://modrepo.de/minecraft/car/wiki)
-- [ModRepo](https://modrepo.de/minecraft/car/overview)
-- [GitHub](https://github.com/henkelmax/ultimate-car-mod)
+- [Wiki](https://modrepo.de/minecraft/car/wiki/fuel_production)
 - [FAQ](https://modrepo.de/minecraft/car/faq)
 - [Credits](https://modrepo.de/minecraft/car/credits)
 
