@@ -41,7 +41,7 @@ public class MessageEditSign implements Message<MessageEditSign> {
         this.pos = buf.readBlockPos();
         this.text = new String[8];
         for (int i = 0; i < text.length; i++) {
-            this.text[i] = buf.readUtf(20);
+            this.text[i] = buf.readUtf(64);
         }
 
         return this;
@@ -51,7 +51,7 @@ public class MessageEditSign implements Message<MessageEditSign> {
     public void toBytes(FriendlyByteBuf buf) {
         buf.writeBlockPos(pos);
         for (String s : text) {
-            buf.writeUtf(s, 20);
+            buf.writeUtf(s, 64);
         }
     }
 
