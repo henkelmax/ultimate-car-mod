@@ -377,7 +377,11 @@ public class TileEntityGasStation extends TileEntityBase implements ITickableBlo
 
     private CachedValue<Vec3> center = new CachedValue<>(() -> new Vec3(worldPosition.getX() + 0.5D, worldPosition.getY() + 1.5D, worldPosition.getZ() + 0.5D));
 
+    @Nullable
     private IFluidHandler searchFluidHandlerInFront() {
+        if (level == null) {
+            return null;
+        }
         return level.getEntitiesOfClass(Entity.class, getDetectionBox())
                 .stream()
                 .sorted(Comparator.comparingDouble(o -> o.distanceToSqr(center.get())))
