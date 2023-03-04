@@ -1,1 +1,1 @@
-- Fixed crash with gas station
+- Updated Chinese Simplified translation
