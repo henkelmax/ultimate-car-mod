@@ -6,6 +6,7 @@ import de.maxhenkel.car.Main;
 import de.maxhenkel.car.items.ItemKey;
 import de.maxhenkel.car.items.ModItems;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
@@ -22,7 +23,7 @@ public class KeyRecipe extends CustomRecipe {
     }
 
     @Override
-    public ItemStack getResultItem() {
+    public ItemStack getResultItem(RegistryAccess registryAccess) {
         return new ItemStack(ModItems.KEY.get());
     }
 
@@ -57,6 +58,10 @@ public class KeyRecipe extends CustomRecipe {
     }
 
     @Override
+    public ItemStack assemble(CraftingContainer craftingContainer, RegistryAccess registryAccess) {
+        return assemble(craftingContainer);
+    }
+
     public ItemStack assemble(CraftingContainer inv) {
         ItemStack key = null;
         ItemStack iron = null;

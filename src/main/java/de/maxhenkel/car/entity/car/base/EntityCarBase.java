@@ -15,15 +15,20 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Holder;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -38,6 +43,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -136,7 +142,11 @@ public abstract class EntityCarBase extends EntityVehicleBase {
                 float speed = getSpeed();
                 if (speed > 0.35F) {
                     float damage = speed * 10;
-                    tasks.add(() -> entityIn.hurt(DamageSourceCar.DAMAGE_CAR, damage));
+                    tasks.add(() -> {
+                        ServerLevel serverLevel = (ServerLevel) level;
+                        Optional<Holder.Reference<DamageType>> holder = serverLevel.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolder(DamageSourceCar.DAMAGE_CAR_TYPE);
+                        holder.ifPresent(damageTypeReference -> entityIn.hurt(new DamageSource(damageTypeReference, this), damage));
+                    });
                 }
             }
         }
@@ -273,7 +283,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
     }
 
     public float getModifier() {
-        BlockPos pos = new BlockPos(getX(), getY() - 0.1D, getZ());
+        BlockPos pos = new BlockPos((int) getX(), (int) (getY() - 0.1D), (int) getZ());
         BlockState state = level.getBlockState(pos);
 
         if (state.isAir() || Main.SERVER_CONFIG.carDriveBlockList.stream().anyMatch(tag -> tag.contains(state.getBlock()))) {

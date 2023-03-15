@@ -68,7 +68,7 @@ public class TileEntitySpecialRendererSign implements BlockEntityRenderer<TileEn
         matrixStack.translate(-(textScale * textWidth) / 2D, 0D, 0D);
         matrixStack.scale(textScale, textScale, textScale);
 
-        font.drawInBatch(txt, 0F, 0F, 0x0, false, matrixStack.last().pose(), buffer, false, 0, light);
+        font.drawInBatch(txt, 0F, 0F, 0x0, false, matrixStack.last().pose(), buffer, Font.DisplayMode.NORMAL, 0, light);
 
         matrixStack.popPose();
     }

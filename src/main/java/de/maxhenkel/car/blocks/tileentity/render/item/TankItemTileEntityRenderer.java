@@ -8,8 +8,8 @@ import de.maxhenkel.car.blocks.tileentity.render.TileEntitySpecialRendererTank;
 import de.maxhenkel.corelib.client.ItemRenderer;
 import de.maxhenkel.corelib.client.RendererProviders;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 
 public class TankItemTileEntityRenderer extends ItemRenderer {
@@ -22,7 +22,7 @@ public class TankItemTileEntityRenderer extends ItemRenderer {
     }
 
     @Override
-    public void renderByItem(ItemStack itemStack, ItemTransforms.TransformType transformType, PoseStack stack, MultiBufferSource source, int light, int overlay) {
+    public void renderByItem(ItemStack itemStack, ItemDisplayContext itemDisplayContext, PoseStack stack, MultiBufferSource source, int light, int overlay) {
         if (tileEntityTank == null) {
             tileEntityTank = new TileEntityTank(BlockPos.ZERO, ModBlocks.TANK.get().defaultBlockState());
             tankRenderer = new TileEntitySpecialRendererTank(RendererProviders.createBlockEntityRendererContext());

@@ -5,40 +5,35 @@ import de.maxhenkel.corelib.block.IItemBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.BasePressurePlateBlock;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockSetType;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.Material;
+import org.jetbrains.annotations.Nullable;
 
 public class BlockCarPressurePlate extends BasePressurePlateBlock implements IItemBlock {
 
     public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 
     protected BlockCarPressurePlate() {
-        super(Block.Properties.of(Material.STONE).noCollission().strength(0.5F));
+        super(Block.Properties.of(Material.STONE).noCollission().strength(0.5F), BlockSetType.STONE);
         registerDefaultState(stateDefinition.any().setValue(POWERED, false));
     }
 
     @Override
     public Item toItem() {
         return new BlockItem(this, new Item.Properties());
-    }
-
-    @Override
-    protected void playOnSound(LevelAccessor worldIn, BlockPos pos) {
-        worldIn.playSound(null, pos, SoundEvents.STONE_PRESSURE_PLATE_CLICK_ON, SoundSource.BLOCKS, 0.3F, 0.6F);
-    }
-
-    @Override
-    protected void playOffSound(LevelAccessor worldIn, BlockPos pos) {
-        worldIn.playSound(null, pos, SoundEvents.STONE_PRESSURE_PLATE_CLICK_OFF, SoundSource.BLOCKS, 0.3F, 0.5F);
     }
 
     @Override

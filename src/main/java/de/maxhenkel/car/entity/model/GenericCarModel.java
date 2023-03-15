@@ -7,6 +7,7 @@ import de.maxhenkel.car.entity.car.base.EntityGenericCar;
 import de.maxhenkel.corelib.client.obj.OBJEntityRenderer;
 import de.maxhenkel.corelib.client.obj.OBJModelInstance;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import org.joml.Vector3d;
@@ -53,7 +54,7 @@ public class GenericCarModel extends OBJEntityRenderer<EntityGenericCar> {
 
         matrixStack.scale(textScale, textScale, textScale);
 
-        Minecraft.getInstance().font.drawInBatch(txt, 0F, 0F, 0xFFFFFF, false, matrixStack.last().pose(), buffer, false, 0, packedLight);
+        Minecraft.getInstance().font.drawInBatch(txt, 0F, 0F, 0xFFFFFF, false, matrixStack.last().pose(), buffer, Font.DisplayMode.NORMAL, 0, packedLight);
 
         matrixStack.popPose();
     }

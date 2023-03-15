@@ -22,7 +22,7 @@ public class CreativeTabEvents {
         TAB_CAR = event.registerCreativeModeTab(new ResourceLocation(Main.MODID, "car"), builder -> {
             builder
                     .icon(() -> new ItemStack(ModBlocks.ASPHALT.get()))
-                    .displayItems((features, output, hasPermissions) -> {
+                    .displayItems((param, output) -> {
                         output.accept(new ItemStack(ModBlocks.ASPHALT.get()));
                         output.accept(new ItemStack(ModBlocks.ASPHALT_SLOPE.get()));
                         output.accept(new ItemStack(ModBlocks.ASPHALT_SLOPE_FLAT_UPPER.get()));
@@ -77,7 +77,7 @@ public class CreativeTabEvents {
         TAB_CAR_PARTS = event.registerCreativeModeTab(new ResourceLocation(Main.MODID, "car_parts"), builder -> {
             builder
                     .icon(() -> new ItemStack(ModItems.OAK_BODY.get()))
-                    .displayItems((features, output, hasPermissions) -> {
+                    .displayItems((param, output) -> {
                         output.accept(new ItemStack(ModItems.ENGINE_3_CYLINDER.get()));
                         output.accept(new ItemStack(ModItems.ENGINE_6_CYLINDER.get()));
                         output.accept(new ItemStack(ModItems.ENGINE_TRUCK.get()));

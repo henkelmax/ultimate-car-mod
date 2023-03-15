@@ -1,6 +1,7 @@
 package de.maxhenkel.car.recipes;
 
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
@@ -36,7 +37,7 @@ public abstract class EnergyFluidProducerRecipe implements Recipe<Container> {
     }
 
     @Override
-    public ItemStack assemble(Container inv) {
+    public ItemStack assemble(Container container, RegistryAccess registryAccess) {
         return result.copy();
     }
 
@@ -62,6 +63,10 @@ public abstract class EnergyFluidProducerRecipe implements Recipe<Container> {
     }
 
     @Override
+    public ItemStack getResultItem(RegistryAccess registryAccess) {
+        return getResultItem();
+    }
+
     public ItemStack getResultItem() {
         return result.copy();
     }

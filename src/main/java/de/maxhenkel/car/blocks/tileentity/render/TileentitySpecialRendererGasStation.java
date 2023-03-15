@@ -55,7 +55,7 @@ public class TileentitySpecialRendererGasStation implements BlockEntityRenderer<
 
         matrixStack.scale(textScale, textScale, textScale);
 
-        font.drawInBatch(name, 0F, 0F, 0x0, false, matrixStack.last().pose(), buffer, false, 0, combinedLightIn);
+        font.drawInBatch(name, 0F, 0F, 0x0, false, matrixStack.last().pose(), buffer, Font.DisplayMode.NORMAL, 0, combinedLightIn);
         matrixStack.popPose();
 
         if (minecraft.getEntityRenderDispatcher().shouldRenderHitBoxes() && !Minecraft.getInstance().showOnlyReducedInfo()) {
