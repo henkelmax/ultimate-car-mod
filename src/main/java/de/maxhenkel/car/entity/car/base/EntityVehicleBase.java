@@ -1,6 +1,11 @@
 package de.maxhenkel.car.entity.car.base;
 
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.energy.IEnergyStorage;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 import org.joml.Vector3d;
 import de.maxhenkel.car.Main;
 import net.minecraft.core.BlockPos;
@@ -22,6 +27,8 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.List;
 
 public abstract class EntityVehicleBase extends Entity {
@@ -252,4 +259,13 @@ public abstract class EntityVehicleBase extends Entity {
         return super.getDismountLocationForPassenger(entity);
     }
 
+    @Override
+    @Nonnull
+    public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
+        if ((this instanceof IFluidHandler && cap.equals(ForgeCapabilities.FLUID_HANDLER)) ||
+                (this instanceof IEnergyStorage && cap.equals(ForgeCapabilities.ENERGY))) {
+            return LazyOptional.of(() -> (T) this);
+        }
+        return LazyOptional.empty();
+    }
 }
