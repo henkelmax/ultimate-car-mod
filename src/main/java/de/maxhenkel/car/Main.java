@@ -149,7 +149,7 @@ public class Main {
     @SubscribeEvent
     public void commonSetup(FMLCommonSetupEvent event) {
         MinecraftForge.EVENT_BUS.register(this);
-        MinecraftForge.EVENT_BUS.register(new CapabilityEvents());
+        //MinecraftForge.EVENT_BUS.register(new CapabilityEvents());
         MinecraftForge.EVENT_BUS.register(new BlockEvents());
 
         MinecraftForge.EVENT_BUS.register(new VillagerEvents());

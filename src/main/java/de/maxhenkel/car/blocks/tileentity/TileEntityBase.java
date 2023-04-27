@@ -3,8 +3,8 @@ package de.maxhenkel.car.blocks.tileentity;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.net.MessageSyncTileEntity;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.Connection;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
@@ -15,7 +15,14 @@ import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.energy.CapabilityEnergy;
+import net.minecraftforge.energy.IEnergyStorage;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.network.PacketDistributor;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 
@@ -90,5 +97,15 @@ public abstract class TileEntityBase extends BlockEntity implements Nameable {
             name = Component.Serializer.fromJson(compound.getString("CustomName"));
         }
         super.load(compound);
+    }
+
+    @Override
+    @NotNull
+    public <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @org.jetbrains.annotations.Nullable Direction side) {
+        if ((this instanceof IFluidHandler && cap.equals(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)) ||
+                (this instanceof IEnergyStorage && cap.equals(CapabilityEnergy.ENERGY))) {
+            return LazyOptional.of(() -> (T) this);
+        }
+        return LazyOptional.empty();
     }
 }
