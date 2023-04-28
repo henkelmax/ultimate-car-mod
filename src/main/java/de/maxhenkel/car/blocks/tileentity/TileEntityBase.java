@@ -16,9 +16,10 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.network.PacketDistributor;
 import org.jetbrains.annotations.NotNull;
@@ -101,8 +102,8 @@ public abstract class TileEntityBase extends BlockEntity implements Nameable {
     @Override
     @NotNull
     public <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @org.jetbrains.annotations.Nullable Direction side) {
-        if ((this instanceof IFluidHandler && cap.equals(ForgeCapabilities.FLUID_HANDLER)) ||
-                (this instanceof IEnergyStorage && cap.equals(ForgeCapabilities.ENERGY))) {
+        if ((this instanceof IFluidHandler && cap.equals(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)) ||
+                (this instanceof IEnergyStorage && cap.equals(CapabilityEnergy.ENERGY))) {
             return LazyOptional.of(() -> (T) this);
         }
         return LazyOptional.empty();
