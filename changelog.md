@@ -1,1 +1,1 @@
-- Fix crash with gas station
+- Fixed OptiFine compatibility issues
