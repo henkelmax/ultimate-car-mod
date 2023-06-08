@@ -19,9 +19,8 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.level.material.Material;
-import net.minecraft.world.level.material.MaterialColor;
-import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -44,7 +43,7 @@ public class BlockGuardRail extends BlockBase implements SimpleWaterloggedBlock 
     private static final VoxelShape SHAPE = Block.box(7.5D, 0D, 7.5D, 8.5D, 16D, 8.5D);
 
     public BlockGuardRail() {
-        super(Properties.of(Material.METAL, MaterialColor.METAL).strength(2F).sound(SoundType.LANTERN).noOcclusion());
+        super(Properties.of().mapColor(MapColor.METAL).strength(2F).sound(SoundType.LANTERN).noOcclusion());
 
         registerDefaultState(stateDefinition
                 .any()
@@ -123,7 +122,7 @@ public class BlockGuardRail extends BlockBase implements SimpleWaterloggedBlock 
     }
 
     @Override
-    public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
+    public List<ItemStack> getDrops(BlockState state, LootParams.Builder builder) {
         List<ItemStack> drops = super.getDrops(state, builder);
         drops.stream().filter(itemStack -> itemStack.getItem() == ModItems.GUARD_RAIL.get()).forEach(itemStack -> {
             if (itemStack.getCount() == 1) {

@@ -12,7 +12,7 @@ import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
-import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
@@ -22,17 +22,12 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 public class BlockSplitTankTop extends BlockBase {
 
     public BlockSplitTankTop() {
-        super(Properties.of(Material.METAL).strength(3F).sound(SoundType.STONE));
+        super(Properties.of().mapColor(MapColor.METAL).strength(3F).sound(SoundType.STONE).pushReaction(PushReaction.BLOCK));
     }
 
     @Override
     public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
         return ModBlocks.SPLIT_TANK.get().use(worldIn.getBlockState(pos.below()), worldIn, pos.below(), player, handIn, hit);
-    }
-
-    @Override
-    public PushReaction getPistonPushReaction(BlockState state) {
-        return PushReaction.BLOCK;
     }
 
     private static final VoxelShape SHAPE = Block.box(0D, -16D, 0D, 16D, 8D, 16D);

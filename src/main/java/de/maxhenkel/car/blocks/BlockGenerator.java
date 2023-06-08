@@ -18,8 +18,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Material;
-import net.minecraft.world.level.material.MaterialColor;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -29,7 +28,7 @@ import javax.annotation.Nullable;
 public class BlockGenerator extends BlockGui<TileEntityGenerator> {
 
     protected BlockGenerator() {
-        super(Properties.of(Material.METAL, MaterialColor.METAL).strength(3F, 3F).sound(SoundType.STONE).noOcclusion());
+        super(Properties.of().mapColor(MapColor.METAL).strength(3F, 3F).sound(SoundType.STONE).noOcclusion());
     }
 
     @Nullable

@@ -1,9 +1,9 @@
 package de.maxhenkel.car.gui;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.blocks.tileentity.TileEntityGenerator;
 import de.maxhenkel.corelib.inventory.ScreenBase;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FormattedCharSequence;
@@ -29,18 +29,18 @@ public class GuiGenerator extends ScreenBase<ContainerGenerator> {
     }
 
     @Override
-    protected void renderLabels(PoseStack matrixStack, int mouseX, int mouseY) {
-        super.renderLabels(matrixStack, mouseX, mouseY);
+    protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
+        super.renderLabels(guiGraphics, mouseX, mouseY);
 
         // Title
-        font.draw(matrixStack, playerInv.getDisplayName().getVisualOrderText(), 8, this.imageHeight - 96 + 2, FONT_COLOR);
-        font.draw(matrixStack, tile.getDisplayName().getVisualOrderText(), 62, 6, FONT_COLOR);
+        guiGraphics.drawString(font, playerInv.getDisplayName().getVisualOrderText(), 8, this.imageHeight - 96 + 2, FONT_COLOR, false);
+        guiGraphics.drawString(font, tile.getDisplayName().getVisualOrderText(), 62, 6, FONT_COLOR, false);
 
         if (mouseX >= leftPos + 122 && mouseX <= leftPos + 16 + 122) {
             if (mouseY >= topPos + 8 && mouseY <= topPos + 57 + 8) {
                 List<FormattedCharSequence> list = new ArrayList<>();
                 list.add(Component.translatable("tooltip.energy", tile.getStoredEnergy()).getVisualOrderText());
-                renderTooltip(matrixStack, list, mouseX - leftPos, mouseY - topPos);
+                guiGraphics.renderTooltip(font, list, mouseX - leftPos, mouseY - topPos);
             }
         }
 
@@ -48,19 +48,19 @@ public class GuiGenerator extends ScreenBase<ContainerGenerator> {
             if (mouseY >= topPos + 8 && mouseY <= topPos + 57 + 8) {
                 List<FormattedCharSequence> list = new ArrayList<>();
                 list.add(Component.translatable("tooltip.fuel", tile.getCurrentMillibuckets()).getVisualOrderText());
-                renderTooltip(matrixStack, list, mouseX - leftPos, mouseY - topPos);
+                guiGraphics.renderTooltip(font, list, mouseX - leftPos, mouseY - topPos);
             }
         }
     }
 
     @Override
-    protected void renderBg(PoseStack matrixStack, float partialTicks, int mouseX, int mouseY) {
-        super.renderBg(matrixStack, partialTicks, mouseX, mouseY);
-        drawEnergy(matrixStack);
-        drawFluid(matrixStack);
+    protected void renderBg(GuiGraphics guiGraphics, float partialTicks, int mouseX, int mouseY) {
+        super.renderBg(guiGraphics, partialTicks, mouseX, mouseY);
+        drawEnergy(guiGraphics);
+        drawFluid(guiGraphics);
     }
 
-    public void drawEnergy(PoseStack matrixStack) {
+    public void drawEnergy(GuiGraphics guiGraphics) {
         float perc = getEnergy();
 
         int texX = 176;
@@ -73,10 +73,10 @@ public class GuiGenerator extends ScreenBase<ContainerGenerator> {
         int scHeight = (int) (texH * (1 - perc));
         int i = this.leftPos;
         int j = this.topPos;
-        blit(matrixStack, i + targetX, j + targetY + scHeight, texX, texY + scHeight, texW, texH - scHeight);
+        guiGraphics.blit(texture, i + targetX, j + targetY + scHeight, texX, texY + scHeight, texW, texH - scHeight);
     }
 
-    public void drawFluid(PoseStack matrixStack) {
+    public void drawFluid(GuiGraphics guiGraphics) {
         float perc = getFluid();
 
         int texX = 192;
@@ -89,7 +89,7 @@ public class GuiGenerator extends ScreenBase<ContainerGenerator> {
         int scHeight = (int) (texH * (1 - perc));
         int i = this.leftPos;
         int j = this.topPos;
-        blit(matrixStack, i + targetX, j + targetY + scHeight, texX, texY + scHeight, texW, texH - scHeight);
+        guiGraphics.blit(texture, i + targetX, j + targetY + scHeight, texX, texY + scHeight, texW, texH - scHeight);
     }
 
     public float getEnergy() {

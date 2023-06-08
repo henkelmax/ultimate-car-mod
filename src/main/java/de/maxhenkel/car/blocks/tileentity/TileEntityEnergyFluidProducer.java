@@ -116,7 +116,7 @@ public abstract class TileEntityEnergyFluidProducer extends TileEntityBase imple
             return;
         }
 
-        if (!(output.isEmpty() || (ItemStack.isSame(output, recipe.getResultItem()) && output.getCount() + recipe.getResultItem().getCount() <= output.getMaxStackSize()))) {
+        if (!(output.isEmpty() || (ItemStack.isSameItem(output, recipe.getResultItem()) && output.getCount() + recipe.getResultItem().getCount() <= output.getMaxStackSize()))) {
             time = 0;
             setChanged();
             setBlockEnabled(false);

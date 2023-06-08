@@ -1,11 +1,11 @@
 package de.maxhenkel.car.gui;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.blocks.tileentity.TileEntitySign;
 import de.maxhenkel.car.net.MessageEditSign;
 import de.maxhenkel.corelib.inventory.ScreenBase;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.network.chat.Component;
@@ -97,8 +97,8 @@ public class GuiSign extends ScreenBase<ContainerSign> {
     }
 
     @Override
-    protected void renderLabels(PoseStack matrixStack, int mouseX, int mouseY) {
-        super.renderLabels(matrixStack, mouseX, mouseY);
+    protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
+        super.renderLabels(guiGraphics, mouseX, mouseY);
 
         String s;
         if (front) {
@@ -107,7 +107,7 @@ public class GuiSign extends ScreenBase<ContainerSign> {
             s = Component.translatable("gui.sign.back").getString();
         }
 
-        font.draw(matrixStack, Component.translatable("gui.sign", s).getVisualOrderText(), 54, 10, FONT_COLOR);
+        guiGraphics.drawString(font, Component.translatable("gui.sign", s).getVisualOrderText(), 54, 10, FONT_COLOR, false);
     }
 
     @Override

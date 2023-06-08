@@ -14,8 +14,7 @@ import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
-import net.minecraft.world.level.material.Material;
-import net.minecraft.world.level.material.MaterialColor;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -30,7 +29,7 @@ public class BlockPaint extends BlockBase implements IItemBlock {
     private final boolean yellow;
 
     public BlockPaint(EnumPaintType type, boolean yellow) {
-        super(Properties.of(new Material.Builder(MaterialColor.NONE).build()).strength(2F).sound(SoundType.STONE).noOcclusion());
+        super(Properties.of().mapColor(MapColor.TERRACOTTA_WHITE).strength(2F).sound(SoundType.STONE).noOcclusion());
         this.paintType = type;
         this.yellow = yellow;
 

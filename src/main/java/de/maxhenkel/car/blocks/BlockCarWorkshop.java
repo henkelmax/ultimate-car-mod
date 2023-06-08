@@ -24,8 +24,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.material.Material;
-import net.minecraft.world.level.material.MaterialColor;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.BlockHitResult;
 
 import javax.annotation.Nullable;
@@ -35,7 +34,7 @@ public class BlockCarWorkshop extends BlockBase implements EntityBlock, IItemBlo
     public static final BooleanProperty VALID = BooleanProperty.create("valid");
 
     protected BlockCarWorkshop() {
-        super(Properties.of(Material.METAL, MaterialColor.COLOR_GRAY).strength(3F).sound(SoundType.METAL));
+        super(Properties.of().mapColor(MapColor.METAL).strength(3F).sound(SoundType.METAL));
         this.registerDefaultState(stateDefinition.any().setValue(VALID, false));
     }
 

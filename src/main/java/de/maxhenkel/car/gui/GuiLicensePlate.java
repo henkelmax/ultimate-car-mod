@@ -1,12 +1,12 @@
 package de.maxhenkel.car.gui;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.items.ItemLicensePlate;
 import de.maxhenkel.car.net.MessageEditLicensePlate;
 import de.maxhenkel.corelib.inventory.ScreenBase;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.network.chat.Component;
@@ -76,9 +76,9 @@ public class GuiLicensePlate extends ScreenBase<ContainerLicensePlate> {
     }
 
     @Override
-    protected void renderLabels(PoseStack matrixStack, int mouseX, int mouseY) {
-        super.renderLabels(matrixStack, mouseX, mouseY);
-        drawCenteredString(matrixStack, font, containerLicensePlate.getLicensePlate().getHoverName().getString(), imageWidth / 2, 5, TITLE_COLOR);
+    protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
+        super.renderLabels(guiGraphics, mouseX, mouseY);
+        guiGraphics.drawCenteredString(font, containerLicensePlate.getLicensePlate().getHoverName().getString(), imageWidth / 2, 5, TITLE_COLOR);
     }
 
     @Override

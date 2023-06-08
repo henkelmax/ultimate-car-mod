@@ -1,8 +1,8 @@
 package de.maxhenkel.car.gui;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.corelib.inventory.ScreenBase;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
@@ -18,9 +18,9 @@ public class GuiPainter extends ScreenBase<ContainerPainter> {
     }
 
     @Override
-    protected void renderLabels(PoseStack matrixStack, int mouseX, int mouseY) {
-        super.renderLabels(matrixStack, mouseX, mouseY);
-        font.draw(matrixStack, Component.translatable("gui.painter").getVisualOrderText(), 8, 6, FONT_COLOR);
+    protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
+        super.renderLabels(guiGraphics, mouseX, mouseY);
+        guiGraphics.drawString(font, Component.translatable("gui.painter").getVisualOrderText(), 8, 6, FONT_COLOR, false);
     }
 
     @Override

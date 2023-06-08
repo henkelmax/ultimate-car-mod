@@ -14,15 +14,14 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Material;
-import net.minecraft.world.level.material.MaterialColor;
+import net.minecraft.world.level.material.MapColor;
 
 import javax.annotation.Nullable;
 
 public class BlockDynamo extends BlockBase implements EntityBlock, IItemBlock {
 
     protected BlockDynamo() {
-        super(Properties.of(Material.METAL, MaterialColor.COLOR_BLACK).strength(3F).sound(SoundType.METAL));
+        super(Properties.of().mapColor(MapColor.METAL).strength(3F).sound(SoundType.METAL));
     }
 
     @Override

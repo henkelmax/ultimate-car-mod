@@ -1,7 +1,6 @@
 package de.maxhenkel.car.gui;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.blocks.tileentity.TileEntityCarWorkshop;
 import de.maxhenkel.car.entity.car.base.EntityCarBase;
@@ -11,6 +10,7 @@ import de.maxhenkel.car.net.MessageRepairCar;
 import de.maxhenkel.corelib.inventory.ScreenBase;
 import de.maxhenkel.corelib.math.MathUtils;
 import de.maxhenkel.tools.EntityTools;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
@@ -64,12 +64,12 @@ public class GuiCarWorkshopRepair extends ScreenBase<ContainerCarWorkshopRepair>
     }
 
     @Override
-    protected void renderLabels(PoseStack matrixStack, int mouseX, int mouseY) {
-        super.renderLabels(matrixStack, mouseX, mouseY);
+    protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
+        super.renderLabels(guiGraphics, mouseX, mouseY);
 
         // Titles
-        font.draw(matrixStack, tile.getDisplayName().getVisualOrderText(), 8, 6, FONT_COLOR);
-        font.draw(matrixStack, player.getInventory().getDisplayName().getVisualOrderText(), 8, imageHeight - 96 + 2, FONT_COLOR);
+        guiGraphics.drawString(font, tile.getDisplayName().getVisualOrderText(), 8, 6, FONT_COLOR, false);
+        guiGraphics.drawString(font, player.getInventory().getDisplayName().getVisualOrderText(), 8, imageHeight - 96 + 2, FONT_COLOR, false);
 
         EntityCarBase carTop = tile.getCarOnTop();
 
@@ -84,7 +84,7 @@ public class GuiCarWorkshopRepair extends ScreenBase<ContainerCarWorkshopRepair>
             if (mouseY >= topPos + 81 && mouseY <= topPos + 90) {
                 List<FormattedCharSequence> list = new ArrayList<>();
                 list.add(Component.translatable("tooltip.damage", MathUtils.round(car.getDamage(), 2)).getVisualOrderText());
-                renderTooltip(matrixStack, list, mouseX - leftPos, mouseY - topPos);
+                guiGraphics.renderTooltip(font, list, mouseX - leftPos, mouseY - topPos);
             }
         }
 
@@ -93,7 +93,7 @@ public class GuiCarWorkshopRepair extends ScreenBase<ContainerCarWorkshopRepair>
         } else {
             buttonRepair.active = false;
         }
-        drawCar(matrixStack, carTop);
+        drawCar(guiGraphics, carTop);
     }
 
     @Override
@@ -102,8 +102,8 @@ public class GuiCarWorkshopRepair extends ScreenBase<ContainerCarWorkshopRepair>
         carRenderer.tick();
     }
 
-    private void drawCar(PoseStack matrixStack, EntityCarBase car) {
-        carRenderer.render(matrixStack, car, imageWidth / 2, 55, 23);
+    private void drawCar(GuiGraphics guiGraphics, EntityCarBase car) {
+        carRenderer.render(guiGraphics, car, imageWidth / 2, 55, 23);
     }
 
     public double getDamagePercent(EntityCarDamageBase car) {
@@ -113,12 +113,12 @@ public class GuiCarWorkshopRepair extends ScreenBase<ContainerCarWorkshopRepair>
     }
 
     @Override
-    protected void renderBg(PoseStack matrixStack, float partialTicks, int mouseX, int mouseY) {
-        super.renderBg(matrixStack, partialTicks, mouseX, mouseY);
-        drawDamage(matrixStack);
+    protected void renderBg(GuiGraphics guiGraphics, float partialTicks, int mouseX, int mouseY) {
+        super.renderBg(guiGraphics, partialTicks, mouseX, mouseY);
+        drawDamage(guiGraphics);
     }
 
-    public void drawDamage(PoseStack matrixStack) {
+    public void drawDamage(GuiGraphics guiGraphics) {
         EntityCarBase car = tile.getCarOnTop();
         if (!(car instanceof EntityCarDamageBase)) {
             return;
@@ -130,11 +130,10 @@ public class GuiCarWorkshopRepair extends ScreenBase<ContainerCarWorkshopRepair>
 
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1F, 1F, 1F, 1F);
-        RenderSystem.setShaderTexture(0, GUI_TEXTURE);
         int scaled = (int) (72 * percent / 100);
         int i = this.leftPos;
         int j = this.topPos;
-        blit(matrixStack, i + 52, j + 81, 176, 0, scaled, 10);
+        guiGraphics.blit(GUI_TEXTURE, i + 52, j + 81, 176, 0, scaled, 10);
     }
 
     @Override

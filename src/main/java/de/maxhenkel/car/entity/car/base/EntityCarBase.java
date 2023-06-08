@@ -108,7 +108,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 
         move(MoverType.SELF, getDeltaMovement());
 
-        if (level.isClientSide) {
+        if (level().isClientSide) {
             updateSounds();
         }
 
@@ -137,13 +137,13 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 
     @Override
     public boolean canCollideWith(Entity entityIn) {
-        if (!level.isClientSide && Main.SERVER_CONFIG.damageEntities.get() && entityIn instanceof LivingEntity && !getPassengers().contains(entityIn)) {
+        if (!level().isClientSide && Main.SERVER_CONFIG.damageEntities.get() && entityIn instanceof LivingEntity && !getPassengers().contains(entityIn)) {
             if (entityIn.getBoundingBox().intersects(getBoundingBox())) {
                 float speed = getSpeed();
                 if (speed > 0.35F) {
                     float damage = speed * 10;
                     tasks.add(() -> {
-                        ServerLevel serverLevel = (ServerLevel) level;
+                        ServerLevel serverLevel = (ServerLevel) level();
                         Optional<Holder.Reference<DamageType>> holder = serverLevel.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolder(DamageSourceCar.DAMAGE_CAR_TYPE);
                         holder.ifPresent(damageTypeReference -> entityIn.hurt(new DamageSource(damageTypeReference, this), damage));
                     });
@@ -155,7 +155,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 
 
     public void checkPush() {
-        List<Player> list = level.getEntitiesOfClass(Player.class, getBoundingBox().expandTowards(0.2, 0, 0.2).expandTowards(-0.2, 0, -0.2));
+        List<Player> list = level().getEntitiesOfClass(Player.class, getBoundingBox().expandTowards(0.2, 0, 0.2).expandTowards(-0.2, 0, -0.2));
 
         for (Player player : list) {
             if (!player.hasPassenger(this) && player.isShiftKeyDown()) {
@@ -270,13 +270,13 @@ public abstract class EntityCarBase extends EntityVehicleBase {
         }
 
         if (horizontalCollision) {
-            if (level.isClientSide && !collidedLastTick) {
+            if (level().isClientSide && !collidedLastTick) {
                 onCollision(speed);
                 collidedLastTick = true;
             }
         } else {
             setDeltaMovement(calculateMotionX(getSpeed(), getYRot()), getDeltaMovement().y, calculateMotionZ(getSpeed(), getYRot()));
-            if (level.isClientSide) {
+            if (level().isClientSide) {
                 collidedLastTick = false;
             }
         }
@@ -284,7 +284,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 
     public float getModifier() {
         BlockPos pos = new BlockPos((int) getX(), (int) (getY() - 0.1D), (int) getZ());
-        BlockState state = level.getBlockState(pos);
+        BlockState state = level().getBlockState(pos);
 
         if (state.isAir() || Main.SERVER_CONFIG.carDriveBlockList.stream().anyMatch(tag -> tag.contains(state.getBlock()))) {
             return Main.SERVER_CONFIG.carOnroadSpeed.get().floatValue();
@@ -294,7 +294,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
     }
 
     public void onCollision(float speed) {
-        if (level.isClientSide) {
+        if (level().isClientSide) {
             Main.SIMPLE_CHANNEL.sendToServer(new MessageCrash(speed, this));
         }
         setSpeed(0.01F);
@@ -341,7 +341,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
             setRight(right);
             needsUpdate = true;
         }
-        if (this.level.isClientSide && needsUpdate) {
+        if (level().isClientSide && needsUpdate) {
             Main.SIMPLE_CHANNEL.sendToServer(new MessageControlCar(forward, backward, left, right, player));
         }
     }
@@ -392,7 +392,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
     }
 
     public void openCarGUI(Player player) {
-        if (level.isClientSide) {
+        if (level().isClientSide) {
             Main.SIMPLE_CHANNEL.sendToServer(new MessageCarGui(player));
         }
     }
@@ -492,19 +492,19 @@ public abstract class EntityCarBase extends EntityVehicleBase {
     }
 
     public void playStopSound() {
-        ModSounds.playSound(getStopSound(), level, blockPosition(), null, SoundSource.MASTER, 1F);
+        ModSounds.playSound(getStopSound(), level(), blockPosition(), null, SoundSource.MASTER, 1F);
     }
 
     public void playFailSound() {
-        ModSounds.playSound(getFailSound(), level, blockPosition(), null, SoundSource.MASTER, 1F);
+        ModSounds.playSound(getFailSound(), level(), blockPosition(), null, SoundSource.MASTER, 1F);
     }
 
     public void playCrashSound() {
-        ModSounds.playSound(getCrashSound(), level, blockPosition(), null, SoundSource.MASTER, 1F);
+        ModSounds.playSound(getCrashSound(), level(), blockPosition(), null, SoundSource.MASTER, 1F);
     }
 
     public void playHornSound() {
-        ModSounds.playSound(getHornSound(), level, blockPosition(), null, SoundSource.MASTER, 1F);
+        ModSounds.playSound(getHornSound(), level(), blockPosition(), null, SoundSource.MASTER, 1F);
     }
 
     public abstract SoundEvent getStopSound();
@@ -527,7 +527,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
     public void checkIdleLoop() {
         if (!isSoundPlaying(idleLoop)) {
             idleLoop = new SoundLoopIdle(this, getIdleSound(), SoundSource.MASTER);
-            ModSounds.playSoundLoop(idleLoop, level);
+            ModSounds.playSoundLoop(idleLoop, level());
         }
     }
 
@@ -535,7 +535,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
     public void checkHighLoop() {
         if (!isSoundPlaying(highLoop)) {
             highLoop = new SoundLoopHigh(this, getHighSound(), SoundSource.MASTER);
-            ModSounds.playSoundLoop(highLoop, level);
+            ModSounds.playSoundLoop(highLoop, level());
         }
     }
 
@@ -543,12 +543,12 @@ public abstract class EntityCarBase extends EntityVehicleBase {
     public void checkStartLoop() {
         if (!isSoundPlaying(startLoop)) {
             startLoop = new SoundLoopStart(this, getStartSound(), SoundSource.MASTER);
-            ModSounds.playSoundLoop(startLoop, level);
+            ModSounds.playSoundLoop(startLoop, level());
         }
     }
 
     public void onHornPressed(Player player) {
-        if (level.isClientSide) {
+        if (level().isClientSide) {
             Main.SIMPLE_CHANNEL.sendToServer(new MessageCarHorn(true, player));
         } else {
             if (this instanceof EntityCarBatteryBase) {
@@ -563,7 +563,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
             playHornSound();
             if (Main.SERVER_CONFIG.hornFlee.get()) {
                 double radius = 15;
-                List<Monster> list = level.getEntitiesOfClass(Monster.class, new AABB(getX() - radius, getY() - radius, getZ() - radius, getX() + radius, getY() + radius, getZ() + radius));
+                List<Monster> list = level().getEntitiesOfClass(Monster.class, new AABB(getX() - radius, getY() - radius, getZ() - radius, getX() + radius, getY() + radius, getZ() + radius));
                 for (Monster ent : list) {
                     fleeEntity(ent);
                 }

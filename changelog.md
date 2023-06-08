@@ -1,1 +1,2 @@
-- Fixed OptiFine compatibility issues
+- Updated to 1.20
+

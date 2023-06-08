@@ -32,11 +32,11 @@ public class SlotFuel extends Slot {
         boolean success = ItemCanister.fuelFluidHandler(stack, car);
 
         if (success) {
-            ModSounds.playSound(SoundEvents.BREWING_STAND_BREW, car.level, car.blockPosition(), null, SoundSource.MASTER);
+            ModSounds.playSound(SoundEvents.BREWING_STAND_BREW, car.level(), car.blockPosition(), null, SoundSource.MASTER);
         }
 
         if (!player.getInventory().add(stack)) {
-            Containers.dropItemStack(car.level, car.getX(), car.getY(), car.getZ(), stack);
+            Containers.dropItemStack(car.level(), car.getX(), car.getY(), car.getZ(), stack);
         }
     }
 

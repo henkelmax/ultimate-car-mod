@@ -16,7 +16,7 @@ public class ContainerFactoryTileEntity<T extends AbstractContainerMenu, U exten
 
     @Override
     public T create(int windowId, Inventory inv, FriendlyByteBuf data) {
-        BlockEntity te = inv.player.level.getBlockEntity(data.readBlockPos());
+        BlockEntity te = inv.player.level().getBlockEntity(data.readBlockPos());
         try {
             return containerCreator.create(windowId, (U) te, inv);
         } catch (ClassCastException e) {

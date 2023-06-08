@@ -246,3 +246,14 @@ shadowJar {
 reobf {
     shadowJar {}
 }
+
+sourceSets {
+    main {
+        java {
+            exclude 'de/maxhenkel/car/integration/jei/CarRecipeCategory.java'
+            exclude 'de/maxhenkel/car/integration/jei/JEIPlugin.java'
+            exclude 'de/maxhenkel/car/integration/jei/PainterRecipeCategory.java'
+            exclude 'de/maxhenkel/car/integration/jei/PainterRecipeCategoryYellow.java'
+        }
+    }
+}

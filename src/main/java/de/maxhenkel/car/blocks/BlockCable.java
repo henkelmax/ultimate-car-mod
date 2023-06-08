@@ -23,8 +23,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.level.material.Material;
-import net.minecraft.world.level.material.MaterialColor;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
@@ -42,7 +41,7 @@ public class BlockCable extends BlockBase implements EntityBlock, IItemBlock, Si
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
     protected BlockCable() {
-        super(Block.Properties.of(Material.WOOL, MaterialColor.COLOR_GRAY).strength(0.25F).sound(SoundType.WOOL));
+        super(Block.Properties.of().mapColor(MapColor.COLOR_GRAY).strength(0.25F).sound(SoundType.WOOL));
 
         registerDefaultState(stateDefinition.any()
                 .setValue(UP, false)

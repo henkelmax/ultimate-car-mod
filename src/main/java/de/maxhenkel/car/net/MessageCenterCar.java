@@ -48,7 +48,7 @@ public class MessageCenterCar implements Message<MessageCenterCar> {
         }
 
         MessageCenterCarClient msg = new MessageCenterCarClient(uuid);
-        context.getSender().getLevel().getPlayers(player -> player.distanceTo(car) <= 128F).forEach(player -> Main.SIMPLE_CHANNEL.sendTo(msg, player.connection.connection, NetworkDirection.PLAY_TO_CLIENT));
+        context.getSender().serverLevel().getPlayers(player -> player.distanceTo(car) <= 128F).forEach(player -> Main.SIMPLE_CHANNEL.sendTo(msg, player.connection.connection, NetworkDirection.PLAY_TO_CLIENT));
     }
 
     @Override

@@ -1,11 +1,11 @@
 package de.maxhenkel.car.gui;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.blocks.tileentity.TileEntityGasStation;
 import de.maxhenkel.car.net.MessageGasStationAdminAmount;
 import de.maxhenkel.corelib.inventory.ScreenBase;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -77,12 +77,12 @@ public class GuiGasStationAdmin extends ScreenBase<ContainerGasStationAdmin> {
     }
 
     @Override
-    protected void renderLabels(PoseStack matrixStack, int mouseX, int mouseY) {
-        super.renderLabels(matrixStack, mouseX, mouseY);
+    protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
+        super.renderLabels(guiGraphics, mouseX, mouseY);
 
-        drawCenteredString(matrixStack, font, Component.translatable("gui.gas_station").getString(), imageWidth / 2, 5, TITLE_COLOR);
+        guiGraphics.drawCenteredString(font, Component.translatable("gui.gas_station").getString(), imageWidth / 2, 5, TITLE_COLOR);
 
-        font.draw(matrixStack, inventoryPlayer.getDisplayName().getVisualOrderText(), 8, imageHeight - 93, FONT_COLOR);
+        guiGraphics.drawString(font, inventoryPlayer.getDisplayName().getVisualOrderText(), 8, imageHeight - 93, FONT_COLOR, false);
     }
 
     @Override

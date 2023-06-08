@@ -16,7 +16,6 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.BlockHitResult;
 
 import javax.annotation.Nullable;
@@ -24,7 +23,7 @@ import javax.annotation.Nullable;
 public class BlockBackmixReactor extends BlockGui<TileEntityBackmixReactor> {
 
     protected BlockBackmixReactor() {
-        super(Material.METAL, SoundType.METAL, 3F, 3F);
+        super(SoundType.METAL, 3F, 3F);
     }
 
     @Override

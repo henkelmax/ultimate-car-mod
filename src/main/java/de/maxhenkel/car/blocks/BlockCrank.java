@@ -16,8 +16,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
-import net.minecraft.world.level.material.Material;
-import net.minecraft.world.level.material.MaterialColor;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -29,7 +28,7 @@ public class BlockCrank extends BlockBase implements IItemBlock {
     public static final VoxelShape SHAPE = Block.box(3.2D, 0D, 3.2D, 12.8D, 9.6D, 12.8D);
 
     public BlockCrank() {
-        super(Properties.of(Material.WOOD, MaterialColor.WOOD).strength(0.5F).sound(SoundType.WOOD));
+        super(Properties.of().mapColor(MapColor.WOOD).strength(0.5F).sound(SoundType.WOOD));
         registerDefaultState(stateDefinition.any().setValue(CRANK_POS, 0));
     }
 

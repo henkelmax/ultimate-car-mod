@@ -30,8 +30,7 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.level.material.Material;
-import net.minecraft.world.level.material.MaterialColor;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -50,7 +49,7 @@ public class BlockFluidExtractor extends BlockBase implements EntityBlock, IItem
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
     protected BlockFluidExtractor() {
-        super(Properties.of(Material.WOOL, MaterialColor.COLOR_GRAY).strength(0.5F).sound(SoundType.METAL));
+        super(Properties.of().mapColor(MapColor.METAL).strength(0.5F).sound(SoundType.METAL));
 
         registerDefaultState(stateDefinition.any()
                 .setValue(FACING, Direction.NORTH)

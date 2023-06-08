@@ -28,7 +28,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -45,7 +45,7 @@ import java.util.List;
 public class BlockTank extends BlockBase implements EntityBlock, IItemBlock {
 
     protected BlockTank() {
-        super(Block.Properties.of(Material.GLASS).strength(0.5F).sound(SoundType.GLASS).noOcclusion());
+        super(Block.Properties.of().mapColor(MapColor.METAL).strength(0.5F).sound(SoundType.GLASS).noOcclusion());
     }
 
     @Override

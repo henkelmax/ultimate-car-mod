@@ -19,8 +19,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
-import net.minecraft.world.level.material.Material;
-import net.minecraft.world.level.material.MaterialColor;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.BlockHitResult;
 
 import javax.annotation.Nullable;
@@ -30,7 +29,7 @@ public class BlockCarWorkshopOutter extends BlockBase implements IItemBlock {
     public static final IntegerProperty POSITION = IntegerProperty.create("position", 0, 8);
 
     public BlockCarWorkshopOutter() {
-        super(Properties.of(Material.METAL, MaterialColor.COLOR_GRAY).strength(3F).sound(SoundType.METAL));
+        super(Properties.of().mapColor(MapColor.COLOR_GRAY).strength(3F).sound(SoundType.METAL));
 
         this.registerDefaultState(stateDefinition.any().setValue(POSITION, 0));
     }

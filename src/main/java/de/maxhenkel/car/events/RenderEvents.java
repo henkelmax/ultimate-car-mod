@@ -1,15 +1,16 @@
 package de.maxhenkel.car.events;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.entity.car.base.EntityGenericCar;
 import de.maxhenkel.car.entity.car.base.EntityVehicleBase;
 import de.maxhenkel.corelib.math.MathUtils;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiComponent;
+import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
@@ -25,6 +26,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 @OnlyIn(Dist.CLIENT)
 public class RenderEvents {
 
+    protected static final ResourceLocation GUI_ICONS_LOCATION = new ResourceLocation("textures/gui/icons.png");
     private static final Minecraft mc = Minecraft.getInstance();
 
     @SubscribeEvent
@@ -54,7 +56,7 @@ public class RenderEvents {
         return null;
     }
 
-    public static boolean onRenderExperienceBar(PoseStack poseStack, int i) {
+    public static boolean onRenderExperienceBar(GuiGraphics guiGraphics, int i) {
         Player player = mc.player;
         EntityGenericCar car = getCar();
 
@@ -65,39 +67,38 @@ public class RenderEvents {
         if (!player.equals(car.getDriver())) {
             return false;
         }
-        renderFuelBar(poseStack, ((float) car.getFuelAmount()) / ((float) car.getMaxFuel()));
-        renderSpeed(poseStack, car.getKilometerPerHour());
+        renderFuelBar(guiGraphics, ((float) car.getFuelAmount()) / ((float) car.getMaxFuel()));
+        renderSpeed(guiGraphics, car.getKilometerPerHour());
         return true;
     }
 
-    public static void renderFuelBar(PoseStack matrixStack, float percent) {
+    public static void renderFuelBar(GuiGraphics guiGraphics, float percent) {
         percent = Mth.clamp(percent, 0F, 1F);
         int x = mc.getWindow().getGuiScaledWidth() / 2 - 91;
 
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1F, 1F, 1F, 1F);
-        RenderSystem.setShaderTexture(0, GuiComponent.GUI_ICONS_LOCATION);
 
         int k = mc.getWindow().getGuiScaledHeight() - 32 + 3;
-        mc.gui.blit(matrixStack, x, k, 0, 64, 182, 5);
+        guiGraphics.blit(GUI_ICONS_LOCATION, x, k, 0, 64, 182, 5);
 
         int j = (int) (percent * 182F);
 
         if (j > 0) {
-            mc.gui.blit(matrixStack, x, k, 0, 69, j, 5);
+            guiGraphics.blit(GUI_ICONS_LOCATION, x, k, 0, 69, j, 5);
         }
     }
 
-    public static void renderSpeed(PoseStack matrixStack, float speed) {
+    public static void renderSpeed(GuiGraphics guiGraphics, float speed) {
+        Font font = mc.gui.getFont();
         String s = String.valueOf(MathUtils.round(Math.abs(speed), 2));
-        int i1 = (mc.getWindow().getGuiScaledWidth() - mc.gui.getFont().width(s)) / 2;
+        int i1 = (mc.getWindow().getGuiScaledWidth() - font.width(s)) / 2;
         int j1 = mc.getWindow().getGuiScaledHeight() - 31 - 4;
-        mc.gui.getFont().draw(matrixStack, s, i1 + 1, j1, 0);
-        mc.gui.getFont().draw(matrixStack, s, i1 - 1, j1, 0);
-        mc.gui.getFont().draw(matrixStack, s, i1, j1 + 1, 0);
-        mc.gui.getFont().draw(matrixStack, s, i1, j1 - 1, 0);
-        mc.gui.getFont().draw(matrixStack, s, i1, j1, 8453920);
-
+        guiGraphics.drawString(font, s, i1 + 1, j1, 0, false);
+        guiGraphics.drawString(font, s, i1 - 1, j1, 0, false);
+        guiGraphics.drawString(font, s, i1, j1 + 1, 0, false);
+        guiGraphics.drawString(font, s, i1, j1 - 1, 0, false);
+        guiGraphics.drawString(font, s, i1, j1, 8453920, false);
     }
 
     @SubscribeEvent

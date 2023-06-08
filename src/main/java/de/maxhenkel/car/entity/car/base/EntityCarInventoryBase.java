@@ -56,7 +56,7 @@ public abstract class EntityCarInventoryBase extends EntityCarFuelBase implement
                     boolean success = ItemCanister.fillCanister(stack, this);
 
                     if (success) {
-                        ModSounds.playSound(SoundEvents.BREWING_STAND_BREW, level, blockPosition(), null, SoundSource.BLOCKS);
+                        ModSounds.playSound(SoundEvents.BREWING_STAND_BREW, level(), blockPosition(), null, SoundSource.BLOCKS);
                     }
                     return InteractionResult.CONSUME;
                 }
@@ -79,7 +79,7 @@ public abstract class EntityCarInventoryBase extends EntityCarFuelBase implement
             }
 
             //Inv
-            if (!level.isClientSide) {
+            if (!level().isClientSide) {
                 if (externalInventory.getContainerSize() <= 0) {
                     openCarGUI(player);
                 } else {
@@ -144,17 +144,17 @@ public abstract class EntityCarInventoryBase extends EntityCarFuelBase implement
     public void destroyCar(Player player, boolean dropParts) {
         super.destroyCar(player, dropParts);
 
-        Containers.dropContents(level, this, this);
-        Containers.dropContents(level, this, externalInventory);
+        Containers.dropContents(level(), this, this);
+        Containers.dropContents(level(), this, externalInventory);
         if (dropParts) {
-            Containers.dropContents(level, this, partInventory);
+            Containers.dropContents(level(), this, partInventory);
         }
     }
 
     @Override
     public void openCarGUI(Player player) {
         super.openCarGUI(player);
-        if (!level.isClientSide && player instanceof ServerPlayer) {
+        if (!level().isClientSide && player instanceof ServerPlayer) {
             NetworkHooks.openScreen((ServerPlayer) player, new MenuProvider() {
                 @Override
                 public Component getDisplayName() {

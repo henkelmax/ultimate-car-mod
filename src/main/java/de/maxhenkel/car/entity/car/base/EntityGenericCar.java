@@ -388,7 +388,7 @@ public class EntityGenericCar extends EntityCarLicensePlateBase {
 
     public void tryInitPartsAndModel() {
         if (!isInitialized) {
-            if (level.isClientSide) {
+            if (level().isClientSide) {
                 if (!isSpawned || updateClientSideItems()) {
                     initParts();
                     initModel();

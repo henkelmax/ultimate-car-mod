@@ -1,10 +1,10 @@
 package de.maxhenkel.car.gui;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.blocks.tileentity.TileEntityFluidExtractor;
 import de.maxhenkel.corelib.inventory.ScreenBase;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
@@ -29,17 +29,17 @@ public class GuiFluidExtractor extends ScreenBase<ContainerFluidExtractor> {
     }
 
     @Override
-    protected void renderLabels(PoseStack matrixStack, int mouseX, int mouseY) {
-        super.renderLabels(matrixStack, mouseX, mouseY);
+    protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
+        super.renderLabels(guiGraphics, mouseX, mouseY);
 
         // Title
-        font.draw(matrixStack, playerInv.getDisplayName().getVisualOrderText(), 8, this.imageHeight - 96 + 2, FONT_COLOR);
-        font.draw(matrixStack, tile.getDisplayName().getVisualOrderText(), 8, 6, FONT_COLOR);
+        guiGraphics.drawString(font, playerInv.getDisplayName().getVisualOrderText(), 8, this.imageHeight - 96 + 2, FONT_COLOR, false);
+        guiGraphics.drawString(font, tile.getDisplayName().getVisualOrderText(), 8, 6, FONT_COLOR, false);
 
-        drawFilter(matrixStack);
+        drawFilter(guiGraphics);
     }
 
-    private void drawFilter(PoseStack matrixStack) {
+    private void drawFilter(GuiGraphics guiGraphics) {
         MutableComponent name;
 
         Fluid f = tile.getFilterFluid();
@@ -50,7 +50,7 @@ public class GuiFluidExtractor extends ScreenBase<ContainerFluidExtractor> {
             name = Component.literal(new FluidStack(f, 1).getDisplayName().getString());
         }
 
-        font.draw(matrixStack, Component.translatable("filter.fluid", name.withStyle(ChatFormatting.WHITE)).getVisualOrderText(), 46, 28, FONT_COLOR);
+        guiGraphics.drawString(font, Component.translatable("filter.fluid", name.withStyle(ChatFormatting.WHITE)).getVisualOrderText(), 46, 28, FONT_COLOR, false);
     }
 
 }

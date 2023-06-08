@@ -35,7 +35,6 @@ import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.network.syncher.EntityDataSerializer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
@@ -119,7 +118,6 @@ public class Main {
     public Main() {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::commonSetup);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(IMC::enqueueIMC);
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(CreativeTabEvents::onCreativeModeTabRegister);
 
         SERVER_CONFIG = CommonRegistry.registerConfig(ModConfig.Type.SERVER, ServerConfig.class, true);
         FUEL_CONFIG = CommonRegistry.registerDynamicConfig(DynamicConfig.DynamicConfigType.SERVER, Main.MODID, "fuel", FuelConfig.class);
@@ -134,6 +132,8 @@ public class Main {
         ModBlocks.init();
         ModItems.init();
         ModSounds.init();
+        ModCreativeTabs.init();
+
         MENU_TYPE_REGISTER.register(FMLJavaModLoadingContext.get().getModEventBus());
         BLOCK_ENTITY_REGISTER.register(FMLJavaModLoadingContext.get().getModEventBus());
         ENTITY_REGISTER.register(FMLJavaModLoadingContext.get().getModEventBus());

@@ -29,7 +29,7 @@ public class MessageEditSign implements Message<MessageEditSign> {
 
     @Override
     public void executeServerSide(NetworkEvent.Context context) {
-        BlockEntity te = context.getSender().level.getBlockEntity(pos);
+        BlockEntity te = context.getSender().level().getBlockEntity(pos);
 
         if (te instanceof TileEntitySign) {
             ((TileEntitySign) te).setText(text);

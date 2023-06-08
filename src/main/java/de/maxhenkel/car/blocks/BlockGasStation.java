@@ -26,8 +26,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Material;
-import net.minecraft.world.level.material.MaterialColor;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -62,7 +61,7 @@ public class BlockGasStation extends BlockOrientableHorizontal {
             ).build();
 
     public BlockGasStation() {
-        super(Material.METAL, MaterialColor.METAL, SoundType.METAL, 4F, 50F);
+        super(MapColor.METAL, SoundType.METAL, 4F, 50F);
     }
 
     @Override

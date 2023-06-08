@@ -29,7 +29,7 @@ public class MessageGasStationAdminAmount implements Message<MessageGasStationAd
 
     @Override
     public void executeServerSide(NetworkEvent.Context context) {
-        BlockEntity te = context.getSender().level.getBlockEntity(pos);
+        BlockEntity te = context.getSender().level().getBlockEntity(pos);
 
         if (te instanceof TileEntityGasStation) {
             ((TileEntityGasStation) te).setTradeAmount(amount);

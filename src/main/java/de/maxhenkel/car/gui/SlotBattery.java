@@ -36,7 +36,7 @@ public class SlotBattery extends Slot {
         car.setBatteryLevel(car.getBatteryLevel() + fill);
 
         if (!player.getInventory().add(stack)) {
-            Containers.dropItemStack(car.level, car.getX(), car.getY(), car.getZ(), stack);
+            Containers.dropItemStack(car.level(), car.getX(), car.getY(), car.getZ(), stack);
         }
     }
 

@@ -22,8 +22,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
-import net.minecraft.world.level.material.Material;
-import net.minecraft.world.level.material.MaterialColor;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.BlockHitResult;
 
 import javax.annotation.Nullable;
@@ -33,8 +32,8 @@ public abstract class BlockGui<T extends BlockEntity> extends BlockBase implemen
     public static final BooleanProperty POWERED = BooleanProperty.create("powered");
     public static final DirectionProperty FACING = DirectionProperty.create("facing", Direction.Plane.HORIZONTAL);
 
-    protected BlockGui(Material material, SoundType soundType, float hardness, float resistance) {
-        this(Properties.of(material, MaterialColor.METAL).strength(hardness, resistance).sound(soundType));
+    protected BlockGui(SoundType soundType, float hardness, float resistance) {
+        this(Properties.of().mapColor(MapColor.METAL).strength(hardness, resistance).sound(soundType));
     }
 
     protected BlockGui(Block.Properties properties) {

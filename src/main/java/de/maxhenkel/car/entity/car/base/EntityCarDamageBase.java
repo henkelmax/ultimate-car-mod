@@ -35,7 +35,7 @@ public abstract class EntityCarDamageBase extends EntityCarBatteryBase {
     }
 
     public void particles() {
-        if (!level.isClientSide) {
+        if (!level().isClientSide) {
             return;
         }
 
@@ -63,7 +63,7 @@ public abstract class EntityCarDamageBase extends EntityCarBatteryBase {
         }
 
         for (int i = 0; i < amount; i++) {
-            this.level.addParticle(ParticleTypes.LARGE_SMOKE,
+            this.level().addParticle(ParticleTypes.LARGE_SMOKE,
                     getX() + (random.nextDouble() - 0.5D) * getCarWidth(),
                     getY() + random.nextDouble() * getCarHeight(),
                     getZ() + (random.nextDouble() - 0.5D) * getCarWidth(),
@@ -96,7 +96,7 @@ public abstract class EntityCarDamageBase extends EntityCarBatteryBase {
             return false;
         }
 
-        if (level.isClientSide || !isAlive()) {
+        if (level().isClientSide || !isAlive()) {
             return false;
         }
 
@@ -117,7 +117,7 @@ public abstract class EntityCarDamageBase extends EntityCarBatteryBase {
         ItemStack stack = player.getMainHandItem();
 
         if (stack.getItem() instanceof ItemRepairTool) {
-            long time = player.level.getGameTime();
+            long time = player.level().getGameTime();
             if (time - lastDamage < 10L) {
                 destroyCar(player, true);
                 stack.hurtAndBreak(50, player, playerEntity -> playerEntity.broadcastBreakEvent(InteractionHand.MAIN_HAND));

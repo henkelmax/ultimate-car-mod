@@ -39,11 +39,11 @@ public class MessageSyncTileEntity implements Message<MessageSyncTileEntity> {
     private void sync() {
         Player player = Minecraft.getInstance().player;
 
-        if (player == null || player.level == null) {
+        if (player == null || player.level() == null) {
             return;
         }
 
-        BlockEntity te = player.level.getBlockEntity(pos);
+        BlockEntity te = player.level().getBlockEntity(pos);
 
         if (te != null) {
             te.load(tag);

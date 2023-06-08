@@ -43,7 +43,7 @@ public class MessageOpenCarWorkshopGui implements Message<MessageOpenCarWorkshop
             return;
         }
 
-        BlockEntity te = context.getSender().level.getBlockEntity(pos);
+        BlockEntity te = context.getSender().level().getBlockEntity(pos);
 
         if (!(te instanceof TileEntityCarWorkshop)) {
             return;

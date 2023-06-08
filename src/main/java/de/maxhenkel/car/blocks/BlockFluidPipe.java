@@ -22,8 +22,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.level.material.Material;
-import net.minecraft.world.level.material.MaterialColor;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
@@ -40,7 +39,7 @@ public class BlockFluidPipe extends BlockBase implements IItemBlock, SimpleWater
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
     public BlockFluidPipe() {
-        super(Properties.of(Material.WOOL, MaterialColor.COLOR_GRAY).strength(0.25F).sound(SoundType.METAL));
+        super(Properties.of().mapColor(MapColor.METAL).strength(0.25F).sound(SoundType.METAL));
 
         registerDefaultState(stateDefinition.any()
                 .setValue(UP, false)

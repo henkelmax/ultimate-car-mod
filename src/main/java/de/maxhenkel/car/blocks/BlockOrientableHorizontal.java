@@ -12,8 +12,7 @@ import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
-import net.minecraft.world.level.material.Material;
-import net.minecraft.world.level.material.MaterialColor;
+import net.minecraft.world.level.material.MapColor;
 
 import javax.annotation.Nullable;
 
@@ -21,8 +20,8 @@ public abstract class BlockOrientableHorizontal extends BlockBase implements Ent
 
     public static final DirectionProperty FACING = DirectionProperty.create("facing", Direction.Plane.HORIZONTAL);
 
-    public BlockOrientableHorizontal(Material material, MaterialColor color, SoundType soundType, float hardness, float resistance) {
-        super(Properties.of(material, color).strength(hardness, resistance).sound(soundType));
+    public BlockOrientableHorizontal(MapColor color, SoundType soundType, float hardness, float resistance) {
+        super(Properties.of().mapColor(color).strength(hardness, resistance).sound(soundType));
         registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH));
     }
 

@@ -18,8 +18,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.level.material.Material;
-import net.minecraft.world.level.material.MaterialColor;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
@@ -30,7 +29,7 @@ public class BlockSignPost extends BlockBase implements IItemBlock, SimpleWaterl
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
     public BlockSignPost() {
-        super(Properties.of(Material.METAL, MaterialColor.METAL).strength(2F).sound(SoundType.METAL));
+        super(Properties.of().mapColor(MapColor.METAL).strength(2F).sound(SoundType.METAL));
 
         registerDefaultState(stateDefinition.any().setValue(WATERLOGGED, false));
     }

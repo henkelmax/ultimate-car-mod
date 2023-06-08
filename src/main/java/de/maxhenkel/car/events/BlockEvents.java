@@ -5,7 +5,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
@@ -23,17 +23,16 @@ public class BlockEvents {
             return;
         }
 
-        if (event.getPlayer().level instanceof ServerLevel level) {
-            LootContext.Builder builder = new LootContext.Builder(level)
-                    .withRandom(level.random)
+        if (event.getPlayer().level() instanceof ServerLevel level) {
+            LootParams.Builder builder = new LootParams.Builder(level)
                     .withParameter(LootContextParams.ORIGIN, new Vec3(event.getPos().getX(), event.getPos().getY(), event.getPos().getZ()))
                     .withParameter(LootContextParams.TOOL, event.getPlayer().getMainHandItem())
                     .withParameter(LootContextParams.THIS_ENTITY, event.getPlayer())
                     .withParameter(LootContextParams.BLOCK_STATE, event.getState());
 
-            LootContext lootContext = builder.create(LootContextParamSets.BLOCK);
+            LootParams lootContext = builder.create(LootContextParamSets.BLOCK);
 
-            LootTable lootTable = level.getServer().getLootTables().get(GRASS_LOOT_TABLE);
+            LootTable lootTable = level.getServer().getLootData().getLootTable(GRASS_LOOT_TABLE);
 
             lootTable.getRandomItems(lootContext).forEach((stack) -> Block.popResource(level, event.getPos(), stack));
         }

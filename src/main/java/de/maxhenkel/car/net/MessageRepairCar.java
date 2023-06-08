@@ -38,7 +38,7 @@ public class MessageRepairCar implements Message<MessageRepairCar> {
             return;
         }
 
-        BlockEntity te = context.getSender().level.getBlockEntity(pos);
+        BlockEntity te = context.getSender().level().getBlockEntity(pos);
 
         if (te instanceof TileEntityCarWorkshop) {
             ((TileEntityCarWorkshop) te).repairCar(context.getSender());

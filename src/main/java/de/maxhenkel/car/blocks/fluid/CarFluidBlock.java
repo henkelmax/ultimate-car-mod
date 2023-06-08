@@ -8,14 +8,13 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FlowingFluid;
-import net.minecraft.world.level.material.Material;
 
 import java.util.function.Supplier;
 
 public class CarFluidBlock extends LiquidBlock {
 
     public CarFluidBlock(Supplier<? extends FlowingFluid> fluidSupplier) {
-        super(fluidSupplier, Block.Properties.of(Material.WATER).noCollission().strength(100F));
+        super(fluidSupplier, Block.Properties.of().noCollission().strength(100F));
     }
 
     @Override

@@ -3,7 +3,6 @@ package de.maxhenkel.car.entity.car.base;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.sounds.ModSounds;
 import de.maxhenkel.car.sounds.SoundLoopStarting;
-import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -44,7 +43,7 @@ public abstract class EntityCarBatteryBase extends EntityCarTemperatureBase {
     public void tick() {
         super.tick();
 
-        if (level.isClientSide) {
+        if (level().isClientSide) {
             if (isStarted()) {
                 timeSinceStarted++;
                 if (tickCount % 2 == 0) { //How often particles will spawn
@@ -99,7 +98,7 @@ public abstract class EntityCarBatteryBase extends EntityCarTemperatureBase {
     }
 
     public void spawnParticles(boolean driving) {
-        if (!level.isClientSide) {
+        if (!level().isClientSide) {
             return;
         }
         Vec3 lookVec = getLookAngle().normalize();
@@ -145,7 +144,7 @@ public abstract class EntityCarBatteryBase extends EntityCarTemperatureBase {
     }
 
     private void spawnParticle(ParticleOptions particleTypes, double offX, double offY, double offZ, double speedX, double speedZ, double r) {
-        level.addParticle(particleTypes,
+        level().addParticle(particleTypes,
                 getX() + offX + (random.nextDouble() * r - r / 2D),
                 getY() + offY + (random.nextDouble() * r - r / 2D) + getCarHeight() / 8F,
                 getZ() + offZ + (random.nextDouble() * r - r / 2D),
@@ -315,13 +314,13 @@ public abstract class EntityCarBatteryBase extends EntityCarTemperatureBase {
     public void checkStartingLoop() {
         if (!isSoundPlaying(startingLoop)) {
             startingLoop = new SoundLoopStarting(this, getStartingSound(), SoundSource.MASTER);
-            ModSounds.playSoundLoop(startingLoop, level);
+            ModSounds.playSoundLoop(startingLoop, level());
         }
     }
 
     @Override
     public void playFailSound() {
-        ModSounds.playSound(getFailSound(), level, blockPosition(), null, SoundSource.MASTER, 1F, getBatterySoundPitchLevel());
+        ModSounds.playSound(getFailSound(), level(), blockPosition(), null, SoundSource.MASTER, 1F, getBatterySoundPitchLevel());
     }
 
 }

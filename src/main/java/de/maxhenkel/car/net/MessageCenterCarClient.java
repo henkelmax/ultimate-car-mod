@@ -31,7 +31,7 @@ public class MessageCenterCarClient implements Message<MessageCenterCarClient> {
     @OnlyIn(Dist.CLIENT)
     public void centerClient() {
         Player player = Minecraft.getInstance().player;
-        Player ridingPlayer = player.level.getPlayerByUUID(uuid);
+        Player ridingPlayer = player.level().getPlayerByUUID(uuid);
         Entity riding = ridingPlayer.getVehicle();
 
         if (!(riding instanceof EntityCarBase)) {

@@ -36,11 +36,11 @@ public class SlotRepairKit extends Slot {
             if (damage >= 0) {
                 car.setDamage(damage);
             }
-            ModSounds.playSound(ModSounds.RATCHET.get(), car.level, car.blockPosition(), null, SoundSource.BLOCKS);
+            ModSounds.playSound(ModSounds.RATCHET.get(), car.level(), car.blockPosition(), null, SoundSource.BLOCKS);
         }
 
         if (!player.getInventory().add(stack)) {
-            Containers.dropItemStack(car.level, car.getX(), car.getY(), car.getZ(), stack);
+            Containers.dropItemStack(car.level(), car.getX(), car.getY(), car.getZ(), stack);
         }
     }
 
