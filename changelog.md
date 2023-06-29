@@ -1,2 +1,1 @@
-- Updated to 1.20.1
-
+- Fix support for newer Forge versions

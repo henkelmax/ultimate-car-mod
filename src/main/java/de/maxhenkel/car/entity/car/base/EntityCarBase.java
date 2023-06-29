@@ -70,7 +70,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 
     public EntityCarBase(EntityType type, Level worldIn) {
         super(type, worldIn);
-        this.maxUpStep = 0.5F;
+        setMaxUpStep(0.5F);
     }
 
     public abstract float getMaxSpeed();

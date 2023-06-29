@@ -445,7 +445,7 @@ public class EntityGenericCar extends EntityCarLicensePlateBase {
 
         PartWheelBase partWheels = getPartByClass(PartWheelBase.class);
         if (partWheels != null) {
-            maxUpStep = partWheels.getStepHeight();
+            setMaxUpStep(partWheels.getStepHeight());
         }
     }
 
