@@ -1,1 +1,1 @@
-- Fix support for newer Forge versions
+- Fixed car volume slider
