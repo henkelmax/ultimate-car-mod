@@ -1,1 +1,5 @@
 blank_issues_enabled: false
+contact_links:
+  - name: Wiki
+    about: Useful information about the mod
+    url: https://modrepo.de/minecraft/car/wiki
