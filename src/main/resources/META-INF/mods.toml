@@ -22,3 +22,21 @@ description='''This mod brings cars, road construction and biodiesel production 
     versionRange="[${mod_minecraft_version}]"
     ordering="NONE"
     side="BOTH"
+[[dependencies.${mod_id}]]
+    modId="jei"
+    mandatory=false
+    versionRange="*"
+    ordering="NONE"
+    side="BOTH"
+[[dependencies.${mod_id}]]
+    modId="theoneprobe"
+    mandatory=false
+    versionRange="*"
+    ordering="NONE"
+    side="BOTH"
+[[dependencies.${mod_id}]]
+    modId="jade"
+    mandatory=false
+    versionRange="*"
+    ordering="NONE"
+    side="BOTH"
