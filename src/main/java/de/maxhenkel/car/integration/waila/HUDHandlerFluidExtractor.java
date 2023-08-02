@@ -5,9 +5,6 @@ import de.maxhenkel.car.blocks.tileentity.TileEntityFluidExtractor;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.material.Fluid;
 import snownee.jade.api.BlockAccessor;
 import snownee.jade.api.IBlockComponentProvider;
@@ -15,7 +12,7 @@ import snownee.jade.api.IServerDataProvider;
 import snownee.jade.api.ITooltip;
 import snownee.jade.api.config.IPluginConfig;
 
-public class HUDHandlerFluidExtractor implements IBlockComponentProvider, IServerDataProvider<BlockEntity> {
+public class HUDHandlerFluidExtractor implements IBlockComponentProvider, IServerDataProvider<BlockAccessor> {
 
     public static final HUDHandlerFluidExtractor INSTANCE = new HUDHandlerFluidExtractor();
 
@@ -29,8 +26,8 @@ public class HUDHandlerFluidExtractor implements IBlockComponentProvider, IServe
     }
 
     @Override
-    public void appendServerData(CompoundTag compoundTag, ServerPlayer serverPlayer, Level level, BlockEntity blockEntity, boolean b) {
-        TileEntityFluidExtractor extractor = (TileEntityFluidExtractor) blockEntity;
+    public void appendServerData(CompoundTag compoundTag, BlockAccessor blockAccessor) {
+        TileEntityFluidExtractor extractor = (TileEntityFluidExtractor) blockAccessor.getBlockEntity();
         Fluid filter = extractor.getFilterFluid();
         if (filter != null) {
             compoundTag.putString("filter", extractor.getFilterFluid().getFluidType().getDescriptionId());

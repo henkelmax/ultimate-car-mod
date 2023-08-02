@@ -1,1 +1,1 @@
-- Fixed car volume slider
+- Re-added Jade, The One Probe and JEI integration

@@ -73,18 +73,31 @@ minecraft {
 
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
+repositories {
+    mavenLocal()
+    maven { url = 'https://dvs1.progwml6.com/files/maven/' }
+    maven { url = 'https://modmaven.k-4u.nl' }
+    maven { url = 'https://maven.maxhenkel.de/repository/public' }
+    maven {
+        url = 'https://api.modrinth.com/maven'
+        content {
+            includeGroup "maven.modrinth"
+        }
+    }
+}
+
 dependencies {
     minecraft "net.minecraftforge:forge:${mod_minecraft_version}-${forge_version}"
 
-    compileOnly fg.deobf("curse.maven:jei-238222:${jei_id}")
+    implementation fg.deobf("maven.modrinth:jei:${jei_version}")
 
     shadow fg.deobf("de.maxhenkel.corelib:corelib:${mod_minecraft_version}-${corelib_version}:api")
     runtimeOnly fg.deobf("de.maxhenkel.corelib:corelib:${mod_minecraft_version}-${corelib_version}")
     runtimeOnly fg.deobf("de.maxhenkel.corelib:corelib:${mod_minecraft_version}-${corelib_version}:javadoc")
 
-    compileOnly fg.deobf("curse.maven:the-one-probe-245211:${theoneprobe_id}")
+    implementation fg.deobf("maven.modrinth:the-one-probe:${theoneprobe_version}")
 
-    compileOnly fg.deobf("curse.maven:jade-324717:${jade_id}")
+    implementation fg.deobf("maven.modrinth:jade:${jade_version}")
 
     implementation 'com.google.code.findbugs:jsr305:3.0.2'
     annotationProcessor 'org.spongepowered:mixin:0.8.4:processor'
@@ -184,19 +197,6 @@ modUpdate {
     tags = recommended == 'true' ? ['recommended'] : []
 }
 
-repositories {
-    mavenLocal()
-    maven { url = 'https://dvs1.progwml6.com/files/maven/' }
-    maven { url = 'https://modmaven.k-4u.nl' }
-    maven { url = 'https://maven.maxhenkel.de/repository/public' }
-    maven {
-        url 'https://www.cursemaven.com'
-        content {
-            includeGroup 'curse.maven'
-        }
-    }
-}
-
 javadoc {
     failOnError = false
 }
@@ -247,7 +247,7 @@ reobf {
     shadowJar {}
 }
 
-sourceSets {
+/*sourceSets {
     main {
         java {
             exclude 'de/maxhenkel/car/integration/jei/CarRecipeCategory.java'
@@ -256,4 +256,4 @@ sourceSets {
             exclude 'de/maxhenkel/car/integration/jei/PainterRecipeCategoryYellow.java'
         }
     }
-}
+}*/

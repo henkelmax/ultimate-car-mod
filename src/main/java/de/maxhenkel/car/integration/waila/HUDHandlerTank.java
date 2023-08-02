@@ -5,9 +5,6 @@ import de.maxhenkel.car.blocks.tileentity.TileEntityTank;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.fluids.FluidStack;
 import snownee.jade.api.BlockAccessor;
 import snownee.jade.api.IBlockComponentProvider;
@@ -15,7 +12,7 @@ import snownee.jade.api.IServerDataProvider;
 import snownee.jade.api.ITooltip;
 import snownee.jade.api.config.IPluginConfig;
 
-public class HUDHandlerTank implements IBlockComponentProvider, IServerDataProvider<BlockEntity> {
+public class HUDHandlerTank implements IBlockComponentProvider, IServerDataProvider<BlockAccessor> {
 
     public static final HUDHandlerTank INSTANCE = new HUDHandlerTank();
 
@@ -34,8 +31,8 @@ public class HUDHandlerTank implements IBlockComponentProvider, IServerDataProvi
     }
 
     @Override
-    public void appendServerData(CompoundTag compoundTag, ServerPlayer serverPlayer, Level level, BlockEntity blockEntity, boolean b) {
-        TileEntityTank tank = (TileEntityTank) blockEntity;
+    public void appendServerData(CompoundTag compoundTag, BlockAccessor blockAccessor) {
+        TileEntityTank tank = (TileEntityTank) blockAccessor.getBlockEntity();
         compoundTag.put("fluid", tank.getFluid().writeToNBT(new CompoundTag()));
     }
 
