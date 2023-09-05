@@ -15,6 +15,7 @@ import net.minecraftforge.event.village.VillagerTradesEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class VillagerEvents {
@@ -22,11 +23,11 @@ public class VillagerEvents {
     @SubscribeEvent
     public void villagerTrades(VillagerTradesEvent event) {
         if (event.getType().equals(Main.VILLAGER_PROFESSION_GAS_STATION_ATTENDANT.get())) {
-            event.getTrades().put(1, Arrays.asList(
+            event.getTrades().put(1, new ArrayList<>(Arrays.asList(
                     new EmeraldForItemsTrade(ModItems.CANOLA.get(), 20, 16, 2),
                     new Trade(Items.EMERALD, 16, ModBlocks.ASPHALT.get(), 4, 16, 2)
-            ));
-            event.getTrades().put(2, Arrays.asList(
+            )));
+            event.getTrades().put(2, new ArrayList<>(Arrays.asList(
                     new MultiTrade(
                             new Trade(Items.EMERALD, 8, ModItems.PAINTER.get(), 1, 8, 3),
                             new Trade(Items.EMERALD, 8, ModItems.PAINTER_YELLOW.get(), 1, 8, 3)
@@ -36,17 +37,17 @@ public class VillagerEvents {
                             new Trade(Items.EMERALD, 16, ModItems.SCREW_DRIVER.get(), 1, 3, 6),
                             new Trade(Items.EMERALD, 16, ModItems.HAMMER.get(), 1, 3, 6)
                     )
-            ));
-            event.getTrades().put(3, Arrays.asList(
+            )));
+            event.getTrades().put(3, new ArrayList<>(Arrays.asList(
                     new Trade(Items.EMERALD, 18, ModItems.CANISTER.get(), 1, 3, 8),
                     new Trade(Items.EMERALD, 24, ModItems.REPAIR_KIT.get(), 1, 3, 8)
-            ));
-            event.getTrades().put(4, Arrays.asList(
+            )));
+            event.getTrades().put(4, new ArrayList<>(Arrays.asList(
                     new MultiTrade(
                             new Trade(Items.EMERALD, 32, ModItems.BATTERY.get(), 1, 3, 12),
                             new Trade(Items.EMERALD, 32, ModItems.LICENSE_PLATE.get(), 1, 3, 12)
                     )
-            ));
+            )));
         }
     }
 
