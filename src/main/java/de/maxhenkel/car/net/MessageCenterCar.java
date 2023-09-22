@@ -3,12 +3,12 @@ package de.maxhenkel.car.net;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.entity.car.base.EntityCarBatteryBase;
 import de.maxhenkel.corelib.net.Message;
+import de.maxhenkel.corelib.net.NetUtils;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.network.NetworkDirection;
-import net.minecraftforge.network.NetworkEvent;
+import net.minecraftforge.event.network.CustomPayloadEvent;
 
 import java.util.UUID;
 
@@ -30,7 +30,7 @@ public class MessageCenterCar implements Message<MessageCenterCar> {
     }
 
     @Override
-    public void executeServerSide(NetworkEvent.Context context) {
+    public void executeServerSide(CustomPayloadEvent.Context context) {
         if (!context.getSender().getUUID().equals(uuid)) {
             Main.LOGGER.error("The UUID of the sender was not equal to the packet UUID");
             return;
@@ -48,7 +48,8 @@ public class MessageCenterCar implements Message<MessageCenterCar> {
         }
 
         MessageCenterCarClient msg = new MessageCenterCarClient(uuid);
-        context.getSender().serverLevel().getPlayers(player -> player.distanceTo(car) <= 128F).forEach(player -> Main.SIMPLE_CHANNEL.sendTo(msg, player.connection.connection, NetworkDirection.PLAY_TO_CLIENT));
+
+        context.getSender().serverLevel().getPlayers(player -> player.distanceTo(car) <= 128F).forEach(player -> NetUtils.sendTo(Main.SIMPLE_CHANNEL, player, msg));
     }
 
     @Override

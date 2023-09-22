@@ -4,6 +4,7 @@ import de.maxhenkel.car.Main;
 import de.maxhenkel.car.blocks.tileentity.TileEntitySign;
 import de.maxhenkel.car.net.MessageEditSign;
 import de.maxhenkel.corelib.inventory.ScreenBase;
+import de.maxhenkel.corelib.net.NetUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
@@ -59,7 +60,7 @@ public class GuiSign extends ScreenBase<ContainerSign> {
 
         buttonSubmit = addRenderableWidget(Button.builder(Component.translatable("button.car.submit"), button -> {
             save();
-            Main.SIMPLE_CHANNEL.sendToServer(new MessageEditSign(sign.getBlockPos(), text));
+            NetUtils.sendToServer(Main.SIMPLE_CHANNEL, new MessageEditSign(sign.getBlockPos(), text));
             Minecraft.getInstance().setScreen(null);
         }).bounds(guiLeft + 20, guiTop + imageHeight - 25, 50, 20).build());
         buttonCancel = addRenderableWidget(Button.builder(Component.translatable("button.car.cancel"), button -> {

@@ -1,7 +1,7 @@
 package de.maxhenkel.car.loottable;
 
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonObject;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.blocks.tileentity.TileEntityTank;
 import net.minecraft.nbt.CompoundTag;
@@ -14,9 +14,13 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraftforge.fluids.FluidStack;
 
+import java.util.List;
+
 public class CopyFluid extends LootItemConditionalFunction {
 
-    protected CopyFluid(LootItemCondition[] conditions) {
+    public static final Codec<CopyFluid> CODEC = RecordCodecBuilder.create(instance -> commonFields(instance).apply(instance, CopyFluid::new));
+
+    protected CopyFluid(List<LootItemCondition> conditions) {
         super(conditions);
     }
 
@@ -45,13 +49,6 @@ public class CopyFluid extends LootItemConditionalFunction {
     @Override
     public LootItemFunctionType getType() {
         return Main.COPY_FLUID;
-    }
-
-    public static class Serializer extends LootItemConditionalFunction.Serializer<CopyFluid> {
-        @Override
-        public CopyFluid deserialize(JsonObject jsonObject, JsonDeserializationContext jsonDeserializationContext, LootItemCondition[] iLootConditions) {
-            return new CopyFluid(iLootConditions);
-        }
     }
 
 }

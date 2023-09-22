@@ -9,7 +9,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.network.NetworkEvent;
+import net.minecraftforge.event.network.CustomPayloadEvent;
 
 public class MessageSyncTileEntity implements Message<MessageSyncTileEntity> {
 
@@ -31,7 +31,7 @@ public class MessageSyncTileEntity implements Message<MessageSyncTileEntity> {
     }
 
     @Override
-    public void executeClientSide(NetworkEvent.Context context) {
+    public void executeClientSide(CustomPayloadEvent.Context context) {
         sync();
     }
 

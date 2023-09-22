@@ -2,7 +2,6 @@ package de.maxhenkel.car.recipes;
 
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -12,7 +11,6 @@ import net.minecraft.world.level.Level;
 
 public abstract class EnergyFluidProducerRecipe implements Recipe<Container> {
     protected final RecipeType<?> type;
-    protected final ResourceLocation id;
     protected final Ingredient ingredient;
     protected final ItemStack result;
     protected final String group;
@@ -20,9 +18,8 @@ public abstract class EnergyFluidProducerRecipe implements Recipe<Container> {
     protected final int energy;
     protected final int duration;
 
-    public EnergyFluidProducerRecipe(RecipeType<?> type, ResourceLocation idIn, String group, Ingredient ingredientIn, ItemStack result, int fluidAmount, int energy, int duration) {
+    public EnergyFluidProducerRecipe(RecipeType<?> type, String group, Ingredient ingredientIn, ItemStack result, int fluidAmount, int energy, int duration) {
         this.type = type;
-        this.id = idIn;
         this.group = group;
         this.ingredient = ingredientIn;
         this.result = result;
@@ -91,11 +88,6 @@ public abstract class EnergyFluidProducerRecipe implements Recipe<Container> {
 
     public int getDuration() {
         return duration;
-    }
-
-    @Override
-    public ResourceLocation getId() {
-        return id;
     }
 
     @Override

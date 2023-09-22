@@ -38,7 +38,7 @@ public abstract class TileEntityBase extends BlockEntity implements Nameable {
         if (!level.isClientSide && level instanceof ServerLevel) {
             CompoundTag last = getUpdateTag();
             if (compoundLast == null || !compoundLast.equals(last)) {
-                Main.SIMPLE_CHANNEL.send(PacketDistributor.TRACKING_CHUNK.with(() -> level.getChunkAt(getBlockPos())), new MessageSyncTileEntity(worldPosition, last));
+                Main.SIMPLE_CHANNEL.send(new MessageSyncTileEntity(worldPosition, last), PacketDistributor.TRACKING_CHUNK.with(level.getChunkAt(getBlockPos())));
                 compoundLast = last;
             }
         }

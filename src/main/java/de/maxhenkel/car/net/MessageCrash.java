@@ -7,7 +7,7 @@ import de.maxhenkel.corelib.net.Message;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.Entity;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.network.NetworkEvent;
+import net.minecraftforge.event.network.CustomPayloadEvent;
 
 public class MessageCrash implements Message<MessageCrash> {
 
@@ -29,7 +29,7 @@ public class MessageCrash implements Message<MessageCrash> {
     }
 
     @Override
-    public void executeServerSide(NetworkEvent.Context context) {
+    public void executeServerSide(CustomPayloadEvent.Context context) {
         Entity riding = context.getSender().getVehicle();
 
         if (!(riding instanceof EntityCarBase)) {

@@ -4,6 +4,7 @@ import de.maxhenkel.car.Main;
 import de.maxhenkel.car.blocks.tileentity.TileEntityGasStation;
 import de.maxhenkel.car.net.MessageGasStationAdminAmount;
 import de.maxhenkel.corelib.inventory.ScreenBase;
+import de.maxhenkel.corelib.net.NetUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.EditBox;
@@ -53,7 +54,7 @@ public class GuiGasStationAdmin extends ScreenBase<ContainerGasStationAdmin> {
         if (!text.isEmpty()) {
             try {
                 int i = Integer.parseInt(text);
-                Main.SIMPLE_CHANNEL.sendToServer(new MessageGasStationAdminAmount(gasStation.getBlockPos(), i));
+                NetUtils.sendToServer(Main.SIMPLE_CHANNEL, new MessageGasStationAdminAmount(gasStation.getBlockPos(), i));
             } catch (Exception e) {
             }
         }

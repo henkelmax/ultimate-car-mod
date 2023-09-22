@@ -11,6 +11,7 @@ import de.maxhenkel.car.sounds.SoundLoopHigh;
 import de.maxhenkel.car.sounds.SoundLoopIdle;
 import de.maxhenkel.car.sounds.SoundLoopStart;
 import de.maxhenkel.corelib.math.MathUtils;
+import de.maxhenkel.corelib.net.NetUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.core.BlockPos;
@@ -295,7 +296,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 
     public void onCollision(float speed) {
         if (level().isClientSide) {
-            Main.SIMPLE_CHANNEL.sendToServer(new MessageCrash(speed, this));
+            NetUtils.sendToServer(Main.SIMPLE_CHANNEL, new MessageCrash(speed, this));
         }
         setSpeed(0.01F);
         setDeltaMovement(0D, getDeltaMovement().y, 0D);
@@ -342,7 +343,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
             needsUpdate = true;
         }
         if (level().isClientSide && needsUpdate) {
-            Main.SIMPLE_CHANNEL.sendToServer(new MessageControlCar(forward, backward, left, right, player));
+            NetUtils.sendToServer(Main.SIMPLE_CHANNEL, new MessageControlCar(forward, backward, left, right, player));
         }
     }
 
@@ -393,7 +394,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 
     public void openCarGUI(Player player) {
         if (level().isClientSide) {
-            Main.SIMPLE_CHANNEL.sendToServer(new MessageCarGui(player));
+            NetUtils.sendToServer(Main.SIMPLE_CHANNEL, new MessageCarGui(player));
         }
     }
 
@@ -549,7 +550,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 
     public void onHornPressed(Player player) {
         if (level().isClientSide) {
-            Main.SIMPLE_CHANNEL.sendToServer(new MessageCarHorn(true, player));
+            NetUtils.sendToServer(Main.SIMPLE_CHANNEL, new MessageCarHorn(true, player));
         } else {
             if (this instanceof EntityCarBatteryBase) {
                 EntityCarBatteryBase car = (EntityCarBatteryBase) this;

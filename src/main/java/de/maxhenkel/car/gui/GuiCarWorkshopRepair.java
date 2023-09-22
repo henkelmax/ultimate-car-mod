@@ -9,6 +9,7 @@ import de.maxhenkel.car.net.MessageOpenCarWorkshopGui;
 import de.maxhenkel.car.net.MessageRepairCar;
 import de.maxhenkel.corelib.inventory.ScreenBase;
 import de.maxhenkel.corelib.math.MathUtils;
+import de.maxhenkel.corelib.net.NetUtils;
 import de.maxhenkel.tools.EntityTools;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
@@ -50,14 +51,14 @@ public class GuiCarWorkshopRepair extends ScreenBase<ContainerCarWorkshopRepair>
 
         this.buttonRepair = addRenderableWidget(Button.builder(Component.translatable("button.car.repair_car"), button -> {
             if (tile.getLevel().isClientSide) {
-                Main.SIMPLE_CHANNEL.sendToServer(new MessageRepairCar(tile.getBlockPos(), player));
+                NetUtils.sendToServer(Main.SIMPLE_CHANNEL, new MessageRepairCar(tile.getBlockPos(), player));
             }
         }).bounds(leftPos + imageWidth - 7 - 60, topPos + 105, 60, 20).build());
         this.buttonRepair.active = false;
 
         this.buttonBack = addRenderableWidget(Button.builder(Component.translatable("button.car.back"), button -> {
             if (tile.getLevel().isClientSide) {
-                Main.SIMPLE_CHANNEL.sendToServer(new MessageOpenCarWorkshopGui(tile.getBlockPos(), player, false));
+                NetUtils.sendToServer(Main.SIMPLE_CHANNEL, new MessageOpenCarWorkshopGui(tile.getBlockPos(), player, false));
             }
         }).bounds(leftPos + 7, topPos + 105, 60, 20).build());
         this.buttonBack.active = true;

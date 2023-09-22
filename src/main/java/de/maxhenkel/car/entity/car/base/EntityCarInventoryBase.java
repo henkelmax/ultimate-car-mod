@@ -24,7 +24,6 @@ import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
-import net.minecraftforge.network.NetworkHooks;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -83,7 +82,7 @@ public abstract class EntityCarInventoryBase extends EntityCarFuelBase implement
                 if (externalInventory.getContainerSize() <= 0) {
                     openCarGUI(player);
                 } else {
-                    NetworkHooks.openScreen((ServerPlayer) player, new MenuProvider() {
+                    ((ServerPlayer) player).openMenu(new MenuProvider() {
                         @Override
                         public Component getDisplayName() {
                             return EntityCarInventoryBase.this.getDisplayName();
@@ -155,7 +154,7 @@ public abstract class EntityCarInventoryBase extends EntityCarFuelBase implement
     public void openCarGUI(Player player) {
         super.openCarGUI(player);
         if (!level().isClientSide && player instanceof ServerPlayer) {
-            NetworkHooks.openScreen((ServerPlayer) player, new MenuProvider() {
+            ((ServerPlayer) player).openMenu(new MenuProvider() {
                 @Override
                 public Component getDisplayName() {
                     return EntityCarInventoryBase.this.getDisplayName();

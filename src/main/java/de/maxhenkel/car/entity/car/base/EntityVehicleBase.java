@@ -200,7 +200,7 @@ public abstract class EntityVehicleBase extends Entity {
 
     @OnlyIn(Dist.CLIENT)
     @Override
-    public void lerpTo(double x, double y, double z, float yaw, float pitch, int posRotationIncrements, boolean teleport) {
+    public void lerpTo(double x, double y, double z, float yaw, float pitch, int posRotationIncrements) {
         this.clientX = x;
         this.clientY = y;
         this.clientZ = z;

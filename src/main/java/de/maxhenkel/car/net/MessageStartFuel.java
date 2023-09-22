@@ -6,7 +6,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.network.NetworkEvent;
+import net.minecraftforge.event.network.CustomPayloadEvent;
 
 public class MessageStartFuel implements Message<MessageStartFuel> {
 
@@ -27,7 +27,7 @@ public class MessageStartFuel implements Message<MessageStartFuel> {
     }
 
     @Override
-    public void executeServerSide(NetworkEvent.Context context) {
+    public void executeServerSide(CustomPayloadEvent.Context context) {
         BlockEntity te = context.getSender().level().getBlockEntity(pos);
 
         if (te instanceof TileEntityGasStation) {

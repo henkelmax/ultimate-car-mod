@@ -83,7 +83,7 @@ public abstract class TileEntityEnergyFluidProducer extends TileEntityBase imple
     };
 
     public EnergyFluidProducerRecipe getRecipe() {
-        return level.getRecipeManager().getRecipeFor(recipeType, this, level).orElse(null);
+        return level.getRecipeManager().getRecipeFor(recipeType, this, level).map(recipeHolder -> recipeHolder.value()).orElse(null);
     }
 
     @Override

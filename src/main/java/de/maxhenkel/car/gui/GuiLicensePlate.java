@@ -4,6 +4,7 @@ import de.maxhenkel.car.Main;
 import de.maxhenkel.car.items.ItemLicensePlate;
 import de.maxhenkel.car.net.MessageEditLicensePlate;
 import de.maxhenkel.corelib.inventory.ScreenBase;
+import de.maxhenkel.corelib.net.NetUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -39,7 +40,7 @@ public class GuiLicensePlate extends ScreenBase<ContainerLicensePlate> {
         super.init();
 
         addRenderableWidget(Button.builder(Component.translatable("button.car.submit"), button -> {
-            Main.SIMPLE_CHANNEL.sendToServer(new MessageEditLicensePlate(player, textField.getValue()));
+            NetUtils.sendToServer(Main.SIMPLE_CHANNEL, new MessageEditLicensePlate(player, textField.getValue()));
             MessageEditLicensePlate.setItemText(player, textField.getValue());
             Minecraft.getInstance().setScreen(null);
         }).bounds(leftPos + 20, topPos + imageHeight - 25, 50, 20).build());

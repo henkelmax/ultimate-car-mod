@@ -12,6 +12,7 @@ import de.maxhenkel.car.sounds.SoundLoopTileentity.ISoundLoopable;
 import de.maxhenkel.corelib.CachedValue;
 import de.maxhenkel.corelib.blockentity.ITickableBlockEntity;
 import de.maxhenkel.corelib.item.ItemUtils;
+import de.maxhenkel.corelib.net.NetUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -429,7 +430,7 @@ public class TileEntityGasStation extends TileEntityBase implements ITickableBlo
 
     public void sendStartFuelPacket(boolean start) {
         if (level.isClientSide) {
-            Main.SIMPLE_CHANNEL.sendToServer(new MessageStartFuel(worldPosition, start));
+            NetUtils.sendToServer(Main.SIMPLE_CHANNEL, new MessageStartFuel(worldPosition, start));
         }
     }
 

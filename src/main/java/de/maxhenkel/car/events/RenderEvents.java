@@ -39,7 +39,7 @@ public class RenderEvents {
     @SubscribeEvent
     public void onRender(InputEvent.MouseScrollingEvent evt) {
         if (getCar() != null && !mc.options.getCameraType().isFirstPerson()) {
-            Main.CLIENT_CONFIG.carZoom.set(Math.max(1D, Math.min(20D, Main.CLIENT_CONFIG.carZoom.get() - evt.getScrollDelta())));
+            Main.CLIENT_CONFIG.carZoom.set(Math.max(1D, Math.min(20D, Main.CLIENT_CONFIG.carZoom.get() - evt.getDeltaY())));
             Main.CLIENT_CONFIG.carZoom.save();
             evt.setCanceled(true);
         }
