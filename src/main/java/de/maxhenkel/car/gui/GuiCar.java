@@ -89,7 +89,7 @@ public class GuiCar extends ScreenBase<ContainerCar> {
 
     public Component getTempString() {
         if (Main.CLIENT_CONFIG.tempInFarenheit.get()) {
-            return Component.translatable("gui.car_temperature_farenheit", String.valueOf(getTemperatureFarenheit()));
+            return Component.translatable("gui.car_temperature_fahrenheit", String.valueOf(getTemperatureFarenheit()));
         } else {
             return Component.translatable("gui.car_temperature_celsius", String.valueOf(getTemperatureCelsius()));
         }

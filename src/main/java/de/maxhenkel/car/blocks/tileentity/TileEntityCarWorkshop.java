@@ -84,7 +84,7 @@ public class TileEntityCarWorkshop extends TileEntityBase implements Container {
         EntityGenericCar car = currentCraftingCar;
 
         if (car == null || !isCurrentCraftingCarValid()) {
-            player.sendSystemMessage(Component.translatable("message.no_reciepe"));
+            player.sendSystemMessage(Component.translatable("message.no_recipe"));
             return;
         }
         BlockPos spawnPos = worldPosition.above();
