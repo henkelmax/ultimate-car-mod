@@ -102,7 +102,7 @@ public class PartBody extends PartModel {
         }
 
         if (getAmount(parts, part -> part instanceof PartLicensePlateHolder) > 1) {
-            messages.add(Component.translatable("message.parts.too_many_license_plates"));
+            messages.add(Component.translatable("message.parts.too_many_license_plate_holders"));
         }
 
         if (getAmount(parts, part -> part instanceof PartBumper) > 1) {

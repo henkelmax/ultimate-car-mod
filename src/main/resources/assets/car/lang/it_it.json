@@ -6,7 +6,7 @@
     "message.parts.too_many_wheels": "Troppe ruote",
     "message.parts.no_engine": "Nessun motore",
     "message.parts.too_many_engines": "Troppi motori",
-    "message.parts.too_many_license_plates": "Troppe targhe",
+    "message.parts.too_many_license_plate_holders": "Troppe targhe",
     "message.parts.too_many_bumpers": "Troppi paraurti",
     "message.parts.too_many_containers": "Troppi container",
     "message.parts.no_body_for_bumper": "Questa carrozzeria non supporta i paraurti",

@@ -7,7 +7,7 @@
     "message.parts.too_many_wheels": "Too many wheels",
     "message.parts.no_engine": "No Engine",
     "message.parts.too_many_engines": "Too many engines",
-    "message.parts.too_many_license_plates": "Too many license plates",
+    "message.parts.too_many_license_plate_holders": "Too many license plate holders",
     "message.parts.too_many_bumpers": "Too many bumpers",
     "message.parts.too_many_containers": "Too many containers",
     "message.parts.no_body_for_bumper": "This body doesn't support bumpers",

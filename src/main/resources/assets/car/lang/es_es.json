@@ -7,7 +7,7 @@
   "message.parts.too_many_wheels": "Demasiadas ruedas",
   "message.parts.no_engine": "Sin motor",
   "message.parts.too_many_engines": "Demasiados motores",
-  "message.parts.too_many_license_plates": "Demasiadas placas de matrícula",
+  "message.parts.too_many_license_plate_holders": "Demasiadas placas de matrícula",
   "message.parts.too_many_bumpers": "Demasiados parachoques",
   "message.parts.too_many_containers": "Demasiados contenedores",
   "message.parts.no_body_for_bumper": "Esta carrocería no soporta parachoques",

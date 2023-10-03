@@ -6,7 +6,7 @@
   "message.parts.too_many_wheels": "车轮太多",
   "message.parts.no_engine": "没有发动机",
   "message.parts.too_many_engines": "发动机太多",
-  "message.parts.too_many_license_plates": "车牌架太多",
+  "message.parts.too_many_license_plate_holders": "车牌架太多",
   "message.parts.too_many_bumpers": "保险杠太多",
   "message.parts.too_many_containers": "集装箱太多",
   "message.parts.no_body_for_bumper": "这个车身并不支持保险杠",
