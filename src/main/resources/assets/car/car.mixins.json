@@ -5,7 +5,9 @@
   "refmap": "car.refmap.json",
   "minVersion": "0.8",
   "mixins": [
-    "VillagerEntityMixin",
+    "VillagerEntityMixin"
+  ],
+  "client": [
     "GuiMixin",
     "SoundOptionsScreenMixin"
   ],

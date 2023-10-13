@@ -1,1 +1,1 @@
-- Added Polish translation
+- Fixed crash on servers
