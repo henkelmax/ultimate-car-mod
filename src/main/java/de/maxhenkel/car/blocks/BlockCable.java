@@ -26,8 +26,7 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-
+import net.neoforged.neoforge.common.capabilities.Capabilities;
 import javax.annotation.Nullable;
 
 public class BlockCable extends BlockBase implements EntityBlock, IItemBlock, SimpleWaterloggedBlock {
@@ -150,7 +149,7 @@ public class BlockCable extends BlockBase implements EntityBlock, IItemBlock, Si
 
         BlockEntity te = world.getBlockEntity(pos.relative(facing));
 
-        if (te == null || !te.getCapability(ForgeCapabilities.ENERGY, facing.getOpposite()).isPresent()) {
+        if (te == null || !te.getCapability(Capabilities.ENERGY, facing.getOpposite()).isPresent()) {
             return false;
         }
         return true;

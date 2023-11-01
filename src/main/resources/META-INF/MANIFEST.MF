@@ -1,1 +1,0 @@
-MixinConnector: de.maxhenkel.car.MixinConnector

@@ -4,8 +4,7 @@ import de.maxhenkel.car.fluids.ModFluids;
 import de.maxhenkel.corelib.config.DynamicConfig;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraftforge.registries.ForgeRegistries;
-
+import net.neoforged.neoforge.registries.ForgeRegistries;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;

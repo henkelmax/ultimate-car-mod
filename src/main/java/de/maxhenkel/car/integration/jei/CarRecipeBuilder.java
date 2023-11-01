@@ -3,8 +3,7 @@ package de.maxhenkel.car.integration.jei;
 import de.maxhenkel.car.items.ModItems;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.registries.RegistryObject;
-
+import net.neoforged.neoforge.registries.RegistryObject;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;

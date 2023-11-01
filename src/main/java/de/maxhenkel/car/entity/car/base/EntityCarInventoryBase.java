@@ -18,12 +18,13 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluid;
-import net.minecraftforge.fluids.FluidActionResult;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidUtil;
-import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.wrapper.InvWrapper;
+import net.neoforged.neoforge.fluids.FluidActionResult;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.FluidUtil;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.items.wrapper.InvWrapper;
+import net.neoforged.neoforge.network.NetworkHooks;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -82,7 +83,7 @@ public abstract class EntityCarInventoryBase extends EntityCarFuelBase implement
                 if (externalInventory.getContainerSize() <= 0) {
                     openCarGUI(player);
                 } else {
-                    ((ServerPlayer) player).openMenu(new MenuProvider() {
+                    NetworkHooks.openScreen((ServerPlayer) player, new MenuProvider() {
                         @Override
                         public Component getDisplayName() {
                             return EntityCarInventoryBase.this.getDisplayName();
@@ -154,7 +155,7 @@ public abstract class EntityCarInventoryBase extends EntityCarFuelBase implement
     public void openCarGUI(Player player) {
         super.openCarGUI(player);
         if (!level().isClientSide && player instanceof ServerPlayer) {
-            ((ServerPlayer) player).openMenu(new MenuProvider() {
+            NetworkHooks.openScreen((ServerPlayer) player, new MenuProvider() {
                 @Override
                 public Component getDisplayName() {
                     return EntityCarInventoryBase.this.getDisplayName();

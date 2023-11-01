@@ -1,11 +1,6 @@
 package de.maxhenkel.car.entity.car.base;
 
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.energy.IEnergyStorage;
-import net.minecraftforge.fluids.capability.IFluidHandler;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3d;
 import de.maxhenkel.car.Main;
@@ -25,9 +20,13 @@ import net.minecraft.world.entity.vehicle.DismountHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
+import net.neoforged.neoforge.common.capabilities.Capabilities;
+import net.neoforged.neoforge.common.capabilities.Capability;
+import net.neoforged.neoforge.common.util.LazyOptional;
+import net.neoforged.neoforge.energy.IEnergyStorage;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import java.util.List;
 
 public abstract class EntityVehicleBase extends Entity {
@@ -261,8 +260,8 @@ public abstract class EntityVehicleBase extends Entity {
     @Override
     @NotNull
     public <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @org.jetbrains.annotations.Nullable Direction side) {
-        if ((this instanceof IFluidHandler && cap.equals(ForgeCapabilities.FLUID_HANDLER)) ||
-                (this instanceof IEnergyStorage && cap.equals(ForgeCapabilities.ENERGY))) {
+        if ((this instanceof IFluidHandler && cap.equals(Capabilities.FLUID_HANDLER)) ||
+                (this instanceof IEnergyStorage && cap.equals(Capabilities.ENERGY))) {
             return LazyOptional.of(() -> (T) this);
         }
         return LazyOptional.empty();

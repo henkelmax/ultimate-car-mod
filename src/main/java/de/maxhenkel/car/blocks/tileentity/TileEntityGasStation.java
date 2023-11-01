@@ -29,13 +29,12 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidUtil;
-import net.minecraftforge.fluids.capability.IFluidHandler;
-
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
+import net.neoforged.neoforge.common.capabilities.Capabilities;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.FluidUtil;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.*;
@@ -386,7 +385,7 @@ public class TileEntityGasStation extends TileEntityBase implements ITickableBlo
         return level.getEntitiesOfClass(Entity.class, getDetectionBox())
                 .stream()
                 .sorted(Comparator.comparingDouble(o -> o.distanceToSqr(center.get())))
-                .map(entity -> entity.getCapability(ForgeCapabilities.FLUID_HANDLER).orElse(null))
+                .map(entity -> entity.getCapability(Capabilities.FLUID_HANDLER).orElse(null))
                 .filter(Objects::nonNull)
                 .findFirst()
                 .orElse(null);

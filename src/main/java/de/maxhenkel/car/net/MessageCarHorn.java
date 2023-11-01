@@ -8,8 +8,8 @@ import de.maxhenkel.corelib.net.Message;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.event.network.CustomPayloadEvent;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.neoforge.network.NetworkEvent;
 
 public class MessageCarHorn implements Message<MessageCarHorn> {
 
@@ -31,7 +31,7 @@ public class MessageCarHorn implements Message<MessageCarHorn> {
     }
 
     @Override
-    public void executeServerSide(CustomPayloadEvent.Context context) {
+    public void executeServerSide(NetworkEvent.Context context) {
         if (!pressed) {
             return;
         }

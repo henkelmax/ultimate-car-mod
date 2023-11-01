@@ -12,8 +12,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.event.network.CustomPayloadEvent;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.neoforge.network.NetworkEvent;
 
 public class MessageOpenCarWorkshopGui implements Message<MessageOpenCarWorkshopGui> {
 
@@ -37,7 +37,7 @@ public class MessageOpenCarWorkshopGui implements Message<MessageOpenCarWorkshop
     }
 
     @Override
-    public void executeServerSide(CustomPayloadEvent.Context context) {
+    public void executeServerSide(NetworkEvent.Context context) {
         if (!context.getSender().getUUID().equals(uuid)) {
             Main.LOGGER.error("The UUID of the sender was not equal to the packet UUID");
             return;

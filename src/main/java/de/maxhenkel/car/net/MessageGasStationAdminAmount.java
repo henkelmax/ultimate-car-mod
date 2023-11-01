@@ -5,8 +5,8 @@ import de.maxhenkel.corelib.net.Message;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.event.network.CustomPayloadEvent;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.neoforge.network.NetworkEvent;
 
 public class MessageGasStationAdminAmount implements Message<MessageGasStationAdminAmount> {
 
@@ -28,7 +28,7 @@ public class MessageGasStationAdminAmount implements Message<MessageGasStationAd
     }
 
     @Override
-    public void executeServerSide(CustomPayloadEvent.Context context) {
+    public void executeServerSide(NetworkEvent.Context context) {
         BlockEntity te = context.getSender().level().getBlockEntity(pos);
 
         if (te instanceof TileEntityGasStation) {

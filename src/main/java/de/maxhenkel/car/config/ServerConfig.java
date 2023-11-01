@@ -5,9 +5,8 @@ import de.maxhenkel.corelib.tag.Tag;
 import de.maxhenkel.corelib.tag.TagUtils;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.Fluid;
-import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.fml.event.config.ModConfigEvent;
-
+import net.neoforged.fml.event.config.ModConfigEvent;
+import net.neoforged.neoforge.common.ModConfigSpec;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -16,99 +15,99 @@ import java.util.stream.Collectors;
 
 public class ServerConfig extends ConfigBase {
 
-    public final ForgeConfigSpec.IntValue backmixReactorEnergyStorage;
-    public final ForgeConfigSpec.IntValue backmixReactorEnergyUsage;
-    public final ForgeConfigSpec.IntValue backmixReactorFluidStorage;
-    public final ForgeConfigSpec.IntValue backmixReactorGeneratingTime;
-    public final ForgeConfigSpec.IntValue backmixReactorMixGeneration;
-    public final ForgeConfigSpec.IntValue backmixReactorMethanolUsage;
-    public final ForgeConfigSpec.IntValue backmixReactorCanolaUsage;
+    public final ModConfigSpec.IntValue backmixReactorEnergyStorage;
+    public final ModConfigSpec.IntValue backmixReactorEnergyUsage;
+    public final ModConfigSpec.IntValue backmixReactorFluidStorage;
+    public final ModConfigSpec.IntValue backmixReactorGeneratingTime;
+    public final ModConfigSpec.IntValue backmixReactorMixGeneration;
+    public final ModConfigSpec.IntValue backmixReactorMethanolUsage;
+    public final ModConfigSpec.IntValue backmixReactorCanolaUsage;
 
-    public final ForgeConfigSpec.IntValue blastFurnaceEnergyStorage;
-    public final ForgeConfigSpec.IntValue blastFurnaceFluidStorage;
+    public final ModConfigSpec.IntValue blastFurnaceEnergyStorage;
+    public final ModConfigSpec.IntValue blastFurnaceFluidStorage;
 
-    public final ForgeConfigSpec.IntValue oilMillEnergyStorage;
-    public final ForgeConfigSpec.IntValue oilMillFluidStorage;
+    public final ModConfigSpec.IntValue oilMillEnergyStorage;
+    public final ModConfigSpec.IntValue oilMillFluidStorage;
 
-    public final ForgeConfigSpec.IntValue cableTransferRate;
+    public final ModConfigSpec.IntValue cableTransferRate;
 
-    public final ForgeConfigSpec.IntValue dynamoEnergyStorage;
-    public final ForgeConfigSpec.IntValue dynamoEnergyGeneration;
+    public final ModConfigSpec.IntValue dynamoEnergyStorage;
+    public final ModConfigSpec.IntValue dynamoEnergyGeneration;
 
-    public final ForgeConfigSpec.IntValue fluidExtractorDrainSpeed;
+    public final ModConfigSpec.IntValue fluidExtractorDrainSpeed;
 
-    public final ForgeConfigSpec.IntValue gasStationTransferRate;
-    public final ForgeConfigSpec.ConfigValue<List<? extends String>> gasStationValidFuels;
+    public final ModConfigSpec.IntValue gasStationTransferRate;
+    public final ModConfigSpec.ConfigValue<List<? extends String>> gasStationValidFuels;
 
-    public final ForgeConfigSpec.IntValue generatorEnergyStorage;
-    public final ForgeConfigSpec.IntValue generatorFluidStorage;
-    public final ForgeConfigSpec.IntValue generatorEnergyGeneration;
-    public final ForgeConfigSpec.ConfigValue<List<? extends String>> generatorValidFuels;
+    public final ModConfigSpec.IntValue generatorEnergyStorage;
+    public final ModConfigSpec.IntValue generatorFluidStorage;
+    public final ModConfigSpec.IntValue generatorEnergyGeneration;
+    public final ModConfigSpec.ConfigValue<List<? extends String>> generatorValidFuels;
 
-    public final ForgeConfigSpec.IntValue splitTankFluidStorage;
-    public final ForgeConfigSpec.IntValue splitTankGeneratingTime;
-    public final ForgeConfigSpec.IntValue splitTankMixUsage;
-    public final ForgeConfigSpec.IntValue splitTankGlycerinGeneration;
-    public final ForgeConfigSpec.IntValue splitTankBioDieselGeneration;
+    public final ModConfigSpec.IntValue splitTankFluidStorage;
+    public final ModConfigSpec.IntValue splitTankGeneratingTime;
+    public final ModConfigSpec.IntValue splitTankMixUsage;
+    public final ModConfigSpec.IntValue splitTankGlycerinGeneration;
+    public final ModConfigSpec.IntValue splitTankBioDieselGeneration;
 
-    public final ForgeConfigSpec.DoubleValue repairKitRepairAmount;
+    public final ModConfigSpec.DoubleValue repairKitRepairAmount;
 
-    public final ForgeConfigSpec.IntValue canisterMaxFuel;
+    public final ModConfigSpec.IntValue canisterMaxFuel;
 
-    public final ForgeConfigSpec.DoubleValue carOffroadSpeed;
-    public final ForgeConfigSpec.DoubleValue carOnroadSpeed;
-    public final ForgeConfigSpec.ConfigValue<List<? extends String>> carDriveBlocks;
+    public final ModConfigSpec.DoubleValue carOffroadSpeed;
+    public final ModConfigSpec.DoubleValue carOnroadSpeed;
+    public final ModConfigSpec.ConfigValue<List<? extends String>> carDriveBlocks;
 
-    public final ForgeConfigSpec.BooleanValue collideWithEntities;
-    public final ForgeConfigSpec.BooleanValue damageEntities;
-    public final ForgeConfigSpec.BooleanValue hornFlee;
-    public final ForgeConfigSpec.BooleanValue useBattery;
+    public final ModConfigSpec.BooleanValue collideWithEntities;
+    public final ModConfigSpec.BooleanValue damageEntities;
+    public final ModConfigSpec.BooleanValue hornFlee;
+    public final ModConfigSpec.BooleanValue useBattery;
 
-    public final ForgeConfigSpec.IntValue tankSmallMaxFuel;
-    public final ForgeConfigSpec.IntValue tankMediumMaxFuel;
-    public final ForgeConfigSpec.IntValue tankLargeMaxFuel;
+    public final ModConfigSpec.IntValue tankSmallMaxFuel;
+    public final ModConfigSpec.IntValue tankMediumMaxFuel;
+    public final ModConfigSpec.IntValue tankLargeMaxFuel;
 
-    public final ForgeConfigSpec.DoubleValue engine6CylinderFuelEfficiency;
-    public final ForgeConfigSpec.DoubleValue engine3CylinderFuelEfficiency;
-    public final ForgeConfigSpec.DoubleValue engineTruckFuelEfficiency;
+    public final ModConfigSpec.DoubleValue engine6CylinderFuelEfficiency;
+    public final ModConfigSpec.DoubleValue engine3CylinderFuelEfficiency;
+    public final ModConfigSpec.DoubleValue engineTruckFuelEfficiency;
 
-    public final ForgeConfigSpec.DoubleValue engine6CylinderAcceleration;
-    public final ForgeConfigSpec.DoubleValue engine3CylinderAcceleration;
-    public final ForgeConfigSpec.DoubleValue engineTruckAcceleration;
+    public final ModConfigSpec.DoubleValue engine6CylinderAcceleration;
+    public final ModConfigSpec.DoubleValue engine3CylinderAcceleration;
+    public final ModConfigSpec.DoubleValue engineTruckAcceleration;
 
-    public final ForgeConfigSpec.DoubleValue engine6CylinderMaxSpeed;
-    public final ForgeConfigSpec.DoubleValue engine3CylinderMaxSpeed;
-    public final ForgeConfigSpec.DoubleValue engineTruckMaxSpeed;
+    public final ModConfigSpec.DoubleValue engine6CylinderMaxSpeed;
+    public final ModConfigSpec.DoubleValue engine3CylinderMaxSpeed;
+    public final ModConfigSpec.DoubleValue engineTruckMaxSpeed;
 
-    public final ForgeConfigSpec.DoubleValue engine6CylinderMaxReverseSpeed;
-    public final ForgeConfigSpec.DoubleValue engine3CylinderMaxReverseSpeed;
-    public final ForgeConfigSpec.DoubleValue engineTruckMaxReverseSpeed;
+    public final ModConfigSpec.DoubleValue engine6CylinderMaxReverseSpeed;
+    public final ModConfigSpec.DoubleValue engine3CylinderMaxReverseSpeed;
+    public final ModConfigSpec.DoubleValue engineTruckMaxReverseSpeed;
 
-    public final ForgeConfigSpec.DoubleValue bodyBigWoodFuelEfficiency;
-    public final ForgeConfigSpec.DoubleValue bodyBigWoodAcceleration;
-    public final ForgeConfigSpec.DoubleValue bodyBigWoodMaxSpeed;
+    public final ModConfigSpec.DoubleValue bodyBigWoodFuelEfficiency;
+    public final ModConfigSpec.DoubleValue bodyBigWoodAcceleration;
+    public final ModConfigSpec.DoubleValue bodyBigWoodMaxSpeed;
 
-    public final ForgeConfigSpec.DoubleValue bodyWoodFuelEfficiency;
-    public final ForgeConfigSpec.DoubleValue bodyWoodAcceleration;
-    public final ForgeConfigSpec.DoubleValue bodyWoodMaxSpeed;
+    public final ModConfigSpec.DoubleValue bodyWoodFuelEfficiency;
+    public final ModConfigSpec.DoubleValue bodyWoodAcceleration;
+    public final ModConfigSpec.DoubleValue bodyWoodMaxSpeed;
 
-    public final ForgeConfigSpec.DoubleValue bodySportFuelEfficiency;
-    public final ForgeConfigSpec.DoubleValue bodySportAcceleration;
-    public final ForgeConfigSpec.DoubleValue bodySportMaxSpeed;
+    public final ModConfigSpec.DoubleValue bodySportFuelEfficiency;
+    public final ModConfigSpec.DoubleValue bodySportAcceleration;
+    public final ModConfigSpec.DoubleValue bodySportMaxSpeed;
 
-    public final ForgeConfigSpec.DoubleValue bodySUVFuelEfficiency;
-    public final ForgeConfigSpec.DoubleValue bodySUVAcceleration;
-    public final ForgeConfigSpec.DoubleValue bodySUVMaxSpeed;
+    public final ModConfigSpec.DoubleValue bodySUVFuelEfficiency;
+    public final ModConfigSpec.DoubleValue bodySUVAcceleration;
+    public final ModConfigSpec.DoubleValue bodySUVMaxSpeed;
 
-    public final ForgeConfigSpec.DoubleValue bodyTransporterFuelEfficiency;
-    public final ForgeConfigSpec.DoubleValue bodyTransporterAcceleration;
-    public final ForgeConfigSpec.DoubleValue bodyTransporterMaxSpeed;
+    public final ModConfigSpec.DoubleValue bodyTransporterFuelEfficiency;
+    public final ModConfigSpec.DoubleValue bodyTransporterAcceleration;
+    public final ModConfigSpec.DoubleValue bodyTransporterMaxSpeed;
 
     public List<Tag<Fluid>> gasStationValidFuelList = new ArrayList<>();
     public List<Tag<Fluid>> generatorValidFuelList = new ArrayList<>();
     public List<Tag<Block>> carDriveBlockList = new ArrayList<>();
 
-    public ServerConfig(ForgeConfigSpec.Builder builder) {
+    public ServerConfig(ModConfigSpec.Builder builder) {
         super(builder);
         backmixReactorEnergyStorage = builder.defineInRange("machines.backmix_reactor.energy_storage", 10000, 100, Short.MAX_VALUE);
         backmixReactorEnergyUsage = builder.defineInRange("machines.backmix_reactor.energy_usage", 10, 1, Short.MAX_VALUE);

@@ -2,6 +2,7 @@ package de.maxhenkel.car.blocks.tileentity;
 
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.net.MessageSyncTileEntity;
+import de.maxhenkel.corelib.net.NetUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -15,12 +16,12 @@ import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.energy.IEnergyStorage;
-import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.network.PacketDistributor;
+import net.neoforged.neoforge.common.capabilities.Capabilities;
+import net.neoforged.neoforge.common.capabilities.Capability;
+import net.neoforged.neoforge.common.util.LazyOptional;
+import net.neoforged.neoforge.energy.IEnergyStorage;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
@@ -38,7 +39,7 @@ public abstract class TileEntityBase extends BlockEntity implements Nameable {
         if (!level.isClientSide && level instanceof ServerLevel) {
             CompoundTag last = getUpdateTag();
             if (compoundLast == null || !compoundLast.equals(last)) {
-                Main.SIMPLE_CHANNEL.send(new MessageSyncTileEntity(worldPosition, last), PacketDistributor.TRACKING_CHUNK.with(level.getChunkAt(getBlockPos())));
+                Main.SIMPLE_CHANNEL.send(PacketDistributor.TRACKING_CHUNK.with(() -> level.getChunkAt(getBlockPos())), new MessageSyncTileEntity(worldPosition, last));
                 compoundLast = last;
             }
         }
@@ -101,8 +102,8 @@ public abstract class TileEntityBase extends BlockEntity implements Nameable {
     @Override
     @NotNull
     public <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @org.jetbrains.annotations.Nullable Direction side) {
-        if ((this instanceof IFluidHandler && cap.equals(ForgeCapabilities.FLUID_HANDLER)) ||
-                (this instanceof IEnergyStorage && cap.equals(ForgeCapabilities.ENERGY))) {
+        if ((this instanceof IFluidHandler && cap.equals(Capabilities.FLUID_HANDLER)) ||
+                (this instanceof IEnergyStorage && cap.equals(Capabilities.ENERGY))) {
             return LazyOptional.of(() -> (T) this);
         }
         return LazyOptional.empty();

@@ -16,7 +16,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
-import net.minecraftforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.FluidStack;
 
 public class TileInfoProvider implements IProbeInfoProvider {
 
@@ -39,13 +39,15 @@ public class TileInfoProvider implements IProbeInfoProvider {
         } else if (te instanceof TileEntityGenerator generator) {
             FluidStack fluid = generator.getFluidInTank(0);
             if (!fluid.isEmpty()) {
-                iProbeInfo.tankHandler(generator, new ProgressStyle().suffix(" mb"));
+                // TODO Add back when The One Probe updated
+                // iProbeInfo.tankHandler(generator, new ProgressStyle().suffix(" mb"));
             }
         } else if (te instanceof TileEntityTank tank) {
             FluidStack fluid = tank.getFluidInTank(0);
             if (!fluid.isEmpty()) {
                 iProbeInfo.text(fluid.getDisplayName());
-                iProbeInfo.tankHandler(tank, new ProgressStyle().suffix(" mb"));
+                // TODO Add back when The One Probe updated
+                // iProbeInfo.tankHandler(tank, new ProgressStyle().suffix(" mb"));
             }
         }
     }

@@ -2,10 +2,10 @@ package de.maxhenkel.car.events;
 
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.sounds.ModSounds;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.event.PlayLevelSoundEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.neoforge.event.PlayLevelSoundEvent;
 
 @OnlyIn(Dist.CLIENT)
 public class SoundEvents {
