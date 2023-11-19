@@ -4,6 +4,7 @@ import de.maxhenkel.car.Main;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.sounds.AbstractTickableSoundInstance;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
@@ -12,42 +13,41 @@ import net.minecraft.world.level.Level;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
-import net.neoforged.neoforge.registries.ForgeRegistries;
-import net.neoforged.neoforge.registries.RegistryObject;
 
 public class ModSounds {
 
-    private static final DeferredRegister<SoundEvent> SOUND_REGISTER = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, Main.MODID);
+    private static final DeferredRegister<SoundEvent> SOUND_REGISTER = DeferredRegister.create(BuiltInRegistries.SOUND_EVENT, Main.MODID);
 
-    public static RegistryObject<SoundEvent> ENGINE_STOP = addSound("engine_stop");
-    public static RegistryObject<SoundEvent> ENGINE_STARTING = addSound("engine_starting");
-    public static RegistryObject<SoundEvent> ENGINE_START = addSound("engine_start");
-    public static RegistryObject<SoundEvent> ENGINE_IDLE = addSound("engine_idle");
-    public static RegistryObject<SoundEvent> ENGINE_HIGH = addSound("engine_high");
-    public static RegistryObject<SoundEvent> ENGINE_FAIL = addSound("engine_fail");
-    public static RegistryObject<SoundEvent> SPORT_ENGINE_STOP = addSound("sport_engine_stop");
-    public static RegistryObject<SoundEvent> SPORT_ENGINE_STARTING = addSound("sport_engine_starting");
-    public static RegistryObject<SoundEvent> SPORT_ENGINE_START = addSound("sport_engine_start");
-    public static RegistryObject<SoundEvent> SPORT_ENGINE_IDLE = addSound("sport_engine_idle");
-    public static RegistryObject<SoundEvent> SPORT_ENGINE_HIGH = addSound("sport_engine_high");
-    public static RegistryObject<SoundEvent> SPORT_ENGINE_FAIL = addSound("sport_engine_fail");
-    public static RegistryObject<SoundEvent> TRUCK_ENGINE_STOP = addSound("truck_engine_stop");
-    public static RegistryObject<SoundEvent> TRUCK_ENGINE_STARTING = addSound("truck_engine_starting");
-    public static RegistryObject<SoundEvent> TRUCK_ENGINE_START = addSound("truck_engine_start");
-    public static RegistryObject<SoundEvent> TRUCK_ENGINE_IDLE = addSound("truck_engine_idle");
-    public static RegistryObject<SoundEvent> TRUCK_ENGINE_HIGH = addSound("truck_engine_high");
-    public static RegistryObject<SoundEvent> TRUCK_ENGINE_FAIL = addSound("truck_engine_fail");
-    public static RegistryObject<SoundEvent> CAR_CRASH = addSound("car_crash");
-    public static RegistryObject<SoundEvent> GAS_STATION = addSound("gas_station");
-    public static RegistryObject<SoundEvent> GENERATOR = addSound("generator");
-    public static RegistryObject<SoundEvent> CAR_HORN = addSound("car_horn");
-    public static RegistryObject<SoundEvent> CAR_LOCK = addSound("car_lock");
-    public static RegistryObject<SoundEvent> CAR_UNLOCK = addSound("car_unlock");
-    public static RegistryObject<SoundEvent> RATCHET = addSound("ratchet");
-    public static RegistryObject<SoundEvent> GAS_STATION_ATTENDANT = addSound("gas_station_attendant");
+    public static DeferredHolder<SoundEvent, SoundEvent> ENGINE_STOP = addSound("engine_stop");
+    public static DeferredHolder<SoundEvent, SoundEvent> ENGINE_STARTING = addSound("engine_starting");
+    public static DeferredHolder<SoundEvent, SoundEvent> ENGINE_START = addSound("engine_start");
+    public static DeferredHolder<SoundEvent, SoundEvent> ENGINE_IDLE = addSound("engine_idle");
+    public static DeferredHolder<SoundEvent, SoundEvent> ENGINE_HIGH = addSound("engine_high");
+    public static DeferredHolder<SoundEvent, SoundEvent> ENGINE_FAIL = addSound("engine_fail");
+    public static DeferredHolder<SoundEvent, SoundEvent> SPORT_ENGINE_STOP = addSound("sport_engine_stop");
+    public static DeferredHolder<SoundEvent, SoundEvent> SPORT_ENGINE_STARTING = addSound("sport_engine_starting");
+    public static DeferredHolder<SoundEvent, SoundEvent> SPORT_ENGINE_START = addSound("sport_engine_start");
+    public static DeferredHolder<SoundEvent, SoundEvent> SPORT_ENGINE_IDLE = addSound("sport_engine_idle");
+    public static DeferredHolder<SoundEvent, SoundEvent> SPORT_ENGINE_HIGH = addSound("sport_engine_high");
+    public static DeferredHolder<SoundEvent, SoundEvent> SPORT_ENGINE_FAIL = addSound("sport_engine_fail");
+    public static DeferredHolder<SoundEvent, SoundEvent> TRUCK_ENGINE_STOP = addSound("truck_engine_stop");
+    public static DeferredHolder<SoundEvent, SoundEvent> TRUCK_ENGINE_STARTING = addSound("truck_engine_starting");
+    public static DeferredHolder<SoundEvent, SoundEvent> TRUCK_ENGINE_START = addSound("truck_engine_start");
+    public static DeferredHolder<SoundEvent, SoundEvent> TRUCK_ENGINE_IDLE = addSound("truck_engine_idle");
+    public static DeferredHolder<SoundEvent, SoundEvent> TRUCK_ENGINE_HIGH = addSound("truck_engine_high");
+    public static DeferredHolder<SoundEvent, SoundEvent> TRUCK_ENGINE_FAIL = addSound("truck_engine_fail");
+    public static DeferredHolder<SoundEvent, SoundEvent> CAR_CRASH = addSound("car_crash");
+    public static DeferredHolder<SoundEvent, SoundEvent> GAS_STATION = addSound("gas_station");
+    public static DeferredHolder<SoundEvent, SoundEvent> GENERATOR = addSound("generator");
+    public static DeferredHolder<SoundEvent, SoundEvent> CAR_HORN = addSound("car_horn");
+    public static DeferredHolder<SoundEvent, SoundEvent> CAR_LOCK = addSound("car_lock");
+    public static DeferredHolder<SoundEvent, SoundEvent> CAR_UNLOCK = addSound("car_unlock");
+    public static DeferredHolder<SoundEvent, SoundEvent> RATCHET = addSound("ratchet");
+    public static DeferredHolder<SoundEvent, SoundEvent> GAS_STATION_ATTENDANT = addSound("gas_station_attendant");
 
-    public static RegistryObject<SoundEvent> addSound(String soundName) {
+    public static DeferredHolder<SoundEvent, SoundEvent> addSound(String soundName) {
         return SOUND_REGISTER.register(soundName, () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(Main.MODID, soundName)));
     }
 

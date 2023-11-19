@@ -3,7 +3,8 @@ package de.maxhenkel.car.integration.jei;
 import de.maxhenkel.car.items.ModItems;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.registries.RegistryObject;
+import net.neoforged.neoforge.registries.DeferredHolder;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -110,8 +111,8 @@ public class CarRecipeBuilder {
         return Arrays.asList(new ItemStack(ModItems.SMALL_TANK.get()), new ItemStack(ModItems.MEDIUM_TANK.get()), new ItemStack(ModItems.LARGE_TANK.get()));
     }
 
-    public static <T extends Item> List<ItemStack> concatItems(RegistryObject<T>[]... items) {
-        return concatArrays(items).stream().map(RegistryObject::get).map(ItemStack::new).collect(Collectors.toList());
+    public static <T extends Item> List<ItemStack> concatItems(DeferredHolder<Item, T>[]... items) {
+        return concatArrays(items).stream().map(DeferredHolder::get).map(ItemStack::new).collect(Collectors.toList());
     }
 
     private static <T> List<T> concatArrays(T[]... arrays) {

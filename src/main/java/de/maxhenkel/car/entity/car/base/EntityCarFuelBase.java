@@ -4,6 +4,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import de.maxhenkel.car.fluids.ModFluids;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -15,7 +16,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluid;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
-import net.neoforged.neoforge.registries.ForgeRegistries;
 
 public abstract class EntityCarFuelBase extends EntityCarDamageBase implements IFluidHandler {
 
@@ -112,7 +112,7 @@ public abstract class EntityCarFuelBase extends EntityCarDamageBase implements I
     }
 
     public void setFuelType(Fluid fluid) {
-        setFuelType(ForgeRegistries.FLUIDS.getKey(fluid).toString());
+        setFuelType(BuiltInRegistries.FLUID.getKey(fluid).toString());
     }
 
     public String getFuelType() {
@@ -126,7 +126,7 @@ public abstract class EntityCarFuelBase extends EntityCarDamageBase implements I
             return null;
         }
 
-        return ForgeRegistries.FLUIDS.getValue(new ResourceLocation(fuelType));
+        return BuiltInRegistries.FLUID.get(new ResourceLocation(fuelType));
     }
 
     public int getFuelAmount() {

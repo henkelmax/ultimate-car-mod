@@ -2,9 +2,9 @@ package de.maxhenkel.car.config;
 
 import de.maxhenkel.car.fluids.ModFluids;
 import de.maxhenkel.corelib.config.DynamicConfig;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
-import net.neoforged.neoforge.registries.ForgeRegistries;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -30,7 +30,7 @@ public class FuelConfig extends DynamicConfig {
     }
 
     private void addFuel(Fluid fluid, int efficiency) {
-        String name = ForgeRegistries.FLUIDS.getKey(fluid).toString();
+        String name = BuiltInRegistries.FLUID.getKey(fluid).toString();
         setObject(name, new Fuel(name, efficiency));
     }
 

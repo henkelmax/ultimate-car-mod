@@ -6,16 +6,17 @@ import de.maxhenkel.car.items.ModItems;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
-import net.neoforged.neoforge.registries.RegistryObject;
 
 public class ModCreativeTabs {
 
     private static final DeferredRegister<CreativeModeTab> TAB_REGISTER = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, Main.MODID);
 
-    public static final RegistryObject<CreativeModeTab> TAB_CAR = TAB_REGISTER.register("car", () -> {
+    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> TAB_CAR = TAB_REGISTER.register("car", () -> {
         return CreativeModeTab.builder()
                 .icon(() -> new ItemStack(ModBlocks.ASPHALT.get()))
                 .displayItems((param, output) -> {
@@ -70,7 +71,7 @@ public class ModCreativeTabs {
                 .build();
     });
 
-    public static final RegistryObject<CreativeModeTab> TAB_CAR_PARTS = TAB_REGISTER.register("car_parts", () -> {
+    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> TAB_CAR_PARTS = TAB_REGISTER.register("car_parts", () -> {
         return CreativeModeTab.builder()
                 .icon(() -> new ItemStack(ModItems.OAK_BODY.get()))
                 .displayItems((param, output) -> {
@@ -83,47 +84,47 @@ public class ModCreativeTabs {
                     output.accept(new ItemStack(ModItems.MEDIUM_TANK.get()));
                     output.accept(new ItemStack(ModItems.LARGE_TANK.get()));
 
-                    for (RegistryObject<ItemCarPart> part : ModItems.WOOD_BODIES) {
+                    for (DeferredHolder<Item, ItemCarPart> part : ModItems.WOOD_BODIES) {
                         output.accept(new ItemStack(part.get()));
                     }
-                    for (RegistryObject<ItemCarPart> part : ModItems.BIG_WOOD_BODIES) {
+                    for (DeferredHolder<Item, ItemCarPart> part : ModItems.BIG_WOOD_BODIES) {
                         output.accept(new ItemStack(part.get()));
                     }
-                    for (RegistryObject<ItemCarPart> part : ModItems.TRANSPORTER_BODIES) {
+                    for (DeferredHolder<Item, ItemCarPart> part : ModItems.TRANSPORTER_BODIES) {
                         output.accept(new ItemStack(part.get()));
                     }
-                    for (RegistryObject<ItemCarPart> part : ModItems.SUV_BODIES) {
+                    for (DeferredHolder<Item, ItemCarPart> part : ModItems.SUV_BODIES) {
                         output.accept(new ItemStack(part.get()));
                     }
-                    for (RegistryObject<ItemCarPart> part : ModItems.SPORT_BODIES) {
+                    for (DeferredHolder<Item, ItemCarPart> part : ModItems.SPORT_BODIES) {
                         output.accept(new ItemStack(part.get()));
                     }
-                    for (RegistryObject<ItemCarPart> part : ModItems.CONTAINERS) {
+                    for (DeferredHolder<Item, ItemCarPart> part : ModItems.CONTAINERS) {
                         output.accept(new ItemStack(part.get()));
                     }
-                    for (RegistryObject<ItemCarPart> part : ModItems.TANK_CONTAINERS) {
+                    for (DeferredHolder<Item, ItemCarPart> part : ModItems.TANK_CONTAINERS) {
                         output.accept(new ItemStack(part.get()));
                     }
-                    for (RegistryObject<ItemCarPart> part : ModItems.BUMPERS) {
+                    for (DeferredHolder<Item, ItemCarPart> part : ModItems.BUMPERS) {
                         output.accept(new ItemStack(part.get()));
                     }
-                    for (RegistryObject<ItemCarPart> part : ModItems.WOODEN_LICENSE_PLATE_HOLDERS) {
+                    for (DeferredHolder<Item, ItemCarPart> part : ModItems.WOODEN_LICENSE_PLATE_HOLDERS) {
                         output.accept(new ItemStack(part.get()));
                     }
                     output.accept(new ItemStack(ModItems.IRON_LICENSE_PLATE_HOLDER.get()));
                     output.accept(new ItemStack(ModItems.DIAMOND_LICENSE_PLATE_HOLDER.get()));
                     output.accept(new ItemStack(ModItems.GOLD_LICENSE_PLATE_HOLDER.get()));
                     output.accept(new ItemStack(ModItems.EMERALD_LICENSE_PLATE_HOLDER.get()));
-                    for (RegistryObject<ItemCarPart> part : ModItems.WOODEN_LICENSE_PLATE_HOLDERS) {
+                    for (DeferredHolder<Item, ItemCarPart> part : ModItems.WOODEN_LICENSE_PLATE_HOLDERS) {
                         output.accept(new ItemStack(part.get()));
                     }
-                    for (RegistryObject<ItemCarPart> part : ModItems.WOODEN_LICENSE_PLATE_HOLDERS) {
+                    for (DeferredHolder<Item, ItemCarPart> part : ModItems.WOODEN_LICENSE_PLATE_HOLDERS) {
                         output.accept(new ItemStack(part.get()));
                     }
-                    for (RegistryObject<ItemCarPart> part : ModItems.WOODEN_LICENSE_PLATE_HOLDERS) {
+                    for (DeferredHolder<Item, ItemCarPart> part : ModItems.WOODEN_LICENSE_PLATE_HOLDERS) {
                         output.accept(new ItemStack(part.get()));
                     }
-                    for (RegistryObject<ItemCarPart> part : ModItems.WOODEN_LICENSE_PLATE_HOLDERS) {
+                    for (DeferredHolder<Item, ItemCarPart> part : ModItems.WOODEN_LICENSE_PLATE_HOLDERS) {
                         output.accept(new ItemStack(part.get()));
                     }
                 })

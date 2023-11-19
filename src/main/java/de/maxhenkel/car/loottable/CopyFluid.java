@@ -47,7 +47,7 @@ public class CopyFluid extends LootItemConditionalFunction {
 
     @Override
     public LootItemFunctionType getType() {
-        return Main.COPY_FLUID;
+        return Main.COPY_FLUID.get();
     }
 
 }
