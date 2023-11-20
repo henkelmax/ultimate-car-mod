@@ -1,1 +1,1 @@
-- Fixed crash on servers
+- Improved compatibility with other mods

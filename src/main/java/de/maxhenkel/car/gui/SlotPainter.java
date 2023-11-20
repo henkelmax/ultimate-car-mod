@@ -24,7 +24,9 @@ public class SlotPainter extends Slot {
     public boolean mayPickup(Player player) {
         setPainterID(index);
         if (player.level().isClientSide) {
-            Minecraft.getInstance().setScreen(null);
+            Minecraft.getInstance().execute(() -> {
+                Minecraft.getInstance().setScreen(null);
+            });
         }
         return false;
     }
