@@ -1,1 +1,1 @@
-- Updated NeoForge
+- Improved compatibility with other mods
