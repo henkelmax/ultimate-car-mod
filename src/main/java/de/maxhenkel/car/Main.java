@@ -12,11 +12,13 @@ import de.maxhenkel.car.config.ClientConfig;
 import de.maxhenkel.car.config.FuelConfig;
 import de.maxhenkel.car.config.ServerConfig;
 import de.maxhenkel.car.entity.car.base.EntityGenericCar;
+import de.maxhenkel.car.entity.car.base.EntityVehicleBase;
 import de.maxhenkel.car.entity.model.GenericCarModel;
 import de.maxhenkel.car.events.*;
 import de.maxhenkel.car.fluids.ModFluids;
 import de.maxhenkel.car.gui.*;
 import de.maxhenkel.car.integration.IMC;
+import de.maxhenkel.car.items.CarBucketItem;
 import de.maxhenkel.car.items.ItemLicensePlate;
 import de.maxhenkel.car.items.ModItems;
 import de.maxhenkel.car.loottable.CopyFluid;
@@ -59,10 +61,15 @@ import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.neoforged.fml.loading.FMLEnvironment;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.extensions.IMenuTypeExtension;
+import net.neoforged.neoforge.energy.IEnergyStorage;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.network.IContainerFactory;
 import net.neoforged.neoforge.network.simple.SimpleChannel;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -125,6 +132,7 @@ public class Main {
     public Main() {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::commonSetup);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(IMC::enqueueIMC);
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::onRegisterCapabilities);
 
         SERVER_CONFIG = CommonRegistry.registerConfig(ModConfig.Type.SERVER, ServerConfig.class, true);
         FUEL_CONFIG = CommonRegistry.registerDynamicConfig(DynamicConfig.DynamicConfigType.SERVER, Main.MODID, "fuel", FuelConfig.class);
@@ -365,6 +373,59 @@ public class Main {
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<TileEntityGasStation>> GAS_STATION_TILE_ENTITY_TYPE = BLOCK_ENTITY_REGISTER.register("gas_station", () ->
             BlockEntityType.Builder.of(TileEntityGasStation::new, ModBlocks.GAS_STATION.get()).build(null)
     );
+
+    public void onRegisterCapabilities(RegisterCapabilitiesEvent event) {
+        registerBlockCapabilities(event, GENERATOR_TILE_ENTITY_TYPE);
+        registerBlockCapabilities(event, BACKMIX_REACTOR_TILE_ENTITY_TYPE);
+        registerBlockCapabilities(event, BLAST_FURNACE_TILE_ENTITY_TYPE);
+        registerBlockCapabilities(event, CABLE_TILE_ENTITY_TYPE);
+        registerBlockCapabilities(event, CAR_WORKSHOP_TILE_ENTITY_TYPE);
+        registerBlockCapabilities(event, DYNAMO_TILE_ENTITY_TYPE);
+        registerBlockCapabilities(event, FLUID_EXTRACTOR_TILE_ENTITY_TYPE);
+        registerBlockCapabilities(event, OIL_MILL_TILE_ENTITY_TYPE);
+        registerBlockCapabilities(event, SIGN_TILE_ENTITY_TYPE);
+        registerBlockCapabilities(event, SPLIT_TANK_TILE_ENTITY_TYPE);
+        registerBlockCapabilities(event, TANK_TILE_ENTITY_TYPE);
+        registerBlockCapabilities(event, GAS_STATION_TILE_ENTITY_TYPE);
+
+        event.registerItem(Capabilities.FluidHandler.ITEM, (object, context) -> CarBucketItem.getFluidHandler(object),
+                ModItems.BIO_DIESEL_BUCKET.get(),
+                ModItems.CANOLA_OIL_BUCKET.get(),
+                ModItems.METHANOL_BUCKET.get(),
+                ModItems.GLYCERIN_BUCKET.get(),
+                ModItems.CANOLA_METHANOL_MIX_BUCKET.get()
+        );
+        event.registerItem(Capabilities.EnergyStorage.ITEM, (object, context) -> ModItems.BATTERY.get().getEnergyHandler(object), ModItems.BATTERY.get());
+
+        registerEntityCapabilities(event, CAR_ENTITY_TYPE);
+    }
+
+    private <T extends TileEntityBase> void registerBlockCapabilities(RegisterCapabilitiesEvent event, DeferredHolder<BlockEntityType<?>, BlockEntityType<T>> holder) {
+        event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, holder.get(), (object, context) -> object.getFluidHandler());
+        event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, holder.get(), (object, context) -> object.getEnergyStorage());
+        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, holder.get(), (object, context) -> object.getItemHandler());
+    }
+
+    private <T extends EntityVehicleBase> void registerEntityCapabilities(RegisterCapabilitiesEvent event, DeferredHolder<EntityType<?>, EntityType<T>> holder) {
+        event.registerEntity(Capabilities.FluidHandler.ENTITY, holder.get(), (object, context) -> {
+            if (object instanceof IFluidHandler fluidHandler) {
+                return fluidHandler;
+            }
+            return null;
+        });
+        event.registerEntity(Capabilities.EnergyStorage.ENTITY, holder.get(), (object, context) -> {
+            if (object instanceof IEnergyStorage energyStorage) {
+                return energyStorage;
+            }
+            return null;
+        });
+        event.registerEntity(Capabilities.ItemHandler.ENTITY, holder.get(), (object, context) -> {
+            if (object instanceof IItemHandler itemHandler) {
+                return itemHandler;
+            }
+            return null;
+        });
+    }
 
     private static final DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZER_REGISTER = DeferredRegister.create(BuiltInRegistries.RECIPE_SERIALIZER, Main.MODID);
     public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<KeyRecipe>> CRAFTING_SPECIAL_KEY = RECIPE_SERIALIZER_REGISTER.register("crafting_special_key", () ->

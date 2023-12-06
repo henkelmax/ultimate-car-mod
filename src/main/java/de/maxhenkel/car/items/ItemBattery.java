@@ -3,8 +3,6 @@ package de.maxhenkel.car.items;
 import de.maxhenkel.car.blocks.ModBlocks;
 import de.maxhenkel.corelib.energy.EnergyUtils;
 import net.minecraft.ChatFormatting;
-import net.minecraft.core.Direction;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.Item;
@@ -12,12 +10,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
-import net.neoforged.neoforge.common.capabilities.Capabilities;
-import net.neoforged.neoforge.common.capabilities.Capability;
-import net.neoforged.neoforge.common.capabilities.ICapabilityProvider;
-import net.neoforged.neoforge.common.util.LazyOptional;
 import net.neoforged.neoforge.energy.IEnergyStorage;
-import javax.annotation.Nonnull;
+
 import javax.annotation.Nullable;
 import java.util.List;
 
@@ -68,19 +62,8 @@ public class ItemBattery extends Item {
         setDamage(stack, Math.max(getMaxDamage(stack) - energy, 0));
     }
 
-    @Nullable
-    @Override
-    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
-        return new ICapabilityProvider() {
-            @Nonnull
-            @Override
-            public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-                if (cap == Capabilities.ENERGY) {
-                    return LazyOptional.of(() -> new BatteryEnergyStorage(stack)).cast();
-                }
-                return LazyOptional.empty();
-            }
-        };
+    public IEnergyStorage getEnergyHandler(ItemStack stack) {
+        return new BatteryEnergyStorage(stack);
     }
 
     public class BatteryEnergyStorage implements IEnergyStorage {

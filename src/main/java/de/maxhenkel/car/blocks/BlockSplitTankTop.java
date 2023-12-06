@@ -7,6 +7,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.SoundType;
@@ -65,7 +66,7 @@ public class BlockSplitTankTop extends BlockBase {
     }
 
     @Override
-    public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter world, BlockPos pos, Player player) {
+    public ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader world, BlockPos pos, Player player) {
         BlockState stateDown = world.getBlockState(pos.below());
         if (stateDown.getBlock().equals(ModBlocks.SPLIT_TANK.get())) {
             return ModBlocks.SPLIT_TANK.get().getCloneItemStack(stateDown, target, world, pos.below(), player);

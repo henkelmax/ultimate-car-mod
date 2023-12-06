@@ -19,7 +19,7 @@ public class BlockEvents {
 
     @SubscribeEvent
     public void breakEvent(BlockEvent.BreakEvent event) {
-        if (!event.getState().getBlock().equals(Blocks.GRASS)) {
+        if (!event.getState().getBlock().equals(Blocks.SHORT_GRASS)) {
             return;
         }
 

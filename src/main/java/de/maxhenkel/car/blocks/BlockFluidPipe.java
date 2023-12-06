@@ -132,7 +132,7 @@ public class BlockFluidPipe extends BlockBase implements IItemBlock, SimpleWater
         return shape;
     }
 
-    public static boolean isConnectedTo(LevelAccessor world, BlockPos pos, Direction facing) {
+    public static boolean isConnectedTo(Level world, BlockPos pos, Direction facing) {
         BlockState state = world.getBlockState(pos.relative(facing));
 
         if (state.getBlock().equals(ModBlocks.FLUID_PIPE.get()) || state.getBlock().equals(ModBlocks.FLUID_EXTRACTOR.get())) {

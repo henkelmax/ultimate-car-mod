@@ -1,5 +1,6 @@
 package de.maxhenkel.car.blocks;
 
+import com.mojang.serialization.MapCodec;
 import de.maxhenkel.car.entity.car.base.EntityGenericCar;
 import de.maxhenkel.corelib.block.IItemBlock;
 import net.minecraft.core.BlockPos;
@@ -27,6 +28,11 @@ public class BlockCarPressurePlate extends BasePressurePlateBlock implements IIt
     @Override
     public Item toItem() {
         return new BlockItem(this, new Item.Properties());
+    }
+
+    @Override
+    protected MapCodec<? extends BasePressurePlateBlock> codec() {
+        return null; //TODO Add
     }
 
     @Override

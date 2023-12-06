@@ -1,12 +1,10 @@
 package de.maxhenkel.car.entity.car.base;
 
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
-import org.jetbrains.annotations.NotNull;
-import org.joml.Vector3d;
 import de.maxhenkel.car.Main;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
@@ -22,11 +20,8 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
-import net.neoforged.neoforge.common.capabilities.Capabilities;
-import net.neoforged.neoforge.common.capabilities.Capability;
-import net.neoforged.neoforge.common.util.LazyOptional;
-import net.neoforged.neoforge.energy.IEnergyStorage;
-import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import org.joml.Vector3d;
+
 import java.util.List;
 
 public abstract class EntityVehicleBase extends Entity {
@@ -257,13 +252,4 @@ public abstract class EntityVehicleBase extends Entity {
         return super.getDismountLocationForPassenger(entity);
     }
 
-    @Override
-    @NotNull
-    public <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @org.jetbrains.annotations.Nullable Direction side) {
-        if ((this instanceof IFluidHandler && cap.equals(Capabilities.FLUID_HANDLER)) ||
-                (this instanceof IEnergyStorage && cap.equals(Capabilities.ENERGY))) {
-            return LazyOptional.of(() -> (T) this);
-        }
-        return LazyOptional.empty();
-    }
 }

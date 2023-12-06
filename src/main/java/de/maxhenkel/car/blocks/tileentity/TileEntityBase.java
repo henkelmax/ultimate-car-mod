@@ -16,11 +16,9 @@ import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.common.capabilities.Capabilities;
-import net.neoforged.neoforge.common.capabilities.Capability;
-import net.neoforged.neoforge.common.util.LazyOptional;
 import net.neoforged.neoforge.energy.IEnergyStorage;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.NotNull;
 
@@ -99,13 +97,28 @@ public abstract class TileEntityBase extends BlockEntity implements Nameable {
         super.load(compound);
     }
 
-    @Override
-    @NotNull
-    public <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @org.jetbrains.annotations.Nullable Direction side) {
-        if ((this instanceof IFluidHandler && cap.equals(Capabilities.FLUID_HANDLER)) ||
-                (this instanceof IEnergyStorage && cap.equals(Capabilities.ENERGY))) {
-            return LazyOptional.of(() -> (T) this);
+    @Nullable
+    public IFluidHandler getFluidHandler() {
+        if (this instanceof IFluidHandler fluidHandler) {
+            return fluidHandler;
         }
-        return LazyOptional.empty();
+        return null;
     }
+
+    @Nullable
+    public IEnergyStorage getEnergyStorage() {
+        if (this instanceof IEnergyStorage energyStorage) {
+            return energyStorage;
+        }
+        return null;
+    }
+
+    @Nullable
+    public IItemHandler getItemHandler() {
+        if (this instanceof IItemHandler itemHandler) {
+            return itemHandler;
+        }
+        return null;
+    }
+
 }
