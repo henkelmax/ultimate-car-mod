@@ -453,9 +453,13 @@ public class TileEntityGasStation extends TileEntityBase implements ITickableBlo
 
     }
 
-    @Override
     public AABB getRenderBoundingBox() {
         return new AABB(worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), worldPosition.getX() + 1, worldPosition.getY() + 2, worldPosition.getZ() + 1);
+    }
+
+    @Override
+    public boolean hasCustomOutlineRendering(Player player) {
+        return super.hasCustomOutlineRendering(player);
     }
 
     public int getTradeAmount() {

@@ -70,4 +70,8 @@ public class TileentitySpecialRendererGasStation implements BlockEntityRenderer<
         LevelRenderer.renderLineBox(matrixStack, buffer.getBuffer(RenderType.lines()), axisalignedbb, 0F, 0F, 1F, 1F);
     }
 
+    @Override
+    public AABB getRenderBoundingBox(TileEntityGasStation blockEntity) {
+        return blockEntity.getRenderBoundingBox();
+    }
 }
