@@ -7,7 +7,7 @@ public class MixinConnector implements IMixinConnector {
 
     @Override
     public void connect() {
-        Mixins.addConfiguration("assets/" + Main.MODID + "/car.mixins.json");
+        Mixins.addConfiguration("car.mixins.json");
     }
 
 }
