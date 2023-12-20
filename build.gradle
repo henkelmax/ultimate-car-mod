@@ -1,248 +1,32 @@
-buildscript {
-    repositories {
-        maven { url = 'https://repo.spongepowered.org/maven' }
-    }
-    dependencies {
-        classpath group: 'org.spongepowered', name: 'mixingradle', version: '0.7-SNAPSHOT'
-    }
-}
-
 plugins {
-    id 'net.minecraftforge.gradle' version '5.+'
-    id 'com.matthewprenger.cursegradle' version '1.4.0'
-    id 'com.github.johnrengelman.shadow' version '7.1.2'
-    id 'com.modrinth.minotaur' version '2.+'
-    id 'mod-update' version '2.0.0'
+    id 'net.minecraftforge.gradle' version "${forgegradle_version}"
+    id 'org.spongepowered.mixin' version "${mixingradle_version}"
+    id 'com.matthewprenger.cursegradle' version "${cursegradle_version}"
+    id 'com.modrinth.minotaur' version "${minotaur_version}"
+    id 'com.github.johnrengelman.shadow' version "${shadow_version}"
+    id 'mod-update' version "${mod_update_version}"
 }
 
-apply plugin: 'idea'
-apply plugin: 'org.spongepowered.mixin'
-
-idea {
-    module {
-        downloadJavadoc = true
-        downloadSources = true
-    }
-}
-
-version = mod_version
-group = mod_packagename
-archivesBaseName = mod_id
-
-java.toolchain.languageVersion = JavaLanguageVersion.of(17)
-
-minecraft {
-    mappings channel: 'official', version: mod_minecraft_version
-
-    accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
-
-    runs {
-        client {
-            workingDirectory project.file('run').canonicalPath
-            property 'forge.logging.console.level', 'debug'
-            args = ['--username', 'henkelmax']
-            source sourceSets.main
-            mods {
-                "${mod_id}" {
-                    source sourceSets.main
-                }
-            }
-        }
-        server {
-            workingDirectory project.file('run/server').canonicalPath
-            property 'forge.logging.console.level', 'debug'
-            source sourceSets.main
-            mods {
-                "${mod_id}" {
-                    source sourceSets.main
-                }
-            }
-        }
-        data {
-            workingDirectory project.file('run')
-            property 'forge.logging.console.level', 'debug'
-            args '--mod', mod_id, '--all', '--output', file('src/generated/resources/')
-            mods {
-                "${mod_id}" {
-                    source sourceSets.main
-                }
-            }
-        }
-    }
-}
-
-sourceSets.main.resources { srcDir 'src/generated/resources' }
+apply from: "https://raw.githubusercontent.com/henkelmax/mod-gradle-scripts/${mod_gradle_script_version}/mod.gradle"
 
 dependencies {
-    minecraft "net.minecraftforge:forge:${mod_minecraft_version}-${forge_version}"
+    shadow fg.deobf("de.maxhenkel.corelib:corelib:${minecraft_version}-${corelib_version}:api")
+    runtimeOnly fg.deobf("de.maxhenkel.corelib:corelib:${minecraft_version}-${corelib_version}")
+    compileOnly fg.deobf("de.maxhenkel.corelib:corelib:${minecraft_version}-${corelib_version}:javadoc")
 
-    compileOnly fg.deobf("curse.maven:jei-238222:${jei_id}")
-
-    shadow fg.deobf("de.maxhenkel.corelib:corelib:${mod_minecraft_version}-${corelib_version}:api")
-    runtimeOnly fg.deobf("de.maxhenkel.corelib:corelib:${mod_minecraft_version}-${corelib_version}")
-    runtimeOnly fg.deobf("de.maxhenkel.corelib:corelib:${mod_minecraft_version}-${corelib_version}:javadoc")
-
-    compileOnly fg.deobf("curse.maven:the-one-probe-245211:${theoneprobe_id}")
-
-    compileOnly fg.deobf("curse.maven:jade-324717:${jade_id}")
-
-    implementation 'com.google.code.findbugs:jsr305:3.0.2'
-    annotationProcessor 'org.spongepowered:mixin:0.8.4:processor'
-}
-
-mixin {
-    add sourceSets.main, 'car.refmap.json'
-}
-
-jar {
-    manifest {
-        attributes(['Specification-Title'     : mod_name,
-                    'Specification-Vendor'    : mod_vendor,
-                    'Specification-Version'   : '1',
-                    'Implementation-Title'    : mod_name,
-                    'Implementation-Version'  : mod_version,
-                    'Implementation-Vendor'   : mod_vendor,
-                    'Implementation-Timestamp': new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
-                    'MixinConnector'          : 'de.maxhenkel.car.MixinConnector'
-        ])
-    }
+    implementation fg.deobf("maven.modrinth:jei:${jei_version}")
+    implementation fg.deobf("maven.modrinth:the-one-probe:${theoneprobe_version}")
+    implementation fg.deobf("maven.modrinth:jade:${jade_version}")
 }
 
 processResources {
     filesMatching('**/*.toml') {
-        expand 'mod_id': mod_id,
-                'mod_version': mod_version,
-                'mod_vendor': mod_vendor,
-                'mod_name': mod_name,
-                'mod_forge_version': mod_forge_version,
-                'mod_loader_version': mod_loader_version,
-                'mod_minecraft_version': mod_minecraft_version
+        expand 'mod_version': mod_version,
+                'forge_dependency': forge_dependency,
+                'minecraft_version': minecraft_version
     }
 }
-
-tasks.withType(JavaCompile).configureEach {
-    options.encoding = 'UTF-8'
-}
-
-curseforge {
-    def apiKeyFile = file('curseforge_api_key.txt')
-    if (System.env.CURSEFORGE_API_KEY != null) {
-        apiKey = System.env.CURSEFORGE_API_KEY;
-    } else if (apiKeyFile.exists()) {
-        apiKey = apiKeyFile.text
-    } else {
-        apiKey = ''
-    }
-    project {
-        id = curse_id
-        changelogType = 'markdown'
-        changelog = file('changelog.md')
-        releaseType = release_type
-        addGameVersion mod_minecraft_version
-        addGameVersion 'Forge'
-        addGameVersion 'Java 17'
-        mainArtifact(jar) {
-            displayName = "[${mod_minecraft_version}] ${mod_name} ${mod_version}"
-            relations {
-                optionalDependency 'jei'
-                optionalDependency 'the-one-probe'
-                optionalDependency 'jade'
-                optionalDependency 'ultimate-plane-mod'
-            }
-        }
-    }
-}
-
-tasks.modrinth.configure({
-    group = 'upload'
-})
-tasks.modrinthSyncBody.configure({
-    group = 'upload'
-})
-
-modrinth {
-    token = file("${rootDir}/modrinth_token.txt").exists() ? file("${rootDir}/modrinth_token.txt").text : ''
-    projectId = modrinth_id
-    versionNumber = "forge-${mod_version}"
-    versionName = "[FORGE][${mod_minecraft_version}] ${mod_name} ${mod_version}"
-    uploadFile = jar
-    versionType = release_type.toUpperCase()
-    changelog = file('changelog.md').text
-    gameVersions = [mod_minecraft_version]
-    loaders = ['forge']
-    syncBodyFrom = file('readme.md').text
-}
-tasks.modrinth.dependsOn(build)
-
-modUpdate {
-    serverURL = 'https://update.maxhenkel.de/'
-    modID = mod_id
-    gameVersion = mod_minecraft_version
-    modVersion = mod_version
-    changelogFile = file('changelog.md')
-    releaseType = release_type
-    tags = recommended == 'true' ? ['recommended'] : []
-}
-
-repositories {
-    mavenLocal()
-    maven { url = 'https://dvs1.progwml6.com/files/maven/' }
-    maven { url = 'https://modmaven.k-4u.nl' }
-    maven { url = 'https://maven.maxhenkel.de/repository/public' }
-    maven {
-        url 'https://www.cursemaven.com'
-        content {
-            includeGroup 'curse.maven'
-        }
-    }
-}
-
-javadoc {
-    failOnError = false
-}
-
-task deobfJar(type: Jar) {
-    classifier 'deobf'
-    from sourceSets.main.output
-    manifest {
-        attributes(['Specification-Title'     : mod_name,
-                    'Specification-Vendor'    : mod_vendor,
-                    'Specification-Version'   : '1',
-                    'Implementation-Title'    : mod_name,
-                    'Implementation-Version'  : mod_version,
-                    'Implementation-Vendor'   : mod_vendor,
-                    'Implementation-Timestamp': new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
-                    'MixinConnector'          : 'de.maxhenkel.car.MixinConnector'
-        ])
-    }
-}
-
-task sourcesJar(type: Jar) {
-    classifier 'sources'
-    from sourceSets.main.allJava
-}
-
-task javadocJar(type: Jar, dependsOn: javadoc) {
-    classifier 'javadoc'
-    from javadoc.getDestinationDir()
-}
-
-artifacts {
-    archives deobfJar
-    archives sourcesJar
-    archives javadocJar
-    archives shadowJar
-}
-
-jar.finalizedBy('reobfJar')
 
 shadowJar {
-    project.configurations.shadow.setTransitive(true);
-    configurations = [project.configurations.shadow]
-    classifier ''
-    relocate 'de.maxhenkel.corelib', "de.maxhenkel.${mod_id}.corelib"
-}
-
-reobf {
-    shadowJar {}
+    relocate 'de.maxhenkel.corelib', 'de.maxhenkel.car.corelib'
 }

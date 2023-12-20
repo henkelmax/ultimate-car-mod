@@ -1,24 +1,42 @@
-modLoader="javafml"
-loaderVersion="${mod_loader_version}"
-license="All rights reserved"
-issueTrackerURL="https://github.com/henkelmax/ultimate-car-mod/issues"
+modLoader = "javafml"
+loaderVersion = "*"
+license = "All rights reserved"
+issueTrackerURL = "https://github.com/henkelmax/ultimate-car-mod/issues"
 [[mods]]
-modId="${mod_id}"
-version="${mod_version}"
-displayName="${mod_name}"
-updateJSONURL="https://maxhenkel.de/update/car.json"
-displayURL="https://www.curseforge.com/minecraft/mc-mods/ultimate-car-mod"
-authors="${mod_vendor}"
-description='''This mod brings cars, road construction and biodiesel production into your Minecraft world'''
-[[dependencies.${mod_id}]]
-    modId="forge"
-    mandatory=true
-    versionRange="${mod_forge_version}"
-    ordering="NONE"
-    side="BOTH"
-[[dependencies.${mod_id}]]
-    modId="minecraft"
-    mandatory=true
-    versionRange="[${mod_minecraft_version}]"
-    ordering="NONE"
-    side="BOTH"
+modId = "car"
+version = "${mod_version}"
+displayName = "Ultimate Car Mod"
+updateJSONURL = "https://update.maxhenkel.de/forge/car"
+displayURL = "https://www.curseforge.com/minecraft/mc-mods/ultimate-car-mod"
+authors = "Max Henkel"
+description = '''This mod brings cars, road construction and biodiesel production into your Minecraft world'''
+[[dependencies.car]]
+modId = "forge"
+mandatory = true
+versionRange = "${forge_dependency}"
+ordering = "NONE"
+side = "BOTH"
+[[dependencies.car]]
+modId = "minecraft"
+mandatory = true
+versionRange = "[${minecraft_version}]"
+ordering = "NONE"
+side = "BOTH"
+[[dependencies.car]]
+modId = "jei"
+mandatory = false
+versionRange = "*"
+ordering = "NONE"
+side = "BOTH"
+[[dependencies.car]]
+modId = "theoneprobe"
+mandatory = false
+versionRange = "*"
+ordering = "NONE"
+side = "BOTH"
+[[dependencies.car]]
+modId = "jade"
+mandatory = false
+versionRange = "*"
+ordering = "NONE"
+side = "BOTH"
