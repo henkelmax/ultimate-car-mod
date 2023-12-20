@@ -8,6 +8,7 @@ version = "${mod_version}"
 displayName = "Ultimate Car Mod"
 updateJSONURL = "https://update.maxhenkel.de/neoforge/car"
 displayURL = "https://www.curseforge.com/minecraft/mc-mods/ultimate-car-mod"
+logoFile = "icon.png"
 authors = "Max Henkel"
 description = '''This mod brings cars, road construction and biodiesel production into your Minecraft world'''
 [[dependencies.car]]
