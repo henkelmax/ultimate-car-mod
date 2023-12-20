@@ -1,1 +1,1 @@
-- Fixed OptiFine compatibility issues
+- Added mod icon
