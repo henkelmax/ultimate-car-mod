@@ -1,12 +1,11 @@
 <!-- modrinth_exclude.start -->
 
-# The Ultimate Car Mod ![](http://cf.way2muchnoise.eu/full_267458_downloads.svg) ![](http://cf.way2muchnoise.eu/versions/267458.svg)
+# The Ultimate Car Mod
 
 ## Links
+- [Modrinth](https://modrinth.com/mod/ultimate-car-mod)
 - [CurseForge](https://www.curseforge.com/minecraft/mc-mods/ultimate-car-mod)
-- [Wiki](https://modrepo.de/minecraft/car/wiki)
-- [ModRepo](https://modrepo.de/minecraft/car/overview)
-- [GitHub](https://github.com/henkelmax/ultimate-car-mod)
+- [Wiki](https://modrepo.de/minecraft/car/wiki/fuel_production)
 - [FAQ](https://modrepo.de/minecraft/car/faq)
 - [Credits](https://modrepo.de/minecraft/car/credits)
 
