@@ -32,6 +32,8 @@ import de.maxhenkel.corelib.config.DynamicConfig;
 import de.maxhenkel.corelib.dataserializers.DataSerializerItemList;
 import de.maxhenkel.tools.EntityTools;
 import net.minecraft.client.KeyMapping;
+import net.minecraft.client.renderer.ItemBlockRenderTypes;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.core.NonNullList;
@@ -238,6 +240,17 @@ public class Main {
         NeoForge.EVENT_BUS.register(new PlayerEvents());
 
         EntityRenderers.register(CAR_ENTITY_TYPE.get(), GenericCarModel::new);
+
+        ItemBlockRenderTypes.setRenderLayer(ModFluids.CANOLA_OIL.get(), RenderType.translucent());
+        ItemBlockRenderTypes.setRenderLayer(ModFluids.CANOLA_OIL_FLOWING.get(), RenderType.translucent());
+        ItemBlockRenderTypes.setRenderLayer(ModFluids.METHANOL.get(), RenderType.translucent());
+        ItemBlockRenderTypes.setRenderLayer(ModFluids.METHANOL_FLOWING.get(), RenderType.translucent());
+        ItemBlockRenderTypes.setRenderLayer(ModFluids.CANOLA_METHANOL_MIX.get(), RenderType.translucent());
+        ItemBlockRenderTypes.setRenderLayer(ModFluids.CANOLA_METHANOL_MIX_FLOWING.get(), RenderType.translucent());
+        ItemBlockRenderTypes.setRenderLayer(ModFluids.GLYCERIN.get(), RenderType.translucent());
+        ItemBlockRenderTypes.setRenderLayer(ModFluids.GLYCERIN_FLOWING.get(), RenderType.translucent());
+        ItemBlockRenderTypes.setRenderLayer(ModFluids.BIO_DIESEL.get(), RenderType.translucent());
+        ItemBlockRenderTypes.setRenderLayer(ModFluids.BIO_DIESEL_FLOWING.get(), RenderType.translucent());
     }
 
     @SubscribeEvent
