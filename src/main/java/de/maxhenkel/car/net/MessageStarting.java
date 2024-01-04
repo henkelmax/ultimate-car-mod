@@ -4,14 +4,17 @@ import de.maxhenkel.car.Main;
 import de.maxhenkel.car.entity.car.base.EntityCarBatteryBase;
 import de.maxhenkel.corelib.net.Message;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.world.entity.Entity;
+import net.minecraft.network.protocol.PacketFlow;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.neoforge.network.NetworkEvent;
+import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
 import java.util.UUID;
 
 public class MessageStarting implements Message<MessageStarting> {
+
+    public static ResourceLocation ID = new ResourceLocation(Main.MODID, "starting");
 
     private boolean start;
     private boolean playSound;
@@ -28,25 +31,26 @@ public class MessageStarting implements Message<MessageStarting> {
     }
 
     @Override
-    public Dist getExecutingSide() {
-        return Dist.DEDICATED_SERVER;
+    public PacketFlow getExecutingSide() {
+        return PacketFlow.SERVERBOUND;
     }
 
     @Override
-    public void executeServerSide(NetworkEvent.Context context) {
-        if (!context.getSender().getUUID().equals(uuid)) {
+    public void executeServerSide(PlayPayloadContext context) {
+        if (!(context.player().orElse(null) instanceof ServerPlayer sender)) {
+            return;
+        }
+
+        if (!sender.getUUID().equals(uuid)) {
             Main.LOGGER.error("The UUID of the sender was not equal to the packet UUID");
             return;
         }
 
-        Entity riding = context.getSender().getVehicle();
-
-        if (!(riding instanceof EntityCarBatteryBase)) {
+        if (!(sender.getVehicle() instanceof EntityCarBatteryBase car)) {
             return;
         }
 
-        EntityCarBatteryBase car = (EntityCarBatteryBase) riding;
-        if (context.getSender().equals(car.getDriver())) {
+        if (sender.equals(car.getDriver())) {
             car.setStarting(start, playSound);
         }
     }
@@ -67,6 +71,11 @@ public class MessageStarting implements Message<MessageStarting> {
         buf.writeBoolean(playSound);
 
         buf.writeUUID(uuid);
+    }
+
+    @Override
+    public ResourceLocation id() {
+        return ID;
     }
 
 }

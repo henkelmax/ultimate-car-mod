@@ -1,17 +1,22 @@
 package de.maxhenkel.car.net;
 
+import de.maxhenkel.car.Main;
 import de.maxhenkel.car.items.ItemLicensePlate;
 import de.maxhenkel.corelib.net.Message;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.protocol.PacketFlow;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.neoforge.network.NetworkEvent;
+import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
 import java.util.UUID;
 
 public class MessageEditLicensePlate implements Message<MessageEditLicensePlate> {
+
+    public static ResourceLocation ID = new ResourceLocation(Main.MODID, "edit_license_plate");
 
     private UUID uuid;
     private String text;
@@ -26,16 +31,20 @@ public class MessageEditLicensePlate implements Message<MessageEditLicensePlate>
     }
 
     @Override
-    public Dist getExecutingSide() {
-        return Dist.DEDICATED_SERVER;
+    public PacketFlow getExecutingSide() {
+        return PacketFlow.SERVERBOUND;
     }
 
     @Override
-    public void executeServerSide(NetworkEvent.Context context) {
-        if (!context.getSender().getUUID().equals(uuid)) {
+    public void executeServerSide(PlayPayloadContext context) {
+        if (!(context.player().orElse(null) instanceof ServerPlayer sender)) {
             return;
         }
-        setItemText(context.getSender(), text);
+
+        if (!sender.getUUID().equals(uuid)) {
+            return;
+        }
+        setItemText(sender, text);
     }
 
     public static void setItemText(Player player, String text) {
@@ -63,6 +72,11 @@ public class MessageEditLicensePlate implements Message<MessageEditLicensePlate>
     public void toBytes(FriendlyByteBuf buf) {
         buf.writeUUID(uuid);
         buf.writeUtf(text);
+    }
+
+    @Override
+    public ResourceLocation id() {
+        return ID;
     }
 
 }

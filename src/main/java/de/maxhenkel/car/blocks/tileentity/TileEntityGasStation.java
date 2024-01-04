@@ -35,6 +35,7 @@ import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.FluidUtil;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.network.PacketDistributor;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -430,7 +431,7 @@ public class TileEntityGasStation extends TileEntityBase implements ITickableBlo
 
     public void sendStartFuelPacket(boolean start) {
         if (level.isClientSide) {
-            NetUtils.sendToServer(Main.SIMPLE_CHANNEL, new MessageStartFuel(worldPosition, start));
+            PacketDistributor.SERVER.noArg().send(new MessageStartFuel(worldPosition, start));
         }
     }
 

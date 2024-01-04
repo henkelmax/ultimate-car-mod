@@ -8,7 +8,6 @@ import de.maxhenkel.car.entity.car.base.EntityGenericCar;
 import de.maxhenkel.car.net.MessageOpenCarWorkshopGui;
 import de.maxhenkel.car.net.MessageSpawnCar;
 import de.maxhenkel.corelib.inventory.ScreenBase;
-import de.maxhenkel.corelib.net.NetUtils;
 import de.maxhenkel.tools.EntityTools;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
@@ -16,6 +15,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
+import net.neoforged.neoforge.network.PacketDistributor;
 
 public class GuiCarWorkshopCrafting extends ScreenBase<ContainerCarWorkshopCrafting> {
 
@@ -44,13 +44,13 @@ public class GuiCarWorkshopCrafting extends ScreenBase<ContainerCarWorkshopCraft
         super.init();
 
         buttonRepair = addRenderableWidget(Button.builder(Component.translatable("button.car.repair_car"), button -> {
-            NetUtils.sendToServer(Main.SIMPLE_CHANNEL, new MessageOpenCarWorkshopGui(tile.getBlockPos(), player, true));
+            PacketDistributor.SERVER.noArg().send(new MessageOpenCarWorkshopGui(tile.getBlockPos(), player, true));
         }).bounds(leftPos + 105, topPos + 72, 60, 20).build());
 
         buttonSpawn = addRenderableWidget(Button.builder(Component.translatable("button.car.spawn_car"), button -> {
             if (tile.getLevel().isClientSide) {
                 if (tile.isCurrentCraftingCarValid()) {
-                    NetUtils.sendToServer(Main.SIMPLE_CHANNEL, new MessageSpawnCar(tile.getBlockPos()));
+                    PacketDistributor.SERVER.noArg().send(new MessageSpawnCar(tile.getBlockPos()));
                 } else {
                     for (Component message : tile.getMessages()) {
                         player.sendSystemMessage(message);

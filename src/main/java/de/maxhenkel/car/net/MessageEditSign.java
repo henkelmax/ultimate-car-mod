@@ -1,14 +1,18 @@
 package de.maxhenkel.car.net;
 
+import de.maxhenkel.car.Main;
 import de.maxhenkel.car.blocks.tileentity.TileEntitySign;
 import de.maxhenkel.corelib.net.Message;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.neoforge.network.NetworkEvent;
+import net.minecraft.network.protocol.PacketFlow;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
+import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
 public class MessageEditSign implements Message<MessageEditSign> {
+
+    public static ResourceLocation ID = new ResourceLocation(Main.MODID, "edit_sign");
 
     private BlockPos pos;
     private String[] text;
@@ -23,16 +27,18 @@ public class MessageEditSign implements Message<MessageEditSign> {
     }
 
     @Override
-    public Dist getExecutingSide() {
-        return Dist.DEDICATED_SERVER;
+    public PacketFlow getExecutingSide() {
+        return PacketFlow.SERVERBOUND;
     }
 
     @Override
-    public void executeServerSide(NetworkEvent.Context context) {
-        BlockEntity te = context.getSender().level().getBlockEntity(pos);
+    public void executeServerSide(PlayPayloadContext context) {
+        if (!(context.player().orElse(null) instanceof ServerPlayer sender)) {
+            return;
+        }
 
-        if (te instanceof TileEntitySign) {
-            ((TileEntitySign) te).setText(text);
+        if (sender.level().getBlockEntity(pos) instanceof TileEntitySign sign) {
+            sign.setText(text);
         }
     }
 
@@ -53,6 +59,11 @@ public class MessageEditSign implements Message<MessageEditSign> {
         for (String s : text) {
             buf.writeUtf(s, 64);
         }
+    }
+
+    @Override
+    public ResourceLocation id() {
+        return ID;
     }
 
 }

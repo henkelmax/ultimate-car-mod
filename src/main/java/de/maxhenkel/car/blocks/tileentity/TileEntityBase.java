@@ -1,10 +1,7 @@
 package de.maxhenkel.car.blocks.tileentity;
 
-import de.maxhenkel.car.Main;
 import de.maxhenkel.car.net.MessageSyncTileEntity;
-import de.maxhenkel.corelib.net.NetUtils;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
@@ -20,7 +17,6 @@ import net.neoforged.neoforge.energy.IEnergyStorage;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.network.PacketDistributor;
-import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 
@@ -37,7 +33,7 @@ public abstract class TileEntityBase extends BlockEntity implements Nameable {
         if (!level.isClientSide && level instanceof ServerLevel) {
             CompoundTag last = getUpdateTag();
             if (compoundLast == null || !compoundLast.equals(last)) {
-                Main.SIMPLE_CHANNEL.send(PacketDistributor.TRACKING_CHUNK.with(() -> level.getChunkAt(getBlockPos())), new MessageSyncTileEntity(worldPosition, last));
+                PacketDistributor.TRACKING_CHUNK.with(level.getChunkAt(getBlockPos())).send(new MessageSyncTileEntity(worldPosition, last));
                 compoundLast = last;
             }
         }

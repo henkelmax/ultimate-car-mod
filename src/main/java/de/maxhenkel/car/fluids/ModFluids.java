@@ -4,6 +4,7 @@ import de.maxhenkel.car.Main;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.material.Fluid;
+import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.neoforged.neoforge.fluids.FluidType;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -43,9 +44,9 @@ public class ModFluids {
             new FluidTypeCar("block.car.bio_diesel", new ResourceLocation(Main.MODID, "block/bio_diesel_still"), new ResourceLocation(Main.MODID, "block/bio_diesel_flowing"))
     );
 
-    public static void init() {
-        FLUID_REGISTER.register(FMLJavaModLoadingContext.get().getModEventBus());
-        FLUID_TYPE_REGISTER.register(FMLJavaModLoadingContext.get().getModEventBus());
+    public static void init(IEventBus eventBus) {
+        FLUID_REGISTER.register(eventBus);
+        FLUID_TYPE_REGISTER.register(eventBus);
     }
 
 }

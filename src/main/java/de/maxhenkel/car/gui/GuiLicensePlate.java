@@ -4,7 +4,6 @@ import de.maxhenkel.car.Main;
 import de.maxhenkel.car.items.ItemLicensePlate;
 import de.maxhenkel.car.net.MessageEditLicensePlate;
 import de.maxhenkel.corelib.inventory.ScreenBase;
-import de.maxhenkel.corelib.net.NetUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -14,6 +13,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
+import net.neoforged.neoforge.network.PacketDistributor;
 import org.lwjgl.glfw.GLFW;
 
 public class GuiLicensePlate extends ScreenBase<ContainerLicensePlate> {
@@ -40,7 +40,7 @@ public class GuiLicensePlate extends ScreenBase<ContainerLicensePlate> {
         super.init();
 
         addRenderableWidget(Button.builder(Component.translatable("button.car.submit"), button -> {
-            NetUtils.sendToServer(Main.SIMPLE_CHANNEL, new MessageEditLicensePlate(player, textField.getValue()));
+            PacketDistributor.SERVER.noArg().send(new MessageEditLicensePlate(player, textField.getValue()));
             MessageEditLicensePlate.setItemText(player, textField.getValue());
             Minecraft.getInstance().setScreen(null);
         }).bounds(leftPos + 20, topPos + imageHeight - 25, 50, 20).build());

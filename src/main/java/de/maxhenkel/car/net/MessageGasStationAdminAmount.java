@@ -1,14 +1,18 @@
 package de.maxhenkel.car.net;
 
+import de.maxhenkel.car.Main;
 import de.maxhenkel.car.blocks.tileentity.TileEntityGasStation;
 import de.maxhenkel.corelib.net.Message;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.neoforge.network.NetworkEvent;
+import net.minecraft.network.protocol.PacketFlow;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
+import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
 public class MessageGasStationAdminAmount implements Message<MessageGasStationAdminAmount> {
+
+    public static ResourceLocation ID = new ResourceLocation(Main.MODID, "gas_station_amount");
 
     private BlockPos pos;
     private int amount;
@@ -23,16 +27,18 @@ public class MessageGasStationAdminAmount implements Message<MessageGasStationAd
     }
 
     @Override
-    public Dist getExecutingSide() {
-        return Dist.DEDICATED_SERVER;
+    public PacketFlow getExecutingSide() {
+        return PacketFlow.SERVERBOUND;
     }
 
     @Override
-    public void executeServerSide(NetworkEvent.Context context) {
-        BlockEntity te = context.getSender().level().getBlockEntity(pos);
+    public void executeServerSide(PlayPayloadContext context) {
+        if (!(context.player().orElse(null) instanceof ServerPlayer sender)) {
+            return;
+        }
 
-        if (te instanceof TileEntityGasStation) {
-            ((TileEntityGasStation) te).setTradeAmount(amount);
+        if (sender.level().getBlockEntity(pos) instanceof TileEntityGasStation gasStation) {
+            gasStation.setTradeAmount(amount);
         }
     }
 
@@ -48,6 +54,11 @@ public class MessageGasStationAdminAmount implements Message<MessageGasStationAd
     public void toBytes(FriendlyByteBuf buf) {
         buf.writeBlockPos(pos);
         buf.writeInt(amount);
+    }
+
+    @Override
+    public ResourceLocation id() {
+        return ID;
     }
 
 }

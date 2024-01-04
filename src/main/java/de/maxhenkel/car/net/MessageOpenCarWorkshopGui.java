@@ -1,7 +1,5 @@
 package de.maxhenkel.car.net;
 
-import java.util.UUID;
-
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.blocks.tileentity.TileEntityCarWorkshop;
 import de.maxhenkel.car.gui.ContainerCarWorkshopCrafting;
@@ -10,12 +8,17 @@ import de.maxhenkel.car.gui.TileEntityContainerProvider;
 import de.maxhenkel.corelib.net.Message;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.protocol.PacketFlow;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.neoforge.network.NetworkEvent;
+import net.neoforged.neoforge.network.handling.PlayPayloadContext;
+
+import java.util.UUID;
 
 public class MessageOpenCarWorkshopGui implements Message<MessageOpenCarWorkshopGui> {
+
+    public static ResourceLocation ID = new ResourceLocation(Main.MODID, "open_car_workshop");
 
     private BlockPos pos;
     private UUID uuid;
@@ -32,28 +35,29 @@ public class MessageOpenCarWorkshopGui implements Message<MessageOpenCarWorkshop
     }
 
     @Override
-    public Dist getExecutingSide() {
-        return Dist.DEDICATED_SERVER;
+    public PacketFlow getExecutingSide() {
+        return PacketFlow.SERVERBOUND;
     }
 
     @Override
-    public void executeServerSide(NetworkEvent.Context context) {
-        if (!context.getSender().getUUID().equals(uuid)) {
+    public void executeServerSide(PlayPayloadContext context) {
+        if (!(context.player().orElse(null) instanceof ServerPlayer sender)) {
+            return;
+        }
+
+        if (!sender.getUUID().equals(uuid)) {
             Main.LOGGER.error("The UUID of the sender was not equal to the packet UUID");
             return;
         }
 
-        BlockEntity te = context.getSender().level().getBlockEntity(pos);
-
-        if (!(te instanceof TileEntityCarWorkshop)) {
+        if (!(sender.level().getBlockEntity(pos) instanceof TileEntityCarWorkshop workshop)) {
             return;
         }
-        TileEntityCarWorkshop carWorkshop = (TileEntityCarWorkshop) te;
 
         if (repair) {
-            TileEntityContainerProvider.openGui(context.getSender(), carWorkshop, (i, playerInventory, playerEntity) -> new ContainerCarWorkshopRepair(i, carWorkshop, playerInventory));
+            TileEntityContainerProvider.openGui(sender, workshop, (i, playerInventory, playerEntity) -> new ContainerCarWorkshopRepair(i, workshop, playerInventory));
         } else {
-            TileEntityContainerProvider.openGui(context.getSender(), carWorkshop, (i, playerInventory, playerEntity) -> new ContainerCarWorkshopCrafting(i, carWorkshop, playerInventory));
+            TileEntityContainerProvider.openGui(sender, workshop, (i, playerInventory, playerEntity) -> new ContainerCarWorkshopCrafting(i, workshop, playerInventory));
         }
     }
 
@@ -71,6 +75,11 @@ public class MessageOpenCarWorkshopGui implements Message<MessageOpenCarWorkshop
         buf.writeBlockPos(pos);
         buf.writeUUID(uuid);
         buf.writeBoolean(repair);
+    }
+
+    @Override
+    public ResourceLocation id() {
+        return ID;
     }
 
 }

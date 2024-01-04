@@ -42,6 +42,8 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
+import net.neoforged.neoforge.network.PacketDistributor;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.BlockingQueue;
@@ -295,7 +297,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 
     public void onCollision(float speed) {
         if (level().isClientSide) {
-            NetUtils.sendToServer(Main.SIMPLE_CHANNEL, new MessageCrash(speed, this));
+            PacketDistributor.SERVER.noArg().send(new MessageCrash(speed, this));
         }
         setSpeed(0.01F);
         setDeltaMovement(0D, getDeltaMovement().y, 0D);
@@ -342,7 +344,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
             needsUpdate = true;
         }
         if (level().isClientSide && needsUpdate) {
-            NetUtils.sendToServer(Main.SIMPLE_CHANNEL, new MessageControlCar(forward, backward, left, right, player));
+            PacketDistributor.SERVER.noArg().send(new MessageControlCar(forward, backward, left, right, player));
         }
     }
 
@@ -393,7 +395,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 
     public void openCarGUI(Player player) {
         if (level().isClientSide) {
-            NetUtils.sendToServer(Main.SIMPLE_CHANNEL, new MessageCarGui(player));
+            PacketDistributor.SERVER.noArg().send(new MessageCarGui(player));
         }
     }
 
@@ -549,7 +551,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 
     public void onHornPressed(Player player) {
         if (level().isClientSide) {
-            NetUtils.sendToServer(Main.SIMPLE_CHANNEL, new MessageCarHorn(true, player));
+            PacketDistributor.SERVER.noArg().send(new MessageCarHorn(true, player));
         } else {
             if (this instanceof EntityCarBatteryBase) {
                 EntityCarBatteryBase car = (EntityCarBatteryBase) this;

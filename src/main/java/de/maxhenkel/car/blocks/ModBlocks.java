@@ -7,6 +7,7 @@ import de.maxhenkel.car.fluids.ModFluids;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.LiquidBlock;
+import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -64,8 +65,8 @@ public class ModBlocks {
         }
     }
 
-    public static void init() {
-        BLOCK_REGISTER.register(FMLJavaModLoadingContext.get().getModEventBus());
+    public static void init(IEventBus eventBus) {
+        BLOCK_REGISTER.register(eventBus);
     }
 
 }

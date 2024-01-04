@@ -13,6 +13,7 @@ import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.client.event.InputEvent;
 import net.minecraft.client.Minecraft;
+import net.neoforged.neoforge.network.PacketDistributor;
 
 @OnlyIn(Dist.CLIENT)
 public class KeyEvents {
@@ -49,12 +50,12 @@ public class KeyEvents {
 
             if (Main.START_KEY.isDown()) {
                 if (!wasStartPressed) {
-                    NetUtils.sendToServer(Main.SIMPLE_CHANNEL, new MessageStarting(true, false, player));
+                    PacketDistributor.SERVER.noArg().send(new MessageStarting(true, false, player));
                     wasStartPressed = true;
                 }
             } else {
                 if (wasStartPressed) {
-                    NetUtils.sendToServer(Main.SIMPLE_CHANNEL, new MessageStarting(false, true, player));
+                    PacketDistributor.SERVER.noArg().send(new MessageStarting(false, true, player));
                 }
                 wasStartPressed = false;
             }
@@ -70,7 +71,7 @@ public class KeyEvents {
 
             if (Main.CENTER_KEY.isDown()) {
                 if (!wasCenterPressed) {
-                    NetUtils.sendToServer(Main.SIMPLE_CHANNEL, new MessageCenterCar(player));
+                    PacketDistributor.SERVER.noArg().send(new MessageCenterCar(player));
                     player.displayClientMessage(Component.translatable("message.center_car"), true);
                     wasCenterPressed = true;
                 }

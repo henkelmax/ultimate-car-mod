@@ -1,18 +1,22 @@
 package de.maxhenkel.car.net;
 
+import de.maxhenkel.car.Main;
 import de.maxhenkel.car.entity.car.base.EntityCarBase;
 import de.maxhenkel.corelib.net.Message;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.world.entity.Entity;
+import net.minecraft.network.protocol.PacketFlow;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
-import net.neoforged.neoforge.network.NetworkEvent;
+import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
 import java.util.UUID;
 
 public class MessageCenterCarClient implements Message<MessageCenterCarClient> {
+
+    public static ResourceLocation ID = new ResourceLocation(Main.MODID, "center_car_client");
 
     private UUID uuid;
 
@@ -32,25 +36,23 @@ public class MessageCenterCarClient implements Message<MessageCenterCarClient> {
     public void centerClient() {
         Player player = Minecraft.getInstance().player;
         Player ridingPlayer = player.level().getPlayerByUUID(uuid);
-        Entity riding = ridingPlayer.getVehicle();
 
-        if (!(riding instanceof EntityCarBase)) {
+        if (!(ridingPlayer.getVehicle() instanceof EntityCarBase car)) {
             return;
         }
 
-        EntityCarBase car = (EntityCarBase) riding;
         if (ridingPlayer.equals(car.getDriver())) {
             car.centerCar();
         }
     }
 
     @Override
-    public Dist getExecutingSide() {
-        return Dist.CLIENT;
+    public PacketFlow getExecutingSide() {
+        return PacketFlow.CLIENTBOUND;
     }
 
     @Override
-    public void executeClientSide(NetworkEvent.Context context) {
+    public void executeClientSide(PlayPayloadContext context) {
         centerClient();
     }
 
@@ -63,6 +65,11 @@ public class MessageCenterCarClient implements Message<MessageCenterCarClient> {
     @Override
     public void toBytes(FriendlyByteBuf buf) {
         buf.writeUUID(uuid);
+    }
+
+    @Override
+    public ResourceLocation id() {
+        return ID;
     }
 
 }

@@ -1,15 +1,19 @@
 package de.maxhenkel.car.net;
 
-import java.util.UUID;
-
+import de.maxhenkel.car.Main;
 import de.maxhenkel.car.entity.car.base.EntityCarBase;
 import de.maxhenkel.corelib.net.Message;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.world.entity.Entity;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.neoforge.network.NetworkEvent;
+import net.minecraft.network.protocol.PacketFlow;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
+import net.neoforged.neoforge.network.handling.PlayPayloadContext;
+
+import java.util.UUID;
 
 public class MessageCrash implements Message<MessageCrash> {
+
+    public static ResourceLocation ID = new ResourceLocation(Main.MODID, "crash");
 
     private float speed;
     private UUID uuid;
@@ -24,19 +28,19 @@ public class MessageCrash implements Message<MessageCrash> {
     }
 
     @Override
-    public Dist getExecutingSide() {
-        return Dist.DEDICATED_SERVER;
+    public PacketFlow getExecutingSide() {
+        return PacketFlow.SERVERBOUND;
     }
 
     @Override
-    public void executeServerSide(NetworkEvent.Context context) {
-        Entity riding = context.getSender().getVehicle();
-
-        if (!(riding instanceof EntityCarBase)) {
+    public void executeServerSide(PlayPayloadContext context) {
+        if (!(context.player().orElse(null) instanceof ServerPlayer sender)) {
             return;
         }
 
-        EntityCarBase car = (EntityCarBase) riding;
+        if (!(sender.getVehicle() instanceof EntityCarBase car)) {
+            return;
+        }
 
         if (!car.getUUID().equals(uuid)) {
             return;
@@ -56,6 +60,11 @@ public class MessageCrash implements Message<MessageCrash> {
     public void toBytes(FriendlyByteBuf buf) {
         buf.writeFloat(speed);
         buf.writeUUID(uuid);
+    }
+
+    @Override
+    public ResourceLocation id() {
+        return ID;
     }
 
 }

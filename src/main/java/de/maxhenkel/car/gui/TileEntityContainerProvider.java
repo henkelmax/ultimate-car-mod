@@ -7,7 +7,6 @@ import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.neoforged.neoforge.network.NetworkHooks;
 
 import javax.annotation.Nullable;
 
@@ -27,7 +26,7 @@ public class TileEntityContainerProvider implements MenuProvider {
     }
 
     public static void openGui(ServerPlayer player, TileEntityBase tileEntity, ContainerCreator containerCreator) {
-        NetworkHooks.openScreen(player, new TileEntityContainerProvider(containerCreator, tileEntity), packetBuffer -> packetBuffer.writeBlockPos(tileEntity.getBlockPos()));
+        player.openMenu(new TileEntityContainerProvider(containerCreator, tileEntity), packetBuffer -> packetBuffer.writeBlockPos(tileEntity.getBlockPos()));
     }
 
     @Nullable

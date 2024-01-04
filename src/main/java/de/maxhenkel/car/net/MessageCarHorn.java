@@ -1,17 +1,20 @@
 package de.maxhenkel.car.net;
 
-import java.util.UUID;
-
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.entity.car.base.EntityCarBase;
 import de.maxhenkel.corelib.net.Message;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.world.entity.Entity;
+import net.minecraft.network.protocol.PacketFlow;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.neoforge.network.NetworkEvent;
+import net.neoforged.neoforge.network.handling.PlayPayloadContext;
+
+import java.util.UUID;
 
 public class MessageCarHorn implements Message<MessageCarHorn> {
+
+    public static ResourceLocation ID = new ResourceLocation(Main.MODID, "car_horn");
 
     private boolean pressed;
     private UUID uuid;
@@ -26,30 +29,31 @@ public class MessageCarHorn implements Message<MessageCarHorn> {
     }
 
     @Override
-    public Dist getExecutingSide() {
-        return Dist.DEDICATED_SERVER;
+    public PacketFlow getExecutingSide() {
+        return PacketFlow.SERVERBOUND;
     }
 
     @Override
-    public void executeServerSide(NetworkEvent.Context context) {
+    public void executeServerSide(PlayPayloadContext context) {
         if (!pressed) {
             return;
         }
 
-        if (!context.getSender().getUUID().equals(uuid)) {
+        if (!(context.player().orElse(null) instanceof ServerPlayer sender)) {
+            return;
+        }
+
+        if (!sender.getUUID().equals(uuid)) {
             Main.LOGGER.error("The UUID of the sender was not equal to the packet UUID");
             return;
         }
 
-        Entity riding = context.getSender().getVehicle();
-
-        if (!(riding instanceof EntityCarBase)) {
+        if (!(sender.getVehicle() instanceof EntityCarBase car)) {
             return;
         }
 
-        EntityCarBase car = (EntityCarBase) riding;
-        if (context.getSender().equals(car.getDriver())) {
-            car.onHornPressed(context.getSender());
+        if (sender.equals(car.getDriver())) {
+            car.onHornPressed(sender);
         }
     }
 
@@ -64,6 +68,11 @@ public class MessageCarHorn implements Message<MessageCarHorn> {
     public void toBytes(FriendlyByteBuf buf) {
         buf.writeBoolean(pressed);
         buf.writeUUID(uuid);
+    }
+
+    @Override
+    public ResourceLocation id() {
+        return ID;
     }
 
 }

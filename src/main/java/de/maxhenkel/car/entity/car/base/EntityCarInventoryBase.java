@@ -24,7 +24,6 @@ import net.neoforged.neoforge.fluids.FluidUtil;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.wrapper.InvWrapper;
-import net.neoforged.neoforge.network.NetworkHooks;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -83,18 +82,20 @@ public abstract class EntityCarInventoryBase extends EntityCarFuelBase implement
                 if (externalInventory.getContainerSize() <= 0) {
                     openCarGUI(player);
                 } else {
-                    NetworkHooks.openScreen((ServerPlayer) player, new MenuProvider() {
-                        @Override
-                        public Component getDisplayName() {
-                            return EntityCarInventoryBase.this.getDisplayName();
-                        }
+                    if (player instanceof ServerPlayer serverPlayer) {
+                        serverPlayer.openMenu(new MenuProvider() {
+                            @Override
+                            public Component getDisplayName() {
+                                return EntityCarInventoryBase.this.getDisplayName();
+                            }
 
-                        @Nullable
-                        @Override
-                        public AbstractContainerMenu createMenu(int i, Inventory playerInventory, Player playerEntity) {
-                            return new ContainerCarInventory(i, EntityCarInventoryBase.this, playerInventory);
-                        }
-                    }, packetBuffer -> packetBuffer.writeUUID(getUUID()));
+                            @Nullable
+                            @Override
+                            public AbstractContainerMenu createMenu(int i, Inventory playerInventory, Player playerEntity) {
+                                return new ContainerCarInventory(i, EntityCarInventoryBase.this, playerInventory);
+                            }
+                        }, packetBuffer -> packetBuffer.writeUUID(getUUID()));
+                    }
                 }
             }
 
@@ -154,8 +155,8 @@ public abstract class EntityCarInventoryBase extends EntityCarFuelBase implement
     @Override
     public void openCarGUI(Player player) {
         super.openCarGUI(player);
-        if (!level().isClientSide && player instanceof ServerPlayer) {
-            NetworkHooks.openScreen((ServerPlayer) player, new MenuProvider() {
+        if (!level().isClientSide && player instanceof ServerPlayer serverPlayer) {
+            serverPlayer.openMenu(new MenuProvider() {
                 @Override
                 public Component getDisplayName() {
                     return EntityCarInventoryBase.this.getDisplayName();

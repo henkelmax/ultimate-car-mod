@@ -7,6 +7,7 @@ import de.maxhenkel.car.entity.car.parts.PartRegistry;
 import de.maxhenkel.car.fluids.ModFluids;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.item.Item;
+import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -264,8 +265,8 @@ public class ModItems {
         }
     }
 
-    public static void init() {
-        ITEM_REGISTER.register(FMLJavaModLoadingContext.get().getModEventBus());
+    public static void init(IEventBus eventBus) {
+        ITEM_REGISTER.register(eventBus);
     }
 
 }

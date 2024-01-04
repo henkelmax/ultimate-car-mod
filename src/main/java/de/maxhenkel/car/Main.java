@@ -56,12 +56,12 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.storage.loot.functions.LootItemFunctionType;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
+import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.neoforged.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
@@ -73,7 +73,8 @@ import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.network.IContainerFactory;
-import net.neoforged.neoforge.network.simple.SimpleChannel;
+import net.neoforged.neoforge.network.event.RegisterPayloadHandlerEvent;
+import net.neoforged.neoforge.network.registration.IPayloadRegistrar;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
@@ -88,16 +89,13 @@ public class Main {
 
     public static final Logger LOGGER = LogManager.getLogger(Main.MODID);
 
-    public static SimpleChannel SIMPLE_CHANNEL;
-
     private static final DeferredRegister<EntityType<?>> ENTITY_REGISTER = DeferredRegister.create(BuiltInRegistries.ENTITY_TYPE, Main.MODID);
     public static final DeferredHolder<EntityType<?>, EntityType<EntityGenericCar>> CAR_ENTITY_TYPE = ENTITY_REGISTER.register("car", () -> {
         return CommonRegistry.registerEntity(Main.MODID, "car", MobCategory.MISC, EntityGenericCar.class, builder -> {
             builder.setTrackingRange(128)
                     .setUpdateInterval(1)
                     .setShouldReceiveVelocityUpdates(true)
-                    .sized(1F, 1F)
-                    .setCustomClientFactory((spawnEntity, world) -> new EntityGenericCar(world));
+                    .sized(1F, 1F);
         });
     });
 
@@ -131,35 +129,36 @@ public class Main {
     public static FuelConfig FUEL_CONFIG;
     public static ClientConfig CLIENT_CONFIG;
 
-    public Main() {
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::commonSetup);
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(IMC::enqueueIMC);
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::onRegisterCapabilities);
+    public Main(IEventBus eventBus) {
+        eventBus.addListener(this::commonSetup);
+        eventBus.addListener(this::onRegisterPayloadHandler);
+        eventBus.addListener(IMC::enqueueIMC);
+        eventBus.addListener(this::onRegisterCapabilities);
 
         SERVER_CONFIG = CommonRegistry.registerConfig(ModConfig.Type.SERVER, ServerConfig.class, true);
         FUEL_CONFIG = CommonRegistry.registerDynamicConfig(DynamicConfig.DynamicConfigType.SERVER, Main.MODID, "fuel", FuelConfig.class);
         CLIENT_CONFIG = CommonRegistry.registerConfig(ModConfig.Type.CLIENT, ClientConfig.class);
 
         if (FMLEnvironment.dist.isClient()) {
-            FMLJavaModLoadingContext.get().getModEventBus().addListener(Main.this::clientSetup);
-            FMLJavaModLoadingContext.get().getModEventBus().addListener(Main.this::onRegisterKeyBinds);
+            eventBus.addListener(Main.this::clientSetup);
+            eventBus.addListener(Main.this::onRegisterKeyBinds);
         }
 
-        ModFluids.init();
-        ModBlocks.init();
-        ModItems.init();
-        ModSounds.init();
-        ModCreativeTabs.init();
+        ModFluids.init(eventBus);
+        ModBlocks.init(eventBus);
+        ModItems.init(eventBus);
+        ModSounds.init(eventBus);
+        ModCreativeTabs.init(eventBus);
 
-        ENTITY_REGISTER.register(FMLJavaModLoadingContext.get().getModEventBus());
-        MENU_TYPE_REGISTER.register(FMLJavaModLoadingContext.get().getModEventBus());
-        BLOCK_ENTITY_REGISTER.register(FMLJavaModLoadingContext.get().getModEventBus());
-        LOOT_FUNCTION_TYPE_REGISTER.register(FMLJavaModLoadingContext.get().getModEventBus());
-        RECIPE_TYPE_REGISTER.register(FMLJavaModLoadingContext.get().getModEventBus());
-        RECIPE_SERIALIZER_REGISTER.register(FMLJavaModLoadingContext.get().getModEventBus());
-        POI_TYPE_REGISTER.register(FMLJavaModLoadingContext.get().getModEventBus());
-        VILLAGER_PROFESSION_REGISTER.register(FMLJavaModLoadingContext.get().getModEventBus());
-        ENTITY_DATA_SERIALIZER_REGISTER.register(FMLJavaModLoadingContext.get().getModEventBus());
+        ENTITY_REGISTER.register(eventBus);
+        MENU_TYPE_REGISTER.register(eventBus);
+        BLOCK_ENTITY_REGISTER.register(eventBus);
+        LOOT_FUNCTION_TYPE_REGISTER.register(eventBus);
+        RECIPE_TYPE_REGISTER.register(eventBus);
+        RECIPE_SERIALIZER_REGISTER.register(eventBus);
+        POI_TYPE_REGISTER.register(eventBus);
+        VILLAGER_PROFESSION_REGISTER.register(eventBus);
+        ENTITY_DATA_SERIALIZER_REGISTER.register(eventBus);
     }
 
     @SubscribeEvent
@@ -173,23 +172,6 @@ public class Main {
 
         NeoForge.EVENT_BUS.register(new VillagerEvents());
 
-        SIMPLE_CHANNEL = CommonRegistry.registerChannel(Main.MODID, "default");
-        CommonRegistry.registerMessage(SIMPLE_CHANNEL, 0, MessageControlCar.class);
-        CommonRegistry.registerMessage(SIMPLE_CHANNEL, 1, MessageCarGui.class);
-        CommonRegistry.registerMessage(SIMPLE_CHANNEL, 2, MessageStarting.class);
-        CommonRegistry.registerMessage(SIMPLE_CHANNEL, 3, MessageCrash.class);
-        CommonRegistry.registerMessage(SIMPLE_CHANNEL, 4, MessageStartFuel.class);
-        CommonRegistry.registerMessage(SIMPLE_CHANNEL, 6, MessageSyncTileEntity.class);
-        CommonRegistry.registerMessage(SIMPLE_CHANNEL, 7, MessageSpawnCar.class);
-        CommonRegistry.registerMessage(SIMPLE_CHANNEL, 8, MessageOpenCarWorkshopGui.class);
-        CommonRegistry.registerMessage(SIMPLE_CHANNEL, 9, MessageRepairCar.class);
-        CommonRegistry.registerMessage(SIMPLE_CHANNEL, 10, MessageCarHorn.class);
-        CommonRegistry.registerMessage(SIMPLE_CHANNEL, 11, MessageEditSign.class);
-        CommonRegistry.registerMessage(SIMPLE_CHANNEL, 12, MessageGasStationAdminAmount.class);
-        CommonRegistry.registerMessage(SIMPLE_CHANNEL, 13, MessageCenterCar.class);
-        CommonRegistry.registerMessage(SIMPLE_CHANNEL, 14, MessageCenterCarClient.class);
-        CommonRegistry.registerMessage(SIMPLE_CHANNEL, 15, MessageEditLicensePlate.class);
-
         ComposterBlock.COMPOSTABLES.put(ModItems.CANOLA_SEEDS.get(), 0.3F);
         ComposterBlock.COMPOSTABLES.put(ModItems.CANOLA_CAKE.get(), 0.5F);
         ComposterBlock.COMPOSTABLES.put(ModItems.CANOLA.get(), 0.65F);
@@ -199,6 +181,25 @@ public class Main {
                 .add(ModItems.CANOLA_SEEDS.get())
                 .add(ModItems.CANOLA.get())
                 .build();
+    }
+
+    public void onRegisterPayloadHandler(RegisterPayloadHandlerEvent event) {
+        IPayloadRegistrar registrar = event.registrar(MODID).versioned("0");
+        CommonRegistry.registerMessage(registrar, MessageControlCar.class);
+        CommonRegistry.registerMessage(registrar, MessageCarGui.class);
+        CommonRegistry.registerMessage(registrar, MessageStarting.class);
+        CommonRegistry.registerMessage(registrar, MessageCrash.class);
+        CommonRegistry.registerMessage(registrar, MessageStartFuel.class);
+        CommonRegistry.registerMessage(registrar, MessageSyncTileEntity.class);
+        CommonRegistry.registerMessage(registrar, MessageSpawnCar.class);
+        CommonRegistry.registerMessage(registrar, MessageOpenCarWorkshopGui.class);
+        CommonRegistry.registerMessage(registrar, MessageRepairCar.class);
+        CommonRegistry.registerMessage(registrar, MessageCarHorn.class);
+        CommonRegistry.registerMessage(registrar, MessageEditSign.class);
+        CommonRegistry.registerMessage(registrar, MessageGasStationAdminAmount.class);
+        CommonRegistry.registerMessage(registrar, MessageCenterCar.class);
+        CommonRegistry.registerMessage(registrar, MessageCenterCarClient.class);
+        CommonRegistry.registerMessage(registrar, MessageEditLicensePlate.class);
     }
 
     public static KeyMapping FORWARD_KEY;
@@ -253,7 +254,6 @@ public class Main {
         ItemBlockRenderTypes.setRenderLayer(ModFluids.BIO_DIESEL_FLOWING.get(), RenderType.translucent());
     }
 
-    @SubscribeEvent
     @OnlyIn(Dist.CLIENT)
     public void onRegisterKeyBinds(RegisterKeyMappingsEvent event) {
         FORWARD_KEY = new KeyMapping("key.car_forward", GLFW.GLFW_KEY_W, "category.car");
