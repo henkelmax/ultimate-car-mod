@@ -46,8 +46,7 @@ public class ItemKey extends Item {
 
         EntityCarLockBase car = cars.get(0);
 
-        if (car == null) {
-            playerIn.sendSystemMessage(Component.translatable("message.car_out_of_range"));
+        if (car.getPassengers().stream().anyMatch(entity -> entity == playerIn)) {
             return new InteractionResultHolder<>(InteractionResult.SUCCESS, stack);
         }
 
