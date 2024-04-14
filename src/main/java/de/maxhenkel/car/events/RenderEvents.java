@@ -26,7 +26,8 @@ import net.neoforged.neoforge.client.event.ViewportEvent;
 @OnlyIn(Dist.CLIENT)
 public class RenderEvents {
 
-    protected static final ResourceLocation GUI_ICONS_LOCATION = new ResourceLocation("textures/gui/icons.png");
+    protected static final ResourceLocation EXPERIENCE_BAR_BACKGROUND_SPRITE = new ResourceLocation("hud/experience_bar_background");
+    protected static final ResourceLocation EXPERIENCE_BAR_PROGRESS_SPRITE = new ResourceLocation("hud/experience_bar_progress");
     private static final Minecraft mc = Minecraft.getInstance();
 
     @SubscribeEvent
@@ -80,12 +81,12 @@ public class RenderEvents {
         RenderSystem.setShaderColor(1F, 1F, 1F, 1F);
 
         int k = mc.getWindow().getGuiScaledHeight() - 32 + 3;
-        guiGraphics.blit(GUI_ICONS_LOCATION, x, k, 0, 64, 182, 5);
+        guiGraphics.blitSprite(EXPERIENCE_BAR_BACKGROUND_SPRITE, x, k, 182, 5);
 
         int j = (int) (percent * 182F);
 
         if (j > 0) {
-            guiGraphics.blit(GUI_ICONS_LOCATION, x, k, 0, 69, j, 5);
+            guiGraphics.blitSprite(EXPERIENCE_BAR_PROGRESS_SPRITE, 182, 5, 0, 0, x, k, j, 5);
         }
     }
 
