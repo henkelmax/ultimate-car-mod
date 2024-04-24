@@ -6,6 +6,7 @@ import de.maxhenkel.corelib.blockentity.ITickableBlockEntity;
 import de.maxhenkel.corelib.item.ItemUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.WorldlyContainer;
@@ -19,6 +20,7 @@ import net.minecraft.world.level.material.Fluid;
 import net.neoforged.neoforge.energy.IEnergyStorage;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+
 import javax.annotation.Nonnull;
 
 public abstract class TileEntityEnergyFluidProducer extends TileEntityBase implements IEnergyStorage, WorldlyContainer, ITickableBlockEntity, IFluidHandler {
@@ -157,24 +159,23 @@ public abstract class TileEntityEnergyFluidProducer extends TileEntityBase imple
     }
 
     @Override
-    protected void saveAdditional(CompoundTag compound) {
-        super.saveAdditional(compound);
-
+    public void saveAdditional(CompoundTag compound, HolderLookup.Provider provider) {
+        super.saveAdditional(compound, provider);
         compound.putInt("energy_stored", storedEnergy);
         compound.putInt("time", time);
         compound.putInt("fluid_stored", currentMillibuckets);
 
-        ItemUtils.saveInventory(compound, "slots", inventory);
+        ItemUtils.saveInventory(provider, compound, "slots", inventory);
     }
 
     @Override
-    public void load(CompoundTag compound) {
+    public void loadAdditional(CompoundTag compound, HolderLookup.Provider provider) {
         storedEnergy = compound.getInt("energy_stored");
         time = compound.getInt("time");
         currentMillibuckets = compound.getInt("fluid_stored");
 
-        ItemUtils.readInventory(compound, "slots", inventory);
-        super.load(compound);
+        ItemUtils.readInventory(provider, compound, "slots", inventory);
+        super.loadAdditional(compound, provider);
     }
 
     @Override

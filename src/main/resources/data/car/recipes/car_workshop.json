@@ -14,7 +14,7 @@
     }
   },
   "result": {
-    "item": "car:car_workshop",
+    "id": "car:car_workshop",
     "count": 1
   }
 }

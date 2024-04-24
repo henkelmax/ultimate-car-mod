@@ -94,10 +94,10 @@ public abstract class EntityCarFuelBase extends EntityCarDamageBase implements I
     }
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        entityData.define(FUEL_AMOUNT, 0);
-        entityData.define(FUEL_TYPE, "");
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(FUEL_AMOUNT, 0);
+        builder.define(FUEL_TYPE, "");
     }
 
     public void setFuelAmount(int fuel) {

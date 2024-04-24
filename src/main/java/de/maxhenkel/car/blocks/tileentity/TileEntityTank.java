@@ -4,6 +4,7 @@ import de.maxhenkel.car.Main;
 import de.maxhenkel.corelib.blockentity.ITickableBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.inventory.ContainerData;
@@ -16,6 +17,7 @@ import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.FluidUtil;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+
 import javax.annotation.Nonnull;
 
 public class TileEntityTank extends TileEntityBase implements IFluidHandler, ITickableBlockEntity {
@@ -109,32 +111,27 @@ public class TileEntityTank extends TileEntityBase implements IFluidHandler, ITi
     }
 
     @Override
-    protected void saveAdditional(CompoundTag compound) {
-        super.saveAdditional(compound);
+    public void saveAdditional(CompoundTag compound, HolderLookup.Provider provider) {
+        super.saveAdditional(compound, provider);
         if (!fluid.isEmpty() && fluid.getAmount() > 0) {
-            CompoundTag comp = new CompoundTag();
-
-            fluid.writeToNBT(comp);
-
-            compound.put("fluid", comp);
+            compound.put("fluid", fluid.save(provider));
         }
     }
 
     @Override
-    public void load(CompoundTag compound) {
+    public void loadAdditional(CompoundTag compound, HolderLookup.Provider provider) {
         if (compound.contains("fluid")) {
             CompoundTag comp = compound.getCompound("fluid");
-            fluid = FluidStack.loadFluidStackFromNBT(comp);
+            fluid = FluidStack.parseOptional(provider, comp);
         } else {
             fluid = FluidStack.EMPTY;
         }
-        super.load(compound);
+        super.loadAdditional(compound, provider);
     }
 
     public void setFluid(FluidStack fluid) {
         this.fluid = fluid;
     }
-
 
     @Override
     public Component getTranslatedName() {

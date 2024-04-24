@@ -82,9 +82,9 @@ public abstract class EntityCarTemperatureBase extends EntityCarBase {
     public abstract float getOptimalTemperature();
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(TEMPERATURE, 0F);
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(TEMPERATURE, 0F);
     }
 
     @Override

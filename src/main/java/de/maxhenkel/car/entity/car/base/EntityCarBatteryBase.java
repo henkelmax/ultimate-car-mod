@@ -202,11 +202,11 @@ public abstract class EntityCarBatteryBase extends EntityCarTemperatureBase {
     }
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(BATTERY_LEVEL, getMaxBatteryLevel());
-        this.entityData.define(STARTING_TIME, 0);
-        this.entityData.define(STARTING, Boolean.FALSE);
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(BATTERY_LEVEL, getMaxBatteryLevel());
+        builder.define(STARTING_TIME, 0);
+        builder.define(STARTING, Boolean.FALSE);
     }
 
     public int getStartingTime() {

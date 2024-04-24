@@ -14,7 +14,7 @@
     }
   },
   "result": {
-    "item": "car:license_plate",
+    "id": "car:license_plate",
     "count": 4
   }
 }

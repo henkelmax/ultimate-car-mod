@@ -24,9 +24,9 @@ public abstract class EntityCarLicensePlateBase extends EntityCarLockBase {
     }
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(LICENSE_PLATE, "");
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(LICENSE_PLATE, "");
     }
 
     @Override

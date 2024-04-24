@@ -14,7 +14,7 @@
     }
   },
   "result": {
-    "item": "car:dynamo",
+    "id": "car:dynamo",
     "count": 1
   }
 }

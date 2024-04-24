@@ -11,7 +11,7 @@
     }
   },
   "result": {
-    "item": "car:orange_transporter_body",
+    "id": "car:orange_transporter_body",
     "count": 1
   }
 }

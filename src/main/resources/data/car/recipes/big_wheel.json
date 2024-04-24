@@ -14,7 +14,7 @@
     }
   },
   "result": {
-    "item": "car:big_wheel",
+    "id": "car:big_wheel",
     "count": 1
   }
 }

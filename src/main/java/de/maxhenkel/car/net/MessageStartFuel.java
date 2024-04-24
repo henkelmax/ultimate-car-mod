@@ -4,15 +4,16 @@ import de.maxhenkel.car.Main;
 import de.maxhenkel.car.blocks.tileentity.TileEntityGasStation;
 import de.maxhenkel.corelib.net.Message;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.protocol.PacketFlow;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
-import net.neoforged.neoforge.network.handling.PlayPayloadContext;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 public class MessageStartFuel implements Message<MessageStartFuel> {
 
-    public static ResourceLocation ID = new ResourceLocation(Main.MODID, "start_fuel");
+    public static final CustomPacketPayload.Type<MessageStartFuel> TYPE = new CustomPacketPayload.Type<>(new ResourceLocation(Main.MODID, "start_fuel"));
 
     private boolean start;
     private BlockPos pos;
@@ -31,8 +32,8 @@ public class MessageStartFuel implements Message<MessageStartFuel> {
     }
 
     @Override
-    public void executeServerSide(PlayPayloadContext context) {
-        if (!(context.player().orElse(null) instanceof ServerPlayer sender)) {
+    public void executeServerSide(IPayloadContext context) {
+        if (!(context.player() instanceof ServerPlayer sender)) {
             return;
         }
 
@@ -43,21 +44,21 @@ public class MessageStartFuel implements Message<MessageStartFuel> {
     }
 
     @Override
-    public MessageStartFuel fromBytes(FriendlyByteBuf buf) {
+    public MessageStartFuel fromBytes(RegistryFriendlyByteBuf buf) {
         this.start = buf.readBoolean();
         this.pos = buf.readBlockPos();
         return this;
     }
 
     @Override
-    public void toBytes(FriendlyByteBuf buf) {
+    public void toBytes(RegistryFriendlyByteBuf buf) {
         buf.writeBoolean(start);
         buf.writeBlockPos(pos);
     }
 
     @Override
-    public ResourceLocation id() {
-        return ID;
+    public Type<MessageStartFuel> type() {
+        return TYPE;
     }
 
 }

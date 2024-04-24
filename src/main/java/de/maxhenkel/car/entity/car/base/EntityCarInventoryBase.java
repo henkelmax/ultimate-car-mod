@@ -174,15 +174,15 @@ public abstract class EntityCarInventoryBase extends EntityCarFuelBase implement
     @Override
     public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
-        ItemUtils.readInventory(compound, "int_inventory", internalInventory);
+        ItemUtils.readInventory(registryAccess(), compound, "int_inventory", internalInventory);
 
         this.externalInventory = new SimpleContainer(compound.getInt("external_inventory_size"));
-        ItemUtils.readInventory(compound, "external_inventory", externalInventory);
+        ItemUtils.readInventory(registryAccess(), compound, "external_inventory", externalInventory);
 
-        ItemUtils.readInventory(compound, "parts", partInventory);
+        ItemUtils.readInventory(registryAccess(), compound, "parts", partInventory);
 
         if (compound.contains("fluid_inventory")) {
-            fluidInventory = FluidStack.loadFluidStackFromNBT(compound.getCompound("fluid_inventory"));
+            fluidInventory = FluidStack.parseOptional(registryAccess(), compound.getCompound("fluid_inventory"));
         }
     }
 
@@ -190,15 +190,15 @@ public abstract class EntityCarInventoryBase extends EntityCarFuelBase implement
     protected void addAdditionalSaveData(CompoundTag compound) {
         super.addAdditionalSaveData(compound);
 
-        ItemUtils.saveInventory(compound, "int_inventory", internalInventory);
+        ItemUtils.saveInventory(registryAccess(), compound, "int_inventory", internalInventory);
 
         compound.putInt("external_inventory_size", externalInventory.getContainerSize());
-        ItemUtils.saveInventory(compound, "external_inventory", externalInventory);
+        ItemUtils.saveInventory(registryAccess(), compound, "external_inventory", externalInventory);
 
-        ItemUtils.saveInventory(compound, "parts", partInventory);
+        ItemUtils.saveInventory(registryAccess(), compound, "parts", partInventory);
 
         if (!fluidInventory.isEmpty()) {
-            compound.put("fluid_inventory", fluidInventory.writeToNBT(new CompoundTag()));
+            compound.put("fluid_inventory", fluidInventory.save(registryAccess()));
         }
     }
 

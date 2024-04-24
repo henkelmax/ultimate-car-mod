@@ -14,7 +14,7 @@
     }
   },
   "result": {
-    "item": "car:asphalt",
+    "id": "car:asphalt",
     "count": 8
   }
 }

@@ -14,7 +14,7 @@
     }
   },
   "result": {
-    "item": "car:oak_bumper",
+    "id": "car:oak_bumper",
     "count": 1
   }
 }

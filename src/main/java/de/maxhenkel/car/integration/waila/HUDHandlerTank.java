@@ -20,12 +20,12 @@ public class HUDHandlerTank implements IBlockComponentProvider, IServerDataProvi
 
     @Override
     public void appendTooltip(ITooltip iTooltip, BlockAccessor blockAccessor, IPluginConfig iPluginConfig) {
-        FluidStack stack = FluidStack.loadFluidStackFromNBT(blockAccessor.getServerData().getCompound("fluid"));
+        FluidStack stack = FluidStack.parseOptional(blockAccessor.getBlockEntity().getLevel().registryAccess()/*TODO*/, blockAccessor.getServerData().getCompound("fluid"));
 
         if (stack.isEmpty()) {
             iTooltip.add(Component.translatable("tooltip.waila.tank.no_fluid"));
         } else {
-            iTooltip.add(Component.translatable("tooltip.waila.tank.fluid", stack.getDisplayName()));
+            iTooltip.add(Component.translatable("tooltip.waila.tank.fluid", stack.getHoverName()));
             iTooltip.add(Component.translatable("tooltip.waila.tank.amount", stack.getAmount(), TileEntityTank.CAPACITY));
         }
     }
@@ -33,7 +33,7 @@ public class HUDHandlerTank implements IBlockComponentProvider, IServerDataProvi
     @Override
     public void appendServerData(CompoundTag compoundTag, BlockAccessor blockAccessor) {
         TileEntityTank tank = (TileEntityTank) blockAccessor.getBlockEntity();
-        compoundTag.put("fluid", tank.getFluid().writeToNBT(new CompoundTag()));
+        compoundTag.put("fluid", tank.getFluid().save(blockAccessor.getBlockEntity().getLevel().registryAccess()/*TODO*/));
     }
 
     @Override

@@ -5,7 +5,6 @@ import de.maxhenkel.car.blocks.ModBlocks;
 import de.maxhenkel.car.blocks.tileentity.TileEntityGasStation;
 import de.maxhenkel.car.sounds.ModSounds;
 import net.minecraft.ChatFormatting;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -14,12 +13,12 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.SimpleFluidContent;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
-import javax.annotation.Nullable;
+
 import java.util.List;
 
 public class ItemCanister extends Item {
@@ -70,31 +69,16 @@ public class ItemCanister extends Item {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
-        if (stack.hasTag()) {
-            CompoundTag comp = stack.getTag();
-
-            if (comp.contains("fuel")) {
-                CompoundTag fuel = comp.getCompound("fuel");
-
-                FluidStack fluidStack = FluidStack.loadFluidStackFromNBT(fuel);
-                if (fluidStack == null || fluidStack.isEmpty()) {
-                    addInfo("-", 0, tooltip);
-                    super.appendHoverText(stack, worldIn, tooltip, flagIn);
-                    return;
-                }
-
-                addInfo(fluidStack.getDisplayName().getString(), fluidStack.getAmount(), tooltip);
-                super.appendHoverText(stack, worldIn, tooltip, flagIn);
-                return;
-            }
+    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flagIn) {
+        SimpleFluidContent content = stack.get(Main.FUEL_DATA_COMPONENT);
+        if (content == null || content.isEmpty()) {
             addInfo("-", 0, tooltip);
-            super.appendHoverText(stack, worldIn, tooltip, flagIn);
+            super.appendHoverText(stack, context, tooltip, flagIn);
             return;
         }
-        addInfo("-", 0, tooltip);
-
-        super.appendHoverText(stack, worldIn, tooltip, flagIn);
+        FluidStack fluidStack = content.copy();
+        addInfo(fluidStack.getHoverName().getString(), fluidStack.getAmount(), tooltip);
+        super.appendHoverText(stack, context, tooltip, flagIn);
     }
 
     private void addInfo(String fluid, int amount, List<Component> tooltip) {
@@ -103,18 +87,12 @@ public class ItemCanister extends Item {
     }
 
     public static boolean fillCanister(ItemStack canister, IFluidHandler handler) {
-        CompoundTag comp = canister.getOrCreateTag();
-
-        FluidStack fluid = null;
-
-        if (comp.contains("fuel")) {
-            fluid = FluidStack.loadFluidStackFromNBT(comp.getCompound("fuel"));
-        }
+        SimpleFluidContent content = canister.get(Main.FUEL_DATA_COMPONENT);
 
         int maxAmount = Main.SERVER_CONFIG.canisterMaxFuel.get();
 
-        if (fluid != null) {
-            maxAmount = Main.SERVER_CONFIG.canisterMaxFuel.get() - fluid.getAmount();
+        if (content != null) {
+            maxAmount = Main.SERVER_CONFIG.canisterMaxFuel.get() - content.getAmount();
         }
 
         if (maxAmount <= 0) {
@@ -126,7 +104,7 @@ public class ItemCanister extends Item {
             return false;
         }
 
-        if (fluid != null && !fluid.isEmpty() && !resultSim.getFluid().equals(fluid.getFluid())) {
+        if (content != null && !content.isEmpty() && !resultSim.getFluid().equals(content.getFluid())) {
             return false;
         }
 
@@ -136,49 +114,35 @@ public class ItemCanister extends Item {
             return false;
         }
 
-        if (fluid == null || fluid.isEmpty()) {
-            comp.put("fuel", result.writeToNBT(new CompoundTag()));
+        if (content == null || content.isEmpty()) {
+            canister.set(Main.FUEL_DATA_COMPONENT, SimpleFluidContent.copyOf(result));
             return true;
         }
 
-        if (result.getFluid().equals(fluid.getFluid())) {
-            fluid.setAmount(fluid.getAmount() + result.getAmount());
-            comp.put("fuel", fluid.writeToNBT(new CompoundTag()));
+        if (result.getFluid().equals(content.getFluid())) {
+            canister.set(Main.FUEL_DATA_COMPONENT, SimpleFluidContent.copyOf(new FluidStack(content.getFluid(), content.getAmount() + result.getAmount())));
         }
         return true;
     }
 
     public static boolean fuelFluidHandler(ItemStack canister, IFluidHandler handler) {
-        if (!canister.hasTag()) {
+        SimpleFluidContent content = canister.get(Main.FUEL_DATA_COMPONENT);
+
+        if (content == null || content.isEmpty()) {
             return false;
         }
+        FluidStack result = content.copy();
 
-        CompoundTag comp = canister.getTag();
+        int fueledAmount = handler.fill(result, IFluidHandler.FluidAction.EXECUTE);
 
-        if (!comp.contains("fuel")) {
-            return false;
-        }
+        result.setAmount(result.getAmount() - fueledAmount);
 
-        CompoundTag fluid = comp.getCompound("fuel");
-
-        FluidStack stack = FluidStack.loadFluidStackFromNBT(fluid);
-
-        if (stack == null || stack.isEmpty()) {
-            return false;
-        }
-
-        int fueledAmount = handler.fill(stack, IFluidHandler.FluidAction.EXECUTE);
-
-        stack.setAmount(stack.getAmount() - fueledAmount);
-
-        if (stack.getAmount() <= 0) {
-            comp.put("fuel", new CompoundTag());
+        if (result.getAmount() <= 0) {
+            canister.remove(Main.FUEL_DATA_COMPONENT);
             return true;
         }
 
-        CompoundTag f = new CompoundTag();
-        stack.writeToNBT(f);
-        comp.put("fuel", f);
+        canister.set(Main.FUEL_DATA_COMPONENT, SimpleFluidContent.copyOf(result));
         return true;
     }
 

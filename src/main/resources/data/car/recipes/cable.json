@@ -14,7 +14,7 @@
     }
   },
   "result": {
-    "item": "car:cable",
+    "id": "car:cable",
     "count": 8
   }
 }

@@ -14,7 +14,7 @@
     }
   },
   "result": {
-    "item": "car:orange_tank_container",
+    "id": "car:orange_tank_container",
     "count": 1
   }
 }

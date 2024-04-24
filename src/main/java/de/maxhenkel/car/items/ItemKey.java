@@ -1,8 +1,8 @@
 package de.maxhenkel.car.items;
 
+import de.maxhenkel.car.Main;
 import de.maxhenkel.car.PredicateUUID;
 import de.maxhenkel.car.entity.car.base.EntityCarLockBase;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -55,31 +55,11 @@ public class ItemKey extends Item {
     }
 
     public static void setCar(ItemStack stack, UUID carUUID) {
-        if (!stack.hasTag()) {
-            stack.setTag(new CompoundTag());
-        }
-
-        CompoundTag comp = stack.getTag();
-
-        comp.putUUID("car", carUUID);
+        stack.set(Main.CAR_UUID_DATA_COMPONENT, carUUID);
     }
 
     public static UUID getCar(ItemStack stack) {
-        if (stack == null) {
-            return null;
-        }
-
-        if (!stack.hasTag()) {
-            return null;
-        }
-
-        CompoundTag comp = stack.getTag();
-
-        if (comp == null) {
-            return null;
-        }
-
-        return comp.getUUID("car");
+        return stack.get(Main.CAR_UUID_DATA_COMPONENT);
     }
 
     public static ItemStack getKeyForCar(UUID car) {

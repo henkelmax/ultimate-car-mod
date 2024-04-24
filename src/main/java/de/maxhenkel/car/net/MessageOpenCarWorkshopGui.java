@@ -7,18 +7,19 @@ import de.maxhenkel.car.gui.ContainerCarWorkshopRepair;
 import de.maxhenkel.car.gui.TileEntityContainerProvider;
 import de.maxhenkel.corelib.net.Message;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.protocol.PacketFlow;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
-import net.neoforged.neoforge.network.handling.PlayPayloadContext;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 import java.util.UUID;
 
 public class MessageOpenCarWorkshopGui implements Message<MessageOpenCarWorkshopGui> {
 
-    public static ResourceLocation ID = new ResourceLocation(Main.MODID, "open_car_workshop");
+    public static final CustomPacketPayload.Type<MessageOpenCarWorkshopGui> TYPE = new CustomPacketPayload.Type<>(new ResourceLocation(Main.MODID, "open_car_workshop"));
 
     private BlockPos pos;
     private UUID uuid;
@@ -40,8 +41,8 @@ public class MessageOpenCarWorkshopGui implements Message<MessageOpenCarWorkshop
     }
 
     @Override
-    public void executeServerSide(PlayPayloadContext context) {
-        if (!(context.player().orElse(null) instanceof ServerPlayer sender)) {
+    public void executeServerSide(IPayloadContext context) {
+        if (!(context.player() instanceof ServerPlayer sender)) {
             return;
         }
 
@@ -62,7 +63,7 @@ public class MessageOpenCarWorkshopGui implements Message<MessageOpenCarWorkshop
     }
 
     @Override
-    public MessageOpenCarWorkshopGui fromBytes(FriendlyByteBuf buf) {
+    public MessageOpenCarWorkshopGui fromBytes(RegistryFriendlyByteBuf buf) {
         this.pos = buf.readBlockPos();
         this.uuid = buf.readUUID();
         this.repair = buf.readBoolean();
@@ -71,15 +72,15 @@ public class MessageOpenCarWorkshopGui implements Message<MessageOpenCarWorkshop
     }
 
     @Override
-    public void toBytes(FriendlyByteBuf buf) {
+    public void toBytes(RegistryFriendlyByteBuf buf) {
         buf.writeBlockPos(pos);
         buf.writeUUID(uuid);
         buf.writeBoolean(repair);
     }
 
     @Override
-    public ResourceLocation id() {
-        return ID;
+    public Type<MessageOpenCarWorkshopGui> type() {
+        return TYPE;
     }
 
 }

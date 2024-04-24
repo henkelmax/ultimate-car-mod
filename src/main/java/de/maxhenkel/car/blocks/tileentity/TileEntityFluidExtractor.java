@@ -12,6 +12,7 @@ import de.maxhenkel.car.blocks.BlockFluidExtractor;
 import de.maxhenkel.car.blocks.ModBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.inventory.ContainerData;
@@ -140,25 +141,22 @@ public class TileEntityFluidExtractor extends TileEntityBase implements ITickabl
     }
 
     @Override
-    protected void saveAdditional(CompoundTag compound) {
-        super.saveAdditional(compound);
-
+    public void saveAdditional(CompoundTag compound, HolderLookup.Provider provider) {
+        super.saveAdditional(compound, provider);
         if (filter != null) {
-            CompoundTag tag = new CompoundTag();
-            filter.save(tag);
-            compound.put("filter", tag);
+            compound.put("filter", filter.saveOptional(provider));
         }
     }
 
     @Override
-    public void load(CompoundTag compound) {
+    public void loadAdditional(CompoundTag compound, HolderLookup.Provider provider) {
         if (compound.contains("filter")) {
             CompoundTag tag = compound.getCompound("filter");
-            filter = ItemStack.of(tag);
+            filter = ItemStack.parseOptional(provider, tag);
         } else {
             filter = null;
         }
-        super.load(compound);
+        super.loadAdditional(compound, provider);
     }
 
     @Override

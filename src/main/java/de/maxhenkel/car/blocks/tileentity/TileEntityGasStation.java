@@ -12,9 +12,9 @@ import de.maxhenkel.car.sounds.SoundLoopTileentity.ISoundLoopable;
 import de.maxhenkel.corelib.CachedValue;
 import de.maxhenkel.corelib.blockentity.ITickableBlockEntity;
 import de.maxhenkel.corelib.item.ItemUtils;
-import de.maxhenkel.corelib.net.NetUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -285,20 +285,17 @@ public class TileEntityGasStation extends TileEntityBase implements ITickableBlo
     }
 
     @Override
-    protected void saveAdditional(CompoundTag compound) {
-        super.saveAdditional(compound);
-
+    public void saveAdditional(CompoundTag compound, HolderLookup.Provider provider) {
+        super.saveAdditional(compound, provider);
         compound.putInt("counter", fuelCounter);
 
         if (!storage.isEmpty()) {
-            CompoundTag comp = new CompoundTag();
-            storage.writeToNBT(comp);
-            compound.put("fluid", comp);
+            compound.put("fluid", storage.save(provider));
         }
 
-        ItemUtils.saveInventory(compound, "inventory", inventory);
+        ItemUtils.saveInventory(provider, compound, "inventory", inventory);
 
-        ItemUtils.saveInventory(compound, "trading", trading);
+        ItemUtils.saveInventory(provider, compound, "trading", trading);
 
         compound.putInt("trade_amount", tradeAmount);
         compound.putInt("free_amount", freeAmountLeft);
@@ -307,16 +304,16 @@ public class TileEntityGasStation extends TileEntityBase implements ITickableBlo
     }
 
     @Override
-    public void load(CompoundTag compound) {
+    public void loadAdditional(CompoundTag compound, HolderLookup.Provider provider) {
         fuelCounter = compound.getInt("counter");
 
         if (compound.contains("fluid")) {
             CompoundTag comp = compound.getCompound("fluid");
-            storage = FluidStack.loadFluidStackFromNBT(comp);
+            storage = FluidStack.parseOptional(provider, comp);
         }
 
-        ItemUtils.readInventory(compound, "inventory", inventory);
-        ItemUtils.readInventory(compound, "trading", trading);
+        ItemUtils.readInventory(provider, compound, "inventory", inventory);
+        ItemUtils.readInventory(provider, compound, "trading", trading);
 
         tradeAmount = compound.getInt("trade_amount");
         freeAmountLeft = compound.getInt("free_amount");
@@ -326,7 +323,7 @@ public class TileEntityGasStation extends TileEntityBase implements ITickableBlo
         } else {
             owner = new UUID(0L, 0L);
         }
-        super.load(compound);
+        super.loadAdditional(compound, provider);
     }
 
     public boolean isFueling() {
@@ -431,7 +428,7 @@ public class TileEntityGasStation extends TileEntityBase implements ITickableBlo
 
     public void sendStartFuelPacket(boolean start) {
         if (level.isClientSide) {
-            PacketDistributor.SERVER.noArg().send(new MessageStartFuel(worldPosition, start));
+            PacketDistributor.sendToServer(new MessageStartFuel(worldPosition, start));
         }
     }
 

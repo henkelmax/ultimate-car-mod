@@ -1,6 +1,6 @@
 package de.maxhenkel.car.gui;
 
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -15,7 +15,7 @@ public class ContainerFactoryTileEntity<T extends AbstractContainerMenu, U exten
     }
 
     @Override
-    public T create(int windowId, Inventory inv, FriendlyByteBuf data) {
+    public T create(int windowId, Inventory inv, RegistryFriendlyByteBuf data) {
         BlockEntity te = inv.player.level().getBlockEntity(data.readBlockPos());
         try {
             return containerCreator.create(windowId, (U) te, inv);

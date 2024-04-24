@@ -11,7 +11,7 @@
     }
   },
   "result": {
-    "item": "car:green_transporter_body",
+    "id": "car:green_transporter_body",
     "count": 1
   }
 }

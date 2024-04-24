@@ -40,9 +40,12 @@ public abstract class EntityVehicleBase extends Entity {
     public EntityVehicleBase(EntityType type, Level worldIn) {
         super(type, worldIn);
         this.blocksBuilding = true;
-        setMaxUpStep(0.6F);
-
         recalculateBoundingBox();
+    }
+
+    @Override
+    public float maxUpStep() {
+        return 0.6F;
     }
 
     @Override

@@ -17,7 +17,7 @@
     }
   },
   "result": {
-    "item": "car:split_tank",
+    "id": "car:split_tank",
     "count": 1
   }
 }

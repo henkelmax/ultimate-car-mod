@@ -2,6 +2,7 @@ package de.maxhenkel.car.blocks;
 
 import de.maxhenkel.car.blocks.tileentity.TileEntityBase;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -17,9 +18,9 @@ public class BlockBase extends Block {
     @Override
     public void setPlacedBy(Level worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
         super.setPlacedBy(worldIn, pos, state, placer, stack);
-        if (stack.hasCustomHoverName()) {
+        if (stack.has(DataComponents.CUSTOM_NAME)) {
             if (worldIn.getBlockEntity(pos) instanceof TileEntityBase base) {
-                base.setCustomName(stack.getHoverName());
+                base.setCustomName(stack.get(DataComponents.CUSTOM_NAME));
             }
         }
     }

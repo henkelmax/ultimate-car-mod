@@ -14,7 +14,7 @@
     }
   },
   "result": {
-    "item": "car:pink_tank_container",
+    "id": "car:pink_tank_container",
     "count": 1
   }
 }

@@ -14,7 +14,7 @@
     }
   },
   "result": {
-    "item": "car:medium_tank",
+    "id": "car:medium_tank",
     "count": 1
   }
 }

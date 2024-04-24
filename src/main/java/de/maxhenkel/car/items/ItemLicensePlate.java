@@ -1,8 +1,8 @@
 package de.maxhenkel.car.items;
 
+import de.maxhenkel.car.Main;
 import de.maxhenkel.car.gui.ContainerLicensePlate;
 import net.minecraft.ChatFormatting;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -26,14 +26,14 @@ public class ItemLicensePlate extends ItemCraftingComponent {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
+    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flagIn) {
         String text = getText(stack);
 
         if (!text.isEmpty()) {
             tooltip.add(Component.translatable("tooltip.license_plate_text", Component.literal(text).withStyle(ChatFormatting.DARK_GRAY)).withStyle(ChatFormatting.GRAY));
         }
 
-        super.appendHoverText(stack, worldIn, tooltip, flagIn);
+        super.appendHoverText(stack, context, tooltip, flagIn);
     }
 
     @Override
@@ -57,21 +57,12 @@ public class ItemLicensePlate extends ItemCraftingComponent {
     }
 
     public static void setText(ItemStack stack, String text) {
-        CompoundTag compound = stack.getOrCreateTag();
-
-        compound.putString("plate_text", text);
+        stack.set(Main.LICENSE_PLATE_TEXT_DATA_COMPONENT, text);
     }
 
     @Nonnull
     public static String getText(ItemStack stack) {
-        if (!stack.hasTag()) {
-            return "";
-        }
-        CompoundTag compound = stack.getTag();
-        if (!compound.contains("plate_text")) {
-            return "";
-        }
-        return compound.getString("plate_text");
+        return stack.getOrDefault(Main.LICENSE_PLATE_TEXT_DATA_COMPONENT, "");
     }
 
 }

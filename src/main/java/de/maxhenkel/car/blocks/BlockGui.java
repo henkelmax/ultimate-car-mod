@@ -6,7 +6,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
 import net.minecraft.world.Containers;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
@@ -47,17 +46,17 @@ public abstract class BlockGui<T extends BlockEntity> extends BlockBase implemen
     }
 
     @Override
-    public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
+    protected InteractionResult useWithoutItem(BlockState blockState, Level level, BlockPos blockPos, Player player, BlockHitResult blockHitResult) {
         if (!player.isShiftKeyDown()) {
             if (!(player instanceof ServerPlayer)) {
                 return InteractionResult.SUCCESS;
             }
 
-            BlockEntity tileEntity = worldIn.getBlockEntity(pos);
+            BlockEntity tileEntity = level.getBlockEntity(blockPos);
 
             try {
                 T tile = (T) tileEntity;
-                openGui(state, worldIn, pos, (ServerPlayer) player, handIn, tile);
+                openGui(blockState, level, blockPos, (ServerPlayer) player, tile);
             } catch (ClassCastException e) {
 
             }
@@ -67,7 +66,7 @@ public abstract class BlockGui<T extends BlockEntity> extends BlockBase implemen
         return InteractionResult.FAIL;
     }
 
-    public abstract void openGui(BlockState state, Level worldIn, BlockPos pos, ServerPlayer player, InteractionHand handIn, T tileEntity);
+    public abstract void openGui(BlockState state, Level worldIn, BlockPos pos, ServerPlayer player, T tileEntity);
 
     @Override
     public void onRemove(BlockState state, Level worldIn, BlockPos pos, BlockState newState, boolean isMoving) {

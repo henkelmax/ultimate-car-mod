@@ -9,12 +9,10 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -104,16 +102,9 @@ public class RenderEvents {
 
     @SubscribeEvent
     public void renderToolTip(RenderTooltipEvent.Pre event) {
-        ItemStack stack = event.getItemStack();
-
-        if (!stack.hasTag()) {
-            return;
+        if (event.getItemStack().has(Main.TRADING_ITEM_DATA_COMPONENT)) {
+            event.setCanceled(true);
         }
-        CompoundTag compound = stack.getTag();
-        if (!compound.contains("trading_item") && !compound.getBoolean("trading_item")) {
-            return;
-        }
-        event.setCanceled(true);
     }
 
     @SubscribeEvent

@@ -4,6 +4,7 @@ import de.maxhenkel.car.Main;
 import de.maxhenkel.car.fluids.ModFluids;
 import de.maxhenkel.corelib.blockentity.ITickableBlockEntity;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.Container;
@@ -14,6 +15,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+
 import javax.annotation.Nonnull;
 
 public class TileEntitySplitTank extends TileEntityBase implements ITickableBlockEntity, IFluidHandler, Container {
@@ -145,9 +147,8 @@ public class TileEntitySplitTank extends TileEntityBase implements ITickableBloc
     }
 
     @Override
-    protected void saveAdditional(CompoundTag compound) {
-        super.saveAdditional(compound);
-
+    public void saveAdditional(CompoundTag compound, HolderLookup.Provider provider) {
+        super.saveAdditional(compound, provider);
         compound.putInt("mix", currentMix);
         compound.putInt("bio_diesel", currentBioDiesel);
         compound.putInt("glycerin", currentGlycerin);
@@ -155,12 +156,12 @@ public class TileEntitySplitTank extends TileEntityBase implements ITickableBloc
     }
 
     @Override
-    public void load(CompoundTag compound) {
+    public void loadAdditional(CompoundTag compound, HolderLookup.Provider provider) {
         currentMix = compound.getInt("mix");
         currentBioDiesel = compound.getInt("bio_diesel");
         currentGlycerin = compound.getInt("glycerin");
         timeToGenerate = compound.getInt("timeToGenerate");
-        super.load(compound);
+        super.loadAdditional(compound, provider);
     }
 
     @Override

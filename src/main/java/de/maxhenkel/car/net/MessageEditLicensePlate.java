@@ -3,20 +3,21 @@ package de.maxhenkel.car.net;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.items.ItemLicensePlate;
 import de.maxhenkel.corelib.net.Message;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.protocol.PacketFlow;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.network.handling.PlayPayloadContext;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 import java.util.UUID;
 
 public class MessageEditLicensePlate implements Message<MessageEditLicensePlate> {
 
-    public static ResourceLocation ID = new ResourceLocation(Main.MODID, "edit_license_plate");
+    public static final CustomPacketPayload.Type<MessageEditLicensePlate> TYPE = new CustomPacketPayload.Type<>(new ResourceLocation(Main.MODID, "edit_license_plate"));
 
     private UUID uuid;
     private String text;
@@ -36,8 +37,8 @@ public class MessageEditLicensePlate implements Message<MessageEditLicensePlate>
     }
 
     @Override
-    public void executeServerSide(PlayPayloadContext context) {
-        if (!(context.player().orElse(null) instanceof ServerPlayer sender)) {
+    public void executeServerSide(IPayloadContext context) {
+        if (!(context.player() instanceof ServerPlayer sender)) {
             return;
         }
 
@@ -62,21 +63,21 @@ public class MessageEditLicensePlate implements Message<MessageEditLicensePlate>
     }
 
     @Override
-    public MessageEditLicensePlate fromBytes(FriendlyByteBuf buf) {
+    public MessageEditLicensePlate fromBytes(RegistryFriendlyByteBuf buf) {
         uuid = buf.readUUID();
         text = buf.readUtf(128);
         return this;
     }
 
     @Override
-    public void toBytes(FriendlyByteBuf buf) {
+    public void toBytes(RegistryFriendlyByteBuf buf) {
         buf.writeUUID(uuid);
         buf.writeUtf(text);
     }
 
     @Override
-    public ResourceLocation id() {
-        return ID;
+    public Type<MessageEditLicensePlate> type() {
+        return TYPE;
     }
 
 }

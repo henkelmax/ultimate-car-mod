@@ -20,7 +20,7 @@
     }
   },
   "result": {
-    "item": "car:generator",
+    "id": "car:generator",
     "count": 1
   }
 }

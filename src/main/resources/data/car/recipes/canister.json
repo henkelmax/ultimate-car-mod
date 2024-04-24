@@ -14,7 +14,7 @@
     }
   },
   "result": {
-    "item": "car:canister",
+    "id": "car:canister",
     "count": 1
   }
 }

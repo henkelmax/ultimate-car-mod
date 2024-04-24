@@ -11,7 +11,7 @@
     }
   },
   "result": {
-    "item": "car:warped_body",
+    "id": "car:warped_body",
     "count": 1
   }
 }

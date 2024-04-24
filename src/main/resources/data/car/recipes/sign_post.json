@@ -10,7 +10,7 @@
     }
   },
   "result": {
-    "item": "car:sign_post",
+    "id": "car:sign_post",
     "count": 3
   }
 }

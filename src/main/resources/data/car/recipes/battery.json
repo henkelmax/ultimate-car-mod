@@ -14,7 +14,7 @@
     }
   },
   "result": {
-    "item": "car:battery",
+    "id": "car:battery",
     "count": 1
   }
 }

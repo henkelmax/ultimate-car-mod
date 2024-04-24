@@ -14,7 +14,7 @@
     }
   },
   "result": {
-    "item": "car:hammer",
+    "id": "car:hammer",
     "count": 1
   }
 }

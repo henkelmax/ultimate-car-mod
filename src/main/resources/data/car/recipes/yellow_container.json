@@ -17,7 +17,7 @@
     }
   },
   "result": {
-    "item": "car:yellow_container",
+    "id": "car:yellow_container",
     "count": 1
   }
 }

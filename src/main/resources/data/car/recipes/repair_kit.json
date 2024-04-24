@@ -20,7 +20,7 @@
     }
   },
   "result": {
-    "item": "car:repair_kit",
+    "id": "car:repair_kit",
     "count": 1
   }
 }

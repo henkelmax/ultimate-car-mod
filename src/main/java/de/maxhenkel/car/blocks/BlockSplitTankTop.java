@@ -2,7 +2,7 @@ package de.maxhenkel.car.blocks;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
@@ -27,8 +27,8 @@ public class BlockSplitTankTop extends BlockBase {
     }
 
     @Override
-    public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
-        return ModBlocks.SPLIT_TANK.get().use(worldIn.getBlockState(pos.below()), worldIn, pos.below(), player, handIn, hit);
+    protected ItemInteractionResult useItemOn(ItemStack itemStack, BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
+        return ModBlocks.SPLIT_TANK.get().useItemOn(itemStack, level.getBlockState(blockPos.below()), level, blockPos.below(), player, interactionHand, blockHitResult);
     }
 
     private static final VoxelShape SHAPE = Block.box(0D, -16D, 0D, 16D, 8D, 16D);

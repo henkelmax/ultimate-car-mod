@@ -11,7 +11,7 @@
     }
   },
   "result": {
-    "item": "car:light_gray_suv_body",
+    "id": "car:light_gray_suv_body",
     "count": 1
   }
 }

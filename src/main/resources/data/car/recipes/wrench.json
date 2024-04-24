@@ -14,7 +14,7 @@
     }
   },
   "result": {
-    "item": "car:wrench",
+    "id": "car:wrench",
     "count": 1
   }
 }

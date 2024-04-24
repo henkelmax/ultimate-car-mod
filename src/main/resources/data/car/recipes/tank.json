@@ -14,7 +14,7 @@
     }
   },
   "result": {
-    "item": "car:tank",
+    "id": "car:tank",
     "count": 1
   }
 }

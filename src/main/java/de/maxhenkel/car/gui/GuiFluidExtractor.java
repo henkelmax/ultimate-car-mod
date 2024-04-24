@@ -42,12 +42,14 @@ public class GuiFluidExtractor extends ScreenBase<ContainerFluidExtractor> {
     private void drawFilter(GuiGraphics guiGraphics) {
         MutableComponent name;
 
+        tile.setFilter(menu.getFilter());
+
         Fluid f = tile.getFilterFluid();
 
         if (f == null) {
             name = Component.literal("-");
         } else {
-            name = Component.literal(new FluidStack(f, 1).getDisplayName().getString());
+            name = Component.literal(new FluidStack(f, 1).getHoverName().getString());
         }
 
         guiGraphics.drawString(font, Component.translatable("filter.fluid", name.withStyle(ChatFormatting.WHITE)).getVisualOrderText(), 46, 28, FONT_COLOR, false);

@@ -26,7 +26,7 @@ public class HUDHandlerCars implements IEntityComponentProvider {
         if (entityAccessor.getEntity() instanceof EntityGenericCar car) {
             FluidStack carFluid = car.getFluidInTank(0);
             if (!carFluid.isEmpty()) {
-                iTooltip.add(Component.translatable("tooltip.waila.car.fuel", carFluid.getDisplayName()));
+                iTooltip.add(Component.translatable("tooltip.waila.car.fuel", carFluid.getHoverName()));
                 iTooltip.add(Component.translatable("tooltip.waila.car.fuel_amount", carFluid.getAmount(), car.getMaxFuel()));
             }
 

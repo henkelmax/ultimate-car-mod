@@ -1,6 +1,8 @@
 package de.maxhenkel.car.events;
 
 import de.maxhenkel.car.Main;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.Block;
@@ -15,7 +17,7 @@ import net.neoforged.neoforge.event.level.BlockEvent;
 
 public class BlockEvents {
 
-    private static ResourceLocation GRASS_LOOT_TABLE = new ResourceLocation(Main.MODID, "blocks/grass");
+    private static ResourceKey<LootTable> GRASS_LOOT_TABLE = ResourceKey.create(Registries.LOOT_TABLE, new ResourceLocation(Main.MODID, "blocks/grass"));
 
     @SubscribeEvent
     public void breakEvent(BlockEvent.BreakEvent event) {
@@ -32,7 +34,7 @@ public class BlockEvents {
 
             LootParams lootContext = builder.create(LootContextParamSets.BLOCK);
 
-            LootTable lootTable = level.getServer().getLootData().getLootTable(GRASS_LOOT_TABLE);
+            LootTable lootTable = level.getServer().reloadableRegistries().getLootTable(GRASS_LOOT_TABLE);
 
             lootTable.getRandomItems(lootContext).forEach((stack) -> Block.popResource(level, event.getPos(), stack));
         }

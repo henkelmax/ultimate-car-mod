@@ -14,7 +14,7 @@
     }
   },
   "result": {
-    "item": "car:sign",
+    "id": "car:sign",
     "count": 3
   }
 }

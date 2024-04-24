@@ -14,7 +14,7 @@
     }
   },
   "result": {
-    "item": "car:cyan_tank_container",
+    "id": "car:cyan_tank_container",
     "count": 1
   }
 }

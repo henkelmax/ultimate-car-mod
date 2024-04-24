@@ -14,7 +14,7 @@
     }
   },
   "result": {
-    "item": "car:blue_tank_container",
+    "id": "car:blue_tank_container",
     "count": 1
   }
 }

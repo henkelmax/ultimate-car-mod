@@ -1,6 +1,7 @@
 package de.maxhenkel.car.gui;
 
-import net.minecraft.nbt.CompoundTag;
+import de.maxhenkel.car.Main;
+import net.minecraft.util.Unit;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;
@@ -8,14 +9,12 @@ import net.minecraft.world.item.ItemStack;
 
 public class SlotPresent extends Slot {
 
-    private ItemStack stack;
+    private final ItemStack stack;
 
     public SlotPresent(ItemStack s, int xPosition, int yPosition) {
         super(new SimpleContainer(1), 0, xPosition, yPosition);
         this.stack = s.copy();
-        CompoundTag compound = stack.getOrCreateTag();
-
-        compound.putBoolean("trading_item", true);
+        stack.set(Main.TRADING_ITEM_DATA_COMPONENT, Unit.INSTANCE);
     }
 
     @Override

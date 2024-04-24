@@ -15,6 +15,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -126,7 +127,7 @@ public class GuiGasStation extends ScreenBase<ContainerGasStation> {
         guiGraphics.drawString(font, fuelText.getVisualOrderText(), leftPos + 63, topPos + 30, FONT_COLOR, false);
 
         if (!tank.isEmpty()) {
-            guiGraphics.drawString(font, Component.translatable("gas_station.car_fuel_type", Component.literal(tank.getDisplayName().getString()).withStyle(ChatFormatting.WHITE)).getVisualOrderText(), leftPos + 63, topPos + 40, FONT_COLOR, false);
+            guiGraphics.drawString(font, Component.translatable("gas_station.car_fuel_type", Component.literal(tank.getHoverName().getString()).withStyle(ChatFormatting.WHITE)).getVisualOrderText(), leftPos + 63, topPos + 40, FONT_COLOR, false);
         }
     }
 
@@ -152,7 +153,7 @@ public class GuiGasStation extends ScreenBase<ContainerGasStation> {
         guiGraphics.drawString(font, amountText.getVisualOrderText(), leftPos + 63, topPos + 70, FONT_COLOR, false);
 
         Component bufferText = Component.translatable("gas_station.fuel_buffer_type",
-                Component.literal(stack.getDisplayName().getString()).withStyle(ChatFormatting.WHITE)
+                Component.literal(stack.getHoverName().getString()).withStyle(ChatFormatting.WHITE)
         );
 
         guiGraphics.drawString(font, bufferText.getVisualOrderText(), leftPos + 63, topPos + 80, FONT_COLOR, false);

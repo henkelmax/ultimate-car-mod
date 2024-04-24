@@ -3,18 +3,19 @@ package de.maxhenkel.car.net;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.entity.car.base.EntityCarBatteryBase;
 import de.maxhenkel.corelib.net.Message;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.protocol.PacketFlow;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
-import net.neoforged.neoforge.network.handling.PlayPayloadContext;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 import java.util.UUID;
 
 public class MessageStarting implements Message<MessageStarting> {
 
-    public static ResourceLocation ID = new ResourceLocation(Main.MODID, "starting");
+    public static final CustomPacketPayload.Type<MessageStarting> TYPE = new CustomPacketPayload.Type<>(new ResourceLocation(Main.MODID, "starting"));
 
     private boolean start;
     private boolean playSound;
@@ -36,8 +37,8 @@ public class MessageStarting implements Message<MessageStarting> {
     }
 
     @Override
-    public void executeServerSide(PlayPayloadContext context) {
-        if (!(context.player().orElse(null) instanceof ServerPlayer sender)) {
+    public void executeServerSide(IPayloadContext context) {
+        if (!(context.player() instanceof ServerPlayer sender)) {
             return;
         }
 
@@ -56,7 +57,7 @@ public class MessageStarting implements Message<MessageStarting> {
     }
 
     @Override
-    public MessageStarting fromBytes(FriendlyByteBuf buf) {
+    public MessageStarting fromBytes(RegistryFriendlyByteBuf buf) {
         this.start = buf.readBoolean();
         this.playSound = buf.readBoolean();
 
@@ -66,7 +67,7 @@ public class MessageStarting implements Message<MessageStarting> {
     }
 
     @Override
-    public void toBytes(FriendlyByteBuf buf) {
+    public void toBytes(RegistryFriendlyByteBuf buf) {
         buf.writeBoolean(start);
         buf.writeBoolean(playSound);
 
@@ -74,8 +75,8 @@ public class MessageStarting implements Message<MessageStarting> {
     }
 
     @Override
-    public ResourceLocation id() {
-        return ID;
+    public Type<MessageStarting> type() {
+        return TYPE;
     }
 
 }

@@ -7,6 +7,7 @@ import de.maxhenkel.corelib.blockentity.ITickableBlockEntity;
 import de.maxhenkel.corelib.energy.EnergyUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.Container;
@@ -19,6 +20,7 @@ import net.minecraft.world.level.material.Fluid;
 import net.neoforged.neoforge.energy.IEnergyStorage;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+
 import javax.annotation.Nonnull;
 
 public class TileEntityGenerator extends TileEntityBase implements ITickableBlockEntity, IFluidHandler, IEnergyStorage, Container {
@@ -140,27 +142,24 @@ public class TileEntityGenerator extends TileEntityBase implements ITickableBloc
     }
 
     @Override
-    protected void saveAdditional(CompoundTag compound) {
-        super.saveAdditional(compound);
-
+    public void saveAdditional(CompoundTag compound, HolderLookup.Provider provider) {
+        super.saveAdditional(compound, provider);
         compound.putInt("stored_energy", storedEnergy);
         if (currentFluid != null) {
             FluidStack stack = new FluidStack(currentFluid, currentMillibuckets);
-            CompoundTag comp = new CompoundTag();
-            stack.writeToNBT(comp);
-            compound.put("fluid", comp);
+            compound.put("fluid", stack.save(provider));
         }
     }
 
     @Override
-    public void load(CompoundTag compound) {
+    public void loadAdditional(CompoundTag compound, HolderLookup.Provider provider) {
         storedEnergy = compound.getInt("stored_energy");
         if (compound.contains("fluid")) {
-            FluidStack stack = FluidStack.loadFluidStackFromNBT(compound.getCompound("fluid"));
+            FluidStack stack = FluidStack.parseOptional(provider, compound.getCompound("fluid"));
             currentFluid = stack.getFluid();
             currentMillibuckets = stack.getAmount();
         }
-        super.load(compound);
+        super.loadAdditional(compound, provider);
     }
 
     @Override

@@ -14,7 +14,7 @@
     }
   },
   "result": {
-    "item": "car:lime_tank_container",
+    "id": "car:lime_tank_container",
     "count": 1
   }
 }

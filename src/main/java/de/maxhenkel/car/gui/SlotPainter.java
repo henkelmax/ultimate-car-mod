@@ -1,8 +1,8 @@
 package de.maxhenkel.car.gui;
 
+import de.maxhenkel.car.Main;
 import de.maxhenkel.car.items.ItemPainter;
 import net.minecraft.client.Minecraft;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;
@@ -39,24 +39,11 @@ public class SlotPainter extends Slot {
         if (!(i instanceof ItemPainter)) {
             return;
         }
-
-        CompoundTag compound = stack.getOrCreateTag();
-
-        compound.putInt("index", index);
+        stack.set(Main.PAINTER_INDEX_DATA_COMPONENT, index);
     }
 
     public static int getPainterID(ItemStack stack) {
-        if (!stack.hasTag()) {
-            return 0;
-        }
-
-        CompoundTag compound = stack.getOrCreateTag();
-
-        if (!compound.contains("index")) {
-            return 0;
-        }
-
-        return compound.getInt("index");
+        return stack.getOrDefault(Main.PAINTER_INDEX_DATA_COMPONENT, 0);
     }
 
 }

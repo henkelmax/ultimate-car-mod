@@ -11,7 +11,7 @@
     }
   },
   "result": {
-    "item": "car:oak_body",
+    "id": "car:oak_body",
     "count": 1
   }
 }

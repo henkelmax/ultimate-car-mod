@@ -14,7 +14,7 @@
     }
   },
   "result": {
-    "item": "car:engine_6_cylinder",
+    "id": "car:engine_6_cylinder",
     "count": 1
   }
 }

@@ -44,13 +44,13 @@ public class GuiCarWorkshopCrafting extends ScreenBase<ContainerCarWorkshopCraft
         super.init();
 
         buttonRepair = addRenderableWidget(Button.builder(Component.translatable("button.car.repair_car"), button -> {
-            PacketDistributor.SERVER.noArg().send(new MessageOpenCarWorkshopGui(tile.getBlockPos(), player, true));
+            PacketDistributor.sendToServer(new MessageOpenCarWorkshopGui(tile.getBlockPos(), player, true));
         }).bounds(leftPos + 105, topPos + 72, 60, 20).build());
 
         buttonSpawn = addRenderableWidget(Button.builder(Component.translatable("button.car.spawn_car"), button -> {
             if (tile.getLevel().isClientSide) {
                 if (tile.isCurrentCraftingCarValid()) {
-                    PacketDistributor.SERVER.noArg().send(new MessageSpawnCar(tile.getBlockPos()));
+                    PacketDistributor.sendToServer(new MessageSpawnCar(tile.getBlockPos()));
                 } else {
                     for (Component message : tile.getMessages()) {
                         player.sendSystemMessage(message);

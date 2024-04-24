@@ -10,7 +10,7 @@
     }
   },
   "result": {
-    "item": "car:iron_stick",
+    "id": "car:iron_stick",
     "count": 1
   }
 }

@@ -3,7 +3,6 @@ package de.maxhenkel.car.blocks;
 import de.maxhenkel.car.blocks.tileentity.TileEntityCarWorkshop;
 import de.maxhenkel.corelib.block.IItemBlock;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -40,13 +39,13 @@ public class BlockCarWorkshopOutter extends BlockBase implements IItemBlock {
     }
 
     @Override
-    public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
-        BlockPos tePos = findCenter(worldIn, pos);
+    protected InteractionResult useWithoutItem(BlockState blockState, Level level, BlockPos blockPos, Player player, BlockHitResult blockHitResult) {
+        BlockPos tePos = findCenter(level, blockPos);
 
         if (tePos == null) {
             return InteractionResult.FAIL;
         }
-        return ModBlocks.CAR_WORKSHOP.get().use(worldIn.getBlockState(tePos), worldIn, tePos, player, handIn, hit);
+        return ModBlocks.CAR_WORKSHOP.get().useWithoutItem(level.getBlockState(tePos), level, tePos, player, blockHitResult);
     }
 
     @Override

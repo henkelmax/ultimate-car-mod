@@ -3,7 +3,6 @@ package de.maxhenkel.car.blocks;
 import de.maxhenkel.car.blocks.tileentity.TileEntityDynamo;
 import de.maxhenkel.corelib.block.IItemBlock;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
@@ -43,8 +42,8 @@ public class BlockCrank extends BlockBase implements IItemBlock {
     }
 
     @Override
-    public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
-        BlockEntity te = worldIn.getBlockEntity(pos.below());
+    protected InteractionResult useWithoutItem(BlockState blockState, Level level, BlockPos blockPos, Player player, BlockHitResult blockHitResult) {
+        BlockEntity te = level.getBlockEntity(blockPos.below());
 
         if (!(te instanceof TileEntityDynamo)) {
             return InteractionResult.FAIL;
@@ -54,12 +53,12 @@ public class BlockCrank extends BlockBase implements IItemBlock {
 
         dyn.addEnergy(dyn.generation);
 
-        int i = state.getValue(CRANK_POS) + 1;
+        int i = blockState.getValue(CRANK_POS) + 1;
         if (i > 7) {
             i = 0;
         }
 
-        worldIn.setBlock(pos, state.setValue(CRANK_POS, i), 3);
+        level.setBlock(blockPos, blockState.setValue(CRANK_POS, i), 3);
 
         return InteractionResult.SUCCESS;
     }

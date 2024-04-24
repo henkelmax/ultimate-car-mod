@@ -54,7 +54,7 @@ public class GuiGasStationAdmin extends ScreenBase<ContainerGasStationAdmin> {
         if (!text.isEmpty()) {
             try {
                 int i = Integer.parseInt(text);
-                PacketDistributor.SERVER.noArg().send(new MessageGasStationAdminAmount(gasStation.getBlockPos(), i));
+                PacketDistributor.sendToServer(new MessageGasStationAdminAmount(gasStation.getBlockPos(), i));
             } catch (Exception e) {
             }
         }

@@ -11,7 +11,7 @@
     }
   },
   "result": {
-    "item": "car:orange_suv_body",
+    "id": "car:orange_suv_body",
     "count": 1
   }
 }

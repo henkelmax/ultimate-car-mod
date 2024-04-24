@@ -14,7 +14,7 @@
     }
   },
   "result": {
-    "item": "car:painter_yellow",
+    "id": "car:painter_yellow",
     "count": 1
   }
 }

@@ -56,9 +56,9 @@ public abstract class EntityCarLockBase extends EntityCarInventoryBase {
     }
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(LOCKED, Boolean.FALSE);
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(LOCKED, Boolean.FALSE);
     }
 
     public void setLocked(boolean locked, boolean playsound) {

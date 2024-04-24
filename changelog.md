@@ -1,1 +1,1 @@
-- Fixed experience bar rendering
+- Updated to 1.20.5

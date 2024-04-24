@@ -3,19 +3,20 @@ package de.maxhenkel.car.net;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.entity.car.base.EntityCarBatteryBase;
 import de.maxhenkel.corelib.net.Message;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.protocol.PacketFlow;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.network.PacketDistributor;
-import net.neoforged.neoforge.network.handling.PlayPayloadContext;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 import java.util.UUID;
 
 public class MessageCenterCar implements Message<MessageCenterCar> {
 
-    public static ResourceLocation ID = new ResourceLocation(Main.MODID, "center_car");
+    public static final CustomPacketPayload.Type<MessageCenterCar> TYPE = new CustomPacketPayload.Type<>(new ResourceLocation(Main.MODID, "center_car"));
 
     private UUID uuid;
 
@@ -33,8 +34,8 @@ public class MessageCenterCar implements Message<MessageCenterCar> {
     }
 
     @Override
-    public void executeServerSide(PlayPayloadContext context) {
-        if (!(context.player().orElse(null) instanceof ServerPlayer sender)) {
+    public void executeServerSide(IPayloadContext context) {
+        if (!(context.player() instanceof ServerPlayer sender)) {
             return;
         }
 
@@ -51,23 +52,23 @@ public class MessageCenterCar implements Message<MessageCenterCar> {
             car.centerCar();
         }
 
-        PacketDistributor.TRACKING_ENTITY.with(car).send(new MessageCenterCarClient(uuid));
+        PacketDistributor.sendToPlayersTrackingEntity(car, new MessageCenterCarClient(uuid));
     }
 
     @Override
-    public MessageCenterCar fromBytes(FriendlyByteBuf buf) {
+    public MessageCenterCar fromBytes(RegistryFriendlyByteBuf buf) {
         this.uuid = buf.readUUID();
         return this;
     }
 
     @Override
-    public void toBytes(FriendlyByteBuf buf) {
+    public void toBytes(RegistryFriendlyByteBuf buf) {
         buf.writeUUID(uuid);
     }
 
     @Override
-    public ResourceLocation id() {
-        return ID;
+    public Type<MessageCenterCar> type() {
+        return TYPE;
     }
 
 }

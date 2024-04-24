@@ -1,22 +1,24 @@
 package de.maxhenkel.car.net;
 
 import de.maxhenkel.car.Main;
+import de.maxhenkel.car.blocks.tileentity.TileEntityBase;
 import de.maxhenkel.corelib.net.Message;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.protocol.PacketFlow;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
-import net.neoforged.neoforge.network.handling.PlayPayloadContext;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 public class MessageSyncTileEntity implements Message<MessageSyncTileEntity> {
 
-    public static ResourceLocation ID = new ResourceLocation(Main.MODID, "sync_block_entity");
+    public static final CustomPacketPayload.Type<MessageSyncTileEntity> TYPE = new CustomPacketPayload.Type<>(new ResourceLocation(Main.MODID, "sync_block_entity"));
 
     private BlockPos pos;
     private CompoundTag tag;
@@ -36,7 +38,7 @@ public class MessageSyncTileEntity implements Message<MessageSyncTileEntity> {
     }
 
     @Override
-    public void executeClientSide(PlayPayloadContext context) {
+    public void executeClientSide(IPayloadContext context) {
         sync();
     }
 
@@ -50,27 +52,27 @@ public class MessageSyncTileEntity implements Message<MessageSyncTileEntity> {
 
         BlockEntity te = player.level().getBlockEntity(pos);
 
-        if (te != null) {
-            te.load(tag);
+        if (te instanceof TileEntityBase tileEntityBase) {
+            tileEntityBase.loadAdditional(tag, player.registryAccess());
         }
     }
 
     @Override
-    public MessageSyncTileEntity fromBytes(FriendlyByteBuf buf) {
+    public MessageSyncTileEntity fromBytes(RegistryFriendlyByteBuf buf) {
         this.pos = buf.readBlockPos();
         this.tag = buf.readNbt();
         return this;
     }
 
     @Override
-    public void toBytes(FriendlyByteBuf buf) {
+    public void toBytes(RegistryFriendlyByteBuf buf) {
         buf.writeBlockPos(pos);
         buf.writeNbt(tag);
     }
 
     @Override
-    public ResourceLocation id() {
-        return ID;
+    public Type<MessageSyncTileEntity> type() {
+        return TYPE;
     }
 
 }

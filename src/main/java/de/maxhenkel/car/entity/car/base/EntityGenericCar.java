@@ -33,9 +33,11 @@ public class EntityGenericCar extends EntityCarLicensePlateBase {
     private static final EntityDataAccessor<NonNullList<ItemStack>> PARTS = SynchedEntityData.defineId(EntityGenericCar.class, Main.ITEM_LIST.get());
 
     private List<Part> parts;
+    private float maxUpStep;
 
     public EntityGenericCar(EntityType type, Level worldIn) {
         super(type, worldIn);
+        maxUpStep = super.maxUpStep();
     }
 
     public EntityGenericCar(Level worldIn) {
@@ -305,9 +307,9 @@ public class EntityGenericCar extends EntityCarLicensePlateBase {
     }
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(PARTS, NonNullList.create());
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(PARTS, NonNullList.create());
     }
 
     public <T extends Part> T getPartByClass(Class<T> clazz) {
@@ -447,6 +449,15 @@ public class EntityGenericCar extends EntityCarLicensePlateBase {
         if (partWheels != null) {
             setMaxUpStep(partWheels.getStepHeight());
         }
+    }
+
+    @Override
+    public float maxUpStep() {
+        return maxUpStep;
+    }
+
+    public void setMaxUpStep(float maxUpStep) {
+        this.maxUpStep = maxUpStep;
     }
 
     @Override

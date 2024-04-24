@@ -97,7 +97,8 @@ public class ItemPainter extends Item {
 
         context.getLevel().setBlockAndUpdate(context.getClickedPos().above(), state);
 
-        stack1.hurtAndBreak(1, context.getPlayer(), playerEntity -> playerEntity.broadcastBreakEvent(context.getHand()));
+        stack1.hurtAndBreak(1, context.getPlayer().getRandom(), context.getPlayer(), () -> {
+        });
 
         return InteractionResult.SUCCESS;
     }
@@ -118,12 +119,12 @@ public class ItemPainter extends Item {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> textComponents, TooltipFlag tooltipFlag) {
+    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> textComponents, TooltipFlag tooltipFlag) {
         BlockPaint paint = getSelectedPaint(SlotPainter.getPainterID(stack));
         if (paint != null) {
             textComponents.add(Component.translatable("tooltip.painter", Component.translatable(paint.getDescriptionId()).withStyle(ChatFormatting.DARK_GRAY)).withStyle(ChatFormatting.GRAY));
         }
-        super.appendHoverText(stack, world, textComponents, tooltipFlag);
+        super.appendHoverText(stack, context, textComponents, tooltipFlag);
     }
 
 }

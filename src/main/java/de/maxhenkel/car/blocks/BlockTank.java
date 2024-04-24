@@ -1,5 +1,6 @@
 package de.maxhenkel.car.blocks;
 
+import de.maxhenkel.car.Main;
 import de.maxhenkel.car.blocks.tileentity.TileEntityTank;
 import de.maxhenkel.car.blocks.tileentity.render.item.TankItemTileEntityRenderer;
 import de.maxhenkel.corelib.block.IItemBlock;
@@ -9,10 +10,9 @@ import de.maxhenkel.corelib.client.ItemRenderer;
 import de.maxhenkel.corelib.fluid.FluidUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -35,9 +35,11 @@ import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.fluids.FluidActionResult;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.FluidUtil;
+import net.neoforged.neoforge.fluids.SimpleFluidContent;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.wrapper.InvWrapper;
+
 import javax.annotation.Nullable;
 import java.util.List;
 
@@ -49,7 +51,7 @@ public class BlockTank extends BlockBase implements EntityBlock, IItemBlock {
 
     @Override
     public Item toItem() {
-        return new CustomRendererBlockItem(this, new Item.Properties().stacksTo(1)) {
+        return new CustomRendererBlockItem(this, new Item.Properties().stacksTo(1)/*.component(Main.FLUID_STACK_DATA_COMPONENT, FluidStack.EMPTY)*/) {
             @OnlyIn(Dist.CLIENT)
             @Override
             public ItemRenderer createItemRenderer() {
@@ -65,17 +67,16 @@ public class BlockTank extends BlockBase implements EntityBlock, IItemBlock {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, @Nullable BlockGetter worldIn, List<Component> tooltip, TooltipFlag flagIn) {
-        if (stack.hasTag() && stack.getTag().contains("fluid")) {
-            CompoundTag fluidComp = stack.getTag().getCompound("fluid");
-            FluidStack fluidStack = FluidStack.loadFluidStackFromNBT(fluidComp);
-
-            if (fluidStack != null) {
-                tooltip.add(Component.translatable("tooltip.fluid", Component.literal(fluidStack.getDisplayName().getString()).withStyle(ChatFormatting.DARK_GRAY)).withStyle(ChatFormatting.GRAY));
+    public void appendHoverText(ItemStack stack, Item.TooltipContext tooltipContext, List<Component> tooltip, TooltipFlag tooltipFlag) {
+        if (stack.has(Main.FLUID_STACK_DATA_COMPONENT)) {
+            SimpleFluidContent content = stack.get(Main.FLUID_STACK_DATA_COMPONENT);
+            if (content != null) {
+                FluidStack fluidStack = content.copy();
+                tooltip.add(Component.translatable("tooltip.fluid", Component.literal(fluidStack.getHoverName().getString()).withStyle(ChatFormatting.DARK_GRAY)).withStyle(ChatFormatting.GRAY));
                 tooltip.add(Component.translatable("tooltip.amount", Component.literal(String.valueOf(fluidStack.getAmount())).withStyle(ChatFormatting.DARK_GRAY)).withStyle(ChatFormatting.GRAY));
             }
         }
-        super.appendHoverText(stack, worldIn, tooltip, flagIn);
+        super.appendHoverText(stack, tooltipContext, tooltip, tooltipFlag);
     }
 
     @Override
@@ -95,27 +96,17 @@ public class BlockTank extends BlockBase implements EntityBlock, IItemBlock {
     }
 
     public static void applyItemData(ItemStack stack, TileEntityTank tank) {
-        if (!stack.hasTag()) {
+        SimpleFluidContent content = stack.get(Main.FLUID_STACK_DATA_COMPONENT);
+        if (content == null) {
             tank.setFluid(FluidStack.EMPTY);
             return;
         }
-
-        CompoundTag comp = stack.getTag();
-
-        if (!comp.contains("fluid")) {
-            return;
-        }
-
-        CompoundTag fluidTag = comp.getCompound("fluid");
-
-        FluidStack fluidStack = FluidStack.loadFluidStackFromNBT(fluidTag);
-
-        tank.setFluid(fluidStack);
+        tank.setFluid(content.copy());
     }
 
     @Override
-    public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
-        return FluidUtils.tryFluidInteraction(player, handIn, worldIn, pos) ? InteractionResult.SUCCESS : InteractionResult.FAIL;
+    protected ItemInteractionResult useItemOn(ItemStack itemStack, BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
+        return FluidUtils.tryFluidInteraction(player, interactionHand, level, blockPos) ? ItemInteractionResult.SUCCESS : ItemInteractionResult.FAIL;
     }
 
     public static boolean handleEmpty(ItemStack stack, Level worldIn, BlockPos pos, Player playerIn, InteractionHand hand) {

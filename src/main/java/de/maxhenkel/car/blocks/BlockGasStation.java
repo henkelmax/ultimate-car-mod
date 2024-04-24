@@ -11,7 +11,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
@@ -33,6 +33,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.FluidUtil;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+
 import javax.annotation.Nullable;
 
 public class BlockGasStation extends BlockOrientableHorizontal {
@@ -83,32 +84,32 @@ public class BlockGasStation extends BlockOrientableHorizontal {
     }
 
     @Override
-    public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
-        BlockEntity te = worldIn.getBlockEntity(pos);
+    public ItemInteractionResult useItemOn(ItemStack itemStack, BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
+        BlockEntity te = level.getBlockEntity(blockPos);
 
         if (!(te instanceof TileEntityGasStation)) {
-            return InteractionResult.FAIL;
+            return ItemInteractionResult.FAIL;
         }
 
         TileEntityGasStation station = (TileEntityGasStation) te;
 
-        ItemStack stack = player.getItemInHand(handIn);
+        ItemStack stack = player.getItemInHand(interactionHand);
 
         if (station.isOwner(player) || !station.hasTrade()) {
             FluidStack fluidStack = FluidUtil.getFluidContained(stack).orElse(FluidStack.EMPTY);
 
             if (!fluidStack.isEmpty()) {
-                boolean success = BlockTank.handleEmpty(stack, worldIn, pos, player, handIn);
+                boolean success = BlockTank.handleEmpty(stack, level, blockPos, player, interactionHand);
                 if (success) {
-                    return InteractionResult.SUCCESS;
+                    return ItemInteractionResult.SUCCESS;
                 }
             }
             IFluidHandler handler = FluidUtil.getFluidHandler(stack).orElse(null);
 
             if (handler != null) {
-                boolean success1 = BlockTank.handleFill(stack, worldIn, pos, player, handIn);
+                boolean success1 = BlockTank.handleFill(stack, level, blockPos, player, interactionHand);
                 if (success1) {
-                    return InteractionResult.SUCCESS;
+                    return ItemInteractionResult.SUCCESS;
                 }
             }
         }
@@ -117,16 +118,15 @@ public class BlockGasStation extends BlockOrientableHorizontal {
             if (player instanceof ServerPlayer) {
                 TileEntityContainerProvider.openGui((ServerPlayer) player, station, (i, playerInventory, playerEntity) -> new ContainerGasStation(i, station, playerInventory));
             }
-            return InteractionResult.SUCCESS;
+            return ItemInteractionResult.SUCCESS;
         } else if (station.isOwner(player)) {
             if (player instanceof ServerPlayer) {
                 TileEntityContainerProvider.openGui((ServerPlayer) player, station, (i, playerInventory, playerEntity) -> new ContainerGasStationAdmin(i, station, playerInventory));
             }
-            return InteractionResult.SUCCESS;
+            return ItemInteractionResult.SUCCESS;
         }
-        return InteractionResult.FAIL;
+        return ItemInteractionResult.FAIL;
     }
-
 
     @Override
     public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {

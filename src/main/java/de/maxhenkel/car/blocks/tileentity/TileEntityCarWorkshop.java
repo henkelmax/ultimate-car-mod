@@ -13,6 +13,7 @@ import de.maxhenkel.car.sounds.ModSounds;
 import de.maxhenkel.corelib.item.ItemUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundSource;
@@ -185,18 +186,17 @@ public class TileEntityCarWorkshop extends TileEntityBase implements Container {
     }
 
     @Override
-    protected void saveAdditional(CompoundTag compound) {
-        super.saveAdditional(compound);
-
-        ItemUtils.saveInventory(compound, "crafting", craftingMatrix);
-        ItemUtils.saveInventory(compound, "repair", repairInventory);
+    public void saveAdditional(CompoundTag compound, HolderLookup.Provider provider) {
+        super.saveAdditional(compound, provider);
+        ItemUtils.saveInventory(provider, compound, "crafting", craftingMatrix);
+        ItemUtils.saveInventory(provider, compound, "repair", repairInventory);
     }
 
     @Override
-    public void load(CompoundTag compound) {
-        ItemUtils.readInventory(compound, "crafting", craftingMatrix);
-        ItemUtils.readInventory(compound, "repair", repairInventory);
-        super.load(compound);
+    public void loadAdditional(CompoundTag compound, HolderLookup.Provider provider) {
+        ItemUtils.readInventory(provider, compound, "crafting", craftingMatrix);
+        ItemUtils.readInventory(provider, compound, "repair", repairInventory);
+        super.loadAdditional(compound, provider);
     }
 
     public void updateRecipe() {
@@ -388,7 +388,7 @@ public class TileEntityCarWorkshop extends TileEntityBase implements Container {
         for (int i = 0; i < repairInventory.getContainerSize(); i++) {
             ItemStack stack = repairInventory.getItem(i);
             if (!stack.isEmpty()) {
-                stack.hurtAndBreak(10, player, playerEntity -> {
+                stack.hurtAndBreak(10, player.getRandom(), player, () -> {
                 });
             }
         }

@@ -5,6 +5,7 @@ import de.maxhenkel.car.blocks.ModBlocks;
 import de.maxhenkel.car.fluids.ModFluids;
 import de.maxhenkel.corelib.blockentity.ITickableBlockEntity;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.Container;
@@ -15,6 +16,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.energy.IEnergyStorage;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+
 import javax.annotation.Nonnull;
 
 public class TileEntityBackmixReactor extends TileEntityBase implements ITickableBlockEntity, IFluidHandler, IEnergyStorage, Container {
@@ -156,8 +158,8 @@ public class TileEntityBackmixReactor extends TileEntityBase implements ITickabl
     }
 
     @Override
-    protected void saveAdditional(CompoundTag compound) {
-        super.saveAdditional(compound);
+    public void saveAdditional(CompoundTag compound, HolderLookup.Provider provider) {
+        super.saveAdditional(compound, provider);
 
         compound.putInt("stored_endergy", storedEnergy);
         compound.putInt("canola", currentCanola);
@@ -167,13 +169,13 @@ public class TileEntityBackmixReactor extends TileEntityBase implements ITickabl
     }
 
     @Override
-    public void load(CompoundTag compound) {
+    public void loadAdditional(CompoundTag compound, HolderLookup.Provider provider) {
         storedEnergy = compound.getInt("stored_endergy");
         currentCanola = compound.getInt("canola");
         currentMethanol = compound.getInt("methanol");
         currentMix = compound.getInt("mix");
         timeToGenerate = compound.getInt("time");
-        super.load(compound);
+        super.loadAdditional(compound, provider);
     }
 
     @Override

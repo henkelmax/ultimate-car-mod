@@ -4,15 +4,16 @@ import de.maxhenkel.car.Main;
 import de.maxhenkel.car.blocks.tileentity.TileEntityCarWorkshop;
 import de.maxhenkel.corelib.net.Message;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.protocol.PacketFlow;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
-import net.neoforged.neoforge.network.handling.PlayPayloadContext;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 public class MessageSpawnCar implements Message<MessageSpawnCar> {
 
-    public static ResourceLocation ID = new ResourceLocation(Main.MODID, "spawn_car");
+    public static final CustomPacketPayload.Type<MessageSpawnCar> TYPE = new CustomPacketPayload.Type<>(new ResourceLocation(Main.MODID, "spawn_car"));
 
     private BlockPos pos;
 
@@ -29,8 +30,8 @@ public class MessageSpawnCar implements Message<MessageSpawnCar> {
     }
 
     @Override
-    public void executeServerSide(PlayPayloadContext context) {
-        if (!(context.player().orElse(null) instanceof ServerPlayer sender)) {
+    public void executeServerSide(IPayloadContext context) {
+        if (!(context.player() instanceof ServerPlayer sender)) {
             return;
         }
 
@@ -40,19 +41,19 @@ public class MessageSpawnCar implements Message<MessageSpawnCar> {
     }
 
     @Override
-    public MessageSpawnCar fromBytes(FriendlyByteBuf buf) {
+    public MessageSpawnCar fromBytes(RegistryFriendlyByteBuf buf) {
         this.pos = buf.readBlockPos();
         return this;
     }
 
     @Override
-    public void toBytes(FriendlyByteBuf buf) {
+    public void toBytes(RegistryFriendlyByteBuf buf) {
         buf.writeBlockPos(pos);
     }
 
     @Override
-    public ResourceLocation id() {
-        return ID;
+    public Type<MessageSpawnCar> type() {
+        return TYPE;
     }
 
 }

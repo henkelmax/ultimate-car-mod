@@ -23,7 +23,7 @@
     }
   },
   "result": {
-    "item": "car:gas_station",
+    "id": "car:gas_station",
     "count": 1
   }
 }

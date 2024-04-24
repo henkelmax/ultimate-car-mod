@@ -3,18 +3,19 @@ package de.maxhenkel.car.net;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.entity.car.base.EntityCarBase;
 import de.maxhenkel.corelib.net.Message;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.protocol.PacketFlow;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
-import net.neoforged.neoforge.network.handling.PlayPayloadContext;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 import java.util.UUID;
 
 public class MessageCarHorn implements Message<MessageCarHorn> {
 
-    public static ResourceLocation ID = new ResourceLocation(Main.MODID, "car_horn");
+    public static final CustomPacketPayload.Type<MessageCarHorn> TYPE = new CustomPacketPayload.Type<>(new ResourceLocation(Main.MODID, "car_horn"));
 
     private boolean pressed;
     private UUID uuid;
@@ -34,12 +35,12 @@ public class MessageCarHorn implements Message<MessageCarHorn> {
     }
 
     @Override
-    public void executeServerSide(PlayPayloadContext context) {
+    public void executeServerSide(IPayloadContext context) {
         if (!pressed) {
             return;
         }
 
-        if (!(context.player().orElse(null) instanceof ServerPlayer sender)) {
+        if (!(context.player() instanceof ServerPlayer sender)) {
             return;
         }
 
@@ -58,21 +59,21 @@ public class MessageCarHorn implements Message<MessageCarHorn> {
     }
 
     @Override
-    public MessageCarHorn fromBytes(FriendlyByteBuf buf) {
+    public MessageCarHorn fromBytes(RegistryFriendlyByteBuf buf) {
         this.pressed = buf.readBoolean();
         this.uuid = buf.readUUID();
         return this;
     }
 
     @Override
-    public void toBytes(FriendlyByteBuf buf) {
+    public void toBytes(RegistryFriendlyByteBuf buf) {
         buf.writeBoolean(pressed);
         buf.writeUUID(uuid);
     }
 
     @Override
-    public ResourceLocation id() {
-        return ID;
+    public Type<MessageCarHorn> type() {
+        return TYPE;
     }
 
 }

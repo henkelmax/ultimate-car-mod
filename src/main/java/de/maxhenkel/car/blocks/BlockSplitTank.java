@@ -8,10 +8,7 @@ import de.maxhenkel.corelib.blockentity.SimpleBlockEntityTicker;
 import de.maxhenkel.corelib.fluid.FluidUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.Container;
-import net.minecraft.world.Containers;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.*;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
@@ -34,6 +31,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
+
 import javax.annotation.Nullable;
 
 public class BlockSplitTank extends BlockBase implements EntityBlock, IItemBlock {
@@ -62,25 +60,25 @@ public class BlockSplitTank extends BlockBase implements EntityBlock, IItemBlock
     }
 
     @Override
-    public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
-        if (FluidUtils.tryFluidInteraction(player, handIn, worldIn, pos)) {
-            return InteractionResult.SUCCESS;
+    protected ItemInteractionResult useItemOn(ItemStack itemStack, BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
+        if (FluidUtils.tryFluidInteraction(player, interactionHand, level, blockPos)) {
+            return ItemInteractionResult.SUCCESS;
         }
 
         if (!player.isShiftKeyDown()) {
-            BlockEntity te = worldIn.getBlockEntity(pos);
+            BlockEntity te = level.getBlockEntity(blockPos);
 
             if (!(te instanceof TileEntitySplitTank)) {
-                return InteractionResult.FAIL;
+                return ItemInteractionResult.FAIL;
             }
             TileEntitySplitTank splitTank = (TileEntitySplitTank) te;
             if (player instanceof ServerPlayer) {
                 TileEntityContainerProvider.openGui((ServerPlayer) player, splitTank, (i, playerInventory, playerEntity) -> new ContainerSplitTank(i, splitTank, playerInventory));
             }
-            return InteractionResult.SUCCESS;
+            return ItemInteractionResult.SUCCESS;
         }
 
-        return InteractionResult.FAIL;
+        return ItemInteractionResult.FAIL;
     }
 
     @Override

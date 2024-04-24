@@ -7,7 +7,6 @@ import de.maxhenkel.corelib.block.IItemBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Containers;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -44,8 +43,8 @@ public class BlockCarWorkshop extends BlockBase implements EntityBlock, IItemBlo
     }
 
     @Override
-    public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
-        TileEntityCarWorkshop workshop = getOwnTileEntity(worldIn, pos);
+    protected InteractionResult useWithoutItem(BlockState blockState, Level level, BlockPos blockPos, Player player, BlockHitResult blockHitResult) {
+        TileEntityCarWorkshop workshop = getOwnTileEntity(level, blockPos);
 
         if (workshop == null) {
             return InteractionResult.FAIL;
@@ -54,8 +53,8 @@ public class BlockCarWorkshop extends BlockBase implements EntityBlock, IItemBlo
         if (!workshop.areBlocksAround()) {
             return InteractionResult.FAIL;
         }
-        if (player instanceof ServerPlayer) {
-            TileEntityContainerProvider.openGui((ServerPlayer) player, workshop, (i, playerInventory, playerEntity) -> new ContainerCarWorkshopCrafting(i, workshop, playerInventory));
+        if (player instanceof ServerPlayer serverPlayer) {
+            TileEntityContainerProvider.openGui(serverPlayer, workshop, (i, playerInventory, playerEntity) -> new ContainerCarWorkshopCrafting(i, workshop, playerInventory));
         }
 
         return InteractionResult.SUCCESS;

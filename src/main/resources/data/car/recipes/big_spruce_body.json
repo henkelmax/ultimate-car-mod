@@ -11,7 +11,7 @@
     }
   },
   "result": {
-    "item": "car:big_spruce_body",
+    "id": "car:big_spruce_body",
     "count": 1
   }
 }

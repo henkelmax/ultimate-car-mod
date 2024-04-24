@@ -10,7 +10,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.FluidTags;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
@@ -75,11 +74,11 @@ public class BlockFluidExtractor extends BlockBase implements EntityBlock, IItem
     }
 
     @Override
-    public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
+    protected InteractionResult useWithoutItem(BlockState blockState, Level level, BlockPos blockPos, Player player, BlockHitResult blockHitResult) {
         if (player.isShiftKeyDown()) {
             return InteractionResult.FAIL;
         }
-        BlockEntity te = worldIn.getBlockEntity(pos);
+        BlockEntity te = level.getBlockEntity(blockPos);
         if (!(te instanceof TileEntityFluidExtractor)) {
             return InteractionResult.FAIL;
         }

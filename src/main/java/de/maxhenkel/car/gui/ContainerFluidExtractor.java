@@ -4,6 +4,7 @@ import de.maxhenkel.car.Main;
 import de.maxhenkel.car.blocks.tileentity.TileEntityFluidExtractor;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.item.ItemStack;
 
 public class ContainerFluidExtractor extends ContainerBase {
 
@@ -18,6 +19,10 @@ public class ContainerFluidExtractor extends ContainerBase {
         addSlot(new SlotFluidFilter(inventory, 0, 26, 25, tile));
 
         addPlayerInventorySlots();
+    }
+
+    public ItemStack getFilter() {
+        return inventory.getItem(0);
     }
 
     public TileEntityFluidExtractor getTile() {

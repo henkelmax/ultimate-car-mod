@@ -20,7 +20,7 @@
     }
   },
   "result": {
-    "item": "car:engine_truck",
+    "id": "car:engine_truck",
     "count": 1
   }
 }

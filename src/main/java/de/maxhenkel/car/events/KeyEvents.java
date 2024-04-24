@@ -4,7 +4,6 @@ import de.maxhenkel.car.Main;
 import de.maxhenkel.car.entity.car.base.EntityCarBatteryBase;
 import de.maxhenkel.car.net.MessageCenterCar;
 import de.maxhenkel.car.net.MessageStarting;
-import de.maxhenkel.corelib.net.NetUtils;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
@@ -50,12 +49,12 @@ public class KeyEvents {
 
             if (Main.START_KEY.isDown()) {
                 if (!wasStartPressed) {
-                    PacketDistributor.SERVER.noArg().send(new MessageStarting(true, false, player));
+                    PacketDistributor.sendToServer(new MessageStarting(true, false, player));
                     wasStartPressed = true;
                 }
             } else {
                 if (wasStartPressed) {
-                    PacketDistributor.SERVER.noArg().send(new MessageStarting(false, true, player));
+                    PacketDistributor.sendToServer(new MessageStarting(false, true, player));
                 }
                 wasStartPressed = false;
             }
@@ -71,7 +70,7 @@ public class KeyEvents {
 
             if (Main.CENTER_KEY.isDown()) {
                 if (!wasCenterPressed) {
-                    PacketDistributor.SERVER.noArg().send(new MessageCenterCar(player));
+                    PacketDistributor.sendToServer(new MessageCenterCar(player));
                     player.displayClientMessage(Component.translatable("message.center_car"), true);
                     wasCenterPressed = true;
                 }

@@ -11,7 +11,6 @@ import de.maxhenkel.car.sounds.SoundLoopHigh;
 import de.maxhenkel.car.sounds.SoundLoopIdle;
 import de.maxhenkel.car.sounds.SoundLoopStart;
 import de.maxhenkel.corelib.math.MathUtils;
-import de.maxhenkel.corelib.net.NetUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.core.BlockPos;
@@ -72,7 +71,11 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 
     public EntityCarBase(EntityType type, Level worldIn) {
         super(type, worldIn);
-        setMaxUpStep(0.5F);
+    }
+
+    @Override
+    public float maxUpStep() {
+        return 0.5F;
     }
 
     public abstract float getMaxSpeed();
@@ -297,7 +300,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 
     public void onCollision(float speed) {
         if (level().isClientSide) {
-            PacketDistributor.SERVER.noArg().send(new MessageCrash(speed, this));
+            PacketDistributor.sendToServer(new MessageCrash(speed, this));
         }
         setSpeed(0.01F);
         setDeltaMovement(0D, getDeltaMovement().y, 0D);
@@ -344,7 +347,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
             needsUpdate = true;
         }
         if (level().isClientSide && needsUpdate) {
-            PacketDistributor.SERVER.noArg().send(new MessageControlCar(forward, backward, left, right, player));
+            PacketDistributor.sendToServer(new MessageControlCar(forward, backward, left, right, player));
         }
     }
 
@@ -395,7 +398,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 
     public void openCarGUI(Player player) {
         if (level().isClientSide) {
-            PacketDistributor.SERVER.noArg().send(new MessageCarGui(player));
+            PacketDistributor.sendToServer(new MessageCarGui(player));
         }
     }
 
@@ -405,13 +408,13 @@ public abstract class EntityCarBase extends EntityVehicleBase {
     }
 
     @Override
-    protected void defineSynchedData() {
-        entityData.define(STARTED, false);
-        entityData.define(SPEED, 0F);
-        entityData.define(FORWARD, false);
-        entityData.define(BACKWARD, false);
-        entityData.define(LEFT, false);
-        entityData.define(RIGHT, false);
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        builder.define(STARTED, false);
+        builder.define(SPEED, 0F);
+        builder.define(FORWARD, false);
+        builder.define(BACKWARD, false);
+        builder.define(LEFT, false);
+        builder.define(RIGHT, false);
     }
 
     public void setSpeed(float speed) {
@@ -551,7 +554,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 
     public void onHornPressed(Player player) {
         if (level().isClientSide) {
-            PacketDistributor.SERVER.noArg().send(new MessageCarHorn(true, player));
+            PacketDistributor.sendToServer(new MessageCarHorn(true, player));
         } else {
             if (this instanceof EntityCarBatteryBase) {
                 EntityCarBatteryBase car = (EntityCarBatteryBase) this;

@@ -9,7 +9,7 @@
     }
   },
   "result": {
-    "item": "car:cable_insulator",
+    "id": "car:cable_insulator",
     "count": 16
   }
 }

@@ -40,7 +40,7 @@ public class GuiLicensePlate extends ScreenBase<ContainerLicensePlate> {
         super.init();
 
         addRenderableWidget(Button.builder(Component.translatable("button.car.submit"), button -> {
-            PacketDistributor.SERVER.noArg().send(new MessageEditLicensePlate(player, textField.getValue()));
+            PacketDistributor.sendToServer(new MessageEditLicensePlate(player, textField.getValue()));
             MessageEditLicensePlate.setItemText(player, textField.getValue());
             Minecraft.getInstance().setScreen(null);
         }).bounds(leftPos + 20, topPos + imageHeight - 25, 50, 20).build());

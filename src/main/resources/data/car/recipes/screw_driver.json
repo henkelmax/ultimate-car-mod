@@ -14,7 +14,7 @@
     }
   },
   "result": {
-    "item": "car:screw_driver",
+    "id": "car:screw_driver",
     "count": 1
   }
 }

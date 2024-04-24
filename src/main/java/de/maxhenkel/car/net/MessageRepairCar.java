@@ -4,18 +4,19 @@ import de.maxhenkel.car.Main;
 import de.maxhenkel.car.blocks.tileentity.TileEntityCarWorkshop;
 import de.maxhenkel.corelib.net.Message;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.protocol.PacketFlow;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
-import net.neoforged.neoforge.network.handling.PlayPayloadContext;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 import java.util.UUID;
 
 public class MessageRepairCar implements Message<MessageRepairCar> {
 
-    public static ResourceLocation ID = new ResourceLocation(Main.MODID, "repair_car");
+    public static final CustomPacketPayload.Type<MessageRepairCar> TYPE = new CustomPacketPayload.Type<>(new ResourceLocation(Main.MODID, "repair_car"));
 
     private BlockPos pos;
     private UUID uuid;
@@ -35,8 +36,8 @@ public class MessageRepairCar implements Message<MessageRepairCar> {
     }
 
     @Override
-    public void executeServerSide(PlayPayloadContext context) {
-        if (!(context.player().orElse(null) instanceof ServerPlayer sender)) {
+    public void executeServerSide(IPayloadContext context) {
+        if (!(context.player() instanceof ServerPlayer sender)) {
             return;
         }
 
@@ -51,21 +52,21 @@ public class MessageRepairCar implements Message<MessageRepairCar> {
     }
 
     @Override
-    public MessageRepairCar fromBytes(FriendlyByteBuf buf) {
+    public MessageRepairCar fromBytes(RegistryFriendlyByteBuf buf) {
         pos = buf.readBlockPos();
         uuid = buf.readUUID();
         return this;
     }
 
     @Override
-    public void toBytes(FriendlyByteBuf buf) {
+    public void toBytes(RegistryFriendlyByteBuf buf) {
         buf.writeBlockPos(pos);
         buf.writeUUID(uuid);
     }
 
     @Override
-    public ResourceLocation id() {
-        return ID;
+    public Type<MessageRepairCar> type() {
+        return TYPE;
     }
 
 }

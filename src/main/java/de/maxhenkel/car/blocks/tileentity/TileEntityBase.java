@@ -2,6 +2,7 @@ package de.maxhenkel.car.blocks.tileentity;
 
 import de.maxhenkel.car.net.MessageSyncTileEntity;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
@@ -10,6 +11,7 @@ import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Nameable;
 import net.minecraft.world.inventory.ContainerData;
+import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -30,10 +32,10 @@ public abstract class TileEntityBase extends BlockEntity implements Nameable {
     }
 
     public void synchronize() {
-        if (!level.isClientSide && level instanceof ServerLevel) {
-            CompoundTag last = getUpdateTag();
+        if (!level.isClientSide && level instanceof ServerLevel serverLevel) {
+            CompoundTag last = getUpdateTag(serverLevel.registryAccess());
             if (compoundLast == null || !compoundLast.equals(last)) {
-                PacketDistributor.TRACKING_CHUNK.with(level.getChunkAt(getBlockPos())).send(new MessageSyncTileEntity(worldPosition, last));
+                PacketDistributor.sendToPlayersTrackingChunk(serverLevel, new ChunkPos(getBlockPos()), new MessageSyncTileEntity(worldPosition, last));
                 compoundLast = last;
             }
         }
@@ -46,9 +48,9 @@ public abstract class TileEntityBase extends BlockEntity implements Nameable {
     }
 
     @Override
-    public CompoundTag getUpdateTag() {
-        CompoundTag updateTag = super.getUpdateTag();
-        saveAdditional(updateTag);
+    public CompoundTag getUpdateTag(HolderLookup.Provider provider) {
+        CompoundTag updateTag = super.getUpdateTag(provider);
+        saveAdditional(updateTag, provider);
         return updateTag;
     }
 
@@ -77,20 +79,19 @@ public abstract class TileEntityBase extends BlockEntity implements Nameable {
     public abstract ContainerData getFields();
 
     @Override
-    protected void saveAdditional(CompoundTag compound) {
-        super.saveAdditional(compound);
-
+    public void saveAdditional(CompoundTag compound, HolderLookup.Provider provider) {
+        super.saveAdditional(compound, provider);
         if (name != null) {
-            compound.putString("CustomName", Component.Serializer.toJson(name));
+            compound.putString("CustomName", Component.Serializer.toJson(name, provider));
         }
     }
 
     @Override
-    public void load(CompoundTag compound) {
+    public void loadAdditional(CompoundTag compound, HolderLookup.Provider provider) {
         if (compound.contains("CustomName")) {
-            name = Component.Serializer.fromJson(compound.getString("CustomName"));
+            name = Component.Serializer.fromJson(compound.getString("CustomName"), provider);
         }
-        super.load(compound);
+        super.loadAdditional(compound, provider);
     }
 
     @Nullable
