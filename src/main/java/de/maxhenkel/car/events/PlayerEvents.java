@@ -9,8 +9,7 @@ import net.minecraft.world.entity.Entity;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.LogicalSide;
-import net.neoforged.neoforge.event.TickEvent;
+import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 
 @OnlyIn(Dist.CLIENT)
 public class PlayerEvents {
@@ -24,12 +23,12 @@ public class PlayerEvents {
     }
 
     @SubscribeEvent
-    public void onPlayerTick(TickEvent.PlayerTickEvent evt) {
-        if (evt.side.equals(LogicalSide.SERVER)) {
+    public void onPlayerTick(PlayerTickEvent.Pre evt) {
+        if (!evt.getEntity().level().isClientSide()) {
             return;
         }
 
-        if (!evt.player.equals(getPlayer())) {
+        if (!evt.getEntity().equals(getPlayer())) {
             return;
         }
 

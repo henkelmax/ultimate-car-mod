@@ -14,12 +14,11 @@ import java.util.function.Supplier;
 public class CarFluidBlock extends LiquidBlock {
 
     public CarFluidBlock(Supplier<? extends FlowingFluid> fluidSupplier) {
-        super(fluidSupplier, Block.Properties.of().noCollission().strength(100F));
+        super(fluidSupplier.get(), Block.Properties.of().noCollission().strength(100F));
     }
 
     @Override
     public void entityInside(BlockState state, Level worldIn, BlockPos pos, Entity entityIn) {
-        FlowingFluid fluid = getFluid();
         if (fluid instanceof IEffectApplyable) {
             ((IEffectApplyable) fluid).applyEffects(entityIn, state, worldIn, pos);
         }
