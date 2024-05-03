@@ -1,1 +1,1 @@
-- Fixed experience bar rendering
+- Added Chinese Traditional translation
