@@ -1,1 +1,1 @@
-- Added Chinese Traditional translation
+- Fixed container registration

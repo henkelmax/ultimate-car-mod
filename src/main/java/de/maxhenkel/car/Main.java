@@ -27,7 +27,6 @@ import de.maxhenkel.car.net.*;
 import de.maxhenkel.car.recipes.*;
 import de.maxhenkel.car.sounds.ModSounds;
 import de.maxhenkel.car.villagers.VillagerEvents;
-import de.maxhenkel.corelib.ClientRegistry;
 import de.maxhenkel.corelib.CommonRegistry;
 import de.maxhenkel.corelib.config.DynamicConfig;
 import de.maxhenkel.corelib.dataserializers.DataSerializerItemList;
@@ -73,6 +72,7 @@ import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
+import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.extensions.IMenuTypeExtension;
 import net.neoforged.neoforge.energy.IEnergyStorage;
@@ -160,6 +160,7 @@ public class Main {
         if (FMLEnvironment.dist.isClient()) {
             eventBus.addListener(Main.this::clientSetup);
             eventBus.addListener(Main.this::onRegisterKeyBinds);
+            eventBus.addListener(Main.this::onRegisterScreens);
         }
 
         ModFluids.init(eventBus);
@@ -238,22 +239,6 @@ public class Main {
         BlockEntityRenderers.register(TANK_TILE_ENTITY_TYPE.get(), TileEntitySpecialRendererTank::new);
         BlockEntityRenderers.register(SIGN_TILE_ENTITY_TYPE.get(), TileEntitySpecialRendererSign::new);
 
-        ClientRegistry.<ContainerBackmixReactor, GuiBackmixReactor>registerScreen(Main.BACKMIX_REACTOR_CONTAINER_TYPE.get(), GuiBackmixReactor::new);
-        ClientRegistry.<ContainerBlastFurnace, GuiBlastFurnace>registerScreen(Main.BLAST_FURNACE_CONTAINER_TYPE.get(), GuiBlastFurnace::new);
-        ClientRegistry.<ContainerCar, GuiCar>registerScreen(Main.CAR_CONTAINER_TYPE.get(), GuiCar::new);
-        ClientRegistry.<ContainerCarInventory, GuiCarInventory>registerScreen(Main.CAR_INVENTORY_CONTAINER_TYPE.get(), GuiCarInventory::new);
-        ClientRegistry.<ContainerCarWorkshopCrafting, GuiCarWorkshopCrafting>registerScreen(Main.CAR_WORKSHOP_CRAFTING_CONTAINER_TYPE.get(), GuiCarWorkshopCrafting::new);
-        ClientRegistry.<ContainerCarWorkshopRepair, GuiCarWorkshopRepair>registerScreen(Main.CAR_WORKSHOP_REPAIR_CONTAINER_TYPE.get(), GuiCarWorkshopRepair::new);
-        ClientRegistry.<ContainerFluidExtractor, GuiFluidExtractor>registerScreen(Main.FLUID_EXTRACTOR_CONTAINER_TYPE.get(), GuiFluidExtractor::new);
-        ClientRegistry.<ContainerGasStation, GuiGasStation>registerScreen(Main.GAS_STATION_CONTAINER_TYPE.get(), GuiGasStation::new);
-        ClientRegistry.<ContainerGasStationAdmin, GuiGasStationAdmin>registerScreen(Main.GAS_STATION_ADMIN_CONTAINER_TYPE.get(), GuiGasStationAdmin::new);
-        ClientRegistry.<ContainerGenerator, GuiGenerator>registerScreen(Main.GENERATOR_CONTAINER_TYPE.get(), GuiGenerator::new);
-        ClientRegistry.<ContainerLicensePlate, GuiLicensePlate>registerScreen(Main.LICENSE_PLATE_CONTAINER_TYPE.get(), GuiLicensePlate::new);
-        ClientRegistry.<ContainerOilMill, GuiOilMill>registerScreen(Main.OIL_MILL_CONTAINER_TYPE.get(), GuiOilMill::new);
-        ClientRegistry.<ContainerPainter, GuiPainter>registerScreen(Main.PAINTER_CONTAINER_TYPE.get(), GuiPainter::new);
-        ClientRegistry.<ContainerSign, GuiSign>registerScreen(Main.SIGN_CONTAINER_TYPE.get(), GuiSign::new);
-        ClientRegistry.<ContainerSplitTank, GuiSplitTank>registerScreen(Main.SPLIT_TANK_CONTAINER_TYPE.get(), GuiSplitTank::new);
-
         NeoForge.EVENT_BUS.register(new RenderEvents());
         NeoForge.EVENT_BUS.register(new SoundEvents());
         NeoForge.EVENT_BUS.register(new KeyEvents());
@@ -271,6 +256,25 @@ public class Main {
         ItemBlockRenderTypes.setRenderLayer(ModFluids.GLYCERIN_FLOWING.get(), RenderType.translucent());
         ItemBlockRenderTypes.setRenderLayer(ModFluids.BIO_DIESEL.get(), RenderType.translucent());
         ItemBlockRenderTypes.setRenderLayer(ModFluids.BIO_DIESEL_FLOWING.get(), RenderType.translucent());
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public void onRegisterScreens(RegisterMenuScreensEvent containers) {
+        containers.<ContainerBackmixReactor, GuiBackmixReactor>register(Main.BACKMIX_REACTOR_CONTAINER_TYPE.get(), GuiBackmixReactor::new);
+        containers.<ContainerBlastFurnace, GuiBlastFurnace>register(Main.BLAST_FURNACE_CONTAINER_TYPE.get(), GuiBlastFurnace::new);
+        containers.<ContainerCar, GuiCar>register(Main.CAR_CONTAINER_TYPE.get(), GuiCar::new);
+        containers.<ContainerCarInventory, GuiCarInventory>register(Main.CAR_INVENTORY_CONTAINER_TYPE.get(), GuiCarInventory::new);
+        containers.<ContainerCarWorkshopCrafting, GuiCarWorkshopCrafting>register(Main.CAR_WORKSHOP_CRAFTING_CONTAINER_TYPE.get(), GuiCarWorkshopCrafting::new);
+        containers.<ContainerCarWorkshopRepair, GuiCarWorkshopRepair>register(Main.CAR_WORKSHOP_REPAIR_CONTAINER_TYPE.get(), GuiCarWorkshopRepair::new);
+        containers.<ContainerFluidExtractor, GuiFluidExtractor>register(Main.FLUID_EXTRACTOR_CONTAINER_TYPE.get(), GuiFluidExtractor::new);
+        containers.<ContainerGasStation, GuiGasStation>register(Main.GAS_STATION_CONTAINER_TYPE.get(), GuiGasStation::new);
+        containers.<ContainerGasStationAdmin, GuiGasStationAdmin>register(Main.GAS_STATION_ADMIN_CONTAINER_TYPE.get(), GuiGasStationAdmin::new);
+        containers.<ContainerGenerator, GuiGenerator>register(Main.GENERATOR_CONTAINER_TYPE.get(), GuiGenerator::new);
+        containers.<ContainerLicensePlate, GuiLicensePlate>register(Main.LICENSE_PLATE_CONTAINER_TYPE.get(), GuiLicensePlate::new);
+        containers.<ContainerOilMill, GuiOilMill>register(Main.OIL_MILL_CONTAINER_TYPE.get(), GuiOilMill::new);
+        containers.<ContainerPainter, GuiPainter>register(Main.PAINTER_CONTAINER_TYPE.get(), GuiPainter::new);
+        containers.<ContainerSign, GuiSign>register(Main.SIGN_CONTAINER_TYPE.get(), GuiSign::new);
+        containers.<ContainerSplitTank, GuiSplitTank>register(Main.SPLIT_TANK_CONTAINER_TYPE.get(), GuiSplitTank::new);
     }
 
     @OnlyIn(Dist.CLIENT)
