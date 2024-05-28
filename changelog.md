@@ -1,1 +1,2 @@
-- Fixed container registration
+- Fixed The One Probe integration
+- Fixed Jade integration
