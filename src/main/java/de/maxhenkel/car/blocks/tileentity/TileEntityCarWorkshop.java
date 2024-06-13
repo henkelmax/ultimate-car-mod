@@ -16,12 +16,14 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.inventory.SimpleContainerData;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -30,6 +32,7 @@ import net.minecraft.world.phys.AABB;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Consumer;
 
 public class TileEntityCarWorkshop extends TileEntityBase implements Container {
 
@@ -388,8 +391,12 @@ public class TileEntityCarWorkshop extends TileEntityBase implements Container {
         for (int i = 0; i < repairInventory.getContainerSize(); i++) {
             ItemStack stack = repairInventory.getItem(i);
             if (!stack.isEmpty()) {
-                stack.hurtAndBreak(10, player.getRandom(), player, () -> {
-                });
+                if (player.level() instanceof ServerLevel serverLevel) {
+                    stack.hurtAndBreak(10, serverLevel, player, item -> {
+
+                    });
+                }
+
             }
         }
     }

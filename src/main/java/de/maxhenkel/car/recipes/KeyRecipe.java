@@ -5,10 +5,10 @@ import de.maxhenkel.car.items.ItemKey;
 import de.maxhenkel.car.items.ModItems;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
-import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.CraftingBookCategory;
+import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
@@ -32,19 +32,18 @@ public class KeyRecipe extends CustomRecipe {
     }
 
     @Override
-    public NonNullList<ItemStack> getRemainingItems(CraftingContainer inv) {
-        NonNullList<ItemStack> list = NonNullList.create();
+    public NonNullList<ItemStack> getRemainingItems(CraftingInput inv) {
+        NonNullList<ItemStack> list = NonNullList.withSize(inv.size(), ItemStack.EMPTY);
 
-        for (int i = 0; i < inv.getContainerSize(); i++) {
+        for (int i = 0; i < inv.size(); i++) {
             ItemStack stack = inv.getItem(i);
 
             if (stack.isEmpty()) {
                 continue;
             }
 
-            if (stack.getItem().equals(Items.IRON_INGOT)) {
-                stack.shrink(1);
-                inv.setItem(i, stack);
+            if (stack.getItem().equals(ModItems.KEY.get())) {
+                list.set(i, stack.copy());
             }
         }
 
@@ -52,20 +51,20 @@ public class KeyRecipe extends CustomRecipe {
     }
 
     @Override
-    public boolean matches(CraftingContainer inv, Level worldIn) {
+    public boolean matches(CraftingInput inv, Level worldIn) {
         return assemble(inv) != null;
     }
 
     @Override
-    public ItemStack assemble(CraftingContainer craftingContainer, HolderLookup.Provider provider) {
+    public ItemStack assemble(CraftingInput craftingContainer, HolderLookup.Provider provider) {
         return assemble(craftingContainer);
     }
 
-    public ItemStack assemble(CraftingContainer inv) {
+    public ItemStack assemble(CraftingInput inv) {
         ItemStack key = null;
         ItemStack iron = null;
 
-        for (int i = 0; i < inv.getContainerSize(); i++) {
+        for (int i = 0; i < inv.size(); i++) {
             ItemStack stack = inv.getItem(i);
 
             if (stack.isEmpty()) {

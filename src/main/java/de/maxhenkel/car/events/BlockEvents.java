@@ -17,7 +17,7 @@ import net.neoforged.neoforge.event.level.BlockEvent;
 
 public class BlockEvents {
 
-    private static ResourceKey<LootTable> GRASS_LOOT_TABLE = ResourceKey.create(Registries.LOOT_TABLE, new ResourceLocation(Main.MODID, "blocks/grass"));
+    private static ResourceKey<LootTable> GRASS_LOOT_TABLE = ResourceKey.create(Registries.LOOT_TABLE, ResourceLocation.fromNamespaceAndPath(Main.MODID, "blocks/grass"));
 
     @SubscribeEvent
     public void breakEvent(BlockEvent.BreakEvent event) {

@@ -1,2 +1,1 @@
-- Fixed The One Probe integration
-- Fixed Jade integration
+- Updated to 1.21

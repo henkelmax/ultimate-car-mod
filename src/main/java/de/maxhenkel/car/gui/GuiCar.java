@@ -11,7 +11,7 @@ import net.minecraft.world.entity.player.Inventory;
 
 public class GuiCar extends ScreenBase<ContainerCar> {
 
-    private static final ResourceLocation CAR_GUI_TEXTURE = new ResourceLocation(Main.MODID, "textures/gui/gui_car.png");
+    private static final ResourceLocation CAR_GUI_TEXTURE = ResourceLocation.fromNamespaceAndPath(Main.MODID, "textures/gui/gui_car.png");
 
     private static final int fontColor = 4210752;
 

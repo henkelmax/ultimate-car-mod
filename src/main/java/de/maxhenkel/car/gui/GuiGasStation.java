@@ -22,7 +22,7 @@ import java.util.List;
 
 public class GuiGasStation extends ScreenBase<ContainerGasStation> {
 
-    private static final ResourceLocation GUI_TEXTURE = new ResourceLocation(Main.MODID, "textures/gui/gui_gas_station.png");
+    private static final ResourceLocation GUI_TEXTURE = ResourceLocation.fromNamespaceAndPath(Main.MODID, "textures/gui/gui_gas_station.png");
 
     private TileEntityGasStation gasStation;
     private Inventory playerInventory;

@@ -16,7 +16,7 @@ import java.util.UUID;
 
 public class MessageRepairCar implements Message<MessageRepairCar> {
 
-    public static final CustomPacketPayload.Type<MessageRepairCar> TYPE = new CustomPacketPayload.Type<>(new ResourceLocation(Main.MODID, "repair_car"));
+    public static final CustomPacketPayload.Type<MessageRepairCar> TYPE = new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(Main.MODID, "repair_car"));
 
     private BlockPos pos;
     private UUID uuid;

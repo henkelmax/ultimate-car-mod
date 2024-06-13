@@ -9,8 +9,8 @@ import net.minecraft.world.entity.player.Inventory;
 
 public class GuiCarInventory extends ScreenBase<ContainerCarInventory> {
 
-    private static final ResourceLocation GUI_TEXTURE_3 = new ResourceLocation("textures/gui/container/shulker_box.png");
-    private static final ResourceLocation GUI_TEXTURE_6 = new ResourceLocation("textures/gui/container/generic_54.png");
+    private static final ResourceLocation GUI_TEXTURE_3 = ResourceLocation.withDefaultNamespace("textures/gui/container/shulker_box.png");
+    private static final ResourceLocation GUI_TEXTURE_6 = ResourceLocation.withDefaultNamespace("textures/gui/container/generic_54.png");
 
     private EntityCarInventoryBase car;
     private Inventory playerInventory;

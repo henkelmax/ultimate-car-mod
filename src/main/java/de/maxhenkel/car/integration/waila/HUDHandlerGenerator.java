@@ -15,7 +15,7 @@ public class HUDHandlerGenerator implements IBlockComponentProvider, IServerData
 
     public static final HUDHandlerGenerator INSTANCE = new HUDHandlerGenerator();
 
-    private static final ResourceLocation UID = new ResourceLocation(Main.MODID, "generator");
+    private static final ResourceLocation UID = ResourceLocation.fromNamespaceAndPath(Main.MODID, "generator");
 
     @Override
     public void appendTooltip(ITooltip iTooltip, BlockAccessor blockAccessor, IPluginConfig iPluginConfig) {

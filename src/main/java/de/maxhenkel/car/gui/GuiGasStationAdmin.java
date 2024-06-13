@@ -17,7 +17,7 @@ import java.awt.*;
 
 public class GuiGasStationAdmin extends ScreenBase<ContainerGasStationAdmin> {
 
-    private static final ResourceLocation GUI_TEXTURE = new ResourceLocation(Main.MODID, "textures/gui/gui_gas_station_admin.png");
+    private static final ResourceLocation GUI_TEXTURE = ResourceLocation.fromNamespaceAndPath(Main.MODID, "textures/gui/gui_gas_station_admin.png");
 
     private TileEntityGasStation gasStation;
     private Inventory inventoryPlayer;

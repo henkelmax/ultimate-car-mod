@@ -21,7 +21,7 @@ import net.neoforged.neoforge.fluids.FluidStack;
 
 public class TileEntitySpecialRendererTank implements BlockEntityRenderer<TileEntityTank> {
 
-    public static final ResourceLocation LOCATION_TANK = new ResourceLocation(Main.MODID, "textures/block/tank_line.png");
+    public static final ResourceLocation LOCATION_TANK = ResourceLocation.fromNamespaceAndPath(Main.MODID, "textures/block/tank_line.png");
 
     protected BlockEntityRendererProvider.Context renderer;
 

@@ -7,7 +7,7 @@ import net.minecraft.world.entity.player.Inventory;
 
 public class GuiOilMill extends GuiEnergyFluidProducer<ContainerOilMill> {
 
-    private static final ResourceLocation GUI_TEXTURE = new ResourceLocation(Main.MODID, "textures/gui/gui_oil_mill.png");
+    private static final ResourceLocation GUI_TEXTURE = ResourceLocation.fromNamespaceAndPath(Main.MODID, "textures/gui/gui_oil_mill.png");
 
     public GuiOilMill(ContainerOilMill containerOilMill, Inventory playerInventory, Component title) {
         super(GUI_TEXTURE, containerOilMill, playerInventory, title);

@@ -16,7 +16,7 @@ public class HUDHandlerCars implements IEntityComponentProvider {
 
     public static final HUDHandlerCars INSTANCE = new HUDHandlerCars();
 
-    private static final ResourceLocation UID = new ResourceLocation(Main.MODID, "car");
+    private static final ResourceLocation UID = ResourceLocation.fromNamespaceAndPath(Main.MODID, "car");
 
     @Override
     public void appendTooltip(ITooltip iTooltip, EntityAccessor entityAccessor, IPluginConfig iPluginConfig) {

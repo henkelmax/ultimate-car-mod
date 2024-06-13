@@ -13,7 +13,7 @@ import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 public class MessageGasStationAdminAmount implements Message<MessageGasStationAdminAmount> {
 
-    public static final CustomPacketPayload.Type<MessageGasStationAdminAmount> TYPE = new CustomPacketPayload.Type<>(new ResourceLocation(Main.MODID, "gas_station_amount"));
+    public static final CustomPacketPayload.Type<MessageGasStationAdminAmount> TYPE = new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(Main.MODID, "gas_station_amount"));
 
     private BlockPos pos;
     private int amount;

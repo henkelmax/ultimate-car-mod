@@ -8,7 +8,7 @@ import net.minecraft.resources.ResourceLocation;
 public class PartBodyBigWood extends PartBodyWoodBase {
 
     public PartBodyBigWood(ResourceLocation texture, String materialTranslationKey) {
-        super(new OBJModel(new ResourceLocation(Main.MODID, "models/entity/wood_body_big.obj")), texture, new Vector3d(0D, 4D / 16D, 0D), "big_wood", materialTranslationKey);
+        super(new OBJModel(ResourceLocation.fromNamespaceAndPath(Main.MODID, "models/entity/wood_body_big.obj")), texture, new Vector3d(0D, 4D / 16D, 0D), "big_wood", materialTranslationKey);
 
         this.bumperOffset = new Vector3d(0D, 6D / 16D, -19.5D / 16D);
         this.wheelOffsets = new Vector3d[]{

@@ -18,7 +18,7 @@ import org.lwjgl.glfw.GLFW;
 
 public class GuiLicensePlate extends ScreenBase<ContainerLicensePlate> {
 
-    private static final ResourceLocation GUI_TEXTURE = new ResourceLocation(Main.MODID, "textures/gui/gui_license_plate.png");
+    private static final ResourceLocation GUI_TEXTURE = ResourceLocation.fromNamespaceAndPath(Main.MODID, "textures/gui/gui_license_plate.png");
 
     private static final int TITLE_COLOR = ChatFormatting.WHITE.getColor();
 

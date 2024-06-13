@@ -14,7 +14,7 @@ import java.util.List;
 
 public class GuiSplitTank extends ScreenBase<ContainerSplitTank> {
 
-    private static final ResourceLocation GUI_TEXTURE = new ResourceLocation(Main.MODID, "textures/gui/gui_split_tank.png");
+    private static final ResourceLocation GUI_TEXTURE = ResourceLocation.fromNamespaceAndPath(Main.MODID, "textures/gui/gui_split_tank.png");
 
     private Inventory playerInv;
     private TileEntitySplitTank tile;

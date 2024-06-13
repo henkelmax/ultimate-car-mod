@@ -15,7 +15,7 @@ import java.util.UUID;
 
 public class MessageControlCar implements Message<MessageControlCar> {
 
-    public static final CustomPacketPayload.Type<MessageControlCar> TYPE = new CustomPacketPayload.Type<>(new ResourceLocation(Main.MODID, "control_car"));
+    public static final CustomPacketPayload.Type<MessageControlCar> TYPE = new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(Main.MODID, "control_car"));
 
     private boolean forward, backward, left, right;
     private UUID uuid;

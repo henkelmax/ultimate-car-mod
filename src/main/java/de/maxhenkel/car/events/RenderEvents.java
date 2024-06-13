@@ -24,14 +24,14 @@ import net.neoforged.neoforge.client.event.ViewportEvent;
 @OnlyIn(Dist.CLIENT)
 public class RenderEvents {
 
-    protected static final ResourceLocation EXPERIENCE_BAR_BACKGROUND_SPRITE = new ResourceLocation("hud/experience_bar_background");
-    protected static final ResourceLocation EXPERIENCE_BAR_PROGRESS_SPRITE = new ResourceLocation("hud/experience_bar_progress");
+    protected static final ResourceLocation EXPERIENCE_BAR_BACKGROUND_SPRITE = ResourceLocation.withDefaultNamespace("hud/experience_bar_background");
+    protected static final ResourceLocation EXPERIENCE_BAR_PROGRESS_SPRITE = ResourceLocation.withDefaultNamespace("hud/experience_bar_progress");
     private static final Minecraft mc = Minecraft.getInstance();
 
     @SubscribeEvent
     public void onRender(ViewportEvent.ComputeCameraAngles evt) {
         if (getCar() != null && !mc.options.getCameraType().isFirstPerson()) {
-            evt.getCamera().move(-evt.getCamera().getMaxZoom(Main.CLIENT_CONFIG.carZoom.get() - 4D), 0D, 0D);
+            evt.getCamera().move(-evt.getCamera().getMaxZoom(Main.CLIENT_CONFIG.carZoom.get().floatValue() - 4F), 0F, 0F);
         }
     }
 

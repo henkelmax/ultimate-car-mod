@@ -9,7 +9,7 @@ import net.minecraft.world.entity.player.Inventory;
 
 public class GuiPainter extends ScreenBase<ContainerPainter> {
 
-    private static final ResourceLocation PAINTER_GUI_TEXTURE = new ResourceLocation(Main.MODID, "textures/gui/gui_painter.png");
+    private static final ResourceLocation PAINTER_GUI_TEXTURE = ResourceLocation.fromNamespaceAndPath(Main.MODID, "textures/gui/gui_painter.png");
 
     public GuiPainter(ContainerPainter containerPainter, Inventory playerInventory, Component title) {
         super(PAINTER_GUI_TEXTURE, containerPainter, playerInventory, title);

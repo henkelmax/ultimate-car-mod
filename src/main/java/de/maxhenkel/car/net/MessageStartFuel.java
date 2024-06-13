@@ -13,7 +13,7 @@ import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 public class MessageStartFuel implements Message<MessageStartFuel> {
 
-    public static final CustomPacketPayload.Type<MessageStartFuel> TYPE = new CustomPacketPayload.Type<>(new ResourceLocation(Main.MODID, "start_fuel"));
+    public static final CustomPacketPayload.Type<MessageStartFuel> TYPE = new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(Main.MODID, "start_fuel"));
 
     private boolean start;
     private BlockPos pos;

@@ -29,7 +29,7 @@ public class PainterRecipeCategoryYellow implements IRecipeCategory<PainterRecip
 
     @Override
     public IDrawable getBackground() {
-        return helper.createDrawable(new ResourceLocation(Main.MODID, "textures/gui/jei_painter.png"), 0, 0, 80, 54);
+        return helper.createDrawable(ResourceLocation.fromNamespaceAndPath(Main.MODID, "textures/gui/jei_painter.png"), 0, 0, 80, 54);
     }
 
     @Override

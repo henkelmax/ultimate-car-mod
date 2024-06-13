@@ -11,7 +11,7 @@ import java.util.List;
 public class PartContainer extends PartTransporterBack {
 
     public PartContainer(ResourceLocation texture) {
-        super(new OBJModel(new ResourceLocation(Main.MODID, "models/entity/container.obj")),
+        super(new OBJModel(ResourceLocation.fromNamespaceAndPath(Main.MODID, "models/entity/container.obj")),
                 texture, new Vector3d(0D / 16D, 17D / 16D, 5.5D / 16D));
     }
 

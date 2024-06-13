@@ -17,7 +17,7 @@ import java.util.UUID;
 
 public class MessageEditLicensePlate implements Message<MessageEditLicensePlate> {
 
-    public static final CustomPacketPayload.Type<MessageEditLicensePlate> TYPE = new CustomPacketPayload.Type<>(new ResourceLocation(Main.MODID, "edit_license_plate"));
+    public static final CustomPacketPayload.Type<MessageEditLicensePlate> TYPE = new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(Main.MODID, "edit_license_plate"));
 
     private UUID uuid;
     private String text;

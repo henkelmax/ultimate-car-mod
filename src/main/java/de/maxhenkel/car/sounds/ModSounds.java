@@ -13,7 +13,6 @@ import net.minecraft.world.level.Level;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.bus.api.IEventBus;
-import net.neoforged.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
@@ -49,7 +48,7 @@ public class ModSounds {
     public static DeferredHolder<SoundEvent, SoundEvent> GAS_STATION_ATTENDANT = addSound("gas_station_attendant");
 
     public static DeferredHolder<SoundEvent, SoundEvent> addSound(String soundName) {
-        return SOUND_REGISTER.register(soundName, () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(Main.MODID, soundName)));
+        return SOUND_REGISTER.register(soundName, () -> SoundEvent.createVariableRangeEvent(ResourceLocation.fromNamespaceAndPath(Main.MODID, soundName)));
     }
 
     public static void init(IEventBus eventBus) {

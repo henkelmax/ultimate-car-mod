@@ -16,7 +16,7 @@ public class HUDHandlerTank implements IBlockComponentProvider, IServerDataProvi
 
     public static final HUDHandlerTank INSTANCE = new HUDHandlerTank();
 
-    private static final ResourceLocation UID = new ResourceLocation(Main.MODID, "tank");
+    private static final ResourceLocation UID = ResourceLocation.fromNamespaceAndPath(Main.MODID, "tank");
 
     @Override
     public void appendTooltip(ITooltip iTooltip, BlockAccessor blockAccessor, IPluginConfig iPluginConfig) {

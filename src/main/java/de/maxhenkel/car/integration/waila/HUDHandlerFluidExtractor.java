@@ -16,7 +16,7 @@ public class HUDHandlerFluidExtractor implements IBlockComponentProvider, IServe
 
     public static final HUDHandlerFluidExtractor INSTANCE = new HUDHandlerFluidExtractor();
 
-    private static final ResourceLocation UID = new ResourceLocation(Main.MODID, "fluid_extractor");
+    private static final ResourceLocation UID = ResourceLocation.fromNamespaceAndPath(Main.MODID, "fluid_extractor");
 
     @Override
     public void appendTooltip(ITooltip iTooltip, BlockAccessor blockAccessor, IPluginConfig iPluginConfig) {

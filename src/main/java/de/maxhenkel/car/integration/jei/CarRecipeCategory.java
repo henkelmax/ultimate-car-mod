@@ -36,7 +36,7 @@ public class CarRecipeCategory implements IRecipeCategory<CarRecipe> {
 
     @Override
     public IDrawable getBackground() {
-        return helper.createDrawable(new ResourceLocation(Main.MODID, "textures/gui/jei_car_workshop_crafting.png"), 0, 0, RECIPE_WIDTH, RECIPE_HEIGHT);
+        return helper.createDrawable(ResourceLocation.fromNamespaceAndPath(Main.MODID, "textures/gui/jei_car_workshop_crafting.png"), 0, 0, RECIPE_WIDTH, RECIPE_HEIGHT);
     }
 
     @Override

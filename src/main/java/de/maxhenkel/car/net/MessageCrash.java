@@ -14,7 +14,7 @@ import java.util.UUID;
 
 public class MessageCrash implements Message<MessageCrash> {
 
-    public static final CustomPacketPayload.Type<MessageCrash> TYPE = new CustomPacketPayload.Type<>(new ResourceLocation(Main.MODID, "crash"));
+    public static final CustomPacketPayload.Type<MessageCrash> TYPE = new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(Main.MODID, "crash"));
 
     private float speed;
     private UUID uuid;

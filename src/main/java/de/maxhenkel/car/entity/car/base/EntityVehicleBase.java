@@ -230,11 +230,6 @@ public abstract class EntityVehicleBase extends Entity {
     public abstract boolean doesEnterThirdPerson();
 
     @Override
-    public Packet<ClientGamePacketListener> getAddEntityPacket() {
-        return new ClientboundAddEntityPacket(this);
-    }
-
-    @Override
     public Vec3 getDismountLocationForPassenger(LivingEntity entity) {
         Direction direction = getMotionDirection();
         if (direction.getAxis() == Direction.Axis.Y) {

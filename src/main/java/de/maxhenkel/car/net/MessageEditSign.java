@@ -13,7 +13,7 @@ import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 public class MessageEditSign implements Message<MessageEditSign> {
 
-    public static final CustomPacketPayload.Type<MessageEditSign> TYPE = new CustomPacketPayload.Type<>(new ResourceLocation(Main.MODID, "edit_sign"));
+    public static final CustomPacketPayload.Type<MessageEditSign> TYPE = new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(Main.MODID, "edit_sign"));
 
     private BlockPos pos;
     private String[] text;

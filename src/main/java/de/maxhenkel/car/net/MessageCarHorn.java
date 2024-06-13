@@ -15,7 +15,7 @@ import java.util.UUID;
 
 public class MessageCarHorn implements Message<MessageCarHorn> {
 
-    public static final CustomPacketPayload.Type<MessageCarHorn> TYPE = new CustomPacketPayload.Type<>(new ResourceLocation(Main.MODID, "car_horn"));
+    public static final CustomPacketPayload.Type<MessageCarHorn> TYPE = new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(Main.MODID, "car_horn"));
 
     private boolean pressed;
     private UUID uuid;

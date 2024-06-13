@@ -3,9 +3,9 @@ package de.maxhenkel.car.mixins;
 import de.maxhenkel.car.Main;
 import net.minecraft.client.OptionInstance;
 import net.minecraft.client.Options;
-import net.minecraft.client.gui.screens.OptionsSubScreen;
+import net.minecraft.client.gui.screens.options.OptionsSubScreen;
+import net.minecraft.client.gui.screens.options.SoundOptionsScreen;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.gui.screens.SoundOptionsScreen;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import org.spongepowered.asm.mixin.Mixin;
@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(SoundOptionsScreen.class)
-public class SoundOptionsScreenMixin extends OptionsSubScreen {
+public abstract class SoundOptionsScreenMixin extends OptionsSubScreen {
 
     public SoundOptionsScreenMixin(Screen screen, Options options, Component component) {
         super(screen, options, component);

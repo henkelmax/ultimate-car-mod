@@ -16,7 +16,7 @@ import java.util.UUID;
 
 public class MessageCenterCar implements Message<MessageCenterCar> {
 
-    public static final CustomPacketPayload.Type<MessageCenterCar> TYPE = new CustomPacketPayload.Type<>(new ResourceLocation(Main.MODID, "center_car"));
+    public static final CustomPacketPayload.Type<MessageCenterCar> TYPE = new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(Main.MODID, "center_car"));
 
     private UUID uuid;
 

@@ -19,7 +19,7 @@ import java.util.UUID;
 
 public class MessageOpenCarWorkshopGui implements Message<MessageOpenCarWorkshopGui> {
 
-    public static final CustomPacketPayload.Type<MessageOpenCarWorkshopGui> TYPE = new CustomPacketPayload.Type<>(new ResourceLocation(Main.MODID, "open_car_workshop"));
+    public static final CustomPacketPayload.Type<MessageOpenCarWorkshopGui> TYPE = new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(Main.MODID, "open_car_workshop"));
 
     private BlockPos pos;
     private UUID uuid;

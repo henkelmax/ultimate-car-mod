@@ -68,7 +68,7 @@ public class EntityTools {
         }
 
         public void render(GuiGraphics guiGraphics, EntityCarBase car, int posX, int posY, int scale) {
-            EntityTools.drawCarOnScreen(guiGraphics, car, posX, posY, scale, rotation + rotationPerTick * minecraft.getFrameTime());
+            EntityTools.drawCarOnScreen(guiGraphics, car, posX, posY, scale, rotation + rotationPerTick * minecraft.getTimer().getRealtimeDeltaTicks());
         }
     }
 

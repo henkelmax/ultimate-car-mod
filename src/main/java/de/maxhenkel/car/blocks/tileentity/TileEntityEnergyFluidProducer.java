@@ -13,6 +13,7 @@ import net.minecraft.world.WorldlyContainer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeInput;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -23,7 +24,7 @@ import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 
 import javax.annotation.Nonnull;
 
-public abstract class TileEntityEnergyFluidProducer extends TileEntityBase implements IEnergyStorage, WorldlyContainer, ITickableBlockEntity, IFluidHandler {
+public abstract class TileEntityEnergyFluidProducer extends TileEntityBase implements IEnergyStorage, WorldlyContainer, ITickableBlockEntity, IFluidHandler, RecipeInput {
 
     protected RecipeType<? extends EnergyFluidProducerRecipe> recipeType;
     protected SimpleContainer inventory;
@@ -382,4 +383,8 @@ public abstract class TileEntityEnergyFluidProducer extends TileEntityBase imple
         return new FluidStack(getProducingFluid(), amount);
     }
 
+    @Override
+    public int size() {
+        return 1;
+    }
 }

@@ -18,7 +18,7 @@ public class PartLicensePlateHolder extends PartModel {
     protected Vector3d textOffset;
 
     public PartLicensePlateHolder(ResourceLocation texture) {
-        super(new OBJModel(new ResourceLocation(Main.MODID, "models/entity/license_plate.obj")), texture, new Vector3d(0D, 0D, 0D), new Rotation(90F, Axis.ZP));
+        super(new OBJModel(ResourceLocation.fromNamespaceAndPath(Main.MODID, "models/entity/license_plate.obj")), texture, new Vector3d(0D, 0D, 0D), new Rotation(90F, Axis.ZP));
         this.textOffset = new Vector3d(0D, -0.5D / 16D, -0.5D / 16D - 0.001D);
 
     }

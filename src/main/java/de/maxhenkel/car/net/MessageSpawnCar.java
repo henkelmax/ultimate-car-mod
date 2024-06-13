@@ -13,7 +13,7 @@ import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 public class MessageSpawnCar implements Message<MessageSpawnCar> {
 
-    public static final CustomPacketPayload.Type<MessageSpawnCar> TYPE = new CustomPacketPayload.Type<>(new ResourceLocation(Main.MODID, "spawn_car"));
+    public static final CustomPacketPayload.Type<MessageSpawnCar> TYPE = new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(Main.MODID, "spawn_car"));
 
     private BlockPos pos;
 

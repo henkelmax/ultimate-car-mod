@@ -8,6 +8,6 @@ import net.minecraft.world.level.material.Fluid;
 
 public class ModFluidTags {
 
-    public static final TagKey<Fluid> BLINDING = TagKey.create(Registries.FLUID, new ResourceLocation(Main.MODID, "blinding"));
+    public static final TagKey<Fluid> BLINDING = TagKey.create(Registries.FLUID, ResourceLocation.fromNamespaceAndPath(Main.MODID, "blinding"));
 
 }

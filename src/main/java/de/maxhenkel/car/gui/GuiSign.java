@@ -16,7 +16,7 @@ import org.lwjgl.glfw.GLFW;
 
 public class GuiSign extends ScreenBase<ContainerSign> {
 
-    private static final ResourceLocation GUI_TEXTURE = new ResourceLocation(Main.MODID, "textures/gui/gui_sign.png");
+    private static final ResourceLocation GUI_TEXTURE = ResourceLocation.fromNamespaceAndPath(Main.MODID, "textures/gui/gui_sign.png");
 
     private TileEntitySign sign;
 

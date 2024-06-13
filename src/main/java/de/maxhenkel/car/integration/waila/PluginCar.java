@@ -16,7 +16,7 @@ import snownee.jade.api.WailaPlugin;
 @WailaPlugin
 public class PluginCar implements IWailaPlugin {
 
-    public static final ResourceLocation OBJECT_NAME_TAG = new ResourceLocation("jade", "object_name");
+    public static final ResourceLocation OBJECT_NAME_TAG = ResourceLocation.fromNamespaceAndPath("jade", "object_name");
 
     @Override
     public void register(IWailaCommonRegistration registration) {

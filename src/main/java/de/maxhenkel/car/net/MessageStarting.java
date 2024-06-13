@@ -15,7 +15,7 @@ import java.util.UUID;
 
 public class MessageStarting implements Message<MessageStarting> {
 
-    public static final CustomPacketPayload.Type<MessageStarting> TYPE = new CustomPacketPayload.Type<>(new ResourceLocation(Main.MODID, "starting"));
+    public static final CustomPacketPayload.Type<MessageStarting> TYPE = new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(Main.MODID, "starting"));
 
     private boolean start;
     private boolean playSound;

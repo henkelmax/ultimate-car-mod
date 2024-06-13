@@ -4,12 +4,10 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.Recipe;
-import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
 
-public abstract class EnergyFluidProducerRecipe implements Recipe<Container> {
+public abstract class EnergyFluidProducerRecipe implements Recipe<RecipeInput> {
 
     protected final RecipeType<?> type;
     protected final Ingredient ingredient;
@@ -30,12 +28,12 @@ public abstract class EnergyFluidProducerRecipe implements Recipe<Container> {
     }
 
     @Override
-    public boolean matches(Container inv, Level worldIn) {
+    public boolean matches(RecipeInput inv, Level worldIn) {
         return ingredient.test(inv.getItem(0));
     }
 
     @Override
-    public ItemStack assemble(Container container, HolderLookup.Provider provider) {
+    public ItemStack assemble(RecipeInput container, HolderLookup.Provider provider) {
         return result.copy();
     }
 
@@ -70,7 +68,7 @@ public abstract class EnergyFluidProducerRecipe implements Recipe<Container> {
     }
 
     @Override
-    public NonNullList<ItemStack> getRemainingItems(Container inv) {
+    public NonNullList<ItemStack> getRemainingItems(RecipeInput inv) {
         return null;
     }
 

@@ -14,7 +14,7 @@ import java.util.List;
 public class PartBumper extends PartModel {
 
     public PartBumper(ResourceLocation texture) {
-        super(new OBJModel(new ResourceLocation(Main.MODID, "models/entity/wood_bumper.obj")), texture);
+        super(new OBJModel(ResourceLocation.fromNamespaceAndPath(Main.MODID, "models/entity/wood_bumper.obj")), texture);
     }
 
     @Override

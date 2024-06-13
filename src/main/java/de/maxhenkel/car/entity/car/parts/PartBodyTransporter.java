@@ -11,7 +11,7 @@ import java.util.List;
 public class PartBodyTransporter extends PartBody {
 
     public PartBodyTransporter(ResourceLocation texture, String materialTranslationKey) {
-        super(new OBJModel(new ResourceLocation(Main.MODID, "models/entity/transporter_body.obj")), texture, new Vector3d(0D, 4D / 16D, 0D), "transporter", materialTranslationKey);
+        super(new OBJModel(ResourceLocation.fromNamespaceAndPath(Main.MODID, "models/entity/transporter_body.obj")), texture, new Vector3d(0D, 4D / 16D, 0D), "transporter", materialTranslationKey);
         this.wheelOffsets = new Vector3d[]{
                 new Vector3d(14.5F / 16F, 4F / 16F, 12F / 16F),
                 new Vector3d(14.5F / 16F, 4F / 16F, -16F / 16F),
