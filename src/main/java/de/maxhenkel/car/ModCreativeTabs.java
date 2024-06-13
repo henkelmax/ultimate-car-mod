@@ -52,7 +52,6 @@ public class ModCreativeTabs {
 
                     output.accept(new ItemStack(ModItems.PAINTER.get()));
                     output.accept(new ItemStack(ModItems.PAINTER_YELLOW.get()));
-                    output.accept(new ItemStack(ModItems.CANOLA_SEEDS.get()));
                     output.accept(new ItemStack(ModItems.CANOLA.get()));
                     output.accept(new ItemStack(ModItems.CANOLA_CAKE.get()));
                     output.accept(new ItemStack(ModItems.IRON_STICK.get()));
@@ -116,18 +115,6 @@ public class ModCreativeTabs {
                     output.accept(new ItemStack(ModItems.DIAMOND_LICENSE_PLATE_HOLDER.get()));
                     output.accept(new ItemStack(ModItems.GOLD_LICENSE_PLATE_HOLDER.get()));
                     output.accept(new ItemStack(ModItems.EMERALD_LICENSE_PLATE_HOLDER.get()));
-                    for (DeferredHolder<Item, ItemCarPart> part : ModItems.WOODEN_LICENSE_PLATE_HOLDERS) {
-                        output.accept(new ItemStack(part.get()));
-                    }
-                    for (DeferredHolder<Item, ItemCarPart> part : ModItems.WOODEN_LICENSE_PLATE_HOLDERS) {
-                        output.accept(new ItemStack(part.get()));
-                    }
-                    for (DeferredHolder<Item, ItemCarPart> part : ModItems.WOODEN_LICENSE_PLATE_HOLDERS) {
-                        output.accept(new ItemStack(part.get()));
-                    }
-                    for (DeferredHolder<Item, ItemCarPart> part : ModItems.WOODEN_LICENSE_PLATE_HOLDERS) {
-                        output.accept(new ItemStack(part.get()));
-                    }
                 })
                 .title(Component.translatable("itemGroup.car_parts"))
                 .build();
