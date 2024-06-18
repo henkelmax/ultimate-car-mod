@@ -1,2 +1,1 @@
-- Fixed The One Probe integration
-- Fixed Jade integration
+- Fixed tags in recipes
