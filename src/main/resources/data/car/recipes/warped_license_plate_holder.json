@@ -10,7 +10,7 @@
       "item": "minecraft:warped_planks"
     },
     "I": {
-      "tag": "forge:rods/iron"
+      "tag": "c:rods/iron"
     }
   },
   "result": {

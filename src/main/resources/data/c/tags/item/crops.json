@@ -1,6 +1,6 @@
 {
   "replace": false,
   "values": [
-    "#forge:crops/canola"
+    "#c:crops/canola"
   ]
 }

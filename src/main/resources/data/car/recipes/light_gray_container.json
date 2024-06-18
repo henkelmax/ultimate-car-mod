@@ -13,7 +13,7 @@
       "item": "minecraft:chest"
     },
     "I": {
-      "tag": "forge:ingots/iron"
+      "tag": "c:ingots/iron"
     }
   },
   "result": {
