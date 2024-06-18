@@ -10,7 +10,7 @@
       "item": "minecraft:spruce_planks"
     },
     "I": {
-      "tag": "forge:ingots/iron"
+      "tag": "c:ingots/iron"
     }
   },
   "result": {

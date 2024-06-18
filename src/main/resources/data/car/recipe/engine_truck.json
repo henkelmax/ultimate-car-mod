@@ -10,7 +10,7 @@
       "item": "minecraft:flint"
     },
     "I": {
-      "tag": "forge:ingots/iron"
+      "tag": "c:ingots/iron"
     },
     "P": {
       "item": "car:engine_piston"

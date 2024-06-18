@@ -7,10 +7,10 @@
   ],
   "key": {
     "S": {
-      "tag": "forge:rods/wooden"
+      "tag": "c:rods/wooden"
     },
     "B": {
-      "tag": "forge:dyes/white"
+      "tag": "c:dyes/white"
     }
   },
   "result": {
