@@ -1,1 +1,1 @@
-- Fixed tags in recipes
+- Fixed block loot tables
