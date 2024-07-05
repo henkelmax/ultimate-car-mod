@@ -1,1 +1,1 @@
-- Fixed block loot tables
+- Updated NeoForge
