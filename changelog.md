@@ -1,1 +1,1 @@
-- Updated dependencies
+- Fixed config error
