@@ -15,6 +15,7 @@ import net.minecraft.world.item.ItemNameBlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.neoforged.neoforge.common.SpecialPlantable;
 import net.neoforged.neoforge.common.Tags;
@@ -58,8 +59,8 @@ public class ItemCanolaSeed extends ItemNameBlockItem implements SpecialPlantabl
     }
 
     @Override
-    public void spawnPlantAtPosition(ItemStack itemStack, LevelReader levelReader, BlockPos pos, @Nullable Direction direction) {
-        if (!(levelReader instanceof Level level)) {
+    public void spawnPlantAtPosition(ItemStack itemStack, LevelAccessor lvl, BlockPos pos, @Nullable Direction direction) {
+        if (!(lvl instanceof Level level)) {
             return;
         }
         level.setBlockAndUpdate(pos, ModBlocks.CANOLA_CROP.get().defaultBlockState());
