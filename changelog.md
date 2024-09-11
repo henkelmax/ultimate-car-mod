@@ -1,1 +1,1 @@
-- Updated dependencies
+- Added Turkish translation
