@@ -1,1 +1,1 @@
-- Fixed blocks not rotating when placed with structure blocks
+- Fixed third person distance

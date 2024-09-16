@@ -16,10 +16,7 @@ import net.minecraft.world.entity.player.Player;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.neoforge.client.event.InputEvent;
-import net.neoforged.neoforge.client.event.RenderPlayerEvent;
-import net.neoforged.neoforge.client.event.RenderTooltipEvent;
-import net.neoforged.neoforge.client.event.ViewportEvent;
+import net.neoforged.neoforge.client.event.*;
 
 @OnlyIn(Dist.CLIENT)
 public class RenderEvents {
@@ -29,9 +26,9 @@ public class RenderEvents {
     private static final Minecraft mc = Minecraft.getInstance();
 
     @SubscribeEvent
-    public void onRender(ViewportEvent.ComputeCameraAngles evt) {
+    public void onCameraDistance(CalculateDetachedCameraDistanceEvent evt) {
         if (getCar() != null && !mc.options.getCameraType().isFirstPerson()) {
-            evt.getCamera().move(-evt.getCamera().getMaxZoom(Main.CLIENT_CONFIG.carZoom.get().floatValue() - 4F), 0F, 0F);
+            evt.setDistance(Main.CLIENT_CONFIG.carZoom.get().floatValue());
         }
     }
 
