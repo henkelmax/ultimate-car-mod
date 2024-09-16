@@ -1,1 +1,1 @@
-- Added Turkish translation
+- Fixed blocks not rotating when placed with structure blocks
