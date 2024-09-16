@@ -92,7 +92,7 @@ public abstract class BlockGui<T extends BlockEntity> extends BlockBase implemen
     }
 
     @Override
-    protected BlockState rotate(BlockState state, Rotation rotation) {
+    public BlockState rotate(BlockState state, Rotation rotation) {
         return state.setValue(FACING, rotation.rotate(state.getValue(FACING)));
     }
 
