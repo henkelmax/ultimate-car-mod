@@ -94,7 +94,7 @@ public class BlockSign extends BlockBase implements EntityBlock, IItemBlock, Sim
     }
 
     @Override
-    protected BlockState rotate(BlockState state, Rotation rotation) {
+    public BlockState rotate(BlockState state, Rotation rotation) {
         return state.setValue(FACING, rotation.rotate(state.getValue(FACING)));
     }
 
