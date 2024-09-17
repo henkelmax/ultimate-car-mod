@@ -73,6 +73,7 @@ import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
+import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.extensions.IMenuTypeExtension;
 import net.neoforged.neoforge.energy.IEnergyStorage;
@@ -152,6 +153,7 @@ public class Main {
         eventBus.addListener(this::onRegisterPayloadHandler);
         eventBus.addListener(IMC::enqueueIMC);
         eventBus.addListener(this::onRegisterCapabilities);
+        eventBus.addListener(this::onRegisterClientExtensions);
 
         SERVER_CONFIG = CommonRegistry.registerConfig(MODID, ModConfig.Type.SERVER, ServerConfig.class, true);
         FUEL_CONFIG = CommonRegistry.registerDynamicConfig(DynamicConfig.DynamicConfigType.SERVER, Main.MODID, "fuel", FuelConfig.class);
@@ -409,6 +411,14 @@ public class Main {
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<TileEntityGasStation>> GAS_STATION_TILE_ENTITY_TYPE = BLOCK_ENTITY_REGISTER.register("gas_station", () ->
             BlockEntityType.Builder.of(TileEntityGasStation::new, ModBlocks.GAS_STATION.get()).build(null)
     );
+
+    public void onRegisterClientExtensions(RegisterClientExtensionsEvent event) {
+        event.registerFluidType(ModFluids.BIO_DIESEL_TYPE.get().getExtensions(), ModFluids.BIO_DIESEL_TYPE.get());
+        event.registerFluidType(ModFluids.CANOLA_OIL_TYPE.get().getExtensions(), ModFluids.CANOLA_OIL_TYPE.get());
+        event.registerFluidType(ModFluids.METHANOL_TYPE.get().getExtensions(), ModFluids.METHANOL_TYPE.get());
+        event.registerFluidType(ModFluids.GLYCERIN_TYPE.get().getExtensions(), ModFluids.GLYCERIN_TYPE.get());
+        event.registerFluidType(ModFluids.CANOLA_METHANOL_MIX_TYPE.get().getExtensions(), ModFluids.CANOLA_METHANOL_MIX_TYPE.get());
+    }
 
     public void onRegisterCapabilities(RegisterCapabilitiesEvent event) {
         registerBlockCapabilities(event, GENERATOR_TILE_ENTITY_TYPE);

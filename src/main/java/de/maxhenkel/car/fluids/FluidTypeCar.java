@@ -6,7 +6,6 @@ import net.minecraft.sounds.SoundEvents;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.neoforged.neoforge.common.SoundActions;
 import net.neoforged.neoforge.fluids.FluidType;
-import java.util.function.Consumer;
 
 public class FluidTypeCar extends FluidType {
 
@@ -31,9 +30,8 @@ public class FluidTypeCar extends FluidType {
         this.flowingTexture = flowingTexture;
     }
 
-    @Override
-    public void initializeClient(Consumer<IClientFluidTypeExtensions> consumer) {
-        consumer.accept(new IClientFluidTypeExtensions() {
+    public IClientFluidTypeExtensions getExtensions() {
+        return new IClientFluidTypeExtensions() {
 
             private static final ResourceLocation UNDERWATER_LOCATION = ResourceLocation.withDefaultNamespace("textures/misc/underwater.png");
             private static final ResourceLocation WATER_OVERLAY = ResourceLocation.withDefaultNamespace("block/water_overlay");
@@ -58,6 +56,6 @@ public class FluidTypeCar extends FluidType {
                 return UNDERWATER_LOCATION;
             }
 
-        });
+        };
     }
 }

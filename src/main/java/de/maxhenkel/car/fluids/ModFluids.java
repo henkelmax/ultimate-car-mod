@@ -27,19 +27,19 @@ public class ModFluids {
 
     private static final DeferredRegister<FluidType> FLUID_TYPE_REGISTER = DeferredRegister.create(NeoForgeRegistries.Keys.FLUID_TYPES, Main.MODID);
 
-    public static final DeferredHolder<FluidType, FluidType> CANOLA_OIL_TYPE = FLUID_TYPE_REGISTER.register("canola_oil", () ->
+    public static final DeferredHolder<FluidType, FluidTypeCar> CANOLA_OIL_TYPE = FLUID_TYPE_REGISTER.register("canola_oil", () ->
             new FluidTypeCar("block.car.canola_oil", ResourceLocation.fromNamespaceAndPath(Main.MODID, "block/canola_oil_still"), ResourceLocation.fromNamespaceAndPath(Main.MODID, "block/canola_oil_flowing"))
     );
-    public static final DeferredHolder<FluidType, FluidType> METHANOL_TYPE = FLUID_TYPE_REGISTER.register("methanol", () ->
+    public static final DeferredHolder<FluidType, FluidTypeCar> METHANOL_TYPE = FLUID_TYPE_REGISTER.register("methanol", () ->
             new FluidTypeCar("block.car.methanol", ResourceLocation.fromNamespaceAndPath(Main.MODID, "block/methanol_still"), ResourceLocation.fromNamespaceAndPath(Main.MODID, "block/methanol_flowing"))
     );
-    public static final DeferredHolder<FluidType, FluidType> CANOLA_METHANOL_MIX_TYPE = FLUID_TYPE_REGISTER.register("canola_methanol_mix", () ->
+    public static final DeferredHolder<FluidType, FluidTypeCar> CANOLA_METHANOL_MIX_TYPE = FLUID_TYPE_REGISTER.register("canola_methanol_mix", () ->
             new FluidTypeCar("block.car.canola_methanol_mix", ResourceLocation.fromNamespaceAndPath(Main.MODID, "block/canola_methanol_mix_still"), ResourceLocation.fromNamespaceAndPath(Main.MODID, "block/canola_methanol_mix_flowing"))
     );
-    public static final DeferredHolder<FluidType, FluidType> GLYCERIN_TYPE = FLUID_TYPE_REGISTER.register("glycerin", () ->
+    public static final DeferredHolder<FluidType, FluidTypeCar> GLYCERIN_TYPE = FLUID_TYPE_REGISTER.register("glycerin", () ->
             new FluidTypeCar("block.car.glycerin", ResourceLocation.fromNamespaceAndPath(Main.MODID, "block/glycerin_still"), ResourceLocation.fromNamespaceAndPath(Main.MODID, "block/glycerin_flowing"))
     );
-    public static final DeferredHolder<FluidType, FluidType> BIO_DIESEL_TYPE = FLUID_TYPE_REGISTER.register("bio_diesel", () ->
+    public static final DeferredHolder<FluidType, FluidTypeCar> BIO_DIESEL_TYPE = FLUID_TYPE_REGISTER.register("bio_diesel", () ->
             new FluidTypeCar("block.car.bio_diesel", ResourceLocation.fromNamespaceAndPath(Main.MODID, "block/bio_diesel_still"), ResourceLocation.fromNamespaceAndPath(Main.MODID, "block/bio_diesel_flowing"))
     );
 
