@@ -1,1 +1,1 @@
-- Fixed issues with fluids
+- Fixed gas stations not being able to be rotated in structures
