@@ -1,1 +1,1 @@
-- Fixed blocks not rotating when placed with structure blocks
+- Fixed gas stations not being able to be rotated in structures
