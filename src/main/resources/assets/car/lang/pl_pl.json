@@ -310,7 +310,7 @@
   "gas_station.ready": "Gotowy",
   "gas_station.fuel_amount": "%s mb",
   "gas_station.fuel_empty": "Brak magazynowanego Paliwa",
-  "gas_station.no_car": "Brak Samochodu",
+  "gas_station.no_vehicle": "Brak Samochodu",
   "gas_station.admin.amount_text_field": "Ilość",
 
   "tooltip.energy": "Przechowywana energia: %s RF",

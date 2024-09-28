@@ -310,7 +310,7 @@
   "gas_station.ready": "Listo",
   "gas_station.fuel_amount": "%s mb",
   "gas_station.fuel_empty": "Sin combustible",
-  "gas_station.no_car": "No hay auto",
+  "gas_station.no_vehicle": "No hay auto",
   "gas_station.admin.amount_text_field": "Cantidad",
 
   "tooltip.energy": "Energía: %s RF",

@@ -310,7 +310,7 @@
     "gas_station.ready": "Ready",
     "gas_station.fuel_amount": "%s mb",
     "gas_station.fuel_empty": "No Fuel stored",
-    "gas_station.no_car": "No Car",
+    "gas_station.no_vehicle": "No Vehicle",
     "gas_station.admin.amount_text_field": "Amount",
 
     "tooltip.energy": "Stored energy: %s RF",

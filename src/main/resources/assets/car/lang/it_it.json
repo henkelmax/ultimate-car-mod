@@ -304,7 +304,7 @@
     "gas_station.ready": "Pronto",
     "gas_station.fuel_amount": "%s mb",
     "gas_station.fuel_empty": "Carburante Assente",
-    "gas_station.no_car": "Nessuna Macchina",
+    "gas_station.no_vehicle": "Nessuna Macchina",
     "gas_station.admin.amount_text_field": "Quantità",
     "tooltip.energy": "Energia: %s RF",
     "tooltip.oil": "Olio: %s mb",

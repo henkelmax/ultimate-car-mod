@@ -112,7 +112,7 @@ public class GuiGasStation extends ScreenBase<ContainerGasStation> {
 
     private void drawCarFuel(GuiGraphics guiGraphics, IFluidHandler handler) {
         if (handler == null) {
-            guiGraphics.drawString(font, Component.translatable("gas_station.no_car").getVisualOrderText(), leftPos + 63, topPos + 30, FONT_COLOR, false);
+            guiGraphics.drawString(font, Component.translatable("gas_station.no_vehicle").getVisualOrderText(), leftPos + 63, topPos + 30, FONT_COLOR, false);
             return;
         }
         if (handler.getTanks() <= 0) {
