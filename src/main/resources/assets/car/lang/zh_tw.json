@@ -304,7 +304,7 @@
   "gas_station.ready": "就緒",
   "gas_station.fuel_amount": "%smB",
   "gas_station.fuel_empty": "沒有燃油",
-  "gas_station.no_car": "閒置",
+  "gas_station.no_vehicle": "閒置",
   "gas_station.admin.amount_text_field": "數量",
   "tooltip.energy": "儲存能量：%sRF",
   "tooltip.oil": "儲存芥花油：%smB",

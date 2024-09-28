@@ -367,7 +367,7 @@ public class TileEntityGasStation extends TileEntityBase implements ITickableBlo
 
     public String getRenderText() {
         if (fluidHandlerInFront == null) {
-            return Component.translatable("gas_station.no_car").getString();
+            return Component.translatable("gas_station.no_vehicle").getString();
         } else if (fuelCounter <= 0) {
             return Component.translatable("gas_station.ready").getString();
         } else {
