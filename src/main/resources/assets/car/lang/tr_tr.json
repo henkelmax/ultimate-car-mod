@@ -310,7 +310,7 @@
     "gas_station.ready": "Hazır",
     "gas_station.fuel_amount": "%s mb",
     "gas_station.fuel_empty": "Yakıt depolanmamış",
-    "gas_station.no_car": "Araba Yok",
+    "gas_station.no_vehicle": "Araba Yok",
     "gas_station.admin.amount_text_field": "Miktar",
 
     "tooltip.energy": "Depolanan Enerji: %s RF",

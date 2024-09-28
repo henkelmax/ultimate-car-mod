@@ -1,1 +1,1 @@
-- Fixed gas stations not being able to be rotated in structures
+- Renamed "No car" to "No vehicle" on the gas station
