@@ -1,1 +1,2 @@
-- Renamed "No car" to "No vehicle" on the gas station
+- Fixed cables not connecting properly
+- Fixed cables and fluid pipes not rotating properly with structure blocks
