@@ -12,10 +12,7 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.RenderShape;
-import net.minecraft.world.level.block.SimpleWaterloggedBlock;
-import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -87,6 +84,37 @@ public class BlockFluidPipe extends BlockBase implements IItemBlock, SimpleWater
     public void neighborChanged(BlockState state, Level world, BlockPos pos, Block block, BlockPos pos1, boolean b) {
         super.neighborChanged(state, world, pos, block, pos1, b);
         world.setBlockAndUpdate(pos, getState(world, pos));
+    }
+
+    @Override
+    protected BlockState rotate(BlockState state, Rotation rot) {
+        BlockState newState = state;
+        newState = setDirection(newState, rot.rotate(Direction.NORTH), state.getValue(NORTH));
+        newState = setDirection(newState, rot.rotate(Direction.SOUTH), state.getValue(SOUTH));
+        newState = setDirection(newState, rot.rotate(Direction.EAST), state.getValue(EAST));
+        newState = setDirection(newState, rot.rotate(Direction.WEST), state.getValue(WEST));
+        return newState;
+    }
+
+    private BlockState setDirection(BlockState state, Direction direction, boolean connected) {
+        return switch (direction) {
+            case NORTH -> state.setValue(NORTH, connected);
+            case SOUTH -> state.setValue(SOUTH, connected);
+            case EAST -> state.setValue(EAST, connected);
+            case WEST -> state.setValue(WEST, connected);
+            case UP -> state.setValue(UP, connected);
+            case DOWN -> state.setValue(DOWN, connected);
+        };
+    }
+
+    @Override
+    protected BlockState mirror(BlockState state, Mirror mirror) {
+        BlockState newState = state;
+        newState = setDirection(newState, mirror.getRotation(Direction.NORTH).rotate(Direction.NORTH), state.getValue(NORTH));
+        newState = setDirection(newState, mirror.getRotation(Direction.SOUTH).rotate(Direction.SOUTH), state.getValue(SOUTH));
+        newState = setDirection(newState, mirror.getRotation(Direction.EAST).rotate(Direction.EAST), state.getValue(EAST));
+        newState = setDirection(newState, mirror.getRotation(Direction.WEST).rotate(Direction.WEST), state.getValue(WEST));
+        return newState;
     }
 
     @Override

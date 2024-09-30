@@ -124,6 +124,37 @@ public class BlockFluidExtractor extends BlockBase implements EntityBlock, IItem
     }
 
     @Override
+    protected BlockState rotate(BlockState state, Rotation rot) {
+        BlockState newState = state.setValue(FACING, rot.rotate(state.getValue(FACING)));
+        newState = setDirection(newState, rot.rotate(Direction.NORTH), state.getValue(NORTH));
+        newState = setDirection(newState, rot.rotate(Direction.SOUTH), state.getValue(SOUTH));
+        newState = setDirection(newState, rot.rotate(Direction.EAST), state.getValue(EAST));
+        newState = setDirection(newState, rot.rotate(Direction.WEST), state.getValue(WEST));
+        return newState;
+    }
+
+    private BlockState setDirection(BlockState state, Direction direction, boolean connected) {
+        return switch (direction) {
+            case NORTH -> state.setValue(NORTH, connected);
+            case SOUTH -> state.setValue(SOUTH, connected);
+            case EAST -> state.setValue(EAST, connected);
+            case WEST -> state.setValue(WEST, connected);
+            case UP -> state.setValue(UP, connected);
+            case DOWN -> state.setValue(DOWN, connected);
+        };
+    }
+
+    @Override
+    protected BlockState mirror(BlockState state, Mirror mirror) {
+        BlockState newState = state.rotate(mirror.getRotation(state.getValue(FACING)));
+        newState = setDirection(newState, mirror.getRotation(Direction.NORTH).rotate(Direction.NORTH), state.getValue(NORTH));
+        newState = setDirection(newState, mirror.getRotation(Direction.SOUTH).rotate(Direction.SOUTH), state.getValue(SOUTH));
+        newState = setDirection(newState, mirror.getRotation(Direction.EAST).rotate(Direction.EAST), state.getValue(EAST));
+        newState = setDirection(newState, mirror.getRotation(Direction.WEST).rotate(Direction.WEST), state.getValue(WEST));
+        return newState;
+    }
+
+    @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(FACING, UP, DOWN, NORTH, SOUTH, EAST, WEST, WATERLOGGED);
     }

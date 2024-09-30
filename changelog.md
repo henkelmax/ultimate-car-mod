@@ -1,1 +1,2 @@
-- Fixed issues with jade
+- Fixed cables not connecting properly
+- Fixed cables and fluid pipes not rotating properly with structure blocks
