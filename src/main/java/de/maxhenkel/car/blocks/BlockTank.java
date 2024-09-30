@@ -110,44 +110,30 @@ public class BlockTank extends BlockBase implements EntityBlock, IItemBlock {
     }
 
     public static boolean handleEmpty(ItemStack stack, Level worldIn, BlockPos pos, Player playerIn, InteractionHand hand) {
-        BlockEntity te = worldIn.getBlockEntity(pos);
-
-        if (!(te instanceof IFluidHandler)) {
+        BlockEntity be = worldIn.getBlockEntity(pos);
+        if (!(be instanceof IFluidHandler handler)) {
             return false;
         }
-
-        IFluidHandler handler = (IFluidHandler) te;
-
         IItemHandler inv = new InvWrapper(playerIn.getInventory());
-
         FluidActionResult res = FluidUtil.tryEmptyContainerAndStow(stack, handler, inv, Integer.MAX_VALUE, playerIn, true);
-
         if (res.isSuccess()) {
             playerIn.setItemInHand(hand, res.result);
             return true;
         }
-
         return false;
     }
 
     public static boolean handleFill(ItemStack stack, Level worldIn, BlockPos pos, Player playerIn, InteractionHand hand) {
         BlockEntity te = worldIn.getBlockEntity(pos);
-
-        if (!(te instanceof IFluidHandler)) {
+        if (!(te instanceof IFluidHandler blockHandler)) {
             return false;
         }
-
-        IFluidHandler blockHandler = (IFluidHandler) te;
-
         IItemHandler inv = new InvWrapper(playerIn.getInventory());
-
         FluidActionResult result = FluidUtil.tryFillContainerAndStow(stack, blockHandler, inv, Integer.MAX_VALUE, playerIn, true);
-
         if (result.isSuccess()) {
             playerIn.setItemInHand(hand, result.result);
             return true;
         }
-
         return false;
     }
 
