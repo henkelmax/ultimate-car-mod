@@ -1,1 +1,1 @@
-- Renamed "No car" to "No vehicle" on the gas station
+- Fixed issues with jade

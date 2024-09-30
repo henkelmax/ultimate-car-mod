@@ -33,7 +33,9 @@ public class HUDHandlerTank implements IBlockComponentProvider, IServerDataProvi
     @Override
     public void appendServerData(CompoundTag compoundTag, BlockAccessor blockAccessor) {
         TileEntityTank tank = (TileEntityTank) blockAccessor.getBlockEntity();
-        compoundTag.put("fluid", tank.getFluid().save(blockAccessor.getBlockEntity().getLevel().registryAccess()));
+        if (!tank.getFluid().isEmpty()) {
+            compoundTag.put("fluid", tank.getFluid().save(blockAccessor.getBlockEntity().getLevel().registryAccess()));
+        }
     }
 
     @Override
