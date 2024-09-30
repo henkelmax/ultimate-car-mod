@@ -51,7 +51,7 @@ public class BlockTank extends BlockBase implements EntityBlock, IItemBlock {
 
     @Override
     public Item toItem() {
-        return new CustomRendererBlockItem(this, new Item.Properties().stacksTo(1)/*.component(Main.FLUID_STACK_DATA_COMPONENT, FluidStack.EMPTY)*/) {
+        return new CustomRendererBlockItem(this, new Item.Properties().stacksTo(1)) {
             @OnlyIn(Dist.CLIENT)
             @Override
             public ItemRenderer createItemRenderer() {
