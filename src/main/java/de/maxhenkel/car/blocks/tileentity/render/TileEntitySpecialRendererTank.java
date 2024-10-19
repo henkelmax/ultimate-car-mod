@@ -9,9 +9,9 @@ import de.maxhenkel.corelib.client.RenderUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
+import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
@@ -43,7 +43,7 @@ public class TileEntitySpecialRendererTank implements BlockEntityRenderer<TileEn
 
     public void renderFluid(TileEntityTank tank, FluidStack fluid, float amount, float yStart, PoseStack matrixStack, MultiBufferSource buffer, int light, int overlay) {
         matrixStack.pushPose();
-        VertexConsumer builder = buffer.getBuffer(Sheets.translucentCullBlockSheet());
+        VertexConsumer builder = buffer.getBuffer(RenderType.entityTranslucent(TextureAtlas.LOCATION_BLOCKS));
 
         IClientFluidTypeExtensions type = IClientFluidTypeExtensions.of(fluid.getFluid());
 
@@ -56,8 +56,8 @@ public class TileEntitySpecialRendererTank implements BlockEntityRenderer<TileEn
             tint = type.getTintColor(fluid);
             stillTexture = type.getStillTexture(fluid);
         }
-
         TextureAtlasSprite texture = Minecraft.getInstance().getModelManager().getAtlas(InventoryMenu.BLOCK_ATLAS).getSprite(stillTexture);
+
 
         float uMin = texture.getU0();
         float uMax = texture.getU1();

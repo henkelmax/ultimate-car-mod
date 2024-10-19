@@ -5,6 +5,7 @@ import de.maxhenkel.car.Main;
 import de.maxhenkel.car.blocks.tileentity.TileEntityCarWorkshop;
 import de.maxhenkel.car.entity.car.base.EntityCarBase;
 import de.maxhenkel.car.entity.car.base.EntityCarDamageBase;
+import de.maxhenkel.car.entity.car.base.EntityGenericCar;
 import de.maxhenkel.car.net.MessageOpenCarWorkshopGui;
 import de.maxhenkel.car.net.MessageRepairCar;
 import de.maxhenkel.corelib.inventory.ScreenBase;
@@ -12,7 +13,7 @@ import de.maxhenkel.corelib.math.MathUtils;
 import de.maxhenkel.tools.EntityTools;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FormattedCharSequence;
@@ -74,12 +75,10 @@ public class GuiCarWorkshopRepair extends ScreenBase<ContainerCarWorkshopRepair>
 
         EntityCarBase carTop = tile.getCarOnTop();
 
-        if (!(carTop instanceof EntityCarDamageBase)) {
+        if (!(carTop instanceof EntityGenericCar car)) {
             buttonRepair.active = false;
             return;
         }
-
-        EntityCarDamageBase car = (EntityCarDamageBase) carTop;
 
         if (mouseX >= leftPos + 52 && mouseX <= leftPos + 123) {
             if (mouseY >= topPos + 81 && mouseY <= topPos + 90) {
@@ -94,7 +93,7 @@ public class GuiCarWorkshopRepair extends ScreenBase<ContainerCarWorkshopRepair>
         } else {
             buttonRepair.active = false;
         }
-        drawCar(guiGraphics, carTop);
+        drawCar(guiGraphics, car);
     }
 
     @Override
@@ -103,7 +102,7 @@ public class GuiCarWorkshopRepair extends ScreenBase<ContainerCarWorkshopRepair>
         carRenderer.tick();
     }
 
-    private void drawCar(GuiGraphics guiGraphics, EntityCarBase car) {
+    private void drawCar(GuiGraphics guiGraphics, EntityGenericCar car) {
         carRenderer.render(guiGraphics, car, imageWidth / 2, 55, 23);
     }
 
@@ -129,12 +128,11 @@ public class GuiCarWorkshopRepair extends ScreenBase<ContainerCarWorkshopRepair>
 
         double percent = 100 - getDamagePercent(c);
 
-        RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1F, 1F, 1F, 1F);
         int scaled = (int) (72 * percent / 100);
         int i = this.leftPos;
         int j = this.topPos;
-        guiGraphics.blit(GUI_TEXTURE, i + 52, j + 81, 176, 0, scaled, 10);
+        guiGraphics.blit(RenderType::guiTextured, GUI_TEXTURE, i + 52, j + 81, 176, 0, scaled, 10, 256, 256);
     }
 
     @Override

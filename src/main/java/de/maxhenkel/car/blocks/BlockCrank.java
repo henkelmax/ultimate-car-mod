@@ -1,12 +1,9 @@
 package de.maxhenkel.car.blocks;
 
 import de.maxhenkel.car.blocks.tileentity.TileEntityDynamo;
-import de.maxhenkel.corelib.block.IItemBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -20,20 +17,15 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class BlockCrank extends BlockBase implements IItemBlock {
+public class BlockCrank extends BlockBase {
 
     public static final IntegerProperty CRANK_POS = IntegerProperty.create("rotation", 0, 7);
 
     public static final VoxelShape SHAPE = Block.box(3.2D, 0D, 3.2D, 12.8D, 9.6D, 12.8D);
 
-    public BlockCrank() {
-        super(Properties.of().mapColor(MapColor.WOOD).strength(0.5F).sound(SoundType.WOOD));
+    public BlockCrank(Properties properties) {
+        super(properties.mapColor(MapColor.WOOD).strength(0.5F).sound(SoundType.WOOD));
         registerDefaultState(stateDefinition.any().setValue(CRANK_POS, 0));
-    }
-
-    @Override
-    public Item toItem() {
-        return new BlockItem(this, new Item.Properties());
     }
 
     @Override

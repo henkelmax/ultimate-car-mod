@@ -2,6 +2,7 @@ package de.maxhenkel.car.entity.car.parts;
 
 import com.mojang.math.Axis;
 import de.maxhenkel.car.entity.car.base.EntityGenericCar;
+import de.maxhenkel.car.entity.model.CarRenderState;
 import de.maxhenkel.corelib.client.obj.OBJModel;
 import de.maxhenkel.corelib.client.obj.OBJModelInstance;
 import de.maxhenkel.corelib.client.obj.OBJModelOptions;
@@ -47,8 +48,8 @@ public class PartWheelBase extends PartModel {
     }
 
     @Override
-    public List<OBJModelInstance<EntityGenericCar>> getInstances(EntityGenericCar car) {
-        List<OBJModelInstance<EntityGenericCar>> list = new ArrayList<>();
+    public List<OBJModelInstance<CarRenderState>> getInstances(EntityGenericCar car) {
+        List<OBJModelInstance<CarRenderState>> list = new ArrayList<>();
 
         Vector3d[] wheelOffsets = new Vector3d[0];
 
@@ -67,8 +68,8 @@ public class PartWheelBase extends PartModel {
         }
 
         for (int i = 0; i < wheelOffsets.length && i < wheels.size(); i++) {
-            list.add(new OBJModelInstance<>(wheels.get(i).model, new OBJModelOptions<>(wheels.get(i).texture, wheelOffsets[i], null, (c, matrixStack, partialTicks) -> {
-                matrixStack.mulPose(Axis.XP.rotationDegrees(-car.getWheelRotation(partialTicks)));
+            list.add(new OBJModelInstance<>(wheels.get(i).model, new OBJModelOptions<>(wheels.get(i).texture, wheelOffsets[i], null, (state, matrixStack) -> {
+                matrixStack.mulPose(Axis.XP.rotationDegrees(-car.getWheelRotation(state.partialTick)));
             })));
         }
 

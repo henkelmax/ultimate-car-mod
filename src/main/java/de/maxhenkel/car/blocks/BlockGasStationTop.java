@@ -4,7 +4,7 @@ import de.maxhenkel.corelib.block.DirectionalVoxelShape;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -14,7 +14,8 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
@@ -49,15 +50,15 @@ public class BlockGasStationTop extends BlockBase {
                     SHAPE_SLAB
             ).build();
 
-    public static final DirectionProperty FACING = DirectionProperty.create("facing", Direction.Plane.HORIZONTAL);
+    public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
 
-    public BlockGasStationTop() {
-        super(Properties.of().mapColor(MapColor.METAL).strength(4F).sound(SoundType.METAL).pushReaction(PushReaction.BLOCK));
+    public BlockGasStationTop(Properties properties) {
+        super(properties.mapColor(MapColor.METAL).strength(4F).sound(SoundType.METAL).pushReaction(PushReaction.BLOCK));
         registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH));
     }
 
     @Override
-    protected ItemInteractionResult useItemOn(ItemStack itemStack, BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
+    protected InteractionResult useItemOn(ItemStack itemStack, BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
         return ModBlocks.GAS_STATION.get().useItemOn(itemStack, level.getBlockState(blockPos.below()), level, blockPos.below(), player, interactionHand, blockHitResult);
     }
 

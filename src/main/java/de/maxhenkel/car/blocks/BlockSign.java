@@ -4,26 +4,22 @@ import de.maxhenkel.car.blocks.tileentity.TileEntitySign;
 import de.maxhenkel.car.gui.ContainerSign;
 import de.maxhenkel.car.gui.TileEntityContainerProvider;
 import de.maxhenkel.corelib.block.DirectionalVoxelShape;
-import de.maxhenkel.corelib.block.IItemBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.FluidTags;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.material.MapColor;
@@ -33,7 +29,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 import javax.annotation.Nullable;
 
-public class BlockSign extends BlockBase implements EntityBlock, IItemBlock, SimpleWaterloggedBlock {
+public class BlockSign extends BlockBase implements EntityBlock, SimpleWaterloggedBlock {
 
     private static final VoxelShape SHAPE_NORTH_SOUTH = Block.box(0D, 3D, 7.5D, 16D, 13D, 8.5D);
     private static final VoxelShape SHAPE_EAST_WEST = Block.box(7.5D, 3D, 0D, 8.5D, 13D, 16D);
@@ -57,18 +53,13 @@ public class BlockSign extends BlockBase implements EntityBlock, IItemBlock, Sim
                     SHAPE_POST
             ).build();
 
-    public static final DirectionProperty FACING = DirectionProperty.create("facing", Direction.Plane.HORIZONTAL);
+    public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
-    public BlockSign() {
-        super(Properties.of().mapColor(MapColor.METAL).strength(4F).sound(SoundType.METAL));
+    public BlockSign(Properties properties) {
+        super(properties.mapColor(MapColor.METAL).strength(4F).sound(SoundType.METAL));
 
         registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(WATERLOGGED, false));
-    }
-
-    @Override
-    public Item toItem() {
-        return new BlockItem(this, new Item.Properties());
     }
 
     @Override
@@ -103,11 +94,11 @@ public class BlockSign extends BlockBase implements EntityBlock, IItemBlock, Sim
     }
 
     @Override
-    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor worldIn, BlockPos currentPos, BlockPos facingPos) {
-        if (stateIn.getValue(WATERLOGGED)) {
-            worldIn.scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(worldIn));
+    protected BlockState updateShape(BlockState state, LevelReader level, ScheduledTickAccess tickAccess, BlockPos pos, Direction direction, BlockPos pos1, BlockState state1, RandomSource randomSource) {
+        if (state.getValue(WATERLOGGED)) {
+            tickAccess.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
         }
-        return super.updateShape(stateIn, facing, facingState, worldIn, currentPos, facingPos);
+        return super.updateShape(state, level, tickAccess, pos, direction, pos1, state1, randomSource);
     }
 
     @Override

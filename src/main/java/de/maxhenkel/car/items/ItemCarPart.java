@@ -7,7 +7,8 @@ public class ItemCarPart extends AbstractItemCarPart {
 
     private final Part part;
 
-    public ItemCarPart(Part part) {
+    public ItemCarPart(Properties properties, Part part) {
+        super(properties);
         this.part = part;
     }
 

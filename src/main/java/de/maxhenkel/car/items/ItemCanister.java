@@ -23,8 +23,8 @@ import java.util.List;
 
 public class ItemCanister extends Item {
 
-    public ItemCanister() {
-        super(new Item.Properties().stacksTo(1));
+    public ItemCanister(Properties properties) {
+        super(properties.stacksTo(1));
     }
 
     @Override

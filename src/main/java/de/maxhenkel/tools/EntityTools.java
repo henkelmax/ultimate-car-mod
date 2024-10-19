@@ -1,7 +1,6 @@
 package de.maxhenkel.tools;
 
 import com.mojang.math.Axis;
-import de.maxhenkel.car.entity.car.base.EntityCarBase;
 import de.maxhenkel.car.entity.car.base.EntityGenericCar;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -28,7 +27,7 @@ public class EntityTools {
         return player.level().getEntitiesOfClass(EntityGenericCar.class, new AABB(player.getX() - distance, player.getY() - distance, player.getZ() - distance, player.getX() + distance, player.getY() + distance, player.getZ() + distance), entity -> entity.getUUID().equals(uuid)).stream().findAny().orElse(null);
     }
 
-    public static void drawCarOnScreen(GuiGraphics graphics, EntityCarBase car, int posX, int posY, float scale, float rotation) {
+    public static void drawCarOnScreen(GuiGraphics graphics, EntityGenericCar car, int posX, int posY, float scale, float rotation) {
         graphics.pose().pushPose();
         graphics.pose().translate(posX, posY, 100D);
         graphics.pose().scale(1F, 1F, -1F);
@@ -36,13 +35,13 @@ public class EntityTools {
 
         graphics.pose().mulPose(Axis.YP.rotationDegrees(135F + rotation));
         graphics.pose().mulPose(Axis.ZP.rotationDegrees(180F));
-        EntityRenderDispatcher entityrenderermanager = Minecraft.getInstance().getEntityRenderDispatcher();
-        entityrenderermanager.setRenderShadow(false);
+        EntityRenderDispatcher dispatcher = Minecraft.getInstance().getEntityRenderDispatcher();
+        dispatcher.setRenderShadow(false);
 
         MultiBufferSource.BufferSource buffer = Minecraft.getInstance().renderBuffers().bufferSource();
-        entityrenderermanager.render(car, 0D, 0D, 0D, 0F, 1F, graphics.pose(), buffer, 0xF000F0);
+        dispatcher.render(car, 0D, 0D, 0D, 0F, graphics.pose(), buffer, 0xF000F0);
         buffer.endBatch();
-        entityrenderermanager.setRenderShadow(true);
+        dispatcher.setRenderShadow(true);
         graphics.pose().popPose();
     }
 
@@ -67,8 +66,8 @@ public class EntityTools {
             }
         }
 
-        public void render(GuiGraphics guiGraphics, EntityCarBase car, int posX, int posY, int scale) {
-            EntityTools.drawCarOnScreen(guiGraphics, car, posX, posY, scale, rotation + rotationPerTick * minecraft.getTimer().getRealtimeDeltaTicks());
+        public void render(GuiGraphics guiGraphics, EntityGenericCar car, int posX, int posY, int scale) {
+            EntityTools.drawCarOnScreen(guiGraphics, car, posX, posY, scale, rotation + rotationPerTick * minecraft.getDeltaTracker().getRealtimeDeltaTicks());
         }
     }
 
@@ -86,7 +85,7 @@ public class EntityTools {
             this(3.6F);
         }
 
-        public void render(GuiGraphics guiGraphics, EntityCarBase car, int posX, int posY, int scale) {
+        public void render(GuiGraphics guiGraphics, EntityGenericCar car, int posX, int posY, int scale) {
             ticker.render(new Renderer() {
                 @Override
                 public void render(float partialTicks) {

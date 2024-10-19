@@ -21,7 +21,7 @@ public abstract class RecipeSerializerEnergyFluidProducer<T extends EnergyFluidP
                 .group(
                         Codec.STRING.optionalFieldOf("group", "")
                                 .forGetter((recipe) -> recipe.group),
-                        Ingredient.CODEC_NONEMPTY
+                        Ingredient.CODEC
                                 .fieldOf("ingredient")
                                 .forGetter((recipe) -> recipe.ingredient),
                         BuiltInRegistries.ITEM.byNameCodec().xmap(ItemStack::new, ItemStack::getItem)

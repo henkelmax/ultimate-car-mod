@@ -4,6 +4,7 @@ import de.maxhenkel.car.Main;
 import de.maxhenkel.car.blocks.tileentity.TileEntityGenerator;
 import de.maxhenkel.corelib.inventory.ScreenBase;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FormattedCharSequence;
@@ -73,7 +74,7 @@ public class GuiGenerator extends ScreenBase<ContainerGenerator> {
         int scHeight = (int) (texH * (1 - perc));
         int i = this.leftPos;
         int j = this.topPos;
-        guiGraphics.blit(texture, i + targetX, j + targetY + scHeight, texX, texY + scHeight, texW, texH - scHeight);
+        guiGraphics.blit(RenderType::guiTextured, texture, i + targetX, j + targetY + scHeight, texX, texY + scHeight, texW, texH - scHeight, 256, 256);
     }
 
     public void drawFluid(GuiGraphics guiGraphics) {
@@ -89,7 +90,7 @@ public class GuiGenerator extends ScreenBase<ContainerGenerator> {
         int scHeight = (int) (texH * (1 - perc));
         int i = this.leftPos;
         int j = this.topPos;
-        guiGraphics.blit(texture, i + targetX, j + targetY + scHeight, texX, texY + scHeight, texW, texH - scHeight);
+        guiGraphics.blit(RenderType::guiTextured, texture, i + targetX, j + targetY + scHeight, texX, texY + scHeight, texW, texH - scHeight, 256, 256);
     }
 
     public float getEnergy() {

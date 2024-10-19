@@ -1,2 +1,1 @@
-- Fixed cables not connecting properly
-- Fixed cables and fluid pipes not rotating properly with structure blocks
+- Updated to 1.21.2

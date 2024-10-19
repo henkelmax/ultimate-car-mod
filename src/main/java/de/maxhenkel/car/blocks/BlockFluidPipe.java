@@ -1,17 +1,13 @@
 package de.maxhenkel.car.blocks;
 
-import de.maxhenkel.corelib.block.IItemBlock;
 import de.maxhenkel.corelib.block.VoxelUtils;
 import de.maxhenkel.corelib.fluid.FluidUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.tags.FluidTags;
-import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.Item;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -20,12 +16,13 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.level.redstone.Orientation;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 import javax.annotation.Nullable;
 
-public class BlockFluidPipe extends BlockBase implements IItemBlock, SimpleWaterloggedBlock {
+public class BlockFluidPipe extends BlockBase implements SimpleWaterloggedBlock {
 
     public static final BooleanProperty DOWN = BooleanProperty.create("down");
     public static final BooleanProperty UP = BooleanProperty.create("up");
@@ -35,8 +32,8 @@ public class BlockFluidPipe extends BlockBase implements IItemBlock, SimpleWater
     public static final BooleanProperty EAST = BooleanProperty.create("east");
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
-    public BlockFluidPipe() {
-        super(Properties.of().mapColor(MapColor.METAL).strength(0.25F).sound(SoundType.METAL));
+    public BlockFluidPipe(Properties properties) {
+        super(properties.mapColor(MapColor.METAL).strength(0.25F).sound(SoundType.METAL));
 
         registerDefaultState(stateDefinition.any()
                 .setValue(UP, false)
@@ -47,11 +44,6 @@ public class BlockFluidPipe extends BlockBase implements IItemBlock, SimpleWater
                 .setValue(WEST, false)
                 .setValue(WATERLOGGED, false)
         );
-    }
-
-    @Override
-    public Item toItem() {
-        return new BlockItem(this, new Item.Properties());
     }
 
     @Nullable
@@ -73,17 +65,17 @@ public class BlockFluidPipe extends BlockBase implements IItemBlock, SimpleWater
     }
 
     @Override
-    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor worldIn, BlockPos currentPos, BlockPos facingPos) {
-        if (stateIn.getValue(WATERLOGGED)) {
-            worldIn.scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(worldIn));
+    protected BlockState updateShape(BlockState state, LevelReader level, ScheduledTickAccess tickAccess, BlockPos pos, Direction direction, BlockPos pos1, BlockState state1, RandomSource randomSource) {
+        if (state.getValue(WATERLOGGED)) {
+            tickAccess.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
         }
-        return super.updateShape(stateIn, facing, facingState, worldIn, currentPos, facingPos);
+        return super.updateShape(state, level, tickAccess, pos, direction, pos1, state1, randomSource);
     }
 
     @Override
-    public void neighborChanged(BlockState state, Level world, BlockPos pos, Block block, BlockPos pos1, boolean b) {
-        super.neighborChanged(state, world, pos, block, pos1, b);
-        world.setBlockAndUpdate(pos, getState(world, pos));
+    protected void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, @Nullable Orientation orientation, boolean b) {
+        super.neighborChanged(state, level, pos, block, orientation, b);
+        level.setBlockAndUpdate(pos, getState(level, pos));
     }
 
     @Override

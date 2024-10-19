@@ -92,7 +92,7 @@ public abstract class EntityCarDamageBase extends EntityCarBatteryBase {
     private long lastDamage;
 
     @Override
-    public boolean hurt(DamageSource source, float amount) {
+    public boolean hurtServer(ServerLevel serverLevel, DamageSource source, float damage) {
         if (this.isInvulnerable()) {
             return false;
         }

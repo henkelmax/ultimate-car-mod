@@ -2,6 +2,7 @@ package de.maxhenkel.car.entity.car.parts;
 
 import com.mojang.math.Axis;
 import de.maxhenkel.car.entity.car.base.EntityGenericCar;
+import de.maxhenkel.car.entity.model.CarRenderState;
 import de.maxhenkel.corelib.client.obj.OBJModel;
 import de.maxhenkel.corelib.client.obj.OBJModelInstance;
 import de.maxhenkel.corelib.client.obj.OBJModelOptions;
@@ -38,14 +39,14 @@ public class PartModel extends Part {
         return model;
     }
 
-    public List<OBJModelInstance<EntityGenericCar>> getInstances(EntityGenericCar car) {
-        List<OBJModelInstance<EntityGenericCar>> list = new ArrayList<>();
+    public List<OBJModelInstance<CarRenderState>> getInstances(EntityGenericCar car) {
+        List<OBJModelInstance<CarRenderState>> list = new ArrayList<>();
         list.add(new OBJModelInstance<>(model, new OBJModelOptions<>(texture, offset, rotation)));
         onPartAdd(list);
         return list;
     }
 
-    protected void onPartAdd(List<OBJModelInstance<EntityGenericCar>> list) {
+    protected void onPartAdd(List<OBJModelInstance<CarRenderState>> list) {
 
     }
 

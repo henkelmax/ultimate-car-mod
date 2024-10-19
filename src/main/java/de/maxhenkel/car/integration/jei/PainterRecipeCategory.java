@@ -45,7 +45,7 @@ public class PainterRecipeCategory implements IRecipeCategory<PainterRecipe> {
 
     @Override
     public Component getTitle() {
-        return ModItems.PAINTER.get().getDescription();
+        return ModItems.PAINTER.get().getName();
     }
 
 }

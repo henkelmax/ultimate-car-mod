@@ -100,7 +100,8 @@ public class BlockAsphaltSlopeFlat extends BlockSlope {
 
     private boolean isUpper;
 
-    public BlockAsphaltSlopeFlat(boolean isUpper) {
+    public BlockAsphaltSlopeFlat(Properties properties, boolean isUpper) {
+        super(properties);
         this.isUpper = isUpper;
     }
 

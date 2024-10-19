@@ -3,15 +3,12 @@ package de.maxhenkel.car.blocks;
 import de.maxhenkel.car.blocks.tileentity.TileEntityCarWorkshop;
 import de.maxhenkel.car.gui.ContainerCarWorkshopCrafting;
 import de.maxhenkel.car.gui.TileEntityContainerProvider;
-import de.maxhenkel.corelib.block.IItemBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
@@ -28,18 +25,13 @@ import net.minecraft.world.phys.BlockHitResult;
 
 import javax.annotation.Nullable;
 
-public class BlockCarWorkshop extends BlockBase implements EntityBlock, IItemBlock {
+public class BlockCarWorkshop extends BlockBase implements EntityBlock {
 
     public static final BooleanProperty VALID = BooleanProperty.create("valid");
 
-    protected BlockCarWorkshop() {
-        super(Properties.of().mapColor(MapColor.METAL).strength(3F).sound(SoundType.METAL));
+    protected BlockCarWorkshop(Properties properties) {
+        super(properties.mapColor(MapColor.METAL).strength(3F).sound(SoundType.METAL));
         this.registerDefaultState(stateDefinition.any().setValue(VALID, false));
-    }
-
-    @Override
-    public Item toItem() {
-        return new BlockItem(this, new Item.Properties());
     }
 
     @Override

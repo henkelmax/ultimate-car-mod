@@ -1,10 +1,8 @@
 package de.maxhenkel.car.blocks;
 
-import de.maxhenkel.corelib.block.IItemBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -14,40 +12,29 @@ import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.level.redstone.Orientation;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 import javax.annotation.Nullable;
 
-public class BlockPaint extends BlockBase implements IItemBlock {
+public class BlockPaint extends BlockBase {
 
-    public static final DirectionProperty FACING = DirectionProperty.create("facing", Direction.Plane.HORIZONTAL);
+    public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
 
     private final EnumPaintType paintType;
     private final boolean yellow;
 
-    public BlockPaint(EnumPaintType type, boolean yellow) {
-        super(Properties.of().mapColor(MapColor.TERRACOTTA_WHITE).strength(2F).sound(SoundType.STONE).noOcclusion());
+    public BlockPaint(Properties properties, EnumPaintType type, boolean yellow) {
+        super(properties.mapColor(MapColor.TERRACOTTA_WHITE).strength(2F).sound(SoundType.STONE).noOcclusion());
         this.paintType = type;
         this.yellow = yellow;
 
         registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH));
-    }
-
-    @Override
-    public Item toItem() {
-        return new BlockItem(this, new Item.Properties()) {
-            @Override
-            protected boolean canPlace(BlockPlaceContext context, BlockState state) {
-                if (!canPlaceBlockAt(context.getLevel(), context.getClickedPos())) {
-                    return false;
-                }
-                return super.canPlace(context, state);
-            }
-        };
     }
 
     @Nullable
@@ -69,11 +56,6 @@ public class BlockPaint extends BlockBase implements IItemBlock {
     private static final VoxelShape SHAPE = Block.box(0D, 0D, 0D, 16D, 0.25D, 16D);
 
     @Override
-    public VoxelShape getOcclusionShape(BlockState state, BlockGetter worldIn, BlockPos pos) {
-        return SHAPE;
-    }
-
-    @Override
     public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
         return SHAPE;
     }
@@ -89,9 +71,9 @@ public class BlockPaint extends BlockBase implements IItemBlock {
     }
 
     @Override
-    public void neighborChanged(BlockState state, Level worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean p_220069_6_) {
-        super.neighborChanged(state, worldIn, pos, blockIn, fromPos, p_220069_6_);
-        checkForDrop(worldIn, pos, state);
+    protected void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, @Nullable Orientation orientation, boolean b) {
+        super.neighborChanged(state, level, pos, block, orientation, b);
+        checkForDrop(level, pos, state);
     }
 
     private boolean checkForDrop(Level worldIn, BlockPos pos, BlockState state) {
@@ -168,6 +150,21 @@ public class BlockPaint extends BlockBase implements IItemBlock {
 
         public String getPaintName() {
             return name;
+        }
+    }
+
+    public static class PaintItem extends BlockItem {
+
+        public PaintItem(Block block, Properties properties) {
+            super(block, properties.useBlockDescriptionPrefix());
+        }
+
+        @Override
+        protected boolean canPlace(BlockPlaceContext context, BlockState state) {
+            if (!canPlaceBlockAt(context.getLevel(), context.getClickedPos())) {
+                return false;
+            }
+            return super.canPlace(context, state);
         }
     }
 

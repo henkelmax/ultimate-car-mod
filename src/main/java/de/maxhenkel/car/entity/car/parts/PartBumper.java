@@ -2,6 +2,7 @@ package de.maxhenkel.car.entity.car.parts;
 
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.entity.car.base.EntityGenericCar;
+import de.maxhenkel.car.entity.model.CarRenderState;
 import de.maxhenkel.corelib.client.obj.OBJModel;
 import de.maxhenkel.corelib.client.obj.OBJModelInstance;
 import de.maxhenkel.corelib.client.obj.OBJModelOptions;
@@ -18,14 +19,14 @@ public class PartBumper extends PartModel {
     }
 
     @Override
-    public List<OBJModelInstance<EntityGenericCar>> getInstances(EntityGenericCar car) {
+    public List<OBJModelInstance<CarRenderState>> getInstances(EntityGenericCar car) {
         PartBodyWoodBase chassis = car.getPartByClass(PartBodyWoodBase.class);
 
         if (chassis == null) {
             return super.getInstances(car);
         }
 
-        List<OBJModelInstance<EntityGenericCar>> list = new ArrayList<>();
+        List<OBJModelInstance<CarRenderState>> list = new ArrayList<>();
         list.add(new OBJModelInstance<>(model, new OBJModelOptions<>(texture, chassis.getBumperOffset(), rotation)));
         onPartAdd(list);
         return list;

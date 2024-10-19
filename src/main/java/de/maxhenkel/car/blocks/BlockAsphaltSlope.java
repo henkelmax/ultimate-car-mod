@@ -85,7 +85,8 @@ public class BlockAsphaltSlope extends BlockSlope {
                     Block.box(0D, 15D, 0D, 1D, 16D, 16D)
             ).build();
 
-    public BlockAsphaltSlope() {
+    public BlockAsphaltSlope(Properties properties) {
+        super(properties);
     }
 
     @Override

@@ -3,7 +3,6 @@ package de.maxhenkel.car.gui;
 import com.mojang.blaze3d.systems.RenderSystem;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.blocks.tileentity.TileEntityCarWorkshop;
-import de.maxhenkel.car.entity.car.base.EntityCarBase;
 import de.maxhenkel.car.entity.car.base.EntityGenericCar;
 import de.maxhenkel.car.net.MessageOpenCarWorkshopGui;
 import de.maxhenkel.car.net.MessageSpawnCar;
@@ -53,7 +52,7 @@ public class GuiCarWorkshopCrafting extends ScreenBase<ContainerCarWorkshopCraft
                     PacketDistributor.sendToServer(new MessageSpawnCar(tile.getBlockPos()));
                 } else {
                     for (Component message : tile.getMessages()) {
-                        player.sendSystemMessage(message);
+                        minecraft.gui.getChat().addMessage(message);
                     }
                 }
             }
@@ -71,7 +70,7 @@ public class GuiCarWorkshopCrafting extends ScreenBase<ContainerCarWorkshopCraft
 
         RenderSystem.setShaderColor(1F, 1F, 1F, 1F);
 
-        EntityCarBase carTop = tile.getCarOnTop();
+        EntityGenericCar carTop = tile.getCarOnTop();
         EntityGenericCar car = tile.getCurrentCraftingCar();
 
         if (carTop != null) {
@@ -91,7 +90,7 @@ public class GuiCarWorkshopCrafting extends ScreenBase<ContainerCarWorkshopCraft
         carRenderer.tick();
     }
 
-    private void drawCar(GuiGraphics guiGraphics, EntityCarBase car) {
+    private void drawCar(GuiGraphics guiGraphics, EntityGenericCar car) {
         carRenderer.render(guiGraphics, car, imageWidth / 2, 55, 23);
     }
 

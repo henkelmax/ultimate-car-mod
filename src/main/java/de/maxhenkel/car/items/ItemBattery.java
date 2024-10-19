@@ -15,8 +15,8 @@ import java.util.List;
 
 public class ItemBattery extends Item {
 
-    public ItemBattery() {
-        super(new Item.Properties().stacksTo(1).durability(500));
+    public ItemBattery(Properties properties) {
+        super(properties.stacksTo(1).durability(500));
     }
 
     @Override
@@ -28,7 +28,7 @@ public class ItemBattery extends Item {
     }
 
     @Override
-    public boolean isEnchantable(ItemStack stack) {
+    public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
         return false;
     }
 

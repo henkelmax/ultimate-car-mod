@@ -1,9 +1,10 @@
 package de.maxhenkel.car.recipes;
 
 import de.maxhenkel.car.Main;
-import de.maxhenkel.car.blocks.ModBlocks;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeInput;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 
 public class OilMillRecipe extends EnergyFluidProducerRecipe {
@@ -13,13 +14,8 @@ public class OilMillRecipe extends EnergyFluidProducerRecipe {
     }
 
     @Override
-    public ItemStack getToastSymbol() {
-        return new ItemStack(ModBlocks.OIL_MILL.get());
-    }
-
-
-    @Override
-    public RecipeSerializer<?> getSerializer() {
+    public RecipeSerializer<? extends Recipe<RecipeInput>> getSerializer() {
         return Main.CRAFTING_OIL_MILL.get();
     }
+
 }

@@ -5,10 +5,12 @@ import de.maxhenkel.corelib.block.VoxelUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.tags.FluidTags;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
@@ -42,8 +44,8 @@ public class BlockGuardRail extends BlockBase implements SimpleWaterloggedBlock 
     private static final VoxelShape SHAPE_WEST = Block.box(14D, 0D, 0D, 16D, 16D, 16D);
     private static final VoxelShape SHAPE = Block.box(7.5D, 0D, 7.5D, 8.5D, 16D, 8.5D);
 
-    public BlockGuardRail() {
-        super(Properties.of().mapColor(MapColor.METAL).strength(2F).sound(SoundType.LANTERN).noOcclusion());
+    public BlockGuardRail(Properties properties) {
+        super(properties.mapColor(MapColor.METAL).strength(2F).sound(SoundType.LANTERN).noOcclusion());
 
         registerDefaultState(stateDefinition
                 .any()
@@ -99,11 +101,11 @@ public class BlockGuardRail extends BlockBase implements SimpleWaterloggedBlock 
     }
 
     @Override
-    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor worldIn, BlockPos currentPos, BlockPos facingPos) {
-        if (stateIn.getValue(WATERLOGGED)) {
-            worldIn.scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(worldIn));
+    protected BlockState updateShape(BlockState state, LevelReader level, ScheduledTickAccess tickAccess, BlockPos pos, Direction direction, BlockPos pos1, BlockState state1, RandomSource randomSource) {
+        if (state.getValue(WATERLOGGED)) {
+            tickAccess.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
         }
-        return super.updateShape(stateIn, facing, facingState, worldIn, currentPos, facingPos);
+        return super.updateShape(state, level, tickAccess, pos, direction, pos1, state1, randomSource);
     }
 
     @Override

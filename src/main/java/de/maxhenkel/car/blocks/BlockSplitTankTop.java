@@ -2,7 +2,7 @@ package de.maxhenkel.car.blocks;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
@@ -22,12 +22,12 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class BlockSplitTankTop extends BlockBase {
 
-    public BlockSplitTankTop() {
-        super(Properties.of().mapColor(MapColor.METAL).strength(3F).sound(SoundType.STONE).pushReaction(PushReaction.BLOCK));
+    public BlockSplitTankTop(Properties properties) {
+        super(properties.mapColor(MapColor.METAL).strength(3F).sound(SoundType.STONE).pushReaction(PushReaction.BLOCK));
     }
 
     @Override
-    protected ItemInteractionResult useItemOn(ItemStack itemStack, BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
+    protected InteractionResult useItemOn(ItemStack itemStack, BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
         return ModBlocks.SPLIT_TANK.get().useItemOn(itemStack, level.getBlockState(blockPos.below()), level, blockPos.below(), player, interactionHand, blockHitResult);
     }
 

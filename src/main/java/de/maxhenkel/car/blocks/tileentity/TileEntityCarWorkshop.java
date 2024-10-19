@@ -17,6 +17,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
@@ -52,7 +53,7 @@ public class TileEntityCarWorkshop extends TileEntityBase implements Container {
         return repairInventory;
     }
 
-    public EntityCarBase getCarOnTop() {
+    public EntityGenericCar getCarOnTop() {
         BlockState ownState = level.getBlockState(worldPosition);
 
         if (!ownState.getBlock().equals(ModBlocks.CAR_WORKSHOP.get())) {
@@ -64,7 +65,7 @@ public class TileEntityCarWorkshop extends TileEntityBase implements Container {
         AABB aabb = new AABB(start.getX(), start.getY(), start.getZ(), start.getX() + 1,
                 start.getY() + 1, start.getZ() + 1);
 
-        List<EntityCarBase> cars = level.getEntitiesOfClass(EntityCarBase.class, aabb);
+        List<EntityGenericCar> cars = level.getEntitiesOfClass(EntityGenericCar.class, aabb);
         if (cars.isEmpty()) {
             return null;
         }
@@ -72,7 +73,7 @@ public class TileEntityCarWorkshop extends TileEntityBase implements Container {
         return cars.get(0);
     }
 
-    public void spawnCar(Player player) {
+    public void spawnCar(ServerPlayer player) {
         if (!areBlocksAround()) {
             player.sendSystemMessage(Component.translatable("message.incomplete_structure"));
             return;
@@ -346,7 +347,7 @@ public class TileEntityCarWorkshop extends TileEntityBase implements Container {
         return messages;
     }
 
-    public void repairCar(Player player) {
+    public void repairCar(ServerPlayer player) {
         if (!areBlocksAround()) {
             player.sendSystemMessage(Component.translatable("message.incomplete_structure"));
             return;

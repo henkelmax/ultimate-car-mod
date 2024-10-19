@@ -1,30 +1,23 @@
 package de.maxhenkel.car.blocks;
 
-import de.maxhenkel.corelib.block.IItemBlock;
 import net.minecraft.core.Direction;
-import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.material.MapColor;
 
 import javax.annotation.Nullable;
 
-public abstract class BlockOrientableHorizontal extends BlockBase implements EntityBlock, IItemBlock {
+public abstract class BlockOrientableHorizontal extends BlockBase implements EntityBlock {
 
-    public static final DirectionProperty FACING = DirectionProperty.create("facing", Direction.Plane.HORIZONTAL);
+    public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
 
-    public BlockOrientableHorizontal(MapColor color, SoundType soundType, float hardness, float resistance) {
-        super(Properties.of().mapColor(color).strength(hardness, resistance).sound(soundType));
+    public BlockOrientableHorizontal(Properties properties, MapColor color, SoundType soundType, float hardness, float resistance) {
+        super(properties.mapColor(color).strength(hardness, resistance).sound(soundType));
         registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH));
-    }
-
-    @Override
-    public Item toItem() {
-        return new BlockItem(this, new Item.Properties());
     }
 
     @Override

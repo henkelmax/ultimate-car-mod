@@ -2,10 +2,7 @@ package de.maxhenkel.car.blocks;
 
 import com.mojang.serialization.MapCodec;
 import de.maxhenkel.car.entity.car.base.EntityGenericCar;
-import de.maxhenkel.corelib.block.IItemBlock;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BasePressurePlateBlock;
 import net.minecraft.world.level.block.Block;
@@ -16,18 +13,13 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.MapColor;
 
-public class BlockCarPressurePlate extends BasePressurePlateBlock implements IItemBlock {
+public class BlockCarPressurePlate extends BasePressurePlateBlock {
 
     public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 
-    protected BlockCarPressurePlate() {
-        super(Block.Properties.of().mapColor(MapColor.COLOR_BLACK).noCollission().strength(0.5F), BlockSetType.STONE);
+    protected BlockCarPressurePlate(Properties properties) {
+        super(properties.mapColor(MapColor.COLOR_BLACK).noCollission().strength(0.5F), BlockSetType.STONE);
         registerDefaultState(stateDefinition.any().setValue(POWERED, false));
-    }
-
-    @Override
-    public Item toItem() {
-        return new BlockItem(this, new Item.Properties());
     }
 
     @Override

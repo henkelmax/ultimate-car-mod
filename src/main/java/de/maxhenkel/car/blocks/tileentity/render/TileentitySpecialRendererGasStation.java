@@ -5,9 +5,9 @@ import com.mojang.math.Axis;
 import de.maxhenkel.car.blocks.tileentity.TileEntityGasStation;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.ShapeRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.Direction;
@@ -67,7 +67,7 @@ public class TileentitySpecialRendererGasStation implements BlockEntityRenderer<
 
     public void renderBoundingBox(TileEntityGasStation target, float partialTicks, PoseStack matrixStack, MultiBufferSource buffer, int combinedLightIn, int combinedOverlayIn) {
         AABB axisalignedbb = target.getDetectionBox().move(-target.getBlockPos().getX(), -target.getBlockPos().getY(), -target.getBlockPos().getZ());
-        LevelRenderer.renderLineBox(matrixStack, buffer.getBuffer(RenderType.lines()), axisalignedbb, 0F, 0F, 1F, 1F);
+        ShapeRenderer.renderLineBox(matrixStack, buffer.getBuffer(RenderType.lines()), axisalignedbb, 0F, 0F, 1F, 1F);
     }
 
     @Override

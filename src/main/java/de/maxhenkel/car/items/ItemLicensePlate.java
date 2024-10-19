@@ -7,7 +7,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -22,7 +21,8 @@ import java.util.List;
 
 public class ItemLicensePlate extends ItemCraftingComponent {
 
-    public ItemLicensePlate() {
+    public ItemLicensePlate(Properties properties) {
+        super(properties);
     }
 
     @Override
@@ -37,7 +37,7 @@ public class ItemLicensePlate extends ItemCraftingComponent {
     }
 
     @Override
-    public InteractionResultHolder<ItemStack> use(Level worldIn, Player playerIn, InteractionHand handIn) {
+    public InteractionResult use(Level worldIn, Player playerIn, InteractionHand handIn) {
         ItemStack stack = playerIn.getItemInHand(handIn);
         if (playerIn instanceof ServerPlayer serverPlayer) {
             serverPlayer.openMenu(new MenuProvider() {
@@ -53,7 +53,7 @@ public class ItemLicensePlate extends ItemCraftingComponent {
                 }
             });
         }
-        return new InteractionResultHolder<>(InteractionResult.SUCCESS, stack);
+        return InteractionResult.SUCCESS;
     }
 
     public static void setText(ItemStack stack, String text) {

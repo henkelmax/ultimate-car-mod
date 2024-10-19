@@ -1,11 +1,8 @@
 package de.maxhenkel.car.blocks;
 
 import de.maxhenkel.car.blocks.tileentity.TileEntityDynamo;
-import de.maxhenkel.corelib.block.IItemBlock;
 import de.maxhenkel.corelib.blockentity.SimpleBlockEntityTicker;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.RenderShape;
@@ -18,15 +15,10 @@ import net.minecraft.world.level.material.MapColor;
 
 import javax.annotation.Nullable;
 
-public class BlockDynamo extends BlockBase implements EntityBlock, IItemBlock {
+public class BlockDynamo extends BlockBase implements EntityBlock {
 
-    protected BlockDynamo() {
-        super(Properties.of().mapColor(MapColor.METAL).strength(3F).sound(SoundType.METAL));
-    }
-
-    @Override
-    public Item toItem() {
-        return new BlockItem(this, new Item.Properties());
+    protected BlockDynamo(Properties properties) {
+        super(properties.mapColor(MapColor.METAL).strength(3F).sound(SoundType.METAL));
     }
 
     @Nullable

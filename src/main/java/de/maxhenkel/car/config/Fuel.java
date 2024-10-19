@@ -25,7 +25,7 @@ public class Fuel {
     }
 
     public Fuel(String fluid) {
-        this.fluid = BuiltInRegistries.FLUID.get(ResourceLocation.parse(fluid));
+        this.fluid = BuiltInRegistries.FLUID.getValue(ResourceLocation.parse(fluid));
     }
 
     public Fluid getFluid() {

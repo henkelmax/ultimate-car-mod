@@ -1,15 +1,13 @@
 package de.maxhenkel.car.recipes;
 
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.NonNullList;
-import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
 
 public abstract class EnergyFluidProducerRecipe implements Recipe<RecipeInput> {
 
-    protected final RecipeType<?> type;
+    protected final RecipeType<? extends Recipe<RecipeInput>> type;
     protected final Ingredient ingredient;
     protected final ItemStack result;
     protected final String group;
@@ -17,7 +15,7 @@ public abstract class EnergyFluidProducerRecipe implements Recipe<RecipeInput> {
     protected final int energy;
     protected final int duration;
 
-    public EnergyFluidProducerRecipe(RecipeType<?> type, String group, Ingredient ingredientIn, ItemStack result, int fluidAmount, int energy, int duration) {
+    public EnergyFluidProducerRecipe(RecipeType<? extends Recipe<RecipeInput>> type, String group, Ingredient ingredientIn, ItemStack result, int fluidAmount, int energy, int duration) {
         this.type = type;
         this.group = group;
         this.ingredient = ingredientIn;
@@ -37,17 +35,6 @@ public abstract class EnergyFluidProducerRecipe implements Recipe<RecipeInput> {
         return result.copy();
     }
 
-    @Override
-    public boolean canCraftInDimensions(int width, int height) {
-        return true;
-    }
-
-    @Override
-    public NonNullList<Ingredient> getIngredients() {
-        NonNullList<Ingredient> list = NonNullList.create();
-        list.add(ingredient);
-        return list;
-    }
 
     public Ingredient getIngredient() {
         return ingredient;
@@ -58,23 +45,8 @@ public abstract class EnergyFluidProducerRecipe implements Recipe<RecipeInput> {
         return false;
     }
 
-    @Override
-    public ItemStack getResultItem(HolderLookup.Provider p_336125_) {
-        return getResultItem();
-    }
-
     public ItemStack getResultItem() {
         return result.copy();
-    }
-
-    @Override
-    public NonNullList<ItemStack> getRemainingItems(RecipeInput inv) {
-        return null;
-    }
-
-    @Override
-    public String getGroup() {
-        return group;
     }
 
     public int getFluidAmount() {
@@ -90,7 +62,18 @@ public abstract class EnergyFluidProducerRecipe implements Recipe<RecipeInput> {
     }
 
     @Override
-    public RecipeType<?> getType() {
+    public RecipeType<? extends Recipe<RecipeInput>> getType() {
         return type;
     }
+
+    @Override
+    public PlacementInfo placementInfo() {
+        return PlacementInfo.create(ingredient);
+    }
+
+    @Override
+    public RecipeBookCategory recipeBookCategory() {
+        return null;
+    }
+
 }

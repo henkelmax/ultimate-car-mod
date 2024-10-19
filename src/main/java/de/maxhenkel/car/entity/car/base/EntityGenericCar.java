@@ -3,6 +3,7 @@ package de.maxhenkel.car.entity.car.base;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.config.Fuel;
 import de.maxhenkel.car.entity.car.parts.*;
+import de.maxhenkel.car.entity.model.CarRenderState;
 import de.maxhenkel.car.integration.jei.CarRecipe;
 import de.maxhenkel.car.integration.jei.CarRecipeBuilder;
 import de.maxhenkel.car.items.ICarPart;
@@ -480,7 +481,7 @@ public class EntityGenericCar extends EntityCarLicensePlateBase {
 
     //---------------CLIENT---------------------------------
 
-    private List<OBJModelInstance<EntityGenericCar>> modelInstances = new ArrayList<>();
+    private List<OBJModelInstance<CarRenderState>> modelInstances = new ArrayList<>();
 
     protected void initModel() {
         modelInstances.clear();
@@ -500,7 +501,7 @@ public class EntityGenericCar extends EntityCarLicensePlateBase {
         }
     }
 
-    public List<OBJModelInstance<EntityGenericCar>> getModels() {
+    public List<OBJModelInstance<CarRenderState>> getModels() {
         return modelInstances;
     }
 

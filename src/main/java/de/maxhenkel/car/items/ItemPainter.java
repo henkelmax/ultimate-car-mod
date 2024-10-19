@@ -10,7 +10,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -29,8 +28,8 @@ public class ItemPainter extends Item {
 
     private final boolean isYellow;
 
-    public ItemPainter(boolean isYellow) {
-        super(new Item.Properties().stacksTo(1).durability(1024));
+    public ItemPainter(Properties properties, boolean isYellow) {
+        super(properties.stacksTo(1).durability(1024));
         this.isYellow = isYellow;
     }
 
@@ -43,7 +42,7 @@ public class ItemPainter extends Item {
     }
 
     @Override
-    public InteractionResultHolder<ItemStack> use(Level worldIn, Player playerIn, InteractionHand handIn) {
+    public InteractionResult use(Level worldIn, Player playerIn, InteractionHand handIn) {
         if (playerIn.isShiftKeyDown()) {
             if (playerIn instanceof ServerPlayer serverPlayer) {
                 serverPlayer.openMenu(new MenuProvider() {

@@ -22,12 +22,7 @@ public class KeyRecipe extends CustomRecipe {
     }
 
     @Override
-    public ItemStack getResultItem(HolderLookup.Provider provider) {
-        return new ItemStack(ModItems.KEY.get());
-    }
-
-    @Override
-    public RecipeSerializer<?> getSerializer() {
+    public RecipeSerializer<? extends CustomRecipe> getSerializer() {
         return Main.CRAFTING_SPECIAL_KEY.get();
     }
 
@@ -97,15 +92,6 @@ public class KeyRecipe extends CustomRecipe {
         ItemStack out = ItemKey.getKeyForCar(uuid);
 
         return out;
-    }
-
-    @Override
-    public boolean canCraftInDimensions(int width, int height) {
-        if (width > 1 && height > 1) {
-            return true;
-        }
-
-        return false;
     }
 
 }

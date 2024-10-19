@@ -10,8 +10,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemNameBlockItem;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
@@ -21,10 +20,10 @@ import net.neoforged.neoforge.common.SpecialPlantable;
 import net.neoforged.neoforge.common.Tags;
 import org.jetbrains.annotations.Nullable;
 
-public class ItemCanolaSeed extends ItemNameBlockItem implements SpecialPlantable {
+public class ItemCanolaSeed extends BlockItem implements SpecialPlantable {
 
-    public ItemCanolaSeed() {
-        super(ModBlocks.CANOLA_CROP.get(), new Item.Properties());
+    public ItemCanolaSeed(Properties properties) {
+        super(ModBlocks.CANOLA_CROP.get(), properties.useItemDescriptionPrefix());
     }
 
     @Override

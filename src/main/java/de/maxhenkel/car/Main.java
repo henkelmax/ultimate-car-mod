@@ -8,6 +8,7 @@ import de.maxhenkel.car.blocks.tileentity.render.TileEntitySpecialRendererSign;
 import de.maxhenkel.car.blocks.tileentity.render.TileEntitySpecialRendererSplitTank;
 import de.maxhenkel.car.blocks.tileentity.render.TileEntitySpecialRendererTank;
 import de.maxhenkel.car.blocks.tileentity.render.TileentitySpecialRendererGasStation;
+import de.maxhenkel.car.blocks.tileentity.render.item.TankItemTileEntityRenderer;
 import de.maxhenkel.car.commands.CommandCarDemo;
 import de.maxhenkel.car.config.ClientConfig;
 import de.maxhenkel.car.config.FuelConfig;
@@ -28,6 +29,7 @@ import de.maxhenkel.car.recipes.*;
 import de.maxhenkel.car.sounds.ModSounds;
 import de.maxhenkel.car.villagers.VillagerEvents;
 import de.maxhenkel.corelib.CommonRegistry;
+import de.maxhenkel.corelib.client.CustomRenderItemExtension;
 import de.maxhenkel.corelib.config.DynamicConfig;
 import de.maxhenkel.corelib.dataserializers.DataSerializerItemList;
 import de.maxhenkel.tools.EntityTools;
@@ -43,20 +45,18 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.syncher.EntityDataSerializer;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.util.Unit;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.ai.village.poi.PoiType;
-import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.inventory.MenuType;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraft.world.item.crafting.SimpleCraftingRecipeSerializer;
 import net.minecraft.world.level.block.ComposterBlock;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.storage.loot.functions.LootItemFunctionType;
@@ -125,12 +125,10 @@ public class Main {
 
     private static final DeferredRegister<RecipeType<?>> RECIPE_TYPE_REGISTER = DeferredRegister.create(BuiltInRegistries.RECIPE_TYPE, Main.MODID);
     public static final DeferredHolder<RecipeType<?>, RecipeType<BlastFurnaceRecipe>> RECIPE_TYPE_BLAST_FURNACE = RECIPE_TYPE_REGISTER.register("blast_furnace", () ->
-            new RecipeType<BlastFurnaceRecipe>() {
-            }
+            RecipeType.simple(ResourceLocation.fromNamespaceAndPath(Main.MODID, "blast_furnace"))
     );
     public static final DeferredHolder<RecipeType<?>, RecipeType<OilMillRecipe>> RECIPE_TYPE_OIL_MILL = RECIPE_TYPE_REGISTER.register("oil_mill", () ->
-            new RecipeType<OilMillRecipe>() {
-            }
+            RecipeType.simple(ResourceLocation.fromNamespaceAndPath(Main.MODID, "oil_mill"))
     );
 
     private static final DeferredRegister<EntityDataSerializer<?>> ENTITY_DATA_SERIALIZER_REGISTER = DeferredRegister.create(NeoForgeRegistries.Keys.ENTITY_DATA_SERIALIZERS, Main.MODID);
@@ -197,12 +195,6 @@ public class Main {
         ComposterBlock.COMPOSTABLES.put(ModItems.CANOLA_SEEDS.get(), 0.3F);
         ComposterBlock.COMPOSTABLES.put(ModItems.CANOLA_CAKE.get(), 0.5F);
         ComposterBlock.COMPOSTABLES.put(ModItems.CANOLA.get(), 0.65F);
-
-        Villager.WANTED_ITEMS = ImmutableSet.<Item>builder()
-                .addAll(Villager.WANTED_ITEMS)
-                .add(ModItems.CANOLA_SEEDS.get())
-                .add(ModItems.CANOLA.get())
-                .build();
     }
 
     public void onRegisterPayloadHandler(RegisterPayloadHandlersEvent event) {
@@ -376,40 +368,40 @@ public class Main {
     private static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITY_REGISTER = DeferredRegister.create(BuiltInRegistries.BLOCK_ENTITY_TYPE, Main.MODID);
 
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<TileEntityGenerator>> GENERATOR_TILE_ENTITY_TYPE = BLOCK_ENTITY_REGISTER.register("generator", () ->
-            BlockEntityType.Builder.of(TileEntityGenerator::new, ModBlocks.GENERATOR.get()).build(null)
+            new BlockEntityType<>(TileEntityGenerator::new, ModBlocks.GENERATOR.get())
     );
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<TileEntityBackmixReactor>> BACKMIX_REACTOR_TILE_ENTITY_TYPE = BLOCK_ENTITY_REGISTER.register("backmix_reactor", () ->
-            BlockEntityType.Builder.of(TileEntityBackmixReactor::new, ModBlocks.BACKMIX_REACTOR.get()).build(null)
+            new BlockEntityType<>(TileEntityBackmixReactor::new, ModBlocks.BACKMIX_REACTOR.get())
     );
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<TileEntityBlastFurnace>> BLAST_FURNACE_TILE_ENTITY_TYPE = BLOCK_ENTITY_REGISTER.register("blast_furnace", () ->
-            BlockEntityType.Builder.of(TileEntityBlastFurnace::new, ModBlocks.BLAST_FURNACE.get()).build(null)
+            new BlockEntityType<>(TileEntityBlastFurnace::new, ModBlocks.BLAST_FURNACE.get())
     );
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<TileEntityCable>> CABLE_TILE_ENTITY_TYPE = BLOCK_ENTITY_REGISTER.register("cable", () ->
-            BlockEntityType.Builder.of(TileEntityCable::new, ModBlocks.CABLE.get()).build(null)
+            new BlockEntityType<>(TileEntityCable::new, ModBlocks.CABLE.get())
     );
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<TileEntityCarWorkshop>> CAR_WORKSHOP_TILE_ENTITY_TYPE = BLOCK_ENTITY_REGISTER.register("car_workshop", () ->
-            BlockEntityType.Builder.of(TileEntityCarWorkshop::new, ModBlocks.CAR_WORKSHOP.get()).build(null)
+            new BlockEntityType<>(TileEntityCarWorkshop::new, ModBlocks.CAR_WORKSHOP.get())
     );
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<TileEntityDynamo>> DYNAMO_TILE_ENTITY_TYPE = BLOCK_ENTITY_REGISTER.register("dynamo", () ->
-            BlockEntityType.Builder.of(TileEntityDynamo::new, ModBlocks.DYNAMO.get()).build(null)
+            new BlockEntityType<>(TileEntityDynamo::new, ModBlocks.DYNAMO.get())
     );
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<TileEntityFluidExtractor>> FLUID_EXTRACTOR_TILE_ENTITY_TYPE = BLOCK_ENTITY_REGISTER.register("fluid_extractor", () ->
-            BlockEntityType.Builder.of(TileEntityFluidExtractor::new, ModBlocks.FLUID_EXTRACTOR.get()).build(null)
+            new BlockEntityType<>(TileEntityFluidExtractor::new, ModBlocks.FLUID_EXTRACTOR.get())
     );
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<TileEntityOilMill>> OIL_MILL_TILE_ENTITY_TYPE = BLOCK_ENTITY_REGISTER.register("oil_mill", () ->
-            BlockEntityType.Builder.of(TileEntityOilMill::new, ModBlocks.OIL_MILL.get()).build(null)
+            new BlockEntityType<>(TileEntityOilMill::new, ModBlocks.OIL_MILL.get())
     );
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<TileEntitySign>> SIGN_TILE_ENTITY_TYPE = BLOCK_ENTITY_REGISTER.register("sign", () ->
-            BlockEntityType.Builder.of(TileEntitySign::new, ModBlocks.SIGN.get()).build(null)
+            new BlockEntityType<>(TileEntitySign::new, ModBlocks.SIGN.get())
     );
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<TileEntitySplitTank>> SPLIT_TANK_TILE_ENTITY_TYPE = BLOCK_ENTITY_REGISTER.register("split_tank", () ->
-            BlockEntityType.Builder.of(TileEntitySplitTank::new, ModBlocks.SPLIT_TANK.get()).build(null)
+            new BlockEntityType<>(TileEntitySplitTank::new, ModBlocks.SPLIT_TANK.get())
     );
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<TileEntityTank>> TANK_TILE_ENTITY_TYPE = BLOCK_ENTITY_REGISTER.register("tank", () ->
-            BlockEntityType.Builder.of(TileEntityTank::new, ModBlocks.TANK.get()).build(null)
+            new BlockEntityType<>(TileEntityTank::new, ModBlocks.TANK.get())
     );
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<TileEntityGasStation>> GAS_STATION_TILE_ENTITY_TYPE = BLOCK_ENTITY_REGISTER.register("gas_station", () ->
-            BlockEntityType.Builder.of(TileEntityGasStation::new, ModBlocks.GAS_STATION.get()).build(null)
+            new BlockEntityType<>(TileEntityGasStation::new, ModBlocks.GAS_STATION.get())
     );
 
     public void onRegisterClientExtensions(RegisterClientExtensionsEvent event) {
@@ -418,6 +410,8 @@ public class Main {
         event.registerFluidType(ModFluids.METHANOL_TYPE.get().getExtensions(), ModFluids.METHANOL_TYPE.get());
         event.registerFluidType(ModFluids.GLYCERIN_TYPE.get().getExtensions(), ModFluids.GLYCERIN_TYPE.get());
         event.registerFluidType(ModFluids.CANOLA_METHANOL_MIX_TYPE.get().getExtensions(), ModFluids.CANOLA_METHANOL_MIX_TYPE.get());
+
+        event.registerItem(new CustomRenderItemExtension(new TankItemTileEntityRenderer()), ModItems.TANK);
     }
 
     public void onRegisterCapabilities(RegisterCapabilitiesEvent event) {
@@ -474,8 +468,7 @@ public class Main {
     }
 
     private static final DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZER_REGISTER = DeferredRegister.create(BuiltInRegistries.RECIPE_SERIALIZER, Main.MODID);
-    public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<KeyRecipe>> CRAFTING_SPECIAL_KEY = RECIPE_SERIALIZER_REGISTER.register("crafting_special_key", () ->
-            new SimpleCraftingRecipeSerializer<>(KeyRecipe::new)
+    public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializerKey> CRAFTING_SPECIAL_KEY = RECIPE_SERIALIZER_REGISTER.register("crafting_special_key", RecipeSerializerKey::new
     );
     public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<BlastFurnaceRecipe>> CRAFTING_BLAST_FURNACE = RECIPE_SERIALIZER_REGISTER.register("blast_furnace", () ->
             new RecipeSerializerBlastFurnace(BlastFurnaceRecipe::new)

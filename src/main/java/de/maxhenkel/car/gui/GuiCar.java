@@ -5,6 +5,7 @@ import de.maxhenkel.car.entity.car.base.EntityCarInventoryBase;
 import de.maxhenkel.corelib.inventory.ScreenBase;
 import de.maxhenkel.corelib.math.MathUtils;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
@@ -110,7 +111,7 @@ public class GuiCar extends ScreenBase<ContainerCar> {
         int scaled = (int) (72F * percent / 100D);
         int i = this.leftPos;
         int j = this.topPos;
-        guiGraphics.blit(CAR_GUI_TEXTURE, i + 8, j + 20, 176, 0, scaled, 10);
+        guiGraphics.blit(RenderType::guiTextured, CAR_GUI_TEXTURE, i + 8, j + 20, 176, 0, scaled, 10, 256,256);
     }
 
     public void drawDamage(GuiGraphics guiGraphics, float percent) {
@@ -118,7 +119,7 @@ public class GuiCar extends ScreenBase<ContainerCar> {
         int scaled = (int) (72F * percent / 100D);
         int i = this.leftPos;
         int j = this.topPos;
-        guiGraphics.blit(CAR_GUI_TEXTURE, i + 8, j + 46, 176, 10, scaled, 10);
+        guiGraphics.blit(RenderType::guiTextured, CAR_GUI_TEXTURE, i + 8, j + 46, 176, 10, scaled, 10, 256,256);
     }
 
     public void drawTemp(GuiGraphics guiGraphics, float percent) {
@@ -126,7 +127,7 @@ public class GuiCar extends ScreenBase<ContainerCar> {
         int scaled = (int) (72F * percent);
         int i = this.leftPos;
         int j = this.topPos;
-        guiGraphics.blit(CAR_GUI_TEXTURE, i + 96, j + 46, 176, 30, scaled, 10);
+        guiGraphics.blit(RenderType::guiTextured, CAR_GUI_TEXTURE, i + 96, j + 46, 176, 30, scaled, 10, 256,256);
     }
 
     public void drawBattery(GuiGraphics guiGraphics, float percent) {
@@ -134,7 +135,7 @@ public class GuiCar extends ScreenBase<ContainerCar> {
         int scaled = (int) (72F * percent);
         int i = this.leftPos;
         int j = this.topPos;
-        guiGraphics.blit(CAR_GUI_TEXTURE, i + 96, j + 20, 176, 20, scaled, 10);
+        guiGraphics.blit(RenderType::guiTextured, CAR_GUI_TEXTURE, i + 96, j + 20, 176, 20, scaled, 10, 256,256);
     }
 
 }

@@ -1,39 +1,33 @@
 package de.maxhenkel.car.blocks;
 
-import de.maxhenkel.corelib.block.IItemBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.tags.FluidTags;
-import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.Item;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.material.MapColor;
 
 import javax.annotation.Nullable;
 
-public class BlockSlope extends BlockBase implements IItemBlock, SimpleWaterloggedBlock {
+public class BlockSlope extends BlockBase implements SimpleWaterloggedBlock {
 
-    public static final DirectionProperty FACING = DirectionProperty.create("facing", Direction.Plane.HORIZONTAL);
+    public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
-    public BlockSlope() {
-        super(Properties.of().mapColor(MapColor.COLOR_BLACK).strength(2.2F, 20F).sound(SoundType.STONE));
+    public BlockSlope(Properties properties) {
+        super(properties.mapColor(MapColor.COLOR_BLACK).strength(2.2F, 20F).sound(SoundType.STONE));
 
         registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(WATERLOGGED, false));
-    }
-
-    @Override
-    public Item toItem() {
-        return new BlockItem(this, new Item.Properties());
     }
 
     @Nullable
@@ -44,11 +38,11 @@ public class BlockSlope extends BlockBase implements IItemBlock, SimpleWaterlogg
     }
 
     @Override
-    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor worldIn, BlockPos currentPos, BlockPos facingPos) {
-        if (stateIn.getValue(WATERLOGGED)) {
-            worldIn.scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(worldIn));
+    protected BlockState updateShape(BlockState state, LevelReader level, ScheduledTickAccess tickAccess, BlockPos pos, Direction direction, BlockPos pos1, BlockState state1, RandomSource randomSource) {
+        if (state.getValue(WATERLOGGED)) {
+            tickAccess.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
         }
-        return super.updateShape(stateIn, facing, facingState, worldIn, currentPos, facingPos);
+        return super.updateShape(state, level, tickAccess, pos, direction, pos1, state1, randomSource);
     }
 
     @Override

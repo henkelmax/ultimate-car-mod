@@ -12,8 +12,8 @@ import net.minecraft.world.item.Items;
 
 public class ItemCanolaCake extends Item {
 
-    public ItemCanolaCake() {
-        super(new Item.Properties());
+    public ItemCanolaCake(Properties properties) {
+        super(properties);
     }
 
     @Override

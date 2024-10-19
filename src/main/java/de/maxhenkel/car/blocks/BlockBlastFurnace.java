@@ -8,7 +8,7 @@ import de.maxhenkel.corelib.fluid.FluidUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -23,8 +23,8 @@ import javax.annotation.Nullable;
 
 public class BlockBlastFurnace extends BlockGui<TileEntityBlastFurnace> {
 
-    protected BlockBlastFurnace() {
-        super(SoundType.METAL, 3F, 3F);
+    protected BlockBlastFurnace(Properties properties) {
+        super(properties, SoundType.METAL, 3F, 3F);
     }
 
     @Nullable
@@ -34,9 +34,9 @@ public class BlockBlastFurnace extends BlockGui<TileEntityBlastFurnace> {
     }
 
     @Override
-    protected ItemInteractionResult useItemOn(ItemStack itemStack, BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
+    protected InteractionResult useItemOn(ItemStack itemStack, BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
         if (FluidUtils.tryFluidInteraction(player, interactionHand, level, blockPos)) {
-            return ItemInteractionResult.SUCCESS;
+            return InteractionResult.SUCCESS;
         }
         return super.useItemOn(itemStack, blockState, level, blockPos, player, interactionHand, blockHitResult);
     }

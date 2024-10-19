@@ -3,7 +3,6 @@ package de.maxhenkel.car.blocks;
 import de.maxhenkel.car.blocks.tileentity.TileEntitySplitTank;
 import de.maxhenkel.car.gui.ContainerSplitTank;
 import de.maxhenkel.car.gui.TileEntityContainerProvider;
-import de.maxhenkel.corelib.block.IItemBlock;
 import de.maxhenkel.corelib.blockentity.SimpleBlockEntityTicker;
 import de.maxhenkel.corelib.fluid.FluidUtils;
 import net.minecraft.core.BlockPos;
@@ -34,23 +33,10 @@ import net.neoforged.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
 
-public class BlockSplitTank extends BlockBase implements EntityBlock, IItemBlock {
+public class BlockSplitTank extends BlockBase implements EntityBlock {
 
-    protected BlockSplitTank() {
-        super(Properties.of().mapColor(MapColor.METAL).strength(3F).sound(SoundType.STONE).noOcclusion());
-    }
-
-    @Override
-    public Item toItem() {
-        return new BlockItem(this, new Item.Properties()) {
-            @Override
-            protected boolean canPlace(BlockPlaceContext context, BlockState state) {
-                if (!context.getLevel().isEmptyBlock(context.getClickedPos().above())) {
-                    return false;
-                }
-                return super.canPlace(context, state);
-            }
-        };
+    protected BlockSplitTank(Properties properties) {
+        super(properties.mapColor(MapColor.METAL).strength(3F).sound(SoundType.STONE).noOcclusion());
     }
 
     @Nullable
@@ -60,34 +46,29 @@ public class BlockSplitTank extends BlockBase implements EntityBlock, IItemBlock
     }
 
     @Override
-    protected ItemInteractionResult useItemOn(ItemStack itemStack, BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
+    protected InteractionResult useItemOn(ItemStack itemStack, BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
         if (FluidUtils.tryFluidInteraction(player, interactionHand, level, blockPos)) {
-            return ItemInteractionResult.SUCCESS;
+            return InteractionResult.SUCCESS;
         }
 
         if (!player.isShiftKeyDown()) {
             BlockEntity te = level.getBlockEntity(blockPos);
 
             if (!(te instanceof TileEntitySplitTank)) {
-                return ItemInteractionResult.FAIL;
+                return InteractionResult.FAIL;
             }
             TileEntitySplitTank splitTank = (TileEntitySplitTank) te;
             if (player instanceof ServerPlayer) {
                 TileEntityContainerProvider.openGui((ServerPlayer) player, splitTank, (i, playerInventory, playerEntity) -> new ContainerSplitTank(i, splitTank, playerInventory));
             }
-            return ItemInteractionResult.SUCCESS;
+            return InteractionResult.SUCCESS;
         }
 
-        return ItemInteractionResult.FAIL;
+        return InteractionResult.FAIL;
     }
 
     @Override
     public VoxelShape getCollisionShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
-        return Block.box(0D, 0D, 0D, 16D, 24D, 16D);
-    }
-
-    @Override
-    public VoxelShape getOcclusionShape(BlockState state, BlockGetter worldIn, BlockPos pos) {
         return Block.box(0D, 0D, 0D, 16D, 24D, 16D);
     }
 
@@ -143,6 +124,22 @@ public class BlockSplitTank extends BlockBase implements EntityBlock, IItemBlock
     @Override
     public BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
         return new TileEntitySplitTank(blockPos, blockState);
+    }
+
+    public static class SplitTankItem extends BlockItem {
+
+        public SplitTankItem(Block block, Properties properties) {
+            super(block, properties.useBlockDescriptionPrefix());
+        }
+
+        @Override
+        protected boolean canPlace(BlockPlaceContext context, BlockState state) {
+            if (!context.getLevel().isEmptyBlock(context.getClickedPos().above())) {
+                return false;
+            }
+            return super.canPlace(context, state);
+        }
+
     }
 
 }

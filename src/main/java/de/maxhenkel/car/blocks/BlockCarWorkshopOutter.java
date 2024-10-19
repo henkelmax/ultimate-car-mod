@@ -1,13 +1,10 @@
 package de.maxhenkel.car.blocks;
 
 import de.maxhenkel.car.blocks.tileentity.TileEntityCarWorkshop;
-import de.maxhenkel.corelib.block.IItemBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
@@ -23,19 +20,14 @@ import net.minecraft.world.phys.BlockHitResult;
 
 import javax.annotation.Nullable;
 
-public class BlockCarWorkshopOutter extends BlockBase implements IItemBlock {
+public class BlockCarWorkshopOutter extends BlockBase {
 
     public static final IntegerProperty POSITION = IntegerProperty.create("position", 0, 8);
 
-    public BlockCarWorkshopOutter() {
-        super(Properties.of().mapColor(MapColor.COLOR_GRAY).strength(3F).sound(SoundType.METAL));
+    public BlockCarWorkshopOutter(Properties properties) {
+        super(properties.mapColor(MapColor.COLOR_GRAY).strength(3F).sound(SoundType.METAL));
 
         this.registerDefaultState(stateDefinition.any().setValue(POSITION, 0));
-    }
-
-    @Override
-    public Item toItem() {
-        return new BlockItem(this, new Item.Properties());
     }
 
     @Override

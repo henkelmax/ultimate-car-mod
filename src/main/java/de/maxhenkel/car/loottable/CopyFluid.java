@@ -26,7 +26,7 @@ public class CopyFluid extends LootItemConditionalFunction {
 
     @Override
     public ItemStack run(ItemStack stack, LootContext context) {
-        BlockEntity tileEntity = context.getParamOrNull(LootContextParams.BLOCK_ENTITY);
+        BlockEntity tileEntity = context.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
         if (!(tileEntity instanceof TileEntityTank tank)) {
             return stack;
         }

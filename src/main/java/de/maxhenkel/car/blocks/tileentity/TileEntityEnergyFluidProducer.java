@@ -8,11 +8,13 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.WorldlyContainer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeInput;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -58,6 +60,8 @@ public abstract class TileEntityEnergyFluidProducer extends TileEntityBase imple
                     return storedEnergy;
                 case 2:
                     return currentMillibuckets;
+                case 3:
+                    return clientTimeToGenerate;
                 default:
                     return 0;
             }
@@ -75,29 +79,32 @@ public abstract class TileEntityEnergyFluidProducer extends TileEntityBase imple
                 case 2:
                     currentMillibuckets = value;
                     break;
+                case 3:
+                    clientTimeToGenerate = value;
+                    break;
             }
         }
 
         @Override
         public int getCount() {
-            return 3;
+            return 4;
         }
     };
 
-    public EnergyFluidProducerRecipe getRecipe() {
-        return level.getRecipeManager().getRecipeFor(recipeType, this, level).map(recipeHolder -> recipeHolder.value()).orElse(null);
+    public EnergyFluidProducerRecipe getRecipe(ServerLevel serverLevel) {
+        return serverLevel.recipeAccess().getRecipeFor(recipeType, this, level).map(RecipeHolder::value).orElse(null);
     }
 
     @Override
     public void tick() {
-        if (level.isClientSide) {
+        if (!(level instanceof ServerLevel serverLevel)) {
             return;
         }
 
         ItemStack input = inventory.getItem(0);
         ItemStack output = inventory.getItem(1);
 
-        EnergyFluidProducerRecipe recipe = getRecipe();
+        EnergyFluidProducerRecipe recipe = getRecipe(serverLevel);
 
         if (recipe == null) {
             time = 0;
@@ -267,12 +274,18 @@ public abstract class TileEntityEnergyFluidProducer extends TileEntityBase imple
         return storedEnergy;
     }
 
-    public int getTimeToGenerate() {
-        EnergyFluidProducerRecipe recipe = getRecipe();
+    public int getTimeToGenerate(ServerLevel serverLevel) {
+        EnergyFluidProducerRecipe recipe = getRecipe(serverLevel);
         if (recipe == null) {
             return 0;
         }
         return recipe.getDuration();
+    }
+
+    private int clientTimeToGenerate;
+
+    public int getClientTimeToGenerate() {
+        return clientTimeToGenerate;
     }
 
     public int getGeneratingTime() {

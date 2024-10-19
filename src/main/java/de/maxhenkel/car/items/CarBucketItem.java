@@ -10,8 +10,8 @@ import net.neoforged.neoforge.fluids.capability.wrappers.FluidBucketWrapper;
 
 public class CarBucketItem extends BucketItem {
 
-    public CarBucketItem(Fluid fluid) {
-        super(fluid, new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1));
+    public CarBucketItem(Fluid fluid, Properties properties) {
+        super(fluid, properties.craftRemainder(Items.BUCKET).stacksTo(1));
     }
 
     public static IFluidHandlerItem getFluidHandler(ItemStack stack) {

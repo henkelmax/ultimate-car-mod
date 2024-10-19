@@ -126,7 +126,7 @@ public abstract class EntityCarFuelBase extends EntityCarDamageBase implements I
             return null;
         }
 
-        return BuiltInRegistries.FLUID.get(ResourceLocation.parse(fuelType));
+        return BuiltInRegistries.FLUID.getValue(ResourceLocation.parse(fuelType));
     }
 
     public int getFuelAmount() {

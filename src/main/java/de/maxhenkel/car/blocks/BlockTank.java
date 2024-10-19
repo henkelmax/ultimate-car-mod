@@ -3,16 +3,14 @@ package de.maxhenkel.car.blocks;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.blocks.tileentity.TileEntityTank;
 import de.maxhenkel.car.blocks.tileentity.render.item.TankItemTileEntityRenderer;
-import de.maxhenkel.corelib.block.IItemBlock;
 import de.maxhenkel.corelib.blockentity.SimpleBlockEntityTicker;
-import de.maxhenkel.corelib.client.CustomRendererBlockItem;
 import de.maxhenkel.corelib.client.ItemRenderer;
 import de.maxhenkel.corelib.fluid.FluidUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -20,7 +18,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.SoundType;
@@ -43,21 +40,10 @@ import net.neoforged.neoforge.items.wrapper.InvWrapper;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class BlockTank extends BlockBase implements EntityBlock, IItemBlock {
+public class BlockTank extends BlockBase implements EntityBlock {
 
-    protected BlockTank() {
-        super(Block.Properties.of().mapColor(MapColor.METAL).strength(0.5F).sound(SoundType.GLASS).noOcclusion());
-    }
-
-    @Override
-    public Item toItem() {
-        return new CustomRendererBlockItem(this, new Item.Properties().stacksTo(1)) {
-            @OnlyIn(Dist.CLIENT)
-            @Override
-            public ItemRenderer createItemRenderer() {
-                return new TankItemTileEntityRenderer();
-            }
-        };
+    protected BlockTank(Properties properties) {
+        super(properties.mapColor(MapColor.METAL).strength(0.5F).sound(SoundType.GLASS).noOcclusion());
     }
 
     @Nullable
@@ -105,8 +91,8 @@ public class BlockTank extends BlockBase implements EntityBlock, IItemBlock {
     }
 
     @Override
-    protected ItemInteractionResult useItemOn(ItemStack itemStack, BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
-        return FluidUtils.tryFluidInteraction(player, interactionHand, level, blockPos) ? ItemInteractionResult.SUCCESS : ItemInteractionResult.FAIL;
+    protected InteractionResult useItemOn(ItemStack itemStack, BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
+        return FluidUtils.tryFluidInteraction(player, interactionHand, level, blockPos) ? InteractionResult.SUCCESS : InteractionResult.FAIL;
     }
 
     public static boolean handleEmpty(ItemStack stack, Level worldIn, BlockPos pos, Player playerIn, InteractionHand hand) {
@@ -143,7 +129,7 @@ public class BlockTank extends BlockBase implements EntityBlock, IItemBlock {
     }
 
     @Override
-    public boolean propagatesSkylightDown(BlockState state, BlockGetter world, BlockPos pos) {
+    protected boolean propagatesSkylightDown(BlockState state) {
         return true;
     }
 

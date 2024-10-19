@@ -6,7 +6,6 @@ import de.maxhenkel.car.entity.car.base.EntityCarLockBase;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -18,12 +17,12 @@ import java.util.UUID;
 
 public class ItemKey extends Item {
 
-    public ItemKey() {
-        super(new Item.Properties().stacksTo(1));
+    public ItemKey(Properties properties) {
+        super(properties.stacksTo(1));
     }
 
     @Override
-    public InteractionResultHolder<ItemStack> use(Level worldIn, Player playerIn, InteractionHand handIn) {
+    public InteractionResult use(Level worldIn, Player playerIn, InteractionHand handIn) {
         ItemStack stack = playerIn.getItemInHand(handIn);
         UUID carUUID = getCar(stack);
 
@@ -31,27 +30,27 @@ public class ItemKey extends Item {
             if (worldIn.isClientSide) {
                 playerIn.displayClientMessage(Component.translatable("message.key_no_car"), true);
             }
-            return new InteractionResultHolder<>(InteractionResult.PASS, stack);
+            return InteractionResult.PASS;
         } else if (worldIn.isClientSide) {
-            return new InteractionResultHolder<>(InteractionResult.SUCCESS, stack);
+            return InteractionResult.SUCCESS;
         }
 
         List<EntityCarLockBase> cars = worldIn.getEntitiesOfClass(EntityCarLockBase.class, new AABB(playerIn.getX() - 25D, playerIn.getY() - 25D, playerIn.getZ() - 25D, playerIn.getX() + 25D, playerIn.getY() + 25D, playerIn.getZ() + 25D), new PredicateUUID(carUUID));
 
         if (cars.isEmpty()) {
             playerIn.displayClientMessage(Component.translatable("message.car_out_of_range"), true);
-            return new InteractionResultHolder<>(InteractionResult.SUCCESS, stack);
+            return InteractionResult.SUCCESS;
         }
 
         EntityCarLockBase car = cars.get(0);
 
         if (car.getPassengers().stream().anyMatch(entity -> entity == playerIn)) {
-            return new InteractionResultHolder<>(InteractionResult.SUCCESS, stack);
+            return InteractionResult.SUCCESS;
         }
 
         car.setLocked(!car.isLocked(), true);
 
-        return new InteractionResultHolder<>(InteractionResult.SUCCESS, stack);
+        return InteractionResult.SUCCESS;
     }
 
     public static void setCar(ItemStack stack, UUID carUUID) {

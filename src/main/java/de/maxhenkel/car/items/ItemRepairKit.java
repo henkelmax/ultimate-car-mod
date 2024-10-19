@@ -10,8 +10,8 @@ import java.util.List;
 
 public class ItemRepairKit extends Item {
 
-    public ItemRepairKit() {
-        super(new Item.Properties().stacksTo(1));
+    public ItemRepairKit(Properties properties) {
+        super(properties.stacksTo(1));
     }
 
     @Override

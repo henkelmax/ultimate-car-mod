@@ -3,8 +3,7 @@ package de.maxhenkel.car.recipes;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.blocks.ModBlocks;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.*;
 
 public class BlastFurnaceRecipe extends EnergyFluidProducerRecipe {
 
@@ -13,12 +12,8 @@ public class BlastFurnaceRecipe extends EnergyFluidProducerRecipe {
     }
 
     @Override
-    public ItemStack getToastSymbol() {
-        return new ItemStack(ModBlocks.BLAST_FURNACE.get());
-    }
-
-    @Override
-    public RecipeSerializer<?> getSerializer() {
+    public RecipeSerializer<? extends Recipe<RecipeInput>> getSerializer() {
         return Main.CRAFTING_BLAST_FURNACE.get();
     }
+
 }

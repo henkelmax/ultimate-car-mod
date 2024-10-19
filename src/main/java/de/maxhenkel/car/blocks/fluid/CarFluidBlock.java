@@ -14,8 +14,8 @@ import java.util.function.Supplier;
 
 public class CarFluidBlock extends LiquidBlock {
 
-    public CarFluidBlock(Supplier<? extends FlowingFluid> fluidSupplier) {
-        super(fluidSupplier.get(), Block.Properties.of().noCollission().replaceable().sound(SoundType.EMPTY));
+    public CarFluidBlock(Properties properties, Supplier<? extends FlowingFluid> fluidSupplier) {
+        super(fluidSupplier.get(), properties.noCollission().replaceable().sound(SoundType.EMPTY));
     }
 
     @Override

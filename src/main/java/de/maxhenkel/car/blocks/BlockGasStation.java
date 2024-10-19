@@ -11,11 +11,10 @@ import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
@@ -60,21 +59,8 @@ public class BlockGasStation extends BlockOrientableHorizontal {
                     SHAPE_SLAB
             ).build();
 
-    public BlockGasStation() {
-        super(MapColor.METAL, SoundType.METAL, 4F, 50F);
-    }
-
-    @Override
-    public Item toItem() {
-        return new BlockItem(this, new Item.Properties()) {
-            @Override
-            protected boolean canPlace(BlockPlaceContext context, BlockState state) {
-                if (!context.getLevel().isEmptyBlock(context.getClickedPos().above())) {
-                    return false;
-                }
-                return super.canPlace(context, state);
-            }
-        };
+    public BlockGasStation(Properties properties) {
+        super(properties, MapColor.METAL, SoundType.METAL, 4F, 50F);
     }
 
     @Nullable
@@ -84,11 +70,11 @@ public class BlockGasStation extends BlockOrientableHorizontal {
     }
 
     @Override
-    public ItemInteractionResult useItemOn(ItemStack itemStack, BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
+    public InteractionResult useItemOn(ItemStack itemStack, BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
         BlockEntity te = level.getBlockEntity(blockPos);
 
         if (!(te instanceof TileEntityGasStation)) {
-            return ItemInteractionResult.FAIL;
+            return InteractionResult.FAIL;
         }
 
         TileEntityGasStation station = (TileEntityGasStation) te;
@@ -101,7 +87,7 @@ public class BlockGasStation extends BlockOrientableHorizontal {
             if (!fluidStack.isEmpty()) {
                 boolean success = BlockTank.handleEmpty(stack, level, blockPos, player, interactionHand);
                 if (success) {
-                    return ItemInteractionResult.SUCCESS;
+                    return InteractionResult.SUCCESS;
                 }
             }
             IFluidHandler handler = FluidUtil.getFluidHandler(stack).orElse(null);
@@ -109,7 +95,7 @@ public class BlockGasStation extends BlockOrientableHorizontal {
             if (handler != null) {
                 boolean success1 = BlockTank.handleFill(stack, level, blockPos, player, interactionHand);
                 if (success1) {
-                    return ItemInteractionResult.SUCCESS;
+                    return InteractionResult.SUCCESS;
                 }
             }
         }
@@ -118,14 +104,14 @@ public class BlockGasStation extends BlockOrientableHorizontal {
             if (player instanceof ServerPlayer) {
                 TileEntityContainerProvider.openGui((ServerPlayer) player, station, (i, playerInventory, playerEntity) -> new ContainerGasStation(i, station, playerInventory));
             }
-            return ItemInteractionResult.SUCCESS;
+            return InteractionResult.SUCCESS;
         } else if (station.isOwner(player)) {
             if (player instanceof ServerPlayer) {
                 TileEntityContainerProvider.openGui((ServerPlayer) player, station, (i, playerInventory, playerEntity) -> new ContainerGasStationAdmin(i, station, playerInventory));
             }
-            return ItemInteractionResult.SUCCESS;
+            return InteractionResult.SUCCESS;
         }
-        return ItemInteractionResult.FAIL;
+        return InteractionResult.FAIL;
     }
 
     @Override
@@ -176,6 +162,22 @@ public class BlockGasStation extends BlockOrientableHorizontal {
     @Override
     public BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
         return new TileEntityGasStation(blockPos, blockState);
+    }
+
+    public static class GasStationItem extends BlockItem {
+
+        public GasStationItem(Block block, Properties properties) {
+            super(block, properties.useBlockDescriptionPrefix());
+        }
+
+        @Override
+        protected boolean canPlace(BlockPlaceContext context, BlockState state) {
+            if (!context.getLevel().isEmptyBlock(context.getClickedPos().above())) {
+                return false;
+            }
+            return super.canPlace(context, state);
+        }
+
     }
 
 }

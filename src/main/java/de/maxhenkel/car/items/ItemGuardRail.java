@@ -9,7 +9,6 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
@@ -20,8 +19,8 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 
 public class ItemGuardRail extends BlockItem {
 
-    public ItemGuardRail() {
-        super(ModBlocks.GUARD_RAIL.get(), new Item.Properties());
+    public ItemGuardRail(Properties properties) {
+        super(ModBlocks.GUARD_RAIL.get(), properties.useBlockDescriptionPrefix());
     }
 
     @Override
@@ -73,7 +72,7 @@ public class ItemGuardRail extends BlockItem {
             itemstack.shrink(1);
         }
 
-        return InteractionResult.sidedSuccess(world.isClientSide);
+        return InteractionResult.SUCCESS;
     }
 
 }

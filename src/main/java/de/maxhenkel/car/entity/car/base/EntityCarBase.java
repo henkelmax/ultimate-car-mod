@@ -22,6 +22,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
@@ -149,7 +150,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
                     float damage = speed * 10;
                     tasks.add(() -> {
                         ServerLevel serverLevel = (ServerLevel) level();
-                        Optional<Holder.Reference<DamageType>> holder = serverLevel.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolder(DamageSourceCar.DAMAGE_CAR_TYPE);
+                        Optional<Holder.Reference<DamageType>> holder = serverLevel.registryAccess().holder(DamageSourceCar.DAMAGE_CAR_TYPE);
                         holder.ifPresent(damageTypeReference -> entityIn.hurt(new DamageSource(damageTypeReference, this), damage));
                     });
                 }
@@ -210,7 +211,9 @@ public abstract class EntityCarBase extends EntityVehicleBase {
     }
 
     public void destroyCar(Player player, boolean dropParts) {
-        kill();
+        if (player instanceof ServerPlayer serverPlayer) {
+            kill(serverPlayer.serverLevel());
+        }
     }
 
     private void controlCar() {
