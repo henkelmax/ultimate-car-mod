@@ -6,21 +6,11 @@
     "STS"
   ],
   "key": {
-    "I": {
-      "tag": "c:ingots/iron"
-    },
-    "B": {
-      "item": "minecraft:iron_block"
-    },
-    "C": {
-      "item": "minecraft:redstone"
-    },
-    "T": {
-      "item": "car:tank"
-    },
-    "S": {
-      "item": "minecraft:smooth_stone_slab"
-    }
+    "I": "#c:ingots/iron",
+    "B": "minecraft:iron_block",
+    "C": "minecraft:redstone",
+    "T": "car:tank",
+    "S": "minecraft:smooth_stone_slab"
   },
   "result": {
     "id": "car:gas_station",

@@ -6,18 +6,10 @@
     "ITI"
   ],
   "key": {
-    "I": {
-      "tag": "c:ingots/iron"
-    },
-    "T": {
-      "item": "car:tank"
-    },
-    "E": {
-      "item": "car:engine_3_cylinder"
-    },
-    "C": {
-      "item": "minecraft:redstone"
-    }
+    "I": "#c:ingots/iron",
+    "T": "car:tank",
+    "E": "car:engine_3_cylinder",
+    "C": "minecraft:redstone"
   },
   "result": {
     "id": "car:generator",

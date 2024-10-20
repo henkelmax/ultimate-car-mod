@@ -6,12 +6,8 @@
     "III"
   ],
   "key": {
-    "I": {
-      "item": "minecraft:iron_block"
-    },
-    "T": {
-      "item": "car:tank"
-    }
+    "I": "minecraft:iron_block",
+    "T": "car:tank"
   },
   "result": {
     "id": "car:large_tank",

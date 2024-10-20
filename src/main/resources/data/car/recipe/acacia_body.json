@@ -6,9 +6,7 @@
     "WWW"
   ],
   "key": {
-    "W": {
-      "item": "minecraft:acacia_planks"
-    }
+    "W": "minecraft:acacia_planks"
   },
   "result": {
     "id": "car:acacia_body",

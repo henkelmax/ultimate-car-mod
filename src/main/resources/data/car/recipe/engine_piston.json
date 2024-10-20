@@ -6,12 +6,8 @@
     "S  "
   ],
   "key": {
-    "I": {
-      "tag": "c:ingots/iron"
-    },
-    "S": {
-      "tag": "c:rods/iron"
-    }
+    "I": "#c:ingots/iron",
+    "S": "#c:rods/iron"
   },
   "result": {
     "id": "car:engine_piston",

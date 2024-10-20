@@ -6,9 +6,7 @@
     "WWW"
   ],
   "key": {
-    "W": {
-      "item": "minecraft:dark_oak_planks"
-    }
+    "W": "minecraft:dark_oak_planks"
   },
   "result": {
     "id": "car:dark_oak_body",

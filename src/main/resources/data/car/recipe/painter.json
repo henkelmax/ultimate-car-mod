@@ -6,12 +6,8 @@
     "S  "
   ],
   "key": {
-    "S": {
-      "tag": "c:rods/wooden"
-    },
-    "B": {
-      "tag": "c:dyes/white"
-    }
+    "S": "#c:rods/wooden",
+    "B": "#c:dyes/white"
   },
   "result": {
     "id": "car:painter",

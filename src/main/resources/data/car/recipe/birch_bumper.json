@@ -6,12 +6,8 @@
     "   "
   ],
   "key": {
-    "W": {
-      "item": "minecraft:birch_planks"
-    },
-    "I": {
-      "tag": "c:ingots/iron"
-    }
+    "W": "minecraft:birch_planks",
+    "I": "#c:ingots/iron"
   },
   "result": {
     "id": "car:birch_bumper",

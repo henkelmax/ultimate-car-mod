@@ -5,9 +5,7 @@
     " S"
   ],
   "key": {
-    "S": {
-      "tag": "c:rods/wooden"
-    }
+    "S": "#c:rods/wooden"
   },
   "result": {
     "id": "car:crank",

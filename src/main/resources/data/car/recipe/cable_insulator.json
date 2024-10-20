@@ -4,9 +4,7 @@
     "WWW"
   ],
   "key": {
-    "W": {
-      "tag": "minecraft:wool"
-    }
+    "W": "#minecraft:wool"
   },
   "result": {
     "id": "car:cable_insulator",

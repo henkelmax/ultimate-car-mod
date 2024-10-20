@@ -6,12 +6,8 @@
     "III"
   ],
   "key": {
-    "I": {
-      "tag": "c:ingots/iron"
-    },
-    "T": {
-      "item": "car:tank"
-    }
+    "I": "#c:ingots/iron",
+    "T": "car:tank"
   },
   "result": {
     "id": "car:medium_tank",

@@ -6,12 +6,8 @@
     "WWW"
   ],
   "key": {
-    "W": {
-      "item": "minecraft:gold_ingot"
-    },
-    "I": {
-      "tag": "c:rods/iron"
-    }
+    "W": "minecraft:gold_ingot",
+    "I": "#c:rods/iron"
   },
   "result": {
     "id": "car:gold_license_plate_holder",

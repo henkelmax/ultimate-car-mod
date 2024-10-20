@@ -5,9 +5,7 @@
     "I"
   ],
   "key": {
-    "I": {
-      "tag": "c:ingots/iron"
-    }
+    "I": "#c:ingots/iron"
   },
   "result": {
     "id": "car:iron_stick",

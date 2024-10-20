@@ -6,12 +6,8 @@
     "XXX"
   ],
   "key": {
-    "X": {
-      "item": "minecraft:cobblestone"
-    },
-    "W": {
-      "item": "minecraft:charcoal"
-    }
+    "X": "minecraft:cobblestone",
+    "W": "minecraft:charcoal"
   },
   "result": {
     "id": "car:asphalt",

@@ -6,12 +6,8 @@
     "WWW"
   ],
   "key": {
-    "W": {
-      "item": "minecraft:birch_planks"
-    },
-    "I": {
-      "tag": "c:rods/iron"
-    }
+    "W": "minecraft:birch_planks",
+    "I": "#c:rods/iron"
   },
   "result": {
     "id": "car:birch_license_plate_holder",

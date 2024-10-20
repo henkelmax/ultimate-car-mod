@@ -6,12 +6,8 @@
     "   "
   ],
   "key": {
-    "W": {
-      "item": "minecraft:warped_planks"
-    },
-    "I": {
-      "tag": "c:ingots/iron"
-    }
+    "W": "minecraft:warped_planks",
+    "I": "#c:ingots/iron"
   },
   "result": {
     "id": "car:warped_bumper",

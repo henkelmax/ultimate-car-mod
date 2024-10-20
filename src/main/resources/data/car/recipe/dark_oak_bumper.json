@@ -6,12 +6,8 @@
     "   "
   ],
   "key": {
-    "W": {
-      "item": "minecraft:dark_oak_planks"
-    },
-    "I": {
-      "tag": "c:ingots/iron"
-    }
+    "W": "minecraft:dark_oak_planks",
+    "I": "#c:ingots/iron"
   },
   "result": {
     "id": "car:dark_oak_bumper",

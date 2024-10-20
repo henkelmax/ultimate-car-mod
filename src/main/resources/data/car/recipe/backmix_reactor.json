@@ -6,15 +6,9 @@
     "III"
   ],
   "key": {
-    "I": {
-      "tag": "c:ingots/iron"
-    },
-    "T": {
-      "item": "car:tank"
-    },
-    "C": {
-      "item": "minecraft:redstone"
-    }
+    "I": "#c:ingots/iron",
+    "T": "car:tank",
+    "C": "minecraft:redstone"
   },
   "result": {
     "id": "car:backmix_reactor",

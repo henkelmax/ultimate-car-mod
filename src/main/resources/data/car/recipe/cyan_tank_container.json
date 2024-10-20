@@ -6,12 +6,8 @@
     "CTC"
   ],
   "key": {
-    "C": {
-      "item": "minecraft:cyan_concrete"
-    },
-    "T": {
-      "item": "car:tank"
-    }
+    "C": "minecraft:cyan_concrete",
+    "T": "car:tank"
   },
   "result": {
     "id": "car:cyan_tank_container",

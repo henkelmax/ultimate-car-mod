@@ -6,12 +6,8 @@
     "I  "
   ],
   "key": {
-    "I": {
-      "tag": "c:ingots/iron"
-    },
-    "P": {
-      "item": "car:fluid_pipe"
-    }
+    "I": "#c:ingots/iron",
+    "P": "car:fluid_pipe"
   },
   "result": {
     "id": "car:fluid_extractor",

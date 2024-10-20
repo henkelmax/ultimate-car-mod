@@ -6,15 +6,9 @@
     "GTG"
   ],
   "key": {
-    "I": {
-      "tag": "c:ingots/iron"
-    },
-    "T": {
-      "item": "car:tank"
-    },
-    "G": {
-      "item": "minecraft:glass"
-    }
+    "I": "#c:ingots/iron",
+    "T": "car:tank",
+    "G": "minecraft:glass"
   },
   "result": {
     "id": "car:split_tank",

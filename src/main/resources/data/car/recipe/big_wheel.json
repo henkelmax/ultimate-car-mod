@@ -6,12 +6,8 @@
     "WWW"
   ],
   "key": {
-    "W": {
-      "item": "minecraft:black_wool"
-    },
-    "I": {
-      "tag": "c:ingots/iron"
-    }
+    "W": "minecraft:black_wool",
+    "I": "#c:ingots/iron"
   },
   "result": {
     "id": "car:big_wheel",

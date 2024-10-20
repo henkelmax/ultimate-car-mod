@@ -6,9 +6,7 @@
     "WWW"
   ],
   "key": {
-    "W": {
-      "item": "minecraft:spruce_planks"
-    }
+    "W": "minecraft:spruce_planks"
   },
   "result": {
     "id": "car:spruce_body",

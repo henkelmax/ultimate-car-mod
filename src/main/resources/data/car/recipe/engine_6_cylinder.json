@@ -6,12 +6,8 @@
     "III"
   ],
   "key": {
-    "I": {
-      "tag": "c:ingots/iron"
-    },
-    "E": {
-      "item": "car:engine_3_cylinder"
-    }
+    "I": "#c:ingots/iron",
+    "E": "car:engine_3_cylinder"
   },
   "result": {
     "id": "car:engine_6_cylinder",

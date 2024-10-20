@@ -6,9 +6,7 @@
     "CCC"
   ],
   "key": {
-    "C": {
-      "item": "minecraft:green_concrete"
-    }
+    "C": "minecraft:green_concrete"
   },
   "result": {
     "id": "car:green_sport_body",

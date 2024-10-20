@@ -6,12 +6,8 @@
     "   "
   ],
   "key": {
-    "W": {
-      "item": "minecraft:spruce_planks"
-    },
-    "I": {
-      "tag": "c:ingots/iron"
-    }
+    "W": "minecraft:spruce_planks",
+    "I": "#c:ingots/iron"
   },
   "result": {
     "id": "car:spruce_bumper",

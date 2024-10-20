@@ -6,9 +6,7 @@
     "WWW"
   ],
   "key": {
-    "W": {
-      "item": "minecraft:warped_planks"
-    }
+    "W": "minecraft:warped_planks"
   },
   "result": {
     "id": "car:big_warped_body",

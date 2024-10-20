@@ -6,12 +6,8 @@
     "WWW"
   ],
   "key": {
-    "W": {
-      "item": "minecraft:diamond"
-    },
-    "I": {
-      "tag": "c:rods/iron"
-    }
+    "W": "minecraft:diamond",
+    "I": "#c:rods/iron"
   },
   "result": {
     "id": "car:diamond_license_plate_holder",

@@ -6,9 +6,7 @@
     "WWW"
   ],
   "key": {
-    "W": {
-      "item": "minecraft:birch_planks"
-    }
+    "W": "minecraft:birch_planks"
   },
   "result": {
     "id": "car:birch_body",

@@ -6,9 +6,7 @@
     "WWW"
   ],
   "key": {
-    "W": {
-      "item": "minecraft:crimson_planks"
-    }
+    "W": "minecraft:crimson_planks"
   },
   "result": {
     "id": "car:big_crimson_body",

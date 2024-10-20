@@ -5,9 +5,7 @@
     "I"
   ],
   "key": {
-    "I": {
-      "tag": "c:rods/iron"
-    }
+    "I": "#c:rods/iron"
   },
   "result": {
     "id": "car:sign_post",

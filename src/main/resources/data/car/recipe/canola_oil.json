@@ -1,8 +1,6 @@
 {
   "type": "car:oil_mill",
-  "ingredient": {
-    "tag": "c:crops/canola"
-  },
+  "ingredient": "#c:crops/canola",
   "result": "car:canola_cake",
   "fluidamount": 100,
   "energy": 10,

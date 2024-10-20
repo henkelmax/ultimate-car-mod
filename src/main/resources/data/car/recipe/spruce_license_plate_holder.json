@@ -6,12 +6,8 @@
     "WWW"
   ],
   "key": {
-    "W": {
-      "item": "minecraft:spruce_planks"
-    },
-    "I": {
-      "tag": "c:rods/iron"
-    }
+    "W": "minecraft:spruce_planks",
+    "I": "#c:rods/iron"
   },
   "result": {
     "id": "car:spruce_license_plate_holder",

@@ -6,12 +6,8 @@
     "WWW"
   ],
   "key": {
-    "W": {
-      "item": "minecraft:oak_planks"
-    },
-    "I": {
-      "tag": "c:rods/iron"
-    }
+    "W": "minecraft:oak_planks",
+    "I": "#c:rods/iron"
   },
   "result": {
     "id": "car:oak_license_plate_holder",

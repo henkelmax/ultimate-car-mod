@@ -6,18 +6,10 @@
     "III"
   ],
   "key": {
-    "I": {
-      "tag": "c:ingots/iron"
-    },
-    "S": {
-      "item": "car:screw_driver"
-    },
-    "W": {
-      "item": "car:wrench"
-    },
-    "H": {
-      "item": "car:hammer"
-    }
+    "I": "#c:ingots/iron",
+    "S": "car:screw_driver",
+    "W": "car:wrench",
+    "H": "car:hammer"
   },
   "result": {
     "id": "car:repair_kit",

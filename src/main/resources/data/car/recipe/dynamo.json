@@ -6,12 +6,8 @@
     "III"
   ],
   "key": {
-    "I": {
-      "tag": "c:ingots/iron"
-    },
-    "C": {
-      "item": "minecraft:redstone"
-    }
+    "I": "#c:ingots/iron",
+    "C": "minecraft:redstone"
   },
   "result": {
     "id": "car:dynamo",

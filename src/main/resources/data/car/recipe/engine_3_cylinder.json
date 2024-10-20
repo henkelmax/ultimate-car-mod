@@ -6,15 +6,9 @@
     "BBB"
   ],
   "key": {
-    "F": {
-      "item": "minecraft:flint"
-    },
-    "P": {
-      "item": "car:engine_piston"
-    },
-    "B": {
-      "item": "minecraft:iron_block"
-    }
+    "F": "minecraft:flint",
+    "P": "car:engine_piston",
+    "B": "minecraft:iron_block"
   },
   "result": {
     "id": "car:engine_3_cylinder",

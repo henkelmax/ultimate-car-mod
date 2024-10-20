@@ -6,12 +6,8 @@
     "IGI"
   ],
   "key": {
-    "G": {
-      "item": "minecraft:glass"
-    },
-    "I": {
-      "tag": "c:ingots/iron"
-    }
+    "G": "minecraft:glass",
+    "I": "#c:ingots/iron"
   },
   "result": {
     "id": "car:tank",

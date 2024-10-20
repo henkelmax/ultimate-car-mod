@@ -4,9 +4,7 @@
     "XX"
   ],
   "key": {
-    "X": {
-      "item": "car:asphalt"
-    }
+    "X": "car:asphalt"
   },
   "result": {
     "id": "car:car_pressure_plate",

@@ -5,9 +5,7 @@
     "XXX"
   ],
   "key": {
-    "X": {
-      "item": "car:asphalt"
-    }
+    "X": "car:asphalt"
   },
   "result": {
     "id": "car:asphalt_slope_flat_lower",

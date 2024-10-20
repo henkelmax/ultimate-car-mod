@@ -6,12 +6,8 @@
     "WWW"
   ],
   "key": {
-    "W": {
-      "item": "minecraft:warped_planks"
-    },
-    "I": {
-      "tag": "c:rods/iron"
-    }
+    "W": "minecraft:warped_planks",
+    "I": "#c:rods/iron"
   },
   "result": {
     "id": "car:warped_license_plate_holder",

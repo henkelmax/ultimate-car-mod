@@ -6,15 +6,9 @@
     "CIC"
   ],
   "key": {
-    "C": {
-      "item": "minecraft:pink_concrete"
-    },
-    "H": {
-      "item": "minecraft:chest"
-    },
-    "I": {
-      "tag": "c:ingots/iron"
-    }
+    "C": "minecraft:pink_concrete",
+    "H": "minecraft:chest",
+    "I": "#c:ingots/iron"
   },
   "result": {
     "id": "car:pink_container",

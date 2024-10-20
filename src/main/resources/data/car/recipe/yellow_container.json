@@ -6,15 +6,9 @@
     "CIC"
   ],
   "key": {
-    "C": {
-      "item": "minecraft:yellow_concrete"
-    },
-    "H": {
-      "item": "minecraft:chest"
-    },
-    "I": {
-      "tag": "c:ingots/iron"
-    }
+    "C": "minecraft:yellow_concrete",
+    "H": "minecraft:chest",
+    "I": "#c:ingots/iron"
   },
   "result": {
     "id": "car:yellow_container",

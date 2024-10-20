@@ -6,12 +6,8 @@
     "   "
   ],
   "key": {
-    "W": {
-      "item": "minecraft:acacia_planks"
-    },
-    "I": {
-      "tag": "c:ingots/iron"
-    }
+    "W": "minecraft:acacia_planks",
+    "I": "#c:ingots/iron"
   },
   "result": {
     "id": "car:acacia_bumper",

@@ -6,12 +6,8 @@
     "III"
   ],
   "key": {
-    "I": {
-      "tag": "c:ingots/iron"
-    },
-    "P": {
-      "item": "minecraft:piston"
-    }
+    "I": "#c:ingots/iron",
+    "P": "minecraft:piston"
   },
   "result": {
     "id": "car:car_workshop",

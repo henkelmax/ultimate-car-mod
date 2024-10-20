@@ -6,9 +6,7 @@
     "III"
   ],
   "key": {
-    "I": {
-      "tag": "c:ingots/iron"
-    }
+    "I": "#c:ingots/iron"
   },
   "result": {
     "id": "car:fluid_pipe",

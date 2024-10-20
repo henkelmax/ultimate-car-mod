@@ -6,9 +6,7 @@
     "I I"
   ],
   "key": {
-    "I": {
-      "tag": "c:ingots/iron"
-    }
+    "I": "#c:ingots/iron"
   },
   "result": {
     "id": "car:guard_rail",
