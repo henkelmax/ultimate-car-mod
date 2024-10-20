@@ -61,7 +61,10 @@ public abstract class TileEntityEnergyFluidProducer extends TileEntityBase imple
                 case 2:
                     return currentMillibuckets;
                 case 3:
-                    return clientTimeToGenerate;
+                    if (level instanceof ServerLevel serverLevel) {
+                        return getTimeToGenerate(serverLevel);
+                    }
+                    return 0;
                 default:
                     return 0;
             }
