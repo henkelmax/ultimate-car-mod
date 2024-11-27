@@ -75,13 +75,13 @@ public class GuiSign extends ScreenBase<ContainerSign> {
                 text2.setValue(text[1]);
                 text3.setValue(text[2]);
                 text4.setValue(text[3]);
-                buttonSwitch.setMessage(Component.translatable("button.car.back"));
+                buttonSwitch.setMessage(Component.translatable("gui.sign.back"));
             } else {
                 text1.setValue(text[4]);
                 text2.setValue(text[5]);
                 text3.setValue(text[6]);
                 text4.setValue(text[7]);
-                buttonSwitch.setMessage(Component.translatable("button.car.front"));
+                buttonSwitch.setMessage(Component.translatable("gui.sign.front"));
             }
         }).bounds(guiLeft + 5, guiTop + 49 + 10, 46, 20).build());
     }
