@@ -66,7 +66,7 @@ public class GuiSign extends ScreenBase<ContainerSign> {
         buttonCancel = addRenderableWidget(Button.builder(Component.translatable("button.car.cancel"), button -> {
             Minecraft.getInstance().setScreen(null);
         }).bounds(guiLeft + imageWidth - 50 - 15, guiTop + imageHeight - 25, 50, 20).build());
-        buttonSwitch = addRenderableWidget(Button.builder(Component.translatable("button.car.back"), button -> {
+        buttonSwitch = addRenderableWidget(Button.builder(Component.translatable("gui.sign.back"), button -> {
             save();
             front = !front;
 
