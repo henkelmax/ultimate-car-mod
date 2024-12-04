@@ -1,0 +1,9 @@
+{
+    "model": {
+        "type": "minecraft:special",
+        "base": "car:item/tank",
+        "model": {
+            "type": "car:tank"
+        }
+    }
+}

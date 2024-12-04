@@ -1,1 +1,1 @@
-- Fixed wrong translation key for sign button
+- Updated to 1.21.4

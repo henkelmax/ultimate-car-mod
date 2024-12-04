@@ -8,7 +8,7 @@ import de.maxhenkel.car.blocks.tileentity.render.TileEntitySpecialRendererSign;
 import de.maxhenkel.car.blocks.tileentity.render.TileEntitySpecialRendererSplitTank;
 import de.maxhenkel.car.blocks.tileentity.render.TileEntitySpecialRendererTank;
 import de.maxhenkel.car.blocks.tileentity.render.TileentitySpecialRendererGasStation;
-import de.maxhenkel.car.blocks.tileentity.render.item.TankItemTileEntityRenderer;
+import de.maxhenkel.car.blocks.tileentity.render.item.TankSpecialRenderer;
 import de.maxhenkel.car.commands.CommandCarDemo;
 import de.maxhenkel.car.config.ClientConfig;
 import de.maxhenkel.car.config.FuelConfig;
@@ -29,7 +29,6 @@ import de.maxhenkel.car.recipes.*;
 import de.maxhenkel.car.sounds.ModSounds;
 import de.maxhenkel.car.villagers.VillagerEvents;
 import de.maxhenkel.corelib.CommonRegistry;
-import de.maxhenkel.corelib.client.CustomRenderItemExtension;
 import de.maxhenkel.corelib.config.DynamicConfig;
 import de.maxhenkel.corelib.dataserializers.DataSerializerItemList;
 import de.maxhenkel.tools.EntityTools;
@@ -73,6 +72,7 @@ import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
+import net.neoforged.neoforge.client.event.RegisterSpecialModelRendererEvent;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.extensions.IMenuTypeExtension;
@@ -152,6 +152,7 @@ public class Main {
         eventBus.addListener(IMC::enqueueIMC);
         eventBus.addListener(this::onRegisterCapabilities);
         eventBus.addListener(this::onRegisterClientExtensions);
+        eventBus.addListener(this::registerItemModels);
 
         SERVER_CONFIG = CommonRegistry.registerConfig(MODID, ModConfig.Type.SERVER, ServerConfig.class, true);
         FUEL_CONFIG = CommonRegistry.registerDynamicConfig(DynamicConfig.DynamicConfigType.SERVER, Main.MODID, "fuel", FuelConfig.class);
@@ -230,7 +231,7 @@ public class Main {
     public void clientSetup(FMLClientSetupEvent event) {
         BlockEntityRenderers.register(GAS_STATION_TILE_ENTITY_TYPE.get(), TileentitySpecialRendererGasStation::new);
         BlockEntityRenderers.register(SPLIT_TANK_TILE_ENTITY_TYPE.get(), TileEntitySpecialRendererSplitTank::new);
-        BlockEntityRenderers.register(TANK_TILE_ENTITY_TYPE.get(), TileEntitySpecialRendererTank::new);
+        BlockEntityRenderers.register(TANK_TILE_ENTITY_TYPE.get(), c -> new TileEntitySpecialRendererTank(c.getModelSet()));
         BlockEntityRenderers.register(SIGN_TILE_ENTITY_TYPE.get(), TileEntitySpecialRendererSign::new);
 
         NeoForge.EVENT_BUS.register(new RenderEvents());
@@ -410,8 +411,11 @@ public class Main {
         event.registerFluidType(ModFluids.METHANOL_TYPE.get().getExtensions(), ModFluids.METHANOL_TYPE.get());
         event.registerFluidType(ModFluids.GLYCERIN_TYPE.get().getExtensions(), ModFluids.GLYCERIN_TYPE.get());
         event.registerFluidType(ModFluids.CANOLA_METHANOL_MIX_TYPE.get().getExtensions(), ModFluids.CANOLA_METHANOL_MIX_TYPE.get());
+    }
 
-        event.registerItem(new CustomRenderItemExtension(new TankItemTileEntityRenderer()), ModItems.TANK);
+    @OnlyIn(Dist.CLIENT)
+    public void registerItemModels(RegisterSpecialModelRendererEvent event) {
+        event.register(ResourceLocation.fromNamespaceAndPath(MODID, "tank"), TankSpecialRenderer.Unbaked.MAP_CODEC);
     }
 
     public void onRegisterCapabilities(RegisterCapabilitiesEvent event) {

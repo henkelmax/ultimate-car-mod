@@ -1,0 +1,6 @@
+{
+    "model": {
+        "type": "minecraft:model",
+        "model": "car:item/lime_transporter_body"
+    }
+}

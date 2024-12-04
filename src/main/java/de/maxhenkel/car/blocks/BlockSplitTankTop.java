@@ -16,7 +16,6 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
@@ -66,12 +65,11 @@ public class BlockSplitTankTop extends BlockBase {
     }
 
     @Override
-    public ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader world, BlockPos pos, Player player) {
-        BlockState stateDown = world.getBlockState(pos.below());
+    public ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState state, boolean includeData, Player player) {
+        BlockState stateDown = level.getBlockState(pos.below());
         if (stateDown.getBlock().equals(ModBlocks.SPLIT_TANK.get())) {
-            return ModBlocks.SPLIT_TANK.get().getCloneItemStack(stateDown, target, world, pos.below(), player);
+            return ModBlocks.SPLIT_TANK.get().getCloneItemStack(level, pos.below(), stateDown, includeData, player);
         }
-        return super.getCloneItemStack(stateDown, target, world, pos, player);
+        return super.getCloneItemStack(level, pos, state, includeData, player);
     }
-
 }

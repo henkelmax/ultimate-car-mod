@@ -2,9 +2,7 @@ package de.maxhenkel.car.blocks;
 
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.blocks.tileentity.TileEntityTank;
-import de.maxhenkel.car.blocks.tileentity.render.item.TankItemTileEntityRenderer;
 import de.maxhenkel.corelib.blockentity.SimpleBlockEntityTicker;
-import de.maxhenkel.corelib.client.ItemRenderer;
 import de.maxhenkel.corelib.fluid.FluidUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;

@@ -7,15 +7,14 @@ import de.maxhenkel.car.Main;
 import de.maxhenkel.car.blocks.tileentity.TileEntityTank;
 import de.maxhenkel.corelib.client.RenderUtils;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
-import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.inventory.InventoryMenu;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.neoforged.neoforge.fluids.FluidStack;
 
@@ -23,10 +22,10 @@ public class TileEntitySpecialRendererTank implements BlockEntityRenderer<TileEn
 
     public static final ResourceLocation LOCATION_TANK = ResourceLocation.fromNamespaceAndPath(Main.MODID, "textures/block/tank_line.png");
 
-    protected BlockEntityRendererProvider.Context renderer;
+    protected EntityModelSet entityModelSet;
 
-    public TileEntitySpecialRendererTank(BlockEntityRendererProvider.Context renderer) {
-        this.renderer = renderer;
+    public TileEntitySpecialRendererTank(EntityModelSet entityModelSet) {
+        this.entityModelSet = entityModelSet;
     }
 
     @Override
@@ -56,7 +55,7 @@ public class TileEntitySpecialRendererTank implements BlockEntityRenderer<TileEn
             tint = type.getTintColor(fluid);
             stillTexture = type.getStillTexture(fluid);
         }
-        TextureAtlasSprite texture = Minecraft.getInstance().getModelManager().getAtlas(InventoryMenu.BLOCK_ATLAS).getSprite(stillTexture);
+        TextureAtlasSprite texture = Minecraft.getInstance().getModelManager().getAtlas(TextureAtlas.LOCATION_BLOCKS).getSprite(stillTexture);
 
 
         float uMin = texture.getU0();

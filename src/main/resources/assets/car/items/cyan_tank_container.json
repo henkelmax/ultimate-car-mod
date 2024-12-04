@@ -1,0 +1,6 @@
+{
+    "model": {
+        "type": "minecraft:model",
+        "model": "car:item/cyan_tank_container"
+    }
+}
