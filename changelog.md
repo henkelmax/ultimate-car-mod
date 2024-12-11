@@ -1,1 +1,1 @@
-- Fixed wrong translation key for sign button
+- Added Japanese translation
