@@ -152,7 +152,6 @@ public class Main {
         eventBus.addListener(IMC::enqueueIMC);
         eventBus.addListener(this::onRegisterCapabilities);
         eventBus.addListener(this::onRegisterClientExtensions);
-        
 
         SERVER_CONFIG = CommonRegistry.registerConfig(MODID, ModConfig.Type.SERVER, ServerConfig.class, true);
         FUEL_CONFIG = CommonRegistry.registerDynamicConfig(DynamicConfig.DynamicConfigType.SERVER, Main.MODID, "fuel", FuelConfig.class);
