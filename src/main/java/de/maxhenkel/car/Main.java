@@ -152,7 +152,6 @@ public class Main {
         eventBus.addListener(IMC::enqueueIMC);
         eventBus.addListener(this::onRegisterCapabilities);
         eventBus.addListener(this::onRegisterClientExtensions);
-        eventBus.addListener(this::registerItemModels);
 
         SERVER_CONFIG = CommonRegistry.registerConfig(MODID, ModConfig.Type.SERVER, ServerConfig.class, true);
         FUEL_CONFIG = CommonRegistry.registerDynamicConfig(DynamicConfig.DynamicConfigType.SERVER, Main.MODID, "fuel", FuelConfig.class);
@@ -162,6 +161,7 @@ public class Main {
             eventBus.addListener(Main.this::clientSetup);
             eventBus.addListener(Main.this::onRegisterKeyBinds);
             eventBus.addListener(Main.this::onRegisterScreens);
+            eventBus.addListener(Main.this::registerItemModels);
         }
 
         ModFluids.init(eventBus);
