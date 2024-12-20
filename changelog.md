@@ -1,1 +1,1 @@
-- Added Japanese translation
+- Fixed crash on servers
