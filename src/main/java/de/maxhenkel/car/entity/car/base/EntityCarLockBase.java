@@ -100,7 +100,7 @@ public abstract class EntityCarLockBase extends EntityCarInventoryBase {
     @Override
     public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
-        setLocked(compound.getBoolean("locked"), false);
+        setLocked(compound.getBooleanOr("locked", false), false);
     }
 
     @Override

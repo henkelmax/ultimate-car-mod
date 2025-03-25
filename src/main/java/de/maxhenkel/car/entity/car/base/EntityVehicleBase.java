@@ -3,9 +3,6 @@ package de.maxhenkel.car.entity.car.base;
 import de.maxhenkel.car.Main;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
-import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -177,12 +174,12 @@ public abstract class EntityVehicleBase extends Entity {
     }
 
     private void tickLerp() {
-        if (this.isControlledByLocalInstance()) {
-            this.steps = 0;
-            this.syncPacketPositionCodec(this.getX(), this.getY(), this.getZ());
+        if (isLocalClientAuthoritative()) {
+            steps = 0;
+            syncPacketPositionCodec(getX(), getY(), getZ());
         }
 
-        if (this.steps > 0) {
+        if (steps > 0) {
             double d0 = getX() + (clientX - getX()) / (double) steps;
             double d1 = getY() + (clientY - getY()) / (double) steps;
             double d2 = getZ() + (clientZ - getZ()) / (double) steps;
@@ -195,12 +192,11 @@ public abstract class EntityVehicleBase extends Entity {
         }
     }
 
-    @OnlyIn(Dist.CLIENT)
     @Override
-    public void lerpTo(double x, double y, double z, float yaw, float pitch, int posRotationIncrements) {
-        this.clientX = x;
-        this.clientY = y;
-        this.clientZ = z;
+    public void moveOrInterpolateTo(Vec3 pos, float yaw, float pitch) {
+        this.clientX = pos.x;
+        this.clientY = pos.y;
+        this.clientZ = pos.z;
         this.clientYaw = yaw;
         this.clientPitch = pitch;
         this.steps = 10;

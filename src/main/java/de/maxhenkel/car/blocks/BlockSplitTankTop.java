@@ -1,6 +1,7 @@
 package de.maxhenkel.car.blocks;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -43,16 +44,13 @@ public class BlockSplitTankTop extends BlockBase {
     }
 
     @Override
-    public void onRemove(BlockState state, Level worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
-        if (state.getBlock() != newState.getBlock()) {
-            super.onRemove(state, worldIn, pos, newState, isMoving);
+    protected void affectNeighborsAfterRemoval(BlockState state, ServerLevel level, BlockPos pos, boolean moving) {
+        super.affectNeighborsAfterRemoval(state, level, pos, moving);
 
-            BlockState stateDown = worldIn.getBlockState(pos.below());
-            if (stateDown != null && stateDown.getBlock().equals(ModBlocks.SPLIT_TANK.get())) {
-                worldIn.destroyBlock(pos.below(), false);
-            }
+        BlockState stateDown = level.getBlockState(pos.below());
+        if (stateDown != null && stateDown.getBlock().equals(ModBlocks.SPLIT_TANK.get())) {
+            level.destroyBlock(pos.below(), false);
         }
-        super.onRemove(state, worldIn, pos, newState, isMoving);
     }
 
     @Override

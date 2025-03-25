@@ -12,6 +12,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -19,7 +20,7 @@ import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.SimpleFluidContent;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 
-import java.util.List;
+import java.util.function.Consumer;
 
 public class ItemCanister extends Item {
 
@@ -69,21 +70,21 @@ public class ItemCanister extends Item {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flagIn) {
+    public void appendHoverText(ItemStack stack, TooltipContext context, TooltipDisplay tooltipDisplay, Consumer<Component> consumer, TooltipFlag flag) {
         SimpleFluidContent content = stack.get(Main.FUEL_DATA_COMPONENT);
         if (content == null || content.isEmpty()) {
-            addInfo("-", 0, tooltip);
-            super.appendHoverText(stack, context, tooltip, flagIn);
+            addInfo("-", 0, consumer);
+            super.appendHoverText(stack, context, tooltipDisplay, consumer, flag);
             return;
         }
         FluidStack fluidStack = content.copy();
-        addInfo(fluidStack.getHoverName().getString(), fluidStack.getAmount(), tooltip);
-        super.appendHoverText(stack, context, tooltip, flagIn);
+        addInfo(fluidStack.getHoverName().getString(), fluidStack.getAmount(), consumer);
+        super.appendHoverText(stack, context, tooltipDisplay, consumer, flag);
     }
 
-    private void addInfo(String fluid, int amount, List<Component> tooltip) {
-        tooltip.add(Component.translatable("canister.fluid", Component.literal(fluid).withStyle(ChatFormatting.DARK_GRAY)).withStyle(ChatFormatting.GRAY));
-        tooltip.add(Component.translatable("canister.amount", Component.literal(String.valueOf(amount)).withStyle(ChatFormatting.DARK_GRAY)).withStyle(ChatFormatting.GRAY));
+    private void addInfo(String fluid, int amount, Consumer<Component> consumer) {
+        consumer.accept(Component.translatable("canister.fluid", Component.literal(fluid).withStyle(ChatFormatting.DARK_GRAY)).withStyle(ChatFormatting.GRAY));
+        consumer.accept(Component.translatable("canister.amount", Component.literal(String.valueOf(amount)).withStyle(ChatFormatting.DARK_GRAY)).withStyle(ChatFormatting.GRAY));
     }
 
     public static boolean fillCanister(ItemStack canister, IFluidHandler handler) {

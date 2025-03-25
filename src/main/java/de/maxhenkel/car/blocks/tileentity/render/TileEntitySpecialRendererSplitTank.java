@@ -12,6 +12,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.neoforged.neoforge.fluids.FluidStack;
 
@@ -27,7 +28,7 @@ public class TileEntitySpecialRendererSplitTank implements BlockEntityRenderer<T
     }
 
     @Override
-    public void render(TileEntitySplitTank te, float partialTicks, PoseStack matrixStack, MultiBufferSource buffer, int light, int overlay) {
+    public void render(TileEntitySplitTank te, float partialTicks, PoseStack matrixStack, MultiBufferSource buffer, int light, int overlay, Vec3 vec) {
         matrixStack.pushPose();
         float bioDiesel = te.getBioDieselPerc() / 2F;
         float glycerin = te.getGlycerinPerc() / 2F;

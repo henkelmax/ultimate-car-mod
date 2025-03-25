@@ -19,10 +19,10 @@ public class HUDHandlerGenerator implements IBlockComponentProvider, IServerData
 
     @Override
     public void appendTooltip(ITooltip iTooltip, BlockAccessor blockAccessor, IPluginConfig iPluginConfig) {
-        int energy = blockAccessor.getServerData().getInt("energy");
-        int maxEnergy = blockAccessor.getServerData().getInt("max_energy");
-        int fluid = blockAccessor.getServerData().getInt("fluid");
-        int maxFluid = blockAccessor.getServerData().getInt("max_fluid");
+        int energy = blockAccessor.getServerData().getIntOr("energy", 0);
+        int maxEnergy = blockAccessor.getServerData().getIntOr("max_energy", 0);
+        int fluid = blockAccessor.getServerData().getIntOr("fluid", 0);
+        int maxFluid = blockAccessor.getServerData().getIntOr("max_fluid", 0);
 
         iTooltip.add(Component.translatable("tooltip.waila.generator.energy", energy, maxEnergy));
         iTooltip.add(Component.translatable("tooltip.waila.generator.fluid", fluid, maxFluid));

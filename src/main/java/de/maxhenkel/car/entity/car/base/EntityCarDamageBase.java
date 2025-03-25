@@ -209,7 +209,7 @@ public abstract class EntityCarDamageBase extends EntityCarBatteryBase {
     @Override
     public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
-        setDamage(compound.getFloat("damage"));
+        setDamage(compound.getFloatOr("damage", 0F));
     }
 
 }

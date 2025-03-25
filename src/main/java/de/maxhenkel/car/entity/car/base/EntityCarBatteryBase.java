@@ -301,7 +301,7 @@ public abstract class EntityCarBatteryBase extends EntityCarTemperatureBase {
     @Override
     public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
-        setBatteryLevel(compound.getInt("battery"));
+        setBatteryLevel(compound.getIntOr("battery", 0));
     }
 
     @Override

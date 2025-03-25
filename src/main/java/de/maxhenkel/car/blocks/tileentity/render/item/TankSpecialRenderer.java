@@ -13,6 +13,7 @@ import net.minecraft.client.renderer.special.SpecialModelRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.Nullable;
@@ -34,7 +35,7 @@ public class TankSpecialRenderer implements SpecialModelRenderer<TileEntityTank>
         if (tank == null) {
             return;
         }
-        tankRenderer.render(tank, 0F, stack, bufferSource, light, overlay);
+        tankRenderer.render(tank, 0F, stack, bufferSource, light, overlay, Vec3.ZERO);
     }
 
     @Nullable

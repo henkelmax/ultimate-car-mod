@@ -56,7 +56,7 @@ public class TileEntityDynamo extends TileEntityBase implements IEnergyStorage, 
 
     @Override
     public void loadAdditional(CompoundTag compound, HolderLookup.Provider provider) {
-        storedEnergy = compound.getInt("stored_energy");
+        storedEnergy = compound.getIntOr("stored_energy", 0);
         super.loadAdditional(compound, provider);
     }
 

@@ -21,7 +21,7 @@ public class HUDHandlerFluidExtractor implements IBlockComponentProvider, IServe
     @Override
     public void appendTooltip(ITooltip iTooltip, BlockAccessor blockAccessor, IPluginConfig iPluginConfig) {
         if (blockAccessor.getServerData().contains("filter")) {
-            iTooltip.add(Component.translatable("tooltip.waila.fluid_extractor.filter", Component.translatable(blockAccessor.getServerData().getString("filter"))));
+            iTooltip.add(Component.translatable("tooltip.waila.fluid_extractor.filter", Component.translatable(blockAccessor.getServerData().getStringOr("filter", ""))));
         }
     }
 

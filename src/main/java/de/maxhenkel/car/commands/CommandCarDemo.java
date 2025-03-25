@@ -100,7 +100,7 @@ public class CommandCarDemo {
 
     private static void createCar(Level world, double posX, double posY, double posZ, ItemStack... items) {
         EntityGenericCar car = new EntityGenericCar(world);
-        car.absMoveTo(posX, posY, posZ, 180F, 0F);
+        car.absSnapTo(posX, posY, posZ, 180F, 0F);
         for (int i = 0; i < items.length; i++) {
             car.getPartInventory().setItem(i, items[i]);
         }

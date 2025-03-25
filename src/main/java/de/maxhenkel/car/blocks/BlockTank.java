@@ -4,16 +4,12 @@ import de.maxhenkel.car.Main;
 import de.maxhenkel.car.blocks.tileentity.TileEntityTank;
 import de.maxhenkel.corelib.blockentity.SimpleBlockEntityTicker;
 import de.maxhenkel.corelib.fluid.FluidUtils;
-import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.EntityBlock;
@@ -36,7 +32,6 @@ import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.wrapper.InvWrapper;
 
 import javax.annotation.Nullable;
-import java.util.List;
 
 public class BlockTank extends BlockBase implements EntityBlock {
 
@@ -48,19 +43,6 @@ public class BlockTank extends BlockBase implements EntityBlock {
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
         return new SimpleBlockEntityTicker<>();
-    }
-
-    @Override
-    public void appendHoverText(ItemStack stack, Item.TooltipContext tooltipContext, List<Component> tooltip, TooltipFlag tooltipFlag) {
-        if (stack.has(Main.FLUID_STACK_DATA_COMPONENT)) {
-            SimpleFluidContent content = stack.get(Main.FLUID_STACK_DATA_COMPONENT);
-            if (content != null) {
-                FluidStack fluidStack = content.copy();
-                tooltip.add(Component.translatable("tooltip.fluid", Component.literal(fluidStack.getHoverName().getString()).withStyle(ChatFormatting.DARK_GRAY)).withStyle(ChatFormatting.GRAY));
-                tooltip.add(Component.translatable("tooltip.amount", Component.literal(String.valueOf(fluidStack.getAmount())).withStyle(ChatFormatting.DARK_GRAY)).withStyle(ChatFormatting.GRAY));
-            }
-        }
-        super.appendHoverText(stack, tooltipContext, tooltip, tooltipFlag);
     }
 
     @Override

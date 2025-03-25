@@ -170,11 +170,11 @@ public class TileEntityBackmixReactor extends TileEntityBase implements ITickabl
 
     @Override
     public void loadAdditional(CompoundTag compound, HolderLookup.Provider provider) {
-        storedEnergy = compound.getInt("stored_endergy");
-        currentCanola = compound.getInt("canola");
-        currentMethanol = compound.getInt("methanol");
-        currentMix = compound.getInt("mix");
-        timeToGenerate = compound.getInt("time");
+        storedEnergy = compound.getIntOr("stored_endergy", 0);
+        currentCanola = compound.getIntOr("canola", 0);
+        currentMethanol = compound.getIntOr("methanol", 0);
+        currentMix = compound.getIntOr("mix", 0);
+        timeToGenerate = compound.getIntOr("time", 0);
         super.loadAdditional(compound, provider);
     }
 

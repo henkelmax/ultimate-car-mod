@@ -347,7 +347,7 @@ public class EntityGenericCar extends EntityCarLicensePlateBase {
     public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
 
-        if (compound.getAllKeys().stream().allMatch(s -> s.equals("id"))) {
+        if (compound.keySet().stream().allMatch(s -> s.equals("id"))) {
             randomizeParts();
             setItem(0, ItemKey.getKeyForCar(getUUID()));
             setItem(1, ItemKey.getKeyForCar(getUUID()));

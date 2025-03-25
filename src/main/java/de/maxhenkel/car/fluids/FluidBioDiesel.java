@@ -27,7 +27,7 @@ public class FluidBioDiesel extends CarFluidSource {
         if (entity instanceof Player) {
             Player player = (Player) entity;
             if (!player.getAbilities().instabuild) {
-                player.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 100, 0, true, false));
+                player.addEffect(new MobEffectInstance(MobEffects.NAUSEA, 100, 0, true, false));
             }
         }
     }

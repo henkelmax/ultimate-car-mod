@@ -2,6 +2,7 @@ package de.maxhenkel.car.blocks;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
 import net.minecraft.world.Containers;
@@ -59,17 +60,14 @@ public abstract class BlockGui<T extends BlockEntity> extends BlockBase implemen
     public abstract void openGui(BlockState state, Level worldIn, BlockPos pos, ServerPlayer player, T tileEntity);
 
     @Override
-    public void onRemove(BlockState state, Level worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
-        BlockEntity tileentity = worldIn.getBlockEntity(pos);
+    protected void affectNeighborsAfterRemoval(BlockState state, ServerLevel level, BlockPos pos, boolean moving) {
+        BlockEntity tileentity = level.getBlockEntity(pos);
 
-        if (state.getBlock() != newState.getBlock()) {
-            if (tileentity instanceof Container) {
-                Containers.dropContents(worldIn, pos, (Container) tileentity);
-                worldIn.updateNeighbourForOutputSignal(pos, this);
-            }
+        if (tileentity instanceof Container) {
+            Containers.dropContents(level, pos, (Container) tileentity);
+            level.updateNeighbourForOutputSignal(pos, this);
         }
-
-        super.onRemove(state, worldIn, pos, newState, isMoving);
+        super.affectNeighborsAfterRemoval(state, level, pos, moving);
     }
 
     @Nullable

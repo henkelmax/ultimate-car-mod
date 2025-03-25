@@ -176,13 +176,13 @@ public abstract class EntityCarInventoryBase extends EntityCarFuelBase implement
         super.readAdditionalSaveData(compound);
         ItemUtils.readInventory(registryAccess(), compound, "int_inventory", internalInventory);
 
-        this.externalInventory = new SimpleContainer(compound.getInt("external_inventory_size"));
+        this.externalInventory = new SimpleContainer(compound.getIntOr("external_inventory_size", 0));
         ItemUtils.readInventory(registryAccess(), compound, "external_inventory", externalInventory);
 
         ItemUtils.readInventory(registryAccess(), compound, "parts", partInventory);
 
         if (compound.contains("fluid_inventory")) {
-            fluidInventory = FluidStack.parseOptional(registryAccess(), compound.getCompound("fluid_inventory"));
+            fluidInventory = FluidStack.parseOptional(registryAccess(), compound.getCompoundOrEmpty("fluid_inventory"));
         }
     }
 

@@ -15,6 +15,7 @@ import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.neoforged.neoforge.fluids.FluidStack;
 
@@ -29,7 +30,7 @@ public class TileEntitySpecialRendererTank implements BlockEntityRenderer<TileEn
     }
 
     @Override
-    public void render(TileEntityTank te, float partialTicks, PoseStack matrixStack, MultiBufferSource buffer, int light, int overlay) {
+    public void render(TileEntityTank te, float partialTicks, PoseStack matrixStack, MultiBufferSource buffer, int light, int overlay, Vec3 vec) {
         matrixStack.pushPose();
         float amount = te.getFillPercent();
         FluidStack stack = te.getFluid();

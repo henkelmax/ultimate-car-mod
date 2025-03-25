@@ -79,7 +79,7 @@ public abstract class EntityCarLicensePlateBase extends EntityCarLockBase {
     @Override
     public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
-        setLicensePlate(compound.getString("license_plate"));
+        setLicensePlate(compound.getStringOr("license_plate", ""));
     }
 
     public abstract Vector3d getLicensePlateOffset();

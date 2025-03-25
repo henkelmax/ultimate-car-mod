@@ -17,12 +17,13 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
 import javax.annotation.Nullable;
-import java.util.List;
+import java.util.function.Consumer;
 
 public class ItemPainter extends Item {
 
@@ -120,12 +121,12 @@ public class ItemPainter extends Item {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> textComponents, TooltipFlag tooltipFlag) {
+    public void appendHoverText(ItemStack stack, TooltipContext context, TooltipDisplay tooltipDisplay, Consumer<Component> consumer, TooltipFlag flag) {
         BlockPaint paint = getSelectedPaint(SlotPainter.getPainterID(stack));
         if (paint != null) {
-            textComponents.add(Component.translatable("tooltip.painter", Component.translatable(paint.getDescriptionId()).withStyle(ChatFormatting.DARK_GRAY)).withStyle(ChatFormatting.GRAY));
+            consumer.accept(Component.translatable("tooltip.painter", Component.translatable(paint.getDescriptionId()).withStyle(ChatFormatting.DARK_GRAY)).withStyle(ChatFormatting.GRAY));
         }
-        super.appendHoverText(stack, context, textComponents, tooltipFlag);
+        super.appendHoverText(stack, context, tooltipDisplay, consumer, flag);
     }
 
 }

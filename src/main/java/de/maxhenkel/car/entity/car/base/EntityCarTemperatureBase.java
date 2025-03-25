@@ -90,7 +90,7 @@ public abstract class EntityCarTemperatureBase extends EntityCarBase {
     @Override
     public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
-        setTemperature(compound.getFloat("temperature"));
+        setTemperature(compound.getFloatOr("temperature", 0F));
     }
 
     @Override

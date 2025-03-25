@@ -12,6 +12,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.Direction;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 
 public class TileentitySpecialRendererGasStation implements BlockEntityRenderer<TileEntityGasStation> {
 
@@ -24,7 +25,7 @@ public class TileentitySpecialRendererGasStation implements BlockEntityRenderer<
     }
 
     @Override
-    public void render(TileEntityGasStation target, float partialTicks, PoseStack matrixStack, MultiBufferSource buffer, int combinedLightIn, int combinedOverlayIn) {
+    public void render(TileEntityGasStation target, float partialTicks, PoseStack matrixStack, MultiBufferSource buffer, int combinedLightIn, int combinedOverlayIn, Vec3 vec) {
         if (!target.hasLevel()) {
             return;
         }

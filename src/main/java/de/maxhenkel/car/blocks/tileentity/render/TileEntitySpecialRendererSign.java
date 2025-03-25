@@ -8,6 +8,7 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
+import net.minecraft.world.phys.Vec3;
 
 public class TileEntitySpecialRendererSign implements BlockEntityRenderer<TileEntitySign> {
 
@@ -18,7 +19,7 @@ public class TileEntitySpecialRendererSign implements BlockEntityRenderer<TileEn
     }
 
     @Override
-    public void render(TileEntitySign te, float partialTicks, PoseStack matrixStack, MultiBufferSource buffer, int light, int i) {
+    public void render(TileEntitySign te, float partialTicks, PoseStack matrixStack, MultiBufferSource buffer, int light, int i, Vec3 vec) {
         matrixStack.pushPose();
 
         matrixStack.translate(0.5D, 1D, 0.5D);

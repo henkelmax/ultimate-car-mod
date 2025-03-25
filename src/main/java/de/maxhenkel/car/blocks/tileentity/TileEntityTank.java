@@ -121,7 +121,7 @@ public class TileEntityTank extends TileEntityBase implements IFluidHandler, ITi
     @Override
     public void loadAdditional(CompoundTag compound, HolderLookup.Provider provider) {
         if (compound.contains("fluid")) {
-            CompoundTag comp = compound.getCompound("fluid");
+            CompoundTag comp = compound.getCompoundOrEmpty("fluid");
             fluid = FluidStack.parseOptional(provider, comp);
         } else {
             fluid = FluidStack.EMPTY;

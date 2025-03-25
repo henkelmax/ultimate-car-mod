@@ -6,6 +6,7 @@ import de.maxhenkel.car.gui.TileEntityContainerProvider;
 import de.maxhenkel.corelib.blockentity.SimpleBlockEntityTicker;
 import de.maxhenkel.corelib.fluid.FluidUtils;
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.*;
 import net.minecraft.world.entity.LivingEntity;
@@ -110,13 +111,13 @@ public class BlockSplitTank extends BlockBase implements EntityBlock {
     }
 
     @Override
-    public void onRemove(BlockState state, Level worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
-        super.onRemove(state, worldIn, pos, newState, isMoving);
+    protected void affectNeighborsAfterRemoval(BlockState state, ServerLevel level, BlockPos pos, boolean moving) {
+        super.affectNeighborsAfterRemoval(state, level, pos, moving);
 
-        BlockState stateUp = worldIn.getBlockState(pos.above());
+        BlockState stateUp = level.getBlockState(pos.above());
         stateUp.getBlock();
         if (stateUp.getBlock().equals(ModBlocks.SPLIT_TANK_TOP.get())) {
-            worldIn.destroyBlock(pos.above(), false);
+            level.destroyBlock(pos.above(), false);
         }
     }
 

@@ -181,9 +181,9 @@ public abstract class TileEntityEnergyFluidProducer extends TileEntityBase imple
 
     @Override
     public void loadAdditional(CompoundTag compound, HolderLookup.Provider provider) {
-        storedEnergy = compound.getInt("energy_stored");
-        time = compound.getInt("time");
-        currentMillibuckets = compound.getInt("fluid_stored");
+        storedEnergy = compound.getIntOr("energy_stored", 0);
+        time = compound.getIntOr("time", 0);
+        currentMillibuckets = compound.getIntOr("fluid_stored", 0);
 
         ItemUtils.readInventory(provider, compound, "slots", inventory);
         super.loadAdditional(compound, provider);

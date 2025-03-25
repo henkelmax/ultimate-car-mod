@@ -157,10 +157,10 @@ public class TileEntitySplitTank extends TileEntityBase implements ITickableBloc
 
     @Override
     public void loadAdditional(CompoundTag compound, HolderLookup.Provider provider) {
-        currentMix = compound.getInt("mix");
-        currentBioDiesel = compound.getInt("bio_diesel");
-        currentGlycerin = compound.getInt("glycerin");
-        timeToGenerate = compound.getInt("timeToGenerate");
+        currentMix = compound.getIntOr("mix", 0);
+        currentBioDiesel = compound.getIntOr("bio_diesel", 0);
+        currentGlycerin = compound.getIntOr("glycerin", 0);
+        timeToGenerate = compound.getIntOr("timeToGenerate", 0);
         super.loadAdditional(compound, provider);
     }
 

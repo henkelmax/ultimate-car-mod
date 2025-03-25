@@ -152,9 +152,9 @@ public abstract class EntityCarFuelBase extends EntityCarDamageBase implements I
     @Override
     public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
-        setFuelAmount(compound.getInt("fuel"));
+        setFuelAmount(compound.getIntOr("fuel", 0));
         if (compound.contains("fuel_type")) {
-            setFuelType(compound.getString("fuel_type"));
+            setFuelType(compound.getStringOr("fuel_type", ""));
         }
     }
 

@@ -153,9 +153,9 @@ public class TileEntityGenerator extends TileEntityBase implements ITickableBloc
 
     @Override
     public void loadAdditional(CompoundTag compound, HolderLookup.Provider provider) {
-        storedEnergy = compound.getInt("stored_energy");
+        storedEnergy = compound.getIntOr("stored_energy", 0);
         if (compound.contains("fluid")) {
-            FluidStack stack = FluidStack.parseOptional(provider, compound.getCompound("fluid"));
+            FluidStack stack = FluidStack.parseOptional(provider, compound.getCompoundOrEmpty("fluid"));
             currentFluid = stack.getFluid();
             currentMillibuckets = stack.getAmount();
         }

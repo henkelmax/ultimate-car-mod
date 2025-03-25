@@ -8,6 +8,7 @@ import de.maxhenkel.corelib.block.DirectionalVoxelShape;
 import de.maxhenkel.corelib.blockentity.SimpleBlockEntityTicker;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
@@ -136,16 +137,16 @@ public class BlockGasStation extends BlockOrientableHorizontal {
     }
 
     @Override
-    public void onRemove(BlockState state, Level worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
-        super.onRemove(state, worldIn, pos, newState, isMoving);
+    protected void affectNeighborsAfterRemoval(BlockState state, ServerLevel level, BlockPos pos, boolean moving) {
+        super.affectNeighborsAfterRemoval(state, level, pos, moving);
 
-        BlockState stateUp = worldIn.getBlockState(pos.above());
+        BlockState stateUp = level.getBlockState(pos.above());
         stateUp.getBlock();
         if (stateUp.getBlock().equals(ModBlocks.GAS_STATION_TOP.get())) {
-            worldIn.destroyBlock(pos.above(), false);
+            level.destroyBlock(pos.above(), false);
         }
 
-        dropItems(worldIn, pos);
+        dropItems(level, pos);
     }
 
     public static void dropItems(Level worldIn, BlockPos pos) {

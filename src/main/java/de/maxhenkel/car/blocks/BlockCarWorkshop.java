@@ -4,6 +4,7 @@ import de.maxhenkel.car.blocks.tileentity.TileEntityCarWorkshop;
 import de.maxhenkel.car.gui.ContainerCarWorkshopCrafting;
 import de.maxhenkel.car.gui.TileEntityContainerProvider;
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionResult;
@@ -112,14 +113,13 @@ public class BlockCarWorkshop extends BlockBase implements EntityBlock {
     }
 
     @Override
-    public void onRemove(BlockState state, Level worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
-        TileEntityCarWorkshop workshop = getOwnTileEntity(worldIn, pos);
+    protected void affectNeighborsAfterRemoval(BlockState state, ServerLevel level, BlockPos pos, boolean moving) {
+        TileEntityCarWorkshop workshop = getOwnTileEntity(level, pos);
 
         if (workshop != null) {
-            Containers.dropContents(worldIn, pos, workshop);
+            Containers.dropContents(level, pos, workshop);
         }
-
-        super.onRemove(state, worldIn, pos, newState, isMoving);
+        super.affectNeighborsAfterRemoval(state, level, pos, moving);
     }
 
     @Nullable

@@ -491,7 +491,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 
     @Override
     public void readAdditionalSaveData(CompoundTag compound) {
-        setStarted(compound.getBoolean("started"), false, false);
+        setStarted(compound.getBooleanOr("started", false), false, false);
     }
 
     @Override

@@ -88,9 +88,7 @@ public abstract class TileEntityBase extends BlockEntity implements Nameable {
 
     @Override
     public void loadAdditional(CompoundTag compound, HolderLookup.Provider provider) {
-        if (compound.contains("CustomName")) {
-            name = Component.Serializer.fromJson(compound.getString("CustomName"), provider);
-        }
+        name = compound.getString("CustomName").map(s -> Component.Serializer.fromJson(s, provider)).orElse(null);
         super.loadAdditional(compound, provider);
     }
 

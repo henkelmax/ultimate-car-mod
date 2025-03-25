@@ -12,9 +12,11 @@ import de.maxhenkel.car.sounds.SoundLoopTileentity.ISoundLoopable;
 import de.maxhenkel.corelib.CachedValue;
 import de.maxhenkel.corelib.blockentity.ITickableBlockEntity;
 import de.maxhenkel.corelib.item.ItemUtils;
+import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.UUIDUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -300,29 +302,25 @@ public class TileEntityGasStation extends TileEntityBase implements ITickableBlo
         compound.putInt("trade_amount", tradeAmount);
         compound.putInt("free_amount", freeAmountLeft);
 
-        compound.putUUID("owner", owner);
+        compound.store("owner", UUIDUtil.CODEC, owner);
     }
 
     @Override
     public void loadAdditional(CompoundTag compound, HolderLookup.Provider provider) {
-        fuelCounter = compound.getInt("counter");
+        fuelCounter = compound.getIntOr("counter", 0);
 
         if (compound.contains("fluid")) {
-            CompoundTag comp = compound.getCompound("fluid");
+            CompoundTag comp = compound.getCompoundOrEmpty("fluid");
             storage = FluidStack.parseOptional(provider, comp);
         }
 
         ItemUtils.readInventory(provider, compound, "inventory", inventory);
         ItemUtils.readInventory(provider, compound, "trading", trading);
 
-        tradeAmount = compound.getInt("trade_amount");
-        freeAmountLeft = compound.getInt("free_amount");
+        tradeAmount = compound.getIntOr("trade_amount", 0);
+        freeAmountLeft = compound.getIntOr("free_amount", 0);
 
-        if (compound.contains("owner")) {
-            owner = compound.getUUID("owner");
-        } else {
-            owner = new UUID(0L, 0L);
-        }
+        owner = compound.read("owner", UUIDUtil.CODEC).orElse(Util.NIL_UUID);
         super.loadAdditional(compound, provider);
     }
 

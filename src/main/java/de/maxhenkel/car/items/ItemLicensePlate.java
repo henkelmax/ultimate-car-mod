@@ -13,11 +13,12 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.level.Level;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.List;
+import java.util.function.Consumer;
 
 public class ItemLicensePlate extends ItemCraftingComponent {
 
@@ -26,14 +27,13 @@ public class ItemLicensePlate extends ItemCraftingComponent {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flagIn) {
+    public void appendHoverText(ItemStack stack, TooltipContext context, TooltipDisplay tooltipDisplay, Consumer<Component> consumer, TooltipFlag flag) {
         String text = getText(stack);
 
         if (!text.isEmpty()) {
-            tooltip.add(Component.translatable("tooltip.license_plate_text", Component.literal(text).withStyle(ChatFormatting.DARK_GRAY)).withStyle(ChatFormatting.GRAY));
+            consumer.accept(Component.translatable("tooltip.license_plate_text", Component.literal(text).withStyle(ChatFormatting.DARK_GRAY)).withStyle(ChatFormatting.GRAY));
         }
-
-        super.appendHoverText(stack, context, tooltip, flagIn);
+        super.appendHoverText(stack, context, tooltipDisplay, consumer, flag);
     }
 
     @Override

@@ -31,7 +31,7 @@ public class TileEntitySign extends TileEntityBase {
     @Override
     public void loadAdditional(CompoundTag compound, HolderLookup.Provider provider) {
         for (int i = 0; i < text.length; i++) {
-            this.text[i] = compound.getString("text" + i);
+            this.text[i] = compound.getStringOr("text" + i, "");
         }
         super.loadAdditional(compound, provider);
     }

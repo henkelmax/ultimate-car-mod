@@ -14,6 +14,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.inventory.SimpleContainerData;
@@ -143,16 +144,16 @@ public class TileEntityFluidExtractor extends TileEntityBase implements ITickabl
     @Override
     public void saveAdditional(CompoundTag compound, HolderLookup.Provider provider) {
         super.saveAdditional(compound, provider);
-        if (filter != null) {
-            compound.put("filter", filter.saveOptional(provider));
+        if (filter != null && !filter.isEmpty()) {
+            compound.put("filter", filter.save(provider));
         }
     }
 
     @Override
     public void loadAdditional(CompoundTag compound, HolderLookup.Provider provider) {
         if (compound.contains("filter")) {
-            CompoundTag tag = compound.getCompound("filter");
-            filter = ItemStack.parseOptional(provider, tag);
+            Tag tag = compound.get("filter");
+            filter = ItemStack.parse(provider, tag).orElse(null);
         } else {
             filter = null;
         }

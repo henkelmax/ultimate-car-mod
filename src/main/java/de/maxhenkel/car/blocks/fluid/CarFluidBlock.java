@@ -3,8 +3,8 @@ package de.maxhenkel.car.blocks.fluid;
 import de.maxhenkel.car.fluids.IEffectApplyable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.InsideBlockEffectApplier;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -19,10 +19,10 @@ public class CarFluidBlock extends LiquidBlock {
     }
 
     @Override
-    public void entityInside(BlockState state, Level worldIn, BlockPos pos, Entity entityIn) {
+    protected void entityInside(BlockState state, Level level, BlockPos pos, Entity entity, InsideBlockEffectApplier insideBlockEffectApplier) {
         if (fluid instanceof IEffectApplyable) {
-            ((IEffectApplyable) fluid).applyEffects(entityIn, state, worldIn, pos);
+            ((IEffectApplyable) fluid).applyEffects(entity, state, level, pos);
         }
-        super.entityInside(state, worldIn, pos, entityIn);
+        super.entityInside(state, level, pos, entity, insideBlockEffectApplier);
     }
 }
