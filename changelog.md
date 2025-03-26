@@ -1,1 +1,1 @@
-- Updated to 1.21.5
+- Fixed car render pipeline not being registered

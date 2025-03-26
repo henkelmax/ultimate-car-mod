@@ -29,6 +29,7 @@ import de.maxhenkel.car.recipes.*;
 import de.maxhenkel.car.sounds.ModSounds;
 import de.maxhenkel.car.villagers.VillagerEvents;
 import de.maxhenkel.corelib.CommonRegistry;
+import de.maxhenkel.corelib.client.obj.OBJModel;
 import de.maxhenkel.corelib.config.DynamicConfig;
 import de.maxhenkel.corelib.dataserializers.DataSerializerItemList;
 import de.maxhenkel.tools.EntityTools;
@@ -159,6 +160,7 @@ public class Main {
         eventBus.addListener(IMC::enqueueIMC);
         eventBus.addListener(this::onRegisterCapabilities);
         eventBus.addListener(this::onRegisterClientExtensions);
+        OBJModel.registerRenderPipeline(eventBus);
 
         SERVER_CONFIG = CommonRegistry.registerConfig(MODID, ModConfig.Type.SERVER, ServerConfig.class, true);
         FUEL_CONFIG = CommonRegistry.registerDynamicConfig(DynamicConfig.DynamicConfigType.SERVER, Main.MODID, "fuel", FuelConfig.class);
