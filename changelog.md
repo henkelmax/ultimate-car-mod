@@ -1,1 +1,1 @@
-- Fixed car render pipeline not being registered
+- Fixed crash on servers
