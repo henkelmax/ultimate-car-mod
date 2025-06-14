@@ -17,6 +17,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
+import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3d;
 
 import java.util.List;
@@ -150,11 +151,11 @@ public abstract class EntityVehicleBase extends Entity {
                 return false;
             }
         }
-        return (entity.canBeCollidedWith() || entity.isPushable()) && !isPassengerOfSameVehicle(entity);
+        return (entity.canBeCollidedWith(entity) || entity.isPushable()) && !isPassengerOfSameVehicle(entity);
     }
 
     @Override
-    public boolean canBeCollidedWith() {
+    public boolean canBeCollidedWith(@Nullable Entity entity) {
         return true;
     }
 

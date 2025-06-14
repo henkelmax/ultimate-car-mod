@@ -11,7 +11,6 @@ import de.maxhenkel.car.items.ItemKey;
 import de.maxhenkel.car.sounds.ModSounds;
 import de.maxhenkel.corelib.client.obj.OBJModelInstance;
 import net.minecraft.core.NonNullList;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -21,6 +20,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.storage.ValueInput;
 import org.joml.Vector3d;
 
 import javax.annotation.Nullable;
@@ -344,10 +344,10 @@ public class EntityGenericCar extends EntityCarLicensePlateBase {
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundTag compound) {
-        super.readAdditionalSaveData(compound);
+    public void readAdditionalSaveData(ValueInput valueInput) {
+        super.readAdditionalSaveData(valueInput);
 
-        if (compound.keySet().stream().allMatch(s -> s.equals("id"))) {
+        if (valueInput.keySet().stream().allMatch(s -> s.equals("id"))) {
             randomizeParts();
             setItem(0, ItemKey.getKeyForCar(getUUID()));
             setItem(1, ItemKey.getKeyForCar(getUUID()));

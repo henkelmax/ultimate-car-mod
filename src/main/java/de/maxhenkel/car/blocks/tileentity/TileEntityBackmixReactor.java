@@ -5,14 +5,14 @@ import de.maxhenkel.car.blocks.ModBlocks;
 import de.maxhenkel.car.fluids.ModFluids;
 import de.maxhenkel.corelib.blockentity.ITickableBlockEntity;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.neoforged.neoforge.energy.IEnergyStorage;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
@@ -158,24 +158,24 @@ public class TileEntityBackmixReactor extends TileEntityBase implements ITickabl
     }
 
     @Override
-    public void saveAdditional(CompoundTag compound, HolderLookup.Provider provider) {
-        super.saveAdditional(compound, provider);
+    public void saveAdditional(ValueOutput valueOutput) {
+        super.saveAdditional(valueOutput);
 
-        compound.putInt("stored_endergy", storedEnergy);
-        compound.putInt("canola", currentCanola);
-        compound.putInt("methanol", currentMethanol);
-        compound.putInt("mix", currentMix);
-        compound.putInt("time", timeToGenerate);
+        valueOutput.putInt("stored_endergy", storedEnergy);
+        valueOutput.putInt("canola", currentCanola);
+        valueOutput.putInt("methanol", currentMethanol);
+        valueOutput.putInt("mix", currentMix);
+        valueOutput.putInt("time", timeToGenerate);
     }
 
     @Override
-    public void loadAdditional(CompoundTag compound, HolderLookup.Provider provider) {
-        storedEnergy = compound.getIntOr("stored_endergy", 0);
-        currentCanola = compound.getIntOr("canola", 0);
-        currentMethanol = compound.getIntOr("methanol", 0);
-        currentMix = compound.getIntOr("mix", 0);
-        timeToGenerate = compound.getIntOr("time", 0);
-        super.loadAdditional(compound, provider);
+    public void loadAdditional(ValueInput valueInput) {
+        storedEnergy = valueInput.getIntOr("stored_endergy", 0);
+        currentCanola = valueInput.getIntOr("canola", 0);
+        currentMethanol = valueInput.getIntOr("methanol", 0);
+        currentMix = valueInput.getIntOr("mix", 0);
+        timeToGenerate = valueInput.getIntOr("time", 0);
+        super.loadAdditional(valueInput);
     }
 
     @Override

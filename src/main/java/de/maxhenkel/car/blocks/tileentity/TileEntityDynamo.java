@@ -5,12 +5,12 @@ import de.maxhenkel.corelib.blockentity.ITickableBlockEntity;
 import de.maxhenkel.corelib.energy.EnergyUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.neoforged.neoforge.energy.IEnergyStorage;
 
 public class TileEntityDynamo extends TileEntityBase implements IEnergyStorage, ITickableBlockEntity {
@@ -49,15 +49,15 @@ public class TileEntityDynamo extends TileEntityBase implements IEnergyStorage, 
     }
 
     @Override
-    public void saveAdditional(CompoundTag compound, HolderLookup.Provider provider) {
-        super.saveAdditional(compound, provider);
-        compound.putInt("stored_energy", storedEnergy);
+    public void saveAdditional(ValueOutput valueOutput) {
+        super.saveAdditional(valueOutput);
+        valueOutput.putInt("stored_energy", storedEnergy);
     }
 
     @Override
-    public void loadAdditional(CompoundTag compound, HolderLookup.Provider provider) {
-        storedEnergy = compound.getIntOr("stored_energy", 0);
-        super.loadAdditional(compound, provider);
+    public void loadAdditional(ValueInput valueInput) {
+        storedEnergy = valueInput.getIntOr("stored_energy", 0);
+        super.loadAdditional(valueInput);
     }
 
     @Override

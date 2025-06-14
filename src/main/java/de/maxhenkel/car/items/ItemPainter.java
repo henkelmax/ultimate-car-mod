@@ -98,7 +98,7 @@ public class ItemPainter extends Item {
         context.getLevel().setBlockAndUpdate(context.getClickedPos().above(), state);
 
         if (context.getPlayer() instanceof ServerPlayer serverPlayer) {
-            stack1.hurtAndBreak(1, serverPlayer.serverLevel(), serverPlayer, (item) -> {
+            stack1.hurtAndBreak(1, serverPlayer.level(), serverPlayer, (item) -> {
             });
         }
 

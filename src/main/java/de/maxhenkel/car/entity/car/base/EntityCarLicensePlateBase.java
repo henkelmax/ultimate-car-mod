@@ -1,10 +1,11 @@
 package de.maxhenkel.car.entity.car.base;
 
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import org.joml.Vector3d;
 import de.maxhenkel.car.entity.car.parts.PartLicensePlateHolder;
 import de.maxhenkel.car.items.ItemLicensePlate;
 import de.maxhenkel.corelib.item.ItemUtils;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -71,15 +72,15 @@ public abstract class EntityCarLicensePlateBase extends EntityCarLockBase {
     }
 
     @Override
-    protected void addAdditionalSaveData(CompoundTag compound) {
-        super.addAdditionalSaveData(compound);
-        compound.putString("license_plate", getLicensePlate());
+    protected void addAdditionalSaveData(ValueOutput valueOutput) {
+        super.addAdditionalSaveData(valueOutput);
+        valueOutput.putString("license_plate", getLicensePlate());
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundTag compound) {
-        super.readAdditionalSaveData(compound);
-        setLicensePlate(compound.getStringOr("license_plate", ""));
+    public void readAdditionalSaveData(ValueInput valueInput) {
+        super.readAdditionalSaveData(valueInput);
+        setLicensePlate(valueInput.getStringOr("license_plate", ""));
     }
 
     public abstract Vector3d getLicensePlateOffset();

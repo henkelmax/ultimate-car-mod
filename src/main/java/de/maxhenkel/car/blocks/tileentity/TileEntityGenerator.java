@@ -4,10 +4,12 @@ import de.maxhenkel.car.Main;
 import de.maxhenkel.car.blocks.BlockGui;
 import de.maxhenkel.car.blocks.ModBlocks;
 import de.maxhenkel.corelib.blockentity.ITickableBlockEntity;
+import de.maxhenkel.corelib.codec.ValueInputOutputUtils;
 import de.maxhenkel.corelib.energy.EnergyUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.Container;
@@ -17,6 +19,8 @@ import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.neoforged.neoforge.energy.IEnergyStorage;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
@@ -142,24 +146,26 @@ public class TileEntityGenerator extends TileEntityBase implements ITickableBloc
     }
 
     @Override
-    public void saveAdditional(CompoundTag compound, HolderLookup.Provider provider) {
-        super.saveAdditional(compound, provider);
-        compound.putInt("stored_energy", storedEnergy);
+    public void saveAdditional(ValueOutput valueOutput) {
+        super.saveAdditional(valueOutput);
+        valueOutput.putInt("stored_energy", storedEnergy);
         if (currentFluid != null) {
             FluidStack stack = new FluidStack(currentFluid, currentMillibuckets);
-            compound.put("fluid", stack.save(provider));
+            HolderLookup.Provider registries = level != null ? level.registryAccess() : RegistryAccess.EMPTY;
+            ValueInputOutputUtils.setTag(valueOutput, "fluid", (CompoundTag) stack.save(registries));
         }
     }
 
     @Override
-    public void loadAdditional(CompoundTag compound, HolderLookup.Provider provider) {
-        storedEnergy = compound.getIntOr("stored_energy", 0);
-        if (compound.contains("fluid")) {
-            FluidStack stack = FluidStack.parseOptional(provider, compound.getCompoundOrEmpty("fluid"));
-            currentFluid = stack.getFluid();
-            currentMillibuckets = stack.getAmount();
-        }
-        super.loadAdditional(compound, provider);
+    public void loadAdditional(ValueInput valueInput) {
+        storedEnergy = valueInput.getIntOr("stored_energy", 0);
+        ValueInputOutputUtils.getTag(valueInput, "fluid").ifPresent(t -> {
+            HolderLookup.Provider registries = level != null ? level.registryAccess() : RegistryAccess.EMPTY;
+            FluidStack fluidStack = FluidStack.parseOptional(registries, t);
+            currentFluid = fluidStack.getFluid();
+            currentMillibuckets = fluidStack.getAmount();
+        });
+        super.loadAdditional(valueInput);
     }
 
     @Override

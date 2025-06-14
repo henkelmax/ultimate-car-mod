@@ -1,6 +1,5 @@
 package de.maxhenkel.car.entity.model;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import de.maxhenkel.car.entity.car.base.EntityGenericCar;
@@ -47,7 +46,6 @@ public class GenericCarModel extends OBJEntityRenderer<EntityGenericCar, CarRend
         String text = state.licensePlate;
         if (text != null && !text.isEmpty()) {
             pose.pushPose();
-            RenderSystem.setShaderColor(1F, 1F, 1F, 1F);
             drawLicensePlate(state, pose, source, packedLight);
             pose.popPose();
         }

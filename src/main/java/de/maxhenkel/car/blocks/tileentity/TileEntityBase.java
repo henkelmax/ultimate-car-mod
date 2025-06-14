@@ -1,10 +1,13 @@
 package de.maxhenkel.car.blocks.tileentity;
 
 import de.maxhenkel.car.net.MessageSyncTileEntity;
+import de.maxhenkel.corelib.codec.CodecUtils;
+import de.maxhenkel.corelib.codec.ValueInputOutputUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.ComponentSerialization;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
@@ -15,12 +18,16 @@ import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.TagValueOutput;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.neoforged.neoforge.energy.IEnergyStorage;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.network.PacketDistributor;
 
 import javax.annotation.Nullable;
+import java.util.Optional;
 
 public abstract class TileEntityBase extends BlockEntity implements Nameable {
 
@@ -49,9 +56,9 @@ public abstract class TileEntityBase extends BlockEntity implements Nameable {
 
     @Override
     public CompoundTag getUpdateTag(HolderLookup.Provider provider) {
-        CompoundTag updateTag = super.getUpdateTag(provider);
-        saveAdditional(updateTag, provider);
-        return updateTag;
+        TagValueOutput valueOutput = ValueInputOutputUtils.createValueOutput(this, provider);
+        saveAdditional(valueOutput);
+        return ValueInputOutputUtils.toTag(valueOutput);
     }
 
     @Override
@@ -79,17 +86,18 @@ public abstract class TileEntityBase extends BlockEntity implements Nameable {
     public abstract ContainerData getFields();
 
     @Override
-    public void saveAdditional(CompoundTag compound, HolderLookup.Provider provider) {
-        super.saveAdditional(compound, provider);
+    public void saveAdditional(ValueOutput valueOutput) {
+        super.saveAdditional(valueOutput);
         if (name != null) {
-            compound.putString("CustomName", Component.Serializer.toJson(name, provider));
+            CodecUtils.toJsonString(ComponentSerialization.CODEC, name).ifPresent(s -> valueOutput.putString("CustomName", s));
         }
     }
 
     @Override
-    public void loadAdditional(CompoundTag compound, HolderLookup.Provider provider) {
-        name = compound.getString("CustomName").map(s -> Component.Serializer.fromJson(s, provider)).orElse(null);
-        super.loadAdditional(compound, provider);
+    public void loadAdditional(ValueInput valueInput) {
+        Optional<String> optionalName = valueInput.getString("CustomName");
+        optionalName.ifPresent(s -> name = CodecUtils.fromJson(ComponentSerialization.CODEC, s).orElse(null));
+        super.loadAdditional(valueInput);
     }
 
     @Nullable

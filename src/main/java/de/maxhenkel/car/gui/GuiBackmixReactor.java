@@ -4,7 +4,7 @@ import de.maxhenkel.car.Main;
 import de.maxhenkel.car.blocks.tileentity.TileEntityBackmixReactor;
 import de.maxhenkel.corelib.inventory.ScreenBase;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FormattedCharSequence;
@@ -41,7 +41,7 @@ public class GuiBackmixReactor extends ScreenBase<ContainerBackmixReactor> {
             if (mouseY >= topPos + 8 && mouseY <= topPos + 57 + 8) {
                 List<FormattedCharSequence> list = new ArrayList<>();
                 list.add(Component.translatable("tooltip.energy", tile.getStoredEnergy()).getVisualOrderText());
-                guiGraphics.renderTooltip(font, list, mouseX - leftPos, mouseY - topPos);
+                guiGraphics.setTooltipForNextFrame(font, list, mouseX - leftPos, mouseY - topPos);
             }
         }
 
@@ -49,7 +49,7 @@ public class GuiBackmixReactor extends ScreenBase<ContainerBackmixReactor> {
             if (mouseY >= topPos + 8 && mouseY <= topPos + 57 + 8) {
                 List<FormattedCharSequence> list = new ArrayList<>();
                 list.add(Component.translatable("tooltip.oil", tile.getCurrentCanola()).getVisualOrderText());
-                guiGraphics.renderTooltip(font, list, mouseX - leftPos, mouseY - topPos);
+                guiGraphics.setTooltipForNextFrame(font, list, mouseX - leftPos, mouseY - topPos);
             }
         }
 
@@ -57,7 +57,7 @@ public class GuiBackmixReactor extends ScreenBase<ContainerBackmixReactor> {
             if (mouseY >= topPos + 8 && mouseY <= topPos + 57 + 8) {
                 List<FormattedCharSequence> list = new ArrayList<>();
                 list.add(Component.translatable("tooltip.methanol", tile.getCurrentMethanol()).getVisualOrderText());
-                guiGraphics.renderTooltip(font, list, mouseX - leftPos, mouseY - topPos);
+                guiGraphics.setTooltipForNextFrame(font, list, mouseX - leftPos, mouseY - topPos);
             }
         }
 
@@ -65,7 +65,7 @@ public class GuiBackmixReactor extends ScreenBase<ContainerBackmixReactor> {
             if (mouseY >= topPos + 8 && mouseY <= topPos + 57 + 8) {
                 List<FormattedCharSequence> list = new ArrayList<>();
                 list.add(Component.translatable("tooltip.mix", tile.getCurrentMix()).getVisualOrderText());
-                guiGraphics.renderTooltip(font, list, mouseX - leftPos, mouseY - topPos);
+                guiGraphics.setTooltipForNextFrame(font, list, mouseX - leftPos, mouseY - topPos);
             }
         }
 
@@ -73,7 +73,7 @@ public class GuiBackmixReactor extends ScreenBase<ContainerBackmixReactor> {
             if (mouseY >= topPos + 34 && mouseY <= topPos + 17 + 34) {
                 List<FormattedCharSequence> list = new ArrayList<>();
                 list.add(Component.translatable("tooltip.progress", ((int) (getProgress() * 100F))).getVisualOrderText());
-                guiGraphics.renderTooltip(font, list, mouseX - leftPos, mouseY - topPos);
+                guiGraphics.setTooltipForNextFrame(font, list, mouseX - leftPos, mouseY - topPos);
             }
         }
     }
@@ -102,7 +102,7 @@ public class GuiBackmixReactor extends ScreenBase<ContainerBackmixReactor> {
         int scHeight = (int) (texH * (1 - perc));
         int i = this.leftPos;
         int j = this.topPos;
-        guiGraphics.blit(RenderType::guiTextured, GUI_TEXTURE, i + targetX, j + targetY + scHeight, texX, texY + scHeight, texW, texH - scHeight, 256, 256);
+        guiGraphics.blit(RenderPipelines.GUI_TEXTURED, GUI_TEXTURE, i + targetX, j + targetY + scHeight, texX, texY + scHeight, texW, texH - scHeight, 256, 256);
     }
 
     public void drawCanola(GuiGraphics guiGraphics) {
@@ -118,7 +118,7 @@ public class GuiBackmixReactor extends ScreenBase<ContainerBackmixReactor> {
         int scHeight = (int) (texH * (1 - perc));
         int i = this.leftPos;
         int j = this.topPos;
-        guiGraphics.blit(RenderType::guiTextured, GUI_TEXTURE, i + targetX, j + targetY + scHeight, texX, texY + scHeight, texW, texH - scHeight, 256, 256);
+        guiGraphics.blit(RenderPipelines.GUI_TEXTURED, GUI_TEXTURE, i + targetX, j + targetY + scHeight, texX, texY + scHeight, texW, texH - scHeight, 256, 256);
     }
 
     public void drawMethanol(GuiGraphics guiGraphics) {
@@ -134,7 +134,7 @@ public class GuiBackmixReactor extends ScreenBase<ContainerBackmixReactor> {
         int scHeight = (int) (texH * (1 - perc));
         int i = this.leftPos;
         int j = this.topPos;
-        guiGraphics.blit(RenderType::guiTextured, GUI_TEXTURE, i + targetX, j + targetY + scHeight, texX, texY + scHeight, texW, texH - scHeight, 256, 256);
+        guiGraphics.blit(RenderPipelines.GUI_TEXTURED, GUI_TEXTURE, i + targetX, j + targetY + scHeight, texX, texY + scHeight, texW, texH - scHeight, 256, 256);
     }
 
     public void drawMix(GuiGraphics guiGraphics) {
@@ -150,7 +150,7 @@ public class GuiBackmixReactor extends ScreenBase<ContainerBackmixReactor> {
         int scHeight = (int) (texH * (1 - perc));
         int i = this.leftPos;
         int j = this.topPos;
-        guiGraphics.blit(RenderType::guiTextured, GUI_TEXTURE, i + targetX, j + targetY + scHeight, texX, texY + scHeight, texW, texH - scHeight, 256, 256);
+        guiGraphics.blit(RenderPipelines.GUI_TEXTURED, GUI_TEXTURE, i + targetX, j + targetY + scHeight, texX, texY + scHeight, texW, texH - scHeight, 256, 256);
     }
 
     public void drawProgress(GuiGraphics guiGraphics) {
@@ -166,7 +166,7 @@ public class GuiBackmixReactor extends ScreenBase<ContainerBackmixReactor> {
         int scWidth = (int) (texW * perc);
         int i = this.leftPos;
         int j = this.topPos;
-        guiGraphics.blit(RenderType::guiTextured, GUI_TEXTURE, i + targetX, j + targetY, texX, texY, scWidth, texH, 256, 256);
+        guiGraphics.blit(RenderPipelines.GUI_TEXTURED, GUI_TEXTURE, i + targetX, j + targetY, texX, texY, scWidth, texH, 256, 256);
     }
 
     public float getEnergy() {

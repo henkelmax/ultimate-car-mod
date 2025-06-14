@@ -1,1 +1,1 @@
-- Fixed crash on servers
+- Updated to 1.21.6

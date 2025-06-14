@@ -1,6 +1,5 @@
 package de.maxhenkel.car.gui;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.blocks.tileentity.TileEntityCarWorkshop;
 import de.maxhenkel.car.entity.car.base.EntityGenericCar;
@@ -67,8 +66,6 @@ public class GuiCarWorkshopCrafting extends ScreenBase<ContainerCarWorkshopCraft
         // Titles
         guiGraphics.drawString(font, tile.getDisplayName().getVisualOrderText(), 8, 6, FONT_COLOR, false);
         guiGraphics.drawString(font, playerInventoryTitle.getVisualOrderText(), 8, imageHeight - 96 + 2, FONT_COLOR, false);
-
-        RenderSystem.setShaderColor(1F, 1F, 1F, 1F);
 
         EntityGenericCar carTop = tile.getCarOnTop();
         EntityGenericCar car = tile.getCurrentCraftingCar();

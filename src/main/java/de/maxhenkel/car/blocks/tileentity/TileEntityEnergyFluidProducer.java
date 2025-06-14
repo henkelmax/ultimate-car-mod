@@ -3,10 +3,10 @@ package de.maxhenkel.car.blocks.tileentity;
 import de.maxhenkel.car.blocks.BlockGui;
 import de.maxhenkel.car.recipes.EnergyFluidProducerRecipe;
 import de.maxhenkel.corelib.blockentity.ITickableBlockEntity;
+import de.maxhenkel.corelib.codec.ValueInputOutputUtils;
 import de.maxhenkel.corelib.item.ItemUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.SimpleContainer;
@@ -20,6 +20,8 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.neoforged.neoforge.energy.IEnergyStorage;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
@@ -170,23 +172,27 @@ public abstract class TileEntityEnergyFluidProducer extends TileEntityBase imple
     }
 
     @Override
-    public void saveAdditional(CompoundTag compound, HolderLookup.Provider provider) {
-        super.saveAdditional(compound, provider);
-        compound.putInt("energy_stored", storedEnergy);
-        compound.putInt("time", time);
-        compound.putInt("fluid_stored", currentMillibuckets);
+    public void saveAdditional(ValueOutput valueOutput) {
+        super.saveAdditional(valueOutput);
+        valueOutput.putInt("energy_stored", storedEnergy);
+        valueOutput.putInt("time", time);
+        valueOutput.putInt("fluid_stored", currentMillibuckets);
 
-        ItemUtils.saveInventory(provider, compound, "slots", inventory);
+
+        CompoundTag compound = new CompoundTag();
+        ItemUtils.saveInventory(compound, "slots", inventory);
+        valueOutput.store(compound);
     }
 
     @Override
-    public void loadAdditional(CompoundTag compound, HolderLookup.Provider provider) {
-        storedEnergy = compound.getIntOr("energy_stored", 0);
-        time = compound.getIntOr("time", 0);
-        currentMillibuckets = compound.getIntOr("fluid_stored", 0);
+    public void loadAdditional(ValueInput valueInput) {
+        storedEnergy = valueInput.getIntOr("energy_stored", 0);
+        time = valueInput.getIntOr("time", 0);
+        currentMillibuckets = valueInput.getIntOr("fluid_stored", 0);
 
-        ItemUtils.readInventory(provider, compound, "slots", inventory);
-        super.loadAdditional(compound, provider);
+        CompoundTag tag = ValueInputOutputUtils.getTag(valueInput);
+        ItemUtils.readInventory(tag, "slots", inventory);
+        super.loadAdditional(valueInput);
     }
 
     @Override

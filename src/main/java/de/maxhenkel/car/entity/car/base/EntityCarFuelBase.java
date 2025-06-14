@@ -5,7 +5,6 @@ import javax.annotation.Nullable;
 
 import de.maxhenkel.car.fluids.ModFluids;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -14,6 +13,8 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 
@@ -143,19 +144,17 @@ public abstract class EntityCarFuelBase extends EntityCarDamageBase implements I
     public abstract int getEfficiency(@Nullable Fluid fluid);
 
     @Override
-    protected void addAdditionalSaveData(CompoundTag compound) {
-        super.addAdditionalSaveData(compound);
-        compound.putInt("fuel", getFuelAmount());
-        compound.putString("fuel_type", getFuelType());
+    protected void addAdditionalSaveData(ValueOutput valueOutput) {
+        super.addAdditionalSaveData(valueOutput);
+        valueOutput.putInt("fuel", getFuelAmount());
+        valueOutput.putString("fuel_type", getFuelType());
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundTag compound) {
-        super.readAdditionalSaveData(compound);
-        setFuelAmount(compound.getIntOr("fuel", 0));
-        if (compound.contains("fuel_type")) {
-            setFuelType(compound.getStringOr("fuel_type", ""));
-        }
+    public void readAdditionalSaveData(ValueInput valueInput) {
+        super.readAdditionalSaveData(valueInput);
+        setFuelAmount(valueInput.getIntOr("fuel", 0));
+        valueInput.getString("fuel_type").ifPresent(this::setFuelType);
     }
 
     @Override

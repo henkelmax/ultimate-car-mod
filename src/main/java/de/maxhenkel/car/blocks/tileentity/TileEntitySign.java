@@ -2,12 +2,12 @@ package de.maxhenkel.car.blocks.tileentity;
 
 import de.maxhenkel.car.Main;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 
 import java.util.Arrays;
 
@@ -21,19 +21,19 @@ public class TileEntitySign extends TileEntityBase {
     }
 
     @Override
-    public void saveAdditional(CompoundTag compound, HolderLookup.Provider provider) {
-        super.saveAdditional(compound, provider);
+    public void saveAdditional(ValueOutput valueOutput) {
+        super.saveAdditional(valueOutput);
         for (int i = 0; i < text.length; i++) {
-            compound.putString("text" + i, text[i]);
+            valueOutput.putString("text" + i, text[i]);
         }
     }
 
     @Override
-    public void loadAdditional(CompoundTag compound, HolderLookup.Provider provider) {
+    public void loadAdditional(ValueInput valueInput) {
         for (int i = 0; i < text.length; i++) {
-            this.text[i] = compound.getStringOr("text" + i, "");
+            this.text[i] = valueInput.getStringOr("text" + i, "");
         }
-        super.loadAdditional(compound, provider);
+        super.loadAdditional(valueInput);
     }
 
     public String getText(int i) {

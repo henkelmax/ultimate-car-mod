@@ -1,6 +1,5 @@
 package de.maxhenkel.car.events;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.entity.car.base.EntityGenericCar;
 import de.maxhenkel.car.entity.car.base.EntityVehicleBase;
@@ -8,7 +7,7 @@ import de.maxhenkel.corelib.math.MathUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
@@ -72,15 +71,13 @@ public class RenderEvents {
         percent = Mth.clamp(percent, 0F, 1F);
         int x = mc.getWindow().getGuiScaledWidth() / 2 - 91;
 
-        RenderSystem.setShaderColor(1F, 1F, 1F, 1F);
-
         int k = mc.getWindow().getGuiScaledHeight() - 32 + 3;
-        guiGraphics.blitSprite(RenderType::guiTextured, EXPERIENCE_BAR_BACKGROUND_SPRITE, x, k, 182, 5);
+        guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, EXPERIENCE_BAR_BACKGROUND_SPRITE, x, k, 182, 5);
 
         int j = (int) (percent * 182F);
 
         if (j > 0) {
-            guiGraphics.blitSprite(RenderType::guiTextured, EXPERIENCE_BAR_PROGRESS_SPRITE, 182, 5, 0, 0, x, k, j, 5);
+            guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, EXPERIENCE_BAR_PROGRESS_SPRITE, 182, 5, 0, 0, x, k, j, 5);
         }
     }
 

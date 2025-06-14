@@ -2,7 +2,6 @@ package de.maxhenkel.car.entity.car.base;
 
 import de.maxhenkel.car.items.ItemRepairTool;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -13,6 +12,8 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 
 public abstract class EntityCarDamageBase extends EntityCarBatteryBase {
 
@@ -122,7 +123,7 @@ public abstract class EntityCarDamageBase extends EntityCarBatteryBase {
             if (time - lastDamage < 10L) {
                 destroyCar(player, true);
                 if (player instanceof ServerPlayer serverPlayer) {
-                    stack.hurtAndBreak(50, serverPlayer.serverLevel(), serverPlayer, (item) -> {
+                    stack.hurtAndBreak(50, serverPlayer.level(), serverPlayer, (item) -> {
                     });
                 }
             } else {
@@ -201,15 +202,15 @@ public abstract class EntityCarDamageBase extends EntityCarBatteryBase {
     }
 
     @Override
-    protected void addAdditionalSaveData(CompoundTag compound) {
-        super.addAdditionalSaveData(compound);
-        compound.putFloat("damage", getDamage());
+    protected void addAdditionalSaveData(ValueOutput valueOutput) {
+        super.addAdditionalSaveData(valueOutput);
+        valueOutput.putFloat("damage", getDamage());
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundTag compound) {
-        super.readAdditionalSaveData(compound);
-        setDamage(compound.getFloatOr("damage", 0F));
+    public void readAdditionalSaveData(ValueInput valueInput) {
+        super.readAdditionalSaveData(valueInput);
+        setDamage(valueInput.getFloatOr("damage", 0F));
     }
 
 }

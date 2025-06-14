@@ -4,6 +4,7 @@ import de.maxhenkel.car.gui.ContainerCar;
 import de.maxhenkel.car.gui.ContainerCarInventory;
 import de.maxhenkel.car.items.ItemCanister;
 import de.maxhenkel.car.sounds.ModSounds;
+import de.maxhenkel.corelib.codec.ValueInputOutputUtils;
 import de.maxhenkel.corelib.item.ItemUtils;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -18,6 +19,8 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.neoforged.neoforge.fluids.FluidActionResult;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.FluidUtil;
@@ -172,34 +175,37 @@ public abstract class EntityCarInventoryBase extends EntityCarFuelBase implement
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundTag compound) {
-        super.readAdditionalSaveData(compound);
-        ItemUtils.readInventory(registryAccess(), compound, "int_inventory", internalInventory);
+    public void readAdditionalSaveData(ValueInput valueInput) {
+        super.readAdditionalSaveData(valueInput);
+        CompoundTag tag = ValueInputOutputUtils.getTag(valueInput);
+        ItemUtils.readInventory(tag, "int_inventory", internalInventory);
 
-        this.externalInventory = new SimpleContainer(compound.getIntOr("external_inventory_size", 0));
-        ItemUtils.readInventory(registryAccess(), compound, "external_inventory", externalInventory);
+        this.externalInventory = new SimpleContainer(valueInput.getIntOr("external_inventory_size", 0));
+        ItemUtils.readInventory(tag, "external_inventory", externalInventory);
 
-        ItemUtils.readInventory(registryAccess(), compound, "parts", partInventory);
+        ItemUtils.readInventory(tag, "parts", partInventory);
 
-        if (compound.contains("fluid_inventory")) {
-            fluidInventory = FluidStack.parseOptional(registryAccess(), compound.getCompoundOrEmpty("fluid_inventory"));
+        if (tag.contains("fluid_inventory")) {
+            fluidInventory = FluidStack.parseOptional(registryAccess(), tag.getCompoundOrEmpty("fluid_inventory"));
         }
     }
 
     @Override
-    protected void addAdditionalSaveData(CompoundTag compound) {
-        super.addAdditionalSaveData(compound);
+    protected void addAdditionalSaveData(ValueOutput valueOutput) {
+        super.addAdditionalSaveData(valueOutput);
+        CompoundTag compound = new CompoundTag();
+        ItemUtils.saveInventory(compound, "int_inventory", internalInventory);
 
-        ItemUtils.saveInventory(registryAccess(), compound, "int_inventory", internalInventory);
+        valueOutput.putInt("external_inventory_size", externalInventory.getContainerSize());
+        ItemUtils.saveInventory(compound, "external_inventory", externalInventory);
 
-        compound.putInt("external_inventory_size", externalInventory.getContainerSize());
-        ItemUtils.saveInventory(registryAccess(), compound, "external_inventory", externalInventory);
-
-        ItemUtils.saveInventory(registryAccess(), compound, "parts", partInventory);
+        ItemUtils.saveInventory(compound, "parts", partInventory);
 
         if (!fluidInventory.isEmpty()) {
             compound.put("fluid_inventory", fluidInventory.save(registryAccess()));
         }
+
+        valueOutput.store(compound);
     }
 
     public IFluidHandler getInventoryFluidHandler() {

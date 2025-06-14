@@ -16,8 +16,6 @@ import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -38,6 +36,8 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
@@ -212,7 +212,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 
     public void destroyCar(Player player, boolean dropParts) {
         if (player instanceof ServerPlayer serverPlayer) {
-            kill(serverPlayer.serverLevel());
+            kill(serverPlayer.level());
         }
     }
 
@@ -490,13 +490,13 @@ public abstract class EntityCarBase extends EntityVehicleBase {
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundTag compound) {
-        setStarted(compound.getBooleanOr("started", false), false, false);
+    protected void readAdditionalSaveData(ValueInput valueInput) {
+        setStarted(valueInput.getBooleanOr("started", false), false, false);
     }
 
     @Override
-    protected void addAdditionalSaveData(CompoundTag compound) {
-        compound.putBoolean("started", isStarted());
+    protected void addAdditionalSaveData(ValueOutput valueOutput) {
+        valueOutput.putBoolean("started", isStarted());
     }
 
     public void playStopSound() {

@@ -3,6 +3,8 @@ package de.maxhenkel.car.blocks.tileentity.render;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import de.maxhenkel.car.blocks.tileentity.TileEntityGasStation;
+import de.maxhenkel.corelib.FontColorUtils;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -56,7 +58,7 @@ public class TileentitySpecialRendererGasStation implements BlockEntityRenderer<
 
         matrixStack.scale(textScale, textScale, textScale);
 
-        font.drawInBatch(name, 0F, 0F, 0x0, false, matrixStack.last().pose(), buffer, Font.DisplayMode.NORMAL, 0, combinedLightIn);
+        font.drawInBatch(name, 0F, 0F, FontColorUtils.getFontColor(ChatFormatting.BLACK), false, matrixStack.last().pose(), buffer, Font.DisplayMode.NORMAL, 0, combinedLightIn);
         matrixStack.popPose();
 
         if (minecraft.getEntityRenderDispatcher().shouldRenderHitBoxes() && !Minecraft.getInstance().showOnlyReducedInfo()) {

@@ -2,9 +2,11 @@ package de.maxhenkel.car.blocks.tileentity;
 
 import de.maxhenkel.car.Main;
 import de.maxhenkel.corelib.blockentity.ITickableBlockEntity;
+import de.maxhenkel.corelib.codec.ValueInputOutputUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.inventory.ContainerData;
@@ -12,6 +14,8 @@ import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.fluids.FluidStack;
@@ -111,22 +115,21 @@ public class TileEntityTank extends TileEntityBase implements IFluidHandler, ITi
     }
 
     @Override
-    public void saveAdditional(CompoundTag compound, HolderLookup.Provider provider) {
-        super.saveAdditional(compound, provider);
+    public void saveAdditional(ValueOutput valueOutput) {
+        super.saveAdditional(valueOutput);
         if (!fluid.isEmpty() && fluid.getAmount() > 0) {
-            compound.put("fluid", fluid.save(provider));
+            HolderLookup.Provider registries = level != null ? level.registryAccess() : RegistryAccess.EMPTY;
+            ValueInputOutputUtils.setTag(valueOutput, "fluid", (CompoundTag) fluid.save(registries));
         }
     }
 
     @Override
-    public void loadAdditional(CompoundTag compound, HolderLookup.Provider provider) {
-        if (compound.contains("fluid")) {
-            CompoundTag comp = compound.getCompoundOrEmpty("fluid");
-            fluid = FluidStack.parseOptional(provider, comp);
-        } else {
-            fluid = FluidStack.EMPTY;
-        }
-        super.loadAdditional(compound, provider);
+    public void loadAdditional(ValueInput valueInput) {
+        fluid = ValueInputOutputUtils.getTag(valueInput, "fluid").map(t -> {
+            HolderLookup.Provider registries = level != null ? level.registryAccess() : RegistryAccess.EMPTY;
+            return FluidStack.parseOptional(registries, t);
+        }).orElse(FluidStack.EMPTY);
+        super.loadAdditional(valueInput);
     }
 
     public void setFluid(FluidStack fluid) {

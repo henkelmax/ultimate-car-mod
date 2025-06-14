@@ -1,12 +1,13 @@
 package de.maxhenkel.car.entity.car.base;
 
 import de.maxhenkel.corelib.math.MathUtils;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 
 public abstract class EntityCarTemperatureBase extends EntityCarBase {
 
@@ -88,15 +89,15 @@ public abstract class EntityCarTemperatureBase extends EntityCarBase {
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundTag compound) {
-        super.readAdditionalSaveData(compound);
-        setTemperature(compound.getFloatOr("temperature", 0F));
+    public void readAdditionalSaveData(ValueInput valueInput) {
+        super.readAdditionalSaveData(valueInput);
+        setTemperature(valueInput.getFloatOr("temperature", 0F));
     }
 
     @Override
-    protected void addAdditionalSaveData(CompoundTag compound) {
-        super.addAdditionalSaveData(compound);
-        compound.putFloat("temperature", getTemperature());
+    protected void addAdditionalSaveData(ValueOutput valueOutput) {
+        super.addAdditionalSaveData(valueOutput);
+        valueOutput.putFloat("temperature", getTemperature());
     }
 
     /**

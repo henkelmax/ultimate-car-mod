@@ -4,8 +4,6 @@ import de.maxhenkel.car.Main;
 import de.maxhenkel.car.fluids.ModFluids;
 import de.maxhenkel.corelib.blockentity.ITickableBlockEntity;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
@@ -13,6 +11,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 
@@ -147,21 +147,21 @@ public class TileEntitySplitTank extends TileEntityBase implements ITickableBloc
     }
 
     @Override
-    public void saveAdditional(CompoundTag compound, HolderLookup.Provider provider) {
-        super.saveAdditional(compound, provider);
-        compound.putInt("mix", currentMix);
-        compound.putInt("bio_diesel", currentBioDiesel);
-        compound.putInt("glycerin", currentGlycerin);
-        compound.putInt("time", timeToGenerate);
+    public void saveAdditional(ValueOutput valueOutput) {
+        super.saveAdditional(valueOutput);
+        valueOutput.putInt("mix", currentMix);
+        valueOutput.putInt("bio_diesel", currentBioDiesel);
+        valueOutput.putInt("glycerin", currentGlycerin);
+        valueOutput.putInt("time", timeToGenerate);
     }
 
     @Override
-    public void loadAdditional(CompoundTag compound, HolderLookup.Provider provider) {
-        currentMix = compound.getIntOr("mix", 0);
-        currentBioDiesel = compound.getIntOr("bio_diesel", 0);
-        currentGlycerin = compound.getIntOr("glycerin", 0);
-        timeToGenerate = compound.getIntOr("timeToGenerate", 0);
-        super.loadAdditional(compound, provider);
+    public void loadAdditional(ValueInput valueInput) {
+        currentMix = valueInput.getIntOr("mix", 0);
+        currentBioDiesel = valueInput.getIntOr("bio_diesel", 0);
+        currentGlycerin = valueInput.getIntOr("glycerin", 0);
+        timeToGenerate = valueInput.getIntOr("timeToGenerate", 0);
+        super.loadAdditional(valueInput);
     }
 
     @Override

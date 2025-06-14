@@ -11,12 +11,10 @@ import de.maxhenkel.car.sounds.SoundLoopTileentity;
 import de.maxhenkel.car.sounds.SoundLoopTileentity.ISoundLoopable;
 import de.maxhenkel.corelib.CachedValue;
 import de.maxhenkel.corelib.blockentity.ITickableBlockEntity;
+import de.maxhenkel.corelib.codec.ValueInputOutputUtils;
 import de.maxhenkel.corelib.item.ItemUtils;
 import net.minecraft.Util;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.core.UUIDUtil;
+import net.minecraft.core.*;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -29,6 +27,8 @@ import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
@@ -274,7 +274,7 @@ public class TileEntityGasStation extends TileEntityBase implements ITickableBlo
         if (player instanceof ServerPlayer) {
             ServerPlayer p = (ServerPlayer) player;
 
-            boolean isOp = p.hasPermissions(p.server.getOperatorUserPermissionLevel());
+            boolean isOp = p.hasPermissions(p.getServer().getOperatorUserPermissionLevel());
             if (isOp) {
                 return true;
             }
@@ -287,41 +287,49 @@ public class TileEntityGasStation extends TileEntityBase implements ITickableBlo
     }
 
     @Override
-    public void saveAdditional(CompoundTag compound, HolderLookup.Provider provider) {
-        super.saveAdditional(compound, provider);
-        compound.putInt("counter", fuelCounter);
+    public void saveAdditional(ValueOutput valueOutput) {
+        super.saveAdditional(valueOutput);
+        valueOutput.putInt("counter", fuelCounter);
 
         if (!storage.isEmpty()) {
-            compound.put("fluid", storage.save(provider));
+            HolderLookup.Provider registries = level != null ? level.registryAccess() : RegistryAccess.EMPTY;
+            ValueInputOutputUtils.setTag(valueOutput, "fluid", (CompoundTag) storage.save(registries));
         }
 
-        ItemUtils.saveInventory(provider, compound, "inventory", inventory);
+        CompoundTag inv = new CompoundTag();
+        ItemUtils.saveInventory(inv, "inventory", inventory);
+        valueOutput.store(inv);
 
-        ItemUtils.saveInventory(provider, compound, "trading", trading);
+        CompoundTag trading = new CompoundTag();
+        ItemUtils.saveInventory(trading, "trading", inventory);
+        valueOutput.store(trading);
 
-        compound.putInt("trade_amount", tradeAmount);
-        compound.putInt("free_amount", freeAmountLeft);
+        valueOutput.putInt("trade_amount", tradeAmount);
+        valueOutput.putInt("free_amount", freeAmountLeft);
 
-        compound.store("owner", UUIDUtil.CODEC, owner);
+        valueOutput.store("owner", UUIDUtil.CODEC, owner);
     }
 
     @Override
-    public void loadAdditional(CompoundTag compound, HolderLookup.Provider provider) {
-        fuelCounter = compound.getIntOr("counter", 0);
+    public void loadAdditional(ValueInput valueInput) {
+        fuelCounter = valueInput.getIntOr("counter", 0);
 
-        if (compound.contains("fluid")) {
-            CompoundTag comp = compound.getCompoundOrEmpty("fluid");
-            storage = FluidStack.parseOptional(provider, comp);
-        }
+        ValueInputOutputUtils.getTag(valueInput, "fluid").ifPresent(t -> {
+            HolderLookup.Provider registries = level != null ? level.registryAccess() : RegistryAccess.EMPTY;
+            storage = FluidStack.parseOptional(registries, t);
+        });
 
-        ItemUtils.readInventory(provider, compound, "inventory", inventory);
-        ItemUtils.readInventory(provider, compound, "trading", trading);
+        CompoundTag inv = ValueInputOutputUtils.getTag(valueInput);
+        ItemUtils.readInventory(inv, "inventory", inventory);
 
-        tradeAmount = compound.getIntOr("trade_amount", 0);
-        freeAmountLeft = compound.getIntOr("free_amount", 0);
+        CompoundTag tr = ValueInputOutputUtils.getTag(valueInput);
+        ItemUtils.readInventory(tr, "trading", trading);
 
-        owner = compound.read("owner", UUIDUtil.CODEC).orElse(Util.NIL_UUID);
-        super.loadAdditional(compound, provider);
+        tradeAmount = valueInput.getIntOr("trade_amount", 0);
+        freeAmountLeft = valueInput.getIntOr("free_amount", 0);
+
+        owner = valueInput.read("owner", UUIDUtil.CODEC).orElse(Util.NIL_UUID);
+        super.loadAdditional(valueInput);
     }
 
     public boolean isFueling() {

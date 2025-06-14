@@ -12,15 +12,14 @@ import de.maxhenkel.car.blocks.BlockFluidExtractor;
 import de.maxhenkel.car.blocks.ModBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.FluidUtil;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
@@ -142,22 +141,17 @@ public class TileEntityFluidExtractor extends TileEntityBase implements ITickabl
     }
 
     @Override
-    public void saveAdditional(CompoundTag compound, HolderLookup.Provider provider) {
-        super.saveAdditional(compound, provider);
+    public void saveAdditional(ValueOutput valueOutput) {
+        super.saveAdditional(valueOutput);
         if (filter != null && !filter.isEmpty()) {
-            compound.put("filter", filter.save(provider));
+            valueOutput.store("filter", ItemStack.CODEC, filter);
         }
     }
 
     @Override
-    public void loadAdditional(CompoundTag compound, HolderLookup.Provider provider) {
-        if (compound.contains("filter")) {
-            Tag tag = compound.get("filter");
-            filter = ItemStack.parse(provider, tag).orElse(null);
-        } else {
-            filter = null;
-        }
-        super.loadAdditional(compound, provider);
+    public void loadAdditional(ValueInput valueInput) {
+        filter = valueInput.read("filter", ItemStack.CODEC).orElse(null);
+        super.loadAdditional(valueInput);
     }
 
     @Override

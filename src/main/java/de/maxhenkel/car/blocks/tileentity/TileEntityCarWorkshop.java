@@ -10,10 +10,10 @@ import de.maxhenkel.car.entity.car.parts.PartRegistry;
 import de.maxhenkel.car.items.ICarPart;
 import de.maxhenkel.car.items.ItemKey;
 import de.maxhenkel.car.sounds.ModSounds;
+import de.maxhenkel.corelib.codec.ValueInputOutputUtils;
 import de.maxhenkel.corelib.item.ItemUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -24,16 +24,16 @@ import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.inventory.SimpleContainerData;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.AABB;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.function.Consumer;
 
 public class TileEntityCarWorkshop extends TileEntityBase implements Container {
 
@@ -190,17 +190,24 @@ public class TileEntityCarWorkshop extends TileEntityBase implements Container {
     }
 
     @Override
-    public void saveAdditional(CompoundTag compound, HolderLookup.Provider provider) {
-        super.saveAdditional(compound, provider);
-        ItemUtils.saveInventory(provider, compound, "crafting", craftingMatrix);
-        ItemUtils.saveInventory(provider, compound, "repair", repairInventory);
+    public void saveAdditional(ValueOutput valueOutput) {
+        super.saveAdditional(valueOutput);
+
+        CompoundTag crafting = new CompoundTag();
+        ItemUtils.saveInventory(crafting, "crafting", craftingMatrix);
+        valueOutput.store(crafting);
+
+        CompoundTag repair = new CompoundTag();
+        ItemUtils.saveInventory(repair, "repair", repairInventory);
+        valueOutput.store(repair);
     }
 
     @Override
-    public void loadAdditional(CompoundTag compound, HolderLookup.Provider provider) {
-        ItemUtils.readInventory(provider, compound, "crafting", craftingMatrix);
-        ItemUtils.readInventory(provider, compound, "repair", repairInventory);
-        super.loadAdditional(compound, provider);
+    public void loadAdditional(ValueInput valueInput) {
+        CompoundTag tag = ValueInputOutputUtils.getTag(valueInput);
+        ItemUtils.readInventory(tag, "crafting", craftingMatrix);
+        ItemUtils.readInventory(tag, "repair", repairInventory);
+        super.loadAdditional(valueInput);
     }
 
     public void updateRecipe() {

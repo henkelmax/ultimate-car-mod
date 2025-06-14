@@ -3,6 +3,7 @@ package de.maxhenkel.car.items;
 import de.maxhenkel.car.blocks.ModBlocks;
 import de.maxhenkel.corelib.energy.EnergyUtils;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.Item;
@@ -10,6 +11,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.item.enchantment.Enchantment;
 import net.neoforged.neoforge.energy.IEnergyStorage;
 
 import java.util.function.Consumer;
@@ -28,7 +30,7 @@ public class ItemBattery extends Item {
     }
 
     @Override
-    public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
+    public boolean supportsEnchantment(ItemStack stack, Holder<Enchantment> enchantment) {
         return false;
     }
 

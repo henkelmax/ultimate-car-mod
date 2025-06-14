@@ -95,7 +95,7 @@ public class GuiGasStation extends ScreenBase<ContainerGasStation> {
             if (mouseY >= topPos + 99 && mouseY <= topPos + 114) {
                 List<FormattedCharSequence> list = new ArrayList<>();
                 list.add(Component.translatable("tooltip.trade", stack.getCount(), stack.getHoverName(), gasStation.getTradeAmount()).getVisualOrderText());
-                guiGraphics.renderTooltip(font, list, mouseX - leftPos, mouseY - topPos);
+                guiGraphics.setTooltipForNextFrame(font, list, mouseX - leftPos, mouseY - topPos);
             }
         }
     }

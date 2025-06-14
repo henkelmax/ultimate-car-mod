@@ -1,6 +1,5 @@
 package de.maxhenkel.car.gui;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.blocks.tileentity.TileEntityCarWorkshop;
 import de.maxhenkel.car.entity.car.base.EntityCarBase;
@@ -13,7 +12,7 @@ import de.maxhenkel.corelib.math.MathUtils;
 import de.maxhenkel.tools.EntityTools;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FormattedCharSequence;
@@ -84,7 +83,7 @@ public class GuiCarWorkshopRepair extends ScreenBase<ContainerCarWorkshopRepair>
             if (mouseY >= topPos + 81 && mouseY <= topPos + 90) {
                 List<FormattedCharSequence> list = new ArrayList<>();
                 list.add(Component.translatable("tooltip.damage", MathUtils.round(car.getDamage(), 2)).getVisualOrderText());
-                guiGraphics.renderTooltip(font, list, mouseX - leftPos, mouseY - topPos);
+                guiGraphics.setTooltipForNextFrame(font, list, mouseX - leftPos, mouseY - topPos);
             }
         }
 
@@ -128,11 +127,10 @@ public class GuiCarWorkshopRepair extends ScreenBase<ContainerCarWorkshopRepair>
 
         double percent = 100 - getDamagePercent(c);
 
-        RenderSystem.setShaderColor(1F, 1F, 1F, 1F);
         int scaled = (int) (72 * percent / 100);
         int i = this.leftPos;
         int j = this.topPos;
-        guiGraphics.blit(RenderType::guiTextured, GUI_TEXTURE, i + 52, j + 81, 176, 0, scaled, 10, 256, 256);
+        guiGraphics.blit(RenderPipelines.GUI_TEXTURED, GUI_TEXTURE, i + 52, j + 81, 176, 0, scaled, 10, 256, 256);
     }
 
     @Override
