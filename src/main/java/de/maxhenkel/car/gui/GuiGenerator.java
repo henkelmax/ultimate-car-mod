@@ -41,7 +41,7 @@ public class GuiGenerator extends ScreenBase<ContainerGenerator> {
             if (mouseY >= topPos + 8 && mouseY <= topPos + 57 + 8) {
                 List<FormattedCharSequence> list = new ArrayList<>();
                 list.add(Component.translatable("tooltip.energy", tile.getStoredEnergy()).getVisualOrderText());
-                guiGraphics.setTooltipForNextFrame(font, list, mouseX - leftPos, mouseY - topPos);
+                guiGraphics.setTooltipForNextFrame(font, list, mouseX, mouseY);
             }
         }
 
@@ -49,7 +49,7 @@ public class GuiGenerator extends ScreenBase<ContainerGenerator> {
             if (mouseY >= topPos + 8 && mouseY <= topPos + 57 + 8) {
                 List<FormattedCharSequence> list = new ArrayList<>();
                 list.add(Component.translatable("tooltip.fuel", tile.getCurrentMillibuckets()).getVisualOrderText());
-                guiGraphics.setTooltipForNextFrame(font, list, mouseX - leftPos, mouseY - topPos);
+                guiGraphics.setTooltipForNextFrame(font, list, mouseX, mouseY);
             }
         }
     }

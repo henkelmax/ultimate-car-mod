@@ -48,7 +48,7 @@ public abstract class GuiEnergyFluidProducer<T extends ContainerEnergyFluidProdu
             if (mouseY >= topPos + 8 && mouseY <= topPos + 57 + 8) {
                 List<FormattedCharSequence> list = new ArrayList<>();
                 list.add(Component.translatable(getUnlocalizedTooltipEnergy(), tile.getStoredEnergy()).getVisualOrderText());
-                guiGraphics.setTooltipForNextFrame(font, list, mouseX - leftPos, mouseY - topPos);
+                guiGraphics.setTooltipForNextFrame(font, list, mouseX, mouseY);
             }
         }
 
@@ -56,7 +56,7 @@ public abstract class GuiEnergyFluidProducer<T extends ContainerEnergyFluidProdu
             if (mouseY >= topPos + 8 && mouseY <= topPos + 57 + 8) {
                 List<FormattedCharSequence> list = new ArrayList<>();
                 list.add(Component.translatable(getUnlocalizedTooltipLiquid(), tile.getCurrentMillibuckets()).getVisualOrderText());
-                guiGraphics.setTooltipForNextFrame(font, list, mouseX - leftPos, mouseY - topPos);
+                guiGraphics.setTooltipForNextFrame(font, list, mouseX, mouseY);
             }
         }
 
@@ -64,7 +64,7 @@ public abstract class GuiEnergyFluidProducer<T extends ContainerEnergyFluidProdu
             if (mouseY >= topPos + 34 && mouseY <= topPos + 17 + 34) {
                 List<FormattedCharSequence> list = new ArrayList<>();
                 list.add(Component.translatable(getUnlocalizedTooltipProgress(), ((int) (getProgress() * 100F))).getVisualOrderText());
-                guiGraphics.setTooltipForNextFrame(font, list, mouseX - leftPos, mouseY - topPos);
+                guiGraphics.setTooltipForNextFrame(font, list, mouseX, mouseY);
             }
         }
     }

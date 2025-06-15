@@ -40,7 +40,7 @@ public class GuiSplitTank extends ScreenBase<ContainerSplitTank> {
             if (mouseY >= topPos + 8 && mouseY <= topPos + 57 + 8) {
                 List<FormattedCharSequence> list = new ArrayList<>();
                 list.add(Component.translatable("tooltip.mix", tile.getCurrentMix()).getVisualOrderText());
-                guiGraphics.setTooltipForNextFrame(font, list, mouseX - leftPos, mouseY - topPos);
+                guiGraphics.setTooltipForNextFrame(font, list, mouseX, mouseY);
             }
         }
 
@@ -48,7 +48,7 @@ public class GuiSplitTank extends ScreenBase<ContainerSplitTank> {
             if (mouseY >= topPos + 8 && mouseY <= topPos + 57 + 8) {
                 List<FormattedCharSequence> list = new ArrayList<>();
                 list.add(Component.translatable("tooltip.glycerin", tile.getCurrentGlycerin()).getVisualOrderText());
-                guiGraphics.setTooltipForNextFrame(font, list, mouseX - leftPos, mouseY - topPos);
+                guiGraphics.setTooltipForNextFrame(font, list, mouseX, mouseY);
             }
         }
 
@@ -56,7 +56,7 @@ public class GuiSplitTank extends ScreenBase<ContainerSplitTank> {
             if (mouseY >= topPos + 8 && mouseY <= topPos + 57 + 8) {
                 List<FormattedCharSequence> list = new ArrayList<>();
                 list.add(Component.translatable("tooltip.bio_diesel", tile.getCurrentBioDiesel()).getVisualOrderText());
-                guiGraphics.setTooltipForNextFrame(font, list, mouseX - leftPos, mouseY - topPos);
+                guiGraphics.setTooltipForNextFrame(font, list, mouseX, mouseY);
             }
         }
 
@@ -64,7 +64,7 @@ public class GuiSplitTank extends ScreenBase<ContainerSplitTank> {
             if (mouseY >= topPos + 34 && mouseY <= topPos + 17 + 34) {
                 List<FormattedCharSequence> list = new ArrayList<>();
                 list.add(Component.translatable("tooltip.progress", ((int) (getProgress() * 100F))).getVisualOrderText());
-                guiGraphics.setTooltipForNextFrame(font, list, mouseX - leftPos, mouseY - topPos);
+                guiGraphics.setTooltipForNextFrame(font, list, mouseX, mouseY);
             }
         }
     }

@@ -83,7 +83,7 @@ public class GuiCarWorkshopRepair extends ScreenBase<ContainerCarWorkshopRepair>
             if (mouseY >= topPos + 81 && mouseY <= topPos + 90) {
                 List<FormattedCharSequence> list = new ArrayList<>();
                 list.add(Component.translatable("tooltip.damage", MathUtils.round(car.getDamage(), 2)).getVisualOrderText());
-                guiGraphics.setTooltipForNextFrame(font, list, mouseX - leftPos, mouseY - topPos);
+                guiGraphics.setTooltipForNextFrame(font, list, mouseX, mouseY);
             }
         }
 

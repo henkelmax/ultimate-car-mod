@@ -41,7 +41,7 @@ public class GuiBackmixReactor extends ScreenBase<ContainerBackmixReactor> {
             if (mouseY >= topPos + 8 && mouseY <= topPos + 57 + 8) {
                 List<FormattedCharSequence> list = new ArrayList<>();
                 list.add(Component.translatable("tooltip.energy", tile.getStoredEnergy()).getVisualOrderText());
-                guiGraphics.setTooltipForNextFrame(font, list, mouseX - leftPos, mouseY - topPos);
+                guiGraphics.setTooltipForNextFrame(font, list, mouseX, mouseY);
             }
         }
 
@@ -49,7 +49,7 @@ public class GuiBackmixReactor extends ScreenBase<ContainerBackmixReactor> {
             if (mouseY >= topPos + 8 && mouseY <= topPos + 57 + 8) {
                 List<FormattedCharSequence> list = new ArrayList<>();
                 list.add(Component.translatable("tooltip.oil", tile.getCurrentCanola()).getVisualOrderText());
-                guiGraphics.setTooltipForNextFrame(font, list, mouseX - leftPos, mouseY - topPos);
+                guiGraphics.setTooltipForNextFrame(font, list, mouseX, mouseY);
             }
         }
 
@@ -57,7 +57,7 @@ public class GuiBackmixReactor extends ScreenBase<ContainerBackmixReactor> {
             if (mouseY >= topPos + 8 && mouseY <= topPos + 57 + 8) {
                 List<FormattedCharSequence> list = new ArrayList<>();
                 list.add(Component.translatable("tooltip.methanol", tile.getCurrentMethanol()).getVisualOrderText());
-                guiGraphics.setTooltipForNextFrame(font, list, mouseX - leftPos, mouseY - topPos);
+                guiGraphics.setTooltipForNextFrame(font, list, mouseX, mouseY);
             }
         }
 
@@ -65,7 +65,7 @@ public class GuiBackmixReactor extends ScreenBase<ContainerBackmixReactor> {
             if (mouseY >= topPos + 8 && mouseY <= topPos + 57 + 8) {
                 List<FormattedCharSequence> list = new ArrayList<>();
                 list.add(Component.translatable("tooltip.mix", tile.getCurrentMix()).getVisualOrderText());
-                guiGraphics.setTooltipForNextFrame(font, list, mouseX - leftPos, mouseY - topPos);
+                guiGraphics.setTooltipForNextFrame(font, list, mouseX, mouseY);
             }
         }
 
@@ -73,7 +73,7 @@ public class GuiBackmixReactor extends ScreenBase<ContainerBackmixReactor> {
             if (mouseY >= topPos + 34 && mouseY <= topPos + 17 + 34) {
                 List<FormattedCharSequence> list = new ArrayList<>();
                 list.add(Component.translatable("tooltip.progress", ((int) (getProgress() * 100F))).getVisualOrderText());
-                guiGraphics.setTooltipForNextFrame(font, list, mouseX - leftPos, mouseY - topPos);
+                guiGraphics.setTooltipForNextFrame(font, list, mouseX, mouseY);
             }
         }
     }
