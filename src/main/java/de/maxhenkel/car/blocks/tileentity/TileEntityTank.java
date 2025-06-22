@@ -2,12 +2,8 @@ package de.maxhenkel.car.blocks.tileentity;
 
 import de.maxhenkel.car.Main;
 import de.maxhenkel.corelib.blockentity.ITickableBlockEntity;
-import de.maxhenkel.corelib.codec.ValueInputOutputUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.core.RegistryAccess;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.inventory.SimpleContainerData;
@@ -118,17 +114,13 @@ public class TileEntityTank extends TileEntityBase implements IFluidHandler, ITi
     public void saveAdditional(ValueOutput valueOutput) {
         super.saveAdditional(valueOutput);
         if (!fluid.isEmpty() && fluid.getAmount() > 0) {
-            HolderLookup.Provider registries = level != null ? level.registryAccess() : RegistryAccess.EMPTY;
-            ValueInputOutputUtils.setTag(valueOutput, "fluid", (CompoundTag) fluid.save(registries));
+            valueOutput.store("fluid", FluidStack.CODEC, fluid);
         }
     }
 
     @Override
     public void loadAdditional(ValueInput valueInput) {
-        fluid = ValueInputOutputUtils.getTag(valueInput, "fluid").map(t -> {
-            HolderLookup.Provider registries = level != null ? level.registryAccess() : RegistryAccess.EMPTY;
-            return FluidStack.parseOptional(registries, t);
-        }).orElse(FluidStack.EMPTY);
+        fluid = valueInput.read("fluid", FluidStack.CODEC).orElse(FluidStack.EMPTY);
         super.loadAdditional(valueInput);
     }
 

@@ -2,9 +2,12 @@ package de.maxhenkel.car.integration.waila;
 
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.blocks.tileentity.TileEntityTank;
+import de.maxhenkel.corelib.codec.ValueInputOutputUtils;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.storage.TagValueInput;
+import net.minecraft.world.level.storage.TagValueOutput;
 import net.neoforged.neoforge.fluids.FluidStack;
 import snownee.jade.api.BlockAccessor;
 import snownee.jade.api.IBlockComponentProvider;
@@ -20,7 +23,9 @@ public class HUDHandlerTank implements IBlockComponentProvider, IServerDataProvi
 
     @Override
     public void appendTooltip(ITooltip iTooltip, BlockAccessor blockAccessor, IPluginConfig iPluginConfig) {
-        FluidStack stack = FluidStack.parseOptional(blockAccessor.getBlockEntity().getLevel().registryAccess(), blockAccessor.getServerData().getCompoundOrEmpty("fluid"));
+        CompoundTag tag = blockAccessor.getServerData();
+        TagValueInput valueInput = ValueInputOutputUtils.createValueInput(blockAccessor.getBlockEntity(), blockAccessor.getBlockEntity().getLevel().registryAccess(), tag);
+        FluidStack stack = valueInput.read("fluid", FluidStack.CODEC).orElse(FluidStack.EMPTY);
 
         if (stack.isEmpty()) {
             iTooltip.add(Component.translatable("tooltip.waila.tank.no_fluid"));
@@ -34,7 +39,9 @@ public class HUDHandlerTank implements IBlockComponentProvider, IServerDataProvi
     public void appendServerData(CompoundTag compoundTag, BlockAccessor blockAccessor) {
         TileEntityTank tank = (TileEntityTank) blockAccessor.getBlockEntity();
         if (!tank.getFluid().isEmpty()) {
-            compoundTag.put("fluid", tank.getFluid().save(blockAccessor.getBlockEntity().getLevel().registryAccess()));
+            TagValueOutput valueOutput = ValueInputOutputUtils.createValueOutput(tank, tank.getLevel().registryAccess());
+            valueOutput.store("fluid", FluidStack.CODEC, tank.getFluid());
+            compoundTag.merge(ValueInputOutputUtils.toTag(valueOutput));
         }
     }
 

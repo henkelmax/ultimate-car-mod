@@ -10,11 +10,9 @@ import de.maxhenkel.car.entity.car.parts.PartRegistry;
 import de.maxhenkel.car.items.ICarPart;
 import de.maxhenkel.car.items.ItemKey;
 import de.maxhenkel.car.sounds.ModSounds;
-import de.maxhenkel.corelib.codec.ValueInputOutputUtils;
 import de.maxhenkel.corelib.item.ItemUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -192,21 +190,14 @@ public class TileEntityCarWorkshop extends TileEntityBase implements Container {
     @Override
     public void saveAdditional(ValueOutput valueOutput) {
         super.saveAdditional(valueOutput);
-
-        CompoundTag crafting = new CompoundTag();
-        ItemUtils.saveInventory(crafting, "crafting", craftingMatrix);
-        valueOutput.store(crafting);
-
-        CompoundTag repair = new CompoundTag();
-        ItemUtils.saveInventory(repair, "repair", repairInventory);
-        valueOutput.store(repair);
+        ItemUtils.saveInventory(valueOutput, "crafting", craftingMatrix);
+        ItemUtils.saveInventory(valueOutput, "repair", repairInventory);
     }
 
     @Override
     public void loadAdditional(ValueInput valueInput) {
-        CompoundTag tag = ValueInputOutputUtils.getTag(valueInput);
-        ItemUtils.readInventory(tag, "crafting", craftingMatrix);
-        ItemUtils.readInventory(tag, "repair", repairInventory);
+        ItemUtils.readInventory(valueInput, "crafting", craftingMatrix);
+        ItemUtils.readInventory(valueInput, "repair", repairInventory);
         super.loadAdditional(valueInput);
     }
 

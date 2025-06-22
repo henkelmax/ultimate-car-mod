@@ -4,13 +4,9 @@ import de.maxhenkel.car.Main;
 import de.maxhenkel.car.blocks.BlockGui;
 import de.maxhenkel.car.blocks.ModBlocks;
 import de.maxhenkel.corelib.blockentity.ITickableBlockEntity;
-import de.maxhenkel.corelib.codec.ValueInputOutputUtils;
 import de.maxhenkel.corelib.energy.EnergyUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.core.RegistryAccess;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
@@ -151,19 +147,16 @@ public class TileEntityGenerator extends TileEntityBase implements ITickableBloc
         valueOutput.putInt("stored_energy", storedEnergy);
         if (currentFluid != null) {
             FluidStack stack = new FluidStack(currentFluid, currentMillibuckets);
-            HolderLookup.Provider registries = level != null ? level.registryAccess() : RegistryAccess.EMPTY;
-            ValueInputOutputUtils.setTag(valueOutput, "fluid", (CompoundTag) stack.save(registries));
+            valueOutput.store("fluid", FluidStack.CODEC, stack);
         }
     }
 
     @Override
     public void loadAdditional(ValueInput valueInput) {
         storedEnergy = valueInput.getIntOr("stored_energy", 0);
-        ValueInputOutputUtils.getTag(valueInput, "fluid").ifPresent(t -> {
-            HolderLookup.Provider registries = level != null ? level.registryAccess() : RegistryAccess.EMPTY;
-            FluidStack fluidStack = FluidStack.parseOptional(registries, t);
-            currentFluid = fluidStack.getFluid();
-            currentMillibuckets = fluidStack.getAmount();
+        valueInput.read("fluid", FluidStack.CODEC).ifPresent(stack -> {
+            currentFluid = stack.getFluid();
+            currentMillibuckets = stack.getAmount();
         });
         super.loadAdditional(valueInput);
     }

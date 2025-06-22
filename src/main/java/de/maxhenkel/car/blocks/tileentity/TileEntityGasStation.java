@@ -11,11 +11,9 @@ import de.maxhenkel.car.sounds.SoundLoopTileentity;
 import de.maxhenkel.car.sounds.SoundLoopTileentity.ISoundLoopable;
 import de.maxhenkel.corelib.CachedValue;
 import de.maxhenkel.corelib.blockentity.ITickableBlockEntity;
-import de.maxhenkel.corelib.codec.ValueInputOutputUtils;
 import de.maxhenkel.corelib.item.ItemUtils;
 import net.minecraft.Util;
 import net.minecraft.core.*;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
@@ -292,17 +290,11 @@ public class TileEntityGasStation extends TileEntityBase implements ITickableBlo
         valueOutput.putInt("counter", fuelCounter);
 
         if (!storage.isEmpty()) {
-            HolderLookup.Provider registries = level != null ? level.registryAccess() : RegistryAccess.EMPTY;
-            ValueInputOutputUtils.setTag(valueOutput, "fluid", (CompoundTag) storage.save(registries));
+            valueOutput.store("fluid", FluidStack.CODEC, storage);
         }
 
-        CompoundTag inv = new CompoundTag();
-        ItemUtils.saveInventory(inv, "inventory", inventory);
-        valueOutput.store(inv);
-
-        CompoundTag trading = new CompoundTag();
-        ItemUtils.saveInventory(trading, "trading", inventory);
-        valueOutput.store(trading);
+        ItemUtils.saveInventory(valueOutput, "inventory", inventory);
+        ItemUtils.saveInventory(valueOutput, "trading", inventory);
 
         valueOutput.putInt("trade_amount", tradeAmount);
         valueOutput.putInt("free_amount", freeAmountLeft);
@@ -314,16 +306,10 @@ public class TileEntityGasStation extends TileEntityBase implements ITickableBlo
     public void loadAdditional(ValueInput valueInput) {
         fuelCounter = valueInput.getIntOr("counter", 0);
 
-        ValueInputOutputUtils.getTag(valueInput, "fluid").ifPresent(t -> {
-            HolderLookup.Provider registries = level != null ? level.registryAccess() : RegistryAccess.EMPTY;
-            storage = FluidStack.parseOptional(registries, t);
-        });
+        storage = valueInput.read("fluid", FluidStack.CODEC).orElse(FluidStack.EMPTY);
 
-        CompoundTag inv = ValueInputOutputUtils.getTag(valueInput);
-        ItemUtils.readInventory(inv, "inventory", inventory);
-
-        CompoundTag tr = ValueInputOutputUtils.getTag(valueInput);
-        ItemUtils.readInventory(tr, "trading", trading);
+        ItemUtils.readInventory(valueInput, "inventory", inventory);
+        ItemUtils.readInventory(valueInput, "trading", trading);
 
         tradeAmount = valueInput.getIntOr("trade_amount", 0);
         freeAmountLeft = valueInput.getIntOr("free_amount", 0);

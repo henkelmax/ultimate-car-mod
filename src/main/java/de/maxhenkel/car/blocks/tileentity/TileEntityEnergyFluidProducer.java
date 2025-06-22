@@ -3,11 +3,9 @@ package de.maxhenkel.car.blocks.tileentity;
 import de.maxhenkel.car.blocks.BlockGui;
 import de.maxhenkel.car.recipes.EnergyFluidProducerRecipe;
 import de.maxhenkel.corelib.blockentity.ITickableBlockEntity;
-import de.maxhenkel.corelib.codec.ValueInputOutputUtils;
 import de.maxhenkel.corelib.item.ItemUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.WorldlyContainer;
@@ -177,11 +175,7 @@ public abstract class TileEntityEnergyFluidProducer extends TileEntityBase imple
         valueOutput.putInt("energy_stored", storedEnergy);
         valueOutput.putInt("time", time);
         valueOutput.putInt("fluid_stored", currentMillibuckets);
-
-
-        CompoundTag compound = new CompoundTag();
-        ItemUtils.saveInventory(compound, "slots", inventory);
-        valueOutput.store(compound);
+        ItemUtils.saveInventory(valueOutput, "slots", inventory);
     }
 
     @Override
@@ -189,10 +183,7 @@ public abstract class TileEntityEnergyFluidProducer extends TileEntityBase imple
         storedEnergy = valueInput.getIntOr("energy_stored", 0);
         time = valueInput.getIntOr("time", 0);
         currentMillibuckets = valueInput.getIntOr("fluid_stored", 0);
-
-        CompoundTag tag = ValueInputOutputUtils.getTag(valueInput);
-        ItemUtils.readInventory(tag, "slots", inventory);
-        super.loadAdditional(valueInput);
+        ItemUtils.readInventory(valueInput, "slots", inventory);
     }
 
     @Override
