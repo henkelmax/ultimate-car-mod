@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import de.maxhenkel.car.blocks.BlockSign;
 import de.maxhenkel.car.blocks.tileentity.TileEntitySign;
+import de.maxhenkel.corelib.FontColorUtils;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
@@ -69,7 +70,7 @@ public class TileEntitySpecialRendererSign implements BlockEntityRenderer<TileEn
         matrixStack.translate(-(textScale * textWidth) / 2D, 0D, 0D);
         matrixStack.scale(textScale, textScale, textScale);
 
-        font.drawInBatch(txt, 0F, 0F, 0x0, false, matrixStack.last().pose(), buffer, Font.DisplayMode.NORMAL, 0, light);
+        font.drawInBatch(txt, 0F, 0F, FontColorUtils.BLACK, false, matrixStack.last().pose(), buffer, Font.DisplayMode.NORMAL, 0, light);
 
         matrixStack.popPose();
     }

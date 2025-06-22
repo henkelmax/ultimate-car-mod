@@ -1,4 +1,5 @@
 - Fixed issues with storing items
+- Fixed sign text rendering
 
 **NOTE**
 
