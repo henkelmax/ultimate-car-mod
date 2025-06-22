@@ -20,9 +20,9 @@ public class PluginCar implements IWailaPlugin {
 
     @Override
     public void register(IWailaCommonRegistration registration) {
-        registration.registerBlockDataProvider(HUDHandlerTank.INSTANCE, TileEntityTank.class);
-        registration.registerBlockDataProvider(HUDHandlerGenerator.INSTANCE, TileEntityGenerator.class);
-        registration.registerBlockDataProvider(HUDHandlerFluidExtractor.INSTANCE, TileEntityFluidExtractor.class);
+        registration.registerBlockDataProvider(DataProviderTank.INSTANCE, TileEntityTank.class);
+        registration.registerBlockDataProvider(DataProviderGenerator.INSTANCE, TileEntityGenerator.class);
+        registration.registerBlockDataProvider(DataProviderFluidExtractor.INSTANCE, TileEntityFluidExtractor.class);
     }
 
     @Override

@@ -7,15 +7,13 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.storage.TagValueInput;
-import net.minecraft.world.level.storage.TagValueOutput;
 import net.neoforged.neoforge.fluids.FluidStack;
 import snownee.jade.api.BlockAccessor;
 import snownee.jade.api.IBlockComponentProvider;
-import snownee.jade.api.IServerDataProvider;
 import snownee.jade.api.ITooltip;
 import snownee.jade.api.config.IPluginConfig;
 
-public class HUDHandlerTank implements IBlockComponentProvider, IServerDataProvider<BlockAccessor> {
+public class HUDHandlerTank implements IBlockComponentProvider {
 
     public static final HUDHandlerTank INSTANCE = new HUDHandlerTank();
 
@@ -32,16 +30,6 @@ public class HUDHandlerTank implements IBlockComponentProvider, IServerDataProvi
         } else {
             iTooltip.add(Component.translatable("tooltip.waila.tank.fluid", stack.getHoverName()));
             iTooltip.add(Component.translatable("tooltip.waila.tank.amount", stack.getAmount(), TileEntityTank.CAPACITY));
-        }
-    }
-
-    @Override
-    public void appendServerData(CompoundTag compoundTag, BlockAccessor blockAccessor) {
-        TileEntityTank tank = (TileEntityTank) blockAccessor.getBlockEntity();
-        if (!tank.getFluid().isEmpty()) {
-            TagValueOutput valueOutput = ValueInputOutputUtils.createValueOutput(tank, tank.getLevel().registryAccess());
-            valueOutput.store("fluid", FluidStack.CODEC, tank.getFluid());
-            compoundTag.merge(ValueInputOutputUtils.toTag(valueOutput));
         }
     }
 

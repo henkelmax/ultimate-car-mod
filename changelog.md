@@ -1,5 +1,4 @@
-- Fixed issues with storing items
-- Fixed sign text rendering
+- Fixed Jade integration
 
 **NOTE**
 
