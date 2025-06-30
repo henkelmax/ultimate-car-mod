@@ -11,7 +11,7 @@ import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
-import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 import org.lwjgl.glfw.GLFW;
 
 public class GuiSign extends ScreenBase<ContainerSign> {
@@ -60,7 +60,7 @@ public class GuiSign extends ScreenBase<ContainerSign> {
 
         buttonSubmit = addRenderableWidget(Button.builder(Component.translatable("button.car.submit"), button -> {
             save();
-            PacketDistributor.sendToServer(new MessageEditSign(sign.getBlockPos(), text));
+            ClientPacketDistributor.sendToServer(new MessageEditSign(sign.getBlockPos(), text));
             Minecraft.getInstance().setScreen(null);
         }).bounds(guiLeft + 20, guiTop + imageHeight - 25, 50, 20).build());
         buttonCancel = addRenderableWidget(Button.builder(Component.translatable("button.car.cancel"), button -> {

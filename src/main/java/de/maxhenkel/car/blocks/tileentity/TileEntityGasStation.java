@@ -32,10 +32,10 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.FluidUtil;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
-import net.neoforged.neoforge.network.PacketDistributor;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -420,7 +420,7 @@ public class TileEntityGasStation extends TileEntityBase implements ITickableBlo
 
     public void sendStartFuelPacket(boolean start) {
         if (level.isClientSide) {
-            PacketDistributor.sendToServer(new MessageStartFuel(worldPosition, start));
+            ClientPacketDistributor.sendToServer(new MessageStartFuel(worldPosition, start));
         }
     }
 

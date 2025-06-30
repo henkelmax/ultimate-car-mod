@@ -42,7 +42,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
-import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 
 import java.util.List;
 import java.util.Optional;
@@ -303,7 +303,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 
     public void onCollision(float speed) {
         if (level().isClientSide) {
-            PacketDistributor.sendToServer(new MessageCrash(speed, this));
+            ClientPacketDistributor.sendToServer(new MessageCrash(speed, this));
         }
         setSpeed(0.01F);
         setDeltaMovement(0D, getDeltaMovement().y, 0D);
@@ -350,7 +350,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
             needsUpdate = true;
         }
         if (level().isClientSide && needsUpdate) {
-            PacketDistributor.sendToServer(new MessageControlCar(forward, backward, left, right, player));
+            ClientPacketDistributor.sendToServer(new MessageControlCar(forward, backward, left, right, player));
         }
     }
 
@@ -401,7 +401,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 
     public void openCarGUI(Player player) {
         if (level().isClientSide) {
-            PacketDistributor.sendToServer(new MessageCarGui(player));
+            ClientPacketDistributor.sendToServer(new MessageCarGui(player));
         }
     }
 
@@ -557,7 +557,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 
     public void onHornPressed(Player player) {
         if (level().isClientSide) {
-            PacketDistributor.sendToServer(new MessageCarHorn(true, player));
+            ClientPacketDistributor.sendToServer(new MessageCarHorn(true, player));
         } else {
             if (this instanceof EntityCarBatteryBase) {
                 EntityCarBatteryBase car = (EntityCarBatteryBase) this;

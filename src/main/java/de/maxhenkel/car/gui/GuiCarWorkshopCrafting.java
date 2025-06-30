@@ -13,7 +13,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 
 public class GuiCarWorkshopCrafting extends ScreenBase<ContainerCarWorkshopCrafting> {
 
@@ -42,13 +42,13 @@ public class GuiCarWorkshopCrafting extends ScreenBase<ContainerCarWorkshopCraft
         super.init();
 
         buttonRepair = addRenderableWidget(Button.builder(Component.translatable("button.car.repair_car"), button -> {
-            PacketDistributor.sendToServer(new MessageOpenCarWorkshopGui(tile.getBlockPos(), player, true));
+            ClientPacketDistributor.sendToServer(new MessageOpenCarWorkshopGui(tile.getBlockPos(), player, true));
         }).bounds(leftPos + 105, topPos + 72, 60, 20).build());
 
         buttonSpawn = addRenderableWidget(Button.builder(Component.translatable("button.car.spawn_car"), button -> {
             if (tile.getLevel().isClientSide) {
                 if (tile.isCurrentCraftingCarValid()) {
-                    PacketDistributor.sendToServer(new MessageSpawnCar(tile.getBlockPos()));
+                    ClientPacketDistributor.sendToServer(new MessageSpawnCar(tile.getBlockPos()));
                 } else {
                     for (Component message : tile.getMessages()) {
                         minecraft.gui.getChat().addMessage(message);

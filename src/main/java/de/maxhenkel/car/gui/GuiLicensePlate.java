@@ -13,7 +13,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 import org.lwjgl.glfw.GLFW;
 
 public class GuiLicensePlate extends ScreenBase<ContainerLicensePlate> {
@@ -40,7 +40,7 @@ public class GuiLicensePlate extends ScreenBase<ContainerLicensePlate> {
         super.init();
 
         addRenderableWidget(Button.builder(Component.translatable("button.car.submit"), button -> {
-            PacketDistributor.sendToServer(new MessageEditLicensePlate(player, textField.getValue()));
+            ClientPacketDistributor.sendToServer(new MessageEditLicensePlate(player, textField.getValue()));
             MessageEditLicensePlate.setItemText(player, textField.getValue());
             Minecraft.getInstance().setScreen(null);
         }).bounds(leftPos + 20, topPos + imageHeight - 25, 50, 20).build());

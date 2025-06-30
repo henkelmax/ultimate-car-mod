@@ -18,7 +18,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,14 +51,14 @@ public class GuiCarWorkshopRepair extends ScreenBase<ContainerCarWorkshopRepair>
 
         this.buttonRepair = addRenderableWidget(Button.builder(Component.translatable("button.car.repair_car"), button -> {
             if (tile.getLevel().isClientSide) {
-                PacketDistributor.sendToServer(new MessageRepairCar(tile.getBlockPos(), player));
+                ClientPacketDistributor.sendToServer(new MessageRepairCar(tile.getBlockPos(), player));
             }
         }).bounds(leftPos + imageWidth - 7 - 60, topPos + 105, 60, 20).build());
         this.buttonRepair.active = false;
 
         this.buttonBack = addRenderableWidget(Button.builder(Component.translatable("button.car.back"), button -> {
             if (tile.getLevel().isClientSide) {
-                PacketDistributor.sendToServer(new MessageOpenCarWorkshopGui(tile.getBlockPos(), player, false));
+                ClientPacketDistributor.sendToServer(new MessageOpenCarWorkshopGui(tile.getBlockPos(), player, false));
             }
         }).bounds(leftPos + 7, topPos + 105, 60, 20).build());
         this.buttonBack.active = true;
