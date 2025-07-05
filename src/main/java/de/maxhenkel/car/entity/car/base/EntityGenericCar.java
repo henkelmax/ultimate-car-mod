@@ -1,6 +1,6 @@
 package de.maxhenkel.car.entity.car.base;
 
-import de.maxhenkel.car.Main;
+import de.maxhenkel.car.CarMod;
 import de.maxhenkel.car.config.Fuel;
 import de.maxhenkel.car.entity.car.parts.*;
 import de.maxhenkel.car.entity.model.CarRenderState;
@@ -31,7 +31,7 @@ import java.util.Random;
 
 public class EntityGenericCar extends EntityCarLicensePlateBase {
 
-    private static final EntityDataAccessor<NonNullList<ItemStack>> PARTS = SynchedEntityData.defineId(EntityGenericCar.class, Main.ITEM_LIST.get());
+    private static final EntityDataAccessor<NonNullList<ItemStack>> PARTS = SynchedEntityData.defineId(EntityGenericCar.class, CarMod.ITEM_LIST.get());
 
     private List<Part> parts;
     private float maxUpStep;
@@ -42,7 +42,7 @@ public class EntityGenericCar extends EntityCarLicensePlateBase {
     }
 
     public EntityGenericCar(Level worldIn) {
-        this(Main.CAR_ENTITY_TYPE.get(), worldIn);
+        this(CarMod.CAR_ENTITY_TYPE.get(), worldIn);
     }
 
     private List<Part> getCarParts() {
@@ -159,7 +159,7 @@ public class EntityGenericCar extends EntityCarLicensePlateBase {
         if (fluid == null) {
             fluidEfficiency = 100;
         } else {
-            Fuel fuel = Main.FUEL_CONFIG.getFuels().getOrDefault(fluid, null);
+            Fuel fuel = CarMod.FUEL_CONFIG.getFuels().getOrDefault(fluid, null);
             if (fuel != null) {
                 fluidEfficiency = fuel.getEfficiency();
             }

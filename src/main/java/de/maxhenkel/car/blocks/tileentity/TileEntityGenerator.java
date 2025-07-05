@@ -1,6 +1,6 @@
 package de.maxhenkel.car.blocks.tileentity;
 
-import de.maxhenkel.car.Main;
+import de.maxhenkel.car.CarMod;
 import de.maxhenkel.car.blocks.BlockGui;
 import de.maxhenkel.car.blocks.ModBlocks;
 import de.maxhenkel.corelib.blockentity.ITickableBlockEntity;
@@ -37,13 +37,13 @@ public class TileEntityGenerator extends TileEntityBase implements ITickableBloc
     protected SimpleContainer inventory;
 
     public TileEntityGenerator(BlockPos pos, BlockState state) {
-        super(Main.GENERATOR_TILE_ENTITY_TYPE.get(), pos, state);
+        super(CarMod.GENERATOR_TILE_ENTITY_TYPE.get(), pos, state);
         this.inventory = new SimpleContainer(0);
-        this.maxStorage = Main.SERVER_CONFIG.generatorEnergyStorage.get();
+        this.maxStorage = CarMod.SERVER_CONFIG.generatorEnergyStorage.get();
         this.storedEnergy = 0;
-        this.maxMillibuckets = Main.SERVER_CONFIG.generatorFluidStorage.get();
+        this.maxMillibuckets = CarMod.SERVER_CONFIG.generatorFluidStorage.get();
         this.currentMillibuckets = 0;
-        this.energyGeneration = Main.SERVER_CONFIG.generatorEnergyGeneration.get();
+        this.energyGeneration = CarMod.SERVER_CONFIG.generatorEnergyGeneration.get();
     }
 
     public final ContainerData FIELDS = new ContainerData() {
@@ -109,7 +109,7 @@ public class TileEntityGenerator extends TileEntityBase implements ITickableBloc
     }
 
     public boolean isValidFuel(Fluid f) {
-        return Main.SERVER_CONFIG.generatorValidFuelList.stream().anyMatch(fluidTag -> fluidTag.contains(f));
+        return CarMod.SERVER_CONFIG.generatorValidFuelList.stream().anyMatch(fluidTag -> fluidTag.contains(f));
     }
 
     private void handlePushEnergy() {

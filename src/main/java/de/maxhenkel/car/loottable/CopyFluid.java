@@ -2,7 +2,7 @@ package de.maxhenkel.car.loottable;
 
 import com.mojang.serialization.*;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import de.maxhenkel.car.Main;
+import de.maxhenkel.car.CarMod;
 import de.maxhenkel.car.blocks.tileentity.TileEntityTank;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -34,13 +34,13 @@ public class CopyFluid extends LootItemConditionalFunction {
         if (fluid.isEmpty()) {
             return stack;
         }
-        stack.set(Main.FLUID_STACK_DATA_COMPONENT, SimpleFluidContent.copyOf(fluid));
+        stack.set(CarMod.FLUID_STACK_DATA_COMPONENT, SimpleFluidContent.copyOf(fluid));
         return stack;
     }
 
     @Override
     public LootItemFunctionType getType() {
-        return Main.COPY_FLUID.get();
+        return CarMod.COPY_FLUID.get();
     }
 
 }

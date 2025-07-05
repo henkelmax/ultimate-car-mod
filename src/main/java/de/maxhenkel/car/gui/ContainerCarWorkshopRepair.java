@@ -1,6 +1,6 @@
 package de.maxhenkel.car.gui;
 
-import de.maxhenkel.car.Main;
+import de.maxhenkel.car.CarMod;
 import de.maxhenkel.car.blocks.tileentity.TileEntityCarWorkshop;
 import de.maxhenkel.car.items.ModItems;
 import net.minecraft.world.entity.player.Inventory;
@@ -12,7 +12,7 @@ public class ContainerCarWorkshopRepair extends ContainerBase {
     protected TileEntityCarWorkshop tile;
 
     public ContainerCarWorkshopRepair(int id, TileEntityCarWorkshop tile, Inventory playerInventory) {
-        super(Main.CAR_WORKSHOP_REPAIR_CONTAINER_TYPE.get(), id, playerInventory, tile);
+        super(CarMod.CAR_WORKSHOP_REPAIR_CONTAINER_TYPE.get(), id, playerInventory, tile);
         this.playerInventory = playerInventory;
         this.tile = tile;
 

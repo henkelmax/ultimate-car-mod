@@ -1,6 +1,6 @@
 package de.maxhenkel.car.gui;
 
-import de.maxhenkel.car.Main;
+import de.maxhenkel.car.CarMod;
 import de.maxhenkel.corelib.inventory.ScreenBase;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
@@ -9,7 +9,7 @@ import net.minecraft.world.entity.player.Inventory;
 
 public class GuiPainter extends ScreenBase<ContainerPainter> {
 
-    private static final ResourceLocation PAINTER_GUI_TEXTURE = ResourceLocation.fromNamespaceAndPath(Main.MODID, "textures/gui/gui_painter.png");
+    private static final ResourceLocation PAINTER_GUI_TEXTURE = ResourceLocation.fromNamespaceAndPath(CarMod.MODID, "textures/gui/gui_painter.png");
 
     public GuiPainter(ContainerPainter containerPainter, Inventory playerInventory, Component title) {
         super(PAINTER_GUI_TEXTURE, containerPainter, playerInventory, title);

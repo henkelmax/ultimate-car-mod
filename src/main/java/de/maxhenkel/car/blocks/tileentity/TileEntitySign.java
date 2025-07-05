@@ -1,6 +1,6 @@
 package de.maxhenkel.car.blocks.tileentity;
 
-import de.maxhenkel.car.Main;
+import de.maxhenkel.car.CarMod;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.inventory.ContainerData;
@@ -16,7 +16,7 @@ public class TileEntitySign extends TileEntityBase {
     private String[] text = new String[8];
 
     public TileEntitySign(BlockPos pos, BlockState state) {
-        super(Main.SIGN_TILE_ENTITY_TYPE.get(), pos, state);
+        super(CarMod.SIGN_TILE_ENTITY_TYPE.get(), pos, state);
         Arrays.fill(text, "");
     }
 

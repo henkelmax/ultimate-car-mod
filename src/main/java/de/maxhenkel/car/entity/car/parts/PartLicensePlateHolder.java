@@ -1,7 +1,7 @@
 package de.maxhenkel.car.entity.car.parts;
 
 import com.mojang.math.Axis;
-import de.maxhenkel.car.Main;
+import de.maxhenkel.car.CarMod;
 import de.maxhenkel.car.entity.car.base.EntityGenericCar;
 import de.maxhenkel.car.entity.model.CarRenderState;
 import de.maxhenkel.corelib.client.obj.OBJModel;
@@ -19,7 +19,7 @@ public class PartLicensePlateHolder extends PartModel {
     protected Vector3d textOffset;
 
     public PartLicensePlateHolder(ResourceLocation texture) {
-        super(new OBJModel(ResourceLocation.fromNamespaceAndPath(Main.MODID, "models/entity/license_plate.obj")), texture, new Vector3d(0D, 0D, 0D), new Rotation(90F, Axis.ZP));
+        super(new OBJModel(ResourceLocation.fromNamespaceAndPath(CarMod.MODID, "models/entity/license_plate.obj")), texture, new Vector3d(0D, 0D, 0D), new Rotation(90F, Axis.ZP));
         this.textOffset = new Vector3d(0D, -0.5D / 16D, -0.5D / 16D - 0.001D);
 
     }

@@ -1,6 +1,6 @@
 package de.maxhenkel.car.integration.jei;
 
-import de.maxhenkel.car.Main;
+import de.maxhenkel.car.CarMod;
 import de.maxhenkel.car.blocks.ModBlocks;
 import de.maxhenkel.car.items.ModItems;
 import mezz.jei.api.IModPlugin;
@@ -20,9 +20,9 @@ import java.util.stream.Collectors;
 @JeiPlugin
 public class JEIPlugin implements IModPlugin {
 
-    public static final RecipeType<CarRecipe> CATEGORY_CAR_WORKSHOP = RecipeType.create(Main.MODID, "car_workshop", CarRecipe.class);
-    public static final RecipeType<PainterRecipe> CATEGORY_PAINTER = RecipeType.create(Main.MODID, "painter", PainterRecipe.class);
-    public static final RecipeType<PainterRecipe> CATEGORY_PAINTER_YELLOW = RecipeType.create(Main.MODID, "painter_yellow", PainterRecipe.class);
+    public static final RecipeType<CarRecipe> CATEGORY_CAR_WORKSHOP = RecipeType.create(CarMod.MODID, "car_workshop", CarRecipe.class);
+    public static final RecipeType<PainterRecipe> CATEGORY_PAINTER = RecipeType.create(CarMod.MODID, "painter", PainterRecipe.class);
+    public static final RecipeType<PainterRecipe> CATEGORY_PAINTER_YELLOW = RecipeType.create(CarMod.MODID, "painter_yellow", PainterRecipe.class);
 
     @Override
     public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
@@ -57,7 +57,7 @@ public class JEIPlugin implements IModPlugin {
 
     @Override
     public ResourceLocation getPluginUid() {
-        return ResourceLocation.fromNamespaceAndPath(Main.MODID, "car");
+        return ResourceLocation.fromNamespaceAndPath(CarMod.MODID, "car");
     }
 
     @Override

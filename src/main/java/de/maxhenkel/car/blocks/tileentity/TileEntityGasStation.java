@@ -1,6 +1,6 @@
 package de.maxhenkel.car.blocks.tileentity;
 
-import de.maxhenkel.car.Main;
+import de.maxhenkel.car.CarMod;
 import de.maxhenkel.car.blocks.BlockGasStation;
 import de.maxhenkel.car.blocks.BlockGasStationTop;
 import de.maxhenkel.car.blocks.BlockOrientableHorizontal;
@@ -61,8 +61,8 @@ public class TileEntityGasStation extends TileEntityBase implements ITickableBlo
     private IFluidHandler fluidHandlerInFront;
 
     public TileEntityGasStation(BlockPos pos, BlockState state) {
-        super(Main.GAS_STATION_TILE_ENTITY_TYPE.get(), pos, state);
-        this.transferRate = Main.SERVER_CONFIG.gasStationTransferRate.get();
+        super(CarMod.GAS_STATION_TILE_ENTITY_TYPE.get(), pos, state);
+        this.transferRate = CarMod.SERVER_CONFIG.gasStationTransferRate.get();
         this.fuelCounter = 0;
         this.inventory = new SimpleContainer(27);
         this.trading = new SimpleContainer(2);
@@ -248,7 +248,7 @@ public class TileEntityGasStation extends TileEntityBase implements ITickableBlo
     }
 
     public boolean isValidFluid(Fluid f) {
-        return Main.SERVER_CONFIG.gasStationValidFuelList.stream().anyMatch(fluidTag -> fluidTag.contains(f));
+        return CarMod.SERVER_CONFIG.gasStationValidFuelList.stream().anyMatch(fluidTag -> fluidTag.contains(f));
     }
 
     public void setOwner(UUID owner) {

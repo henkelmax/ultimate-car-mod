@@ -1,6 +1,6 @@
 package de.maxhenkel.car.integration.jei;
 
-import de.maxhenkel.car.Main;
+import de.maxhenkel.car.CarMod;
 import de.maxhenkel.car.items.ModItems;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
@@ -29,7 +29,7 @@ public class PainterRecipeCategory implements IRecipeCategory<PainterRecipe> {
 
     @Override
     public IDrawable getBackground() {
-        return helper.createDrawable(ResourceLocation.fromNamespaceAndPath(Main.MODID, "textures/gui/jei_painter.png"), 0, 0, 80, 54);
+        return helper.createDrawable(ResourceLocation.fromNamespaceAndPath(CarMod.MODID, "textures/gui/jei_painter.png"), 0, 0, 80, 54);
     }
 
     @Override

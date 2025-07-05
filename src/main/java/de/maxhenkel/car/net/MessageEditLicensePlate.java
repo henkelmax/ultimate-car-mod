@@ -1,6 +1,6 @@
 package de.maxhenkel.car.net;
 
-import de.maxhenkel.car.Main;
+import de.maxhenkel.car.CarMod;
 import de.maxhenkel.car.items.ItemLicensePlate;
 import de.maxhenkel.corelib.net.Message;
 import net.minecraft.network.RegistryFriendlyByteBuf;
@@ -17,7 +17,7 @@ import java.util.UUID;
 
 public class MessageEditLicensePlate implements Message<MessageEditLicensePlate> {
 
-    public static final CustomPacketPayload.Type<MessageEditLicensePlate> TYPE = new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(Main.MODID, "edit_license_plate"));
+    public static final CustomPacketPayload.Type<MessageEditLicensePlate> TYPE = new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(CarMod.MODID, "edit_license_plate"));
 
     private UUID uuid;
     private String text;

@@ -1,6 +1,6 @@
 package de.maxhenkel.car.gui;
 
-import de.maxhenkel.car.Main;
+import de.maxhenkel.car.CarMod;
 import de.maxhenkel.car.blocks.tileentity.TileEntityBackmixReactor;
 import de.maxhenkel.corelib.inventory.ScreenBase;
 import net.minecraft.client.gui.GuiGraphics;
@@ -16,7 +16,7 @@ import java.util.List;
 
 public class GuiBackmixReactor extends ScreenBase<ContainerBackmixReactor> {
 
-    private static final ResourceLocation GUI_TEXTURE = ResourceLocation.fromNamespaceAndPath(Main.MODID, "textures/gui/gui_backmix_reactor.png");
+    private static final ResourceLocation GUI_TEXTURE = ResourceLocation.fromNamespaceAndPath(CarMod.MODID, "textures/gui/gui_backmix_reactor.png");
 
     private Container playerInv;
     private TileEntityBackmixReactor tile;

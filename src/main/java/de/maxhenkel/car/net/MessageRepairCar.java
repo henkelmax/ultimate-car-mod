@@ -1,6 +1,6 @@
 package de.maxhenkel.car.net;
 
-import de.maxhenkel.car.Main;
+import de.maxhenkel.car.CarMod;
 import de.maxhenkel.car.blocks.tileentity.TileEntityCarWorkshop;
 import de.maxhenkel.corelib.net.Message;
 import net.minecraft.core.BlockPos;
@@ -16,7 +16,7 @@ import java.util.UUID;
 
 public class MessageRepairCar implements Message<MessageRepairCar> {
 
-    public static final CustomPacketPayload.Type<MessageRepairCar> TYPE = new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(Main.MODID, "repair_car"));
+    public static final CustomPacketPayload.Type<MessageRepairCar> TYPE = new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(CarMod.MODID, "repair_car"));
 
     private BlockPos pos;
     private UUID uuid;
@@ -42,7 +42,7 @@ public class MessageRepairCar implements Message<MessageRepairCar> {
         }
 
         if (!sender.getUUID().equals(uuid)) {
-            Main.LOGGER.error("The UUID of the sender was not equal to the packet UUID");
+            CarMod.LOGGER.error("The UUID of the sender was not equal to the packet UUID");
             return;
         }
 

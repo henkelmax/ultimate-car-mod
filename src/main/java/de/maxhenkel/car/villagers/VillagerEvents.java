@@ -1,6 +1,6 @@
 package de.maxhenkel.car.villagers;
 
-import de.maxhenkel.car.Main;
+import de.maxhenkel.car.CarMod;
 import de.maxhenkel.car.blocks.ModBlocks;
 import de.maxhenkel.car.items.ModItems;
 import net.minecraft.util.RandomSource;
@@ -23,7 +23,7 @@ public class VillagerEvents {
 
     @SubscribeEvent
     public void villagerTrades(VillagerTradesEvent event) {
-        if (event.getType().equals(Main.VILLAGER_PROFESSION_GAS_STATION_ATTENDANT.get())) {
+        if (event.getType().equals(CarMod.VILLAGER_PROFESSION_GAS_STATION_ATTENDANT.get())) {
             event.getTrades().put(1, new ArrayList<>(Arrays.asList(
                     new EmeraldForItemsTrade(ModItems.CANOLA.get(), 20, 16, 2),
                     new Trade(Items.EMERALD, 16, ModBlocks.ASPHALT.get(), 4, 16, 2)

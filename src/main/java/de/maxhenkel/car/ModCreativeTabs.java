@@ -14,7 +14,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 
 public class ModCreativeTabs {
 
-    private static final DeferredRegister<CreativeModeTab> TAB_REGISTER = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, Main.MODID);
+    private static final DeferredRegister<CreativeModeTab> TAB_REGISTER = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, CarMod.MODID);
 
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> TAB_CAR = TAB_REGISTER.register("car", () -> {
         return CreativeModeTab.builder()

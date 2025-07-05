@@ -1,6 +1,6 @@
 package de.maxhenkel.car.entity.car.base;
 
-import de.maxhenkel.car.Main;
+import de.maxhenkel.car.CarMod;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
@@ -143,7 +143,7 @@ public abstract class EntityVehicleBase extends Entity {
 
     @Override
     public boolean canCollideWith(Entity entity) {
-        if (!Main.SERVER_CONFIG.collideWithEntities.get()) {
+        if (!CarMod.SERVER_CONFIG.collideWithEntities.get()) {
             if (!(entity instanceof EntityVehicleBase)) {
                 return false;
             }

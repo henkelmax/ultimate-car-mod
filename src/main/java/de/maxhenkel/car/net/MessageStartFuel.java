@@ -1,6 +1,6 @@
 package de.maxhenkel.car.net;
 
-import de.maxhenkel.car.Main;
+import de.maxhenkel.car.CarMod;
 import de.maxhenkel.car.blocks.tileentity.TileEntityGasStation;
 import de.maxhenkel.corelib.net.Message;
 import net.minecraft.core.BlockPos;
@@ -13,7 +13,7 @@ import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 public class MessageStartFuel implements Message<MessageStartFuel> {
 
-    public static final CustomPacketPayload.Type<MessageStartFuel> TYPE = new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(Main.MODID, "start_fuel"));
+    public static final CustomPacketPayload.Type<MessageStartFuel> TYPE = new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(CarMod.MODID, "start_fuel"));
 
     private boolean start;
     private BlockPos pos;

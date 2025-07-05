@@ -1,6 +1,6 @@
 package de.maxhenkel.car.integration.waila;
 
-import de.maxhenkel.car.Main;
+import de.maxhenkel.car.CarMod;
 import de.maxhenkel.car.entity.car.base.EntityGenericCar;
 import de.maxhenkel.corelib.math.MathUtils;
 import net.minecraft.ChatFormatting;
@@ -16,7 +16,7 @@ public class HUDHandlerCars implements IEntityComponentProvider {
 
     public static final HUDHandlerCars INSTANCE = new HUDHandlerCars();
 
-    private static final ResourceLocation UID = ResourceLocation.fromNamespaceAndPath(Main.MODID, "car");
+    private static final ResourceLocation UID = ResourceLocation.fromNamespaceAndPath(CarMod.MODID, "car");
 
     @Override
     public void appendTooltip(ITooltip iTooltip, EntityAccessor entityAccessor, IPluginConfig iPluginConfig) {

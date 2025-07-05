@@ -1,6 +1,6 @@
 package de.maxhenkel.car.recipes;
 
-import de.maxhenkel.car.Main;
+import de.maxhenkel.car.CarMod;
 import de.maxhenkel.car.items.ItemKey;
 import de.maxhenkel.car.items.ModItems;
 import net.minecraft.core.HolderLookup;
@@ -23,7 +23,7 @@ public class KeyRecipe extends CustomRecipe {
 
     @Override
     public RecipeSerializer<? extends CustomRecipe> getSerializer() {
-        return Main.CRAFTING_SPECIAL_KEY.get();
+        return CarMod.CRAFTING_SPECIAL_KEY.get();
     }
 
     @Override

@@ -1,6 +1,6 @@
 package de.maxhenkel.car.net;
 
-import de.maxhenkel.car.Main;
+import de.maxhenkel.car.CarMod;
 import de.maxhenkel.car.entity.car.base.EntityCarBatteryBase;
 import de.maxhenkel.corelib.net.Message;
 import net.minecraft.network.RegistryFriendlyByteBuf;
@@ -15,7 +15,7 @@ import java.util.UUID;
 
 public class MessageStarting implements Message<MessageStarting> {
 
-    public static final CustomPacketPayload.Type<MessageStarting> TYPE = new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(Main.MODID, "starting"));
+    public static final CustomPacketPayload.Type<MessageStarting> TYPE = new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(CarMod.MODID, "starting"));
 
     private boolean start;
     private boolean playSound;
@@ -43,7 +43,7 @@ public class MessageStarting implements Message<MessageStarting> {
         }
 
         if (!sender.getUUID().equals(uuid)) {
-            Main.LOGGER.error("The UUID of the sender was not equal to the packet UUID");
+            CarMod.LOGGER.error("The UUID of the sender was not equal to the packet UUID");
             return;
         }
 

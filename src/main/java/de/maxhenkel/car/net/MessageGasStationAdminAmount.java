@@ -1,6 +1,6 @@
 package de.maxhenkel.car.net;
 
-import de.maxhenkel.car.Main;
+import de.maxhenkel.car.CarMod;
 import de.maxhenkel.car.blocks.tileentity.TileEntityGasStation;
 import de.maxhenkel.corelib.net.Message;
 import net.minecraft.core.BlockPos;
@@ -13,7 +13,7 @@ import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 public class MessageGasStationAdminAmount implements Message<MessageGasStationAdminAmount> {
 
-    public static final CustomPacketPayload.Type<MessageGasStationAdminAmount> TYPE = new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(Main.MODID, "gas_station_amount"));
+    public static final CustomPacketPayload.Type<MessageGasStationAdminAmount> TYPE = new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(CarMod.MODID, "gas_station_amount"));
 
     private BlockPos pos;
     private int amount;

@@ -1,6 +1,6 @@
 package de.maxhenkel.car.blocks.tileentity;
 
-import de.maxhenkel.car.Main;
+import de.maxhenkel.car.CarMod;
 import de.maxhenkel.corelib.blockentity.ITickableBlockEntity;
 import de.maxhenkel.corelib.energy.EnergyUtils;
 import net.minecraft.core.BlockPos;
@@ -20,9 +20,9 @@ public class TileEntityDynamo extends TileEntityBase implements IEnergyStorage, 
     public final int generation;
 
     public TileEntityDynamo(BlockPos pos, BlockState state) {
-        super(Main.DYNAMO_TILE_ENTITY_TYPE.get(), pos, state);
-        this.maxStorage = Main.SERVER_CONFIG.dynamoEnergyStorage.get();
-        this.generation = Main.SERVER_CONFIG.dynamoEnergyGeneration.get();
+        super(CarMod.DYNAMO_TILE_ENTITY_TYPE.get(), pos, state);
+        this.maxStorage = CarMod.SERVER_CONFIG.dynamoEnergyStorage.get();
+        this.generation = CarMod.SERVER_CONFIG.dynamoEnergyGeneration.get();
         this.storedEnergy = 0;
 
     }

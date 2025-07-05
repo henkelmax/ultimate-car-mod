@@ -1,6 +1,6 @@
 package de.maxhenkel.car.integration.theoneprobe;
 
-import de.maxhenkel.car.Main;
+import de.maxhenkel.car.CarMod;
 import de.maxhenkel.car.blocks.tileentity.TileEntityFluidExtractor;
 import de.maxhenkel.car.blocks.tileentity.TileEntityGenerator;
 import de.maxhenkel.car.blocks.tileentity.TileEntityTank;
@@ -20,7 +20,7 @@ import net.neoforged.neoforge.fluids.FluidStack;
 
 public class TileInfoProvider implements IProbeInfoProvider {
 
-    public static final ResourceLocation ID = ResourceLocation.fromNamespaceAndPath(Main.MODID, "probeinfoprovider");
+    public static final ResourceLocation ID = ResourceLocation.fromNamespaceAndPath(CarMod.MODID, "probeinfoprovider");
 
     @Override
     public ResourceLocation getID() {

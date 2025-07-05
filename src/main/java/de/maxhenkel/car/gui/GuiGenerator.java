@@ -1,6 +1,6 @@
 package de.maxhenkel.car.gui;
 
-import de.maxhenkel.car.Main;
+import de.maxhenkel.car.CarMod;
 import de.maxhenkel.car.blocks.tileentity.TileEntityGenerator;
 import de.maxhenkel.corelib.inventory.ScreenBase;
 import net.minecraft.client.gui.GuiGraphics;
@@ -15,7 +15,7 @@ import java.util.List;
 
 public class GuiGenerator extends ScreenBase<ContainerGenerator> {
 
-    private static final ResourceLocation GUI_TEXTURE = ResourceLocation.fromNamespaceAndPath(Main.MODID, "textures/gui/gui_generator.png");
+    private static final ResourceLocation GUI_TEXTURE = ResourceLocation.fromNamespaceAndPath(CarMod.MODID, "textures/gui/gui_generator.png");
 
     private Inventory playerInv;
     private TileEntityGenerator tile;

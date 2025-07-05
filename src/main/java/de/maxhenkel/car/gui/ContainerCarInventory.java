@@ -1,6 +1,6 @@
 package de.maxhenkel.car.gui;
 
-import de.maxhenkel.car.Main;
+import de.maxhenkel.car.CarMod;
 import de.maxhenkel.car.entity.car.base.EntityCarInventoryBase;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
@@ -10,7 +10,7 @@ public class ContainerCarInventory extends ContainerBase {
     private EntityCarInventoryBase car;
 
     public ContainerCarInventory(int id, EntityCarInventoryBase car, Inventory playerInventory) {
-        super(Main.CAR_INVENTORY_CONTAINER_TYPE.get(), id, playerInventory, car.getExternalInventory());
+        super(CarMod.CAR_INVENTORY_CONTAINER_TYPE.get(), id, playerInventory, car.getExternalInventory());
         this.car = car;
 
         int rows = getRows();

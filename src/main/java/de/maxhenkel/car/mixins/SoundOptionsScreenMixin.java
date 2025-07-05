@@ -1,6 +1,6 @@
 package de.maxhenkel.car.mixins;
 
-import de.maxhenkel.car.Main;
+import de.maxhenkel.car.CarMod;
 import net.minecraft.client.OptionInstance;
 import net.minecraft.client.Options;
 import net.minecraft.client.gui.screens.options.OptionsSubScreen;
@@ -31,9 +31,9 @@ public abstract class SoundOptionsScreenMixin extends OptionsSubScreen {
                     Component.translatable("options.generic_value", component, CommonComponents.OPTION_OFF)
                     :
                     Component.translatable("options.percent_value", component, (int) (volume * 100D));
-        }, OptionInstance.UnitDouble.INSTANCE, Main.CLIENT_CONFIG.carVolume.get(), (value) -> {
-            Main.CLIENT_CONFIG.carVolume.set(value);
-            Main.CLIENT_CONFIG.carVolume.save();
+        }, OptionInstance.UnitDouble.INSTANCE, CarMod.CLIENT_CONFIG.carVolume.get(), (value) -> {
+            CarMod.CLIENT_CONFIG.carVolume.set(value);
+            CarMod.CLIENT_CONFIG.carVolume.save();
         });
 
         cir.setReturnValue(newReturnValue);

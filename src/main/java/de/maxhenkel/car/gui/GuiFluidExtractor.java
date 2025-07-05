@@ -1,6 +1,6 @@
 package de.maxhenkel.car.gui;
 
-import de.maxhenkel.car.Main;
+import de.maxhenkel.car.CarMod;
 import de.maxhenkel.car.blocks.tileentity.TileEntityFluidExtractor;
 import de.maxhenkel.corelib.inventory.ScreenBase;
 import net.minecraft.ChatFormatting;
@@ -14,7 +14,7 @@ import net.neoforged.neoforge.fluids.FluidStack;
 
 public class GuiFluidExtractor extends ScreenBase<ContainerFluidExtractor> {
 
-    private static final ResourceLocation GUI_TEXTURE = ResourceLocation.fromNamespaceAndPath(Main.MODID, "textures/gui/gui_fluid_extractor.png");
+    private static final ResourceLocation GUI_TEXTURE = ResourceLocation.fromNamespaceAndPath(CarMod.MODID, "textures/gui/gui_fluid_extractor.png");
 
     private Inventory playerInv;
     private TileEntityFluidExtractor tile;

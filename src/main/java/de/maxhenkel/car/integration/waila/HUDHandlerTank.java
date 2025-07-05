@@ -1,6 +1,6 @@
 package de.maxhenkel.car.integration.waila;
 
-import de.maxhenkel.car.Main;
+import de.maxhenkel.car.CarMod;
 import de.maxhenkel.car.blocks.tileentity.TileEntityTank;
 import de.maxhenkel.corelib.codec.ValueInputOutputUtils;
 import net.minecraft.nbt.CompoundTag;
@@ -17,7 +17,7 @@ public class HUDHandlerTank implements IBlockComponentProvider {
 
     public static final HUDHandlerTank INSTANCE = new HUDHandlerTank();
 
-    private static final ResourceLocation UID = ResourceLocation.fromNamespaceAndPath(Main.MODID, "tank");
+    private static final ResourceLocation UID = ResourceLocation.fromNamespaceAndPath(CarMod.MODID, "tank");
 
     @Override
     public void appendTooltip(ITooltip iTooltip, BlockAccessor blockAccessor, IPluginConfig iPluginConfig) {

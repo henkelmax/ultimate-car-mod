@@ -1,6 +1,6 @@
 package de.maxhenkel.car.items;
 
-import de.maxhenkel.car.Main;
+import de.maxhenkel.car.CarMod;
 import de.maxhenkel.car.blocks.ModBlocks;
 import de.maxhenkel.car.blocks.tileentity.TileEntityGasStation;
 import de.maxhenkel.car.sounds.ModSounds;
@@ -71,7 +71,7 @@ public class ItemCanister extends Item {
 
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, TooltipDisplay tooltipDisplay, Consumer<Component> consumer, TooltipFlag flag) {
-        SimpleFluidContent content = stack.get(Main.FUEL_DATA_COMPONENT);
+        SimpleFluidContent content = stack.get(CarMod.FUEL_DATA_COMPONENT);
         if (content == null || content.isEmpty()) {
             addInfo("-", 0, consumer);
             super.appendHoverText(stack, context, tooltipDisplay, consumer, flag);
@@ -88,12 +88,12 @@ public class ItemCanister extends Item {
     }
 
     public static boolean fillCanister(ItemStack canister, IFluidHandler handler) {
-        SimpleFluidContent content = canister.get(Main.FUEL_DATA_COMPONENT);
+        SimpleFluidContent content = canister.get(CarMod.FUEL_DATA_COMPONENT);
 
-        int maxAmount = Main.SERVER_CONFIG.canisterMaxFuel.get();
+        int maxAmount = CarMod.SERVER_CONFIG.canisterMaxFuel.get();
 
         if (content != null) {
-            maxAmount = Main.SERVER_CONFIG.canisterMaxFuel.get() - content.getAmount();
+            maxAmount = CarMod.SERVER_CONFIG.canisterMaxFuel.get() - content.getAmount();
         }
 
         if (maxAmount <= 0) {
@@ -116,18 +116,18 @@ public class ItemCanister extends Item {
         }
 
         if (content == null || content.isEmpty()) {
-            canister.set(Main.FUEL_DATA_COMPONENT, SimpleFluidContent.copyOf(result));
+            canister.set(CarMod.FUEL_DATA_COMPONENT, SimpleFluidContent.copyOf(result));
             return true;
         }
 
         if (result.getFluid().equals(content.getFluid())) {
-            canister.set(Main.FUEL_DATA_COMPONENT, SimpleFluidContent.copyOf(new FluidStack(content.getFluid(), content.getAmount() + result.getAmount())));
+            canister.set(CarMod.FUEL_DATA_COMPONENT, SimpleFluidContent.copyOf(new FluidStack(content.getFluid(), content.getAmount() + result.getAmount())));
         }
         return true;
     }
 
     public static boolean fuelFluidHandler(ItemStack canister, IFluidHandler handler) {
-        SimpleFluidContent content = canister.get(Main.FUEL_DATA_COMPONENT);
+        SimpleFluidContent content = canister.get(CarMod.FUEL_DATA_COMPONENT);
 
         if (content == null || content.isEmpty()) {
             return false;
@@ -139,11 +139,11 @@ public class ItemCanister extends Item {
         result.setAmount(result.getAmount() - fueledAmount);
 
         if (result.getAmount() <= 0) {
-            canister.remove(Main.FUEL_DATA_COMPONENT);
+            canister.remove(CarMod.FUEL_DATA_COMPONENT);
             return true;
         }
 
-        canister.set(Main.FUEL_DATA_COMPONENT, SimpleFluidContent.copyOf(result));
+        canister.set(CarMod.FUEL_DATA_COMPONENT, SimpleFluidContent.copyOf(result));
         return true;
     }
 

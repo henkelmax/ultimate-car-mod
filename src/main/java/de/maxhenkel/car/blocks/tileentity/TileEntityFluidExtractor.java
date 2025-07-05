@@ -4,7 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 import javax.annotation.Nullable;
 
-import de.maxhenkel.car.Main;
+import de.maxhenkel.car.CarMod;
 import de.maxhenkel.corelib.blockentity.ITickableBlockEntity;
 import de.maxhenkel.corelib.fluid.FluidUtils;
 import de.maxhenkel.tools.BlockPosList;
@@ -33,8 +33,8 @@ public class TileEntityFluidExtractor extends TileEntityBase implements ITickabl
     private ItemStack filter;
 
     public TileEntityFluidExtractor(BlockPos pos, BlockState state) {
-        super(Main.FLUID_EXTRACTOR_TILE_ENTITY_TYPE.get(), pos, state);
-        this.drainSpeed = Main.SERVER_CONFIG.fluidExtractorDrainSpeed.get();
+        super(CarMod.FLUID_EXTRACTOR_TILE_ENTITY_TYPE.get(), pos, state);
+        this.drainSpeed = CarMod.SERVER_CONFIG.fluidExtractorDrainSpeed.get();
         filter = null;
     }
 

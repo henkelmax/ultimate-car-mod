@@ -1,6 +1,6 @@
 package de.maxhenkel.car.gui;
 
-import de.maxhenkel.car.Main;
+import de.maxhenkel.car.CarMod;
 import de.maxhenkel.car.entity.car.base.EntityCarInventoryBase;
 import de.maxhenkel.corelib.inventory.ScreenBase;
 import de.maxhenkel.corelib.math.MathUtils;
@@ -12,7 +12,7 @@ import net.minecraft.world.entity.player.Inventory;
 
 public class GuiCar extends ScreenBase<ContainerCar> {
 
-    private static final ResourceLocation CAR_GUI_TEXTURE = ResourceLocation.fromNamespaceAndPath(Main.MODID, "textures/gui/gui_car.png");
+    private static final ResourceLocation CAR_GUI_TEXTURE = ResourceLocation.fromNamespaceAndPath(CarMod.MODID, "textures/gui/gui_car.png");
 
     private static final int fontColor = 4210752;
 
@@ -89,7 +89,7 @@ public class GuiCar extends ScreenBase<ContainerCar> {
     }
 
     public Component getTempString() {
-        if (Main.CLIENT_CONFIG.tempInFarenheit.get()) {
+        if (CarMod.CLIENT_CONFIG.tempInFarenheit.get()) {
             return Component.translatable("gui.car_temperature_fahrenheit", String.valueOf(getTemperatureFarenheit()));
         } else {
             return Component.translatable("gui.car_temperature_celsius", String.valueOf(getTemperatureCelsius()));

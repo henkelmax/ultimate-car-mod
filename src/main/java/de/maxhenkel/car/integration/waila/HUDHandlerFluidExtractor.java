@@ -1,6 +1,6 @@
 package de.maxhenkel.car.integration.waila;
 
-import de.maxhenkel.car.Main;
+import de.maxhenkel.car.CarMod;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import snownee.jade.api.BlockAccessor;
@@ -12,7 +12,7 @@ public class HUDHandlerFluidExtractor implements IBlockComponentProvider {
 
     public static final HUDHandlerFluidExtractor INSTANCE = new HUDHandlerFluidExtractor();
 
-    private static final ResourceLocation UID = ResourceLocation.fromNamespaceAndPath(Main.MODID, "fluid_extractor");
+    private static final ResourceLocation UID = ResourceLocation.fromNamespaceAndPath(CarMod.MODID, "fluid_extractor");
 
     @Override
     public void appendTooltip(ITooltip iTooltip, BlockAccessor blockAccessor, IPluginConfig iPluginConfig) {

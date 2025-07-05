@@ -1,6 +1,6 @@
 package de.maxhenkel.car.sounds;
 
-import de.maxhenkel.car.Main;
+import de.maxhenkel.car.CarMod;
 import de.maxhenkel.car.entity.car.base.EntityCarBase;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
@@ -18,7 +18,7 @@ public abstract class SoundLoopCar extends AbstractTickableSoundInstance {
         this.car = car;
         this.looping = true;
         this.delay = 0;
-        this.volume = Main.CLIENT_CONFIG.carVolume.get().floatValue();
+        this.volume = CarMod.CLIENT_CONFIG.carVolume.get().floatValue();
         this.pitch = 1F;
         this.relative = false;
         this.attenuation = Attenuation.LINEAR;

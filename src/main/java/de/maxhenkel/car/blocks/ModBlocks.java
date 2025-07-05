@@ -1,6 +1,6 @@
 package de.maxhenkel.car.blocks;
 
-import de.maxhenkel.car.Main;
+import de.maxhenkel.car.CarMod;
 import de.maxhenkel.car.blocks.BlockPaint.EnumPaintType;
 import de.maxhenkel.car.blocks.fluid.CarFluidBlock;
 import de.maxhenkel.car.fluids.ModFluids;
@@ -13,7 +13,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 
 public class ModBlocks {
 
-    private static final DeferredRegister.Blocks BLOCK_REGISTER = DeferredRegister.createBlocks(Main.MODID);
+    private static final DeferredRegister.Blocks BLOCK_REGISTER = DeferredRegister.createBlocks(CarMod.MODID);
 
     public static final DeferredHolder<Block, BlockAsphalt> ASPHALT = BLOCK_REGISTER.registerBlock("asphalt", BlockAsphalt::new, BlockBehaviour.Properties.of());
     public static final DeferredHolder<Block, BlockAsphaltSlope> ASPHALT_SLOPE = BLOCK_REGISTER.registerBlock("asphalt_slope", BlockAsphaltSlope::new, BlockBehaviour.Properties.of());

@@ -1,6 +1,6 @@
 package de.maxhenkel.car.items;
 
-import de.maxhenkel.car.Main;
+import de.maxhenkel.car.CarMod;
 import de.maxhenkel.car.gui.ContainerLicensePlate;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -57,12 +57,12 @@ public class ItemLicensePlate extends ItemCraftingComponent {
     }
 
     public static void setText(ItemStack stack, String text) {
-        stack.set(Main.LICENSE_PLATE_TEXT_DATA_COMPONENT, text);
+        stack.set(CarMod.LICENSE_PLATE_TEXT_DATA_COMPONENT, text);
     }
 
     @Nonnull
     public static String getText(ItemStack stack) {
-        return stack.getOrDefault(Main.LICENSE_PLATE_TEXT_DATA_COMPONENT, "");
+        return stack.getOrDefault(CarMod.LICENSE_PLATE_TEXT_DATA_COMPONENT, "");
     }
 
 }

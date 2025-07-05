@@ -1,6 +1,6 @@
 package de.maxhenkel.car.gui;
 
-import de.maxhenkel.car.Main;
+import de.maxhenkel.car.CarMod;
 import de.maxhenkel.car.items.ItemPainter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.Container;
@@ -39,11 +39,11 @@ public class SlotPainter extends Slot {
         if (!(i instanceof ItemPainter)) {
             return;
         }
-        stack.set(Main.PAINTER_INDEX_DATA_COMPONENT, index);
+        stack.set(CarMod.PAINTER_INDEX_DATA_COMPONENT, index);
     }
 
     public static int getPainterID(ItemStack stack) {
-        return stack.getOrDefault(Main.PAINTER_INDEX_DATA_COMPONENT, 0);
+        return stack.getOrDefault(CarMod.PAINTER_INDEX_DATA_COMPONENT, 0);
     }
 
 }

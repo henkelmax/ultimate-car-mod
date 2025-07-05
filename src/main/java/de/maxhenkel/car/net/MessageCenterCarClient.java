@@ -1,6 +1,6 @@
 package de.maxhenkel.car.net;
 
-import de.maxhenkel.car.Main;
+import de.maxhenkel.car.CarMod;
 import de.maxhenkel.corelib.net.Message;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.protocol.PacketFlow;
@@ -13,7 +13,7 @@ import java.util.UUID;
 
 public class MessageCenterCarClient implements Message<MessageCenterCarClient> {
 
-    public static final CustomPacketPayload.Type<MessageCenterCarClient> TYPE = new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(Main.MODID, "center_car_client"));
+    public static final CustomPacketPayload.Type<MessageCenterCarClient> TYPE = new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(CarMod.MODID, "center_car_client"));
 
     private UUID uuid;
 

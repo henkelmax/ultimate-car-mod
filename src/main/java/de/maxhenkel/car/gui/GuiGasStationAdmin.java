@@ -1,6 +1,6 @@
 package de.maxhenkel.car.gui;
 
-import de.maxhenkel.car.Main;
+import de.maxhenkel.car.CarMod;
 import de.maxhenkel.car.blocks.tileentity.TileEntityGasStation;
 import de.maxhenkel.car.net.MessageGasStationAdminAmount;
 import de.maxhenkel.corelib.inventory.ScreenBase;
@@ -17,7 +17,7 @@ import java.awt.*;
 
 public class GuiGasStationAdmin extends ScreenBase<ContainerGasStationAdmin> {
 
-    private static final ResourceLocation GUI_TEXTURE = ResourceLocation.fromNamespaceAndPath(Main.MODID, "textures/gui/gui_gas_station_admin.png");
+    private static final ResourceLocation GUI_TEXTURE = ResourceLocation.fromNamespaceAndPath(CarMod.MODID, "textures/gui/gui_gas_station_admin.png");
 
     private TileEntityGasStation gasStation;
     private Inventory inventoryPlayer;

@@ -1,7 +1,6 @@
 package de.maxhenkel.car.events;
 
-import de.maxhenkel.car.Main;
-import de.maxhenkel.car.MainClient;
+import de.maxhenkel.car.CarModClient;
 import de.maxhenkel.car.entity.car.base.EntityCarBatteryBase;
 import de.maxhenkel.car.net.MessageCenterCar;
 import de.maxhenkel.car.net.MessageStarting;
@@ -43,9 +42,9 @@ public class KeyEvents {
         EntityCarBatteryBase car = (EntityCarBatteryBase) riding;
 
         if (player.equals(car.getDriver())) {
-            car.updateControls(MainClient.FORWARD_KEY.isDown(), MainClient.BACK_KEY.isDown(), MainClient.LEFT_KEY.isDown(), MainClient.RIGHT_KEY.isDown(), player);
+            car.updateControls(CarModClient.FORWARD_KEY.isDown(), CarModClient.BACK_KEY.isDown(), CarModClient.LEFT_KEY.isDown(), CarModClient.RIGHT_KEY.isDown(), player);
 
-            if (MainClient.START_KEY.isDown()) {
+            if (CarModClient.START_KEY.isDown()) {
                 if (!wasStartPressed) {
                     ClientPacketDistributor.sendToServer(new MessageStarting(true, false, player));
                     wasStartPressed = true;
@@ -57,7 +56,7 @@ public class KeyEvents {
                 wasStartPressed = false;
             }
 
-            if (MainClient.HORN_KEY.isDown()) {
+            if (CarModClient.HORN_KEY.isDown()) {
                 if (!wasHornPressed) {
                     car.onHornPressed(player);
                     wasHornPressed = true;
@@ -66,7 +65,7 @@ public class KeyEvents {
                 wasHornPressed = false;
             }
 
-            if (MainClient.CENTER_KEY.isDown()) {
+            if (CarModClient.CENTER_KEY.isDown()) {
                 if (!wasCenterPressed) {
                     ClientPacketDistributor.sendToServer(new MessageCenterCar(player));
                     player.displayClientMessage(Component.translatable("message.center_car"), true);
@@ -77,7 +76,7 @@ public class KeyEvents {
             }
         }
 
-        if (MainClient.CAR_GUI_KEY.isDown()) {
+        if (CarModClient.CAR_GUI_KEY.isDown()) {
             if (!wasGuiPressed) {
                 car.openCarGUI(player);
                 wasGuiPressed = true;

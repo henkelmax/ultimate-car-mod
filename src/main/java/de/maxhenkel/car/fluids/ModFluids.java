@@ -1,6 +1,6 @@
 package de.maxhenkel.car.fluids;
 
-import de.maxhenkel.car.Main;
+import de.maxhenkel.car.CarMod;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.material.Fluid;
@@ -12,7 +12,7 @@ import net.neoforged.neoforge.registries.NeoForgeRegistries;
 
 public class ModFluids {
 
-    private static final DeferredRegister<Fluid> FLUID_REGISTER = DeferredRegister.create(BuiltInRegistries.FLUID, Main.MODID);
+    private static final DeferredRegister<Fluid> FLUID_REGISTER = DeferredRegister.create(BuiltInRegistries.FLUID, CarMod.MODID);
 
     public static final DeferredHolder<Fluid, FluidCanolaOil> CANOLA_OIL = FLUID_REGISTER.register("canola_oil", () -> new FluidCanolaOil());
     public static final DeferredHolder<Fluid, FluidCanolaOilFlowing> CANOLA_OIL_FLOWING = FLUID_REGISTER.register("canola_oil_flowing", () -> new FluidCanolaOilFlowing());
@@ -25,22 +25,22 @@ public class ModFluids {
     public static final DeferredHolder<Fluid, FluidBioDiesel> BIO_DIESEL = FLUID_REGISTER.register("bio_diesel", () -> new FluidBioDiesel());
     public static final DeferredHolder<Fluid, FluidBioDieselFlowing> BIO_DIESEL_FLOWING = FLUID_REGISTER.register("bio_diesel_flowing", () -> new FluidBioDieselFlowing());
 
-    private static final DeferredRegister<FluidType> FLUID_TYPE_REGISTER = DeferredRegister.create(NeoForgeRegistries.Keys.FLUID_TYPES, Main.MODID);
+    private static final DeferredRegister<FluidType> FLUID_TYPE_REGISTER = DeferredRegister.create(NeoForgeRegistries.Keys.FLUID_TYPES, CarMod.MODID);
 
     public static final DeferredHolder<FluidType, FluidTypeCar> CANOLA_OIL_TYPE = FLUID_TYPE_REGISTER.register("canola_oil", () ->
-            new FluidTypeCar("block.car.canola_oil", ResourceLocation.fromNamespaceAndPath(Main.MODID, "block/canola_oil_still"), ResourceLocation.fromNamespaceAndPath(Main.MODID, "block/canola_oil_flowing"))
+            new FluidTypeCar("block.car.canola_oil", ResourceLocation.fromNamespaceAndPath(CarMod.MODID, "block/canola_oil_still"), ResourceLocation.fromNamespaceAndPath(CarMod.MODID, "block/canola_oil_flowing"))
     );
     public static final DeferredHolder<FluidType, FluidTypeCar> METHANOL_TYPE = FLUID_TYPE_REGISTER.register("methanol", () ->
-            new FluidTypeCar("block.car.methanol", ResourceLocation.fromNamespaceAndPath(Main.MODID, "block/methanol_still"), ResourceLocation.fromNamespaceAndPath(Main.MODID, "block/methanol_flowing"))
+            new FluidTypeCar("block.car.methanol", ResourceLocation.fromNamespaceAndPath(CarMod.MODID, "block/methanol_still"), ResourceLocation.fromNamespaceAndPath(CarMod.MODID, "block/methanol_flowing"))
     );
     public static final DeferredHolder<FluidType, FluidTypeCar> CANOLA_METHANOL_MIX_TYPE = FLUID_TYPE_REGISTER.register("canola_methanol_mix", () ->
-            new FluidTypeCar("block.car.canola_methanol_mix", ResourceLocation.fromNamespaceAndPath(Main.MODID, "block/canola_methanol_mix_still"), ResourceLocation.fromNamespaceAndPath(Main.MODID, "block/canola_methanol_mix_flowing"))
+            new FluidTypeCar("block.car.canola_methanol_mix", ResourceLocation.fromNamespaceAndPath(CarMod.MODID, "block/canola_methanol_mix_still"), ResourceLocation.fromNamespaceAndPath(CarMod.MODID, "block/canola_methanol_mix_flowing"))
     );
     public static final DeferredHolder<FluidType, FluidTypeCar> GLYCERIN_TYPE = FLUID_TYPE_REGISTER.register("glycerin", () ->
-            new FluidTypeCar("block.car.glycerin", ResourceLocation.fromNamespaceAndPath(Main.MODID, "block/glycerin_still"), ResourceLocation.fromNamespaceAndPath(Main.MODID, "block/glycerin_flowing"))
+            new FluidTypeCar("block.car.glycerin", ResourceLocation.fromNamespaceAndPath(CarMod.MODID, "block/glycerin_still"), ResourceLocation.fromNamespaceAndPath(CarMod.MODID, "block/glycerin_flowing"))
     );
     public static final DeferredHolder<FluidType, FluidTypeCar> BIO_DIESEL_TYPE = FLUID_TYPE_REGISTER.register("bio_diesel", () ->
-            new FluidTypeCar("block.car.bio_diesel", ResourceLocation.fromNamespaceAndPath(Main.MODID, "block/bio_diesel_still"), ResourceLocation.fromNamespaceAndPath(Main.MODID, "block/bio_diesel_flowing"))
+            new FluidTypeCar("block.car.bio_diesel", ResourceLocation.fromNamespaceAndPath(CarMod.MODID, "block/bio_diesel_still"), ResourceLocation.fromNamespaceAndPath(CarMod.MODID, "block/bio_diesel_flowing"))
     );
 
     public static void init(IEventBus eventBus) {

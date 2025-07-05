@@ -1,6 +1,6 @@
 package de.maxhenkel.car.gui;
 
-import de.maxhenkel.car.Main;
+import de.maxhenkel.car.CarMod;
 import de.maxhenkel.car.blocks.tileentity.TileEntityGenerator;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.ContainerData;
@@ -11,7 +11,7 @@ public class ContainerGenerator extends ContainerBase {
     private TileEntityGenerator generator;
 
     public ContainerGenerator(int id, TileEntityGenerator generator, Inventory playerInv, ContainerData fields) {
-        super(Main.GENERATOR_CONTAINER_TYPE.get(), id, playerInv, generator);
+        super(CarMod.GENERATOR_CONTAINER_TYPE.get(), id, playerInv, generator);
         this.generator = generator;
 
         addPlayerInventorySlots();

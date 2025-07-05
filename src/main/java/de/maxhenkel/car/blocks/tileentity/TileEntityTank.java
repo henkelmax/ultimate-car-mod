@@ -1,6 +1,6 @@
 package de.maxhenkel.car.blocks.tileentity;
 
-import de.maxhenkel.car.Main;
+import de.maxhenkel.car.CarMod;
 import de.maxhenkel.corelib.blockentity.ITickableBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -24,7 +24,7 @@ public class TileEntityTank extends TileEntityBase implements IFluidHandler, ITi
     public static final int CAPACITY = 16000;
 
     public TileEntityTank(BlockPos pos, BlockState state) {
-        super(Main.TANK_TILE_ENTITY_TYPE.get(), pos, state);
+        super(CarMod.TANK_TILE_ENTITY_TYPE.get(), pos, state);
         this.fluid = FluidStack.EMPTY;
     }
 

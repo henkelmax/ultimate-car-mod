@@ -1,7 +1,7 @@
 package de.maxhenkel.car.entity.car.parts;
 
 import org.joml.Vector3d;
-import de.maxhenkel.car.Main;
+import de.maxhenkel.car.CarMod;
 import de.maxhenkel.corelib.client.obj.OBJModel;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -11,7 +11,7 @@ import java.util.List;
 public class PartBodyTransporter extends PartBody {
 
     public PartBodyTransporter(ResourceLocation texture, String materialTranslationKey) {
-        super(new OBJModel(ResourceLocation.fromNamespaceAndPath(Main.MODID, "models/entity/transporter_body.obj")), texture, new Vector3d(0D, 4D / 16D, 0D), "transporter", materialTranslationKey);
+        super(new OBJModel(ResourceLocation.fromNamespaceAndPath(CarMod.MODID, "models/entity/transporter_body.obj")), texture, new Vector3d(0D, 4D / 16D, 0D), "transporter", materialTranslationKey);
         this.wheelOffsets = new Vector3d[]{
                 new Vector3d(14.5F / 16F, 4F / 16F, 12F / 16F),
                 new Vector3d(14.5F / 16F, 4F / 16F, -16F / 16F),
@@ -29,9 +29,9 @@ public class PartBodyTransporter extends PartBody {
         this.height = 1.51F;
         this.minRotationSpeed = 2.0F;
         this.maxRotationSpeed = 5F;
-        this.fuelEfficiency = () -> Main.SERVER_CONFIG.bodyTransporterFuelEfficiency.get().floatValue();
-        this.acceleration = () -> Main.SERVER_CONFIG.bodyTransporterAcceleration.get().floatValue();
-        this.maxSpeed = () -> Main.SERVER_CONFIG.bodyTransporterMaxSpeed.get().floatValue();
+        this.fuelEfficiency = () -> CarMod.SERVER_CONFIG.bodyTransporterFuelEfficiency.get().floatValue();
+        this.acceleration = () -> CarMod.SERVER_CONFIG.bodyTransporterAcceleration.get().floatValue();
+        this.maxSpeed = () -> CarMod.SERVER_CONFIG.bodyTransporterMaxSpeed.get().floatValue();
     }
 
     @Override

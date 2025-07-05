@@ -31,9 +31,9 @@ import net.neoforged.neoforge.client.event.RegisterSpecialModelRendererEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import org.lwjgl.glfw.GLFW;
 
-@Mod(value = Main.MODID, dist = Dist.CLIENT)
-@EventBusSubscriber(modid = Main.MODID, value = Dist.CLIENT)
-public class MainClient {
+@Mod(value = CarMod.MODID, dist = Dist.CLIENT)
+@EventBusSubscriber(modid = CarMod.MODID, value = Dist.CLIENT)
+public class CarModClient {
 
     public static KeyMapping FORWARD_KEY;
     public static KeyMapping BACK_KEY;
@@ -45,23 +45,23 @@ public class MainClient {
     public static KeyMapping HORN_KEY;
     public static KeyMapping CENTER_KEY;
 
-    public MainClient(IEventBus eventBus) {
+    public CarModClient(IEventBus eventBus) {
         OBJModel.registerRenderPipeline(eventBus);
     }
 
     @SubscribeEvent
     static void onClientSetup(FMLClientSetupEvent event) {
-        BlockEntityRenderers.register(Main.GAS_STATION_TILE_ENTITY_TYPE.get(), TileentitySpecialRendererGasStation::new);
-        BlockEntityRenderers.register(Main.SPLIT_TANK_TILE_ENTITY_TYPE.get(), TileEntitySpecialRendererSplitTank::new);
-        BlockEntityRenderers.register(Main.TANK_TILE_ENTITY_TYPE.get(), c -> new TileEntitySpecialRendererTank(c.getModelSet()));
-        BlockEntityRenderers.register(Main.SIGN_TILE_ENTITY_TYPE.get(), TileEntitySpecialRendererSign::new);
+        BlockEntityRenderers.register(CarMod.GAS_STATION_TILE_ENTITY_TYPE.get(), TileentitySpecialRendererGasStation::new);
+        BlockEntityRenderers.register(CarMod.SPLIT_TANK_TILE_ENTITY_TYPE.get(), TileEntitySpecialRendererSplitTank::new);
+        BlockEntityRenderers.register(CarMod.TANK_TILE_ENTITY_TYPE.get(), c -> new TileEntitySpecialRendererTank(c.getModelSet()));
+        BlockEntityRenderers.register(CarMod.SIGN_TILE_ENTITY_TYPE.get(), TileEntitySpecialRendererSign::new);
 
         NeoForge.EVENT_BUS.register(new RenderEvents());
         NeoForge.EVENT_BUS.register(new SoundEvents());
         NeoForge.EVENT_BUS.register(new KeyEvents());
         NeoForge.EVENT_BUS.register(new PlayerEvents());
 
-        EntityRenderers.register(Main.CAR_ENTITY_TYPE.get(), GenericCarModel::new);
+        EntityRenderers.register(CarMod.CAR_ENTITY_TYPE.get(), GenericCarModel::new);
 
         ItemBlockRenderTypes.setRenderLayer(ModFluids.CANOLA_OIL.get(), ChunkSectionLayer.TRANSLUCENT);
         ItemBlockRenderTypes.setRenderLayer(ModFluids.CANOLA_OIL_FLOWING.get(), ChunkSectionLayer.TRANSLUCENT);
@@ -98,26 +98,26 @@ public class MainClient {
 
     @SubscribeEvent
     static void onRegisterScreens(RegisterMenuScreensEvent containers) {
-        containers.<ContainerBackmixReactor, GuiBackmixReactor>register(Main.BACKMIX_REACTOR_CONTAINER_TYPE.get(), GuiBackmixReactor::new);
-        containers.<ContainerBlastFurnace, GuiBlastFurnace>register(Main.BLAST_FURNACE_CONTAINER_TYPE.get(), GuiBlastFurnace::new);
-        containers.<ContainerCar, GuiCar>register(Main.CAR_CONTAINER_TYPE.get(), GuiCar::new);
-        containers.<ContainerCarInventory, GuiCarInventory>register(Main.CAR_INVENTORY_CONTAINER_TYPE.get(), GuiCarInventory::new);
-        containers.<ContainerCarWorkshopCrafting, GuiCarWorkshopCrafting>register(Main.CAR_WORKSHOP_CRAFTING_CONTAINER_TYPE.get(), GuiCarWorkshopCrafting::new);
-        containers.<ContainerCarWorkshopRepair, GuiCarWorkshopRepair>register(Main.CAR_WORKSHOP_REPAIR_CONTAINER_TYPE.get(), GuiCarWorkshopRepair::new);
-        containers.<ContainerFluidExtractor, GuiFluidExtractor>register(Main.FLUID_EXTRACTOR_CONTAINER_TYPE.get(), GuiFluidExtractor::new);
-        containers.<ContainerGasStation, GuiGasStation>register(Main.GAS_STATION_CONTAINER_TYPE.get(), GuiGasStation::new);
-        containers.<ContainerGasStationAdmin, GuiGasStationAdmin>register(Main.GAS_STATION_ADMIN_CONTAINER_TYPE.get(), GuiGasStationAdmin::new);
-        containers.<ContainerGenerator, GuiGenerator>register(Main.GENERATOR_CONTAINER_TYPE.get(), GuiGenerator::new);
-        containers.<ContainerLicensePlate, GuiLicensePlate>register(Main.LICENSE_PLATE_CONTAINER_TYPE.get(), GuiLicensePlate::new);
-        containers.<ContainerOilMill, GuiOilMill>register(Main.OIL_MILL_CONTAINER_TYPE.get(), GuiOilMill::new);
-        containers.<ContainerPainter, GuiPainter>register(Main.PAINTER_CONTAINER_TYPE.get(), GuiPainter::new);
-        containers.<ContainerSign, GuiSign>register(Main.SIGN_CONTAINER_TYPE.get(), GuiSign::new);
-        containers.<ContainerSplitTank, GuiSplitTank>register(Main.SPLIT_TANK_CONTAINER_TYPE.get(), GuiSplitTank::new);
+        containers.<ContainerBackmixReactor, GuiBackmixReactor>register(CarMod.BACKMIX_REACTOR_CONTAINER_TYPE.get(), GuiBackmixReactor::new);
+        containers.<ContainerBlastFurnace, GuiBlastFurnace>register(CarMod.BLAST_FURNACE_CONTAINER_TYPE.get(), GuiBlastFurnace::new);
+        containers.<ContainerCar, GuiCar>register(CarMod.CAR_CONTAINER_TYPE.get(), GuiCar::new);
+        containers.<ContainerCarInventory, GuiCarInventory>register(CarMod.CAR_INVENTORY_CONTAINER_TYPE.get(), GuiCarInventory::new);
+        containers.<ContainerCarWorkshopCrafting, GuiCarWorkshopCrafting>register(CarMod.CAR_WORKSHOP_CRAFTING_CONTAINER_TYPE.get(), GuiCarWorkshopCrafting::new);
+        containers.<ContainerCarWorkshopRepair, GuiCarWorkshopRepair>register(CarMod.CAR_WORKSHOP_REPAIR_CONTAINER_TYPE.get(), GuiCarWorkshopRepair::new);
+        containers.<ContainerFluidExtractor, GuiFluidExtractor>register(CarMod.FLUID_EXTRACTOR_CONTAINER_TYPE.get(), GuiFluidExtractor::new);
+        containers.<ContainerGasStation, GuiGasStation>register(CarMod.GAS_STATION_CONTAINER_TYPE.get(), GuiGasStation::new);
+        containers.<ContainerGasStationAdmin, GuiGasStationAdmin>register(CarMod.GAS_STATION_ADMIN_CONTAINER_TYPE.get(), GuiGasStationAdmin::new);
+        containers.<ContainerGenerator, GuiGenerator>register(CarMod.GENERATOR_CONTAINER_TYPE.get(), GuiGenerator::new);
+        containers.<ContainerLicensePlate, GuiLicensePlate>register(CarMod.LICENSE_PLATE_CONTAINER_TYPE.get(), GuiLicensePlate::new);
+        containers.<ContainerOilMill, GuiOilMill>register(CarMod.OIL_MILL_CONTAINER_TYPE.get(), GuiOilMill::new);
+        containers.<ContainerPainter, GuiPainter>register(CarMod.PAINTER_CONTAINER_TYPE.get(), GuiPainter::new);
+        containers.<ContainerSign, GuiSign>register(CarMod.SIGN_CONTAINER_TYPE.get(), GuiSign::new);
+        containers.<ContainerSplitTank, GuiSplitTank>register(CarMod.SPLIT_TANK_CONTAINER_TYPE.get(), GuiSplitTank::new);
     }
 
     @SubscribeEvent
     static void registerItemModels(RegisterSpecialModelRendererEvent event) {
-        event.register(ResourceLocation.fromNamespaceAndPath(Main.MODID, "tank"), TankSpecialRenderer.Unbaked.MAP_CODEC);
+        event.register(ResourceLocation.fromNamespaceAndPath(CarMod.MODID, "tank"), TankSpecialRenderer.Unbaked.MAP_CODEC);
     }
 
 }

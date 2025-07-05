@@ -1,6 +1,6 @@
 package de.maxhenkel.car.blocks.tileentity;
 
-import de.maxhenkel.car.Main;
+import de.maxhenkel.car.CarMod;
 import de.maxhenkel.car.fluids.ModFluids;
 import de.maxhenkel.corelib.blockentity.ITickableBlockEntity;
 import net.minecraft.core.BlockPos;
@@ -38,23 +38,23 @@ public class TileEntitySplitTank extends TileEntityBase implements ITickableBloc
     protected SimpleContainer inventory;
 
     public TileEntitySplitTank(BlockPos pos, BlockState state) {
-        super(Main.SPLIT_TANK_TILE_ENTITY_TYPE.get(), pos, state);
+        super(CarMod.SPLIT_TANK_TILE_ENTITY_TYPE.get(), pos, state);
         this.inventory = new SimpleContainer(0);
         this.currentMix = 0;
-        this.maxMix = Main.SERVER_CONFIG.splitTankFluidStorage.get();
+        this.maxMix = CarMod.SERVER_CONFIG.splitTankFluidStorage.get();
 
         this.currentBioDiesel = 0;
-        this.maxBioDiesel = Main.SERVER_CONFIG.splitTankFluidStorage.get();
+        this.maxBioDiesel = CarMod.SERVER_CONFIG.splitTankFluidStorage.get();
 
         this.currentGlycerin = 0;
-        this.maxGlycerin = Main.SERVER_CONFIG.splitTankFluidStorage.get();
+        this.maxGlycerin = CarMod.SERVER_CONFIG.splitTankFluidStorage.get();
 
-        this.generatingTime = Main.SERVER_CONFIG.splitTankGeneratingTime.get();
+        this.generatingTime = CarMod.SERVER_CONFIG.splitTankGeneratingTime.get();
         this.timeToGenerate = 0;
 
-        this.mixUsage = Main.SERVER_CONFIG.splitTankMixUsage.get();
-        this.glycerinGeneration = Main.SERVER_CONFIG.splitTankGlycerinGeneration.get();
-        this.bioDieselGeneration = Main.SERVER_CONFIG.splitTankBioDieselGeneration.get();
+        this.mixUsage = CarMod.SERVER_CONFIG.splitTankMixUsage.get();
+        this.glycerinGeneration = CarMod.SERVER_CONFIG.splitTankGlycerinGeneration.get();
+        this.bioDieselGeneration = CarMod.SERVER_CONFIG.splitTankBioDieselGeneration.get();
     }
 
     public final ContainerData FIELDS = new ContainerData() {

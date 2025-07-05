@@ -1,6 +1,6 @@
 package de.maxhenkel.car.entity.car.base;
 
-import de.maxhenkel.car.Main;
+import de.maxhenkel.car.CarMod;
 import de.maxhenkel.car.sounds.ModSounds;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
@@ -176,7 +176,7 @@ public abstract class EntityCarBatteryBase extends EntityCarTemperatureBase {
     }
 
     public int getBatteryUsage() {
-        if (!Main.SERVER_CONFIG.useBattery.get()) {
+        if (!CarMod.SERVER_CONFIG.useBattery.get()) {
             return 0;
         }
 

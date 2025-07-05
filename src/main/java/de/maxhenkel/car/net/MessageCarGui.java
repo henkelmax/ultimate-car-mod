@@ -1,6 +1,6 @@
 package de.maxhenkel.car.net;
 
-import de.maxhenkel.car.Main;
+import de.maxhenkel.car.CarMod;
 import de.maxhenkel.car.entity.car.base.EntityCarBase;
 import de.maxhenkel.corelib.net.Message;
 import net.minecraft.network.RegistryFriendlyByteBuf;
@@ -15,7 +15,7 @@ import java.util.UUID;
 
 public class MessageCarGui implements Message<MessageCarGui> {
 
-    public static final CustomPacketPayload.Type<MessageCarGui> TYPE = new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(Main.MODID, "car_gui"));
+    public static final CustomPacketPayload.Type<MessageCarGui> TYPE = new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(CarMod.MODID, "car_gui"));
 
     private UUID uuid;
 
@@ -39,7 +39,7 @@ public class MessageCarGui implements Message<MessageCarGui> {
             return;
         }
         if (!sender.getUUID().equals(uuid)) {
-            Main.LOGGER.error("The UUID of the sender was not equal to the packet UUID");
+            CarMod.LOGGER.error("The UUID of the sender was not equal to the packet UUID");
             return;
         }
         if (sender.getVehicle() instanceof EntityCarBase car) {

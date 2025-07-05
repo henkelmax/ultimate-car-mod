@@ -1,6 +1,6 @@
 package de.maxhenkel.car.events;
 
-import de.maxhenkel.car.Main;
+import de.maxhenkel.car.CarMod;
 import de.maxhenkel.car.entity.car.base.EntityVehicleBase;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
@@ -44,7 +44,7 @@ public class PlayerEvents {
     }
 
     private void setThirdPerson(boolean third) {
-        if (!Main.CLIENT_CONFIG.thirdPersonEnter.get()) {
+        if (!CarMod.CLIENT_CONFIG.thirdPersonEnter.get()) {
             return;
         }
 

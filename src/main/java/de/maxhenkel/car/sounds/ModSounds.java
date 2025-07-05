@@ -1,8 +1,6 @@
 package de.maxhenkel.car.sounds;
 
-import de.maxhenkel.car.Main;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.sounds.AbstractTickableSoundInstance;
+import de.maxhenkel.car.CarMod;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
@@ -16,7 +14,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 
 public class ModSounds {
 
-    private static final DeferredRegister<SoundEvent> SOUND_REGISTER = DeferredRegister.create(BuiltInRegistries.SOUND_EVENT, Main.MODID);
+    private static final DeferredRegister<SoundEvent> SOUND_REGISTER = DeferredRegister.create(BuiltInRegistries.SOUND_EVENT, CarMod.MODID);
 
     public static DeferredHolder<SoundEvent, SoundEvent> ENGINE_STOP = addSound("engine_stop");
     public static DeferredHolder<SoundEvent, SoundEvent> ENGINE_STARTING = addSound("engine_starting");
@@ -46,7 +44,7 @@ public class ModSounds {
     public static DeferredHolder<SoundEvent, SoundEvent> GAS_STATION_ATTENDANT = addSound("gas_station_attendant");
 
     public static DeferredHolder<SoundEvent, SoundEvent> addSound(String soundName) {
-        return SOUND_REGISTER.register(soundName, () -> SoundEvent.createVariableRangeEvent(ResourceLocation.fromNamespaceAndPath(Main.MODID, soundName)));
+        return SOUND_REGISTER.register(soundName, () -> SoundEvent.createVariableRangeEvent(ResourceLocation.fromNamespaceAndPath(CarMod.MODID, soundName)));
     }
 
     public static void init(IEventBus eventBus) {

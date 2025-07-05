@@ -1,7 +1,7 @@
 package de.maxhenkel.car.entity.car.base;
 
 import de.maxhenkel.car.DamageSourceCar;
-import de.maxhenkel.car.Main;
+import de.maxhenkel.car.CarMod;
 import de.maxhenkel.car.net.MessageCarGui;
 import de.maxhenkel.car.net.MessageCarHorn;
 import de.maxhenkel.car.net.MessageControlCar;
@@ -133,7 +133,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 
     @Override
     public boolean canCollideWith(Entity entityIn) {
-        if (!level().isClientSide && Main.SERVER_CONFIG.damageEntities.get() && entityIn instanceof LivingEntity && !getPassengers().contains(entityIn)) {
+        if (!level().isClientSide && CarMod.SERVER_CONFIG.damageEntities.get() && entityIn instanceof LivingEntity && !getPassengers().contains(entityIn)) {
             if (entityIn.getBoundingBox().intersects(getBoundingBox())) {
                 float speed = getSpeed();
                 if (speed > 0.35F) {
@@ -251,10 +251,10 @@ public abstract class EntityCarBase extends EntityVehicleBase {
         BlockPos pos = new BlockPos((int) getX(), (int) (getY() - 0.1D), (int) getZ());
         BlockState state = level().getBlockState(pos);
 
-        if (state.isAir() || Main.SERVER_CONFIG.carDriveBlockList.stream().anyMatch(tag -> tag.contains(state.getBlock()))) {
-            return Main.SERVER_CONFIG.carOnroadSpeed.get().floatValue();
+        if (state.isAir() || CarMod.SERVER_CONFIG.carDriveBlockList.stream().anyMatch(tag -> tag.contains(state.getBlock()))) {
+            return CarMod.SERVER_CONFIG.carOnroadSpeed.get().floatValue();
         } else {
-            return Main.SERVER_CONFIG.carOffroadSpeed.get().floatValue();
+            return CarMod.SERVER_CONFIG.carOffroadSpeed.get().floatValue();
         }
     }
 
@@ -497,12 +497,12 @@ public abstract class EntityCarBase extends EntityVehicleBase {
                 if (car.getBatteryLevel() < 10) {
                     return;
                 }
-                if (Main.SERVER_CONFIG.useBattery.get()) {
+                if (CarMod.SERVER_CONFIG.useBattery.get()) {
                     car.setBatteryLevel(car.getBatteryLevel() - 10);
                 }
             }
             playHornSound();
-            if (Main.SERVER_CONFIG.hornFlee.get()) {
+            if (CarMod.SERVER_CONFIG.hornFlee.get()) {
                 double radius = 15;
                 List<Monster> list = level().getEntitiesOfClass(Monster.class, new AABB(getX() - radius, getY() - radius, getZ() - radius, getX() + radius, getY() + radius, getZ() + radius));
                 for (Monster ent : list) {

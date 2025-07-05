@@ -1,6 +1,6 @@
 package de.maxhenkel.car.entity.car.parts;
 
-import de.maxhenkel.car.Main;
+import de.maxhenkel.car.CarMod;
 import de.maxhenkel.car.entity.car.base.EntityGenericCar;
 import de.maxhenkel.car.entity.model.CarRenderState;
 import de.maxhenkel.corelib.client.obj.OBJModel;
@@ -15,7 +15,7 @@ import java.util.List;
 public class PartBumper extends PartModel {
 
     public PartBumper(ResourceLocation texture) {
-        super(new OBJModel(ResourceLocation.fromNamespaceAndPath(Main.MODID, "models/entity/wood_bumper.obj")), texture);
+        super(new OBJModel(ResourceLocation.fromNamespaceAndPath(CarMod.MODID, "models/entity/wood_bumper.obj")), texture);
     }
 
     @Override

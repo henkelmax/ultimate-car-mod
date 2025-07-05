@@ -1,6 +1,6 @@
 package de.maxhenkel.car.gui;
 
-import de.maxhenkel.car.Main;
+import de.maxhenkel.car.CarMod;
 import net.minecraft.util.Unit;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Player;
@@ -14,7 +14,7 @@ public class SlotPresent extends Slot {
     public SlotPresent(ItemStack s, int xPosition, int yPosition) {
         super(new SimpleContainer(1), 0, xPosition, yPosition);
         this.stack = s.copy();
-        stack.set(Main.TRADING_ITEM_DATA_COMPONENT, Unit.INSTANCE);
+        stack.set(CarMod.TRADING_ITEM_DATA_COMPONENT, Unit.INSTANCE);
     }
 
     @Override

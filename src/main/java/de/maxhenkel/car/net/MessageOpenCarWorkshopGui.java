@@ -1,6 +1,6 @@
 package de.maxhenkel.car.net;
 
-import de.maxhenkel.car.Main;
+import de.maxhenkel.car.CarMod;
 import de.maxhenkel.car.blocks.tileentity.TileEntityCarWorkshop;
 import de.maxhenkel.car.gui.ContainerCarWorkshopCrafting;
 import de.maxhenkel.car.gui.ContainerCarWorkshopRepair;
@@ -19,7 +19,7 @@ import java.util.UUID;
 
 public class MessageOpenCarWorkshopGui implements Message<MessageOpenCarWorkshopGui> {
 
-    public static final CustomPacketPayload.Type<MessageOpenCarWorkshopGui> TYPE = new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(Main.MODID, "open_car_workshop"));
+    public static final CustomPacketPayload.Type<MessageOpenCarWorkshopGui> TYPE = new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(CarMod.MODID, "open_car_workshop"));
 
     private BlockPos pos;
     private UUID uuid;
@@ -47,7 +47,7 @@ public class MessageOpenCarWorkshopGui implements Message<MessageOpenCarWorkshop
         }
 
         if (!sender.getUUID().equals(uuid)) {
-            Main.LOGGER.error("The UUID of the sender was not equal to the packet UUID");
+            CarMod.LOGGER.error("The UUID of the sender was not equal to the packet UUID");
             return;
         }
 

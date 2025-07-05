@@ -1,6 +1,6 @@
 package de.maxhenkel.car.blocks;
 
-import de.maxhenkel.car.Main;
+import de.maxhenkel.car.CarMod;
 import de.maxhenkel.car.blocks.tileentity.TileEntityTank;
 import de.maxhenkel.corelib.blockentity.SimpleBlockEntityTicker;
 import de.maxhenkel.corelib.fluid.FluidUtils;
@@ -60,7 +60,7 @@ public class BlockTank extends BlockBase implements EntityBlock {
     }
 
     public static void applyItemData(ItemStack stack, TileEntityTank tank) {
-        SimpleFluidContent content = stack.get(Main.FLUID_STACK_DATA_COMPONENT);
+        SimpleFluidContent content = stack.get(CarMod.FLUID_STACK_DATA_COMPONENT);
         if (content == null) {
             tank.setFluid(FluidStack.EMPTY);
             return;

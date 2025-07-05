@@ -1,6 +1,6 @@
 package de.maxhenkel.car.gui;
 
-import de.maxhenkel.car.Main;
+import de.maxhenkel.car.CarMod;
 import de.maxhenkel.car.entity.car.base.EntityCarDamageBase;
 import de.maxhenkel.car.items.ModItems;
 import de.maxhenkel.car.sounds.ModSounds;
@@ -32,7 +32,7 @@ public class SlotRepairKit extends Slot {
 
             stack.shrink(1);
 
-            float damage = car.getDamage() - Main.SERVER_CONFIG.repairKitRepairAmount.get().floatValue();
+            float damage = car.getDamage() - CarMod.SERVER_CONFIG.repairKitRepairAmount.get().floatValue();
             if (damage >= 0) {
                 car.setDamage(damage);
             }

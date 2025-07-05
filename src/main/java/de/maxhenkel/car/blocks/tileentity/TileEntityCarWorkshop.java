@@ -1,6 +1,6 @@
 package de.maxhenkel.car.blocks.tileentity;
 
-import de.maxhenkel.car.Main;
+import de.maxhenkel.car.CarMod;
 import de.maxhenkel.car.blocks.BlockCarWorkshopOutter;
 import de.maxhenkel.car.blocks.ModBlocks;
 import de.maxhenkel.car.entity.car.base.EntityCarBase;
@@ -41,7 +41,7 @@ public class TileEntityCarWorkshop extends TileEntityBase implements Container {
     private List<Component> messages;
 
     public TileEntityCarWorkshop(BlockPos pos, BlockState state) {
-        super(Main.CAR_WORKSHOP_TILE_ENTITY_TYPE.get(), pos, state);
+        super(CarMod.CAR_WORKSHOP_TILE_ENTITY_TYPE.get(), pos, state);
         this.craftingMatrix = new SimpleContainer(15);
         this.repairInventory = new SimpleContainer(3);
         this.messages = new ArrayList<>();

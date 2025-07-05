@@ -1,6 +1,6 @@
 package de.maxhenkel.car.items;
 
-import de.maxhenkel.car.Main;
+import de.maxhenkel.car.CarMod;
 import de.maxhenkel.car.blocks.BlockGasStation;
 import de.maxhenkel.car.blocks.BlockPaint;
 import de.maxhenkel.car.blocks.BlockSplitTank;
@@ -15,7 +15,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 
 public class ModItems {
 
-    private static final DeferredRegister.Items ITEM_REGISTER = DeferredRegister.createItems(Main.MODID);
+    private static final DeferredRegister.Items ITEM_REGISTER = DeferredRegister.createItems(CarMod.MODID);
 
     public static final DeferredHolder<Item, ItemPainter> PAINTER = ITEM_REGISTER.registerItem("painter", p -> new ItemPainter(p, false));
     public static final DeferredHolder<Item, ItemPainter> PAINTER_YELLOW = ITEM_REGISTER.registerItem("painter_yellow", p -> new ItemPainter(p, true));

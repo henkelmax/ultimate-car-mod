@@ -1,6 +1,6 @@
 package de.maxhenkel.car.items;
 
-import de.maxhenkel.car.Main;
+import de.maxhenkel.car.CarMod;
 import de.maxhenkel.car.PredicateUUID;
 import de.maxhenkel.car.entity.car.base.EntityCarLockBase;
 import net.minecraft.network.chat.Component;
@@ -54,11 +54,11 @@ public class ItemKey extends Item {
     }
 
     public static void setCar(ItemStack stack, UUID carUUID) {
-        stack.set(Main.CAR_UUID_DATA_COMPONENT, carUUID);
+        stack.set(CarMod.CAR_UUID_DATA_COMPONENT, carUUID);
     }
 
     public static UUID getCar(ItemStack stack) {
-        return stack.get(Main.CAR_UUID_DATA_COMPONENT);
+        return stack.get(CarMod.CAR_UUID_DATA_COMPONENT);
     }
 
     public static ItemStack getKeyForCar(UUID car) {

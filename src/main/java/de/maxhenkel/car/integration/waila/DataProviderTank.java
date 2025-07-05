@@ -1,6 +1,6 @@
 package de.maxhenkel.car.integration.waila;
 
-import de.maxhenkel.car.Main;
+import de.maxhenkel.car.CarMod;
 import de.maxhenkel.car.blocks.tileentity.TileEntityTank;
 import de.maxhenkel.corelib.codec.ValueInputOutputUtils;
 import net.minecraft.nbt.CompoundTag;
@@ -14,7 +14,7 @@ public class DataProviderTank implements IServerDataProvider<BlockAccessor> {
 
     public static final DataProviderTank INSTANCE = new DataProviderTank();
 
-    private static final ResourceLocation UID = ResourceLocation.fromNamespaceAndPath(Main.MODID, "tank_data");
+    private static final ResourceLocation UID = ResourceLocation.fromNamespaceAndPath(CarMod.MODID, "tank_data");
 
 
     @Override

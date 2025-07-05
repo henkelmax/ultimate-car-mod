@@ -1,6 +1,6 @@
 package de.maxhenkel.car.events;
 
-import de.maxhenkel.car.Main;
+import de.maxhenkel.car.CarMod;
 import de.maxhenkel.car.entity.car.base.EntityGenericCar;
 import de.maxhenkel.car.entity.car.base.EntityVehicleBase;
 import de.maxhenkel.corelib.math.MathUtils;
@@ -24,15 +24,15 @@ public class RenderEvents {
     @SubscribeEvent
     public void onCameraDistance(CalculateDetachedCameraDistanceEvent evt) {
         if (getCar() != null && !mc.options.getCameraType().isFirstPerson()) {
-            evt.setDistance(Main.CLIENT_CONFIG.carZoom.get().floatValue());
+            evt.setDistance(CarMod.CLIENT_CONFIG.carZoom.get().floatValue());
         }
     }
 
     @SubscribeEvent
     public void onRender(InputEvent.MouseScrollingEvent evt) {
         if (getCar() != null && !mc.options.getCameraType().isFirstPerson()) {
-            Main.CLIENT_CONFIG.carZoom.set(Math.max(1D, Math.min(20D, Main.CLIENT_CONFIG.carZoom.get() - evt.getScrollDeltaY())));
-            Main.CLIENT_CONFIG.carZoom.save();
+            CarMod.CLIENT_CONFIG.carZoom.set(Math.max(1D, Math.min(20D, CarMod.CLIENT_CONFIG.carZoom.get() - evt.getScrollDeltaY())));
+            CarMod.CLIENT_CONFIG.carZoom.save();
             evt.setCanceled(true);
         }
     }
@@ -92,7 +92,7 @@ public class RenderEvents {
 
     @SubscribeEvent
     public void renderToolTip(RenderTooltipEvent.Pre event) {
-        if (event.getItemStack().has(Main.TRADING_ITEM_DATA_COMPONENT)) {
+        if (event.getItemStack().has(CarMod.TRADING_ITEM_DATA_COMPONENT)) {
             event.setCanceled(true);
         }
     }

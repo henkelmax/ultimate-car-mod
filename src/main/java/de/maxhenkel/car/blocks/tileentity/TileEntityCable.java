@@ -1,6 +1,6 @@
 package de.maxhenkel.car.blocks.tileentity;
 
-import de.maxhenkel.car.Main;
+import de.maxhenkel.car.CarMod;
 import de.maxhenkel.corelib.blockentity.ITickableBlockEntity;
 import de.maxhenkel.corelib.energy.EnergyUtils;
 import de.maxhenkel.tools.BlockPosList;
@@ -20,12 +20,12 @@ public class TileEntityCable extends TileEntityBase implements ITickableBlockEnt
     private final int transferRate;
 
     public TileEntityCable(int transferRate, BlockPos pos, BlockState state) {
-        super(Main.CABLE_TILE_ENTITY_TYPE.get(), pos, state);
+        super(CarMod.CABLE_TILE_ENTITY_TYPE.get(), pos, state);
         this.transferRate = transferRate;
     }
 
     public TileEntityCable(BlockPos pos, BlockState state) {
-        this(Main.SERVER_CONFIG.cableTransferRate.get(), pos, state);
+        this(CarMod.SERVER_CONFIG.cableTransferRate.get(), pos, state);
     }
 
     @Override

@@ -1,16 +1,16 @@
 package de.maxhenkel.car.entity.car.parts;
 
-import de.maxhenkel.car.Main;
+import de.maxhenkel.car.CarMod;
 import de.maxhenkel.car.sounds.ModSounds;
 import net.minecraft.sounds.SoundEvent;
 
 public class PartEngine3Cylinder extends PartEngine {
 
     public PartEngine3Cylinder() {
-        this.maxSpeed = () -> Main.SERVER_CONFIG.engine3CylinderMaxSpeed.get().floatValue();
-        this.maxReverseSpeed = () -> Main.SERVER_CONFIG.engine3CylinderMaxReverseSpeed.get().floatValue();
-        this.acceleration = () -> Main.SERVER_CONFIG.engine3CylinderAcceleration.get().floatValue();
-        this.fuelEfficiency = () -> Main.SERVER_CONFIG.engine3CylinderFuelEfficiency.get().floatValue();
+        this.maxSpeed = () -> CarMod.SERVER_CONFIG.engine3CylinderMaxSpeed.get().floatValue();
+        this.maxReverseSpeed = () -> CarMod.SERVER_CONFIG.engine3CylinderMaxReverseSpeed.get().floatValue();
+        this.acceleration = () -> CarMod.SERVER_CONFIG.engine3CylinderAcceleration.get().floatValue();
+        this.fuelEfficiency = () -> CarMod.SERVER_CONFIG.engine3CylinderFuelEfficiency.get().floatValue();
     }
 
     @Override

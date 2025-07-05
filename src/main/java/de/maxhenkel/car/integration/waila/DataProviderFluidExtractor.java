@@ -1,6 +1,6 @@
 package de.maxhenkel.car.integration.waila;
 
-import de.maxhenkel.car.Main;
+import de.maxhenkel.car.CarMod;
 import de.maxhenkel.car.blocks.tileentity.TileEntityFluidExtractor;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -12,7 +12,7 @@ public class DataProviderFluidExtractor implements IServerDataProvider<BlockAcce
 
     public static final DataProviderFluidExtractor INSTANCE = new DataProviderFluidExtractor();
 
-    private static final ResourceLocation UID = ResourceLocation.fromNamespaceAndPath(Main.MODID, "fluid_extractor_data");
+    private static final ResourceLocation UID = ResourceLocation.fromNamespaceAndPath(CarMod.MODID, "fluid_extractor_data");
 
     @Override
     public void appendServerData(CompoundTag compoundTag, BlockAccessor blockAccessor) {

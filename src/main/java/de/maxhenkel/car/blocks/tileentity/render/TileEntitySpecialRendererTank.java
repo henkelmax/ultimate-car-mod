@@ -3,7 +3,7 @@ package de.maxhenkel.car.blocks.tileentity.render;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
-import de.maxhenkel.car.Main;
+import de.maxhenkel.car.CarMod;
 import de.maxhenkel.car.blocks.tileentity.TileEntityTank;
 import de.maxhenkel.corelib.client.RenderUtils;
 import net.minecraft.client.Minecraft;
@@ -21,7 +21,7 @@ import net.neoforged.neoforge.fluids.FluidStack;
 
 public class TileEntitySpecialRendererTank implements BlockEntityRenderer<TileEntityTank> {
 
-    public static final ResourceLocation LOCATION_TANK = ResourceLocation.fromNamespaceAndPath(Main.MODID, "textures/block/tank_line.png");
+    public static final ResourceLocation LOCATION_TANK = ResourceLocation.fromNamespaceAndPath(CarMod.MODID, "textures/block/tank_line.png");
 
     protected EntityModelSet entityModelSet;
 
