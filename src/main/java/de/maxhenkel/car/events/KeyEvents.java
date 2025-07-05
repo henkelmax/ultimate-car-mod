@@ -1,20 +1,18 @@
 package de.maxhenkel.car.events;
 
 import de.maxhenkel.car.Main;
+import de.maxhenkel.car.MainClient;
 import de.maxhenkel.car.entity.car.base.EntityCarBatteryBase;
 import de.maxhenkel.car.net.MessageCenterCar;
 import de.maxhenkel.car.net.MessageStarting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.client.event.InputEvent;
 import net.minecraft.client.Minecraft;
 import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 
-@OnlyIn(Dist.CLIENT)
 public class KeyEvents {
 
     private boolean wasStartPressed;
@@ -45,9 +43,9 @@ public class KeyEvents {
         EntityCarBatteryBase car = (EntityCarBatteryBase) riding;
 
         if (player.equals(car.getDriver())) {
-            car.updateControls(Main.FORWARD_KEY.isDown(), Main.BACK_KEY.isDown(), Main.LEFT_KEY.isDown(), Main.RIGHT_KEY.isDown(), player);
+            car.updateControls(MainClient.FORWARD_KEY.isDown(), MainClient.BACK_KEY.isDown(), MainClient.LEFT_KEY.isDown(), MainClient.RIGHT_KEY.isDown(), player);
 
-            if (Main.START_KEY.isDown()) {
+            if (MainClient.START_KEY.isDown()) {
                 if (!wasStartPressed) {
                     ClientPacketDistributor.sendToServer(new MessageStarting(true, false, player));
                     wasStartPressed = true;
@@ -59,7 +57,7 @@ public class KeyEvents {
                 wasStartPressed = false;
             }
 
-            if (Main.HORN_KEY.isDown()) {
+            if (MainClient.HORN_KEY.isDown()) {
                 if (!wasHornPressed) {
                     car.onHornPressed(player);
                     wasHornPressed = true;
@@ -68,7 +66,7 @@ public class KeyEvents {
                 wasHornPressed = false;
             }
 
-            if (Main.CENTER_KEY.isDown()) {
+            if (MainClient.CENTER_KEY.isDown()) {
                 if (!wasCenterPressed) {
                     ClientPacketDistributor.sendToServer(new MessageCenterCar(player));
                     player.displayClientMessage(Component.translatable("message.center_car"), true);
@@ -79,7 +77,7 @@ public class KeyEvents {
             }
         }
 
-        if (Main.CAR_GUI_KEY.isDown()) {
+        if (MainClient.CAR_GUI_KEY.isDown()) {
             if (!wasGuiPressed) {
                 car.openCarGUI(player);
                 wasGuiPressed = true;

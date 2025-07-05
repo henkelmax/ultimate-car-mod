@@ -2,6 +2,8 @@ package de.maxhenkel.car.integration.jei;
 
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.blocks.ModBlocks;
+import de.maxhenkel.car.blocks.tileentity.TileEntityCarWorkshop;
+import de.maxhenkel.car.entity.car.base.EntityGenericCar;
 import de.maxhenkel.tools.EntityTools;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
@@ -13,13 +15,19 @@ import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+
+import javax.annotation.Nullable;
 
 public class CarRecipeCategory implements IRecipeCategory<CarRecipe> {
 
+    @Nullable
+    private EntityGenericCar car;
     private IGuiHelper helper;
 
     private static final int RECIPE_WIDTH = 175;
@@ -70,6 +78,18 @@ public class CarRecipeCategory implements IRecipeCategory<CarRecipe> {
 
     @Override
     public void draw(CarRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
-        renderer.render(guiGraphics, recipe.getCar(), RECIPE_WIDTH - 30, RECIPE_HEIGHT - 54 / 4, 18);
+        renderer.render(guiGraphics, getCar(recipe), RECIPE_WIDTH - 30, RECIPE_HEIGHT - 54 / 4, 18);
     }
+
+    public EntityGenericCar getCar(CarRecipe recipe) {
+        if (car == null) {
+            car = createCar(Minecraft.getInstance().level, recipe);
+        }
+        return car;
+    }
+
+    private EntityGenericCar createCar(Level world, CarRecipe recipe) {
+        return TileEntityCarWorkshop.createCar(world, recipe.getInputs());
+    }
+
 }

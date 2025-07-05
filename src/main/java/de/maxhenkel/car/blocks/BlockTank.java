@@ -21,8 +21,6 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.BlockHitResult;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.fluids.FluidActionResult;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.FluidUtil;
@@ -113,7 +111,6 @@ public class BlockTank extends BlockBase implements EntityBlock {
         return true;
     }
 
-    @OnlyIn(Dist.CLIENT)
     @Override
     public float getShadeBrightness(BlockState state, BlockGetter reader, BlockPos pos) {
         return 1F;

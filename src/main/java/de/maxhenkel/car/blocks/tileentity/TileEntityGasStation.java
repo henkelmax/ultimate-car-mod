@@ -6,8 +6,7 @@ import de.maxhenkel.car.blocks.BlockGasStationTop;
 import de.maxhenkel.car.blocks.BlockOrientableHorizontal;
 import de.maxhenkel.car.blocks.ModBlocks;
 import de.maxhenkel.car.net.MessageStartFuel;
-import de.maxhenkel.car.sounds.ModSounds;
-import de.maxhenkel.car.sounds.SoundLoopTileentity;
+import de.maxhenkel.car.sounds.ModClientSounds;
 import de.maxhenkel.car.sounds.SoundLoopTileentity.ISoundLoopable;
 import de.maxhenkel.corelib.CachedValue;
 import de.maxhenkel.corelib.blockentity.ITickableBlockEntity;
@@ -16,7 +15,6 @@ import net.minecraft.Util;
 import net.minecraft.core.*;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.Entity;
@@ -29,8 +27,6 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 import net.neoforged.neoforge.fluids.FluidStack;
@@ -349,7 +345,7 @@ public class TileEntityGasStation extends TileEntityBase implements ITickableBlo
 
         if (isFueling && !this.isFueling) {
             if (level.isClientSide) {
-                playSound();
+                ModClientSounds.playGasStationSound(this);
             }
         }
         this.isFueling = isFueling;
@@ -431,11 +427,6 @@ public class TileEntityGasStation extends TileEntityBase implements ITickableBlo
         }
 
         return canEntityBeFueled();
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    public void playSound() {
-        ModSounds.playSoundLoop(new SoundLoopTileentity(ModSounds.GAS_STATION.get(), SoundSource.BLOCKS, this), level);
     }
 
     @Override

@@ -2,7 +2,6 @@ package de.maxhenkel.car.entity.car.base;
 
 import de.maxhenkel.car.Main;
 import de.maxhenkel.car.sounds.ModSounds;
-import de.maxhenkel.car.sounds.SoundLoopStarting;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -14,17 +13,12 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 
 public abstract class EntityCarBatteryBase extends EntityCarTemperatureBase {
 
     private static final EntityDataAccessor<Integer> BATTERY_LEVEL = SynchedEntityData.defineId(EntityCarBatteryBase.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> STARTING_TIME = SynchedEntityData.defineId(EntityCarBatteryBase.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> STARTING = SynchedEntityData.defineId(EntityCarBatteryBase.class, EntityDataSerializers.BOOLEAN);
-
-    @OnlyIn(Dist.CLIENT)
-    private SoundLoopStarting startingLoop;
 
     //Server side
     private boolean carStopped;
@@ -292,14 +286,6 @@ public abstract class EntityCarBatteryBase extends EntityCarTemperatureBase {
     }
 
     @Override
-    public void updateSounds() {
-        if (!isStarted() && isStarting()) {
-            checkStartingLoop();
-        }
-        super.updateSounds();
-    }
-
-    @Override
     public void readAdditionalSaveData(ValueInput valueInput) {
         super.readAdditionalSaveData(valueInput);
         setBatteryLevel(valueInput.getIntOr("battery", 0));
@@ -309,14 +295,6 @@ public abstract class EntityCarBatteryBase extends EntityCarTemperatureBase {
     protected void addAdditionalSaveData(ValueOutput valueOutput) {
         super.addAdditionalSaveData(valueOutput);
         valueOutput.putInt("battery", getBatteryLevel());
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    public void checkStartingLoop() {
-        if (!isSoundPlaying(startingLoop)) {
-            startingLoop = new SoundLoopStarting(this, getStartingSound(), SoundSource.MASTER);
-            ModSounds.playSoundLoop(startingLoop, level());
-        }
     }
 
     @Override

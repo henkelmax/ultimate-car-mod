@@ -12,8 +12,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.FluidUtil;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
@@ -142,7 +140,6 @@ public class TileEntityTank extends TileEntityBase implements IFluidHandler, ITi
 
     private boolean[] sidesFluid = new boolean[Direction.values().length];
 
-    @OnlyIn(Dist.CLIENT)
     private void recalculateSides() {
         for (Direction facing : Direction.values()) {
             sides[facing.get3DDataValue()] = isTankConnectedCalc(facing);
@@ -150,7 +147,6 @@ public class TileEntityTank extends TileEntityBase implements IFluidHandler, ITi
         }
     }
 
-    @OnlyIn(Dist.CLIENT)
     private boolean isFluidConnectedCalc(Direction facing) {
         BlockEntity te = level.getBlockEntity(worldPosition.relative(facing));
         if (te instanceof TileEntityTank) {
@@ -181,8 +177,6 @@ public class TileEntityTank extends TileEntityBase implements IFluidHandler, ITi
         return false;
     }
 
-
-    @OnlyIn(Dist.CLIENT)
     private boolean isTankConnectedCalc(Direction facing) {
         BlockEntity te = level.getBlockEntity(worldPosition.relative(facing));
         if (te instanceof TileEntityTank) {
@@ -200,17 +194,14 @@ public class TileEntityTank extends TileEntityBase implements IFluidHandler, ITi
         return false;
     }
 
-    @OnlyIn(Dist.CLIENT)
     private void updateClientSide() {
         recalculateSides();
     }
 
-    @OnlyIn(Dist.CLIENT)
     public boolean isTankConnectedTo(Direction facing) {
         return sides[facing.get3DDataValue()];
     }
 
-    @OnlyIn(Dist.CLIENT)
     public boolean isFluidConnected(Direction facing) {
         return sidesFluid[facing.get3DDataValue()];
     }

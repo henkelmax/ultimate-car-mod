@@ -4,18 +4,12 @@ import com.google.common.collect.ImmutableSet;
 import com.mojang.serialization.Codec;
 import de.maxhenkel.car.blocks.ModBlocks;
 import de.maxhenkel.car.blocks.tileentity.*;
-import de.maxhenkel.car.blocks.tileentity.render.TileEntitySpecialRendererSign;
-import de.maxhenkel.car.blocks.tileentity.render.TileEntitySpecialRendererSplitTank;
-import de.maxhenkel.car.blocks.tileentity.render.TileEntitySpecialRendererTank;
-import de.maxhenkel.car.blocks.tileentity.render.TileentitySpecialRendererGasStation;
-import de.maxhenkel.car.blocks.tileentity.render.item.TankSpecialRenderer;
 import de.maxhenkel.car.commands.CommandCarDemo;
 import de.maxhenkel.car.config.ClientConfig;
 import de.maxhenkel.car.config.FuelConfig;
 import de.maxhenkel.car.config.ServerConfig;
 import de.maxhenkel.car.entity.car.base.EntityGenericCar;
 import de.maxhenkel.car.entity.car.base.EntityVehicleBase;
-import de.maxhenkel.car.entity.model.GenericCarModel;
 import de.maxhenkel.car.events.*;
 import de.maxhenkel.car.fluids.ModFluids;
 import de.maxhenkel.car.gui.*;
@@ -29,16 +23,10 @@ import de.maxhenkel.car.recipes.*;
 import de.maxhenkel.car.sounds.ModSounds;
 import de.maxhenkel.car.villagers.VillagerEvents;
 import de.maxhenkel.corelib.CommonRegistry;
-import de.maxhenkel.corelib.client.obj.OBJModel;
 import de.maxhenkel.corelib.config.DynamicConfig;
 import de.maxhenkel.corelib.dataserializers.DataSerializerItemList;
 import de.maxhenkel.tools.EntityTools;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.KeyMapping;
-import net.minecraft.client.renderer.ItemBlockRenderTypes;
-import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
-import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
-import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.UUIDUtil;
 import net.minecraft.core.component.DataComponentType;
@@ -62,20 +50,13 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.block.ComposterBlock;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.storage.loot.functions.LootItemFunctionType;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
-import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
-import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
-import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
-import net.neoforged.neoforge.client.event.RegisterSpecialModelRendererEvent;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.extensions.IMenuTypeExtension;
@@ -94,7 +75,6 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.lwjgl.glfw.GLFW;
 
 import java.util.UUID;
 
@@ -165,14 +145,6 @@ public class Main {
         FUEL_CONFIG = CommonRegistry.registerDynamicConfig(DynamicConfig.DynamicConfigType.SERVER, Main.MODID, "fuel", FuelConfig.class);
         CLIENT_CONFIG = CommonRegistry.registerConfig(MODID, ModConfig.Type.CLIENT, ClientConfig.class);
 
-        if (FMLEnvironment.dist.isClient()) {
-            OBJModel.registerRenderPipeline(eventBus);
-            eventBus.addListener(Main.this::clientSetup);
-            eventBus.addListener(Main.this::onRegisterKeyBinds);
-            eventBus.addListener(Main.this::onRegisterScreens);
-            eventBus.addListener(Main.this::registerItemModels);
-        }
-
         ModFluids.init(eventBus);
         ModBlocks.init(eventBus);
         ModItems.init(eventBus);
@@ -226,42 +198,6 @@ public class Main {
         CommonRegistry.registerMessage(registrar, MessageEditLicensePlate.class);
     }
 
-    public static KeyMapping FORWARD_KEY;
-    public static KeyMapping BACK_KEY;
-    public static KeyMapping LEFT_KEY;
-    public static KeyMapping RIGHT_KEY;
-
-    public static KeyMapping CAR_GUI_KEY;
-    public static KeyMapping START_KEY;
-    public static KeyMapping HORN_KEY;
-    public static KeyMapping CENTER_KEY;
-
-    @OnlyIn(Dist.CLIENT)
-    public void clientSetup(FMLClientSetupEvent event) {
-        BlockEntityRenderers.register(GAS_STATION_TILE_ENTITY_TYPE.get(), TileentitySpecialRendererGasStation::new);
-        BlockEntityRenderers.register(SPLIT_TANK_TILE_ENTITY_TYPE.get(), TileEntitySpecialRendererSplitTank::new);
-        BlockEntityRenderers.register(TANK_TILE_ENTITY_TYPE.get(), c -> new TileEntitySpecialRendererTank(c.getModelSet()));
-        BlockEntityRenderers.register(SIGN_TILE_ENTITY_TYPE.get(), TileEntitySpecialRendererSign::new);
-
-        NeoForge.EVENT_BUS.register(new RenderEvents());
-        NeoForge.EVENT_BUS.register(new SoundEvents());
-        NeoForge.EVENT_BUS.register(new KeyEvents());
-        NeoForge.EVENT_BUS.register(new PlayerEvents());
-
-        EntityRenderers.register(CAR_ENTITY_TYPE.get(), GenericCarModel::new);
-
-        ItemBlockRenderTypes.setRenderLayer(ModFluids.CANOLA_OIL.get(), ChunkSectionLayer.TRANSLUCENT);
-        ItemBlockRenderTypes.setRenderLayer(ModFluids.CANOLA_OIL_FLOWING.get(), ChunkSectionLayer.TRANSLUCENT);
-        ItemBlockRenderTypes.setRenderLayer(ModFluids.METHANOL.get(), ChunkSectionLayer.TRANSLUCENT);
-        ItemBlockRenderTypes.setRenderLayer(ModFluids.METHANOL_FLOWING.get(), ChunkSectionLayer.TRANSLUCENT);
-        ItemBlockRenderTypes.setRenderLayer(ModFluids.CANOLA_METHANOL_MIX.get(), ChunkSectionLayer.TRANSLUCENT);
-        ItemBlockRenderTypes.setRenderLayer(ModFluids.CANOLA_METHANOL_MIX_FLOWING.get(), ChunkSectionLayer.TRANSLUCENT);
-        ItemBlockRenderTypes.setRenderLayer(ModFluids.GLYCERIN.get(), ChunkSectionLayer.TRANSLUCENT);
-        ItemBlockRenderTypes.setRenderLayer(ModFluids.GLYCERIN_FLOWING.get(), ChunkSectionLayer.TRANSLUCENT);
-        ItemBlockRenderTypes.setRenderLayer(ModFluids.BIO_DIESEL.get(), ChunkSectionLayer.TRANSLUCENT);
-        ItemBlockRenderTypes.setRenderLayer(ModFluids.BIO_DIESEL_FLOWING.get(), ChunkSectionLayer.TRANSLUCENT);
-    }
-
     @SubscribeEvent
     public void onItemTooltip(ItemTooltipEvent event) {
         SimpleFluidContent fluid = event.getItemStack().get(FLUID_STACK_DATA_COMPONENT);
@@ -272,46 +208,6 @@ public class Main {
             event.getToolTip().add(1, Component.translatable("tooltip.fluid", Component.literal(fluidStack.getHoverName().getString()).withStyle(ChatFormatting.DARK_GRAY)).withStyle(ChatFormatting.GRAY));
             event.getToolTip().add(2, Component.translatable("tooltip.amount", Component.literal(String.valueOf(fluidStack.getAmount())).withStyle(ChatFormatting.DARK_GRAY)).withStyle(ChatFormatting.GRAY));
         }
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    public void onRegisterScreens(RegisterMenuScreensEvent containers) {
-        containers.<ContainerBackmixReactor, GuiBackmixReactor>register(Main.BACKMIX_REACTOR_CONTAINER_TYPE.get(), GuiBackmixReactor::new);
-        containers.<ContainerBlastFurnace, GuiBlastFurnace>register(Main.BLAST_FURNACE_CONTAINER_TYPE.get(), GuiBlastFurnace::new);
-        containers.<ContainerCar, GuiCar>register(Main.CAR_CONTAINER_TYPE.get(), GuiCar::new);
-        containers.<ContainerCarInventory, GuiCarInventory>register(Main.CAR_INVENTORY_CONTAINER_TYPE.get(), GuiCarInventory::new);
-        containers.<ContainerCarWorkshopCrafting, GuiCarWorkshopCrafting>register(Main.CAR_WORKSHOP_CRAFTING_CONTAINER_TYPE.get(), GuiCarWorkshopCrafting::new);
-        containers.<ContainerCarWorkshopRepair, GuiCarWorkshopRepair>register(Main.CAR_WORKSHOP_REPAIR_CONTAINER_TYPE.get(), GuiCarWorkshopRepair::new);
-        containers.<ContainerFluidExtractor, GuiFluidExtractor>register(Main.FLUID_EXTRACTOR_CONTAINER_TYPE.get(), GuiFluidExtractor::new);
-        containers.<ContainerGasStation, GuiGasStation>register(Main.GAS_STATION_CONTAINER_TYPE.get(), GuiGasStation::new);
-        containers.<ContainerGasStationAdmin, GuiGasStationAdmin>register(Main.GAS_STATION_ADMIN_CONTAINER_TYPE.get(), GuiGasStationAdmin::new);
-        containers.<ContainerGenerator, GuiGenerator>register(Main.GENERATOR_CONTAINER_TYPE.get(), GuiGenerator::new);
-        containers.<ContainerLicensePlate, GuiLicensePlate>register(Main.LICENSE_PLATE_CONTAINER_TYPE.get(), GuiLicensePlate::new);
-        containers.<ContainerOilMill, GuiOilMill>register(Main.OIL_MILL_CONTAINER_TYPE.get(), GuiOilMill::new);
-        containers.<ContainerPainter, GuiPainter>register(Main.PAINTER_CONTAINER_TYPE.get(), GuiPainter::new);
-        containers.<ContainerSign, GuiSign>register(Main.SIGN_CONTAINER_TYPE.get(), GuiSign::new);
-        containers.<ContainerSplitTank, GuiSplitTank>register(Main.SPLIT_TANK_CONTAINER_TYPE.get(), GuiSplitTank::new);
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    public void onRegisterKeyBinds(RegisterKeyMappingsEvent event) {
-        FORWARD_KEY = new KeyMapping("key.car_forward", GLFW.GLFW_KEY_W, "category.car");
-        BACK_KEY = new KeyMapping("key.car_back", GLFW.GLFW_KEY_S, "category.car");
-        LEFT_KEY = new KeyMapping("key.car_left", GLFW.GLFW_KEY_A, "category.car");
-        RIGHT_KEY = new KeyMapping("key.car_right", GLFW.GLFW_KEY_D, "category.car");
-        CAR_GUI_KEY = new KeyMapping("key.car_gui", GLFW.GLFW_KEY_I, "category.car");
-        START_KEY = new KeyMapping("key.car_start", GLFW.GLFW_KEY_R, "category.car");
-        HORN_KEY = new KeyMapping("key.car_horn", GLFW.GLFW_KEY_H, "category.car");
-        CENTER_KEY = new KeyMapping("key.center_car", GLFW.GLFW_KEY_SPACE, "category.car");
-
-        event.register(FORWARD_KEY);
-        event.register(BACK_KEY);
-        event.register(LEFT_KEY);
-        event.register(RIGHT_KEY);
-        event.register(CAR_GUI_KEY);
-        event.register(START_KEY);
-        event.register(HORN_KEY);
-        event.register(CENTER_KEY);
     }
 
     private static final DeferredRegister<MenuType<?>> MENU_TYPE_REGISTER = DeferredRegister.create(BuiltInRegistries.MENU, Main.MODID);
@@ -432,11 +328,6 @@ public class Main {
         event.registerFluidType(ModFluids.METHANOL_TYPE.get().getExtensions(), ModFluids.METHANOL_TYPE.get());
         event.registerFluidType(ModFluids.GLYCERIN_TYPE.get().getExtensions(), ModFluids.GLYCERIN_TYPE.get());
         event.registerFluidType(ModFluids.CANOLA_METHANOL_MIX_TYPE.get().getExtensions(), ModFluids.CANOLA_METHANOL_MIX_TYPE.get());
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    public void registerItemModels(RegisterSpecialModelRendererEvent event) {
-        event.register(ResourceLocation.fromNamespaceAndPath(MODID, "tank"), TankSpecialRenderer.Unbaked.MAP_CODEC);
     }
 
     public void onRegisterCapabilities(RegisterCapabilitiesEvent event) {

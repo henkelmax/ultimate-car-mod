@@ -10,8 +10,6 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -100,13 +98,6 @@ public class ModSounds {
                 event.equals(CAR_LOCK.get()) ||
                 event.equals(CAR_UNLOCK.get());
 
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    public static void playSoundLoop(AbstractTickableSoundInstance loop, Level world) {
-        if (world.isClientSide) {
-            Minecraft.getInstance().getSoundManager().play(loop);
-        }
     }
 
 }

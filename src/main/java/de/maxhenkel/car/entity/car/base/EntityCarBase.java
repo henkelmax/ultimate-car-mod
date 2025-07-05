@@ -6,13 +6,8 @@ import de.maxhenkel.car.net.MessageCarGui;
 import de.maxhenkel.car.net.MessageCarHorn;
 import de.maxhenkel.car.net.MessageControlCar;
 import de.maxhenkel.car.net.MessageCrash;
-import de.maxhenkel.car.sounds.ModSounds;
-import de.maxhenkel.car.sounds.SoundLoopHigh;
-import de.maxhenkel.car.sounds.SoundLoopIdle;
-import de.maxhenkel.car.sounds.SoundLoopStart;
+import de.maxhenkel.car.sounds.*;
 import de.maxhenkel.corelib.math.MathUtils;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
@@ -40,8 +35,6 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 
 import java.util.List;
@@ -53,15 +46,9 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 
     private float wheelRotation;
 
-    @OnlyIn(Dist.CLIENT)
     private boolean collidedLastTick;
 
-    @OnlyIn(Dist.CLIENT)
-    private SoundLoopStart startLoop;
-    @OnlyIn(Dist.CLIENT)
-    private SoundLoopIdle idleLoop;
-    @OnlyIn(Dist.CLIENT)
-    private SoundLoopHigh highLoop;
+    protected CarClientSoundController soundController;
 
     private static final EntityDataAccessor<Float> SPEED = SynchedEntityData.defineId(EntityCarBase.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Boolean> STARTED = SynchedEntityData.defineId(EntityCarBase.class, EntityDataSerializers.BOOLEAN);
@@ -70,8 +57,11 @@ public abstract class EntityCarBase extends EntityVehicleBase {
     private static final EntityDataAccessor<Boolean> LEFT = SynchedEntityData.defineId(EntityCarBase.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> RIGHT = SynchedEntityData.defineId(EntityCarBase.class, EntityDataSerializers.BOOLEAN);
 
-    public EntityCarBase(EntityType type, Level worldIn) {
-        super(type, worldIn);
+    public EntityCarBase(EntityType type, Level level) {
+        super(type, level);
+        if (level.isClientSide) {
+            soundController = new CarClientSoundController(this);
+        }
     }
 
     @Override
@@ -115,7 +105,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
         move(MoverType.SELF, getDeltaMovement());
 
         if (level().isClientSide) {
-            updateSounds();
+            soundController.updateSounds();
         }
 
         updateWheelRotation();
@@ -175,39 +165,6 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 
     public boolean canEngineStayOn() {
         return !isInWater() && !isInLava();
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    private boolean startedLast;
-
-    @OnlyIn(Dist.CLIENT)
-    public void updateSounds() {
-        if (getSpeed() == 0 && isStarted()) {
-
-            if (!startedLast) {
-                checkStartLoop();
-            } else if (!isSoundPlaying(startLoop)) {
-                if (startLoop != null) {
-                    startLoop.setDonePlaying();
-                    startLoop = null;
-                }
-
-                checkIdleLoop();
-            }
-        }
-        if (getSpeed() != 0 && isStarted()) {
-            checkHighLoop();
-        }
-
-        startedLast = isStarted();
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    public boolean isSoundPlaying(SoundInstance sound) {
-        if (sound == null) {
-            return false;
-        }
-        return Minecraft.getInstance().getSoundManager().isActive(sound);
     }
 
     public void destroyCar(Player player, boolean dropParts) {
@@ -530,30 +487,6 @@ public abstract class EntityCarBase extends EntityVehicleBase {
     public abstract SoundEvent getHighSound();
 
     public abstract SoundEvent getHornSound();
-
-    @OnlyIn(Dist.CLIENT)
-    public void checkIdleLoop() {
-        if (!isSoundPlaying(idleLoop)) {
-            idleLoop = new SoundLoopIdle(this, getIdleSound(), SoundSource.MASTER);
-            ModSounds.playSoundLoop(idleLoop, level());
-        }
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    public void checkHighLoop() {
-        if (!isSoundPlaying(highLoop)) {
-            highLoop = new SoundLoopHigh(this, getHighSound(), SoundSource.MASTER);
-            ModSounds.playSoundLoop(highLoop, level());
-        }
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    public void checkStartLoop() {
-        if (!isSoundPlaying(startLoop)) {
-            startLoop = new SoundLoopStart(this, getStartSound(), SoundSource.MASTER);
-            ModSounds.playSoundLoop(startLoop, level());
-        }
-    }
 
     public void onHornPressed(Player player) {
         if (level().isClientSide) {
