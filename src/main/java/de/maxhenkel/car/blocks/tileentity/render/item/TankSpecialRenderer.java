@@ -37,7 +37,7 @@ public class TankSpecialRenderer implements SpecialModelRenderer<TileEntityTank>
     }
 
     @Override
-    public void submit(@Nullable TileEntityTank tank, ItemDisplayContext context, PoseStack stack, SubmitNodeCollector collector, int light, int overlay, boolean b) {
+    public void submit(@Nullable TileEntityTank tank, ItemDisplayContext context, PoseStack stack, SubmitNodeCollector collector, int light, int overlay, boolean b, int i) {
         if (tank == null) {
             return;
         }
