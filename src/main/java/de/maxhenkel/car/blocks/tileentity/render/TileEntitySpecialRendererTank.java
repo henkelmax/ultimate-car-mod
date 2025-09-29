@@ -75,8 +75,6 @@ public class TileEntitySpecialRendererTank implements BlockEntityRenderer<TileEn
     }
 
     public void renderFluid(PoseStack stack, TankRenderState state, SubmitNodeCollector collector) {
-        stack.pushPose();
-
         boolean[] connections = state.fluidConnections;
         TextureAtlasSprite texture = state.texture;
         int tint = state.tint;
@@ -145,8 +143,6 @@ public class TileEntitySpecialRendererTank implements BlockEntityRenderer<TileEn
                 RenderUtils.vertex(vertexConsumer, pose, 1F - s, yStart + amount - s * 2F, 1F - s, uMin, vMin, red, green, blue, light, overlay);
                 RenderUtils.vertex(vertexConsumer, pose, 1F - s, yStart + amount - s * 2F, 0F + s, uMax, vMin, red, green, blue, light, overlay);
             }
-
-            stack.popPose();
         });
     }
 
