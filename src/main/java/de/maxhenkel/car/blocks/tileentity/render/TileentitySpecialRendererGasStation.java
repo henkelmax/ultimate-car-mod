@@ -77,8 +77,9 @@ public class TileentitySpecialRendererGasStation implements BlockEntityRenderer<
         stack.popPose();
 
         if (state.hitbox != null) {
+            AABB hitbox = state.hitbox;
             collector.submitCustomGeometry(stack, RenderType.lines(), (pose, vertexConsumer) -> {
-                ShapeRenderer.renderLineBox(pose, vertexConsumer, state.hitbox, 0F, 0F, 1F, 1F);
+                ShapeRenderer.renderLineBox(pose, vertexConsumer, hitbox, 0F, 0F, 1F, 1F);
             });
         }
     }

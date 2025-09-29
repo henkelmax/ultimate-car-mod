@@ -153,7 +153,7 @@ public class TileEntitySpecialRendererTank implements BlockEntityRenderer<TileEn
     public static void renderLines(PoseStack stack, TankRenderState state, SubmitNodeCollector collector) {
         boolean[] connections = state.connections;
         int light = state.lightCoords;
-        int overlay = state.breakProgress == null ? OverlayTexture.NO_OVERLAY : state.breakProgress.progress();
+        int overlay = OverlayTexture.NO_OVERLAY;
         collector.submitCustomGeometry(stack, RenderType.entityCutout(LOCATION_TANK), (pose, vertexConsumer) -> {
             for (Direction facing : Direction.values()) {
                 if (!connections[facing.ordinal()]) {

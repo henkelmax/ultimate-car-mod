@@ -5,13 +5,14 @@ import de.maxhenkel.car.blocks.tileentity.TileEntitySplitTank;
 import de.maxhenkel.car.fluids.ModFluids;
 import de.maxhenkel.corelib.client.RenderUtils;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.Sheets;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
 import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.data.AtlasIds;
 import net.minecraft.world.phys.Vec3;
@@ -64,7 +65,7 @@ public class TileEntitySpecialRendererSplitTank implements BlockEntityRenderer<T
         IClientFluidTypeExtensions type = IClientFluidTypeExtensions.of(fluid.getFluid());
         TextureAtlasSprite texture = Minecraft.getInstance().getAtlasManager().getAtlasOrThrow(AtlasIds.BLOCKS).getSprite(type.getStillTexture(fluid));
 
-        collector.submitCustomGeometry(stack, Sheets.translucentItemSheet(), (pose, vertexConsumer) -> {
+        collector.submitCustomGeometry(stack, RenderType.entityTranslucent(TextureAtlas.LOCATION_BLOCKS), (pose, vertexConsumer) -> {
             float uMin = texture.getU0();
             float uMax = texture.getU1();
             float vMin = texture.getV0();
