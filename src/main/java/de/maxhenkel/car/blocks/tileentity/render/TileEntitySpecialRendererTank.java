@@ -1,7 +1,6 @@
 package de.maxhenkel.car.blocks.tileentity.render;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import de.maxhenkel.car.CarMod;
 import de.maxhenkel.car.blocks.tileentity.TileEntityTank;
@@ -44,7 +43,8 @@ public class TileEntitySpecialRendererTank implements BlockEntityRenderer<TileEn
         state.amount = tank.getFillPercent();
         state.fluid = tank.getFluid();
         for (Direction direction : Direction.values()) {
-            state.connections[direction.ordinal()] = tank.isFluidConnected(direction);
+            state.fluidConnections[direction.get3DDataValue()] = tank.isFluidConnected(direction);
+            state.tankConnections[direction.get3DDataValue()] = tank.isTankConnectedTo(direction);
         }
 
         if (!state.fluid.isEmpty()) {
@@ -77,7 +77,7 @@ public class TileEntitySpecialRendererTank implements BlockEntityRenderer<TileEn
     public void renderFluid(PoseStack stack, TankRenderState state, SubmitNodeCollector collector) {
         stack.pushPose();
 
-        boolean[] connections = state.connections;
+        boolean[] connections = state.fluidConnections;
         TextureAtlasSprite texture = state.texture;
         int tint = state.tint;
         float amount = state.amount;
@@ -98,7 +98,7 @@ public class TileEntitySpecialRendererTank implements BlockEntityRenderer<TileEn
 
             float s = 0F;
 
-            if (!connections[Direction.NORTH.ordinal()]) {
+            if (!connections[Direction.NORTH.get3DDataValue()]) {
                 // North
                 RenderUtils.vertex(vertexConsumer, pose, 1F - s, yStart, 0F + s, uMax, vMin, red, green, blue, light, overlay);
                 RenderUtils.vertex(vertexConsumer, pose, 0F - s, yStart, 0F + s, uMin, vMin, red, green, blue, light, overlay);
@@ -106,7 +106,7 @@ public class TileEntitySpecialRendererTank implements BlockEntityRenderer<TileEn
                 RenderUtils.vertex(vertexConsumer, pose, 1F - s, yStart + amount - s * 2F, 0F + s, uMax, vMin + vHeight * amount, red, green, blue, light, overlay);
             }
 
-            if (!connections[Direction.SOUTH.ordinal()]) {
+            if (!connections[Direction.SOUTH.get3DDataValue()]) {
                 // South
                 RenderUtils.vertex(vertexConsumer, pose, 1F - s, yStart, 1F - s, uMin, vMin, red, green, blue, light, overlay);
                 RenderUtils.vertex(vertexConsumer, pose, 1F - s, yStart + amount - s * 2F, 1F - s, uMin, vMin + vHeight * amount, red, green, blue, light, overlay);
@@ -114,7 +114,7 @@ public class TileEntitySpecialRendererTank implements BlockEntityRenderer<TileEn
                 RenderUtils.vertex(vertexConsumer, pose, 0F + s, yStart, 1F - s, uMax, vMin, red, green, blue, light, overlay);
             }
 
-            if (!connections[Direction.EAST.ordinal()]) {
+            if (!connections[Direction.EAST.get3DDataValue()]) {
                 // East
                 RenderUtils.vertex(vertexConsumer, pose, 1F - s, yStart, 0F + s, uMin, vMin, red, green, blue, light, overlay);
                 RenderUtils.vertex(vertexConsumer, pose, 1F - s, yStart + amount - s * 2F, 0F + s, uMin, vMin + vHeight * amount, red, green, blue, light, overlay);
@@ -122,7 +122,7 @@ public class TileEntitySpecialRendererTank implements BlockEntityRenderer<TileEn
                 RenderUtils.vertex(vertexConsumer, pose, 1F - s, yStart, 1F - s, uMax, vMin, red, green, blue, light, overlay);
             }
 
-            if (!connections[Direction.WEST.ordinal()]) {
+            if (!connections[Direction.WEST.get3DDataValue()]) {
                 // West
                 RenderUtils.vertex(vertexConsumer, pose, 0F + s, yStart, 1F - s, uMin, vMin, red, green, blue, light, overlay);
                 RenderUtils.vertex(vertexConsumer, pose, 0F + s, yStart + amount - s * 2F, 1F - s, uMin, vMin + vHeight * amount, red, green, blue, light, overlay);
@@ -130,7 +130,7 @@ public class TileEntitySpecialRendererTank implements BlockEntityRenderer<TileEn
                 RenderUtils.vertex(vertexConsumer, pose, 0F + s, yStart, 0F + s, uMax, vMin, red, green, blue, light, overlay);
             }
 
-            if (!connections[Direction.DOWN.ordinal()]) {
+            if (!connections[Direction.DOWN.get3DDataValue()]) {
                 // Down
                 RenderUtils.vertex(vertexConsumer, pose, 1F - s, yStart, 0F + s, uMax, vMin, red, green, blue, light, overlay);
                 RenderUtils.vertex(vertexConsumer, pose, 1F - s, yStart, 1F - s, uMin, vMin, red, green, blue, light, overlay);
@@ -138,7 +138,7 @@ public class TileEntitySpecialRendererTank implements BlockEntityRenderer<TileEn
                 RenderUtils.vertex(vertexConsumer, pose, 0F + s, yStart, 0F + s, uMax, vMax, red, green, blue, light, overlay);
             }
 
-            if (!connections[Direction.UP.ordinal()]) {
+            if (!connections[Direction.UP.get3DDataValue()]) {
                 // Up
                 RenderUtils.vertex(vertexConsumer, pose, 0F + s, yStart + amount - s * 2F, 0F + s, uMax, vMax, red, green, blue, light, overlay);
                 RenderUtils.vertex(vertexConsumer, pose, 0F + s, yStart + amount - s * 2F, 1F - s, uMin, vMax, red, green, blue, light, overlay);
@@ -151,31 +151,23 @@ public class TileEntitySpecialRendererTank implements BlockEntityRenderer<TileEn
     }
 
     public static void renderLines(PoseStack stack, TankRenderState state, SubmitNodeCollector collector) {
-        boolean[] connections = state.connections;
-        int light = state.lightCoords;
-        int overlay = OverlayTexture.NO_OVERLAY;
-        collector.submitCustomGeometry(stack, RenderType.entityCutout(LOCATION_TANK), (pose, vertexConsumer) -> {
-            for (Direction facing : Direction.values()) {
-                if (!connections[facing.ordinal()]) {
-                    for (EnumDirection direction : EnumDirection.values()) {
-                        if (!connections[direction.to(facing).ordinal()]) {
-                            drawLine(facing, direction, vertexConsumer, stack, pose, light, overlay);
-                        }
+        boolean[] connections = state.tankConnections;
+        for (Direction facing : Direction.values()) {
+            if (!connections[facing.ordinal()]) {
+                for (EnumDirection direction : EnumDirection.values()) {
+                    if (!connections[direction.to(facing).ordinal()]) {
+                        drawLine(facing, direction, stack, collector, state.lightCoords, OverlayTexture.NO_OVERLAY);
                     }
                 }
             }
-        });
+        }
     }
 
-    public static void drawLine(Direction side, EnumDirection line, VertexConsumer builder, PoseStack stack, PoseStack.Pose pose, int light, int overlay) {
+    public static void drawLine(Direction side, EnumDirection line, PoseStack stack, SubmitNodeCollector collector, int light, int overlay) {
         stack.pushPose();
-
         rotate(side, stack);
-
         stack.translate(-0.00025D, -0.00025D, -0.00025D);
-
-        drawSide(side, line, builder, pose, light, overlay);
-
+        drawSide(line, stack, collector, light, overlay);
         stack.popPose();
     }
 
@@ -207,114 +199,85 @@ public class TileEntitySpecialRendererTank implements BlockEntityRenderer<TileEn
         matrixStack.translate(-0.5D, -0.5D, -0.5D);
     }
 
-    public static void drawSide(Direction side, EnumDirection line, VertexConsumer builder, PoseStack.Pose pose, int light, int overlay) {
-        switch (line) {
-            case UP:
-                // Top
-                RenderUtils.vertex(builder, pose, 0F, 0F, 0F, 1F, 1F, light, overlay);
-                RenderUtils.vertex(builder, pose, 0F, 1F, 0F, 1F, 0F, light, overlay);
-                RenderUtils.vertex(builder, pose, 1F, 1F, 0F, 0F, 0F, light, overlay);
-                RenderUtils.vertex(builder, pose, 1F, 0F, 0F, 0F, 1F, light, overlay);
-                break;
-            case DOWN:
-                // Bottom
-                RenderUtils.vertex(builder, pose, 0F, 0F, 0F, 0F, 0F, light, overlay);
-                RenderUtils.vertex(builder, pose, 0F, 1F, 0F, 0F, 1F, light, overlay);
-                RenderUtils.vertex(builder, pose, 1F, 1F, 0F, 1F, 1F, light, overlay);
-                RenderUtils.vertex(builder, pose, 1F, 0F, 0F, 1F, 0F, light, overlay);
-                break;
-            case RIGHT:
-                // Right
-                RenderUtils.vertex(builder, pose, 0F, 0F, 0F, 1F, 0F, light, overlay);
-                RenderUtils.vertex(builder, pose, 0F, 1F, 0F, 0F, 0F, light, overlay);
-                RenderUtils.vertex(builder, pose, 1F, 1F, 0F, 0F, 1F, light, overlay);
-                RenderUtils.vertex(builder, pose, 1F, 0F, 0F, 1F, 1F, light, overlay);
-                break;
-            case LEFT:
-                // Left
-                RenderUtils.vertex(builder, pose, 0F, 0F, 0F, 0F, 1F, light, overlay);
-                RenderUtils.vertex(builder, pose, 0F, 1F, 0F, 1F, 1F, light, overlay);
-                RenderUtils.vertex(builder, pose, 1F, 1F, 0F, 1F, 0F, light, overlay);
-                RenderUtils.vertex(builder, pose, 1F, 0F, 0F, 0F, 0F, light, overlay);
-                break;
-            default:
-                break;
-        }
+    public static void drawSide(EnumDirection line, PoseStack stack, SubmitNodeCollector collector, int light, int overlay) {
+        collector.submitCustomGeometry(stack, RenderType.entityCutout(LOCATION_TANK), (pose, c) -> {
+            switch (line) {
+                case UP:
+                    // Top
+                    RenderUtils.vertex(c, pose, 0F, 0F, 0F, 1F, 1F, light, overlay);
+                    RenderUtils.vertex(c, pose, 0F, 1F, 0F, 1F, 0F, light, overlay);
+                    RenderUtils.vertex(c, pose, 1F, 1F, 0F, 0F, 0F, light, overlay);
+                    RenderUtils.vertex(c, pose, 1F, 0F, 0F, 0F, 1F, light, overlay);
+                    break;
+                case DOWN:
+                    // Bottom
+                    RenderUtils.vertex(c, pose, 0F, 0F, 0F, 0F, 0F, light, overlay);
+                    RenderUtils.vertex(c, pose, 0F, 1F, 0F, 0F, 1F, light, overlay);
+                    RenderUtils.vertex(c, pose, 1F, 1F, 0F, 1F, 1F, light, overlay);
+                    RenderUtils.vertex(c, pose, 1F, 0F, 0F, 1F, 0F, light, overlay);
+                    break;
+                case RIGHT:
+                    // Right
+                    RenderUtils.vertex(c, pose, 0F, 0F, 0F, 1F, 0F, light, overlay);
+                    RenderUtils.vertex(c, pose, 0F, 1F, 0F, 0F, 0F, light, overlay);
+                    RenderUtils.vertex(c, pose, 1F, 1F, 0F, 0F, 1F, light, overlay);
+                    RenderUtils.vertex(c, pose, 1F, 0F, 0F, 1F, 1F, light, overlay);
+                    break;
+                case LEFT:
+                    // Left
+                    RenderUtils.vertex(c, pose, 0F, 0F, 0F, 0F, 1F, light, overlay);
+                    RenderUtils.vertex(c, pose, 0F, 1F, 0F, 1F, 1F, light, overlay);
+                    RenderUtils.vertex(c, pose, 1F, 1F, 0F, 1F, 0F, light, overlay);
+                    RenderUtils.vertex(c, pose, 1F, 0F, 0F, 0F, 0F, light, overlay);
+                    break;
+                default:
+                    break;
+            }
+        });
     }
 
     public enum EnumDirection {
         UP, DOWN, LEFT, RIGHT;
 
         public Direction to(Direction facing) {
-            switch (facing) {
-                case NORTH:
-                    switch (this) {
-                        case UP:
-                            return Direction.UP;
-                        case DOWN:
-                            return Direction.DOWN;
-                        case LEFT:
-                            return Direction.EAST;
-                        case RIGHT:
-                            return Direction.WEST;
-                    }
-                case SOUTH:
-                    switch (this) {
-                        case UP:
-                            return Direction.UP;
-                        case DOWN:
-                            return Direction.DOWN;
-                        case LEFT:
-                            return Direction.WEST;
-                        case RIGHT:
-                            return Direction.EAST;
-                    }
-                case EAST:
-                    switch (this) {
-                        case UP:
-                            return Direction.UP;
-                        case DOWN:
-                            return Direction.DOWN;
-                        case LEFT:
-                            return Direction.SOUTH;
-                        case RIGHT:
-                            return Direction.NORTH;
-                    }
-                case WEST:
-                    switch (this) {
-                        case UP:
-                            return Direction.UP;
-                        case DOWN:
-                            return Direction.DOWN;
-                        case LEFT:
-                            return Direction.NORTH;
-                        case RIGHT:
-                            return Direction.SOUTH;
-                    }
-                case UP:
-                    switch (this) {
-                        case UP:
-                            return Direction.NORTH;
-                        case DOWN:
-                            return Direction.SOUTH;
-                        case LEFT:
-                            return Direction.WEST;
-                        case RIGHT:
-                            return Direction.EAST;
-                    }
-                case DOWN:
-                    switch (this) {
-                        case UP:
-                            return Direction.SOUTH;
-                        case DOWN:
-                            return Direction.NORTH;
-                        case LEFT:
-                            return Direction.WEST;
-                        case RIGHT:
-                            return Direction.EAST;
-                    }
-            }
-            return Direction.UP;
+            return switch (facing) {
+                case NORTH -> switch (this) {
+                    case UP -> Direction.UP;
+                    case DOWN -> Direction.DOWN;
+                    case LEFT -> Direction.EAST;
+                    case RIGHT -> Direction.WEST;
+                };
+                case SOUTH -> switch (this) {
+                    case UP -> Direction.UP;
+                    case DOWN -> Direction.DOWN;
+                    case LEFT -> Direction.WEST;
+                    case RIGHT -> Direction.EAST;
+                };
+                case EAST -> switch (this) {
+                    case UP -> Direction.UP;
+                    case DOWN -> Direction.DOWN;
+                    case LEFT -> Direction.SOUTH;
+                    case RIGHT -> Direction.NORTH;
+                };
+                case WEST -> switch (this) {
+                    case UP -> Direction.UP;
+                    case DOWN -> Direction.DOWN;
+                    case LEFT -> Direction.NORTH;
+                    case RIGHT -> Direction.SOUTH;
+                };
+                case UP -> switch (this) {
+                    case UP -> Direction.NORTH;
+                    case DOWN -> Direction.SOUTH;
+                    case LEFT -> Direction.WEST;
+                    case RIGHT -> Direction.EAST;
+                };
+                case DOWN -> switch (this) {
+                    case UP -> Direction.SOUTH;
+                    case DOWN -> Direction.NORTH;
+                    case LEFT -> Direction.WEST;
+                    case RIGHT -> Direction.EAST;
+                };
+            };
         }
     }
 

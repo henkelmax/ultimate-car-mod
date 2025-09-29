@@ -11,13 +11,10 @@ public class TankRenderState extends BlockEntityRenderState {
 
     public float amount;
     public FluidStack fluid;
-    public boolean[] connections = new boolean[Direction.values().length];
+    public boolean[] fluidConnections = new boolean[Direction.values().length];
+    public boolean[] tankConnections = new boolean[Direction.values().length];
     public int tint;
     @Nullable
     public TextureAtlasSprite texture;
-
-    public boolean isTankConnectedTo(Direction direction){
-        return connections[direction.ordinal()];
-    }
 
 }
