@@ -12,7 +12,7 @@ logoFile = "icon.png"
 authors = "Max Henkel"
 description = '''This mod brings cars, road construction and biodiesel production into your Minecraft world'''
 [[mixins]]
-config="car.mixins.json"
+config = "car.mixins.json"
 [[dependencies.car]]
 modId = "neoforge"
 type = "required"
