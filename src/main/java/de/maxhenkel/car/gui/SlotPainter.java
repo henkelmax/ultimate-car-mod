@@ -23,7 +23,7 @@ public class SlotPainter extends Slot {
     @Override
     public boolean mayPickup(Player player) {
         setPainterID(index);
-        if (player.level().isClientSide) {
+        if (player.level().isClientSide()) {
             Minecraft.getInstance().execute(() -> {
                 Minecraft.getInstance().setScreen(null);
             });

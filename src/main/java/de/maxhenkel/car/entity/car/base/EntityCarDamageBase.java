@@ -37,7 +37,7 @@ public abstract class EntityCarDamageBase extends EntityCarBatteryBase {
     }
 
     public void particles() {
-        if (!level().isClientSide) {
+        if (!level().isClientSide()) {
             return;
         }
 
@@ -98,7 +98,7 @@ public abstract class EntityCarDamageBase extends EntityCarBatteryBase {
             return false;
         }
 
-        if (level().isClientSide || !isAlive()) {
+        if (level().isClientSide() || !isAlive()) {
             return false;
         }
 

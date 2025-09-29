@@ -8,11 +8,11 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
+import net.minecraft.client.input.KeyEvent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.neoforged.neoforge.client.network.ClientPacketDistributor;
-import org.lwjgl.glfw.GLFW;
 
 public class GuiSign extends ScreenBase<ContainerSign> {
 
@@ -112,20 +112,20 @@ public class GuiSign extends ScreenBase<ContainerSign> {
     }
 
     @Override
-    public boolean keyPressed(int key, int scanCode, int modifiers) {
-        if (key == GLFW.GLFW_KEY_ESCAPE) {
+    public boolean keyPressed(KeyEvent event) {
+        if (event.isEscape()) {
             minecraft.player.closeContainer();
             return true;
         }
 
-        return text1.keyPressed(key, scanCode, modifiers) ||
+        return text1.keyPressed(event) ||
                 text1.canConsumeInput() ||
-                text2.keyPressed(key, scanCode, modifiers) ||
+                text2.keyPressed(event) ||
                 text2.canConsumeInput() ||
-                text3.keyPressed(key, scanCode, modifiers) ||
+                text3.keyPressed(event) ||
                 text3.canConsumeInput() ||
-                text4.keyPressed(key, scanCode, modifiers) ||
-                text4.canConsumeInput() || super.keyPressed(key, scanCode, modifiers);
+                text4.keyPressed(event) ||
+                text4.canConsumeInput() || super.keyPressed(event);
     }
 
     private void save() {

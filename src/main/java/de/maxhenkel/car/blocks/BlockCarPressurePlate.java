@@ -18,7 +18,7 @@ public class BlockCarPressurePlate extends BasePressurePlateBlock {
     public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 
     protected BlockCarPressurePlate(Properties properties) {
-        super(properties.mapColor(MapColor.COLOR_BLACK).noCollission().strength(0.5F), BlockSetType.STONE);
+        super(properties.mapColor(MapColor.COLOR_BLACK).noCollision().strength(0.5F), BlockSetType.STONE);
         registerDefaultState(stateDefinition.any().setValue(POWERED, false));
     }
 

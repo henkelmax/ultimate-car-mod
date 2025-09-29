@@ -5,11 +5,13 @@ import com.mojang.serialization.MapCodec;
 import de.maxhenkel.car.blocks.BlockTank;
 import de.maxhenkel.car.blocks.ModBlocks;
 import de.maxhenkel.car.blocks.tileentity.TileEntityTank;
+import de.maxhenkel.car.blocks.tileentity.render.TankRenderState;
 import de.maxhenkel.car.blocks.tileentity.render.TileEntitySpecialRendererTank;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.EntityModelSet;
-import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.special.SpecialModelRenderer;
+import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
@@ -25,17 +27,22 @@ public class TankSpecialRenderer implements SpecialModelRenderer<TileEntityTank>
 
     private final TileEntitySpecialRendererTank tankRenderer;
     private TileEntityTank tank;
+    private TankRenderState tankRenderState;
+    private CameraRenderState cameraRenderState;
 
     public TankSpecialRenderer(EntityModelSet modelSet) {
         tankRenderer = new TileEntitySpecialRendererTank(modelSet);
+        tankRenderState = new TankRenderState();
+        cameraRenderState = new CameraRenderState();
     }
 
     @Override
-    public void render(@Nullable TileEntityTank tank, ItemDisplayContext itemDisplayContext, PoseStack stack, MultiBufferSource bufferSource, int light, int overlay, boolean b) {
+    public void submit(@Nullable TileEntityTank tank, ItemDisplayContext context, PoseStack stack, SubmitNodeCollector collector, int light, int overlay, boolean b) {
         if (tank == null) {
             return;
         }
-        tankRenderer.render(tank, 0F, stack, bufferSource, light, overlay, Vec3.ZERO);
+        tankRenderer.extractRenderState(tank, tankRenderState, 0F, Vec3.ZERO, null);
+        tankRenderer.submit(tankRenderState, stack, collector, cameraRenderState);
     }
 
     @Override
@@ -62,14 +69,16 @@ public class TankSpecialRenderer implements SpecialModelRenderer<TileEntityTank>
         }
 
         @Override
+        @Nullable
+        public SpecialModelRenderer<?> bake(BakingContext context) {
+            return new TankSpecialRenderer(context.entityModelSet());
+        }
+
+        @Override
         public MapCodec<Unbaked> type() {
             return MAP_CODEC;
         }
 
-        @Override
-        public SpecialModelRenderer<?> bake(EntityModelSet modelSet) {
-            return new TankSpecialRenderer(modelSet);
-        }
     }
 
 }

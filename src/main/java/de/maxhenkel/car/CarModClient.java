@@ -35,6 +35,8 @@ import org.lwjgl.glfw.GLFW;
 @EventBusSubscriber(modid = CarMod.MODID, value = Dist.CLIENT)
 public class CarModClient {
 
+    public static KeyMapping.Category KEY_CATEGORY_CAR;
+
     public static KeyMapping FORWARD_KEY;
     public static KeyMapping BACK_KEY;
     public static KeyMapping LEFT_KEY;
@@ -53,7 +55,7 @@ public class CarModClient {
     static void onClientSetup(FMLClientSetupEvent event) {
         BlockEntityRenderers.register(CarMod.GAS_STATION_TILE_ENTITY_TYPE.get(), TileentitySpecialRendererGasStation::new);
         BlockEntityRenderers.register(CarMod.SPLIT_TANK_TILE_ENTITY_TYPE.get(), TileEntitySpecialRendererSplitTank::new);
-        BlockEntityRenderers.register(CarMod.TANK_TILE_ENTITY_TYPE.get(), c -> new TileEntitySpecialRendererTank(c.getModelSet()));
+        BlockEntityRenderers.register(CarMod.TANK_TILE_ENTITY_TYPE.get(), c -> new TileEntitySpecialRendererTank(c.entityModelSet()));
         BlockEntityRenderers.register(CarMod.SIGN_TILE_ENTITY_TYPE.get(), TileEntitySpecialRendererSign::new);
 
         NeoForge.EVENT_BUS.register(new RenderEvents());
@@ -77,14 +79,17 @@ public class CarModClient {
 
     @SubscribeEvent
     static void onRegisterKeyBinds(RegisterKeyMappingsEvent event) {
-        FORWARD_KEY = new KeyMapping("key.car_forward", GLFW.GLFW_KEY_W, "category.car");
-        BACK_KEY = new KeyMapping("key.car_back", GLFW.GLFW_KEY_S, "category.car");
-        LEFT_KEY = new KeyMapping("key.car_left", GLFW.GLFW_KEY_A, "category.car");
-        RIGHT_KEY = new KeyMapping("key.car_right", GLFW.GLFW_KEY_D, "category.car");
-        CAR_GUI_KEY = new KeyMapping("key.car_gui", GLFW.GLFW_KEY_I, "category.car");
-        START_KEY = new KeyMapping("key.car_start", GLFW.GLFW_KEY_R, "category.car");
-        HORN_KEY = new KeyMapping("key.car_horn", GLFW.GLFW_KEY_H, "category.car");
-        CENTER_KEY = new KeyMapping("key.center_car", GLFW.GLFW_KEY_SPACE, "category.car");
+        KEY_CATEGORY_CAR = new KeyMapping.Category(ResourceLocation.fromNamespaceAndPath(CarMod.MODID, "car"));
+        event.registerCategory(KEY_CATEGORY_CAR);
+
+        FORWARD_KEY = new KeyMapping("key.car_forward", GLFW.GLFW_KEY_W, KEY_CATEGORY_CAR);
+        BACK_KEY = new KeyMapping("key.car_back", GLFW.GLFW_KEY_S, KEY_CATEGORY_CAR);
+        LEFT_KEY = new KeyMapping("key.car_left", GLFW.GLFW_KEY_A, KEY_CATEGORY_CAR);
+        RIGHT_KEY = new KeyMapping("key.car_right", GLFW.GLFW_KEY_D, KEY_CATEGORY_CAR);
+        CAR_GUI_KEY = new KeyMapping("key.car_gui", GLFW.GLFW_KEY_I, KEY_CATEGORY_CAR);
+        START_KEY = new KeyMapping("key.car_start", GLFW.GLFW_KEY_R, KEY_CATEGORY_CAR);
+        HORN_KEY = new KeyMapping("key.car_horn", GLFW.GLFW_KEY_H, KEY_CATEGORY_CAR);
+        CENTER_KEY = new KeyMapping("key.center_car", GLFW.GLFW_KEY_SPACE, KEY_CATEGORY_CAR);
 
         event.register(FORWARD_KEY);
         event.register(BACK_KEY);

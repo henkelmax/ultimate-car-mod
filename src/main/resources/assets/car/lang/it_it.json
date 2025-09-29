@@ -1,5 +1,5 @@
 {
-    "category.car": "Auto",
+    "key.category.car.car": "Auto",
     "itemGroup.car": "Auto",
     "itemGroup.car_parts": "Parti per Auto",
     "message.parts.too_few_wheels": "Troppe poche ruote",

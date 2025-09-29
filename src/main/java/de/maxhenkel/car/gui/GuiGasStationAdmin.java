@@ -7,11 +7,11 @@ import de.maxhenkel.corelib.inventory.ScreenBase;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.EditBox;
+import net.minecraft.client.input.KeyEvent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.neoforged.neoforge.client.network.ClientPacketDistributor;
-import org.lwjgl.glfw.GLFW;
 
 import java.awt.*;
 
@@ -68,13 +68,13 @@ public class GuiGasStationAdmin extends ScreenBase<ContainerGasStationAdmin> {
     }
 
     @Override
-    public boolean keyPressed(int key, int scanCode, int modifiers) {
-        if (key == GLFW.GLFW_KEY_ESCAPE) {
+    public boolean keyPressed(KeyEvent event) {
+        if (event.isEscape()) {
             minecraft.player.closeContainer();
             return true;
         }
 
-        return textField.keyPressed(key, scanCode, modifiers) || textField.canConsumeInput() || super.keyPressed(key, scanCode, modifiers);
+        return textField.keyPressed(event) || textField.canConsumeInput() || super.keyPressed(event);
     }
 
     @Override

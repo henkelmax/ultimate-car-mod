@@ -39,7 +39,7 @@ public abstract class TileEntityBase extends BlockEntity implements Nameable {
     }
 
     public void synchronize() {
-        if (!level.isClientSide && level instanceof ServerLevel serverLevel) {
+        if (!level.isClientSide() && level instanceof ServerLevel serverLevel) {
             CompoundTag last = getUpdateTag(serverLevel.registryAccess());
             if (compoundLast == null || !compoundLast.equals(last)) {
                 PacketDistributor.sendToPlayersTrackingChunk(serverLevel, new ChunkPos(getBlockPos()), new MessageSyncTileEntity(worldPosition, last));

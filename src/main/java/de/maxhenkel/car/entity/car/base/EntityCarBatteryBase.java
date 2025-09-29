@@ -38,7 +38,7 @@ public abstract class EntityCarBatteryBase extends EntityCarTemperatureBase {
     public void tick() {
         super.tick();
 
-        if (level().isClientSide) {
+        if (level().isClientSide()) {
             if (isStarted()) {
                 timeSinceStarted++;
                 if (tickCount % 2 == 0) { //How often particles will spawn
@@ -93,7 +93,7 @@ public abstract class EntityCarBatteryBase extends EntityCarTemperatureBase {
     }
 
     public void spawnParticles(boolean driving) {
-        if (!level().isClientSide) {
+        if (!level().isClientSide()) {
             return;
         }
         Vec3 lookVec = getLookAngle().normalize();

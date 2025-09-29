@@ -29,7 +29,7 @@ public class BlockCanolaCrop extends CropBlock {
             Block.box(0.0D, 0.0D, 0.0D, 16.0D, 13.0D, 16.0D)};
 
     public BlockCanolaCrop(Properties properties) {
-        super(properties.mapColor(MapColor.PLANT).noCollission().randomTicks().strength(0F).sound(SoundType.CROP));
+        super(properties.mapColor(MapColor.PLANT).noCollision().randomTicks().strength(0F).sound(SoundType.CROP));
     }
 
     public IntegerProperty getAgeProperty() {

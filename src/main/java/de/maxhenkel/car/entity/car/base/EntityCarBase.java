@@ -59,7 +59,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 
     public EntityCarBase(EntityType type, Level level) {
         super(type, level);
-        if (level.isClientSide) {
+        if (level.isClientSide()) {
             soundController = new CarClientSoundController(this);
         }
     }
@@ -104,7 +104,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 
         move(MoverType.SELF, getDeltaMovement());
 
-        if (level().isClientSide) {
+        if (level().isClientSide()) {
             soundController.updateSounds();
         }
 
@@ -133,7 +133,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
 
     @Override
     public boolean canCollideWith(Entity entityIn) {
-        if (!level().isClientSide && CarMod.SERVER_CONFIG.damageEntities.get() && entityIn instanceof LivingEntity && !getPassengers().contains(entityIn)) {
+        if (!level().isClientSide() && CarMod.SERVER_CONFIG.damageEntities.get() && entityIn instanceof LivingEntity && !getPassengers().contains(entityIn)) {
             if (entityIn.getBoundingBox().intersects(getBoundingBox())) {
                 float speed = getSpeed();
                 if (speed > 0.35F) {
@@ -235,13 +235,13 @@ public abstract class EntityCarBase extends EntityVehicleBase {
         }
 
         if (horizontalCollision) {
-            if (level().isClientSide && !collidedLastTick) {
+            if (level().isClientSide() && !collidedLastTick) {
                 onCollision(speed);
                 collidedLastTick = true;
             }
         } else {
             setDeltaMovement(calculateMotionX(getSpeed(), getYRot()), getDeltaMovement().y, calculateMotionZ(getSpeed(), getYRot()));
-            if (level().isClientSide) {
+            if (level().isClientSide()) {
                 collidedLastTick = false;
             }
         }
@@ -259,7 +259,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
     }
 
     public void onCollision(float speed) {
-        if (level().isClientSide) {
+        if (level().isClientSide()) {
             ClientPacketDistributor.sendToServer(new MessageCrash(speed, this));
         }
         setSpeed(0.01F);
@@ -306,7 +306,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
             setRight(right);
             needsUpdate = true;
         }
-        if (level().isClientSide && needsUpdate) {
+        if (level().isClientSide() && needsUpdate) {
             ClientPacketDistributor.sendToServer(new MessageControlCar(forward, backward, left, right, player));
         }
     }
@@ -357,7 +357,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
     }
 
     public void openCarGUI(Player player) {
-        if (level().isClientSide) {
+        if (level().isClientSide()) {
             ClientPacketDistributor.sendToServer(new MessageCarGui(player));
         }
     }
@@ -489,7 +489,7 @@ public abstract class EntityCarBase extends EntityVehicleBase {
     public abstract SoundEvent getHornSound();
 
     public void onHornPressed(Player player) {
-        if (level().isClientSide) {
+        if (level().isClientSide()) {
             ClientPacketDistributor.sendToServer(new MessageCarHorn(true, player));
         } else {
             if (this instanceof EntityCarBatteryBase) {

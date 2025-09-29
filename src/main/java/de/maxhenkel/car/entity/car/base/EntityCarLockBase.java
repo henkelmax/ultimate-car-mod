@@ -22,7 +22,7 @@ import java.util.UUID;
 
 public abstract class EntityCarLockBase extends EntityCarInventoryBase {
 
-    private static final EntityDataAccessor<Boolean> LOCKED = SynchedEntityData.defineId(EntityCarInventoryBase.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> LOCKED = SynchedEntityData.defineId(EntityCarLockBase.class, EntityDataSerializers.BOOLEAN);
 
     public EntityCarLockBase(EntityType type, Level worldIn) {
         super(type, worldIn);

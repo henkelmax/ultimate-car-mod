@@ -9,6 +9,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.WorldlyContainer;
+import net.minecraft.world.entity.ContainerUser;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
@@ -222,13 +223,13 @@ public abstract class TileEntityEnergyFluidProducer extends TileEntityBase imple
     }
 
     @Override
-    public void startOpen(Player player) {
-        inventory.startOpen(player);
+    public void startOpen(ContainerUser user) {
+        inventory.startOpen(user);
     }
 
     @Override
-    public void stopOpen(Player player) {
-        inventory.stopOpen(player);
+    public void stopOpen(ContainerUser user) {
+        inventory.stopOpen(user);
     }
 
     @Override

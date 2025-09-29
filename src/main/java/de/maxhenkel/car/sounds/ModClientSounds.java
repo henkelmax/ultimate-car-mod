@@ -9,7 +9,7 @@ import net.minecraft.world.level.Level;
 public class ModClientSounds {
 
     public static void playSoundLoop(AbstractTickableSoundInstance loop, Level world) {
-        if (world.isClientSide) {
+        if (world.isClientSide()) {
             Minecraft.getInstance().getSoundManager().play(loop);
         }
     }

@@ -7,6 +7,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.entity.ContainerUser;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
@@ -99,7 +100,7 @@ public class TileEntitySplitTank extends TileEntityBase implements ITickableBloc
 
     @Override
     public void tick() {
-        if (level.isClientSide) {
+        if (level.isClientSide()) {
             return;
         }
 
@@ -205,13 +206,13 @@ public class TileEntitySplitTank extends TileEntityBase implements ITickableBloc
     }
 
     @Override
-    public void startOpen(Player player) {
-        inventory.startOpen(player);
+    public void startOpen(ContainerUser user) {
+        inventory.startOpen(user);
     }
 
     @Override
-    public void stopOpen(Player player) {
-        inventory.stopOpen(player);
+    public void stopOpen(ContainerUser user) {
+        inventory.stopOpen(user);
     }
 
     @Override

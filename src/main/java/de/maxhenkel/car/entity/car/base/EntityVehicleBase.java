@@ -46,7 +46,7 @@ public abstract class EntityVehicleBase extends Entity {
 
     @Override
     public void tick() {
-        if (!level().isClientSide) {
+        if (!level().isClientSide()) {
             this.xo = getX();
             this.yo = getY();
             this.zo = getZ();
@@ -212,7 +212,7 @@ public abstract class EntityVehicleBase extends Entity {
     public InteractionResult interact(Player player, InteractionHand hand) {
         if (!player.isShiftKeyDown()) {
             if (player.getVehicle() != this) {
-                if (!level().isClientSide) {
+                if (!level().isClientSide()) {
                     player.startRiding(this);
                 }
             }

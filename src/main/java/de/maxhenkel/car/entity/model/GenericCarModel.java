@@ -7,8 +7,10 @@ import de.maxhenkel.corelib.client.obj.OBJEntityRenderer;
 import de.maxhenkel.corelib.client.obj.OBJModelInstance;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.state.CameraRenderState;
+import net.minecraft.network.chat.Component;
 import org.joml.Vector3d;
 
 import java.util.List;
@@ -28,7 +30,8 @@ public class GenericCarModel extends OBJEntityRenderer<EntityGenericCar, CarRend
     public void extractRenderState(EntityGenericCar car, CarRenderState state, float partialTicks) {
         super.extractRenderState(car, state, partialTicks);
         state.models = car.getModels();
-        state.licensePlate = car.getLicensePlate();
+        String licensePlate = car.getLicensePlate();
+        state.licensePlate = licensePlate == null ? null : Component.literal(licensePlate).getVisualOrderText();
         state.licensePlateOffset = car.getLicensePlateOffset();
         state.yRot = car.getViewYRot(partialTicks);
     }
@@ -39,18 +42,11 @@ public class GenericCarModel extends OBJEntityRenderer<EntityGenericCar, CarRend
     }
 
     @Override
-    public void render(CarRenderState state, PoseStack pose, MultiBufferSource source, int packedLight) {
-        super.render(state, pose, source, packedLight);
-        pose.pushPose();
-
-        String text = state.licensePlate;
-        if (text != null && !text.isEmpty()) {
-            pose.pushPose();
-            drawLicensePlate(state, pose, source, packedLight);
-            pose.popPose();
+    public void submit(CarRenderState state, PoseStack pose, SubmitNodeCollector collector, CameraRenderState cameraRenderState) {
+        super.submit(state, pose, collector, cameraRenderState);
+        if (state.licensePlate != null) {
+            drawLicensePlate(state, pose, collector);
         }
-
-        pose.popPose();
     }
 
     @Override
@@ -58,22 +54,22 @@ public class GenericCarModel extends OBJEntityRenderer<EntityGenericCar, CarRend
         pose.mulPose(Axis.YP.rotationDegrees(180F - state.yRot));
     }
 
-    private void drawLicensePlate(CarRenderState state, PoseStack matrixStack, MultiBufferSource buffer, int packedLight) {
-        matrixStack.pushPose();
-        matrixStack.scale(1F, -1F, 1F);
+    private void drawLicensePlate(CarRenderState state, PoseStack stack, SubmitNodeCollector collector) {
+        stack.pushPose();
+        stack.scale(1F, -1F, 1F);
 
-        translateLicensePlate(state, matrixStack);
+        translateLicensePlate(state, stack);
 
         int textWidth = Minecraft.getInstance().font.width(state.licensePlate);
         float textScale = 0.01F;
 
-        matrixStack.translate(-(textScale * textWidth) / 2F, 0F, 0F);
+        stack.translate(-(textScale * textWidth) / 2F, 0F, 0F);
 
-        matrixStack.scale(textScale, textScale, textScale);
+        stack.scale(textScale, textScale, textScale);
 
-        Minecraft.getInstance().font.drawInBatch(state.licensePlate, 0F, 0F, 0xFFFFFF, false, matrixStack.last().pose(), buffer, Font.DisplayMode.NORMAL, 0, packedLight);
+        collector.submitText(stack, 0F, 0F, state.licensePlate, false, Font.DisplayMode.NORMAL, state.lightCoords, 0xFFFFFFFF, 0, 0);
 
-        matrixStack.popPose();
+        stack.popPose();
     }
 
     protected void translateLicensePlate(CarRenderState state, PoseStack matrixStack) {

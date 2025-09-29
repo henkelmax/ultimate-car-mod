@@ -1,5 +1,5 @@
 {
-  "category.car": "汽車",
+  "key.category.car.car": "汽車",
   "itemGroup.car": "汽車",
   "itemGroup.car_parts": "汽車零件",
   "message.parts.too_few_wheels": "輪子太少",

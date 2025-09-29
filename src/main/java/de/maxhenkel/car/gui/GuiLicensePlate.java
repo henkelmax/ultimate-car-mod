@@ -4,23 +4,20 @@ import de.maxhenkel.car.CarMod;
 import de.maxhenkel.car.items.ItemLicensePlate;
 import de.maxhenkel.car.net.MessageEditLicensePlate;
 import de.maxhenkel.corelib.inventory.ScreenBase;
-import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
+import net.minecraft.client.input.KeyEvent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.client.network.ClientPacketDistributor;
-import org.lwjgl.glfw.GLFW;
 
 public class GuiLicensePlate extends ScreenBase<ContainerLicensePlate> {
 
     private static final ResourceLocation GUI_TEXTURE = ResourceLocation.fromNamespaceAndPath(CarMod.MODID, "textures/gui/gui_license_plate.png");
-
-    private static final int TITLE_COLOR = ChatFormatting.WHITE.getColor();
 
     private ContainerLicensePlate containerLicensePlate;
     private Player player;
@@ -67,19 +64,19 @@ public class GuiLicensePlate extends ScreenBase<ContainerLicensePlate> {
     }
 
     @Override
-    public boolean keyPressed(int key, int a, int b) {
-        if (key == GLFW.GLFW_KEY_ESCAPE) {
+    public boolean keyPressed(KeyEvent event) {
+        if (event.isEscape()) {
             minecraft.player.closeContainer();
             return true;
         }
 
-        return textField.keyPressed(key, a, b) || textField.canConsumeInput() || super.keyPressed(key, a, b);
+        return textField.keyPressed(event) || textField.canConsumeInput() || super.keyPressed(event);
     }
 
     @Override
     protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
         super.renderLabels(guiGraphics, mouseX, mouseY);
-        guiGraphics.drawCenteredString(font, containerLicensePlate.getLicensePlate().getHoverName().getString(), imageWidth / 2, 5, TITLE_COLOR);
+        guiGraphics.drawCenteredString(font, containerLicensePlate.getLicensePlate().getHoverName().getString(), imageWidth / 2, 5, 0xFFFFFFFF);
     }
 
     @Override

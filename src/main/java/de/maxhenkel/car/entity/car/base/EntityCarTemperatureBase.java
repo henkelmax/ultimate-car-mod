@@ -21,7 +21,7 @@ public abstract class EntityCarTemperatureBase extends EntityCarBase {
     public void tick() {
         super.tick();
 
-        if (level().isClientSide) {
+        if (level().isClientSide()) {
             return;
         }
         if (tickCount % 20 != 0) {

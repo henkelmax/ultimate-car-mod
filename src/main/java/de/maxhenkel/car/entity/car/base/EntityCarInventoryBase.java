@@ -10,6 +10,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.*;
+import net.minecraft.world.entity.ContainerUser;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -79,7 +80,7 @@ public abstract class EntityCarInventoryBase extends EntityCarFuelBase implement
             }
 
             //Inv
-            if (!level().isClientSide) {
+            if (!level().isClientSide()) {
                 if (externalInventory.getContainerSize() <= 0) {
                     openCarGUI(player);
                 } else {
@@ -156,7 +157,7 @@ public abstract class EntityCarInventoryBase extends EntityCarFuelBase implement
     @Override
     public void openCarGUI(Player player) {
         super.openCarGUI(player);
-        if (!level().isClientSide && player instanceof ServerPlayer serverPlayer) {
+        if (!level().isClientSide() && player instanceof ServerPlayer serverPlayer) {
             serverPlayer.openMenu(new MenuProvider() {
                 @Override
                 public Component getDisplayName() {
@@ -340,13 +341,13 @@ public abstract class EntityCarInventoryBase extends EntityCarFuelBase implement
     }
 
     @Override
-    public void startOpen(Player player) {
-        internalInventory.startOpen(player);
+    public void startOpen(ContainerUser user) {
+        internalInventory.startOpen(user);
     }
 
     @Override
-    public void stopOpen(Player player) {
-        internalInventory.stopOpen(player);
+    public void stopOpen(ContainerUser user) {
+        internalInventory.stopOpen(user);
     }
 
     @Override

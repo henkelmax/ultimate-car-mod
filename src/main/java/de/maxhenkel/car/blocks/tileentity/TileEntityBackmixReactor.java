@@ -7,6 +7,7 @@ import de.maxhenkel.corelib.blockentity.ITickableBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.Container;
+import net.minecraft.world.entity.ContainerUser;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
@@ -110,7 +111,7 @@ public class TileEntityBackmixReactor extends TileEntityBase implements ITickabl
 
     @Override
     public void tick() {
-        if (level.isClientSide) {
+        if (level.isClientSide()) {
             return;
         }
 
@@ -214,13 +215,13 @@ public class TileEntityBackmixReactor extends TileEntityBase implements ITickabl
     }
 
     @Override
-    public void startOpen(Player player) {
-
+    public void startOpen(ContainerUser user) {
+        Container.super.startOpen(user);
     }
 
     @Override
-    public void stopOpen(Player player) {
-
+    public void stopOpen(ContainerUser user) {
+        Container.super.stopOpen(user);
     }
 
     @Override

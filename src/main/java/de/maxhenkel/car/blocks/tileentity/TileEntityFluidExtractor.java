@@ -55,7 +55,7 @@ public class TileEntityFluidExtractor extends TileEntityBase implements ITickabl
 
     @Override
     public void tick() {
-        if (level.isClientSide) {
+        if (level.isClientSide()) {
             return;
         }
         updateExtractHandler();

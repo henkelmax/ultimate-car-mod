@@ -268,7 +268,7 @@ public class TileEntityGasStation extends TileEntityBase implements ITickableBlo
         if (player instanceof ServerPlayer) {
             ServerPlayer p = (ServerPlayer) player;
 
-            boolean isOp = p.hasPermissions(p.getServer().getOperatorUserPermissionLevel());
+            boolean isOp = p.hasPermissions(p.level().getServer().operatorUserPermissionLevel());
             if (isOp) {
                 return true;
             }
@@ -344,7 +344,7 @@ public class TileEntityGasStation extends TileEntityBase implements ITickableBlo
         }
 
         if (isFueling && !this.isFueling) {
-            if (level.isClientSide) {
+            if (level.isClientSide()) {
                 ModClientSounds.playGasStationSound(this);
             }
         }
@@ -352,13 +352,13 @@ public class TileEntityGasStation extends TileEntityBase implements ITickableBlo
         synchronize();
     }
 
-    public String getRenderText() {
+    public Component getRenderText() {
         if (fluidHandlerInFront == null) {
-            return Component.translatable("gas_station.no_vehicle").getString();
+            return Component.translatable("gas_station.no_vehicle");
         } else if (fuelCounter <= 0) {
-            return Component.translatable("gas_station.ready").getString();
+            return Component.translatable("gas_station.ready");
         } else {
-            return Component.translatable("gas_station.fuel_amount", fuelCounter).getString();
+            return Component.translatable("gas_station.fuel_amount", fuelCounter);
         }
     }
 
@@ -415,7 +415,7 @@ public class TileEntityGasStation extends TileEntityBase implements ITickableBlo
     }
 
     public void sendStartFuelPacket(boolean start) {
-        if (level.isClientSide) {
+        if (level.isClientSide()) {
             ClientPacketDistributor.sendToServer(new MessageStartFuel(worldPosition, start));
         }
     }

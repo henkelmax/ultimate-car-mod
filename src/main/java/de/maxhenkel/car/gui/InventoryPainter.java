@@ -66,15 +66,6 @@ public class InventoryPainter implements Container {
         return false;
     }
 
-    @Override
-    public void startOpen(Player player) {
-
-    }
-
-    @Override
-    public void stopOpen(Player player) {
-
-    }
 
     @Override
     public boolean canPlaceItem(int index, ItemStack stack) {

@@ -41,7 +41,7 @@ public class SoundLoopTileentity extends AbstractTickableSoundInstance {
             return;
         }
 
-        if (tileEntity.getLevel().isClientSide) {
+        if (tileEntity.getLevel().isClientSide()) {
             LocalPlayer player = Minecraft.getInstance().player;
             if (player == null || !player.isAlive()) {
                 stop();

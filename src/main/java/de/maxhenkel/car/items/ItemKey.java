@@ -27,11 +27,11 @@ public class ItemKey extends Item {
         UUID carUUID = getCar(stack);
 
         if (carUUID == null) {
-            if (worldIn.isClientSide) {
+            if (worldIn.isClientSide()) {
                 playerIn.displayClientMessage(Component.translatable("message.key_no_car"), true);
             }
             return InteractionResult.PASS;
-        } else if (worldIn.isClientSide) {
+        } else if (worldIn.isClientSide()) {
             return InteractionResult.SUCCESS;
         }
 

@@ -19,6 +19,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.entity.ContainerUser;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.inventory.SimpleContainerData;
@@ -312,14 +313,15 @@ public class TileEntityCarWorkshop extends TileEntityBase implements Container {
         return craftingMatrix.isEmpty();
     }
 
+
     @Override
-    public void startOpen(Player player) {
-        craftingMatrix.startOpen(player);
+    public void startOpen(ContainerUser user) {
+        craftingMatrix.startOpen(user);
     }
 
     @Override
-    public void stopOpen(Player player) {
-        craftingMatrix.startOpen(player);
+    public void stopOpen(ContainerUser user) {
+        craftingMatrix.stopOpen(user);
     }
 
     @Override

@@ -30,7 +30,7 @@ public class TileEntityTank extends TileEntityBase implements IFluidHandler, ITi
 
     @Override
     public void tick() {
-        if (!level.isClientSide) {
+        if (!level.isClientSide()) {
             if (level.getGameTime() % 20 == 0) {
                 synchronize();
             }

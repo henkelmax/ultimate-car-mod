@@ -46,7 +46,7 @@ public class GuiCarWorkshopCrafting extends ScreenBase<ContainerCarWorkshopCraft
         }).bounds(leftPos + 105, topPos + 72, 60, 20).build());
 
         buttonSpawn = addRenderableWidget(Button.builder(Component.translatable("button.car.spawn_car"), button -> {
-            if (tile.getLevel().isClientSide) {
+            if (tile.getLevel().isClientSide()) {
                 if (tile.isCurrentCraftingCarValid()) {
                     ClientPacketDistributor.sendToServer(new MessageSpawnCar(tile.getBlockPos()));
                 } else {
