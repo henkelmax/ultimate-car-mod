@@ -179,8 +179,7 @@ public class TileEntityTank extends TileEntityBase implements IFluidHandler, ITi
 
     private boolean isTankConnectedCalc(Direction facing) {
         BlockEntity te = level.getBlockEntity(worldPosition.relative(facing));
-        if (te instanceof TileEntityTank) {
-            TileEntityTank tank = (TileEntityTank) te;
+        if (te instanceof TileEntityTank tank) {
             if (tank.fluid.isEmpty() && fluid.isEmpty()) {
                 return true;
             }
