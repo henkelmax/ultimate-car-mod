@@ -82,7 +82,7 @@ public class TileEntitySpecialRendererTank implements BlockEntityRenderer<TileEn
         int light = state.lightCoords;
         float yStart = 0F;
         int overlay = OverlayTexture.NO_OVERLAY;
-        collector.submitCustomGeometry(stack, RenderType.entityTranslucent(TextureAtlas.LOCATION_BLOCKS), (pose, vertexConsumer) -> {
+        collector.submitCustomGeometry(stack, RenderType.itemEntityTranslucentCull(TextureAtlas.LOCATION_BLOCKS), (pose, vertexConsumer) -> {
             float uMin = texture.getU0();
             float uMax = texture.getU1();
             float vMin = texture.getV0();

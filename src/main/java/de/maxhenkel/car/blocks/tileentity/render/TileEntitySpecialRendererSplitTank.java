@@ -65,7 +65,7 @@ public class TileEntitySpecialRendererSplitTank implements BlockEntityRenderer<T
         IClientFluidTypeExtensions type = IClientFluidTypeExtensions.of(fluid.getFluid());
         TextureAtlasSprite texture = Minecraft.getInstance().getAtlasManager().getAtlasOrThrow(AtlasIds.BLOCKS).getSprite(type.getStillTexture(fluid));
 
-        collector.submitCustomGeometry(stack, RenderType.entityTranslucent(TextureAtlas.LOCATION_BLOCKS), (pose, vertexConsumer) -> {
+        collector.submitCustomGeometry(stack, RenderType.itemEntityTranslucentCull(TextureAtlas.LOCATION_BLOCKS), (pose, vertexConsumer) -> {
             float uMin = texture.getU0();
             float uMax = texture.getU1();
             float vMin = texture.getV0();
