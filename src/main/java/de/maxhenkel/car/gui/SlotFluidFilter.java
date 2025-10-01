@@ -8,7 +8,7 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.fluids.FluidStack;
-import net.neoforged.neoforge.fluids.FluidUtil;
+import net.neoforged.neoforge.transfer.fluid.FluidUtil;
 
 public class SlotFluidFilter extends Slot {
 
@@ -25,7 +25,7 @@ public class SlotFluidFilter extends Slot {
 
     @Override
     public boolean mayPickup(Player playerIn) {
-        tile.setFilter(null);
+        tile.setFilter(ItemStack.EMPTY);
         ItemUtils.removeStackFromSlot(container, index);
         setChanged();
         return false;
@@ -38,15 +38,15 @@ public class SlotFluidFilter extends Slot {
     }
 
     private void setFluidContained(ItemStack stack) {
-        if (stack == null) {
+        if (stack.isEmpty()) {
             ItemUtils.removeStackFromSlot(container, index);
             setChanged();
             return;
         }
 
-        FluidStack fluidStack = FluidUtil.getFluidContained(stack).orElse(null);
+        FluidStack fluidStack = FluidUtil.getFirstStackContained(stack);
 
-        if (fluidStack == null || fluidStack.getAmount() <= 0) {
+        if (fluidStack.isEmpty() || fluidStack.getAmount() <= 0) {
             ItemUtils.removeStackFromSlot(container, index);
             setChanged();
             return;

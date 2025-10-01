@@ -1,7 +1,7 @@
 package de.maxhenkel.car.items;
 
 import de.maxhenkel.car.blocks.ModBlocks;
-import de.maxhenkel.corelib.energy.EnergyUtils;
+import de.maxhenkel.tools.IntegerJournal;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
@@ -12,7 +12,11 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.item.enchantment.Enchantment;
-import net.neoforged.neoforge.energy.IEnergyStorage;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.transfer.energy.EnergyHandler;
+import net.neoforged.neoforge.transfer.transaction.SnapshotJournal;
+import net.neoforged.neoforge.transfer.transaction.Transaction;
+import net.neoforged.neoforge.transfer.transaction.TransactionContext;
 
 import java.util.function.Consumer;
 
@@ -37,13 +41,15 @@ public class ItemBattery extends Item {
     @Override
     public InteractionResult useOn(UseOnContext context) {
         if (context.getLevel().getBlockState(context.getClickedPos()).getBlock().equals(ModBlocks.GENERATOR.get())) {
-            IEnergyStorage storage = EnergyUtils.getEnergyStorage(context.getLevel(), context.getClickedPos(), context.getClickedFace());
-            if (storage != null) {
+            EnergyHandler energyHandler = context.getLevel().getCapability(Capabilities.Energy.BLOCK, context.getClickedPos(), context.getClickedFace());
+            if (energyHandler != null) {
                 ItemStack stack = context.getPlayer().getItemInHand(context.getHand());
-
                 int energyToFill = stack.getDamageValue();
-
-                int amount = storage.extractEnergy(energyToFill, false);
+                int amount;
+                try (Transaction transaction = Transaction.open(null)) {
+                    amount = energyHandler.extract(energyToFill, transaction);
+                    transaction.commit();
+                }
 
                 stack.setDamageValue(energyToFill - amount);
                 context.getPlayer().setItemInHand(context.getHand(), stack);
@@ -62,50 +68,41 @@ public class ItemBattery extends Item {
         setDamage(stack, Math.max(getMaxDamage(stack) - energy, 0));
     }
 
-    public IEnergyStorage getEnergyHandler(ItemStack stack) {
+    public EnergyHandler getEnergyHandler(ItemStack stack) {
         return new BatteryEnergyStorage(stack);
     }
 
-    public class BatteryEnergyStorage implements IEnergyStorage {
+    public class BatteryEnergyStorage implements EnergyHandler {
 
         private ItemStack stack;
+
+        private final SnapshotJournal<Integer> energyJournal = new IntegerJournal(integer -> setEnergy(stack, integer), () -> getEnergy(stack));
 
         public BatteryEnergyStorage(ItemStack stack) {
             this.stack = stack;
         }
 
         @Override
-        public int receiveEnergy(int maxReceive, boolean simulate) {
-            int amount = Math.min(maxReceive, getMaxDamage(stack) - getEnergy(stack));
-            if (!simulate) {
-                setEnergy(stack, getEnergy(stack) + amount);
-            }
-            return amount;
-        }
-
-        @Override
-        public int extractEnergy(int maxExtract, boolean simulate) {
-            return 0;
-        }
-
-        @Override
-        public int getEnergyStored() {
+        public long getAmountAsLong() {
             return getEnergy(stack);
         }
 
         @Override
-        public int getMaxEnergyStored() {
+        public long getCapacityAsLong() {
             return getMaxDamage(stack);
         }
 
         @Override
-        public boolean canExtract() {
-            return false;
+        public int insert(int amount, TransactionContext transaction) {
+            int result = Math.min(amount, getMaxDamage(stack) - getEnergy(stack));
+            energyJournal.updateSnapshots(transaction);
+            setEnergy(stack, getEnergy(stack) + result);
+            return result;
         }
 
         @Override
-        public boolean canReceive() {
-            return true;
+        public int extract(int amount, TransactionContext transaction) {
+            return 0;
         }
     }
 

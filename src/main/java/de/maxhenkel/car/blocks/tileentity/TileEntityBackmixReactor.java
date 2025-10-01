@@ -4,6 +4,7 @@ import de.maxhenkel.car.CarMod;
 import de.maxhenkel.car.blocks.ModBlocks;
 import de.maxhenkel.car.fluids.ModFluids;
 import de.maxhenkel.corelib.blockentity.ITickableBlockEntity;
+import de.maxhenkel.tools.IntegerJournal;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.Container;
@@ -14,13 +15,14 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
-import net.neoforged.neoforge.energy.IEnergyStorage;
 import net.neoforged.neoforge.fluids.FluidStack;
-import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.transfer.ResourceHandler;
+import net.neoforged.neoforge.transfer.energy.EnergyHandler;
+import net.neoforged.neoforge.transfer.fluid.FluidResource;
+import net.neoforged.neoforge.transfer.transaction.SnapshotJournal;
+import net.neoforged.neoforge.transfer.transaction.TransactionContext;
 
-import javax.annotation.Nonnull;
-
-public class TileEntityBackmixReactor extends TileEntityBase implements ITickableBlockEntity, IFluidHandler, IEnergyStorage, Container {
+public class TileEntityBackmixReactor extends TileEntityBase implements ITickableBlockEntity, ResourceHandler<FluidResource>, EnergyHandler, Container {
 
     public final int maxStorage;
     protected int storedEnergy;
@@ -41,6 +43,23 @@ public class TileEntityBackmixReactor extends TileEntityBase implements ITickabl
 
     public final int generatingTime;
     protected int timeToGenerate;
+
+    private final SnapshotJournal<Integer> canolaJournal = new IntegerJournal(i -> {
+        currentCanola = i;
+        setChanged();
+    }, () -> currentCanola);
+    private final SnapshotJournal<Integer> methanolJournal = new IntegerJournal(i -> {
+        currentMethanol = i;
+        setChanged();
+    }, () -> currentMethanol);
+    private final SnapshotJournal<Integer> mixJournal = new IntegerJournal(i -> {
+        currentMix = i;
+        setChanged();
+    }, () -> currentMix);
+    private final SnapshotJournal<Integer> energyJournal = new IntegerJournal(i -> {
+        storedEnergy = i;
+        setChanged();
+    }, () -> storedEnergy);
 
     public TileEntityBackmixReactor(BlockPos pos, BlockState state) {
         super(CarMod.BACKMIX_REACTOR_TILE_ENTITY_TYPE.get(), pos, state);
@@ -239,43 +258,6 @@ public class TileEntityBackmixReactor extends TileEntityBase implements ITickabl
         return true;
     }
 
-    @Override
-    public int receiveEnergy(int maxReceive, boolean simulate) {
-        int energyNeeded = maxStorage - storedEnergy;
-
-        if (!simulate) {
-            storedEnergy += Math.min(energyNeeded, maxReceive);
-            setChanged();
-        }
-
-        return Math.min(energyNeeded, maxReceive);
-    }
-
-    @Override
-    public int extractEnergy(int maxExtract, boolean simulate) {
-        return 0;
-    }
-
-    @Override
-    public int getEnergyStored() {
-        return storedEnergy;
-    }
-
-    @Override
-    public int getMaxEnergyStored() {
-        return maxStorage;
-    }
-
-    @Override
-    public boolean canExtract() {
-        return false;
-    }
-
-    @Override
-    public boolean canReceive() {
-        return true;
-    }
-
     public int getCurrentCanola() {
         return currentCanola;
     }
@@ -307,89 +289,124 @@ public class TileEntityBackmixReactor extends TileEntityBase implements ITickabl
     }
 
     @Override
-    public int getTanks() {
+    public int size() {
         return 3;
     }
 
-    @Nonnull
     @Override
-    public FluidStack getFluidInTank(int tank) {
-        if (tank == 0) {
-            return new FluidStack(ModFluids.CANOLA_OIL.get(), currentCanola);
-        } else if (tank == 1) {
-            return new FluidStack(ModFluids.METHANOL.get(), currentMethanol);
+    public FluidResource getResource(int index) {
+        if (index == 0) {
+            return FluidResource.of(new FluidStack(ModFluids.CANOLA_OIL.get(), currentCanola));
+        } else if (index == 1) {
+            return FluidResource.of(new FluidStack(ModFluids.METHANOL.get(), currentMethanol));
         } else {
-            return new FluidStack(ModFluids.CANOLA_METHANOL_MIX.get(), currentMix);
+            return FluidResource.of(new FluidStack(ModFluids.CANOLA_METHANOL_MIX.get(), currentMix));
         }
     }
 
     @Override
-    public int getTankCapacity(int tank) {
-        if (tank == 0) {
-            return maxCanola;
-        } else if (tank == 1) {
-            return maxMethanol;
+    public long getAmountAsLong(int index) {
+        if (index == 0) {
+            return currentCanola;
+        } else if (index == 1) {
+            return currentMethanol;
         } else {
+            return currentMix;
+        }
+    }
+
+    @Override
+    public long getCapacityAsLong(int index, FluidResource resource) {
+        if (index == 0 && resource.is(ModFluids.CANOLA_OIL.get())) {
+            return maxCanola;
+        }
+        if (index == 1 && resource.is(ModFluids.METHANOL.get())) {
+            return maxMethanol;
+        }
+        if (index == 2 && resource.is(ModFluids.CANOLA_METHANOL_MIX.get())) {
             return maxMix;
         }
-    }
-
-    @Override
-    public boolean isFluidValid(int tank, @Nonnull FluidStack stack) {
-        if (tank == 0) {
-            return stack.getFluid().equals(ModFluids.CANOLA_OIL.get());
-        } else if (tank == 1) {
-            return stack.getFluid().equals(ModFluids.METHANOL.get());
-        } else {
-            return false;
-        }
-
-    }
-
-    @Override
-    public int fill(FluidStack resource, FluidAction action) {
-        if (resource.getFluid().equals(ModFluids.METHANOL.get())) {
-            int amount = Math.min(maxMethanol - currentMethanol, resource.getAmount());
-            if (action.execute()) {
-                currentMethanol += amount;
-                setChanged();
-            }
-            return amount;
-        } else if (resource.getFluid().equals(ModFluids.CANOLA_OIL.get())) {
-            int amount = Math.min(maxCanola - currentCanola, resource.getAmount());
-            if (action.execute()) {
-                currentCanola += amount;
-                setChanged();
-            }
-            return amount;
-        }
-
         return 0;
     }
 
-    @Nonnull
     @Override
-    public FluidStack drain(FluidStack resource, FluidAction action) {
-        int amount = Math.min(resource.getAmount(), currentMix);
-
-        if (action.execute()) {
-            currentMix -= amount;
-            setChanged();
+    public boolean isValid(int index, FluidResource resource) {
+        if (index == 0 && resource.is(ModFluids.CANOLA_OIL.get())) {
+            return true;
         }
-
-        return new FluidStack(ModFluids.CANOLA_METHANOL_MIX.get(), amount);
+        if (index == 1 && resource.is(ModFluids.METHANOL.get())) {
+            return true;
+        }
+        if (index == 2 && resource.is(ModFluids.CANOLA_METHANOL_MIX.get())) {
+            return true;
+        }
+        return false;
     }
 
-    @Nonnull
     @Override
-    public FluidStack drain(int maxDrain, FluidAction action) {
-        int amount = Math.min(maxDrain, currentMix);
-
-        if (action.execute()) {
-            currentMix -= amount;
+    public int insert(int index, FluidResource resource, int amount, TransactionContext transaction) {
+        if (resource.is(ModFluids.METHANOL.get())) {
+            int actualAmount = Math.min(maxMethanol - currentMethanol, amount);
+            methanolJournal.updateSnapshots(transaction);
+            currentMethanol += actualAmount;
             setChanged();
+            return actualAmount;
+        } else if (resource.is(ModFluids.CANOLA_OIL.get())) {
+            int actualAmount = Math.min(maxCanola - currentCanola, amount);
+            canolaJournal.updateSnapshots(transaction);
+            currentCanola += actualAmount;
+            setChanged();
+            return actualAmount;
         }
+        return 0;
+    }
 
-        return new FluidStack(ModFluids.CANOLA_METHANOL_MIX.get(), amount);
+    @Override
+    public int extract(int index, FluidResource resource, int amount, TransactionContext transaction) {
+        if (!resource.is(ModFluids.CANOLA_METHANOL_MIX.get())) {
+            return 0;
+        }
+        int actualAmount = Math.min(amount, currentMix);
+
+        mixJournal.updateSnapshots(transaction);
+        currentMix -= actualAmount;
+        setChanged();
+
+        return actualAmount;
+    }
+
+    @Override
+    public long getAmountAsLong() {
+        return storedEnergy;
+    }
+
+    @Override
+    public long getCapacityAsLong() {
+        return maxStorage;
+    }
+
+    @Override
+    public int insert(int amount, TransactionContext transaction) {
+        int energyNeeded = maxStorage - storedEnergy;
+        int toStore = Math.min(energyNeeded, amount);
+        energyJournal.updateSnapshots(transaction);
+        storedEnergy += toStore;
+        setChanged();
+        return toStore;
+    }
+
+    @Override
+    public int extract(int amount, TransactionContext transaction) {
+        return 0;
+    }
+
+    @Override
+    public EnergyHandler getEnergyStorage() {
+        return this;
+    }
+
+    @Override
+    public ResourceHandler<FluidResource> getFluidHandler() {
+        return this;
     }
 }

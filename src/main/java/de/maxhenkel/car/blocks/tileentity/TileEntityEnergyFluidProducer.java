@@ -4,6 +4,7 @@ import de.maxhenkel.car.blocks.BlockGui;
 import de.maxhenkel.car.recipes.EnergyFluidProducerRecipe;
 import de.maxhenkel.corelib.blockentity.ITickableBlockEntity;
 import de.maxhenkel.corelib.item.ItemUtils;
+import de.maxhenkel.tools.IntegerJournal;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -19,15 +20,16 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
-import net.neoforged.neoforge.energy.IEnergyStorage;
-import net.neoforged.neoforge.fluids.FluidStack;
-import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.transfer.ResourceHandler;
+import net.neoforged.neoforge.transfer.energy.EnergyHandler;
+import net.neoforged.neoforge.transfer.fluid.FluidResource;
+import net.neoforged.neoforge.transfer.transaction.SnapshotJournal;
+import net.neoforged.neoforge.transfer.transaction.TransactionContext;
 
-import javax.annotation.Nonnull;
-
-public abstract class TileEntityEnergyFluidProducer extends TileEntityBase implements IEnergyStorage, WorldlyContainer, ITickableBlockEntity, IFluidHandler, RecipeInput {
+public abstract class TileEntityEnergyFluidProducer extends TileEntityBase implements EnergyHandler, WorldlyContainer, ITickableBlockEntity, ResourceHandler<FluidResource>, RecipeInput {
 
     protected RecipeType<? extends EnergyFluidProducerRecipe> recipeType;
     protected SimpleContainer inventory;
@@ -39,6 +41,15 @@ public abstract class TileEntityEnergyFluidProducer extends TileEntityBase imple
 
     protected int fluidAmount;
     protected int currentMillibuckets;
+
+    private final SnapshotJournal<Integer> energyJournal = new IntegerJournal(i -> {
+        storedEnergy = i;
+        setChanged();
+    }, () -> storedEnergy);
+    private final SnapshotJournal<Integer> fluidJournal = new IntegerJournal(i -> {
+        currentMillibuckets = i;
+        setChanged();
+    }, () -> currentMillibuckets);
 
     public TileEntityEnergyFluidProducer(BlockEntityType<?> tileEntityTypeIn, RecipeType<? extends EnergyFluidProducerRecipe> recipeType, BlockPos pos, BlockState state) {
         super(tileEntityTypeIn, pos, state);
@@ -304,101 +315,96 @@ public abstract class TileEntityEnergyFluidProducer extends TileEntityBase imple
     public abstract Fluid getProducingFluid();
 
     @Override
-    public int receiveEnergy(int maxReceive, boolean simulate) {
-        int energyNeeded = maxEnergy - storedEnergy;
-
-        if (!simulate) {
-            storedEnergy += Math.min(energyNeeded, maxReceive);
-            setChanged();
-        }
-
-        return Math.min(energyNeeded, maxReceive);
-    }
-
-    @Override
-    public int extractEnergy(int maxExtract, boolean simulate) {
-        return 0;
-    }
-
-    @Override
-    public int getEnergyStored() {
-        return storedEnergy;
-    }
-
-    @Override
-    public int getMaxEnergyStored() {
-        return maxEnergy;
-    }
-
-    @Override
-    public boolean canExtract() {
-        return false;
-    }
-
-    @Override
-    public boolean canReceive() {
-        return true;
-    }
-
-    @Override
     public ContainerData getFields() {
         return FIELDS;
-    }
-
-    @Override
-    public int getTanks() {
-        return 1;
-    }
-
-    @Nonnull
-    @Override
-    public FluidStack getFluidInTank(int tank) {
-        return new FluidStack(getProducingFluid(), currentMillibuckets);
-    }
-
-    @Override
-    public int getTankCapacity(int tank) {
-        return fluidAmount;
-    }
-
-    @Override
-    public boolean isFluidValid(int tank, @Nonnull FluidStack stack) {
-        return stack.getFluid().equals(getProducingFluid());
-    }
-
-    @Override
-    public int fill(FluidStack resource, FluidAction action) {
-        return 0;
-    }
-
-    @Nonnull
-    @Override
-    public FluidStack drain(FluidStack resource, FluidAction action) {
-        int amount = Math.min(resource.getAmount(), currentMillibuckets);
-
-        if (action.execute()) {
-            currentMillibuckets -= amount;
-            setChanged();
-        }
-
-        return new FluidStack(getProducingFluid(), amount);
-    }
-
-    @Nonnull
-    @Override
-    public FluidStack drain(int maxDrain, FluidAction action) {
-        int amount = Math.min(maxDrain, currentMillibuckets);
-
-        if (action.execute()) {
-            currentMillibuckets -= amount;
-            setChanged();
-        }
-
-        return new FluidStack(getProducingFluid(), amount);
     }
 
     @Override
     public int size() {
         return 1;
     }
+
+    @Override
+    public FluidResource getResource(int index) {
+        if (index == 0) {
+            return FluidResource.of(getProducingFluid());
+        }
+        return FluidResource.of(Fluids.EMPTY);
+    }
+
+    @Override
+    public long getAmountAsLong(int index) {
+        if (index == 0) {
+            return currentMillibuckets;
+        }
+        return 0;
+    }
+
+    @Override
+    public long getCapacityAsLong(int index, FluidResource resource) {
+        if (index == 0 && resource.is(getProducingFluid())) {
+            return fluidAmount;
+        }
+        return 0;
+    }
+
+    @Override
+    public boolean isValid(int index, FluidResource resource) {
+        return index == 0 && resource.is(getProducingFluid());
+    }
+
+    @Override
+    public int insert(int index, FluidResource resource, int amount, TransactionContext transaction) {
+        return 0;
+    }
+
+    @Override
+    public int extract(int index, FluidResource resource, int amount, TransactionContext transaction) {
+        if (index != 0 || !resource.is(getProducingFluid())) {
+            return 0;
+        }
+        int actualAmount = Math.min(amount, currentMillibuckets);
+
+        fluidJournal.updateSnapshots(transaction);
+        currentMillibuckets -= actualAmount;
+        setChanged();
+
+        return actualAmount;
+    }
+
+    @Override
+    public long getAmountAsLong() {
+        return storedEnergy;
+    }
+
+    @Override
+    public long getCapacityAsLong() {
+        return maxEnergy;
+    }
+
+    @Override
+    public int insert(int amount, TransactionContext transaction) {
+        int energyNeeded = maxEnergy - storedEnergy;
+        int toStore = Math.min(energyNeeded, amount);
+        energyJournal.updateSnapshots(transaction);
+        storedEnergy += toStore;
+        setChanged();
+        return toStore;
+    }
+
+    @Override
+    public int extract(int amount, TransactionContext transaction) {
+        return 0;
+    }
+
+    @Override
+    public EnergyHandler getEnergyStorage() {
+        return this;
+    }
+
+    @Override
+    public ResourceHandler<FluidResource> getFluidHandler() {
+        return this;
+    }
+
 }

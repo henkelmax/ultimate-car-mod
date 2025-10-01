@@ -16,10 +16,10 @@ public class DataProviderGenerator implements IServerDataProvider<BlockAccessor>
     @Override
     public void appendServerData(CompoundTag compoundTag, BlockAccessor blockAccessor) {
         TileEntityGenerator generator = (TileEntityGenerator) blockAccessor.getBlockEntity();
-        compoundTag.putInt("energy", generator.getEnergyStored());
-        compoundTag.putInt("max_energy", generator.getMaxEnergyStored());
-        compoundTag.putInt("fluid", generator.getFluidInTank(0).getAmount());
-        compoundTag.putInt("max_fluid", generator.getTankCapacity(0));
+        compoundTag.putInt("energy", generator.getAmountAsInt());
+        compoundTag.putInt("max_energy", generator.getCapacityAsInt());
+        compoundTag.putInt("fluid", generator.getAmountAsInt(0));
+        compoundTag.putInt("max_fluid", generator.getCapacityAsInt(0, generator.getResource(0)));
     }
 
     @Override

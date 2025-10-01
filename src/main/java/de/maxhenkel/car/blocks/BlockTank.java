@@ -3,7 +3,6 @@ package de.maxhenkel.car.blocks;
 import de.maxhenkel.car.CarMod;
 import de.maxhenkel.car.blocks.tileentity.TileEntityTank;
 import de.maxhenkel.corelib.blockentity.SimpleBlockEntityTicker;
-import de.maxhenkel.corelib.fluid.FluidUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -21,13 +20,13 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.BlockHitResult;
-import net.neoforged.neoforge.fluids.FluidActionResult;
+import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.fluids.FluidStack;
-import net.neoforged.neoforge.fluids.FluidUtil;
 import net.neoforged.neoforge.fluids.SimpleFluidContent;
-import net.neoforged.neoforge.fluids.capability.IFluidHandler;
-import net.neoforged.neoforge.items.IItemHandler;
-import net.neoforged.neoforge.items.wrapper.InvWrapper;
+import net.neoforged.neoforge.transfer.ResourceHandler;
+import net.neoforged.neoforge.transfer.ResourceHandlerUtil;
+import net.neoforged.neoforge.transfer.access.ItemAccess;
+import net.neoforged.neoforge.transfer.fluid.FluidResource;
 
 import javax.annotation.Nullable;
 
@@ -70,35 +69,23 @@ public class BlockTank extends BlockBase implements EntityBlock {
 
     @Override
     protected InteractionResult useItemOn(ItemStack itemStack, BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
-        return FluidUtils.tryFluidInteraction(player, interactionHand, level, blockPos) ? InteractionResult.SUCCESS : InteractionResult.FAIL;
-    }
-
-    public static boolean handleEmpty(ItemStack stack, Level worldIn, BlockPos pos, Player playerIn, InteractionHand hand) {
-        BlockEntity be = worldIn.getBlockEntity(pos);
-        if (!(be instanceof IFluidHandler handler)) {
-            return false;
+        ResourceHandler<FluidResource> capability = level.getCapability(Capabilities.Fluid.BLOCK, blockPos, blockHitResult.getDirection());
+        if (capability == null) {
+            return InteractionResult.FAIL;
         }
-        IItemHandler inv = new InvWrapper(playerIn.getInventory());
-        FluidActionResult res = FluidUtil.tryEmptyContainerAndStow(stack, handler, inv, Integer.MAX_VALUE, playerIn, true);
-        if (res.isSuccess()) {
-            playerIn.setItemInHand(hand, res.result);
-            return true;
+        ItemAccess itemAccess = ItemAccess.forPlayerInteraction(player, interactionHand);
+        ResourceHandler<FluidResource> itemCapability = itemAccess.getCapability(Capabilities.Fluid.ITEM);
+        if (itemCapability == null) {
+            return InteractionResult.FAIL;
         }
-        return false;
-    }
-
-    public static boolean handleFill(ItemStack stack, Level worldIn, BlockPos pos, Player playerIn, InteractionHand hand) {
-        BlockEntity te = worldIn.getBlockEntity(pos);
-        if (!(te instanceof IFluidHandler blockHandler)) {
-            return false;
+        int result = 0;
+        //TODO Play empty and fill sound
+        if (!ResourceHandlerUtil.isEmpty(itemCapability)) {
+            result = ResourceHandlerUtil.move(itemCapability, capability, resource -> true, Integer.MAX_VALUE, null);
+        } else if (!ResourceHandlerUtil.isEmpty(capability)) {
+            result = ResourceHandlerUtil.move(capability, itemCapability, resource -> true, Integer.MAX_VALUE, null);
         }
-        IItemHandler inv = new InvWrapper(playerIn.getInventory());
-        FluidActionResult result = FluidUtil.tryFillContainerAndStow(stack, blockHandler, inv, Integer.MAX_VALUE, playerIn, true);
-        if (result.isSuccess()) {
-            playerIn.setItemInHand(hand, result.result);
-            return true;
-        }
-        return false;
+        return result > 0 ? InteractionResult.SUCCESS : InteractionResult.FAIL;
     }
 
     @Override

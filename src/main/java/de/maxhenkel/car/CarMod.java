@@ -14,7 +14,6 @@ import de.maxhenkel.car.events.*;
 import de.maxhenkel.car.fluids.ModFluids;
 import de.maxhenkel.car.gui.*;
 import de.maxhenkel.car.integration.IMC;
-import de.maxhenkel.car.items.CarBucketItem;
 import de.maxhenkel.car.items.ItemLicensePlate;
 import de.maxhenkel.car.items.ModItems;
 import de.maxhenkel.car.loottable.CopyFluid;
@@ -61,19 +60,18 @@ import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.extensions.IMenuTypeExtension;
-import net.neoforged.neoforge.energy.IEnergyStorage;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.SimpleFluidContent;
-import net.neoforged.neoforge.fluids.capability.IFluidHandler;
-import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.network.IContainerFactory;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
+import net.neoforged.neoforge.transfer.fluid.BucketResourceHandler;
+import net.neoforged.neoforge.transfer.fluid.ItemAccessFluidHandler;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -345,43 +343,33 @@ public class CarMod {
         registerBlockCapabilities(event, TANK_TILE_ENTITY_TYPE);
         registerBlockCapabilities(event, GAS_STATION_TILE_ENTITY_TYPE);
 
-        event.registerItem(Capabilities.FluidHandler.ITEM, (object, context) -> CarBucketItem.getFluidHandler(object),
+        event.registerItem(Capabilities.Fluid.ITEM, (object, context) -> context == null ? null : new BucketResourceHandler(context),
                 ModItems.BIO_DIESEL_BUCKET.get(),
                 ModItems.CANOLA_OIL_BUCKET.get(),
                 ModItems.METHANOL_BUCKET.get(),
                 ModItems.GLYCERIN_BUCKET.get(),
                 ModItems.CANOLA_METHANOL_MIX_BUCKET.get()
         );
-        event.registerItem(Capabilities.EnergyStorage.ITEM, (object, context) -> ModItems.BATTERY.get().getEnergyHandler(object), ModItems.BATTERY.get());
+
+        event.registerItem(Capabilities.Fluid.ITEM, (object, context) -> context == null ? null : new ItemAccessFluidHandler(context, FUEL_DATA_COMPONENT.get(), CarMod.SERVER_CONFIG.canisterMaxFuel.get()),
+                ModItems.CANISTER.get()
+        );
+
+        event.registerItem(Capabilities.Energy.ITEM, (object, context) -> ModItems.BATTERY.get().getEnergyHandler(object), ModItems.BATTERY.get());
 
         registerEntityCapabilities(event, CAR_ENTITY_TYPE);
     }
 
     private static <T extends TileEntityBase> void registerBlockCapabilities(RegisterCapabilitiesEvent event, DeferredHolder<BlockEntityType<?>, BlockEntityType<T>> holder) {
-        event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, holder.get(), (object, context) -> object.getFluidHandler());
-        event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, holder.get(), (object, context) -> object.getEnergyStorage());
-        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, holder.get(), (object, context) -> object.getItemHandler());
+        event.registerBlockEntity(Capabilities.Fluid.BLOCK, holder.get(), (object, context) -> object.getFluidHandler());
+        event.registerBlockEntity(Capabilities.Energy.BLOCK, holder.get(), (object, context) -> object.getEnergyStorage());
+        event.registerBlockEntity(Capabilities.Item.BLOCK, holder.get(), (object, context) -> object.getItemHandler());
     }
 
-    private static <T extends EntityVehicleBase> void registerEntityCapabilities(RegisterCapabilitiesEvent event, DeferredHolder<EntityType<?>, EntityType<T>> holder) {
-        event.registerEntity(Capabilities.FluidHandler.ENTITY, holder.get(), (object, context) -> {
-            if (object instanceof IFluidHandler fluidHandler) {
-                return fluidHandler;
-            }
-            return null;
-        });
-        event.registerEntity(Capabilities.EnergyStorage.ENTITY, holder.get(), (object, context) -> {
-            if (object instanceof IEnergyStorage energyStorage) {
-                return energyStorage;
-            }
-            return null;
-        });
-        event.registerEntity(Capabilities.ItemHandler.ENTITY, holder.get(), (object, context) -> {
-            if (object instanceof IItemHandler itemHandler) {
-                return itemHandler;
-            }
-            return null;
-        });
+    private static <T extends EntityVehicleBase> void registerEntityCapabilities(RegisterCapabilitiesEvent event, DeferredHolder<EntityType<?>, EntityType<EntityGenericCar>> holder) {
+        event.registerEntity(Capabilities.Fluid.ENTITY, holder.get(), (car, context) -> car);
+        //TODO Implement capability access to the external inventory
+        //event.registerEntity(Capabilities.Item.ENTITY, holder.get(), (car, context) -> car);
     }
 
     private static final DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZER_REGISTER = DeferredRegister.create(BuiltInRegistries.RECIPE_SERIALIZER, CarMod.MODID);

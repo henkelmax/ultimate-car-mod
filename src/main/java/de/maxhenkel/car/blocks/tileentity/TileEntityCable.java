@@ -2,7 +2,6 @@ package de.maxhenkel.car.blocks.tileentity;
 
 import de.maxhenkel.car.CarMod;
 import de.maxhenkel.corelib.blockentity.ITickableBlockEntity;
-import de.maxhenkel.corelib.energy.EnergyUtils;
 import de.maxhenkel.tools.BlockPosList;
 import de.maxhenkel.car.blocks.ModBlocks;
 import net.minecraft.core.BlockPos;
@@ -11,11 +10,15 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.energy.IEnergyStorage;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.transfer.energy.EnergyHandler;
+import net.neoforged.neoforge.transfer.transaction.Transaction;
+import net.neoforged.neoforge.transfer.transaction.TransactionContext;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class TileEntityCable extends TileEntityBase implements ITickableBlockEntity, IEnergyStorage {
+public class TileEntityCable extends TileEntityBase implements ITickableBlockEntity, EnergyHandler {
 
     private final int transferRate;
 
@@ -31,12 +34,12 @@ public class TileEntityCable extends TileEntityBase implements ITickableBlockEnt
     @Override
     public void tick() {
         int energy = 0;
-        List<IEnergyStorage> providers = new ArrayList<>();
+        List<EnergyHandler> providers = new ArrayList<>();
 
         for (Direction facing : Direction.values()) {
-            IEnergyStorage provider = EnergyUtils.getEnergyStorageOffset(level, worldPosition, facing);
+            EnergyHandler energyHandler = level.getCapability(Capabilities.Energy.BLOCK, worldPosition.relative(facing), facing.getOpposite());
 
-            if (provider == null || provider instanceof TileEntityCable) {
+            if (energyHandler == null || energyHandler instanceof TileEntityCable) {
                 continue;
             }
 
@@ -46,11 +49,14 @@ public class TileEntityCable extends TileEntityBase implements ITickableBlockEnt
                 break;
             }
 
-            int extract = provider.extractEnergy(cex, true);
+            int extract;
+            try (Transaction transaction = Transaction.open(null)) {
+                extract = energyHandler.extract(cex, transaction);
+            }
 
             if (extract > 0) {
                 energy += extract;
-                providers.add(provider);
+                providers.add(energyHandler);
             }
 
         }
@@ -59,7 +65,7 @@ public class TileEntityCable extends TileEntityBase implements ITickableBlockEnt
             return;
         }
 
-        List<IEnergyStorage> receivers = new ArrayList<>();
+        List<EnergyHandler> receivers = new ArrayList<>();
 
         getConnectedReceivers(providers, receivers, new BlockPosList(), worldPosition);
 
@@ -75,20 +81,22 @@ public class TileEntityCable extends TileEntityBase implements ITickableBlockEnt
 
         int received = 0;
 
-        for (IEnergyStorage entry : receivers) {
-            received += entry.receiveEnergy(split, false);
-        }
-
-        for (IEnergyStorage entry : providers) {
-            if (received <= 0) {
-                break;
+        try (Transaction transaction = Transaction.open(null)) {
+            for (EnergyHandler entry : receivers) {
+                received += entry.insert(split, transaction);
             }
-            received -= entry.extractEnergy(received, false);
-        }
 
+            for (EnergyHandler entry : providers) {
+                if (received <= 0) {
+                    break;
+                }
+                received -= entry.extract(received, transaction);
+            }
+            transaction.commit();
+        }
     }
 
-    public void getConnectedReceivers(List<IEnergyStorage> sources, List<IEnergyStorage> receivers, BlockPosList positions, BlockPos pos) {
+    public void getConnectedReceivers(List<EnergyHandler> sources, List<EnergyHandler> receivers, BlockPosList positions, BlockPos pos) {
         for (Direction side : Direction.values()) {
             BlockPos p = pos.relative(side);
 
@@ -104,52 +112,22 @@ public class TileEntityCable extends TileEntityBase implements ITickableBlockEnt
                 continue;
             }
 
-            IEnergyStorage storage = EnergyUtils.getEnergyStorageOffset(level, pos, side);
+            EnergyHandler energyHandler = level.getCapability(Capabilities.Energy.BLOCK, pos.relative(side), side.getOpposite());
 
-            if (storage == null || storage.equals(this)) {
+            if (energyHandler == null || energyHandler.equals(this)) {
                 continue;
             }
 
-            if (sources.contains(storage)) {
+            if (sources.contains(energyHandler)) {
                 continue;
             }
 
-            if (receivers.contains(storage)) {
+            if (receivers.contains(energyHandler)) {
                 continue;
             }
 
-            receivers.add(storage);
+            receivers.add(energyHandler);
         }
-    }
-
-    @Override
-    public int receiveEnergy(int maxReceive, boolean simulate) {
-        return 0;
-    }
-
-    @Override
-    public int extractEnergy(int maxExtract, boolean simulate) {
-        return 0;
-    }
-
-    @Override
-    public int getEnergyStored() {
-        return 0;
-    }
-
-    @Override
-    public int getMaxEnergyStored() {
-        return 0;
-    }
-
-    @Override
-    public boolean canExtract() {
-        return false;
-    }
-
-    @Override
-    public boolean canReceive() {
-        return false;
     }
 
     @Override
@@ -160,5 +138,30 @@ public class TileEntityCable extends TileEntityBase implements ITickableBlockEnt
     @Override
     public ContainerData getFields() {
         return new SimpleContainerData(0);
+    }
+
+    @Override
+    public long getAmountAsLong() {
+        return 0;
+    }
+
+    @Override
+    public long getCapacityAsLong() {
+        return 0;
+    }
+
+    @Override
+    public int insert(int amount, TransactionContext transaction) {
+        return 0;
+    }
+
+    @Override
+    public int extract(int amount, TransactionContext transaction) {
+        return 0;
+    }
+
+    @Override
+    public EnergyHandler getEnergyStorage() {
+        return this;
     }
 }

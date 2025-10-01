@@ -11,6 +11,7 @@ import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
+import net.neoforged.neoforge.transfer.access.ItemAccess;
 
 public class SlotFuel extends Slot {
 
@@ -28,8 +29,7 @@ public class SlotFuel extends Slot {
         if (!stack.getItem().equals(ModItems.CANISTER.get())) {
             return;
         }
-
-        boolean success = ItemCanister.fuelFluidHandler(stack, car);
+        boolean success = ItemCanister.fuelFluidHandler(ItemAccess.forStack(stack), car);
 
         if (success) {
             ModSounds.playSound(SoundEvents.BREWING_STAND_BREW, car.level(), car.blockPosition(), null, SoundSource.MASTER);

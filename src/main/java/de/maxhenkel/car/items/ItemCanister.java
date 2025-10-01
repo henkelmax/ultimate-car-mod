@@ -5,6 +5,7 @@ import de.maxhenkel.car.blocks.ModBlocks;
 import de.maxhenkel.car.blocks.tileentity.TileEntityGasStation;
 import de.maxhenkel.car.sounds.ModSounds;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -16,9 +17,13 @@ import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.SimpleFluidContent;
-import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.transfer.ResourceHandler;
+import net.neoforged.neoforge.transfer.ResourceHandlerUtil;
+import net.neoforged.neoforge.transfer.access.ItemAccess;
+import net.neoforged.neoforge.transfer.fluid.FluidResource;
 
 import java.util.function.Consumer;
 
@@ -36,31 +41,31 @@ public class ItemCanister extends Item {
 
         BlockState state = context.getLevel().getBlockState(context.getClickedPos());
 
-        BlockEntity te;
+        BlockPos tePos = context.getClickedPos();
 
         if (state.getBlock().equals(ModBlocks.GAS_STATION_TOP.get())) {
-            te = context.getLevel().getBlockEntity(context.getClickedPos().below());
-        } else {
-            te = context.getLevel().getBlockEntity(context.getClickedPos());
+            tePos = context.getClickedPos().below();
         }
+
+        BlockEntity te = context.getLevel().getBlockEntity(tePos);
 
         if (te == null) {
             return super.useOn(context);
         }
 
-        if (te instanceof TileEntityGasStation) {
-            TileEntityGasStation fuel = (TileEntityGasStation) te;
-            boolean success = fillCanister(context.getPlayer().getItemInHand(context.getHand()), fuel);
+        ItemAccess itemAccess = ItemAccess.forPlayerInteraction(context.getPlayer(), context.getHand());
+
+        if (te instanceof TileEntityGasStation gasStation) {
+            boolean success = fillCanister(itemAccess, gasStation.getFluidHandler());
             if (success) {
                 ModSounds.playSound(SoundEvents.BREWING_STAND_BREW, context.getLevel(), context.getClickedPos(), null, SoundSource.BLOCKS);
             }
             return InteractionResult.SUCCESS;
         }
 
-        if (te instanceof IFluidHandler) {
-            IFluidHandler handler = (IFluidHandler) te;
-
-            boolean success = fuelFluidHandler(context.getPlayer().getItemInHand(context.getHand()), handler);
+        ResourceHandler<FluidResource> capability = context.getLevel().getCapability(Capabilities.Fluid.BLOCK, tePos, context.getClickedFace());
+        if (capability != null) {
+            boolean success = fuelFluidHandler(itemAccess, capability);
             if (success) {
                 ModSounds.playSound(SoundEvents.BREWING_STAND_BREW, context.getLevel(), context.getClickedPos(), null, SoundSource.BLOCKS);
             }
@@ -87,64 +92,16 @@ public class ItemCanister extends Item {
         consumer.accept(Component.translatable("canister.amount", Component.literal(String.valueOf(amount)).withStyle(ChatFormatting.DARK_GRAY)).withStyle(ChatFormatting.GRAY));
     }
 
-    public static boolean fillCanister(ItemStack canister, IFluidHandler handler) {
-        SimpleFluidContent content = canister.get(CarMod.FUEL_DATA_COMPONENT);
-
-        int maxAmount = CarMod.SERVER_CONFIG.canisterMaxFuel.get();
-
-        if (content != null) {
-            maxAmount = CarMod.SERVER_CONFIG.canisterMaxFuel.get() - content.getAmount();
-        }
-
-        if (maxAmount <= 0) {
-            return false;
-        }
-
-        FluidStack resultSim = handler.drain(maxAmount, IFluidHandler.FluidAction.SIMULATE);
-        if (resultSim.getAmount() <= 0) {
-            return false;
-        }
-
-        if (content != null && !content.isEmpty() && !resultSim.getFluid().equals(content.getFluid())) {
-            return false;
-        }
-
-        FluidStack result = handler.drain(maxAmount, IFluidHandler.FluidAction.EXECUTE);
-
-        if (result.isEmpty()) {
-            return false;
-        }
-
-        if (content == null || content.isEmpty()) {
-            canister.set(CarMod.FUEL_DATA_COMPONENT, SimpleFluidContent.copyOf(result));
-            return true;
-        }
-
-        if (result.getFluid().equals(content.getFluid())) {
-            canister.set(CarMod.FUEL_DATA_COMPONENT, SimpleFluidContent.copyOf(new FluidStack(content.getFluid(), content.getAmount() + result.getAmount())));
-        }
-        return true;
+    public static boolean fillCanister(ItemAccess canister, ResourceHandler<FluidResource> handler) {
+        ResourceHandler<FluidResource> canisterHandler = canister.getCapability(Capabilities.Fluid.ITEM);
+        int moved = ResourceHandlerUtil.move(handler, canisterHandler, resource -> true, Integer.MAX_VALUE, null);
+        return moved > 0;
     }
 
-    public static boolean fuelFluidHandler(ItemStack canister, IFluidHandler handler) {
-        SimpleFluidContent content = canister.get(CarMod.FUEL_DATA_COMPONENT);
-
-        if (content == null || content.isEmpty()) {
-            return false;
-        }
-        FluidStack result = content.copy();
-
-        int fueledAmount = handler.fill(result, IFluidHandler.FluidAction.EXECUTE);
-
-        result.setAmount(result.getAmount() - fueledAmount);
-
-        if (result.getAmount() <= 0) {
-            canister.remove(CarMod.FUEL_DATA_COMPONENT);
-            return true;
-        }
-
-        canister.set(CarMod.FUEL_DATA_COMPONENT, SimpleFluidContent.copyOf(result));
-        return true;
+    public static boolean fuelFluidHandler(ItemAccess canister, ResourceHandler<FluidResource> handler) {
+        ResourceHandler<FluidResource> canisterHandler = canister.getCapability(Capabilities.Fluid.ITEM);
+        int moved = ResourceHandlerUtil.move(canisterHandler, handler, resource -> true, Integer.MAX_VALUE, null);
+        return moved > 0;
     }
 
 }

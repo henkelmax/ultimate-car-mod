@@ -6,7 +6,7 @@ import de.maxhenkel.corelib.math.MathUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.transfer.fluid.FluidResource;
 import snownee.jade.api.EntityAccessor;
 import snownee.jade.api.IEntityComponentProvider;
 import snownee.jade.api.ITooltip;
@@ -24,10 +24,11 @@ public class HUDHandlerCars implements IEntityComponentProvider {
         iTooltip.add(entityAccessor.getEntity().getDisplayName().copy().withStyle(ChatFormatting.WHITE));
 
         if (entityAccessor.getEntity() instanceof EntityGenericCar car) {
-            FluidStack carFluid = car.getFluidInTank(0);
-            if (!carFluid.isEmpty()) {
+            FluidResource carFluid = car.getResource(0);
+            int carFluidAmount = car.getAmountAsInt(0);
+            if (carFluidAmount > 0) {
                 iTooltip.add(Component.translatable("tooltip.waila.car.fuel", carFluid.getHoverName()));
-                iTooltip.add(Component.translatable("tooltip.waila.car.fuel_amount", carFluid.getAmount(), car.getMaxFuel()));
+                iTooltip.add(Component.translatable("tooltip.waila.car.fuel_amount", carFluidAmount, car.getMaxFuel()));
             }
 
             float damage = car.getDamage();

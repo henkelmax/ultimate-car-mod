@@ -9,19 +9,32 @@ import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.neoforged.neoforge.fluids.FluidStack;
-import net.neoforged.neoforge.fluids.FluidUtil;
-import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.transfer.ResourceHandler;
+import net.neoforged.neoforge.transfer.ResourceHandlerUtil;
+import net.neoforged.neoforge.transfer.fluid.FluidResource;
+import net.neoforged.neoforge.transfer.transaction.SnapshotJournal;
+import net.neoforged.neoforge.transfer.transaction.TransactionContext;
 
-import javax.annotation.Nonnull;
-
-public class TileEntityTank extends TileEntityBase implements IFluidHandler, ITickableBlockEntity {
+public class TileEntityTank extends TileEntityBase implements ResourceHandler<FluidResource>, ITickableBlockEntity {
 
     private FluidStack fluid;
     public static final int CAPACITY = 16000;
+
+    private final SnapshotJournal<FluidStack> fluidJournal = new SnapshotJournal<>() {
+        @Override
+        protected FluidStack createSnapshot() {
+            return fluid.copy();
+        }
+
+        @Override
+        protected void revertToSnapshot(FluidStack snapshot) {
+            fluid = snapshot.copy();
+            setChanged();
+        }
+    };
 
     public TileEntityTank(BlockPos pos, BlockState state) {
         super(CarMod.TANK_TILE_ENTITY_TYPE.get(), pos, state);
@@ -73,21 +86,19 @@ public class TileEntityTank extends TileEntityBase implements IFluidHandler, ITi
             return;
         }
 
-        FluidUtil.tryFluidTransfer(otherTank, this, (-dif) / 2, true);
+        ResourceHandlerUtil.move(this, otherTank, resource -> true, (-dif) / 2, null);
     }
 
     public void checkDown() {
         BlockEntity te = level.getBlockEntity(worldPosition.below());
 
-        if (!(te instanceof TileEntityTank)) {
+        if (!(te instanceof TileEntityTank otherTank)) {
             return;
         }
 
-        TileEntityTank otherTank = (TileEntityTank) te;
+        int moved = ResourceHandlerUtil.move(this, otherTank, resource -> true, Integer.MAX_VALUE, null);
 
-        FluidStack stack = FluidUtil.tryFluidTransfer(otherTank, this, Integer.MAX_VALUE, true);
-
-        if (stack.isEmpty()) {
+        if (moved <= 0) {
             return;
         }
 
@@ -206,96 +217,76 @@ public class TileEntityTank extends TileEntityBase implements IFluidHandler, ITi
     }
 
     @Override
-    public int getTanks() {
+    public ResourceHandler<FluidResource> getFluidHandler() {
+        return this;
+    }
+
+    @Override
+    public int size() {
         return 1;
     }
 
-    @Nonnull
     @Override
-    public FluidStack getFluidInTank(int tank) {
-        return fluid;
+    public FluidResource getResource(int index) {
+        return FluidResource.of(fluid);
     }
 
     @Override
-    public int getTankCapacity(int tank) {
+    public long getAmountAsLong(int index) {
+        return fluid.getAmount();
+    }
+
+    @Override
+    public long getCapacityAsLong(int index, FluidResource resource) {
         return CAPACITY;
     }
 
     @Override
-    public boolean isFluidValid(int tank, @Nonnull FluidStack stack) {
+    public boolean isValid(int index, FluidResource resource) {
         return true;
     }
 
     @Override
-    public int fill(FluidStack resource, FluidAction action) {
+    public int insert(int index, FluidResource resource, int amount, TransactionContext transaction) {
         if (fluid.isEmpty()) {
-            int amount = Math.min(resource.getAmount(), CAPACITY);
+            int result = Math.min(amount, CAPACITY);
 
-            if (action.execute()) {
-                fluid = new FluidStack(resource.getFluid(), amount);
-                setChanged();
-            }
+            fluidJournal.updateSnapshots(transaction);
+            fluid = new FluidStack(resource.getFluid(), result);
+            setChanged();
 
-            return amount;
-        } else if (resource.getFluid().equals(fluid.getFluid())) {
-            int amount = Math.min(resource.getAmount(), CAPACITY - fluid.getAmount());
+            return result;
+        } else if (resource.is(fluid.getFluid())) {
+            int result = Math.min(amount, CAPACITY - fluid.getAmount());
 
-            if (action.execute()) {
-                fluid.setAmount(fluid.getAmount() + amount);
-                setChanged();
-            }
+            fluidJournal.updateSnapshots(transaction);
+            fluid.setAmount(fluid.getAmount() + result);
+            setChanged();
 
-            return amount;
+            return result;
         }
         return 0;
     }
 
-    @Nonnull
     @Override
-    public FluidStack drain(FluidStack resource, FluidAction action) {
+    public int extract(int index, FluidResource resource, int amount, TransactionContext transaction) {
         if (fluid.isEmpty()) {
-            return FluidStack.EMPTY;
+            return 0;
         }
 
-        if (fluid.getFluid().equals(resource.getFluid())) {
-            int amount = Math.min(resource.getAmount(), fluid.getAmount());
+        if (resource.is(fluid.getFluid())) {
+            int result = Math.min(amount, fluid.getAmount());
 
-            Fluid f = fluid.getFluid();
-
-            if (action.execute()) {
-                fluid.setAmount(fluid.getAmount() - amount);
-                if (fluid.getAmount() <= 0) {
-                    fluid = FluidStack.EMPTY;
-                }
-                setChanged();
-            }
-
-            return new FluidStack(f, amount);
-        }
-
-        return FluidStack.EMPTY;
-    }
-
-    @Nonnull
-    @Override
-    public FluidStack drain(int maxDrain, FluidAction action) {
-        if (fluid.isEmpty()) {
-            return FluidStack.EMPTY;
-        }
-
-        int amount = Math.min(maxDrain, fluid.getAmount());
-
-        Fluid f = fluid.getFluid();
-
-        if (action.execute()) {
-            fluid.setAmount(fluid.getAmount() - amount);
+            fluidJournal.updateSnapshots(transaction);
+            fluid.setAmount(fluid.getAmount() - result);
             if (fluid.getAmount() <= 0) {
                 fluid = FluidStack.EMPTY;
             }
             setChanged();
+
+            return result;
         }
 
-        return new FluidStack(f, amount);
+        return 0;
     }
-
 }

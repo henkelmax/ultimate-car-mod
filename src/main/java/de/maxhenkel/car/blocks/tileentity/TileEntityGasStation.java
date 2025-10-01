@@ -30,14 +30,17 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 import net.neoforged.neoforge.fluids.FluidStack;
-import net.neoforged.neoforge.fluids.FluidUtil;
-import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.transfer.ResourceHandler;
+import net.neoforged.neoforge.transfer.ResourceHandlerUtil;
+import net.neoforged.neoforge.transfer.fluid.FluidResource;
+import net.neoforged.neoforge.transfer.transaction.SnapshotJournal;
+import net.neoforged.neoforge.transfer.transaction.Transaction;
+import net.neoforged.neoforge.transfer.transaction.TransactionContext;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.*;
 
-public class TileEntityGasStation extends TileEntityBase implements ITickableBlockEntity, IFluidHandler, ISoundLoopable {
+public class TileEntityGasStation extends TileEntityBase implements ITickableBlockEntity, ResourceHandler<FluidResource>, ISoundLoopable {
 
     private FluidStack storage;
 
@@ -58,7 +61,20 @@ public class TileEntityGasStation extends TileEntityBase implements ITickableBlo
     private UUID owner;
 
     @Nullable
-    private IFluidHandler fluidHandlerInFront;
+    private ResourceHandler<FluidResource> fluidHandlerInFront;
+
+    private final SnapshotJournal<FluidStack> fluidJournal = new SnapshotJournal<>() {
+        @Override
+        protected FluidStack createSnapshot() {
+            return storage.copy();
+        }
+
+        @Override
+        protected void revertToSnapshot(FluidStack snapshot) {
+            storage = snapshot.copy();
+            setChanged();
+        }
+    };
 
     public TileEntityGasStation(BlockPos pos, BlockState state) {
         super(CarMod.GAS_STATION_TILE_ENTITY_TYPE.get(), pos, state);
@@ -156,10 +172,13 @@ public class TileEntityGasStation extends TileEntityBase implements ITickableBlo
             return;
         }
 
-        FluidStack s = FluidUtil.tryFluidTransfer(fluidHandlerInFront, this, transferRate, false);
+        int moved;
+        try (Transaction transaction = Transaction.open(null)) {
+            moved = ResourceHandlerUtil.move(this, fluidHandlerInFront, resource -> true, transferRate, transaction);
+        }
         int amountCarCanTake = 0;
-        if (!s.isEmpty()) {
-            amountCarCanTake = s.getAmount();
+        if (moved > 0) {
+            amountCarCanTake = moved;
         }
 
         if (amountCarCanTake <= 0) {
@@ -180,11 +199,15 @@ public class TileEntityGasStation extends TileEntityBase implements ITickableBlo
             }
         }
 
-        FluidStack result = FluidUtil.tryFluidTransfer(fluidHandlerInFront, this, Math.min(transferRate, freeAmountLeft), true);
+        int result;
+        try (Transaction transaction = Transaction.open(null)) {
+            result = ResourceHandlerUtil.move(this, fluidHandlerInFront, resource -> true, Math.min(transferRate, freeAmountLeft), transaction);
+            transaction.commit();
+        }
 
-        if (!result.isEmpty()) {
-            fuelCounter += result.getAmount();
-            freeAmountLeft -= result.getAmount();
+        if (result > 0) {
+            fuelCounter += result;
+            freeAmountLeft -= result;
             synchronize(100);
 
             setChanged();
@@ -365,21 +388,21 @@ public class TileEntityGasStation extends TileEntityBase implements ITickableBlo
     private CachedValue<Vec3> center = new CachedValue<>(() -> new Vec3(worldPosition.getX() + 0.5D, worldPosition.getY() + 1.5D, worldPosition.getZ() + 0.5D));
 
     @Nullable
-    private IFluidHandler searchFluidHandlerInFront() {
+    private ResourceHandler<FluidResource> searchFluidHandlerInFront() {
         if (level == null) {
             return null;
         }
         return level.getEntitiesOfClass(Entity.class, getDetectionBox())
                 .stream()
                 .sorted(Comparator.comparingDouble(o -> o.distanceToSqr(center.get())))
-                .map(entity -> entity.getCapability(Capabilities.FluidHandler.ENTITY, null))
+                .map(entity -> entity.getCapability(Capabilities.Fluid.ENTITY, null))
                 .filter(Objects::nonNull)
                 .findFirst()
                 .orElse(null);
     }
 
     @Nullable
-    public IFluidHandler getFluidHandlerInFront() {
+    public ResourceHandler<FluidResource> getFluidHandlerInFront() {
         return fluidHandlerInFront;
     }
 
@@ -406,8 +429,10 @@ public class TileEntityGasStation extends TileEntityBase implements ITickableBlo
         if (fluidHandlerInFront == null) {
             return false;
         }
-        FluidStack result = FluidUtil.tryFluidTransfer(fluidHandlerInFront, this, transferRate, false);
-        return !result.isEmpty();
+        try (Transaction transaction = Transaction.open(null)) {
+            int moved = ResourceHandlerUtil.move(this, fluidHandlerInFront, resource -> true, transferRate, transaction);
+            return moved > 0;
+        }
     }
 
     public Direction getDirection() {
@@ -459,104 +484,84 @@ public class TileEntityGasStation extends TileEntityBase implements ITickableBlo
     }
 
     @Override
-    public int getTanks() {
+    public int size() {
         return 1;
     }
 
-    @Nonnull
     @Override
-    public FluidStack getFluidInTank(int tank) {
-        return storage;
+    public FluidResource getResource(int index) {
+        return FluidResource.of(storage);
     }
 
     @Override
-    public int getTankCapacity(int tank) {
+    public long getAmountAsLong(int index) {
+        return storage.getAmount();
+    }
+
+    @Override
+    public long getCapacityAsLong(int index, FluidResource resource) {
         return maxStorageAmount;
     }
 
     @Override
-    public boolean isFluidValid(int tank, @Nonnull FluidStack stack) {
-        return isValidFluid(stack.getFluid());
+    public boolean isValid(int index, FluidResource resource) {
+        return isValidFluid(resource.getFluid());
     }
 
     @Override
-    public int fill(FluidStack resource, FluidAction action) {
+    public int insert(int index, FluidResource resource, int amount, TransactionContext transaction) {
         if (!isValidFluid(resource.getFluid())) {
             return 0;
         }
 
         if (storage.isEmpty()) {
-            int amount = Math.min(resource.getAmount(), maxStorageAmount);
+            int result = Math.min(amount, maxStorageAmount);
 
-            if (action.execute()) {
-                storage = new FluidStack(resource.getFluid(), amount);
-                synchronize();
-                setChanged();
-            }
+            fluidJournal.updateSnapshots(transaction);
+            storage = new FluidStack(resource.getFluid(), result);
+            synchronize();
+            setChanged();
 
-            return amount;
-        } else if (resource.getFluid().equals(storage.getFluid())) {
-            int amount = Math.min(resource.getAmount(), maxStorageAmount - storage.getAmount());
+            return result;
+        } else if (resource.is(storage.getFluid())) {
+            int result = Math.min(amount, maxStorageAmount - storage.getAmount());
 
-            if (action.execute()) {
-                storage.setAmount(storage.getAmount() + amount);
-                setChanged();
-            }
+            fluidJournal.updateSnapshots(transaction);
+            storage.setAmount(storage.getAmount() + result);
+            setChanged();
 
-            return amount;
+            return result;
         }
         return 0;
     }
 
-    @Nonnull
     @Override
-    public FluidStack drain(FluidStack resource, FluidAction action) {
+    public int extract(int index, FluidResource resource, int amount, TransactionContext transaction) {
         if (storage.isEmpty()) {
-            return FluidStack.EMPTY;
+            return 0;
         }
 
         if (storage.getFluid().equals(resource.getFluid())) {
-            int amount = Math.min(resource.getAmount(), storage.getAmount());
+            int result = Math.min(amount, storage.getAmount());
 
-            Fluid f = storage.getFluid();
-
-            if (action.execute()) {
-                storage.setAmount(storage.getAmount() - amount);
-                if (storage.getAmount() <= 0) {
-                    storage = FluidStack.EMPTY;
-                    synchronize();
-                }
-
-                setChanged();
-            }
-
-            return new FluidStack(f, amount);
-        }
-
-        return FluidStack.EMPTY;
-    }
-
-    @Nonnull
-    @Override
-    public FluidStack drain(int maxDrain, FluidAction action) {
-        if (storage.isEmpty()) {
-            return FluidStack.EMPTY;
-        }
-
-        int amount = Math.min(maxDrain, storage.getAmount());
-
-        Fluid f = storage.getFluid();
-
-        if (action.execute()) {
-            storage.setAmount(storage.getAmount() - amount);
+            fluidJournal.updateSnapshots(transaction);
+            storage.setAmount(storage.getAmount() - result);
             if (storage.getAmount() <= 0) {
                 storage = FluidStack.EMPTY;
                 synchronize();
             }
 
             setChanged();
+
+            return result;
         }
 
-        return new FluidStack(f, amount);
+        return 0;
     }
+
+    @Override
+    public ResourceHandler<FluidResource> getFluidHandler() {
+        return this;
+    }
+
 }

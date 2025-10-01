@@ -21,10 +21,11 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.TagValueOutput;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
-import net.neoforged.neoforge.energy.IEnergyStorage;
-import net.neoforged.neoforge.fluids.capability.IFluidHandler;
-import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.transfer.ResourceHandler;
+import net.neoforged.neoforge.transfer.energy.EnergyHandler;
+import net.neoforged.neoforge.transfer.fluid.FluidResource;
+import net.neoforged.neoforge.transfer.item.ItemResource;
 
 import javax.annotation.Nullable;
 import java.util.Optional;
@@ -101,26 +102,17 @@ public abstract class TileEntityBase extends BlockEntity implements Nameable {
     }
 
     @Nullable
-    public IFluidHandler getFluidHandler() {
-        if (this instanceof IFluidHandler fluidHandler) {
-            return fluidHandler;
-        }
+    public ResourceHandler<FluidResource> getFluidHandler() {
         return null;
     }
 
     @Nullable
-    public IEnergyStorage getEnergyStorage() {
-        if (this instanceof IEnergyStorage energyStorage) {
-            return energyStorage;
-        }
+    public EnergyHandler getEnergyStorage() {
         return null;
     }
 
     @Nullable
-    public IItemHandler getItemHandler() {
-        if (this instanceof IItemHandler itemHandler) {
-            return itemHandler;
-        }
+    public ResourceHandler<ItemResource> getItemHandler() {
         return null;
     }
 

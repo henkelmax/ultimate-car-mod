@@ -14,7 +14,8 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.fluids.FluidStack;
-import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.transfer.ResourceHandler;
+import net.neoforged.neoforge.transfer.fluid.FluidResource;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -67,10 +68,10 @@ public class GuiGasStation extends ScreenBase<ContainerGasStation> {
         guiGraphics.drawCenteredString(font, Component.translatable("gui.gas_station").getString(), width / 2, topPos + 5, TITLE_COLOR);
 
         // Car name
-        IFluidHandler fluidHandler = gasStation.getFluidHandlerInFront();
+        ResourceHandler<FluidResource> fluidHandler = gasStation.getFluidHandlerInFront();
 
-        if (fluidHandler instanceof Entity) {
-            drawCarName(guiGraphics, (Entity) fluidHandler);
+        if (fluidHandler instanceof Entity e) {
+            drawCarName(guiGraphics, e);
         }
 
 
@@ -110,19 +111,19 @@ public class GuiGasStation extends ScreenBase<ContainerGasStation> {
         guiGraphics.drawString(font, Component.translatable("gas_station.car_info", Component.literal(name).withStyle(ChatFormatting.WHITE)).getVisualOrderText(), leftPos + 63, topPos + 20, FONT_COLOR, false);
     }
 
-    private void drawCarFuel(GuiGraphics guiGraphics, IFluidHandler handler) {
+    private void drawCarFuel(GuiGraphics guiGraphics, ResourceHandler<FluidResource> handler) {
         if (handler == null) {
             guiGraphics.drawString(font, Component.translatable("gas_station.no_vehicle").getVisualOrderText(), leftPos + 63, topPos + 30, FONT_COLOR, false);
             return;
         }
-        if (handler.getTanks() <= 0) {
+        if (handler.size() <= 0) {
             guiGraphics.drawString(font, Component.translatable("gas_station.fuel_empty").getVisualOrderText(), leftPos + 63, topPos + 30, FONT_COLOR, false);
             return;
         }
-        FluidStack tank = handler.getFluidInTank(0);
+        FluidResource tank = handler.getResource(0);
         Component fuelText = Component.translatable("gas_station.car_fuel_amount",
-                Component.literal(String.valueOf(tank.getAmount())).withStyle(ChatFormatting.WHITE),
-                Component.literal(String.valueOf(handler.getTankCapacity(0))).withStyle(ChatFormatting.WHITE)
+                Component.literal(String.valueOf(handler.getAmountAsLong(0))).withStyle(ChatFormatting.WHITE),
+                Component.literal(String.valueOf(handler.getCapacityAsLong(0, tank))).withStyle(ChatFormatting.WHITE)
         );
         guiGraphics.drawString(font, fuelText.getVisualOrderText(), leftPos + 63, topPos + 30, FONT_COLOR, false);
 

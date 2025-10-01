@@ -14,8 +14,6 @@ public class GuiCar extends ScreenBase<ContainerCar> {
 
     private static final ResourceLocation CAR_GUI_TEXTURE = ResourceLocation.fromNamespaceAndPath(CarMod.MODID, "textures/gui/gui_car.png");
 
-    private static final int fontColor = 4210752;
-
     private Inventory playerInv;
     private EntityCarInventoryBase car;
 
@@ -33,13 +31,13 @@ public class GuiCar extends ScreenBase<ContainerCar> {
         super.renderLabels(guiGraphics, mouseX, mouseY);
 
         //Titles
-        guiGraphics.drawString(font, car.getDisplayName().getVisualOrderText(), 7, 87, fontColor, false);
-        guiGraphics.drawString(font, playerInv.getDisplayName().getVisualOrderText(), 8, this.imageHeight - 96 + 2, fontColor, false);
+        guiGraphics.drawString(font, car.getDisplayName().getVisualOrderText(), 7, 87, FONT_COLOR, false);
+        guiGraphics.drawString(font, playerInv.getDisplayName().getVisualOrderText(), 8, this.imageHeight - 96 + 2, FONT_COLOR, false);
 
-        guiGraphics.drawString(font, getFuelString().getVisualOrderText(), 7, 9, fontColor, false);
-        guiGraphics.drawString(font, getDamageString().getVisualOrderText(), 7, 35, fontColor, false);
-        guiGraphics.drawString(font, getBatteryString().getVisualOrderText(), 95, 9, fontColor, false);
-        guiGraphics.drawString(font, getTempString().getVisualOrderText(), 95, 35, fontColor, false);
+        guiGraphics.drawString(font, getFuelString().getVisualOrderText(), 7, 9, FONT_COLOR, false);
+        guiGraphics.drawString(font, getDamageString().getVisualOrderText(), 7, 35, FONT_COLOR, false);
+        guiGraphics.drawString(font, getBatteryString().getVisualOrderText(), 95, 9, FONT_COLOR, false);
+        guiGraphics.drawString(font, getTempString().getVisualOrderText(), 95, 35, FONT_COLOR, false);
     }
 
     public float getFuelPercent() {

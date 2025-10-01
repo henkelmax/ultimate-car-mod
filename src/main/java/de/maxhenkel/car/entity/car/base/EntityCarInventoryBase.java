@@ -17,17 +17,18 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
-import net.neoforged.neoforge.fluids.FluidActionResult;
+import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.fluids.FluidStack;
-import net.neoforged.neoforge.fluids.FluidUtil;
-import net.neoforged.neoforge.fluids.capability.IFluidHandler;
-import net.neoforged.neoforge.items.IItemHandler;
-import net.neoforged.neoforge.items.wrapper.InvWrapper;
+import net.neoforged.neoforge.transfer.ResourceHandler;
+import net.neoforged.neoforge.transfer.ResourceHandlerUtil;
+import net.neoforged.neoforge.transfer.access.ItemAccess;
+import net.neoforged.neoforge.transfer.fluid.FluidResource;
+import net.neoforged.neoforge.transfer.transaction.SnapshotJournal;
+import net.neoforged.neoforge.transfer.transaction.Transaction;
+import net.neoforged.neoforge.transfer.transaction.TransactionContext;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public abstract class EntityCarInventoryBase extends EntityCarFuelBase implements Container {
@@ -37,6 +38,18 @@ public abstract class EntityCarInventoryBase extends EntityCarFuelBase implement
     protected Container partInventory;
 
     protected FluidStack fluidInventory;
+
+    private final SnapshotJournal<FluidStack> fluidJournal = new SnapshotJournal<>() {
+        @Override
+        protected FluidStack createSnapshot() {
+            return fluidInventory.copy();
+        }
+
+        @Override
+        protected void revertToSnapshot(FluidStack snapshot) {
+            fluidInventory = snapshot.copy();
+        }
+    };
 
     public EntityCarInventoryBase(EntityType type, Level worldIn) {
         super(type, worldIn);
@@ -54,26 +67,24 @@ public abstract class EntityCarInventoryBase extends EntityCarFuelBase implement
             ItemStack stack = player.getItemInHand(hand);
             if (!stack.isEmpty()) {
                 if (stack.getItem() instanceof ItemCanister) {
-                    boolean success = ItemCanister.fillCanister(stack, this);
-
+                    boolean success = ItemCanister.fillCanister(ItemAccess.forPlayerInteraction(player, hand), this);
                     if (success) {
                         ModSounds.playSound(SoundEvents.BREWING_STAND_BREW, level(), blockPosition(), null, SoundSource.BLOCKS);
                     }
                     return InteractionResult.CONSUME;
                 }
                 if (getFluidInventorySize() > 0) {
-                    IFluidHandler handler = FluidUtil.getFluidHandler(stack).orElse(null);
-                    if (handler != null) {
-                        FluidStack fluidStack = FluidUtil.getFluidContained(stack).orElse(FluidStack.EMPTY);
-
-                        if (!fluidStack.isEmpty()) {
-                            if (handleEmpty(stack, getInventoryFluidHandler(), player, hand)) {
-                                return InteractionResult.CONSUME;
+                    ItemAccess itemAccess = ItemAccess.forPlayerInteraction(player, hand);
+                    ResourceHandler<FluidResource> capability = itemAccess.getCapability(Capabilities.Fluid.ITEM);
+                    if (capability != null) {
+                        try (Transaction transaction = Transaction.open(null)) {
+                            ResourceHandler<FluidResource> handler = getInventoryFluidHandler();
+                            if (ResourceHandlerUtil.isEmpty(capability)) {
+                                ResourceHandlerUtil.move(handler, capability, f -> true, Integer.MAX_VALUE, transaction);
+                            } else {
+                                ResourceHandlerUtil.move(capability, handler, f -> true, Integer.MAX_VALUE, transaction);
                             }
-                        }
-
-                        if (handleFill(stack, getInventoryFluidHandler(), player, hand)) {
-                            return InteractionResult.CONSUME;
+                            transaction.commit();
                         }
                     }
                 }
@@ -104,33 +115,6 @@ public abstract class EntityCarInventoryBase extends EntityCarFuelBase implement
             return InteractionResult.SUCCESS;
         }
         return super.interact(player, hand);
-    }
-
-    public static boolean handleEmpty(ItemStack stack, IFluidHandler handler, Player playerIn, InteractionHand hand) {
-        IItemHandler inv = new InvWrapper(playerIn.getInventory());
-
-        FluidActionResult res = FluidUtil.tryEmptyContainerAndStow(stack, handler, inv, Integer.MAX_VALUE, playerIn, true);
-
-        if (res.isSuccess()) {
-            playerIn.setItemInHand(hand, res.result);
-            return true;
-        }
-
-        return false;
-    }
-
-    public static boolean handleFill(ItemStack stack, IFluidHandler handler, Player playerIn, InteractionHand hand) {
-        IItemHandler inv = new InvWrapper(playerIn.getInventory());
-
-        FluidActionResult result = FluidUtil.tryFillContainerAndStow(stack, handler, inv, Integer.MAX_VALUE,
-                playerIn, true);
-
-        if (result.isSuccess()) {
-            playerIn.setItemInHand(hand, result.result);
-            return true;
-        }
-
-        return false;
     }
 
     public abstract int getFluidInventorySize();
@@ -199,101 +183,79 @@ public abstract class EntityCarInventoryBase extends EntityCarFuelBase implement
         valueOutput.store("fluid_inventory", FluidStack.CODEC, fluidInventory);
     }
 
-    public IFluidHandler getInventoryFluidHandler() {
+    public ResourceHandler<FluidResource> getInventoryFluidHandler() {
         return inventoryFluidHandler;
     }
 
-    private IFluidHandler inventoryFluidHandler = new IFluidHandler() {
+    private final ResourceHandler<FluidResource> inventoryFluidHandler = new ResourceHandler<>() {
+
         @Override
-        public int getTanks() {
+        public int size() {
             return 1;
         }
 
-        @Nonnull
         @Override
-        public FluidStack getFluidInTank(int tank) {
-            return fluidInventory;
+        public FluidResource getResource(int index) {
+            return FluidResource.of(fluidInventory);
         }
 
         @Override
-        public int getTankCapacity(int tank) {
+        public long getAmountAsLong(int index) {
+            return fluidInventory.getAmount();
+        }
+
+        @Override
+        public long getCapacityAsLong(int index, FluidResource resource) {
             return getFluidInventorySize();
         }
 
         @Override
-        public boolean isFluidValid(int tank, @Nonnull FluidStack stack) {
+        public boolean isValid(int index, FluidResource resource) {
+            if (fluidInventory.isEmpty()) {
+                return true;
+            }
+            if (!resource.is(fluidInventory.getFluid())) {
+                return false;
+            }
             return true;
         }
 
         @Override
-        public int fill(FluidStack resource, FluidAction action) {
+        public int insert(int index, FluidResource resource, int amount, TransactionContext transaction) {
             if (fluidInventory.isEmpty()) {
-                int amount = Math.min(resource.getAmount(), getFluidInventorySize());
-
-                if (action.execute()) {
-                    fluidInventory = new FluidStack(resource.getFluid(), amount);
-                }
-
-                return amount;
+                int result = Math.min(amount, getFluidInventorySize());
+                fluidJournal.updateSnapshots(transaction);
+                fluidInventory = new FluidStack(resource.getFluid(), result);
+                return result;
             } else if (resource.getFluid().equals(fluidInventory.getFluid())) {
-                int amount = Math.min(resource.getAmount(), getFluidInventorySize() - fluidInventory.getAmount());
-
-                if (action.execute()) {
-                    fluidInventory.setAmount(fluidInventory.getAmount() + amount);
-                }
-
-                return amount;
+                int result = Math.min(amount, getFluidInventorySize() - fluidInventory.getAmount());
+                fluidJournal.updateSnapshots(transaction);
+                fluidInventory.setAmount(fluidInventory.getAmount() + result);
+                return result;
             }
             return 0;
         }
 
-        @Nonnull
         @Override
-        public FluidStack drain(FluidStack resource, FluidAction action) {
+        public int extract(int index, FluidResource resource, int amount, TransactionContext transaction) {
             if (fluidInventory.isEmpty()) {
-                return FluidStack.EMPTY;
+                return 0;
             }
 
-            if (fluidInventory.getFluid().equals(resource.getFluid())) {
-                int amount = Math.min(resource.getAmount(), fluidInventory.getAmount());
-
-                Fluid f = fluidInventory.getFluid();
-
-                if (action.execute()) {
-                    fluidInventory.setAmount(fluidInventory.getAmount() - amount);
-                    if (fluidInventory.getAmount() <= 0) {
-                        fluidInventory = FluidStack.EMPTY;
-                    }
-                }
-
-                return new FluidStack(f, amount);
-            }
-
-            return FluidStack.EMPTY;
-        }
-
-        @Nonnull
-        @Override
-        public FluidStack drain(int maxDrain, FluidAction action) {
-            if (fluidInventory.isEmpty()) {
-                return FluidStack.EMPTY;
-            }
-
-            int amount = Math.min(maxDrain, fluidInventory.getAmount());
-
-            Fluid f = fluidInventory.getFluid();
-
-            if (action.execute()) {
-                fluidInventory.setAmount(fluidInventory.getAmount() - amount);
+            if (fluidInventory.is(resource.getFluid())) {
+                int result = Math.min(amount, fluidInventory.getAmount());
+                fluidJournal.updateSnapshots(transaction);
+                fluidInventory.setAmount(fluidInventory.getAmount() - result);
                 if (fluidInventory.getAmount() <= 0) {
                     fluidInventory = FluidStack.EMPTY;
                 }
+
+                return result;
             }
 
-            return new FluidStack(f, amount);
+            return 0;
         }
     };
-
 
     @Override
     public int getContainerSize() {

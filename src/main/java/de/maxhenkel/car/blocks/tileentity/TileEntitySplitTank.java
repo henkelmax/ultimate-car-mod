@@ -3,6 +3,7 @@ package de.maxhenkel.car.blocks.tileentity;
 import de.maxhenkel.car.CarMod;
 import de.maxhenkel.car.fluids.ModFluids;
 import de.maxhenkel.corelib.blockentity.ITickableBlockEntity;
+import de.maxhenkel.tools.IntegerJournal;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.Container;
@@ -14,12 +15,12 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
-import net.neoforged.neoforge.fluids.FluidStack;
-import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.transfer.ResourceHandler;
+import net.neoforged.neoforge.transfer.fluid.FluidResource;
+import net.neoforged.neoforge.transfer.transaction.SnapshotJournal;
+import net.neoforged.neoforge.transfer.transaction.TransactionContext;
 
-import javax.annotation.Nonnull;
-
-public class TileEntitySplitTank extends TileEntityBase implements ITickableBlockEntity, IFluidHandler, Container {
+public class TileEntitySplitTank extends TileEntityBase implements ITickableBlockEntity, ResourceHandler<FluidResource>, Container {
 
     private int currentMix;
     public int maxMix;
@@ -37,6 +38,19 @@ public class TileEntitySplitTank extends TileEntityBase implements ITickableBloc
     private int timeToGenerate;
 
     protected SimpleContainer inventory;
+
+    private final SnapshotJournal<Integer> mixJournal = new IntegerJournal(i -> {
+        currentMix = i;
+        setChanged();
+    }, () -> currentMix);
+    private final SnapshotJournal<Integer> bioDieselJournal = new IntegerJournal(i -> {
+        currentBioDiesel = i;
+        setChanged();
+    }, () -> currentBioDiesel);
+    private final SnapshotJournal<Integer> glycerinJournal = new IntegerJournal(i -> {
+        currentGlycerin = i;
+        setChanged();
+    }, () -> currentGlycerin);
 
     public TileEntitySplitTank(BlockPos pos, BlockState state) {
         super(CarMod.SPLIT_TANK_TILE_ENTITY_TYPE.get(), pos, state);
@@ -252,27 +266,37 @@ public class TileEntitySplitTank extends TileEntityBase implements ITickableBloc
     }
 
     @Override
-    public int getTanks() {
+    public int size() {
         return 3;
     }
 
-    @Nonnull
     @Override
-    public FluidStack getFluidInTank(int tank) {
-        if (tank == 0) {
-            return new FluidStack(ModFluids.CANOLA_METHANOL_MIX.get(), currentMix);
-        } else if (tank == 1) {
-            return new FluidStack(ModFluids.BIO_DIESEL.get(), currentBioDiesel);
+    public FluidResource getResource(int index) {
+        if (index == 0) {
+            return FluidResource.of(ModFluids.CANOLA_METHANOL_MIX.get());
+        } else if (index == 1) {
+            return FluidResource.of(ModFluids.BIO_DIESEL.get());
         } else {
-            return new FluidStack(ModFluids.GLYCERIN.get(), currentGlycerin);
+            return FluidResource.of(ModFluids.GLYCERIN.get());
         }
     }
 
     @Override
-    public int getTankCapacity(int tank) {
-        if (tank == 0) {
+    public long getAmountAsLong(int index) {
+        if (index == 0) {
+            return currentMix;
+        } else if (index == 1) {
+            return currentBioDiesel;
+        } else {
+            return currentGlycerin;
+        }
+    }
+
+    @Override
+    public long getCapacityAsLong(int index, FluidResource resource) {
+        if (index == 0) {
             return maxMix;
-        } else if (tank == 1) {
+        } else if (index == 1) {
             return maxBioDiesel;
         } else {
             return maxGlycerin;
@@ -280,75 +304,52 @@ public class TileEntitySplitTank extends TileEntityBase implements ITickableBloc
     }
 
     @Override
-    public boolean isFluidValid(int tank, @Nonnull FluidStack stack) {
-        if (tank == 0) {
-            return stack.getFluid().equals(ModFluids.CANOLA_METHANOL_MIX.get());
-        } else if (tank == 1) {
-            return stack.getFluid().equals(ModFluids.BIO_DIESEL.get());
+    public boolean isValid(int index, FluidResource resource) {
+        if (index == 0) {
+            return resource.is(ModFluids.CANOLA_METHANOL_MIX.get());
+        } else if (index == 1) {
+            return resource.is(ModFluids.BIO_DIESEL.get());
         } else {
-            return stack.getFluid().equals(ModFluids.GLYCERIN.get());
+            return resource.is(ModFluids.GLYCERIN.get());
         }
     }
 
     @Override
-    public int fill(FluidStack resource, FluidAction action) {
+    public int insert(int index, FluidResource resource, int amount, TransactionContext transaction) {
         if (resource.getFluid().equals(ModFluids.CANOLA_METHANOL_MIX.get())) {
-            int amount = Math.min(maxMix - currentMix, resource.getAmount());
-            if (action.execute()) {
-                currentMix += amount;
-                setChanged();
-            }
-            return amount;
+            int result = Math.min(maxMix - currentMix, amount);
+            mixJournal.updateSnapshots(transaction);
+            currentMix += result;
+            setChanged();
+            return result;
+        }
+        return 0;
+    }
+
+    @Override
+    public int extract(int index, FluidResource resource, int amount, TransactionContext transaction) {
+        if (resource.getFluid().equals(ModFluids.GLYCERIN.get())) {
+            int result = Math.min(amount, currentGlycerin);
+
+            glycerinJournal.updateSnapshots(transaction);
+            currentGlycerin -= result;
+            setChanged();
+
+            return result;
+        } else if (resource.getFluid().equals(ModFluids.BIO_DIESEL.get())) {
+            int result = Math.min(amount, currentBioDiesel);
+
+            bioDieselJournal.updateSnapshots(transaction);
+            currentBioDiesel -= result;
+            setChanged();
+            return result;
         }
 
         return 0;
     }
 
-    @Nonnull
     @Override
-    public FluidStack drain(FluidStack resource, FluidAction action) {
-        if (resource.getFluid().equals(ModFluids.GLYCERIN.get())) {
-            int amount = Math.min(resource.getAmount(), currentGlycerin);
-
-            if (action.execute()) {
-                currentGlycerin -= amount;
-                setChanged();
-            }
-
-            return new FluidStack(ModFluids.GLYCERIN.get(), amount);
-        } else if (resource.getFluid().equals(ModFluids.BIO_DIESEL.get())) {
-            int amount = Math.min(resource.getAmount(), currentBioDiesel);
-
-            if (action.execute()) {
-                currentBioDiesel -= amount;
-                setChanged();
-            }
-            return new FluidStack(ModFluids.BIO_DIESEL.get(), amount);
-        }
-
-        return FluidStack.EMPTY;
-    }
-
-    @Nonnull
-    @Override
-    public FluidStack drain(int maxDrain, FluidAction action) {
-        if (currentGlycerin > currentBioDiesel) {
-            int amount = Math.min(maxDrain, currentGlycerin);
-
-            if (action.execute()) {
-                currentGlycerin -= amount;
-                setChanged();
-            }
-
-            return new FluidStack(ModFluids.GLYCERIN.get(), amount);
-        } else {
-            int amount = Math.min(maxDrain, currentBioDiesel);
-
-            if (action.execute()) {
-                currentBioDiesel -= amount;
-                setChanged();
-            }
-            return new FluidStack(ModFluids.BIO_DIESEL.get(), amount);
-        }
+    public ResourceHandler<FluidResource> getFluidHandler() {
+        return this;
     }
 }

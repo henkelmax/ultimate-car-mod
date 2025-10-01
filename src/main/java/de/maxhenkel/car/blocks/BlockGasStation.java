@@ -30,9 +30,6 @@ import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.neoforged.neoforge.fluids.FluidStack;
-import net.neoforged.neoforge.fluids.FluidUtil;
-import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 
 import javax.annotation.Nullable;
 
@@ -79,27 +76,6 @@ public class BlockGasStation extends BlockOrientableHorizontal {
         }
 
         TileEntityGasStation station = (TileEntityGasStation) te;
-
-        ItemStack stack = player.getItemInHand(interactionHand);
-
-        if (station.isOwner(player) || !station.hasTrade()) {
-            FluidStack fluidStack = FluidUtil.getFluidContained(stack).orElse(FluidStack.EMPTY);
-
-            if (!fluidStack.isEmpty()) {
-                boolean success = BlockTank.handleEmpty(stack, level, blockPos, player, interactionHand);
-                if (success) {
-                    return InteractionResult.SUCCESS;
-                }
-            }
-            IFluidHandler handler = FluidUtil.getFluidHandler(stack).orElse(null);
-
-            if (handler != null) {
-                boolean success1 = BlockTank.handleFill(stack, level, blockPos, player, interactionHand);
-                if (success1) {
-                    return InteractionResult.SUCCESS;
-                }
-            }
-        }
 
         if (!player.isShiftKeyDown()) {
             if (player instanceof ServerPlayer) {

@@ -6,7 +6,6 @@ import javax.annotation.Nullable;
 
 import de.maxhenkel.car.CarMod;
 import de.maxhenkel.corelib.blockentity.ITickableBlockEntity;
-import de.maxhenkel.corelib.fluid.FluidUtils;
 import de.maxhenkel.tools.BlockPosList;
 import de.maxhenkel.car.blocks.BlockFluidExtractor;
 import de.maxhenkel.car.blocks.ModBlocks;
@@ -20,13 +19,17 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
+import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.fluids.FluidStack;
-import net.neoforged.neoforge.fluids.FluidUtil;
-import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.transfer.ResourceHandler;
+import net.neoforged.neoforge.transfer.ResourceHandlerUtil;
+import net.neoforged.neoforge.transfer.fluid.FluidResource;
+import net.neoforged.neoforge.transfer.fluid.FluidUtil;
+import net.neoforged.neoforge.transfer.transaction.Transaction;
 
 public class TileEntityFluidExtractor extends TileEntityBase implements ITickableBlockEntity {
 
-    private IFluidHandler extractHandler;
+    private ResourceHandler<FluidResource> extractHandler;
 
     private final int drainSpeed;
 
@@ -35,18 +38,18 @@ public class TileEntityFluidExtractor extends TileEntityBase implements ITickabl
     public TileEntityFluidExtractor(BlockPos pos, BlockState state) {
         super(CarMod.FLUID_EXTRACTOR_TILE_ENTITY_TYPE.get(), pos, state);
         this.drainSpeed = CarMod.SERVER_CONFIG.fluidExtractorDrainSpeed.get();
-        filter = null;
+        filter = ItemStack.EMPTY;
     }
 
     @Nullable
     public Fluid getFilterFluid() {
-        if (filter == null) {
+        if (filter.isEmpty()) {
             return null;
         }
 
-        FluidStack stack = FluidUtil.getFluidContained(filter).orElse(null);
+        FluidStack stack = FluidUtil.getFirstStackContained(filter);
 
-        if (stack == null || stack.getAmount() <= 0) {
+        if (stack.isEmpty() || stack.getAmount() <= 0) {
             return null;
         }
 
@@ -64,27 +67,49 @@ public class TileEntityFluidExtractor extends TileEntityBase implements ITickabl
             return;
         }
 
-        FluidStack drainSimulated;
-        if (getFilterFluid() == null) {
-            drainSimulated = extractHandler.drain(drainSpeed, IFluidHandler.FluidAction.SIMULATE);
+        int drainSimulated;
+        FluidResource toExtract = null;
+        Fluid filterFluid = getFilterFluid();
+        if (filterFluid == null) {
+            for (int i = 0; i < extractHandler.size(); i++) {
+                FluidResource resource = extractHandler.getResource(i);
+                if (resource.isEmpty()) {
+                    continue;
+                }
+                int simulatedExtract;
+                try (Transaction transaction = Transaction.open(null)) {
+                    simulatedExtract = extractHandler.extract(resource, drainSpeed, transaction);
+                }
+                if (simulatedExtract > 0) {
+                    toExtract = resource;
+                    break;
+                }
+            }
+            if (toExtract == null) {
+                return;
+            }
         } else {
-            drainSimulated = extractHandler.drain(new FluidStack(getFilterFluid(), drainSpeed), IFluidHandler.FluidAction.SIMULATE);
+            toExtract = FluidResource.of(filterFluid);
+        }
+        try (Transaction transaction = Transaction.open(null)) {
+            drainSimulated = extractHandler.extract(toExtract, drainSpeed, transaction);
         }
 
-        if (drainSimulated.getAmount() <= 0) {
+        if (drainSimulated <= 0) {
             return;
         }
 
-        List<IFluidHandler> handlers = new LinkedList<>();
+        List<ResourceHandler<FluidResource>> handlers = new LinkedList<>();
 
         getConnectedHandlers(handlers, new BlockPosList(), worldPosition);
 
-        List<IFluidHandler> fillHandlers = new LinkedList<>();
-
-        for (IFluidHandler handler : handlers) {
-            int amount = handler.fill(drainSimulated, IFluidHandler.FluidAction.SIMULATE);
-            if (amount > 0) {
-                fillHandlers.add(handler);
+        List<ResourceHandler<FluidResource>> fillHandlers = new LinkedList<>();
+        try (Transaction transaction = Transaction.open(null)) {
+            for (ResourceHandler<FluidResource> handler : handlers) {
+                int amount = handler.insert(toExtract, drainSimulated, transaction);
+                if (amount > 0) {
+                    fillHandlers.add(handler);
+                }
             }
         }
 
@@ -92,12 +117,9 @@ public class TileEntityFluidExtractor extends TileEntityBase implements ITickabl
             return;
         }
 
-        for (IFluidHandler handler : fillHandlers) {
-            if (getFilterFluid() == null) {
-                FluidUtils.tryFluidTransfer(handler, extractHandler, drainSpeed, true);
-            } else {
-                FluidUtils.tryFluidTransfer(handler, extractHandler, drainSpeed, true, getFilterFluid());
-            }
+        FluidResource extractFluid = toExtract;
+        for (ResourceHandler<FluidResource> handler : fillHandlers) {
+            ResourceHandlerUtil.move(extractHandler, handler, resource -> resource.is(extractFluid.getFluid()), drainSpeed, null);
         }
     }
 
@@ -111,10 +133,10 @@ public class TileEntityFluidExtractor extends TileEntityBase implements ITickabl
 
         Direction side = state.getValue(BlockFluidExtractor.FACING);
 
-        extractHandler = FluidUtils.getFluidHandlerOffset(level, worldPosition, side);
+        extractHandler = level.getCapability(Capabilities.Fluid.BLOCK, worldPosition.relative(side), side.getOpposite());
     }
 
-    public void getConnectedHandlers(List<IFluidHandler> handlers, BlockPosList positions, BlockPos pos) {
+    public void getConnectedHandlers(List<ResourceHandler<FluidResource>> handlers, BlockPosList positions, BlockPos pos) {
         for (Direction side : Direction.values()) {
             BlockPos p = pos.relative(side);
 
@@ -130,7 +152,7 @@ public class TileEntityFluidExtractor extends TileEntityBase implements ITickabl
                 continue;
             }
 
-            IFluidHandler handler = FluidUtils.getFluidHandlerOffset(level, pos, side);
+            ResourceHandler<FluidResource> handler = level.getCapability(Capabilities.Fluid.BLOCK, pos.relative(side), side.getOpposite());
 
             if (handler == null || handler.equals(extractHandler)) {
                 continue;
@@ -143,14 +165,14 @@ public class TileEntityFluidExtractor extends TileEntityBase implements ITickabl
     @Override
     public void saveAdditional(ValueOutput valueOutput) {
         super.saveAdditional(valueOutput);
-        if (filter != null && !filter.isEmpty()) {
+        if (!filter.isEmpty()) {
             valueOutput.store("filter", ItemStack.CODEC, filter);
         }
     }
 
     @Override
     public void loadAdditional(ValueInput valueInput) {
-        filter = valueInput.read("filter", ItemStack.CODEC).orElse(null);
+        filter = valueInput.read("filter", ItemStack.CODEC).orElse(ItemStack.EMPTY);
         super.loadAdditional(valueInput);
     }
 
@@ -160,19 +182,10 @@ public class TileEntityFluidExtractor extends TileEntityBase implements ITickabl
     }
 
     public ItemStack getFilter() {
-        if (filter == null) {
-            return null;
-        }
         return filter.copy();
     }
 
     public void setFilter(ItemStack filter) {
-        if (filter == null) {
-            this.filter = null;
-            setChanged();
-            synchronize();
-            return;
-        }
         this.filter = filter.copy();
         setChanged();
         synchronize();

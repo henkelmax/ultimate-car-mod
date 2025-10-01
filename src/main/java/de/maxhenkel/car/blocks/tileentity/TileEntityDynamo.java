@@ -2,7 +2,7 @@ package de.maxhenkel.car.blocks.tileentity;
 
 import de.maxhenkel.car.CarMod;
 import de.maxhenkel.corelib.blockentity.ITickableBlockEntity;
-import de.maxhenkel.corelib.energy.EnergyUtils;
+import de.maxhenkel.tools.IntegerJournal;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -11,13 +11,24 @@ import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
-import net.neoforged.neoforge.energy.IEnergyStorage;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.transfer.energy.EnergyHandler;
+import net.neoforged.neoforge.transfer.transaction.SnapshotJournal;
+import net.neoforged.neoforge.transfer.transaction.Transaction;
+import net.neoforged.neoforge.transfer.transaction.TransactionContext;
 
-public class TileEntityDynamo extends TileEntityBase implements IEnergyStorage, ITickableBlockEntity {
+import javax.annotation.Nullable;
+
+public class TileEntityDynamo extends TileEntityBase implements EnergyHandler, ITickableBlockEntity {
 
     private int storedEnergy;
     public final int maxStorage;
     public final int generation;
+
+    private final SnapshotJournal<Integer> energyJournal = new IntegerJournal(i -> {
+        storedEnergy = i;
+        setChanged();
+    }, () -> storedEnergy);
 
     public TileEntityDynamo(BlockPos pos, BlockState state) {
         super(CarMod.DYNAMO_TILE_ENTITY_TYPE.get(), pos, state);
@@ -30,14 +41,30 @@ public class TileEntityDynamo extends TileEntityBase implements IEnergyStorage, 
     @Override
     public void tick() {
         for (Direction side : Direction.values()) {
-            IEnergyStorage storage = EnergyUtils.getEnergyStorageOffset(level, worldPosition, side);
+            EnergyHandler energyHandler = level.getCapability(Capabilities.Energy.BLOCK, worldPosition.relative(side), side.getOpposite());
 
-            if (storage == null) {
+            if (energyHandler == null) {
                 continue;
             }
 
-            EnergyUtils.pushEnergy(this, storage, storedEnergy);
+            pushEnergy(this, energyHandler, storedEnergy, null);
         }
+    }
+
+    private static int pushEnergy(EnergyHandler provider, EnergyHandler receiver, int maxAmount, @Nullable TransactionContext transaction) {
+        int energySim;
+        int receivedSim;
+        try (Transaction t = Transaction.open(transaction)) {
+            energySim = provider.extract(maxAmount, t);
+            receivedSim = receiver.insert(energySim, t);
+        }
+        int energy;
+        try (Transaction t = Transaction.open(transaction)) {
+            energy = provider.extract(receivedSim, t);
+            receiver.insert(energy, t);
+            t.commit();
+        }
+        return energy;
     }
 
     public void addEnergy(int energy) {
@@ -61,43 +88,6 @@ public class TileEntityDynamo extends TileEntityBase implements IEnergyStorage, 
     }
 
     @Override
-    public int receiveEnergy(int maxReceive, boolean simulate) {
-        return 0;
-    }
-
-    @Override
-    public int extractEnergy(int maxExtract, boolean simulate) {
-        int i = Math.min(maxExtract, storedEnergy);
-
-        if (!simulate) {
-            storedEnergy -= i;
-            setChanged();
-        }
-
-        return i;
-    }
-
-    @Override
-    public int getEnergyStored() {
-        return storedEnergy;
-    }
-
-    @Override
-    public int getMaxEnergyStored() {
-        return maxStorage;
-    }
-
-    @Override
-    public boolean canExtract() {
-        return true;
-    }
-
-    @Override
-    public boolean canReceive() {
-        return false;
-    }
-
-    @Override
     public Component getTranslatedName() {
         return Component.translatable("block.car.dynamo");
     }
@@ -107,4 +97,34 @@ public class TileEntityDynamo extends TileEntityBase implements IEnergyStorage, 
         return new SimpleContainerData(0);
     }
 
+    @Override
+    public long getAmountAsLong() {
+        return storedEnergy;
+    }
+
+    @Override
+    public long getCapacityAsLong() {
+        return maxStorage;
+    }
+
+    @Override
+    public int insert(int amount, TransactionContext transaction) {
+        return 0;
+    }
+
+    @Override
+    public int extract(int amount, TransactionContext transaction) {
+        int i = Math.min(amount, storedEnergy);
+
+        energyJournal.updateSnapshots(transaction);
+        storedEnergy -= i;
+        setChanged();
+
+        return i;
+    }
+
+    @Override
+    public EnergyHandler getEnergyStorage() {
+        return this;
+    }
 }

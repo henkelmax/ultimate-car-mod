@@ -17,6 +17,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 
 public class TileInfoProvider implements IProbeInfoProvider {
 
@@ -37,15 +38,14 @@ public class TileInfoProvider implements IProbeInfoProvider {
                 iProbeInfo.text(Component.translatable("tooltip.waila.fluid_extractor.filter", new FluidStack(fluid, 1).getHoverName()));
             }
         } else if (te instanceof TileEntityGenerator generator) {
-            FluidStack fluid = generator.getFluidInTank(0);
-            if (!fluid.isEmpty()) {
-                iProbeInfo.tankHandler(generator, new ProgressStyle().suffix(" mb"));
+            if (generator.getAmountAsLong(0) > 0L) {
+                iProbeInfo.tankHandler(IFluidHandler.of(generator), new ProgressStyle().suffix(" mb"));
             }
         } else if (te instanceof TileEntityTank tank) {
-            FluidStack fluid = tank.getFluidInTank(0);
+            FluidStack fluid = tank.getFluid();
             if (!fluid.isEmpty()) {
                 iProbeInfo.text(fluid.getHoverName());
-                iProbeInfo.tankHandler(tank, new ProgressStyle().suffix(" mb"));
+                iProbeInfo.tankHandler(IFluidHandler.of(tank), new ProgressStyle().suffix(" mb"));
             }
         }
     }

@@ -171,7 +171,7 @@ public class BlockCable extends BlockBase implements EntityBlock, SimpleWaterlog
             return true;
         }
 
-        return world.getCapability(Capabilities.EnergyStorage.BLOCK, pos.relative(facing), facing.getOpposite()) != null;
+        return world.getCapability(Capabilities.Energy.BLOCK, pos.relative(facing), facing.getOpposite()) != null;
     }
 
     @Override

@@ -4,7 +4,7 @@ import de.maxhenkel.car.CarMod;
 import de.maxhenkel.car.blocks.BlockGui;
 import de.maxhenkel.car.blocks.ModBlocks;
 import de.maxhenkel.corelib.blockentity.ITickableBlockEntity;
-import de.maxhenkel.corelib.energy.EnergyUtils;
+import de.maxhenkel.tools.IntegerJournal;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -18,13 +18,20 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
-import net.neoforged.neoforge.energy.IEnergyStorage;
+import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.fluids.FluidStack;
-import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.transfer.ResourceHandler;
+import net.neoforged.neoforge.transfer.energy.EnergyHandler;
+import net.neoforged.neoforge.transfer.energy.EnergyHandlerUtil;
+import net.neoforged.neoforge.transfer.fluid.FluidResource;
+import net.neoforged.neoforge.transfer.transaction.SnapshotJournal;
+import net.neoforged.neoforge.transfer.transaction.Transaction;
+import net.neoforged.neoforge.transfer.transaction.TransactionContext;
 
-import javax.annotation.Nonnull;
+import java.util.AbstractMap;
+import java.util.Map;
 
-public class TileEntityGenerator extends TileEntityBase implements ITickableBlockEntity, IFluidHandler, IEnergyStorage, Container {
+public class TileEntityGenerator extends TileEntityBase implements ITickableBlockEntity, ResourceHandler<FluidResource>, EnergyHandler, Container {
 
     public final int maxStorage;
     public int storedEnergy;
@@ -36,6 +43,25 @@ public class TileEntityGenerator extends TileEntityBase implements ITickableBloc
     protected Fluid currentFluid;
 
     protected SimpleContainer inventory;
+
+    private final IntegerJournal energyJournal = new IntegerJournal(i -> {
+        storedEnergy = i;
+        setChanged();
+    }, () -> storedEnergy);
+
+    private final SnapshotJournal<Map.Entry<Fluid, Integer>> fluidJournal = new SnapshotJournal<>() {
+        @Override
+        protected Map.Entry<Fluid, Integer> createSnapshot() {
+            return new AbstractMap.SimpleEntry<>(currentFluid, currentMillibuckets);
+        }
+
+        @Override
+        protected void revertToSnapshot(Map.Entry<Fluid, Integer> snapshot) {
+            currentFluid = snapshot.getKey();
+            currentMillibuckets = snapshot.getValue();
+            setChanged();
+        }
+    };
 
     public TileEntityGenerator(BlockPos pos, BlockState state) {
         super(CarMod.GENERATOR_TILE_ENTITY_TYPE.get(), pos, state);
@@ -115,12 +141,15 @@ public class TileEntityGenerator extends TileEntityBase implements ITickableBloc
 
     private void handlePushEnergy() {
         for (Direction side : Direction.values()) {
-            IEnergyStorage storage = EnergyUtils.getEnergyStorageOffset(level, worldPosition, side);
-            if (storage == null) {
+            EnergyHandler energyHandler = level.getCapability(Capabilities.Energy.BLOCK, worldPosition.relative(side), side.getOpposite());
+            if (energyHandler == null) {
                 continue;
             }
-
-            EnergyUtils.pushEnergy(this, storage, storedEnergy);
+            try (Transaction transaction = Transaction.open(null)) {
+                int moved = EnergyHandlerUtil.move(this, energyHandler, storedEnergy, transaction);
+                storedEnergy -= moved;
+                transaction.commit();
+            }
         }
     }
 
@@ -222,43 +251,6 @@ public class TileEntityGenerator extends TileEntityBase implements ITickableBloc
         inventory.clearContent();
     }
 
-    @Override
-    public int receiveEnergy(int maxReceive, boolean simulate) {
-        return 0;
-    }
-
-    @Override
-    public int extractEnergy(int maxExtract, boolean simulate) {
-        int i = Math.min(maxExtract, storedEnergy);
-
-        if (!simulate) {
-            storedEnergy -= i;
-            setChanged();
-        }
-
-        return i;
-    }
-
-    @Override
-    public int getEnergyStored() {
-        return storedEnergy;
-    }
-
-    @Override
-    public int getMaxEnergyStored() {
-        return maxStorage;
-    }
-
-    @Override
-    public boolean canExtract() {
-        return true;
-    }
-
-    @Override
-    public boolean canReceive() {
-        return false;
-    }
-
 
     public int getStoredEnergy() {
         return storedEnergy;
@@ -274,60 +266,84 @@ public class TileEntityGenerator extends TileEntityBase implements ITickableBloc
     }
 
     @Override
-    public int getTanks() {
+    public ResourceHandler<FluidResource> getFluidHandler() {
+        return this;
+    }
+
+    @Override
+    public EnergyHandler getEnergyStorage() {
+        return this;
+    }
+
+    @Override
+    public long getAmountAsLong() {
+        return storedEnergy;
+    }
+
+    @Override
+    public long getCapacityAsLong() {
+        return maxStorage;
+    }
+
+    @Override
+    public int insert(int amount, TransactionContext transaction) {
+        return 0;
+    }
+
+    @Override
+    public int extract(int amount, TransactionContext transaction) {
+        int i = Math.min(amount, storedEnergy);
+        energyJournal.updateSnapshots(transaction);
+        storedEnergy -= i;
+        setChanged();
+        return i;
+    }
+
+    @Override
+    public int size() {
         return 1;
     }
 
-    @Nonnull
     @Override
-    public FluidStack getFluidInTank(int tank) {
+    public FluidResource getResource(int index) {
         if (currentFluid == null) {
-            return FluidStack.EMPTY;
+            return FluidResource.EMPTY;
         }
-        return new FluidStack(currentFluid, currentMillibuckets);
+        return FluidResource.of(currentFluid);
     }
 
     @Override
-    public int getTankCapacity(int tank) {
+    public long getAmountAsLong(int index) {
+        return currentMillibuckets;
+    }
+
+    @Override
+    public long getCapacityAsLong(int index, FluidResource resource) {
         return maxMillibuckets;
     }
 
     @Override
-    public boolean isFluidValid(int tank, @Nonnull FluidStack stack) {
-        if (isValidFuel(stack.getFluid()) && (currentFluid == null || currentFluid.equals(stack.getFluid()))) {
-            return true;
-        }
-        return false;
+    public boolean isValid(int index, FluidResource resource) {
+        return isValidFuel(resource.getFluid());
     }
 
     @Override
-    public int fill(FluidStack resource, FluidAction action) {
-        if ((currentFluid == null && isValidFuel(resource.getFluid()))
-                || resource.getFluid().equals(currentFluid)) {
-            int amount = Math.min(maxMillibuckets - currentMillibuckets, resource.getAmount());
-            if (action.execute()) {
-                currentMillibuckets += amount;
-                if (currentFluid == null) {
-                    currentFluid = resource.getFluid();
-                }
-                setChanged();
+    public int insert(int index, FluidResource resource, int amount, TransactionContext transaction) {
+        if ((currentFluid == null && isValidFuel(resource.getFluid())) || resource.is(currentFluid)) {
+            int result = Math.min(maxMillibuckets - currentMillibuckets, amount);
+            fluidJournal.updateSnapshots(transaction);
+            currentMillibuckets += result;
+            if (currentFluid == null) {
+                currentFluid = resource.getFluid();
             }
-            return amount;
+            setChanged();
+            return result;
         }
-
         return 0;
     }
 
-    @Nonnull
     @Override
-    public FluidStack drain(FluidStack resource, FluidAction action) {
-        return FluidStack.EMPTY;
+    public int extract(int index, FluidResource resource, int amount, TransactionContext transaction) {
+        return 0;
     }
-
-    @Nonnull
-    @Override
-    public FluidStack drain(int maxDrain, FluidAction action) {
-        return FluidStack.EMPTY;
-    }
-
 }
