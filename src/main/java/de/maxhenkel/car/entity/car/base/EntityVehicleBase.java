@@ -3,9 +3,6 @@ package de.maxhenkel.car.entity.car.base;
 import de.maxhenkel.car.Main;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
-import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -20,6 +17,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import org.joml.Vector3d;
 
 import java.util.List;
@@ -248,6 +246,33 @@ public abstract class EntityVehicleBase extends Entity {
             }
         }
         return super.getDismountLocationForPassenger(entity);
+    }
+
+    @Override
+    public Vec3 collide(Vec3 movement) {
+        AABB boundingBox = getBoundingBox();
+        List<VoxelShape> collisions = level().getEntityCollisions(this, boundingBox.expandTowards(movement));
+        Vec3 resultingMovement = movement.lengthSqr() == 0D ? movement : collideBoundingBox(this, movement, boundingBox, level(), collisions);
+        boolean diffX = movement.x != resultingMovement.x;
+        boolean diffY = movement.y != resultingMovement.y;
+        boolean diffZ = movement.z != resultingMovement.z;
+        boolean falling = diffY && movement.y < 0D;
+        if (maxUpStep() > 0F && (falling || onGround()) && (diffX || diffZ)) {
+            Vec3 stepMovementVec = collideBoundingBox(this, new Vec3(movement.x, maxUpStep(), movement.z), boundingBox, level(), collisions);
+            Vec3 stepVec = collideBoundingBox(this, new Vec3(0D, maxUpStep(), 0D), boundingBox.expandTowards(movement.x, 0D, movement.z), level(), collisions);
+            if (stepVec.y < (double) maxUpStep()) {
+                Vec3 xzVec = collideBoundingBox(this, new Vec3(movement.x, 0D, movement.z), boundingBox.move(stepVec), level(), collisions).add(stepVec);
+                if (xzVec.horizontalDistanceSqr() > stepMovementVec.horizontalDistanceSqr()) {
+                    stepMovementVec = xzVec;
+                }
+            }
+
+            if (stepMovementVec.horizontalDistanceSqr() > resultingMovement.horizontalDistanceSqr()) {
+                resultingMovement = stepMovementVec.add(collideBoundingBox(this, new Vec3(0D, -stepMovementVec.y + movement.y, 0D), boundingBox.move(stepMovementVec), this.level(), collisions));
+            }
+        }
+
+        return resultingMovement;
     }
 
 }
