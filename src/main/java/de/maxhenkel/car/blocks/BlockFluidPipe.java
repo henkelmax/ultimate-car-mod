@@ -1,7 +1,6 @@
 package de.maxhenkel.car.blocks;
 
 import de.maxhenkel.corelib.block.VoxelUtils;
-import de.maxhenkel.corelib.fluid.FluidUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.tags.FluidTags;

@@ -4,7 +4,7 @@ import de.maxhenkel.car.blocks.tileentity.TileEntityBlastFurnace;
 import de.maxhenkel.car.gui.ContainerBlastFurnace;
 import de.maxhenkel.car.gui.TileEntityContainerProvider;
 import de.maxhenkel.corelib.blockentity.SimpleBlockEntityTicker;
-import de.maxhenkel.corelib.fluid.FluidUtils;
+import de.maxhenkel.tools.FluidInteractionTools;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -35,7 +35,7 @@ public class BlockBlastFurnace extends BlockGui<TileEntityBlastFurnace> {
 
     @Override
     protected InteractionResult useItemOn(ItemStack itemStack, BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
-        if (FluidUtils.tryFluidInteraction(player, interactionHand, level, blockPos)) {
+        if (FluidInteractionTools.tryFluidInteraction(player, interactionHand, level, blockPos)) {
             return InteractionResult.SUCCESS;
         }
         return super.useItemOn(itemStack, blockState, level, blockPos, player, interactionHand, blockHitResult);

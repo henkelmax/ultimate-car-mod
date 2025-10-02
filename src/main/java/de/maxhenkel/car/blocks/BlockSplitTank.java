@@ -4,7 +4,7 @@ import de.maxhenkel.car.blocks.tileentity.TileEntitySplitTank;
 import de.maxhenkel.car.gui.ContainerSplitTank;
 import de.maxhenkel.car.gui.TileEntityContainerProvider;
 import de.maxhenkel.corelib.blockentity.SimpleBlockEntityTicker;
-import de.maxhenkel.corelib.fluid.FluidUtils;
+import de.maxhenkel.tools.FluidInteractionTools;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -45,24 +45,21 @@ public class BlockSplitTank extends BlockBase implements EntityBlock {
 
     @Override
     protected InteractionResult useItemOn(ItemStack itemStack, BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
-        if (FluidUtils.tryFluidInteraction(player, interactionHand, level, blockPos)) {
+        if (FluidInteractionTools.tryFluidInteraction(player, interactionHand, level, blockPos)) {
             return InteractionResult.SUCCESS;
         }
 
-        if (!player.isShiftKeyDown()) {
-            BlockEntity te = level.getBlockEntity(blockPos);
-
-            if (!(te instanceof TileEntitySplitTank)) {
+        if (player.isShiftKeyDown()) {
+            return InteractionResult.FAIL;
+        }
+        if (player instanceof ServerPlayer serverPlayer) {
+            BlockEntity be = level.getBlockEntity(blockPos);
+            if (!(be instanceof TileEntitySplitTank splitTank)) {
                 return InteractionResult.FAIL;
             }
-            TileEntitySplitTank splitTank = (TileEntitySplitTank) te;
-            if (player instanceof ServerPlayer) {
-                TileEntityContainerProvider.openGui((ServerPlayer) player, splitTank, (i, playerInventory, playerEntity) -> new ContainerSplitTank(i, splitTank, playerInventory));
-            }
-            return InteractionResult.SUCCESS;
+            TileEntityContainerProvider.openGui(serverPlayer, splitTank, (i, playerInventory, playerEntity) -> new ContainerSplitTank(i, splitTank, playerInventory));
         }
-
-        return InteractionResult.FAIL;
+        return InteractionResult.SUCCESS;
     }
 
     @Override
