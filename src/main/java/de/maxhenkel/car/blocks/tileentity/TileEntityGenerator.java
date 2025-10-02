@@ -140,6 +140,9 @@ public class TileEntityGenerator extends TileEntityBase implements ITickableBloc
     }
 
     private void handlePushEnergy() {
+        if (storedEnergy <= 0) {
+            return;
+        }
         for (Direction side : Direction.values()) {
             EnergyHandler energyHandler = level.getCapability(Capabilities.Energy.BLOCK, worldPosition.relative(side), side.getOpposite());
             if (energyHandler == null) {
@@ -183,7 +186,7 @@ public class TileEntityGenerator extends TileEntityBase implements ITickableBloc
 
     @Override
     public void loadAdditional(ValueInput valueInput) {
-        storedEnergy = valueInput.getIntOr("stored_energy", 0);
+        storedEnergy = Math.max(valueInput.getIntOr("stored_energy", 0), 0);
         valueInput.read("fluid", FluidStack.CODEC).ifPresent(stack -> {
             currentFluid = stack.getFluid();
             currentMillibuckets = stack.getAmount();
