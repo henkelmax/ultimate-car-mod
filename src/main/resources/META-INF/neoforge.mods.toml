@@ -13,6 +13,8 @@ authors = "Max Henkel"
 description = '''This mod brings cars, road construction and biodiesel production into your Minecraft world'''
 [[mixins]]
 config = "car.mixins.json"
+[[accessTransformers]]
+file = "META-INF/accesstransformer.cfg"
 [[dependencies.car]]
 modId = "neoforge"
 type = "required"
