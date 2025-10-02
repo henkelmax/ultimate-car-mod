@@ -1,1 +1,1 @@
-- Fixed crash on servers
+- Fixed car slope collisions
