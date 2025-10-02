@@ -19,6 +19,7 @@ import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.redstone.Orientation;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.neoforged.neoforge.capabilities.Capabilities;
 
 import javax.annotation.Nullable;
 
@@ -159,7 +160,7 @@ public class BlockFluidPipe extends BlockBase implements SimpleWaterloggedBlock 
             return true;
         }
 
-        return FluidUtils.isFluidHandlerOffset(world, pos, facing);
+        return world.getCapability(Capabilities.Fluid.BLOCK, pos.relative(facing), facing.getOpposite()) != null;
     }
 
     @Override
