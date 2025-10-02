@@ -1,1 +1,1 @@
-- Added Japanese translation
+- Fixed car slope collisions
