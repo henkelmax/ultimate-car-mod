@@ -13,7 +13,6 @@ import de.maxhenkel.car.entity.car.base.EntityVehicleBase;
 import de.maxhenkel.car.events.*;
 import de.maxhenkel.car.fluids.ModFluids;
 import de.maxhenkel.car.gui.*;
-import de.maxhenkel.car.integration.IMC;
 import de.maxhenkel.car.items.ItemLicensePlate;
 import de.maxhenkel.car.items.ModItems;
 import de.maxhenkel.car.loottable.CopyFluid;
@@ -135,8 +134,6 @@ public class CarMod {
     public static ClientConfig CLIENT_CONFIG;
 
     public CarMod(IEventBus eventBus) {
-        eventBus.addListener(IMC::enqueueIMC);
-
         SERVER_CONFIG = CommonRegistry.registerConfig(MODID, ModConfig.Type.SERVER, ServerConfig.class, true);
         FUEL_CONFIG = CommonRegistry.registerDynamicConfig(DynamicConfig.DynamicConfigType.SERVER, CarMod.MODID, "fuel", FuelConfig.class);
         CLIENT_CONFIG = CommonRegistry.registerConfig(MODID, ModConfig.Type.CLIENT, ClientConfig.class);

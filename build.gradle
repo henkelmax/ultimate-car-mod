@@ -15,7 +15,6 @@ dependencies {
     compileOnly "de.maxhenkel.corelib:corelib:${minecraft_version}-${corelib_version}:javadoc"
 
     implementation "maven.modrinth:jei:${jei_version}"
-    compileOnly "maven.modrinth:the-one-probe:${theoneprobe_version}"
     implementation "maven.modrinth:jade:${jade_version}"
 }
 
