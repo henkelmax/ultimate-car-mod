@@ -9,12 +9,13 @@ import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.builder.IRecipeSlotBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
+import mezz.jei.api.gui.drawable.IDrawableStatic;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
-import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
+import mezz.jei.api.recipe.types.IRecipeType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
@@ -26,25 +27,19 @@ import javax.annotation.Nullable;
 
 public class CarRecipeCategory implements IRecipeCategory<CarRecipe> {
 
-    @Nullable
-    private EntityGenericCar car;
-    private IGuiHelper helper;
+    protected static final ResourceLocation BACKGROUND = ResourceLocation.fromNamespaceAndPath(CarMod.MODID, "textures/gui/jei_car_workshop_crafting.png");
 
     private static final int RECIPE_WIDTH = 175;
     private static final int RECIPE_HEIGHT = 54;
 
+    private final IGuiHelper helper;
+    @Nullable
+    private EntityGenericCar car;
+    private final IDrawableStatic background;
+
     public CarRecipeCategory(IGuiHelper helper) {
         this.helper = helper;
-    }
-
-    @Override
-    public RecipeType<CarRecipe> getRecipeType() {
-        return JEIPlugin.CATEGORY_CAR_WORKSHOP;
-    }
-
-    @Override
-    public IDrawable getBackground() {
-        return helper.createDrawable(ResourceLocation.fromNamespaceAndPath(CarMod.MODID, "textures/gui/jei_car_workshop_crafting.png"), 0, 0, RECIPE_WIDTH, RECIPE_HEIGHT);
+        background = helper.createDrawable(BACKGROUND, 0, 0, getWidth(), getHeight());
     }
 
     @Override
@@ -63,10 +58,15 @@ public class CarRecipeCategory implements IRecipeCategory<CarRecipe> {
                 }
                 ItemStack stack = recipe.getInputs().get(index);
                 if (!stack.isEmpty()) {
-                    slot.addIngredient(VanillaTypes.ITEM_STACK, stack);
+                    slot.add(VanillaTypes.ITEM_STACK, stack);
                 }
             }
         }
+    }
+
+    @Override
+    public IRecipeType<CarRecipe> getRecipeType() {
+        return JEIPlugin.CATEGORY_CAR_WORKSHOP;
     }
 
     @Override
@@ -79,6 +79,7 @@ public class CarRecipeCategory implements IRecipeCategory<CarRecipe> {
     @Override
     public void draw(CarRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
         renderer.render(guiGraphics, getCar(recipe), RECIPE_WIDTH - 30, RECIPE_HEIGHT - 54 / 4, 18);
+        background.draw(guiGraphics);
     }
 
     public EntityGenericCar getCar(CarRecipe recipe) {
@@ -92,4 +93,13 @@ public class CarRecipeCategory implements IRecipeCategory<CarRecipe> {
         return TileEntityCarWorkshop.createCar(world, recipe.getInputs());
     }
 
+    @Override
+    public int getWidth() {
+        return RECIPE_WIDTH;
+    }
+
+    @Override
+    public int getHeight() {
+        return RECIPE_HEIGHT;
+    }
 }

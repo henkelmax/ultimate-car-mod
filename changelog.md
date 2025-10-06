@@ -1,1 +1,2 @@
 - Updated required NeoForge version
+- Updated JEI integration

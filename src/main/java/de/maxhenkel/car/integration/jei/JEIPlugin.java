@@ -6,7 +6,7 @@ import de.maxhenkel.car.items.ModItems;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.constants.VanillaTypes;
-import mezz.jei.api.recipe.RecipeType;
+import mezz.jei.api.recipe.types.IRecipeType;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
@@ -20,15 +20,17 @@ import java.util.stream.Collectors;
 @JeiPlugin
 public class JEIPlugin implements IModPlugin {
 
-    public static final RecipeType<CarRecipe> CATEGORY_CAR_WORKSHOP = RecipeType.create(CarMod.MODID, "car_workshop", CarRecipe.class);
-    public static final RecipeType<PainterRecipe> CATEGORY_PAINTER = RecipeType.create(CarMod.MODID, "painter", PainterRecipe.class);
-    public static final RecipeType<PainterRecipe> CATEGORY_PAINTER_YELLOW = RecipeType.create(CarMod.MODID, "painter_yellow", PainterRecipe.class);
+    public static ResourceLocation PLUGIN_UID = ResourceLocation.fromNamespaceAndPath(CarMod.MODID, "car");
+
+    public static final IRecipeType<CarRecipe> CATEGORY_CAR_WORKSHOP = IRecipeType.create(CarMod.MODID, "car_workshop", CarRecipe.class);
+    public static final IRecipeType<PainterRecipe> CATEGORY_PAINTER = IRecipeType.create(CarMod.MODID, "painter", PainterRecipe.class);
+    public static final IRecipeType<PainterRecipe> CATEGORY_PAINTER_YELLOW = IRecipeType.create(CarMod.MODID, "painter_yellow", PainterRecipe.class);
 
     @Override
     public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
-        registration.addRecipeCatalyst(VanillaTypes.ITEM_STACK, new ItemStack(ModItems.PAINTER.get()), JEIPlugin.CATEGORY_PAINTER);
-        registration.addRecipeCatalyst(new ItemStack(ModItems.PAINTER_YELLOW.get()), JEIPlugin.CATEGORY_PAINTER_YELLOW);
-        registration.addRecipeCatalyst(new ItemStack(ModBlocks.CAR_WORKSHOP.get()), JEIPlugin.CATEGORY_CAR_WORKSHOP);
+        registration.addCraftingStation(JEIPlugin.CATEGORY_PAINTER, new ItemStack(ModItems.PAINTER.get()));
+        registration.addCraftingStation(JEIPlugin.CATEGORY_PAINTER_YELLOW, new ItemStack(ModItems.PAINTER_YELLOW.get()));
+        registration.addCraftingStation(JEIPlugin.CATEGORY_CAR_WORKSHOP, new ItemStack(ModBlocks.CAR_WORKSHOP.get()));
     }
 
     @Override
@@ -57,7 +59,7 @@ public class JEIPlugin implements IModPlugin {
 
     @Override
     public ResourceLocation getPluginUid() {
-        return ResourceLocation.fromNamespaceAndPath(CarMod.MODID, "car");
+        return PLUGIN_UID;
     }
 
     @Override
