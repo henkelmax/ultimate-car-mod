@@ -23,8 +23,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
-import javax.annotation.Nullable;
-
 public class CarRecipeCategory implements IRecipeCategory<CarRecipe> {
 
     protected static final ResourceLocation BACKGROUND = ResourceLocation.fromNamespaceAndPath(CarMod.MODID, "textures/gui/jei_car_workshop_crafting.png");
@@ -33,8 +31,6 @@ public class CarRecipeCategory implements IRecipeCategory<CarRecipe> {
     private static final int RECIPE_HEIGHT = 54;
 
     private final IGuiHelper helper;
-    @Nullable
-    private EntityGenericCar car;
     private final IDrawableStatic background;
 
     public CarRecipeCategory(IGuiHelper helper) {
@@ -85,10 +81,7 @@ public class CarRecipeCategory implements IRecipeCategory<CarRecipe> {
     }
 
     public EntityGenericCar getCar(CarRecipe recipe) {
-        if (car == null) {
-            car = createCar(Minecraft.getInstance().level, recipe);
-        }
-        return car;
+        return recipe.getCachedCar(() -> createCar(Minecraft.getInstance().level, recipe));
     }
 
     private EntityGenericCar createCar(Level world, CarRecipe recipe) {

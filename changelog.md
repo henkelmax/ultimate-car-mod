@@ -1,3 +1,5 @@
 - Updated required NeoForge version
 - Updated JEI integration
 - Fixed car rendering in GUIs
+- Fixed cars in GUIs always rendering the first drawn model
+- Fixed memory leak
