@@ -1,2 +1,1 @@
-- Updated to 1.21.9
-- Fixed car slope collisions
+- Updated required NeoForge version
