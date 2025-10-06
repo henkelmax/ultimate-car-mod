@@ -1,2 +1,3 @@
 - Updated required NeoForge version
 - Updated JEI integration
+- Fixed car rendering in GUIs

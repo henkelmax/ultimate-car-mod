@@ -1,10 +1,18 @@
 package de.maxhenkel.tools;
 
+import com.mojang.math.Axis;
 import de.maxhenkel.car.entity.car.base.EntityGenericCar;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.renderer.LightTexture;
+import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.entity.EntityRenderer;
+import net.minecraft.client.renderer.entity.state.EntityRenderState;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.AABB;
+import org.joml.Quaternionf;
+import org.joml.Vector3f;
 
 import javax.annotation.Nullable;
 import java.util.UUID;
@@ -24,29 +32,27 @@ public class EntityTools {
         return player.level().getEntitiesOfClass(EntityGenericCar.class, new AABB(player.getX() - distance, player.getY() - distance, player.getZ() - distance, player.getX() + distance, player.getY() + distance, player.getZ() + distance), entity -> entity.getUUID().equals(uuid)).stream().findAny().orElse(null);
     }
 
-    public static void drawCarOnScreen(GuiGraphics graphics, EntityGenericCar car, int posX, int posY, float scale, float rotation) {
-        //TODO Fix
-        /*graphics.pose().pushPose();
-        graphics.pose().translate(posX, posY, 100D);
-        graphics.pose().scale(1F, 1F, -1F);
-        graphics.pose().scale(scale, scale, scale);
+    public static void drawCarOnScreen(GuiGraphics graphics, EntityGenericCar car, int x1, int y1, int x2, int y2, float scale, float rotation) {
+        float ySize = y2 - y1;
+        float yOffset = (ySize / 2F) / scale;
+        renderEntityInInventory(graphics, x1, y1, x2, y2, scale, new Vector3f(0F, yOffset, 0F), Axis.YP.rotationDegrees(135F + rotation).mul(Axis.ZP.rotationDegrees(180F)), car);
+    }
 
-        graphics.pose().mulPose(Axis.YP.rotationDegrees(135F + rotation));
-        graphics.pose().mulPose(Axis.ZP.rotationDegrees(180F));
-        EntityRenderDispatcher dispatcher = Minecraft.getInstance().getEntityRenderDispatcher();
-        dispatcher.setRenderShadow(false);
-
-        MultiBufferSource.BufferSource buffer = Minecraft.getInstance().renderBuffers().bufferSource();
-        dispatcher.render(car, 0D, 0D, 0D, 0F, graphics.pose(), buffer, 0xF000F0);
-        buffer.endBatch();
-        dispatcher.setRenderShadow(true);
-        graphics.pose().popPose();*/
+    public static void renderEntityInInventory(GuiGraphics guiGraphics, int x1, int y1, int x2, int y2, float scale, Vector3f translation, Quaternionf rotation, Entity entity) {
+        EntityRenderDispatcher entityrenderdispatcher = Minecraft.getInstance().getEntityRenderDispatcher();
+        EntityRenderer<? super Entity, ?> entityrenderer = entityrenderdispatcher.getRenderer(entity);
+        EntityRenderState entityrenderstate = entityrenderer.createRenderState(entity, 1F);
+        entityrenderstate.lightCoords = LightTexture.FULL_BRIGHT;
+        entityrenderstate.hitboxesRenderState = null;
+        entityrenderstate.shadowPieces.clear();
+        entityrenderstate.outlineColor = 0;
+        guiGraphics.submitEntityRenderState(entityrenderstate, scale, translation, rotation, null, x1, y1, x2, y2);
     }
 
     public static class CarRenderer {
         private float rotation;
-        private float rotationPerTick;
-        private Minecraft minecraft;
+        private final float rotationPerTick;
+        private final Minecraft minecraft;
 
         public CarRenderer(float rotationPerTick) {
             this.rotationPerTick = rotationPerTick;
@@ -64,15 +70,15 @@ public class EntityTools {
             }
         }
 
-        public void render(GuiGraphics guiGraphics, EntityGenericCar car, int posX, int posY, int scale) {
-            EntityTools.drawCarOnScreen(guiGraphics, car, posX, posY, scale, rotation + rotationPerTick * minecraft.getDeltaTracker().getRealtimeDeltaTicks());
+        public void render(GuiGraphics guiGraphics, EntityGenericCar car, int x1, int y1, int x2, int y2, int scale) {
+            EntityTools.drawCarOnScreen(guiGraphics, car, x1, y1, x2, y2, scale, rotation + rotationPerTick * minecraft.getDeltaTracker().getRealtimeDeltaTicks());
         }
     }
 
     public static class SimulatedCarRenderer {
         private float rotation;
-        private float rotationPerTick;
-        private SimulatedTicker ticker;
+        private final float rotationPerTick;
+        private final SimulatedTicker ticker;
 
         public SimulatedCarRenderer(float rotationPerTick) {
             this.rotationPerTick = rotationPerTick;
@@ -83,11 +89,11 @@ public class EntityTools {
             this(3.6F);
         }
 
-        public void render(GuiGraphics guiGraphics, EntityGenericCar car, int posX, int posY, int scale) {
+        public void render(GuiGraphics guiGraphics, EntityGenericCar car, int x1, int y1, int x2, int y2, int scale) {
             ticker.render(new Renderer() {
                 @Override
                 public void render(float partialTicks) {
-                    EntityTools.drawCarOnScreen(guiGraphics, car, posX, posY, scale, rotation + rotationPerTick * partialTicks);
+                    EntityTools.drawCarOnScreen(guiGraphics, car, x1, y1, x2, y2, scale, rotation + rotationPerTick * partialTicks);
                 }
 
                 @Override

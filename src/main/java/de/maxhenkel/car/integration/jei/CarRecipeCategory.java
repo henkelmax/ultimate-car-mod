@@ -78,8 +78,10 @@ public class CarRecipeCategory implements IRecipeCategory<CarRecipe> {
 
     @Override
     public void draw(CarRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
-        renderer.render(guiGraphics, getCar(recipe), RECIPE_WIDTH - 30, RECIPE_HEIGHT - 54 / 4, 18);
         background.draw(guiGraphics);
+        int x = (int) guiGraphics.pose().m20;
+        int y = (int) guiGraphics.pose().m21;
+        renderer.render(guiGraphics, getCar(recipe), x + 115, y + 5, x + 174, y + 49, 18);
     }
 
     public EntityGenericCar getCar(CarRecipe recipe) {
