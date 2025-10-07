@@ -84,6 +84,7 @@ public class TileEntityGasStation extends TileEntityBase implements ITickableBlo
         this.trading = new SimpleContainer(2);
         this.owner = new UUID(0L, 0L);
         this.storage = FluidStack.EMPTY;
+        this.tradeAmount = 1000;
     }
 
     public final ContainerData FIELDS = new ContainerData() {
@@ -330,7 +331,7 @@ public class TileEntityGasStation extends TileEntityBase implements ITickableBlo
         ItemUtils.readInventory(valueInput, "inventory", inventory);
         ItemUtils.readInventory(valueInput, "trading", trading);
 
-        tradeAmount = valueInput.getIntOr("trade_amount", 0);
+        tradeAmount = valueInput.getIntOr("trade_amount", 1000);
         freeAmountLeft = valueInput.getIntOr("free_amount", 0);
 
         owner = valueInput.read("owner", UUIDUtil.CODEC).orElse(Util.NIL_UUID);
@@ -469,6 +470,7 @@ public class TileEntityGasStation extends TileEntityBase implements ITickableBlo
 
     public void setTradeAmount(int tradeAmount) {
         this.tradeAmount = tradeAmount;
+        synchronize();
     }
 
     public int getFuelAmount() {
@@ -528,6 +530,7 @@ public class TileEntityGasStation extends TileEntityBase implements ITickableBlo
 
             fluidJournal.updateSnapshots(transaction);
             storage.setAmount(storage.getAmount() + result);
+            synchronize();
             setChanged();
 
             return result;
