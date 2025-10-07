@@ -1,1 +1,2 @@
 - Fixed gas station synchronization issues
+- Fixed top gas station block translation
