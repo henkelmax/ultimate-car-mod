@@ -72,6 +72,7 @@ public class TileEntityGasStation extends TileEntityBase implements ITickableBlo
         this.trading = new SimpleContainer(2);
         this.owner = new UUID(0L, 0L);
         this.storage = FluidStack.EMPTY;
+        this.tradeAmount = 1000;
     }
 
     public final ContainerData FIELDS = new ContainerData() {
@@ -466,6 +467,7 @@ public class TileEntityGasStation extends TileEntityBase implements ITickableBlo
 
     public void setTradeAmount(int tradeAmount) {
         this.tradeAmount = tradeAmount;
+        synchronize();
     }
 
     public int getFuelAmount() {
@@ -522,6 +524,7 @@ public class TileEntityGasStation extends TileEntityBase implements ITickableBlo
 
             if (action.execute()) {
                 storage.setAmount(storage.getAmount() + amount);
+                synchronize();
                 setChanged();
             }
 
