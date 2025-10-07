@@ -540,6 +540,10 @@ public class TileEntityGasStation extends TileEntityBase implements ITickableBlo
 
     @Override
     public int extract(int index, FluidResource resource, int amount, TransactionContext transaction) {
+        if (tradeAmount > 0 && !trading.getItem(0).isEmpty()) {
+            // Don't allow taking out fuel if there is a trading item and price set
+            return 0;
+        }
         if (storage.isEmpty()) {
             return 0;
         }

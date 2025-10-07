@@ -71,11 +71,9 @@ public class BlockGasStation extends BlockOrientableHorizontal {
     public InteractionResult useItemOn(ItemStack itemStack, BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
         BlockEntity te = level.getBlockEntity(blockPos);
 
-        if (!(te instanceof TileEntityGasStation)) {
+        if (!(te instanceof TileEntityGasStation station)) {
             return InteractionResult.FAIL;
         }
-
-        TileEntityGasStation station = (TileEntityGasStation) te;
 
         if (!player.isShiftKeyDown()) {
             if (player instanceof ServerPlayer) {
