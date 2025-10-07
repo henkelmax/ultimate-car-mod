@@ -1,1 +1,1 @@
-- Added Russian translation
+- Fixed gas station synchronization issues
