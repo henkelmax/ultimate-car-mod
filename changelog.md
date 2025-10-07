@@ -1,3 +1,1 @@
-- Fixed gas station synchronization issues
-- Fixed top gas station block translation
-- Fixed being able to take out fluid from trading gas stations
+- Updated to 1.21.10

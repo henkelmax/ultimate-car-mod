@@ -19,10 +19,10 @@ public class CarFluidBlock extends LiquidBlock {
     }
 
     @Override
-    protected void entityInside(BlockState state, Level level, BlockPos pos, Entity entity, InsideBlockEffectApplier insideBlockEffectApplier) {
+    protected void entityInside(BlockState state, Level level, BlockPos pos, Entity entity, InsideBlockEffectApplier effectApplier, boolean b) {
         if (fluid instanceof IEffectApplyable) {
             ((IEffectApplyable) fluid).applyEffects(entity, state, level, pos);
         }
-        super.entityInside(state, level, pos, entity, insideBlockEffectApplier);
+        super.entityInside(state, level, pos, entity, effectApplier, b);
     }
 }
