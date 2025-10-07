@@ -1,1 +1,1 @@
-- Fixed car slope collisions
+- Added Russian translation
