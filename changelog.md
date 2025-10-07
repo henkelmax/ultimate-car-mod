@@ -1,1 +1,1 @@
-- Added Japanese translation
+- Added Russian translation
