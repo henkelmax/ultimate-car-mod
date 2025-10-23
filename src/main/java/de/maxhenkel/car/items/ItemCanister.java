@@ -49,9 +49,11 @@ public class ItemCanister extends Item {
             return super.useOn(context);
         }
 
-        if (te instanceof TileEntityGasStation) {
-            TileEntityGasStation fuel = (TileEntityGasStation) te;
-            boolean success = fillCanister(context.getPlayer().getItemInHand(context.getHand()), fuel);
+        if (te instanceof TileEntityGasStation gasStation) {
+            if (gasStation.hasTrade()) {
+                return super.useOn(context);
+            }
+            boolean success = fillCanister(context.getPlayer().getItemInHand(context.getHand()), gasStation);
             if (success) {
                 ModSounds.playSound(SoundEvents.BREWING_STAND_BREW, context.getLevel(), context.getClickedPos(), null, SoundSource.BLOCKS);
             }
