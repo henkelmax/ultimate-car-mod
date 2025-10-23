@@ -536,10 +536,6 @@ public class TileEntityGasStation extends TileEntityBase implements ITickableBlo
     @Nonnull
     @Override
     public FluidStack drain(FluidStack resource, FluidAction action) {
-        if (tradeAmount > 0 && !trading.getItem(0).isEmpty()) {
-            // Don't allow taking out fuel if there is a trading item and price set
-            return FluidStack.EMPTY;
-        }
         if (storage.isEmpty()) {
             return FluidStack.EMPTY;
         }
