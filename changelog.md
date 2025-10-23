@@ -1,1 +1,1 @@
-- Updated to support latest NeoForge version
+- Fixed gas station with price not being able to fuel cars

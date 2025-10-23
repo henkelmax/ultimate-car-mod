@@ -56,6 +56,9 @@ public class ItemCanister extends Item {
         ItemAccess itemAccess = ItemAccess.forPlayerInteraction(context.getPlayer(), context.getHand());
 
         if (te instanceof TileEntityGasStation gasStation) {
+            if (gasStation.hasTrade()) {
+                return super.useOn(context);
+            }
             boolean success = fillCanister(itemAccess, gasStation.getFluidHandler());
             if (success) {
                 ModSounds.playSound(SoundEvents.BREWING_STAND_BREW, context.getLevel(), context.getClickedPos(), null, SoundSource.BLOCKS);
