@@ -3,7 +3,7 @@ package de.maxhenkel.car.integration.waila;
 import de.maxhenkel.car.CarMod;
 import de.maxhenkel.car.blocks.tileentity.TileEntityGenerator;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import snownee.jade.api.BlockAccessor;
 import snownee.jade.api.IServerDataProvider;
 
@@ -11,7 +11,7 @@ public class DataProviderGenerator implements IServerDataProvider<BlockAccessor>
 
     public static final DataProviderGenerator INSTANCE = new DataProviderGenerator();
 
-    private static final ResourceLocation UID = ResourceLocation.fromNamespaceAndPath(CarMod.MODID, "generator_data");
+    private static final Identifier UID = Identifier.fromNamespaceAndPath(CarMod.MODID, "generator_data");
 
     @Override
     public void appendServerData(CompoundTag compoundTag, BlockAccessor blockAccessor) {
@@ -23,7 +23,7 @@ public class DataProviderGenerator implements IServerDataProvider<BlockAccessor>
     }
 
     @Override
-    public ResourceLocation getUid() {
+    public Identifier getUid() {
         return UID;
     }
 }

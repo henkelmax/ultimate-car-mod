@@ -4,7 +4,7 @@ import de.maxhenkel.car.CarMod;
 import de.maxhenkel.car.blocks.tileentity.TileEntityTank;
 import de.maxhenkel.corelib.codec.ValueInputOutputUtils;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.storage.TagValueOutput;
 import net.neoforged.neoforge.fluids.FluidStack;
 import snownee.jade.api.BlockAccessor;
@@ -14,7 +14,7 @@ public class DataProviderTank implements IServerDataProvider<BlockAccessor> {
 
     public static final DataProviderTank INSTANCE = new DataProviderTank();
 
-    private static final ResourceLocation UID = ResourceLocation.fromNamespaceAndPath(CarMod.MODID, "tank_data");
+    private static final Identifier UID = Identifier.fromNamespaceAndPath(CarMod.MODID, "tank_data");
 
 
     @Override
@@ -28,7 +28,7 @@ public class DataProviderTank implements IServerDataProvider<BlockAccessor> {
     }
 
     @Override
-    public ResourceLocation getUid() {
+    public Identifier getUid() {
         return UID;
     }
 }

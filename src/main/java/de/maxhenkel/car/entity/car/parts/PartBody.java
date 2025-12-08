@@ -2,7 +2,7 @@ package de.maxhenkel.car.entity.car.parts;
 
 import de.maxhenkel.corelib.client.obj.OBJModel;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import org.joml.Vector3d;
 
 import java.util.List;
@@ -23,7 +23,7 @@ public class PartBody extends PartModel {
     protected String translationKey;
     protected String materialTranslationKey;
 
-    public PartBody(OBJModel model, ResourceLocation texture, Vector3d offset, String translationKey, String materialTranslationKey) {
+    public PartBody(OBJModel model, Identifier texture, Vector3d offset, String translationKey, String materialTranslationKey) {
         super(model, texture, offset);
         this.translationKey = translationKey;
         this.materialTranslationKey = materialTranslationKey;

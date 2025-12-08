@@ -7,7 +7,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.protocol.PacketFlow;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
@@ -16,7 +16,7 @@ import java.util.UUID;
 
 public class MessageRepairCar implements Message<MessageRepairCar> {
 
-    public static final CustomPacketPayload.Type<MessageRepairCar> TYPE = new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(CarMod.MODID, "repair_car"));
+    public static final CustomPacketPayload.Type<MessageRepairCar> TYPE = new CustomPacketPayload.Type<>(Identifier.fromNamespaceAndPath(CarMod.MODID, "repair_car"));
 
     private BlockPos pos;
     private UUID uuid;

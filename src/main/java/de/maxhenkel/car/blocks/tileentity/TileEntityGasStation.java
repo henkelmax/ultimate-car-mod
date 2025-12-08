@@ -11,10 +11,11 @@ import de.maxhenkel.car.sounds.SoundLoopTileentity.ISoundLoopable;
 import de.maxhenkel.corelib.CachedValue;
 import de.maxhenkel.corelib.blockentity.ITickableBlockEntity;
 import de.maxhenkel.corelib.item.ItemUtils;
-import net.minecraft.Util;
 import net.minecraft.core.*;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.permissions.Permissions;
+import net.minecraft.util.Util;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.Entity;
@@ -289,10 +290,9 @@ public class TileEntityGasStation extends TileEntityBase implements ITickableBlo
      * OPs are also owners
      */
     public boolean isOwner(Player player) {
-        if (player instanceof ServerPlayer) {
-            ServerPlayer p = (ServerPlayer) player;
+        if (player instanceof ServerPlayer p) {
 
-            boolean isOp = p.hasPermissions(p.level().getServer().operatorUserPermissionLevel());
+            boolean isOp = p.permissions().hasPermission(Permissions.COMMANDS_ADMIN);
             if (isOp) {
                 return true;
             }

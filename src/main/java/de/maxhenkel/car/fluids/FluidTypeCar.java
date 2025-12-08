@@ -1,7 +1,7 @@
 package de.maxhenkel.car.fluids;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvents;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.neoforged.neoforge.common.SoundActions;
@@ -9,10 +9,10 @@ import net.neoforged.neoforge.fluids.FluidType;
 
 public class FluidTypeCar extends FluidType {
 
-    private final ResourceLocation stillTexture;
-    private final ResourceLocation flowingTexture;
+    private final Identifier stillTexture;
+    private final Identifier flowingTexture;
 
-    public FluidTypeCar(String descriptionId, ResourceLocation stillTexture, ResourceLocation flowingTexture) {
+    public FluidTypeCar(String descriptionId, Identifier stillTexture, Identifier flowingTexture) {
         super(Properties.create().canConvertToSource(false)
                 .canDrown(true)
                 .canExtinguish(false)
@@ -33,26 +33,26 @@ public class FluidTypeCar extends FluidType {
     public IClientFluidTypeExtensions getExtensions() {
         return new IClientFluidTypeExtensions() {
 
-            private static final ResourceLocation UNDERWATER_LOCATION = ResourceLocation.withDefaultNamespace("textures/misc/underwater.png");
-            private static final ResourceLocation WATER_OVERLAY = ResourceLocation.withDefaultNamespace("block/water_overlay");
+            private static final Identifier UNDERWATER_LOCATION = Identifier.withDefaultNamespace("textures/misc/underwater.png");
+            private static final Identifier WATER_OVERLAY = Identifier.withDefaultNamespace("block/water_overlay");
 
             @Override
-            public ResourceLocation getStillTexture() {
+            public Identifier getStillTexture() {
                 return stillTexture;
             }
 
             @Override
-            public ResourceLocation getFlowingTexture() {
+            public Identifier getFlowingTexture() {
                 return flowingTexture;
             }
 
             @Override
-            public ResourceLocation getOverlayTexture() {
+            public Identifier getOverlayTexture() {
                 return WATER_OVERLAY;
             }
 
             @Override
-            public ResourceLocation getRenderOverlayTexture(Minecraft mc) {
+            public Identifier getRenderOverlayTexture(Minecraft mc) {
                 return UNDERWATER_LOCATION;
             }
 

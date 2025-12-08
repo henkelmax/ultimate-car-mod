@@ -15,7 +15,7 @@ dependencies {
     compileOnly "de.maxhenkel.corelib:corelib:${minecraft_version}-${corelib_version}:javadoc"
 
     compileOnly "maven.modrinth:jei:${jei_version}"
-    implementation "maven.modrinth:jade:${jade_version}"
+    compileOnly "maven.modrinth:jade:${jade_version}"
 }
 
 processResources {
@@ -28,4 +28,17 @@ processResources {
 
 shadowJar {
     relocate 'de.maxhenkel.corelib', 'de.maxhenkel.car.corelib'
+}
+
+sourceSets {
+    main {
+        java {
+            exclude 'de/maxhenkel/car/integration/jei/CarRecipeCategory.java'
+            exclude 'de/maxhenkel/car/integration/jei/JEIPlugin.java'
+            exclude 'de/maxhenkel/car/integration/jei/PainterRecipeCategory.java'
+            exclude 'de/maxhenkel/car/integration/jei/PainterRecipeCategoryYellow.java'
+            exclude 'de/maxhenkel/car/integration/theoneprobe/*/**'
+            exclude 'de/maxhenkel/car/integration/waila/*/**'
+        }
+    }
 }

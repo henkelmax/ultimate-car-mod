@@ -3,7 +3,7 @@ package de.maxhenkel.car.events;
 import de.maxhenkel.car.CarMod;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -17,7 +17,7 @@ import net.neoforged.neoforge.event.level.BlockEvent;
 
 public class BlockEvents {
 
-    private static ResourceKey<LootTable> GRASS_LOOT_TABLE = ResourceKey.create(Registries.LOOT_TABLE, ResourceLocation.fromNamespaceAndPath(CarMod.MODID, "blocks/grass"));
+    private static ResourceKey<LootTable> GRASS_LOOT_TABLE = ResourceKey.create(Registries.LOOT_TABLE, Identifier.fromNamespaceAndPath(CarMod.MODID, "blocks/grass"));
 
     @SubscribeEvent
     public void breakEvent(BlockEvent.BreakEvent event) {

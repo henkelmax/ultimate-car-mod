@@ -10,14 +10,14 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 
 public class GuiLicensePlate extends ScreenBase<ContainerLicensePlate> {
 
-    private static final ResourceLocation GUI_TEXTURE = ResourceLocation.fromNamespaceAndPath(CarMod.MODID, "textures/gui/gui_license_plate.png");
+    private static final Identifier GUI_TEXTURE = Identifier.fromNamespaceAndPath(CarMod.MODID, "textures/gui/gui_license_plate.png");
 
     private ContainerLicensePlate containerLicensePlate;
     private Player player;
@@ -57,9 +57,9 @@ public class GuiLicensePlate extends ScreenBase<ContainerLicensePlate> {
     }
 
     @Override
-    public void resize(Minecraft mc, int x, int y) {
+    public void resize(int x, int y) {
         String text = textField.getValue();
-        init(mc, x, y);
+        init(x, y);
         textField.setValue(text);
     }
 

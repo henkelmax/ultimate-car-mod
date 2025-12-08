@@ -19,13 +19,13 @@ import mezz.jei.api.recipe.types.IRecipeType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
 public class CarRecipeCategory implements IRecipeCategory<CarRecipe> {
 
-    protected static final ResourceLocation BACKGROUND = ResourceLocation.fromNamespaceAndPath(CarMod.MODID, "textures/gui/jei_car_workshop_crafting.png");
+    protected static final Identifier BACKGROUND = Identifier.fromNamespaceAndPath(CarMod.MODID, "textures/gui/jei_car_workshop_crafting.png");
 
     private static final int RECIPE_WIDTH = 175;
     private static final int RECIPE_HEIGHT = 54;

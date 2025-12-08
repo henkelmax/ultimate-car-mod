@@ -4,14 +4,14 @@ import org.joml.Vector3d;
 import de.maxhenkel.car.CarMod;
 import de.maxhenkel.corelib.client.obj.OBJModel;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 import java.util.List;
 
 public class PartContainer extends PartTransporterBack {
 
-    public PartContainer(ResourceLocation texture) {
-        super(new OBJModel(ResourceLocation.fromNamespaceAndPath(CarMod.MODID, "models/entity/container.obj")),
+    public PartContainer(Identifier texture) {
+        super(new OBJModel(Identifier.fromNamespaceAndPath(CarMod.MODID, "models/entity/container.obj")),
                 texture, new Vector3d(0D / 16D, 17D / 16D, 5.5D / 16D));
     }
 

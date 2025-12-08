@@ -7,12 +7,12 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.protocol.PacketFlow;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 public class MessageSyncTileEntity implements Message<MessageSyncTileEntity> {
 
-    public static final CustomPacketPayload.Type<MessageSyncTileEntity> TYPE = new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(CarMod.MODID, "sync_block_entity"));
+    public static final CustomPacketPayload.Type<MessageSyncTileEntity> TYPE = new CustomPacketPayload.Type<>(Identifier.fromNamespaceAndPath(CarMod.MODID, "sync_block_entity"));
 
     private BlockPos pos;
     private CompoundTag tag;

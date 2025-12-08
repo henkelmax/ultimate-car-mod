@@ -10,13 +10,13 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
 import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 
 public class GuiSign extends ScreenBase<ContainerSign> {
 
-    private static final ResourceLocation GUI_TEXTURE = ResourceLocation.fromNamespaceAndPath(CarMod.MODID, "textures/gui/gui_sign.png");
+    private static final Identifier GUI_TEXTURE = Identifier.fromNamespaceAndPath(CarMod.MODID, "textures/gui/gui_sign.png");
 
     private TileEntitySign sign;
 
@@ -143,12 +143,12 @@ public class GuiSign extends ScreenBase<ContainerSign> {
     }
 
     @Override
-    public void resize(Minecraft mc, int x, int y) {
+    public void resize(int x, int y) {
         String txt1 = text1.getValue();
         String txt2 = text2.getValue();
         String txt3 = text3.getValue();
         String txt4 = text4.getValue();
-        init(mc, x, y);
+        init(x, y);
         text1.setValue(txt1);
         text2.setValue(txt2);
         text3.setValue(txt3);

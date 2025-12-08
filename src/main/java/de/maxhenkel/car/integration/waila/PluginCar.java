@@ -7,7 +7,7 @@ import de.maxhenkel.car.blocks.tileentity.TileEntityFluidExtractor;
 import de.maxhenkel.car.blocks.tileentity.TileEntityGenerator;
 import de.maxhenkel.car.blocks.tileentity.TileEntityTank;
 import de.maxhenkel.car.entity.car.base.EntityGenericCar;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import snownee.jade.api.IWailaClientRegistration;
 import snownee.jade.api.IWailaCommonRegistration;
 import snownee.jade.api.IWailaPlugin;
@@ -16,7 +16,7 @@ import snownee.jade.api.WailaPlugin;
 @WailaPlugin
 public class PluginCar implements IWailaPlugin {
 
-    public static final ResourceLocation OBJECT_NAME_TAG = ResourceLocation.fromNamespaceAndPath("jade", "object_name");
+    public static final Identifier OBJECT_NAME_TAG = Identifier.fromNamespaceAndPath("jade", "object_name");
 
     @Override
     public void register(IWailaCommonRegistration registration) {

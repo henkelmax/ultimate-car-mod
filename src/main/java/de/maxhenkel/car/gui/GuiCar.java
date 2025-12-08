@@ -7,12 +7,12 @@ import de.maxhenkel.corelib.math.MathUtils;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
 
 public class GuiCar extends ScreenBase<ContainerCar> {
 
-    private static final ResourceLocation CAR_GUI_TEXTURE = ResourceLocation.fromNamespaceAndPath(CarMod.MODID, "textures/gui/gui_car.png");
+    private static final Identifier CAR_GUI_TEXTURE = Identifier.fromNamespaceAndPath(CarMod.MODID, "textures/gui/gui_car.png");
 
     private Inventory playerInv;
     private EntityCarInventoryBase car;

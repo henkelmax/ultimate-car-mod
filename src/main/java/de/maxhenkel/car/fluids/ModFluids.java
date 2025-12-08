@@ -2,7 +2,7 @@ package de.maxhenkel.car.fluids;
 
 import de.maxhenkel.car.CarMod;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.material.Fluid;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.fluids.FluidType;
@@ -28,19 +28,19 @@ public class ModFluids {
     private static final DeferredRegister<FluidType> FLUID_TYPE_REGISTER = DeferredRegister.create(NeoForgeRegistries.Keys.FLUID_TYPES, CarMod.MODID);
 
     public static final DeferredHolder<FluidType, FluidTypeCar> CANOLA_OIL_TYPE = FLUID_TYPE_REGISTER.register("canola_oil", () ->
-            new FluidTypeCar("block.car.canola_oil", ResourceLocation.fromNamespaceAndPath(CarMod.MODID, "block/canola_oil_still"), ResourceLocation.fromNamespaceAndPath(CarMod.MODID, "block/canola_oil_flowing"))
+            new FluidTypeCar("block.car.canola_oil", Identifier.fromNamespaceAndPath(CarMod.MODID, "block/canola_oil_still"), Identifier.fromNamespaceAndPath(CarMod.MODID, "block/canola_oil_flowing"))
     );
     public static final DeferredHolder<FluidType, FluidTypeCar> METHANOL_TYPE = FLUID_TYPE_REGISTER.register("methanol", () ->
-            new FluidTypeCar("block.car.methanol", ResourceLocation.fromNamespaceAndPath(CarMod.MODID, "block/methanol_still"), ResourceLocation.fromNamespaceAndPath(CarMod.MODID, "block/methanol_flowing"))
+            new FluidTypeCar("block.car.methanol", Identifier.fromNamespaceAndPath(CarMod.MODID, "block/methanol_still"), Identifier.fromNamespaceAndPath(CarMod.MODID, "block/methanol_flowing"))
     );
     public static final DeferredHolder<FluidType, FluidTypeCar> CANOLA_METHANOL_MIX_TYPE = FLUID_TYPE_REGISTER.register("canola_methanol_mix", () ->
-            new FluidTypeCar("block.car.canola_methanol_mix", ResourceLocation.fromNamespaceAndPath(CarMod.MODID, "block/canola_methanol_mix_still"), ResourceLocation.fromNamespaceAndPath(CarMod.MODID, "block/canola_methanol_mix_flowing"))
+            new FluidTypeCar("block.car.canola_methanol_mix", Identifier.fromNamespaceAndPath(CarMod.MODID, "block/canola_methanol_mix_still"), Identifier.fromNamespaceAndPath(CarMod.MODID, "block/canola_methanol_mix_flowing"))
     );
     public static final DeferredHolder<FluidType, FluidTypeCar> GLYCERIN_TYPE = FLUID_TYPE_REGISTER.register("glycerin", () ->
-            new FluidTypeCar("block.car.glycerin", ResourceLocation.fromNamespaceAndPath(CarMod.MODID, "block/glycerin_still"), ResourceLocation.fromNamespaceAndPath(CarMod.MODID, "block/glycerin_flowing"))
+            new FluidTypeCar("block.car.glycerin", Identifier.fromNamespaceAndPath(CarMod.MODID, "block/glycerin_still"), Identifier.fromNamespaceAndPath(CarMod.MODID, "block/glycerin_flowing"))
     );
     public static final DeferredHolder<FluidType, FluidTypeCar> BIO_DIESEL_TYPE = FLUID_TYPE_REGISTER.register("bio_diesel", () ->
-            new FluidTypeCar("block.car.bio_diesel", ResourceLocation.fromNamespaceAndPath(CarMod.MODID, "block/bio_diesel_still"), ResourceLocation.fromNamespaceAndPath(CarMod.MODID, "block/bio_diesel_flowing"))
+            new FluidTypeCar("block.car.bio_diesel", Identifier.fromNamespaceAndPath(CarMod.MODID, "block/bio_diesel_still"), Identifier.fromNamespaceAndPath(CarMod.MODID, "block/bio_diesel_flowing"))
     );
 
     public static void init(IEventBus eventBus) {

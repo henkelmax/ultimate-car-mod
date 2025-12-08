@@ -7,15 +7,15 @@ import de.maxhenkel.corelib.client.obj.OBJModel;
 import de.maxhenkel.corelib.client.obj.OBJModelInstance;
 import de.maxhenkel.corelib.client.obj.OBJModelOptions;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class PartBumper extends PartModel {
 
-    public PartBumper(ResourceLocation texture) {
-        super(new OBJModel(ResourceLocation.fromNamespaceAndPath(CarMod.MODID, "models/entity/wood_bumper.obj")), texture);
+    public PartBumper(Identifier texture) {
+        super(new OBJModel(Identifier.fromNamespaceAndPath(CarMod.MODID, "models/entity/wood_bumper.obj")), texture);
     }
 
     @Override

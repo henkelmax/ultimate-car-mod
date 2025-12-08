@@ -5,7 +5,7 @@ import de.maxhenkel.car.entity.car.base.EntityGenericCar;
 import de.maxhenkel.corelib.math.MathUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.neoforged.neoforge.transfer.fluid.FluidResource;
 import snownee.jade.api.EntityAccessor;
 import snownee.jade.api.IEntityComponentProvider;
@@ -16,7 +16,7 @@ public class HUDHandlerCars implements IEntityComponentProvider {
 
     public static final HUDHandlerCars INSTANCE = new HUDHandlerCars();
 
-    private static final ResourceLocation UID = ResourceLocation.fromNamespaceAndPath(CarMod.MODID, "car");
+    private static final Identifier UID = Identifier.fromNamespaceAndPath(CarMod.MODID, "car");
 
     @Override
     public void appendTooltip(ITooltip iTooltip, EntityAccessor entityAccessor, IPluginConfig iPluginConfig) {
@@ -39,7 +39,7 @@ public class HUDHandlerCars implements IEntityComponentProvider {
     }
 
     @Override
-    public ResourceLocation getUid() {
+    public Identifier getUid() {
         return UID;
     }
 }

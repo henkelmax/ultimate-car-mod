@@ -8,7 +8,7 @@ import de.maxhenkel.corelib.client.obj.OBJModel;
 import de.maxhenkel.corelib.client.obj.OBJModelInstance;
 import de.maxhenkel.corelib.client.obj.OBJModelOptions;
 import de.maxhenkel.corelib.math.Rotation;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import org.joml.Vector3d;
 
 import java.util.ArrayList;
@@ -18,8 +18,8 @@ public class PartLicensePlateHolder extends PartModel {
 
     protected Vector3d textOffset;
 
-    public PartLicensePlateHolder(ResourceLocation texture) {
-        super(new OBJModel(ResourceLocation.fromNamespaceAndPath(CarMod.MODID, "models/entity/license_plate.obj")), texture, new Vector3d(0D, 0D, 0D), new Rotation(90F, Axis.ZP));
+    public PartLicensePlateHolder(Identifier texture) {
+        super(new OBJModel(Identifier.fromNamespaceAndPath(CarMod.MODID, "models/entity/license_plate.obj")), texture, new Vector3d(0D, 0D, 0D), new Rotation(90F, Axis.ZP));
         this.textOffset = new Vector3d(0D, -0.5D / 16D, -0.5D / 16D - 0.001D);
 
     }

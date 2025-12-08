@@ -10,14 +10,14 @@ import de.maxhenkel.tools.EntityTools;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 
 public class GuiCarWorkshopCrafting extends ScreenBase<ContainerCarWorkshopCrafting> {
 
-    private static final ResourceLocation GUI_TEXTURE = ResourceLocation.fromNamespaceAndPath(CarMod.MODID, "textures/gui/gui_car_workshop_crafting.png");
+    private static final Identifier GUI_TEXTURE = Identifier.fromNamespaceAndPath(CarMod.MODID, "textures/gui/gui_car_workshop_crafting.png");
 
     private TileEntityCarWorkshop tile;
     private Player player;

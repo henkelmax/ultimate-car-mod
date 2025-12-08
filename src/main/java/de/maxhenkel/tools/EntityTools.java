@@ -43,7 +43,6 @@ public class EntityTools {
         EntityRenderer<? super Entity, ?> entityrenderer = entityrenderdispatcher.getRenderer(entity);
         EntityRenderState entityrenderstate = entityrenderer.createRenderState(entity, 1F);
         entityrenderstate.lightCoords = LightTexture.FULL_BRIGHT;
-        entityrenderstate.hitboxesRenderState = null;
         entityrenderstate.shadowPieces.clear();
         entityrenderstate.outlineColor = 0;
         guiGraphics.submitEntityRenderState(entityrenderstate, scale, translation, rotation, null, x1, y1, x2, y2);

@@ -3,7 +3,7 @@ package de.maxhenkel.car.config;
 import com.electronwill.nightconfig.core.conversion.Path;
 import com.electronwill.nightconfig.core.conversion.SpecIntInRange;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.material.Fluid;
 
 public class Fuel {
@@ -25,7 +25,7 @@ public class Fuel {
     }
 
     public Fuel(String fluid) {
-        this.fluid = BuiltInRegistries.FLUID.getValue(ResourceLocation.parse(fluid));
+        this.fluid = BuiltInRegistries.FLUID.getValue(Identifier.parse(fluid));
     }
 
     public Fluid getFluid() {

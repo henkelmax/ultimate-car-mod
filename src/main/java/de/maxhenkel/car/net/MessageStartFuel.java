@@ -7,13 +7,13 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.protocol.PacketFlow;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerPlayer;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 public class MessageStartFuel implements Message<MessageStartFuel> {
 
-    public static final CustomPacketPayload.Type<MessageStartFuel> TYPE = new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(CarMod.MODID, "start_fuel"));
+    public static final CustomPacketPayload.Type<MessageStartFuel> TYPE = new CustomPacketPayload.Type<>(Identifier.fromNamespaceAndPath(CarMod.MODID, "start_fuel"));
 
     private boolean start;
     private BlockPos pos;

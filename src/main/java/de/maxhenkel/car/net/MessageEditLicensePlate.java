@@ -6,7 +6,7 @@ import de.maxhenkel.corelib.net.Message;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.protocol.PacketFlow;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
@@ -17,7 +17,7 @@ import java.util.UUID;
 
 public class MessageEditLicensePlate implements Message<MessageEditLicensePlate> {
 
-    public static final CustomPacketPayload.Type<MessageEditLicensePlate> TYPE = new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(CarMod.MODID, "edit_license_plate"));
+    public static final CustomPacketPayload.Type<MessageEditLicensePlate> TYPE = new CustomPacketPayload.Type<>(Identifier.fromNamespaceAndPath(CarMod.MODID, "edit_license_plate"));
 
     private UUID uuid;
     private String text;

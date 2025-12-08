@@ -3,9 +3,10 @@ package de.maxhenkel.car.villagers;
 import de.maxhenkel.car.CarMod;
 import de.maxhenkel.car.blocks.ModBlocks;
 import de.maxhenkel.car.items.ModItems;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.npc.VillagerTrades;
+import net.minecraft.world.entity.npc.villager.VillagerTrades;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -67,8 +68,8 @@ public class VillagerEvents {
 
         @Nullable
         @Override
-        public MerchantOffer getOffer(Entity entity, RandomSource random) {
-            return trades[random.nextInt(trades.length)].getOffer(entity, random);
+        public MerchantOffer getOffer(ServerLevel level, Entity entity, RandomSource random) {
+            return trades[random.nextInt(trades.length)].getOffer(level, entity, random);
         }
     }
 
@@ -92,7 +93,7 @@ public class VillagerEvents {
         }
 
         @Override
-        public MerchantOffer getOffer(Entity entity, RandomSource random) {
+        public MerchantOffer getOffer(ServerLevel level, Entity entity, RandomSource random) {
             return new MerchantOffer(new ItemCost(buyingItem, buyingAmount), new ItemStack(sellingItem, sellingAmount), maxUses, givenExp, priceMultiplier);
         }
     }

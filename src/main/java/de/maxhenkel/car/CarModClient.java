@@ -18,7 +18,7 @@ import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
 import net.minecraft.client.renderer.entity.EntityRenderers;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -79,7 +79,7 @@ public class CarModClient {
 
     @SubscribeEvent
     static void onRegisterKeyBinds(RegisterKeyMappingsEvent event) {
-        KEY_CATEGORY_CAR = new KeyMapping.Category(ResourceLocation.fromNamespaceAndPath(CarMod.MODID, "car"));
+        KEY_CATEGORY_CAR = new KeyMapping.Category(Identifier.fromNamespaceAndPath(CarMod.MODID, "car"));
         event.registerCategory(KEY_CATEGORY_CAR);
 
         FORWARD_KEY = new KeyMapping("key.car_forward", GLFW.GLFW_KEY_W, KEY_CATEGORY_CAR);
@@ -122,7 +122,7 @@ public class CarModClient {
 
     @SubscribeEvent
     static void registerItemModels(RegisterSpecialModelRendererEvent event) {
-        event.register(ResourceLocation.fromNamespaceAndPath(CarMod.MODID, "tank"), TankSpecialRenderer.Unbaked.MAP_CODEC);
+        event.register(Identifier.fromNamespaceAndPath(CarMod.MODID, "tank"), TankSpecialRenderer.Unbaked.MAP_CODEC);
     }
 
 }

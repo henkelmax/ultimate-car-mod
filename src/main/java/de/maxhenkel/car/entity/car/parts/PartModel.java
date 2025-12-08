@@ -7,7 +7,7 @@ import de.maxhenkel.corelib.client.obj.OBJModel;
 import de.maxhenkel.corelib.client.obj.OBJModelInstance;
 import de.maxhenkel.corelib.client.obj.OBJModelOptions;
 import de.maxhenkel.corelib.math.Rotation;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import org.joml.Vector3d;
 
 import java.util.ArrayList;
@@ -16,22 +16,22 @@ import java.util.List;
 public class PartModel extends Part {
 
     protected OBJModel model;
-    protected ResourceLocation texture;
+    protected Identifier texture;
     protected Vector3d offset;
     protected Rotation rotation;
 
-    public PartModel(OBJModel model, ResourceLocation texture, Vector3d offset, Rotation rotation) {
+    public PartModel(OBJModel model, Identifier texture, Vector3d offset, Rotation rotation) {
         this.model = model;
         this.texture = texture;
         this.offset = offset;
         this.rotation = new Rotation(-90F, Axis.XP).add(rotation);
     }
 
-    public PartModel(OBJModel model, ResourceLocation texture, Vector3d offset) {
+    public PartModel(OBJModel model, Identifier texture, Vector3d offset) {
         this(model, texture, offset, null);
     }
 
-    public PartModel(OBJModel model, ResourceLocation texture) {
+    public PartModel(OBJModel model, Identifier texture) {
         this(model, texture, new Vector3d(0D, 0D, 0D), null);
     }
 

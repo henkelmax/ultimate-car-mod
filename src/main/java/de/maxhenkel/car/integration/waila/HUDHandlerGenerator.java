@@ -2,7 +2,7 @@ package de.maxhenkel.car.integration.waila;
 
 import de.maxhenkel.car.CarMod;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import snownee.jade.api.BlockAccessor;
 import snownee.jade.api.IBlockComponentProvider;
 import snownee.jade.api.ITooltip;
@@ -12,7 +12,7 @@ public class HUDHandlerGenerator implements IBlockComponentProvider {
 
     public static final HUDHandlerGenerator INSTANCE = new HUDHandlerGenerator();
 
-    private static final ResourceLocation UID = ResourceLocation.fromNamespaceAndPath(CarMod.MODID, "generator");
+    private static final Identifier UID = Identifier.fromNamespaceAndPath(CarMod.MODID, "generator");
 
     @Override
     public void appendTooltip(ITooltip iTooltip, BlockAccessor blockAccessor, IPluginConfig iPluginConfig) {
@@ -26,7 +26,7 @@ public class HUDHandlerGenerator implements IBlockComponentProvider {
     }
 
     @Override
-    public ResourceLocation getUid() {
+    public Identifier getUid() {
         return UID;
     }
 }

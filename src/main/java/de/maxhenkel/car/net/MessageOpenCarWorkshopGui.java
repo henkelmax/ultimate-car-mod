@@ -10,7 +10,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.protocol.PacketFlow;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
@@ -19,7 +19,7 @@ import java.util.UUID;
 
 public class MessageOpenCarWorkshopGui implements Message<MessageOpenCarWorkshopGui> {
 
-    public static final CustomPacketPayload.Type<MessageOpenCarWorkshopGui> TYPE = new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(CarMod.MODID, "open_car_workshop"));
+    public static final CustomPacketPayload.Type<MessageOpenCarWorkshopGui> TYPE = new CustomPacketPayload.Type<>(Identifier.fromNamespaceAndPath(CarMod.MODID, "open_car_workshop"));
 
     private BlockPos pos;
     private UUID uuid;

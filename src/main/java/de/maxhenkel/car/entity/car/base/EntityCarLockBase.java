@@ -7,6 +7,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.permissions.Permissions;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -39,7 +40,7 @@ public abstract class EntityCarLockBase extends EntityCarInventoryBase {
 
     @Override
     public void destroyCar(Player player, boolean dropParts) {
-        if (isLocked() && !player.hasPermissions(2)) {
+        if (isLocked() && !player.permissions().hasPermission(Permissions.COMMANDS_MODERATOR)) {
             player.displayClientMessage(Component.translatable("message.car_locked"), true);
             return;
         }

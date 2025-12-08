@@ -8,6 +8,7 @@ import de.maxhenkel.car.items.ModItems;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.coordinates.Vec3Argument;
+import net.minecraft.server.permissions.Permissions;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
@@ -18,7 +19,7 @@ public class CommandCarDemo {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
         dispatcher.register(Commands.literal("cardemo")
-                .requires((source) -> source.hasPermission(2))
+                .requires((source) -> source.permissions().hasPermission(Permissions.COMMANDS_MODERATOR))
                 .then(Commands.argument("pos", Vec3Argument.vec3()).executes((context) -> spawnCars(context.getSource().getLevel(), Vec3Argument.getVec3(context, "pos")))));
     }
 

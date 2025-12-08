@@ -4,14 +4,14 @@ import org.joml.Vector3d;
 import de.maxhenkel.car.CarMod;
 import de.maxhenkel.corelib.client.obj.OBJModel;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 import java.util.List;
 
 public class PartBodyTransporter extends PartBody {
 
-    public PartBodyTransporter(ResourceLocation texture, String materialTranslationKey) {
-        super(new OBJModel(ResourceLocation.fromNamespaceAndPath(CarMod.MODID, "models/entity/transporter_body.obj")), texture, new Vector3d(0D, 4D / 16D, 0D), "transporter", materialTranslationKey);
+    public PartBodyTransporter(Identifier texture, String materialTranslationKey) {
+        super(new OBJModel(Identifier.fromNamespaceAndPath(CarMod.MODID, "models/entity/transporter_body.obj")), texture, new Vector3d(0D, 4D / 16D, 0D), "transporter", materialTranslationKey);
         this.wheelOffsets = new Vector3d[]{
                 new Vector3d(14.5F / 16F, 4F / 16F, 12F / 16F),
                 new Vector3d(14.5F / 16F, 4F / 16F, -16F / 16F),

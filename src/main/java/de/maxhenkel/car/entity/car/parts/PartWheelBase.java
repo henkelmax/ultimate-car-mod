@@ -7,7 +7,7 @@ import de.maxhenkel.corelib.client.obj.OBJModel;
 import de.maxhenkel.corelib.client.obj.OBJModelInstance;
 import de.maxhenkel.corelib.client.obj.OBJModelOptions;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import org.joml.Vector3d;
 
 import java.util.ArrayList;
@@ -18,7 +18,7 @@ public class PartWheelBase extends PartModel {
     protected float rotationModifier;
     protected float stepHeight;
 
-    public PartWheelBase(OBJModel model, ResourceLocation texture, float rotationModifier, float stepHeight) {
+    public PartWheelBase(OBJModel model, Identifier texture, float rotationModifier, float stepHeight) {
         super(model, texture);
         this.rotationModifier = rotationModifier;
         this.stepHeight = stepHeight;

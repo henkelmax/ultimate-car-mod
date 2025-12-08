@@ -7,24 +7,24 @@ import de.maxhenkel.car.blocks.tileentity.TileEntityTank;
 import de.maxhenkel.corelib.client.RenderUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.EntityModelSet;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.Direction;
 import net.minecraft.data.AtlasIds;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
 import org.jetbrains.annotations.Nullable;
 
 public class TileEntitySpecialRendererTank implements BlockEntityRenderer<TileEntityTank, TankRenderState> {
 
-    public static final ResourceLocation LOCATION_TANK = ResourceLocation.fromNamespaceAndPath(CarMod.MODID, "textures/block/tank_line.png");
+    public static final Identifier LOCATION_TANK = Identifier.fromNamespaceAndPath(CarMod.MODID, "textures/block/tank_line.png");
 
     protected EntityModelSet entityModelSet;
 
@@ -49,7 +49,7 @@ public class TileEntitySpecialRendererTank implements BlockEntityRenderer<TileEn
 
         if (!state.fluid.isEmpty()) {
             IClientFluidTypeExtensions type = IClientFluidTypeExtensions.of(state.fluid.getFluid());
-            ResourceLocation stillTexture;
+            Identifier stillTexture;
             if (tank.hasLevel()) {
                 state.tint = type.getTintColor(state.fluid.getFluid().defaultFluidState(), tank.getLevel(), tank.getBlockPos());
                 stillTexture = type.getStillTexture(state.fluid.getFluid().defaultFluidState(), tank.getLevel(), tank.getBlockPos());
@@ -82,7 +82,7 @@ public class TileEntitySpecialRendererTank implements BlockEntityRenderer<TileEn
         int light = state.lightCoords;
         float yStart = 0F;
         int overlay = OverlayTexture.NO_OVERLAY;
-        collector.submitCustomGeometry(stack, RenderType.itemEntityTranslucentCull(TextureAtlas.LOCATION_BLOCKS), (pose, vertexConsumer) -> {
+        collector.submitCustomGeometry(stack, RenderTypes.itemEntityTranslucentCull(TextureAtlas.LOCATION_BLOCKS), (pose, vertexConsumer) -> {
             float uMin = texture.getU0();
             float uMax = texture.getU1();
             float vMin = texture.getV0();
@@ -196,7 +196,7 @@ public class TileEntitySpecialRendererTank implements BlockEntityRenderer<TileEn
     }
 
     public static void drawSide(EnumDirection line, PoseStack stack, SubmitNodeCollector collector, int light, int overlay) {
-        collector.submitCustomGeometry(stack, RenderType.entityCutout(LOCATION_TANK), (pose, c) -> {
+        collector.submitCustomGeometry(stack, RenderTypes.entityCutout(LOCATION_TANK), (pose, c) -> {
             switch (line) {
                 case UP:
                     // Top

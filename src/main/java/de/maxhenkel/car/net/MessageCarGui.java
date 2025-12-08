@@ -6,7 +6,7 @@ import de.maxhenkel.corelib.net.Message;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.protocol.PacketFlow;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
@@ -15,7 +15,7 @@ import java.util.UUID;
 
 public class MessageCarGui implements Message<MessageCarGui> {
 
-    public static final CustomPacketPayload.Type<MessageCarGui> TYPE = new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(CarMod.MODID, "car_gui"));
+    public static final CustomPacketPayload.Type<MessageCarGui> TYPE = new CustomPacketPayload.Type<>(Identifier.fromNamespaceAndPath(CarMod.MODID, "car_gui"));
 
     private UUID uuid;
 

@@ -6,13 +6,14 @@ import de.maxhenkel.car.blocks.tileentity.TileEntityGasStation;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.components.debug.DebugScreenEntries;
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.ShapeRenderer;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
 import net.minecraft.client.renderer.state.CameraRenderState;
+import net.minecraft.gizmos.GizmoStyle;
+import net.minecraft.gizmos.Gizmos;
+import net.minecraft.util.ARGB;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
@@ -43,7 +44,7 @@ public class TileentitySpecialRendererGasStation implements BlockEntityRenderer<
         state.direction = gasStation.getDirection();
 
         if (minecraft.debugEntries.isCurrentlyEnabled(DebugScreenEntries.ENTITY_HITBOXES)) {
-            state.hitbox = gasStation.getDetectionBox().move(-gasStation.getBlockPos().getX(), -gasStation.getBlockPos().getY(), -gasStation.getBlockPos().getZ());
+            state.hitbox = gasStation.getDetectionBox();
         } else {
             state.hitbox = null;
         }
@@ -78,9 +79,11 @@ public class TileentitySpecialRendererGasStation implements BlockEntityRenderer<
 
         if (state.hitbox != null) {
             AABB hitbox = state.hitbox;
-            collector.submitCustomGeometry(stack, RenderType.lines(), (pose, vertexConsumer) -> {
-                ShapeRenderer.renderLineBox(pose, vertexConsumer, hitbox, 0F, 0F, 1F, 1F);
-            });
+            Gizmos.cuboid(
+                    hitbox,
+                    GizmoStyle.stroke(ARGB.colorFromFloat(1F, 0.9F, 0.9F, 0.9F)),
+                    false
+            );
         }
     }
 

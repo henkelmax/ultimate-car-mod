@@ -6,7 +6,7 @@ import de.maxhenkel.corelib.net.Message;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.protocol.PacketFlow;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
@@ -15,7 +15,7 @@ import java.util.UUID;
 
 public class MessageStarting implements Message<MessageStarting> {
 
-    public static final CustomPacketPayload.Type<MessageStarting> TYPE = new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(CarMod.MODID, "starting"));
+    public static final CustomPacketPayload.Type<MessageStarting> TYPE = new CustomPacketPayload.Type<>(Identifier.fromNamespaceAndPath(CarMod.MODID, "starting"));
 
     private boolean start;
     private boolean playSound;

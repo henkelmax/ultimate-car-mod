@@ -3,12 +3,12 @@ package de.maxhenkel.car.entity.car.parts;
 import org.joml.Vector3d;
 import de.maxhenkel.car.CarMod;
 import de.maxhenkel.corelib.client.obj.OBJModel;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 public class PartBodySUV extends PartBody {
 
-    public PartBodySUV(ResourceLocation texture, String materialTranslationKey) {
-        super(new OBJModel(ResourceLocation.fromNamespaceAndPath(CarMod.MODID, "models/entity/suv_body.obj")), texture, new Vector3d(0D, 4D / 16D, 0D), "suv", materialTranslationKey);
+    public PartBodySUV(Identifier texture, String materialTranslationKey) {
+        super(new OBJModel(Identifier.fromNamespaceAndPath(CarMod.MODID, "models/entity/suv_body.obj")), texture, new Vector3d(0D, 4D / 16D, 0D), "suv", materialTranslationKey);
         this.wheelOffsets = new Vector3d[]{
                 new Vector3d(11F / 16F, 5F / 16F, 10F / 16F),
                 new Vector3d(11F / 16F, 5F / 16F, -10F / 16F),

@@ -5,7 +5,7 @@ import de.maxhenkel.corelib.inventory.ScreenBase;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.entity.player.Inventory;
 
@@ -17,7 +17,7 @@ public abstract class GuiEnergyFluidProducer<T extends ContainerEnergyFluidProdu
     private Inventory playerInv;
     private TileEntityEnergyFluidProducer tile;
 
-    public GuiEnergyFluidProducer(ResourceLocation texture, T container, Inventory playerInventory, Component title) {
+    public GuiEnergyFluidProducer(Identifier texture, T container, Inventory playerInventory, Component title) {
         super(texture, container, playerInventory, title);
         this.playerInv = playerInventory;
         this.tile = container.getTile();

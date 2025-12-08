@@ -33,14 +33,14 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.syncher.EntityDataSerializer;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.util.Unit;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.ai.village.poi.PoiType;
-import net.minecraft.world.entity.npc.VillagerProfession;
+import net.minecraft.world.entity.npc.villager.VillagerProfession;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeSerializer;
@@ -111,10 +111,10 @@ public class CarMod {
 
     private static final DeferredRegister<RecipeType<?>> RECIPE_TYPE_REGISTER = DeferredRegister.create(BuiltInRegistries.RECIPE_TYPE, CarMod.MODID);
     public static final DeferredHolder<RecipeType<?>, RecipeType<BlastFurnaceRecipe>> RECIPE_TYPE_BLAST_FURNACE = RECIPE_TYPE_REGISTER.register("blast_furnace", () ->
-            RecipeType.simple(ResourceLocation.fromNamespaceAndPath(CarMod.MODID, "blast_furnace"))
+            RecipeType.simple(Identifier.fromNamespaceAndPath(CarMod.MODID, "blast_furnace"))
     );
     public static final DeferredHolder<RecipeType<?>, RecipeType<OilMillRecipe>> RECIPE_TYPE_OIL_MILL = RECIPE_TYPE_REGISTER.register("oil_mill", () ->
-            RecipeType.simple(ResourceLocation.fromNamespaceAndPath(CarMod.MODID, "oil_mill"))
+            RecipeType.simple(Identifier.fromNamespaceAndPath(CarMod.MODID, "oil_mill"))
     );
 
     private static final DeferredRegister<EntityDataSerializer<?>> ENTITY_DATA_SERIALIZER_REGISTER = DeferredRegister.create(NeoForgeRegistries.Keys.ENTITY_DATA_SERIALIZERS, CarMod.MODID);
@@ -124,7 +124,7 @@ public class CarMod {
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<SimpleFluidContent>> FUEL_DATA_COMPONENT = DATA_COMPONENT_TYPE_REGISTER.register("fuel", () -> DataComponentType.<SimpleFluidContent>builder().persistent(SimpleFluidContent.CODEC).networkSynchronized(SimpleFluidContent.STREAM_CODEC).build());
     //TODO Add the tooltip if this component is present
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<SimpleFluidContent>> FLUID_STACK_DATA_COMPONENT = DATA_COMPONENT_TYPE_REGISTER.register("fluid", () -> DataComponentType.<SimpleFluidContent>builder().persistent(SimpleFluidContent.CODEC).networkSynchronized(SimpleFluidContent.STREAM_CODEC).build());
-    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Unit>> TRADING_ITEM_DATA_COMPONENT = DATA_COMPONENT_TYPE_REGISTER.register("trading_item", () -> DataComponentType.<Unit>builder().persistent(Codec.unit(Unit.INSTANCE)).networkSynchronized(StreamCodec.unit(Unit.INSTANCE)).build());
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Unit>> TRADING_ITEM_DATA_COMPONENT = DATA_COMPONENT_TYPE_REGISTER.register("trading_item", () -> DataComponentType.<Unit>builder().persistent(Unit.CODEC).networkSynchronized(StreamCodec.unit(Unit.INSTANCE)).build());
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> PAINTER_INDEX_DATA_COMPONENT = DATA_COMPONENT_TYPE_REGISTER.register("index", () -> DataComponentType.<Integer>builder().persistent(ExtraCodecs.NON_NEGATIVE_INT).networkSynchronized(ByteBufCodecs.VAR_INT).build());
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<UUID>> CAR_UUID_DATA_COMPONENT = DATA_COMPONENT_TYPE_REGISTER.register("car", () -> DataComponentType.<UUID>builder().persistent(UUIDUtil.CODEC).networkSynchronized(UUIDUtil.STREAM_CODEC).build());
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<String>> LICENSE_PLATE_TEXT_DATA_COMPONENT = DATA_COMPONENT_TYPE_REGISTER.register("plate_text", () -> DataComponentType.<String>builder().persistent(Codec.STRING).networkSynchronized(ByteBufCodecs.STRING_UTF8).build());

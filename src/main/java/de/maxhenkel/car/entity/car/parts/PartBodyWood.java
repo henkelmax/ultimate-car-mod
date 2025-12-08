@@ -3,12 +3,12 @@ package de.maxhenkel.car.entity.car.parts;
 import org.joml.Vector3d;
 import de.maxhenkel.car.CarMod;
 import de.maxhenkel.corelib.client.obj.OBJModel;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 public class PartBodyWood extends PartBodyWoodBase {
 
-    public PartBodyWood(ResourceLocation texture, String materialTranslationKey) {
-        super(new OBJModel(ResourceLocation.fromNamespaceAndPath(CarMod.MODID, "models/entity/wood_body.obj")), texture, new Vector3d(0D, 4D / 16D, 0D), "wood", materialTranslationKey);
+    public PartBodyWood(Identifier texture, String materialTranslationKey) {
+        super(new OBJModel(Identifier.fromNamespaceAndPath(CarMod.MODID, "models/entity/wood_body.obj")), texture, new Vector3d(0D, 4D / 16D, 0D), "wood", materialTranslationKey);
 
         this.bumperOffset = new Vector3d(0D, 6D / 16D, -14.5D / 16D);
         this.wheelOffsets = new Vector3d[]{

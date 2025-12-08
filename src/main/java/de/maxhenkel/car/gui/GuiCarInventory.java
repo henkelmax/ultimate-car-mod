@@ -4,13 +4,13 @@ import de.maxhenkel.car.entity.car.base.EntityCarInventoryBase;
 import de.maxhenkel.corelib.inventory.ScreenBase;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
 
 public class GuiCarInventory extends ScreenBase<ContainerCarInventory> {
 
-    private static final ResourceLocation GUI_TEXTURE_3 = ResourceLocation.withDefaultNamespace("textures/gui/container/shulker_box.png");
-    private static final ResourceLocation GUI_TEXTURE_6 = ResourceLocation.withDefaultNamespace("textures/gui/container/generic_54.png");
+    private static final Identifier GUI_TEXTURE_3 = Identifier.withDefaultNamespace("textures/gui/container/shulker_box.png");
+    private static final Identifier GUI_TEXTURE_6 = Identifier.withDefaultNamespace("textures/gui/container/generic_54.png");
 
     private EntityCarInventoryBase car;
     private Inventory playerInventory;
