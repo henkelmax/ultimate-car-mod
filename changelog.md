@@ -1,1 +1,1 @@
-- Fixed gas station with price not being able to fuel cars
+- Added Mexican Spanish translation
