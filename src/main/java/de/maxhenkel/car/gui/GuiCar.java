@@ -4,7 +4,7 @@ import de.maxhenkel.car.CarMod;
 import de.maxhenkel.car.entity.car.base.EntityCarInventoryBase;
 import de.maxhenkel.corelib.inventory.ScreenBase;
 import de.maxhenkel.corelib.math.MathUtils;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
@@ -18,26 +18,23 @@ public class GuiCar extends ScreenBase<ContainerCar> {
     private EntityCarInventoryBase car;
 
     public GuiCar(ContainerCar containerCar, Inventory playerInv, Component title) {
-        super(CAR_GUI_TEXTURE, containerCar, playerInv, title);
+        super(CAR_GUI_TEXTURE, containerCar, playerInv, title, 176, 248);
         this.playerInv = playerInv;
         this.car = containerCar.getCar();
-
-        imageWidth = 176;
-        imageHeight = 248;
     }
 
     @Override
-    protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
-        super.renderLabels(guiGraphics, mouseX, mouseY);
+    protected void extractLabels(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY) {
+        super.extractLabels(guiGraphics, mouseX, mouseY);
 
         //Titles
-        guiGraphics.drawString(font, car.getDisplayName().getVisualOrderText(), 7, 87, FONT_COLOR, false);
-        guiGraphics.drawString(font, playerInv.getDisplayName().getVisualOrderText(), 8, this.imageHeight - 96 + 2, FONT_COLOR, false);
+        guiGraphics.text(font, car.getDisplayName().getVisualOrderText(), 7, 87, FONT_COLOR, false);
+        guiGraphics.text(font, playerInv.getDisplayName().getVisualOrderText(), 8, this.imageHeight - 96 + 2, FONT_COLOR, false);
 
-        guiGraphics.drawString(font, getFuelString().getVisualOrderText(), 7, 9, FONT_COLOR, false);
-        guiGraphics.drawString(font, getDamageString().getVisualOrderText(), 7, 35, FONT_COLOR, false);
-        guiGraphics.drawString(font, getBatteryString().getVisualOrderText(), 95, 9, FONT_COLOR, false);
-        guiGraphics.drawString(font, getTempString().getVisualOrderText(), 95, 35, FONT_COLOR, false);
+        guiGraphics.text(font, getFuelString().getVisualOrderText(), 7, 9, FONT_COLOR, false);
+        guiGraphics.text(font, getDamageString().getVisualOrderText(), 7, 35, FONT_COLOR, false);
+        guiGraphics.text(font, getBatteryString().getVisualOrderText(), 95, 9, FONT_COLOR, false);
+        guiGraphics.text(font, getTempString().getVisualOrderText(), 95, 35, FONT_COLOR, false);
     }
 
     public float getFuelPercent() {
@@ -95,15 +92,15 @@ public class GuiCar extends ScreenBase<ContainerCar> {
     }
 
     @Override
-    protected void renderBg(GuiGraphics guiGraphics, float partialTicks, int mouseX, int mouseY) {
-        super.renderBg(guiGraphics, partialTicks, mouseX, mouseY);
+    public void extractBackground(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTicks) {
+        super.extractBackground(guiGraphics, mouseX, mouseY, partialTicks);
         drawFuel(guiGraphics, getFuelPercent());
         drawDamage(guiGraphics, 100F - getDamagePercent());
         drawBattery(guiGraphics, car.getBatteryPercentage());
         drawTemp(guiGraphics, getTemperaturePercent());
     }
 
-    public void drawFuel(GuiGraphics guiGraphics, float percent) {
+    public void drawFuel(GuiGraphicsExtractor guiGraphics, float percent) {
         percent = Math.min(100F, percent);
         //72x10
         int scaled = (int) (72F * percent / 100D);
@@ -112,7 +109,7 @@ public class GuiCar extends ScreenBase<ContainerCar> {
         guiGraphics.blit(RenderPipelines.GUI_TEXTURED, CAR_GUI_TEXTURE, i + 8, j + 20, 176, 0, scaled, 10, 256, 256);
     }
 
-    public void drawDamage(GuiGraphics guiGraphics, float percent) {
+    public void drawDamage(GuiGraphicsExtractor guiGraphics, float percent) {
         percent = Math.min(100F, percent);
         int scaled = (int) (72F * percent / 100D);
         int i = this.leftPos;
@@ -120,7 +117,7 @@ public class GuiCar extends ScreenBase<ContainerCar> {
         guiGraphics.blit(RenderPipelines.GUI_TEXTURED, CAR_GUI_TEXTURE, i + 8, j + 46, 176, 10, scaled, 10, 256, 256);
     }
 
-    public void drawTemp(GuiGraphics guiGraphics, float percent) {
+    public void drawTemp(GuiGraphicsExtractor guiGraphics, float percent) {
         percent = Math.min(100F, percent);
         int scaled = (int) (72F * percent);
         int i = this.leftPos;
@@ -128,7 +125,7 @@ public class GuiCar extends ScreenBase<ContainerCar> {
         guiGraphics.blit(RenderPipelines.GUI_TEXTURED, CAR_GUI_TEXTURE, i + 96, j + 46, 176, 30, scaled, 10, 256, 256);
     }
 
-    public void drawBattery(GuiGraphics guiGraphics, float percent) {
+    public void drawBattery(GuiGraphicsExtractor guiGraphics, float percent) {
         percent = Math.min(100F, percent);
         int scaled = (int) (72F * percent);
         int i = this.leftPos;

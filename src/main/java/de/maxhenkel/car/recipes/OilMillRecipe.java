@@ -1,16 +1,13 @@
 package de.maxhenkel.car.recipes;
 
 import de.maxhenkel.car.CarMod;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.Recipe;
-import net.minecraft.world.item.crafting.RecipeInput;
-import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.ItemStackTemplate;
+import net.minecraft.world.item.crafting.*;
 
 public class OilMillRecipe extends EnergyFluidProducerRecipe {
 
-    public OilMillRecipe(String group, Ingredient ingredientIn, ItemStack result, int fluidAmount, int energy, int duration) {
-        super(CarMod.RECIPE_TYPE_OIL_MILL.get(), group, ingredientIn, result, fluidAmount, energy, duration);
+    public OilMillRecipe(String group, Ingredient ingredientIn, ItemStackTemplate result, int fluidAmount, int energy, int duration) {
+        super(group, ingredientIn, result, fluidAmount, energy, duration);
     }
 
     @Override
@@ -18,4 +15,8 @@ public class OilMillRecipe extends EnergyFluidProducerRecipe {
         return CarMod.CRAFTING_OIL_MILL.get();
     }
 
+    @Override
+    public RecipeType<? extends Recipe<RecipeInput>> getType() {
+        return CarMod.RECIPE_TYPE_OIL_MILL.get();
+    }
 }

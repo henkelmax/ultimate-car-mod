@@ -7,7 +7,7 @@ import de.maxhenkel.car.net.MessageOpenCarWorkshopGui;
 import de.maxhenkel.car.net.MessageSpawnCar;
 import de.maxhenkel.corelib.inventory.ScreenBase;
 import de.maxhenkel.tools.EntityTools;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
@@ -28,13 +28,10 @@ public class GuiCarWorkshopCrafting extends ScreenBase<ContainerCarWorkshopCraft
     private EntityTools.CarRenderer carRenderer;
 
     public GuiCarWorkshopCrafting(ContainerCarWorkshopCrafting container, Inventory playerInventory, Component title) {
-        super(GUI_TEXTURE, container, playerInventory, title);
+        super(GUI_TEXTURE, container, playerInventory, title, 176, 222);
         this.player = playerInventory.player;
         this.tile = container.getTile();
         this.carRenderer = new EntityTools.CarRenderer();
-
-        imageWidth = 176;
-        imageHeight = 222;
     }
 
     @Override
@@ -51,7 +48,7 @@ public class GuiCarWorkshopCrafting extends ScreenBase<ContainerCarWorkshopCraft
                     ClientPacketDistributor.sendToServer(new MessageSpawnCar(tile.getBlockPos()));
                 } else {
                     for (Component message : tile.getMessages()) {
-                        minecraft.gui.getChat().addMessage(message);
+                        minecraft.gui.getChat().addClientSystemMessage(message);
                     }
                 }
             }
@@ -60,12 +57,12 @@ public class GuiCarWorkshopCrafting extends ScreenBase<ContainerCarWorkshopCraft
     }
 
     @Override
-    protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
-        super.renderLabels(guiGraphics, mouseX, mouseY);
+    public void extractLabels(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY) {
+        super.extractLabels(guiGraphics, mouseX, mouseY);
 
         // Titles
-        guiGraphics.drawString(font, tile.getDisplayName().getVisualOrderText(), 8, 6, FONT_COLOR, false);
-        guiGraphics.drawString(font, playerInventoryTitle.getVisualOrderText(), 8, imageHeight - 96 + 2, FONT_COLOR, false);
+        guiGraphics.text(font, tile.getDisplayName().getVisualOrderText(), 8, 6, FONT_COLOR, false);
+        guiGraphics.text(font, playerInventoryTitle.getVisualOrderText(), 8, imageHeight - 96 + 2, FONT_COLOR, false);
 
         EntityGenericCar carTop = tile.getCarOnTop();
         EntityGenericCar car = tile.getCurrentCraftingCar();
@@ -87,7 +84,7 @@ public class GuiCarWorkshopCrafting extends ScreenBase<ContainerCarWorkshopCraft
         carRenderer.tick();
     }
 
-    private void drawCar(GuiGraphics guiGraphics, EntityGenericCar car) {
+    private void drawCar(GuiGraphicsExtractor guiGraphics, EntityGenericCar car) {
         carRenderer.render(guiGraphics, car, getGuiLeft() + 50, getGuiTop() + 16, getGuiLeft() + 126, getGuiTop() + 59, 23);
     }
 

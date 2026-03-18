@@ -3,27 +3,26 @@ package de.maxhenkel.car.blocks.tileentity.render;
 import com.mojang.blaze3d.vertex.PoseStack;
 import de.maxhenkel.car.blocks.tileentity.TileEntitySplitTank;
 import de.maxhenkel.car.fluids.ModFluids;
+import de.maxhenkel.corelib.FluidUtils;
 import de.maxhenkel.corelib.client.RenderUtils;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.SubmitNodeCollector;
+import net.minecraft.client.renderer.block.FluidModel;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
-import net.minecraft.client.renderer.state.CameraRenderState;
+import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.data.AtlasIds;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.neoforged.neoforge.fluids.FluidStack;
 import org.jetbrains.annotations.Nullable;
 
 public class TileEntitySpecialRendererSplitTank implements BlockEntityRenderer<TileEntitySplitTank, SplitTankRenderState> {
 
-    private static final FluidStack BIO_DIESEL_STACK = new FluidStack(ModFluids.BIO_DIESEL.get(), 1);
-    private static final FluidStack GLYCERIN_STACK = new FluidStack(ModFluids.GLYCERIN.get(), 1);
+    private static FluidStack BIO_DIESEL_STACK;
+    private static FluidStack GLYCERIN_STACK;
 
     protected BlockEntityRendererProvider.Context renderer;
 
@@ -47,6 +46,13 @@ public class TileEntitySpecialRendererSplitTank implements BlockEntityRenderer<T
     public void submit(SplitTankRenderState state, PoseStack stack, SubmitNodeCollector collector, CameraRenderState cameraRenderState) {
         stack.pushPose();
 
+        if (BIO_DIESEL_STACK == null) {
+            BIO_DIESEL_STACK = new FluidStack(ModFluids.BIO_DIESEL, 1);
+        }
+        if (GLYCERIN_STACK == null) {
+            GLYCERIN_STACK = new FluidStack(ModFluids.GLYCERIN, 1);
+        }
+
         if (state.bioDiesel > 0) {
             renderFluid(BIO_DIESEL_STACK, state.bioDiesel, 1F / 16F, stack, state.lightCoords, OverlayTexture.NO_OVERLAY, collector);
         }
@@ -62,10 +68,10 @@ public class TileEntitySpecialRendererSplitTank implements BlockEntityRenderer<T
         stack.scale(0.98F, 0.98F, 0.98F);
         stack.translate(0.01F, 0.01F, 0.01F);
 
-        IClientFluidTypeExtensions type = IClientFluidTypeExtensions.of(fluid.getFluid());
-        TextureAtlasSprite texture = Minecraft.getInstance().getAtlasManager().getAtlasOrThrow(AtlasIds.BLOCKS).getSprite(type.getStillTexture(fluid));
+        FluidModel fluidModel = FluidUtils.getFluidModel(fluid.getFluid());
+        TextureAtlasSprite texture = fluidModel.stillMaterial().sprite();
 
-        collector.submitCustomGeometry(stack, RenderTypes.itemEntityTranslucentCull(TextureAtlas.LOCATION_BLOCKS), (pose, vertexConsumer) -> {
+        collector.submitCustomGeometry(stack, RenderTypes.entityTranslucent(TextureAtlas.LOCATION_BLOCKS), (pose, vertexConsumer) -> {
             float uMin = texture.getU0();
             float uMax = texture.getU1();
             float vMin = texture.getV0();

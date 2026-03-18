@@ -1,22 +1,20 @@
 package de.maxhenkel.car.recipes;
 
-import net.minecraft.core.HolderLookup;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
 
 public abstract class EnergyFluidProducerRecipe implements Recipe<RecipeInput> {
 
-    protected final RecipeType<? extends Recipe<RecipeInput>> type;
     protected final Ingredient ingredient;
-    protected final ItemStack result;
+    protected final ItemStackTemplate result;
     protected final String group;
     protected final int fluidAmount;
     protected final int energy;
     protected final int duration;
 
-    public EnergyFluidProducerRecipe(RecipeType<? extends Recipe<RecipeInput>> type, String group, Ingredient ingredientIn, ItemStack result, int fluidAmount, int energy, int duration) {
-        this.type = type;
+    public EnergyFluidProducerRecipe(String group, Ingredient ingredientIn, ItemStackTemplate result, int fluidAmount, int energy, int duration) {
         this.group = group;
         this.ingredient = ingredientIn;
         this.result = result;
@@ -31,10 +29,9 @@ public abstract class EnergyFluidProducerRecipe implements Recipe<RecipeInput> {
     }
 
     @Override
-    public ItemStack assemble(RecipeInput container, HolderLookup.Provider provider) {
-        return result.copy();
+    public ItemStack assemble(RecipeInput input) {
+        return result.create();
     }
-
 
     public Ingredient getIngredient() {
         return ingredient;
@@ -46,7 +43,7 @@ public abstract class EnergyFluidProducerRecipe implements Recipe<RecipeInput> {
     }
 
     public ItemStack getResultItem() {
-        return result.copy();
+        return result.create();
     }
 
     public int getFluidAmount() {
@@ -62,11 +59,6 @@ public abstract class EnergyFluidProducerRecipe implements Recipe<RecipeInput> {
     }
 
     @Override
-    public RecipeType<? extends Recipe<RecipeInput>> getType() {
-        return type;
-    }
-
-    @Override
     public PlacementInfo placementInfo() {
         return PlacementInfo.create(ingredient);
     }
@@ -74,6 +66,16 @@ public abstract class EnergyFluidProducerRecipe implements Recipe<RecipeInput> {
     @Override
     public RecipeBookCategory recipeBookCategory() {
         return null;
+    }
+
+    @Override
+    public boolean showNotification() {
+        return false;
+    }
+
+    @Override
+    public String group() {
+        return "";
     }
 
 }

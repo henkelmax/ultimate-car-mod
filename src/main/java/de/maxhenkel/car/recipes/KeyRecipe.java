@@ -3,22 +3,25 @@ package de.maxhenkel.car.recipes;
 import de.maxhenkel.car.CarMod;
 import de.maxhenkel.car.items.ItemKey;
 import de.maxhenkel.car.items.ModItems;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.crafting.CraftingBookCategory;
-import net.minecraft.world.item.crafting.CraftingInput;
-import net.minecraft.world.item.crafting.CustomRecipe;
-import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
 
 import java.util.UUID;
 
 public class KeyRecipe extends CustomRecipe {
 
+    private CraftingBookCategory category;
+
     public KeyRecipe(CraftingBookCategory category) {
-        super(category);
+        this.category = category;
+    }
+
+    @Override
+    public CraftingBookCategory category() {
+        return category;
     }
 
     @Override
@@ -48,11 +51,6 @@ public class KeyRecipe extends CustomRecipe {
     @Override
     public boolean matches(CraftingInput inv, Level worldIn) {
         return assemble(inv) != null;
-    }
-
-    @Override
-    public ItemStack assemble(CraftingInput craftingContainer, HolderLookup.Provider provider) {
-        return assemble(craftingContainer);
     }
 
     public ItemStack assemble(CraftingInput inv) {

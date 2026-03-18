@@ -333,11 +333,11 @@ public abstract class EntityCarBase extends EntityVehicleBase {
     }
 
     @Override
-    public InteractionResult interact(Player player, InteractionHand hand) {
+    public InteractionResult interact(Player player, InteractionHand hand, Vec3 location) {
         if (!canPlayerEnterCar(player)) {
             return InteractionResult.FAIL;
         }
-        return super.interact(player, hand);
+        return super.interact(player, hand, location);
     }
 
     public float getKilometerPerHour() {

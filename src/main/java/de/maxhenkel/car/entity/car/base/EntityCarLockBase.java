@@ -18,6 +18,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
+import net.minecraft.world.phys.Vec3;
 
 import java.util.UUID;
 
@@ -32,7 +33,7 @@ public abstract class EntityCarLockBase extends EntityCarInventoryBase {
     @Override
     public boolean canPlayerEnterCar(Player player) {
         if (isLocked()) {
-            player.displayClientMessage(Component.translatable("message.car_locked"), true);
+            player.sendOverlayMessage(Component.translatable("message.car_locked"));
             return false;
         }
         return super.canPlayerEnterCar(player);
@@ -41,7 +42,7 @@ public abstract class EntityCarLockBase extends EntityCarInventoryBase {
     @Override
     public void destroyCar(Player player, boolean dropParts) {
         if (isLocked() && !player.permissions().hasPermission(Permissions.COMMANDS_MODERATOR)) {
-            player.displayClientMessage(Component.translatable("message.car_locked"), true);
+            player.sendOverlayMessage(Component.translatable("message.car_locked"));
             return;
         }
 
@@ -106,7 +107,7 @@ public abstract class EntityCarLockBase extends EntityCarInventoryBase {
     }
 
     @Override
-    public InteractionResult interact(Player player, InteractionHand hand) {
+    public InteractionResult interact(Player player, InteractionHand hand, Vec3 location) {
         ItemStack stack = player.getItemInHand(hand);
         if (!isLocked() && player.isShiftKeyDown() && player.getAbilities().instabuild && !stack.isEmpty() && stack.getItem().equals(ModItems.KEY.get())) {
             UUID uuid = ItemKey.getCar(stack);
@@ -115,7 +116,6 @@ public abstract class EntityCarLockBase extends EntityCarInventoryBase {
                 return InteractionResult.CONSUME;
             }
         }
-        return super.interact(player, hand);
+        return super.interact(player, hand, location);
     }
-
 }

@@ -4,14 +4,17 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import de.maxhenkel.car.CarMod;
 import de.maxhenkel.car.blocks.tileentity.TileEntityTank;
+import de.maxhenkel.corelib.FluidUtils;
 import de.maxhenkel.corelib.client.RenderUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.renderer.SubmitNodeCollector;
+import net.minecraft.client.renderer.block.BlockAndTintGetter;
+import net.minecraft.client.renderer.block.FluidModel;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
-import net.minecraft.client.renderer.state.CameraRenderState;
+import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -48,16 +51,13 @@ public class TileEntitySpecialRendererTank implements BlockEntityRenderer<TileEn
         }
 
         if (!state.fluid.isEmpty()) {
-            IClientFluidTypeExtensions type = IClientFluidTypeExtensions.of(state.fluid.getFluid());
-            Identifier stillTexture;
+            FluidModel fluidModel = FluidUtils.getFluidModel(state.fluid.getFluid());
+            state.texture = fluidModel.stillMaterial().sprite();
             if (tank.hasLevel()) {
-                state.tint = type.getTintColor(state.fluid.getFluid().defaultFluidState(), tank.getLevel(), tank.getBlockPos());
-                stillTexture = type.getStillTexture(state.fluid.getFluid().defaultFluidState(), tank.getLevel(), tank.getBlockPos());
+                state.tint = FluidUtils.getTint(state.fluid.getFluid().defaultFluidState(), tank.getBlockState(), (BlockAndTintGetter) tank.getLevel(), tank.getBlockPos());
             } else {
-                state.tint = type.getTintColor(state.fluid);
-                stillTexture = type.getStillTexture(state.fluid);
+                state.tint = FluidUtils.getTint(state.fluid.getFluid().defaultFluidState());
             }
-            state.texture = Minecraft.getInstance().getAtlasManager().getAtlasOrThrow(AtlasIds.BLOCKS).getSprite(stillTexture);
         } else {
             state.tint = 0;
             state.texture = null;
@@ -82,7 +82,8 @@ public class TileEntitySpecialRendererTank implements BlockEntityRenderer<TileEn
         int light = state.lightCoords;
         float yStart = 0F;
         int overlay = OverlayTexture.NO_OVERLAY;
-        collector.submitCustomGeometry(stack, RenderTypes.itemEntityTranslucentCull(TextureAtlas.LOCATION_BLOCKS), (pose, vertexConsumer) -> {
+
+        collector.submitCustomGeometry(stack, RenderTypes.entityTranslucent(TextureAtlas.LOCATION_BLOCKS), (pose, vertexConsumer) -> {
             float uMin = texture.getU0();
             float uMax = texture.getU1();
             float vMin = texture.getV0();

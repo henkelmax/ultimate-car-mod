@@ -1,0 +1,13 @@
+{
+  "gives": {
+    "count": 16,
+    "id": "car:asphalt"
+  },
+  "max_uses": 16,
+  "reputation_discount": 0.05,
+  "wants": {
+    "count": 4,
+    "id": "minecraft:emerald"
+  },
+  "xp": 2
+}

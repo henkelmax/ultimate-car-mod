@@ -19,6 +19,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
+import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.transfer.ResourceHandler;
@@ -61,7 +62,7 @@ public abstract class EntityCarInventoryBase extends EntityCarFuelBase implement
     }
 
     @Override
-    public InteractionResult interact(Player player, InteractionHand hand) {
+    public InteractionResult interact(Player player, InteractionHand hand, Vec3 location) {
         if (canPlayerAccessInventoryExternal(player) && player.isShiftKeyDown()) {
             //Canister
             ItemStack stack = player.getItemInHand(hand);
@@ -114,7 +115,7 @@ public abstract class EntityCarInventoryBase extends EntityCarFuelBase implement
 
             return InteractionResult.SUCCESS;
         }
-        return super.interact(player, hand);
+        return super.interact(player, hand, location);
     }
 
     public abstract int getFluidInventorySize();

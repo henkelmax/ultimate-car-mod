@@ -28,7 +28,7 @@ public class ItemKey extends Item {
 
         if (carUUID == null) {
             if (worldIn.isClientSide()) {
-                playerIn.displayClientMessage(Component.translatable("message.key_no_car"), true);
+                playerIn.sendOverlayMessage(Component.translatable("message.key_no_car"));
             }
             return InteractionResult.PASS;
         } else if (worldIn.isClientSide()) {
@@ -38,7 +38,7 @@ public class ItemKey extends Item {
         List<EntityCarLockBase> cars = worldIn.getEntitiesOfClass(EntityCarLockBase.class, new AABB(playerIn.getX() - 25D, playerIn.getY() - 25D, playerIn.getZ() - 25D, playerIn.getX() + 25D, playerIn.getY() + 25D, playerIn.getZ() + 25D), new PredicateUUID(carUUID));
 
         if (cars.isEmpty()) {
-            playerIn.displayClientMessage(Component.translatable("message.car_out_of_range"), true);
+            playerIn.sendOverlayMessage(Component.translatable("message.car_out_of_range"));
             return InteractionResult.SUCCESS;
         }
 

@@ -1,0 +1,5 @@
+{
+  "amount": 1,
+  "random_sequence": "car:trade_set/gas_station_attendant/level_5",
+  "trades": "#car:gas_station_attendant/level_5"
+}

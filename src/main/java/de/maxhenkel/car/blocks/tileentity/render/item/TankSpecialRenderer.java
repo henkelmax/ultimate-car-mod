@@ -11,9 +11,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.special.SpecialModelRenderer;
-import net.minecraft.client.renderer.state.CameraRenderState;
+import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
@@ -37,12 +36,12 @@ public class TankSpecialRenderer implements SpecialModelRenderer<TileEntityTank>
     }
 
     @Override
-    public void submit(@Nullable TileEntityTank tank, ItemDisplayContext context, PoseStack stack, SubmitNodeCollector collector, int light, int overlay, boolean b, int i) {
+    public void submit(@Nullable TileEntityTank argument, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int lightCoords, int overlayCoords, boolean hasFoil, int outlineColor) {
         if (tank == null) {
             return;
         }
         tankRenderer.extractRenderState(tank, tankRenderState, 0F, Vec3.ZERO, null);
-        tankRenderer.submit(tankRenderState, stack, collector, cameraRenderState);
+        tankRenderer.submit(tankRenderState, poseStack, submitNodeCollector, cameraRenderState);
     }
 
     @Override
@@ -60,7 +59,7 @@ public class TankSpecialRenderer implements SpecialModelRenderer<TileEntityTank>
         return tank;
     }
 
-    public static class Unbaked implements SpecialModelRenderer.Unbaked {
+    public static class Unbaked implements SpecialModelRenderer.Unbaked<TileEntityTank> {
 
         public static final MapCodec<Unbaked> MAP_CODEC = MapCodec.unit(Unbaked::new);
 
@@ -68,9 +67,9 @@ public class TankSpecialRenderer implements SpecialModelRenderer<TileEntityTank>
 
         }
 
-        @Override
         @Nullable
-        public SpecialModelRenderer<?> bake(BakingContext context) {
+        @Override
+        public SpecialModelRenderer<TileEntityTank> bake(BakingContext context) {
             return new TankSpecialRenderer(context.entityModelSet());
         }
 

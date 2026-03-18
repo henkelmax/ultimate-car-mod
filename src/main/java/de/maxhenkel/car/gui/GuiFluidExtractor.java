@@ -4,7 +4,7 @@ import de.maxhenkel.car.CarMod;
 import de.maxhenkel.car.blocks.tileentity.TileEntityFluidExtractor;
 import de.maxhenkel.corelib.inventory.ScreenBase;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.Identifier;
@@ -20,26 +20,23 @@ public class GuiFluidExtractor extends ScreenBase<ContainerFluidExtractor> {
     private TileEntityFluidExtractor tile;
 
     public GuiFluidExtractor(ContainerFluidExtractor container, Inventory player, Component title) {
-        super(GUI_TEXTURE, container, player, title);
+        super(GUI_TEXTURE, container, player, title, 176, 139);
         this.playerInv = player;
         this.tile = container.getTile();
-
-        imageWidth = 176;
-        imageHeight = 139;
     }
 
     @Override
-    protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
-        super.renderLabels(guiGraphics, mouseX, mouseY);
+    protected void extractLabels(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY) {
+        super.extractLabels(guiGraphics, mouseX, mouseY);
 
         // Title
-        guiGraphics.drawString(font, playerInv.getDisplayName().getVisualOrderText(), 8, this.imageHeight - 96 + 2, FONT_COLOR, false);
-        guiGraphics.drawString(font, tile.getDisplayName().getVisualOrderText(), 8, 6, FONT_COLOR, false);
+        guiGraphics.text(font, playerInv.getDisplayName().getVisualOrderText(), 8, this.imageHeight - 96 + 2, FONT_COLOR, false);
+        guiGraphics.text(font, tile.getDisplayName().getVisualOrderText(), 8, 6, FONT_COLOR, false);
 
         drawFilter(guiGraphics);
     }
 
-    private void drawFilter(GuiGraphics guiGraphics) {
+    private void drawFilter(GuiGraphicsExtractor guiGraphics) {
         MutableComponent name;
 
         tile.setFilter(menu.getFilter());
@@ -52,7 +49,7 @@ public class GuiFluidExtractor extends ScreenBase<ContainerFluidExtractor> {
             name = Component.literal(new FluidStack(f, 1).getHoverName().getString());
         }
 
-        guiGraphics.drawString(font, Component.translatable("filter.fluid", name.withStyle(ChatFormatting.WHITE)).getVisualOrderText(), 46, 28, FONT_COLOR, false);
+        guiGraphics.text(font, Component.translatable("filter.fluid", name.withStyle(ChatFormatting.WHITE)).getVisualOrderText(), 46, 28, FONT_COLOR, false);
     }
 
 }

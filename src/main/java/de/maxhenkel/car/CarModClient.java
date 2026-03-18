@@ -14,9 +14,7 @@ import de.maxhenkel.car.fluids.ModFluids;
 import de.maxhenkel.car.gui.*;
 import de.maxhenkel.corelib.client.obj.OBJModel;
 import net.minecraft.client.KeyMapping;
-import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
-import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.resources.Identifier;
 import net.neoforged.api.distmarker.Dist;
@@ -25,6 +23,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
+import net.neoforged.neoforge.client.event.RegisterFluidModelsEvent;
 import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.client.event.RegisterSpecialModelRendererEvent;
@@ -64,17 +63,6 @@ public class CarModClient {
         NeoForge.EVENT_BUS.register(new PlayerEvents());
 
         EntityRenderers.register(CarMod.CAR_ENTITY_TYPE.get(), GenericCarModel::new);
-
-        ItemBlockRenderTypes.setRenderLayer(ModFluids.CANOLA_OIL.get(), ChunkSectionLayer.TRANSLUCENT);
-        ItemBlockRenderTypes.setRenderLayer(ModFluids.CANOLA_OIL_FLOWING.get(), ChunkSectionLayer.TRANSLUCENT);
-        ItemBlockRenderTypes.setRenderLayer(ModFluids.METHANOL.get(), ChunkSectionLayer.TRANSLUCENT);
-        ItemBlockRenderTypes.setRenderLayer(ModFluids.METHANOL_FLOWING.get(), ChunkSectionLayer.TRANSLUCENT);
-        ItemBlockRenderTypes.setRenderLayer(ModFluids.CANOLA_METHANOL_MIX.get(), ChunkSectionLayer.TRANSLUCENT);
-        ItemBlockRenderTypes.setRenderLayer(ModFluids.CANOLA_METHANOL_MIX_FLOWING.get(), ChunkSectionLayer.TRANSLUCENT);
-        ItemBlockRenderTypes.setRenderLayer(ModFluids.GLYCERIN.get(), ChunkSectionLayer.TRANSLUCENT);
-        ItemBlockRenderTypes.setRenderLayer(ModFluids.GLYCERIN_FLOWING.get(), ChunkSectionLayer.TRANSLUCENT);
-        ItemBlockRenderTypes.setRenderLayer(ModFluids.BIO_DIESEL.get(), ChunkSectionLayer.TRANSLUCENT);
-        ItemBlockRenderTypes.setRenderLayer(ModFluids.BIO_DIESEL_FLOWING.get(), ChunkSectionLayer.TRANSLUCENT);
     }
 
     @SubscribeEvent
@@ -123,6 +111,20 @@ public class CarModClient {
     @SubscribeEvent
     static void registerItemModels(RegisterSpecialModelRendererEvent event) {
         event.register(Identifier.fromNamespaceAndPath(CarMod.MODID, "tank"), TankSpecialRenderer.Unbaked.MAP_CODEC);
+    }
+
+    @SubscribeEvent
+    static void registerFluidModels(RegisterFluidModelsEvent event) {
+        event.register(ModFluids.CANOLA_OIL_MODEL, ModFluids.CANOLA_OIL.get());
+        event.register(ModFluids.CANOLA_OIL_MODEL, ModFluids.CANOLA_OIL_FLOWING.get());
+        event.register(ModFluids.METHANOL_MODEL, ModFluids.METHANOL.get());
+        event.register(ModFluids.METHANOL_MODEL, ModFluids.METHANOL_FLOWING.get());
+        event.register(ModFluids.CANOLA_METHANOL_MIX_MODEL, ModFluids.CANOLA_METHANOL_MIX.get());
+        event.register(ModFluids.CANOLA_METHANOL_MIX_MODEL, ModFluids.CANOLA_METHANOL_MIX_FLOWING.get());
+        event.register(ModFluids.GLYCERIN_MODEL, ModFluids.GLYCERIN.get());
+        event.register(ModFluids.GLYCERIN_MODEL, ModFluids.GLYCERIN_FLOWING.get());
+        event.register(ModFluids.BIO_DIESEL_MODEL, ModFluids.BIO_DIESEL.get());
+        event.register(ModFluids.BIO_DIESEL_MODEL, ModFluids.BIO_DIESEL_FLOWING.get());
     }
 
 }

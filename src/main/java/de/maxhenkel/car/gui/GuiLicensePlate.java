@@ -5,7 +5,7 @@ import de.maxhenkel.car.items.ItemLicensePlate;
 import de.maxhenkel.car.net.MessageEditLicensePlate;
 import de.maxhenkel.corelib.inventory.ScreenBase;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.input.KeyEvent;
@@ -25,11 +25,9 @@ public class GuiLicensePlate extends ScreenBase<ContainerLicensePlate> {
     private EditBox textField;
 
     public GuiLicensePlate(ContainerLicensePlate containerLicensePlate, Inventory playerInventory, Component title) {
-        super(GUI_TEXTURE, containerLicensePlate, playerInventory, title);
+        super(GUI_TEXTURE, containerLicensePlate, playerInventory, title, 176, 84);
         this.containerLicensePlate = containerLicensePlate;
         this.player = playerInventory.player;
-        this.imageWidth = 176;
-        this.imageHeight = 84;
     }
 
     @Override
@@ -74,9 +72,9 @@ public class GuiLicensePlate extends ScreenBase<ContainerLicensePlate> {
     }
 
     @Override
-    protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
-        super.renderLabels(guiGraphics, mouseX, mouseY);
-        guiGraphics.drawCenteredString(font, containerLicensePlate.getLicensePlate().getHoverName().getString(), imageWidth / 2, 5, 0xFFFFFFFF);
+    protected void extractLabels(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY) {
+        super.extractLabels(guiGraphics, mouseX, mouseY);
+        guiGraphics.centeredText(font, containerLicensePlate.getLicensePlate().getHoverName().getString(), imageWidth / 2, 5, 0xFFFFFFFF);
     }
 
     @Override

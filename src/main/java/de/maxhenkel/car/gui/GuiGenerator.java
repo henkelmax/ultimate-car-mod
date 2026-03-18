@@ -3,7 +3,7 @@ package de.maxhenkel.car.gui;
 import de.maxhenkel.car.CarMod;
 import de.maxhenkel.car.blocks.tileentity.TileEntityGenerator;
 import de.maxhenkel.corelib.inventory.ScreenBase;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
@@ -21,21 +21,18 @@ public class GuiGenerator extends ScreenBase<ContainerGenerator> {
     private TileEntityGenerator tile;
 
     public GuiGenerator(ContainerGenerator containerGenerator, Inventory playerInv, Component title) {
-        super(GUI_TEXTURE, containerGenerator, playerInv, title);
+        super(GUI_TEXTURE, containerGenerator, playerInv, title, 176, 166);
         this.playerInv = playerInv;
         this.tile = containerGenerator.getGenerator();
-
-        imageWidth = 176;
-        imageHeight = 166;
     }
 
     @Override
-    protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
-        super.renderLabels(guiGraphics, mouseX, mouseY);
+    protected void extractLabels(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY) {
+        super.extractLabels(guiGraphics, mouseX, mouseY);
 
         // Title
-        guiGraphics.drawString(font, playerInv.getDisplayName().getVisualOrderText(), 8, this.imageHeight - 96 + 2, FONT_COLOR, false);
-        guiGraphics.drawString(font, tile.getDisplayName().getVisualOrderText(), 62, 6, FONT_COLOR, false);
+        guiGraphics.text(font, playerInv.getDisplayName().getVisualOrderText(), 8, this.imageHeight - 96 + 2, FONT_COLOR, false);
+        guiGraphics.text(font, tile.getDisplayName().getVisualOrderText(), 62, 6, FONT_COLOR, false);
 
         if (mouseX >= leftPos + 122 && mouseX <= leftPos + 16 + 122) {
             if (mouseY >= topPos + 8 && mouseY <= topPos + 57 + 8) {
@@ -55,13 +52,13 @@ public class GuiGenerator extends ScreenBase<ContainerGenerator> {
     }
 
     @Override
-    protected void renderBg(GuiGraphics guiGraphics, float partialTicks, int mouseX, int mouseY) {
-        super.renderBg(guiGraphics, partialTicks, mouseX, mouseY);
+    public void extractBackground(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTicks) {
+        super.extractBackground(guiGraphics, mouseX, mouseY, partialTicks);
         drawEnergy(guiGraphics);
         drawFluid(guiGraphics);
     }
 
-    public void drawEnergy(GuiGraphics guiGraphics) {
+    public void drawEnergy(GuiGraphicsExtractor guiGraphics) {
         float perc = getEnergy();
 
         int texX = 176;
@@ -77,7 +74,7 @@ public class GuiGenerator extends ScreenBase<ContainerGenerator> {
         guiGraphics.blit(RenderPipelines.GUI_TEXTURED, texture, i + targetX, j + targetY + scHeight, texX, texY + scHeight, texW, texH - scHeight, 256, 256);
     }
 
-    public void drawFluid(GuiGraphics guiGraphics) {
+    public void drawFluid(GuiGraphicsExtractor guiGraphics) {
         float perc = getFluid();
 
         int texX = 192;

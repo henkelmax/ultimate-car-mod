@@ -2,6 +2,7 @@ package de.maxhenkel.car;
 
 import com.google.common.collect.ImmutableSet;
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import de.maxhenkel.car.blocks.ModBlocks;
 import de.maxhenkel.car.blocks.tileentity.*;
 import de.maxhenkel.car.commands.CommandCarDemo;
@@ -19,21 +20,23 @@ import de.maxhenkel.car.loottable.CopyFluid;
 import de.maxhenkel.car.net.*;
 import de.maxhenkel.car.recipes.*;
 import de.maxhenkel.car.sounds.ModSounds;
-import de.maxhenkel.car.villagers.VillagerEvents;
 import de.maxhenkel.corelib.CommonRegistry;
 import de.maxhenkel.corelib.config.DynamicConfig;
 import de.maxhenkel.corelib.dataserializers.DataSerializerItemList;
 import de.maxhenkel.tools.EntityTools;
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.UUIDUtil;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.syncher.EntityDataSerializer;
 import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.util.Unit;
 import net.minecraft.world.InteractionHand;
@@ -45,9 +48,10 @@ import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.trading.TradeSet;
 import net.minecraft.world.level.block.ComposterBlock;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.level.storage.loot.functions.LootItemFunctionType;
+import net.minecraft.world.level.storage.loot.functions.LootItemFunction;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -94,19 +98,38 @@ public class CarMod {
         });
     });
 
-    private static final DeferredRegister<LootItemFunctionType<?>> LOOT_FUNCTION_TYPE_REGISTER = DeferredRegister.create(BuiltInRegistries.LOOT_FUNCTION_TYPE, CarMod.MODID);
-    public static DeferredHolder<LootItemFunctionType<?>, LootItemFunctionType<CopyFluid>> COPY_FLUID = LOOT_FUNCTION_TYPE_REGISTER.register("copy_fluid", () -> new LootItemFunctionType(CopyFluid.CODEC));
+    private static final DeferredRegister<MapCodec<? extends LootItemFunction>> LOOT_FUNCTION_TYPE_REGISTER = DeferredRegister.create(BuiltInRegistries.LOOT_FUNCTION_TYPE, CarMod.MODID);
+    public static DeferredHolder<MapCodec<? extends LootItemFunction>, MapCodec<CopyFluid>> COPY_FLUID = LOOT_FUNCTION_TYPE_REGISTER.register("copy_fluid", () -> CopyFluid.CODEC);
 
     private static final DeferredRegister<PoiType> POI_TYPE_REGISTER = DeferredRegister.create(BuiltInRegistries.POINT_OF_INTEREST_TYPE, CarMod.MODID);
     public static final DeferredHolder<PoiType, PoiType> POINT_OF_INTEREST_TYPE_GAS_STATION_ATTENDANT = POI_TYPE_REGISTER.register("gas_station_attendant", () ->
             new PoiType(ImmutableSet.copyOf(ModBlocks.GAS_STATION.get().getStateDefinition().getPossibleStates()), 1, 1)
     );
 
+    private static final ResourceKey<TradeSet> GAS_STATION_ATTENDANT_LEVEL_1 = ResourceKey.create(Registries.TRADE_SET, Identifier.fromNamespaceAndPath(CarMod.MODID, "gas_station_attendant/level_1"));
+    private static final ResourceKey<TradeSet> GAS_STATION_ATTENDANT_LEVEL_2 = ResourceKey.create(Registries.TRADE_SET, Identifier.fromNamespaceAndPath(CarMod.MODID, "gas_station_attendant/level_2"));
+    private static final ResourceKey<TradeSet> GAS_STATION_ATTENDANT_LEVEL_3 = ResourceKey.create(Registries.TRADE_SET, Identifier.fromNamespaceAndPath(CarMod.MODID, "gas_station_attendant/level_3"));
+    private static final ResourceKey<TradeSet> GAS_STATION_ATTENDANT_LEVEL_4 = ResourceKey.create(Registries.TRADE_SET, Identifier.fromNamespaceAndPath(CarMod.MODID, "gas_station_attendant/level_4"));
+    private static final ResourceKey<TradeSet> GAS_STATION_ATTENDANT_LEVEL_5 = ResourceKey.create(Registries.TRADE_SET, Identifier.fromNamespaceAndPath(CarMod.MODID, "gas_station_attendant/level_5"));
+
     private static final DeferredRegister<VillagerProfession> VILLAGER_PROFESSION_REGISTER = DeferredRegister.create(BuiltInRegistries.VILLAGER_PROFESSION, CarMod.MODID);
     //TODO Rename translation key
-    //TODO Fix villagers not having trades
     public static final DeferredHolder<VillagerProfession, VillagerProfession> VILLAGER_PROFESSION_GAS_STATION_ATTENDANT = VILLAGER_PROFESSION_REGISTER.register("gas_station_attendant", () ->
-            new VillagerProfession(Component.translatable("entity.minecraft.villager.car.gas_station_attendant"), poi -> poi.is(POINT_OF_INTEREST_TYPE_GAS_STATION_ATTENDANT.getKey()), poi -> poi.is(POINT_OF_INTEREST_TYPE_GAS_STATION_ATTENDANT.getKey()), ImmutableSet.of(), ImmutableSet.of(), ModSounds.GAS_STATION_ATTENDANT.get())
+            new VillagerProfession(
+                    Component.translatable("entity.minecraft.villager.car.gas_station_attendant"),
+                    poi -> poi.is(POINT_OF_INTEREST_TYPE_GAS_STATION_ATTENDANT.getKey()),
+                    poi -> poi.is(POINT_OF_INTEREST_TYPE_GAS_STATION_ATTENDANT.getKey()),
+                    ImmutableSet.of(),
+                    ImmutableSet.of(),
+                    ModSounds.GAS_STATION_ATTENDANT.get(),
+                    Int2ObjectMap.ofEntries(
+                            Int2ObjectMap.entry(1, GAS_STATION_ATTENDANT_LEVEL_1),
+                            Int2ObjectMap.entry(2, GAS_STATION_ATTENDANT_LEVEL_2),
+                            Int2ObjectMap.entry(3, GAS_STATION_ATTENDANT_LEVEL_3),
+                            Int2ObjectMap.entry(4, GAS_STATION_ATTENDANT_LEVEL_4),
+                            Int2ObjectMap.entry(5, GAS_STATION_ATTENDANT_LEVEL_5)
+                    )
+            )
     );
 
     private static final DeferredRegister<RecipeType<?>> RECIPE_TYPE_REGISTER = DeferredRegister.create(BuiltInRegistries.RECIPE_TYPE, CarMod.MODID);
@@ -164,8 +187,6 @@ public class CarMod {
     @SubscribeEvent
     static void commonSetup(FMLCommonSetupEvent event) {
         NeoForge.EVENT_BUS.register(new BlockEvents());
-
-        NeoForge.EVENT_BUS.register(new VillagerEvents());
 
         ComposterBlock.COMPOSTABLES.put(ModItems.CANOLA_SEEDS.get(), 0.3F);
         ComposterBlock.COMPOSTABLES.put(ModItems.CANOLA_CAKE.get(), 0.5F);
@@ -370,13 +391,8 @@ public class CarMod {
     }
 
     private static final DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZER_REGISTER = DeferredRegister.create(BuiltInRegistries.RECIPE_SERIALIZER, CarMod.MODID);
-    public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializerKey> CRAFTING_SPECIAL_KEY = RECIPE_SERIALIZER_REGISTER.register("crafting_special_key", RecipeSerializerKey::new
-    );
-    public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<BlastFurnaceRecipe>> CRAFTING_BLAST_FURNACE = RECIPE_SERIALIZER_REGISTER.register("blast_furnace", () ->
-            new RecipeSerializerBlastFurnace(BlastFurnaceRecipe::new)
-    );
-    public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<OilMillRecipe>> CRAFTING_OIL_MILL = RECIPE_SERIALIZER_REGISTER.register("oil_mill", () ->
-            new RecipeSerializerOilMill(OilMillRecipe::new)
-    );
+    public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<KeyRecipe>> CRAFTING_SPECIAL_KEY = RECIPE_SERIALIZER_REGISTER.register("crafting_special_key", () -> RecipeSerializerKey.RECIPE_SERIALIZER);
+    public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<BlastFurnaceRecipe>> CRAFTING_BLAST_FURNACE = RECIPE_SERIALIZER_REGISTER.register("blast_furnace", () -> RecipeSerializerEnergyFluidProducer.BLAST_FURNACE_RECIPE_SERIALIZER);
+    public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<OilMillRecipe>> CRAFTING_OIL_MILL = RECIPE_SERIALIZER_REGISTER.register("oil_mill", () -> RecipeSerializerEnergyFluidProducer.OIL_MILL_RECIPE_SERIALIZER);
 
 }

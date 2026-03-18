@@ -4,7 +4,7 @@ import de.maxhenkel.car.CarMod;
 import de.maxhenkel.car.blocks.tileentity.TileEntityGasStation;
 import de.maxhenkel.car.net.MessageGasStationAdminAmount;
 import de.maxhenkel.corelib.inventory.ScreenBase;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.network.chat.Component;
@@ -27,12 +27,9 @@ public class GuiGasStationAdmin extends ScreenBase<ContainerGasStationAdmin> {
     protected EditBox textField;
 
     public GuiGasStationAdmin(ContainerGasStationAdmin gasStation, Inventory playerInventory, Component title) {
-        super(GUI_TEXTURE, gasStation, playerInventory, title);
+        super(GUI_TEXTURE, gasStation, playerInventory, title, 176, 217);
         this.gasStation = gasStation.getGasStation();
         this.inventoryPlayer = playerInventory;
-
-        imageWidth = 176;
-        imageHeight = 197;
     }
 
     @Override
@@ -77,12 +74,12 @@ public class GuiGasStationAdmin extends ScreenBase<ContainerGasStationAdmin> {
     }
 
     @Override
-    protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
-        super.renderLabels(guiGraphics, mouseX, mouseY);
+    protected void extractLabels(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY) {
+        super.extractLabels(guiGraphics, mouseX, mouseY);
 
-        guiGraphics.drawCenteredString(font, Component.translatable("gui.gas_station").getString(), imageWidth / 2, 5, TITLE_COLOR);
+        guiGraphics.centeredText(font, Component.translatable("gui.gas_station").getString(), imageWidth / 2, 5, TITLE_COLOR);
 
-        guiGraphics.drawString(font, inventoryPlayer.getDisplayName().getVisualOrderText(), 8, imageHeight - 93, FONT_COLOR, false);
+        guiGraphics.text(font, inventoryPlayer.getDisplayName().getVisualOrderText(), 8, imageHeight - 93, FONT_COLOR, false);
     }
 
     @Override

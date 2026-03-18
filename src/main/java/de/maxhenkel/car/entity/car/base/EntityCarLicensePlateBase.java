@@ -2,6 +2,7 @@ package de.maxhenkel.car.entity.car.base;
 
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
+import net.minecraft.world.phys.Vec3;
 import org.joml.Vector3d;
 import de.maxhenkel.car.entity.car.parts.PartLicensePlateHolder;
 import de.maxhenkel.car.items.ItemLicensePlate;
@@ -31,7 +32,7 @@ public abstract class EntityCarLicensePlateBase extends EntityCarLockBase {
     }
 
     @Override
-    public InteractionResult interact(Player player, InteractionHand hand) {
+    public InteractionResult interact(Player player, InteractionHand hand, Vec3 location) {
         if (player.isShiftKeyDown() && !isLocked()) {
             if (hasLicensePlateHolder()) {
                 ItemStack stack = player.getItemInHand(hand);
@@ -46,8 +47,7 @@ public abstract class EntityCarLicensePlateBase extends EntityCarLockBase {
                 }
             }
         }
-
-        return super.interact(player, hand);
+        return super.interact(player, hand, location);
     }
 
     public boolean hasLicensePlateHolder() {

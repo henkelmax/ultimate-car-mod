@@ -6,7 +6,7 @@ import de.maxhenkel.car.entity.car.base.EntityVehicleBase;
 import de.maxhenkel.corelib.math.MathUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
@@ -48,7 +48,7 @@ public class RenderEvents {
         return null;
     }
 
-    public static boolean onRenderExperienceBar(GuiGraphics guiGraphics, int i) {
+    public static boolean onRenderExperienceBar(GuiGraphicsExtractor guiGraphics, int i) {
         Player player = mc.player;
         EntityGenericCar car = getCar();
 
@@ -64,7 +64,7 @@ public class RenderEvents {
         return true;
     }
 
-    public static void renderFuelBar(GuiGraphics guiGraphics, float percent) {
+    public static void renderFuelBar(GuiGraphicsExtractor guiGraphics, float percent) {
         percent = Mth.clamp(percent, 0F, 1F);
         int x = mc.getWindow().getGuiScaledWidth() / 2 - 91;
 
@@ -78,16 +78,16 @@ public class RenderEvents {
         }
     }
 
-    public static void renderSpeed(GuiGraphics guiGraphics, float speed) {
+    public static void renderSpeed(GuiGraphicsExtractor guiGraphics, float speed) {
         Font font = mc.gui.getFont();
         String s = String.valueOf(MathUtils.round(Math.abs(speed), 2));
         int i1 = (mc.getWindow().getGuiScaledWidth() - font.width(s)) / 2;
         int j1 = mc.getWindow().getGuiScaledHeight() - 31 - 4;
-        guiGraphics.drawString(font, s, i1 + 1, j1, 0, false);
-        guiGraphics.drawString(font, s, i1 - 1, j1, 0, false);
-        guiGraphics.drawString(font, s, i1, j1 + 1, 0, false);
-        guiGraphics.drawString(font, s, i1, j1 - 1, 0, false);
-        guiGraphics.drawString(font, s, i1, j1, 8453920, false);
+        guiGraphics.text(font, s, i1 + 1, j1, 0, false);
+        guiGraphics.text(font, s, i1 - 1, j1, 0, false);
+        guiGraphics.text(font, s, i1, j1 + 1, 0, false);
+        guiGraphics.text(font, s, i1, j1 - 1, 0, false);
+        guiGraphics.text(font, s, i1, j1, 8453920, false);
     }
 
     @SubscribeEvent

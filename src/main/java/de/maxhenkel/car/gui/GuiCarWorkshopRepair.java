@@ -10,7 +10,7 @@ import de.maxhenkel.car.net.MessageRepairCar;
 import de.maxhenkel.corelib.inventory.ScreenBase;
 import de.maxhenkel.corelib.math.MathUtils;
 import de.maxhenkel.tools.EntityTools;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
@@ -36,13 +36,10 @@ public class GuiCarWorkshopRepair extends ScreenBase<ContainerCarWorkshopRepair>
     private EntityTools.CarRenderer carRenderer;
 
     public GuiCarWorkshopRepair(ContainerCarWorkshopRepair container, Inventory playerInventory, Component title) {
-        super(GUI_TEXTURE, container, playerInventory, title);
+        super(GUI_TEXTURE, container, playerInventory, title, 176, 222);
         this.player = container.getPlayer();
         this.tile = container.getTile();
         this.carRenderer = new EntityTools.CarRenderer();
-
-        imageWidth = 176;
-        imageHeight = 222;
     }
 
     @Override
@@ -65,12 +62,12 @@ public class GuiCarWorkshopRepair extends ScreenBase<ContainerCarWorkshopRepair>
     }
 
     @Override
-    protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
-        super.renderLabels(guiGraphics, mouseX, mouseY);
+    protected void extractLabels(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY) {
+        super.extractLabels(guiGraphics, mouseX, mouseY);
 
         // Titles
-        guiGraphics.drawString(font, tile.getDisplayName().getVisualOrderText(), 8, 6, FONT_COLOR, false);
-        guiGraphics.drawString(font, player.getInventory().getDisplayName().getVisualOrderText(), 8, imageHeight - 96 + 2, FONT_COLOR, false);
+        guiGraphics.text(font, tile.getDisplayName().getVisualOrderText(), 8, 6, FONT_COLOR, false);
+        guiGraphics.text(font, player.getInventory().getDisplayName().getVisualOrderText(), 8, imageHeight - 96 + 2, FONT_COLOR, false);
 
         EntityCarBase carTop = tile.getCarOnTop();
 
@@ -101,7 +98,7 @@ public class GuiCarWorkshopRepair extends ScreenBase<ContainerCarWorkshopRepair>
         carRenderer.tick();
     }
 
-    private void drawCar(GuiGraphics guiGraphics, EntityGenericCar car) {
+    private void drawCar(GuiGraphicsExtractor guiGraphics, EntityGenericCar car) {
         carRenderer.render(guiGraphics, car, getGuiLeft() + 50, getGuiTop() + 16, getGuiLeft() + 126, getGuiTop() + 59, 23);
     }
 
@@ -112,12 +109,12 @@ public class GuiCarWorkshopRepair extends ScreenBase<ContainerCarWorkshopRepair>
     }
 
     @Override
-    protected void renderBg(GuiGraphics guiGraphics, float partialTicks, int mouseX, int mouseY) {
-        super.renderBg(guiGraphics, partialTicks, mouseX, mouseY);
+    public void extractBackground(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTicks) {
+        super.extractBackground(guiGraphics, mouseX, mouseY, partialTicks);
         drawDamage(guiGraphics);
     }
 
-    public void drawDamage(GuiGraphics guiGraphics) {
+    public void drawDamage(GuiGraphicsExtractor guiGraphics) {
         EntityCarBase car = tile.getCarOnTop();
         if (!(car instanceof EntityCarDamageBase)) {
             return;

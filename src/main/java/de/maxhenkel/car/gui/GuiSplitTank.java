@@ -3,7 +3,7 @@ package de.maxhenkel.car.gui;
 import de.maxhenkel.car.CarMod;
 import de.maxhenkel.car.blocks.tileentity.TileEntitySplitTank;
 import de.maxhenkel.corelib.inventory.ScreenBase;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
@@ -21,20 +21,17 @@ public class GuiSplitTank extends ScreenBase<ContainerSplitTank> {
     private TileEntitySplitTank tile;
 
     public GuiSplitTank(ContainerSplitTank containerSplitTank, Inventory playerInv, Component title) {
-        super(GUI_TEXTURE, containerSplitTank, playerInv, title);
+        super(GUI_TEXTURE, containerSplitTank, playerInv, title, 176, 166);
         this.playerInv = playerInv;
         this.tile = containerSplitTank.getSplitTank();
-
-        imageWidth = 176;
-        imageHeight = 166;
     }
 
     @Override
-    protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
-        super.renderLabels(guiGraphics, mouseX, mouseY);
+    protected void extractLabels(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY) {
+        super.extractLabels(guiGraphics, mouseX, mouseY);
 
         // Title
-        guiGraphics.drawString(font, playerInv.getDisplayName().getVisualOrderText(), 8, this.imageHeight - 96 + 2, FONT_COLOR, false);
+        guiGraphics.text(font, playerInv.getDisplayName().getVisualOrderText(), 8, this.imageHeight - 96 + 2, FONT_COLOR, false);
 
         if (mouseX >= leftPos + 50 && mouseX <= leftPos + 16 + 50) {
             if (mouseY >= topPos + 8 && mouseY <= topPos + 57 + 8) {
@@ -70,15 +67,15 @@ public class GuiSplitTank extends ScreenBase<ContainerSplitTank> {
     }
 
     @Override
-    protected void renderBg(GuiGraphics guiGraphics, float partialTicks, int mouseX, int mouseY) {
-        super.renderBg(guiGraphics, partialTicks, mouseX, mouseY);
+    public void extractBackground(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTicks) {
+        super.extractBackground(guiGraphics, mouseX, mouseY, partialTicks);
         drawProgress(guiGraphics);
         drawMix(guiGraphics);
         drawBioDiesel(guiGraphics);
         drawGlycerin(guiGraphics);
     }
 
-    public void drawGlycerin(GuiGraphics guiGraphics) {
+    public void drawGlycerin(GuiGraphicsExtractor guiGraphics) {
         float perc = getGlycerin();
 
         int texX = 192;
@@ -94,7 +91,7 @@ public class GuiSplitTank extends ScreenBase<ContainerSplitTank> {
         guiGraphics.blit(RenderPipelines.GUI_TEXTURED, texture, i + targetX, j + targetY + scHeight, texX, texY + scHeight, texW, texH - scHeight, 256, 256);
     }
 
-    public void drawBioDiesel(GuiGraphics guiGraphics) {
+    public void drawBioDiesel(GuiGraphicsExtractor guiGraphics) {
         float perc = getBioDiesel();
 
         int texX = 208;
@@ -110,7 +107,7 @@ public class GuiSplitTank extends ScreenBase<ContainerSplitTank> {
         guiGraphics.blit(RenderPipelines.GUI_TEXTURED, texture, i + targetX, j + targetY + scHeight, texX, texY + scHeight, texW, texH - scHeight, 256, 256);
     }
 
-    public void drawMix(GuiGraphics guiGraphics) {
+    public void drawMix(GuiGraphicsExtractor guiGraphics) {
         float perc = getMix();
 
         int texX = 176;
@@ -126,7 +123,7 @@ public class GuiSplitTank extends ScreenBase<ContainerSplitTank> {
         guiGraphics.blit(RenderPipelines.GUI_TEXTURED, texture, i + targetX, j + targetY + scHeight, texX, texY + scHeight, texW, texH - scHeight, 256, 256);
     }
 
-    public void drawProgress(GuiGraphics guiGraphics) {
+    public void drawProgress(GuiGraphicsExtractor guiGraphics) {
         float perc = getProgress();
 
         int texX = 176;

@@ -5,7 +5,7 @@ import de.maxhenkel.car.blocks.tileentity.TileEntityGasStation;
 import de.maxhenkel.car.entity.car.base.EntityGenericCar;
 import de.maxhenkel.corelib.inventory.ScreenBase;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
@@ -35,12 +35,9 @@ public class GuiGasStation extends ScreenBase<ContainerGasStation> {
     protected Button buttonStop;
 
     public GuiGasStation(ContainerGasStation gasStation, Inventory playerInventory, Component title) {
-        super(GUI_TEXTURE, gasStation, playerInventory, title);
+        super(GUI_TEXTURE, gasStation, playerInventory, title, 176, 217);
         this.gasStation = gasStation.getGasStation();
         this.playerInventory = playerInventory;
-
-        imageWidth = 176;
-        imageHeight = 217;
     }
 
     @Override
@@ -58,14 +55,14 @@ public class GuiGasStation extends ScreenBase<ContainerGasStation> {
     }
 
     @Override
-    protected void renderBg(GuiGraphics guiGraphics, float partialTicks, int mouseX, int mouseY) {
-        super.renderBg(guiGraphics, partialTicks, mouseX, mouseY);
+    public void extractBackground(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTicks) {
+        super.extractBackground(guiGraphics, mouseX, mouseY, partialTicks);
         // buttons
         buttonStart.active = !gasStation.isFueling();
         buttonStop.active = gasStation.isFueling();
 
         // text
-        guiGraphics.drawCenteredString(font, Component.translatable("gui.gas_station").getString(), width / 2, topPos + 5, TITLE_COLOR);
+        guiGraphics.text(font, Component.translatable("gui.gas_station").getString(), width / 2, topPos + 5, TITLE_COLOR);
 
         // Car name
         ResourceHandler<FluidResource> fluidHandler = gasStation.getFluidHandlerInFront();
@@ -79,12 +76,12 @@ public class GuiGasStation extends ScreenBase<ContainerGasStation> {
         drawRefueled(guiGraphics);
         drawBuffer(guiGraphics);
 
-        guiGraphics.drawString(font, playerInventory.getDisplayName().getVisualOrderText(), leftPos + 8, topPos + imageHeight - 93, FONT_COLOR, false);
+        guiGraphics.text(font, playerInventory.getDisplayName().getVisualOrderText(), leftPos + 8, topPos + imageHeight - 93, FONT_COLOR, false);
     }
 
     @Override
-    protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
-        super.renderLabels(guiGraphics, mouseX, mouseY);
+    protected void extractLabels(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY) {
+        super.extractLabels(guiGraphics, mouseX, mouseY);
 
         ItemStack stack = gasStation.getTradingInventory().getItem(0);
 
@@ -101,23 +98,23 @@ public class GuiGasStation extends ScreenBase<ContainerGasStation> {
         }
     }
 
-    private void drawCarName(GuiGraphics guiGraphics, Entity entity) {
+    private void drawCarName(GuiGraphicsExtractor guiGraphics, Entity entity) {
         String name;
         if (entity instanceof EntityGenericCar) {
             name = ((EntityGenericCar) entity).getShortName().getString();
         } else {
             name = entity.getDisplayName().getString();
         }
-        guiGraphics.drawString(font, Component.translatable("gas_station.car_info", Component.literal(name).withStyle(ChatFormatting.WHITE)).getVisualOrderText(), leftPos + 63, topPos + 20, FONT_COLOR, false);
+        guiGraphics.text(font, Component.translatable("gas_station.car_info", Component.literal(name).withStyle(ChatFormatting.WHITE)).getVisualOrderText(), leftPos + 63, topPos + 20, FONT_COLOR, false);
     }
 
-    private void drawCarFuel(GuiGraphics guiGraphics, ResourceHandler<FluidResource> handler) {
+    private void drawCarFuel(GuiGraphicsExtractor guiGraphics, ResourceHandler<FluidResource> handler) {
         if (handler == null) {
-            guiGraphics.drawString(font, Component.translatable("gas_station.no_vehicle").getVisualOrderText(), leftPos + 63, topPos + 30, FONT_COLOR, false);
+            guiGraphics.text(font, Component.translatable("gas_station.no_vehicle").getVisualOrderText(), leftPos + 63, topPos + 30, FONT_COLOR, false);
             return;
         }
         if (handler.size() <= 0) {
-            guiGraphics.drawString(font, Component.translatable("gas_station.fuel_empty").getVisualOrderText(), leftPos + 63, topPos + 30, FONT_COLOR, false);
+            guiGraphics.text(font, Component.translatable("gas_station.fuel_empty").getVisualOrderText(), leftPos + 63, topPos + 30, FONT_COLOR, false);
             return;
         }
         FluidResource tank = handler.getResource(0);
@@ -125,22 +122,22 @@ public class GuiGasStation extends ScreenBase<ContainerGasStation> {
                 Component.literal(String.valueOf(handler.getAmountAsLong(0))).withStyle(ChatFormatting.WHITE),
                 Component.literal(String.valueOf(handler.getCapacityAsLong(0, tank))).withStyle(ChatFormatting.WHITE)
         );
-        guiGraphics.drawString(font, fuelText.getVisualOrderText(), leftPos + 63, topPos + 30, FONT_COLOR, false);
+        guiGraphics.text(font, fuelText.getVisualOrderText(), leftPos + 63, topPos + 30, FONT_COLOR, false);
 
         if (!tank.isEmpty()) {
-            guiGraphics.drawString(font, Component.translatable("gas_station.car_fuel_type", Component.literal(tank.getHoverName().getString()).withStyle(ChatFormatting.WHITE)).getVisualOrderText(), leftPos + 63, topPos + 40, FONT_COLOR, false);
+            guiGraphics.text(font, Component.translatable("gas_station.car_fuel_type", Component.literal(tank.getHoverName().getString()).withStyle(ChatFormatting.WHITE)).getVisualOrderText(), leftPos + 63, topPos + 40, FONT_COLOR, false);
         }
     }
 
-    private void drawRefueled(GuiGraphics guiGraphics) {
-        guiGraphics.drawString(font, Component.translatable("gas_station.refueled", Component.literal(String.valueOf(gasStation.getFuelCounter())).withStyle(ChatFormatting.WHITE)).getVisualOrderText(), leftPos + 63, topPos + 60, FONT_COLOR, false);
+    private void drawRefueled(GuiGraphicsExtractor guiGraphics) {
+        guiGraphics.text(font, Component.translatable("gas_station.refueled", Component.literal(String.valueOf(gasStation.getFuelCounter())).withStyle(ChatFormatting.WHITE)).getVisualOrderText(), leftPos + 63, topPos + 60, FONT_COLOR, false);
     }
 
-    private void drawBuffer(GuiGraphics guiGraphics) {
+    private void drawBuffer(GuiGraphicsExtractor guiGraphics) {
         FluidStack stack = gasStation.getStorage();
 
         if (stack.isEmpty()) {
-            guiGraphics.drawString(font, Component.translatable("gas_station.fuel_empty").getVisualOrderText(), leftPos + 63, topPos + 70, FONT_COLOR, false);
+            guiGraphics.text(font, Component.translatable("gas_station.fuel_empty").getVisualOrderText(), leftPos + 63, topPos + 70, FONT_COLOR, false);
             return;
         }
 
@@ -151,13 +148,13 @@ public class GuiGasStation extends ScreenBase<ContainerGasStation> {
                 Component.literal(String.valueOf(gasStation.maxStorageAmount)).withStyle(ChatFormatting.WHITE)
         );
 
-        guiGraphics.drawString(font, amountText.getVisualOrderText(), leftPos + 63, topPos + 70, FONT_COLOR, false);
+        guiGraphics.text(font, amountText.getVisualOrderText(), leftPos + 63, topPos + 70, FONT_COLOR, false);
 
         Component bufferText = Component.translatable("gas_station.fuel_buffer_type",
                 Component.literal(stack.getHoverName().getString()).withStyle(ChatFormatting.WHITE)
         );
 
-        guiGraphics.drawString(font, bufferText.getVisualOrderText(), leftPos + 63, topPos + 80, FONT_COLOR, false);
+        guiGraphics.text(font, bufferText.getVisualOrderText(), leftPos + 63, topPos + 80, FONT_COLOR, false);
     }
 
     @Override

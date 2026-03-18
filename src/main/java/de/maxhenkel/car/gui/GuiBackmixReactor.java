@@ -3,7 +3,7 @@ package de.maxhenkel.car.gui;
 import de.maxhenkel.car.CarMod;
 import de.maxhenkel.car.blocks.tileentity.TileEntityBackmixReactor;
 import de.maxhenkel.corelib.inventory.ScreenBase;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
@@ -22,20 +22,17 @@ public class GuiBackmixReactor extends ScreenBase<ContainerBackmixReactor> {
     private TileEntityBackmixReactor tile;
 
     public GuiBackmixReactor(ContainerBackmixReactor container, Inventory playerInv, Component name) {
-        super(GUI_TEXTURE, container, playerInv, name);
+        super(GUI_TEXTURE, container, playerInv, name, 176, 166);
         this.playerInv = playerInv;
         this.tile = container.getBackmixReactor();
-
-        imageWidth = 176;
-        imageHeight = 166;
     }
 
     @Override
-    protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
-        super.renderLabels(guiGraphics, mouseX, mouseY);
+    protected void extractLabels(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY) {
+        super.extractLabels(guiGraphics, mouseX, mouseY);
 
         // Title
-        guiGraphics.drawString(font, playerInventoryTitle.getVisualOrderText(), 8, this.imageHeight - 96 + 2, FONT_COLOR, false);
+        guiGraphics.text(font, playerInventoryTitle.getVisualOrderText(), 8, this.imageHeight - 96 + 2, FONT_COLOR, false);
 
         if (mouseX >= leftPos + 11 && mouseX <= leftPos + 16 + 11) {
             if (mouseY >= topPos + 8 && mouseY <= topPos + 57 + 8) {
@@ -79,8 +76,8 @@ public class GuiBackmixReactor extends ScreenBase<ContainerBackmixReactor> {
     }
 
     @Override
-    protected void renderBg(GuiGraphics guiGraphics, float partialTicks, int mouseX, int mouseY) {
-        super.renderBg(guiGraphics, partialTicks, mouseX, mouseY);
+    public void extractBackground(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTicks) {
+        super.extractBackground(guiGraphics, mouseX, mouseY, partialTicks);
 
         drawProgress(guiGraphics);
         drawEnergy(guiGraphics);
@@ -89,7 +86,7 @@ public class GuiBackmixReactor extends ScreenBase<ContainerBackmixReactor> {
         drawMix(guiGraphics);
     }
 
-    public void drawEnergy(GuiGraphics guiGraphics) {
+    public void drawEnergy(GuiGraphicsExtractor guiGraphics) {
         float perc = getEnergy();
 
         int texX = 176;
@@ -105,7 +102,7 @@ public class GuiBackmixReactor extends ScreenBase<ContainerBackmixReactor> {
         guiGraphics.blit(RenderPipelines.GUI_TEXTURED, GUI_TEXTURE, i + targetX, j + targetY + scHeight, texX, texY + scHeight, texW, texH - scHeight, 256, 256);
     }
 
-    public void drawCanola(GuiGraphics guiGraphics) {
+    public void drawCanola(GuiGraphicsExtractor guiGraphics) {
         float perc = getCanola();
 
         int texX = 192;
@@ -121,7 +118,7 @@ public class GuiBackmixReactor extends ScreenBase<ContainerBackmixReactor> {
         guiGraphics.blit(RenderPipelines.GUI_TEXTURED, GUI_TEXTURE, i + targetX, j + targetY + scHeight, texX, texY + scHeight, texW, texH - scHeight, 256, 256);
     }
 
-    public void drawMethanol(GuiGraphics guiGraphics) {
+    public void drawMethanol(GuiGraphicsExtractor guiGraphics) {
         float perc = getMethanol();
 
         int texX = 208;
@@ -137,7 +134,7 @@ public class GuiBackmixReactor extends ScreenBase<ContainerBackmixReactor> {
         guiGraphics.blit(RenderPipelines.GUI_TEXTURED, GUI_TEXTURE, i + targetX, j + targetY + scHeight, texX, texY + scHeight, texW, texH - scHeight, 256, 256);
     }
 
-    public void drawMix(GuiGraphics guiGraphics) {
+    public void drawMix(GuiGraphicsExtractor guiGraphics) {
         float perc = getMix();
 
         int texX = 224;
@@ -153,7 +150,7 @@ public class GuiBackmixReactor extends ScreenBase<ContainerBackmixReactor> {
         guiGraphics.blit(RenderPipelines.GUI_TEXTURED, GUI_TEXTURE, i + targetX, j + targetY + scHeight, texX, texY + scHeight, texW, texH - scHeight, 256, 256);
     }
 
-    public void drawProgress(GuiGraphics guiGraphics) {
+    public void drawProgress(GuiGraphicsExtractor guiGraphics) {
         float perc = getProgress();
 
         int texX = 176;

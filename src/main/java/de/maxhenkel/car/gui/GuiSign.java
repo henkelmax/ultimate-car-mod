@@ -5,7 +5,7 @@ import de.maxhenkel.car.blocks.tileentity.TileEntitySign;
 import de.maxhenkel.car.net.MessageEditSign;
 import de.maxhenkel.corelib.inventory.ScreenBase;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.input.KeyEvent;
@@ -37,10 +37,8 @@ public class GuiSign extends ScreenBase<ContainerSign> {
     protected boolean front = true;
 
     public GuiSign(ContainerSign containerSign, Inventory playerInventory, Component title) {
-        super(GUI_TEXTURE, containerSign, playerInventory, title);
+        super(GUI_TEXTURE, containerSign, playerInventory, title, 176, 142);
         this.sign = containerSign.getSign();
-        this.imageWidth = 176;
-        this.imageHeight = 142;
         this.text = sign.getSignText();
     }
 
@@ -98,8 +96,8 @@ public class GuiSign extends ScreenBase<ContainerSign> {
     }
 
     @Override
-    protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
-        super.renderLabels(guiGraphics, mouseX, mouseY);
+    protected void extractLabels(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY) {
+        super.extractLabels(guiGraphics, mouseX, mouseY);
 
         String s;
         if (front) {
@@ -108,7 +106,7 @@ public class GuiSign extends ScreenBase<ContainerSign> {
             s = Component.translatable("gui.sign.back").getString();
         }
 
-        guiGraphics.drawString(font, Component.translatable("gui.sign", s).getVisualOrderText(), 54, 10, FONT_COLOR, false);
+        guiGraphics.text(font, Component.translatable("gui.sign", s).getVisualOrderText(), 54, 10, FONT_COLOR, false);
     }
 
     @Override

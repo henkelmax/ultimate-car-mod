@@ -68,7 +68,7 @@ public class KeyEvents {
             if (CarModClient.CENTER_KEY.isDown()) {
                 if (!wasCenterPressed) {
                     ClientPacketDistributor.sendToServer(new MessageCenterCar(player));
-                    player.displayClientMessage(Component.translatable("message.center_car"), true);
+                    player.sendOverlayMessage(Component.translatable("message.center_car"));
                     wasCenterPressed = true;
                 }
             } else {

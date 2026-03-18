@@ -8,7 +8,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.functions.LootItemConditionalFunction;
-import net.minecraft.world.level.storage.loot.functions.LootItemFunctionType;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.neoforged.neoforge.fluids.FluidStack;
@@ -25,6 +24,11 @@ public class CopyFluid extends LootItemConditionalFunction {
     }
 
     @Override
+    public MapCodec<? extends LootItemConditionalFunction> codec() {
+        return CODEC;
+    }
+
+    @Override
     public ItemStack run(ItemStack stack, LootContext context) {
         BlockEntity tileEntity = context.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
         if (!(tileEntity instanceof TileEntityTank tank)) {
@@ -36,11 +40,6 @@ public class CopyFluid extends LootItemConditionalFunction {
         }
         stack.set(CarMod.FLUID_STACK_DATA_COMPONENT, SimpleFluidContent.copyOf(fluid));
         return stack;
-    }
-
-    @Override
-    public LootItemFunctionType getType() {
-        return CarMod.COPY_FLUID.get();
     }
 
 }

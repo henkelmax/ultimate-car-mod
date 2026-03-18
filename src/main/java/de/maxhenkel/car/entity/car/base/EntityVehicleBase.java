@@ -210,7 +210,7 @@ public abstract class EntityVehicleBase extends Entity {
     }
 
     @Override
-    public InteractionResult interact(Player player, InteractionHand hand) {
+    public InteractionResult interact(Player player, InteractionHand hand, Vec3 location) {
         if (!player.isShiftKeyDown()) {
             if (player.getVehicle() != this) {
                 if (!level().isClientSide()) {
