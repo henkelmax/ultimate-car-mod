@@ -1,2 +1,3 @@
 - Updated to 26.1
 - Fixed compostables
+- Added Argentinian Spanish translation
