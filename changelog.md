@@ -1,1 +1,2 @@
 - Fixed compostables
+- Added Argentinian Spanish translation
