@@ -1,1 +1,2 @@
 - Updated to 26.1
+- Fixed compostables
