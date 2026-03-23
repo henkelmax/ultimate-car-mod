@@ -1,0 +1,13 @@
+{
+  "values": {
+    "car:canola_seeds": {
+      "chance": 0.3
+    },
+    "car:canola_cake": {
+      "chance": 0.5
+    },
+    "car:canola": {
+      "chance": 0.65
+    }
+  }
+}

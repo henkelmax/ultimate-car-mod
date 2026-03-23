@@ -57,7 +57,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.SimpleCraftingRecipeSerializer;
-import net.minecraft.world.level.block.ComposterBlock;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.storage.loot.functions.LootItemFunctionType;
 import net.neoforged.api.distmarker.Dist;
@@ -193,10 +192,6 @@ public class Main {
         NeoForge.EVENT_BUS.register(new BlockEvents());
 
         NeoForge.EVENT_BUS.register(new VillagerEvents());
-
-        ComposterBlock.COMPOSTABLES.put(ModItems.CANOLA_SEEDS.get(), 0.3F);
-        ComposterBlock.COMPOSTABLES.put(ModItems.CANOLA_CAKE.get(), 0.5F);
-        ComposterBlock.COMPOSTABLES.put(ModItems.CANOLA.get(), 0.65F);
 
         Villager.WANTED_ITEMS = ImmutableSet.<Item>builder()
                 .addAll(Villager.WANTED_ITEMS)
