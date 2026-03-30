@@ -10,6 +10,7 @@ import de.maxhenkel.car.events.KeyEvents;
 import de.maxhenkel.car.events.PlayerEvents;
 import de.maxhenkel.car.events.RenderEvents;
 import de.maxhenkel.car.events.SoundEvents;
+import de.maxhenkel.car.fluids.ModFluidModels;
 import de.maxhenkel.car.fluids.ModFluids;
 import de.maxhenkel.car.gui.*;
 import de.maxhenkel.corelib.client.obj.OBJModel;
@@ -115,16 +116,16 @@ public class CarModClient {
 
     @SubscribeEvent
     static void registerFluidModels(RegisterFluidModelsEvent event) {
-        event.register(ModFluids.CANOLA_OIL_MODEL, ModFluids.CANOLA_OIL.get());
-        event.register(ModFluids.CANOLA_OIL_MODEL, ModFluids.CANOLA_OIL_FLOWING.get());
-        event.register(ModFluids.METHANOL_MODEL, ModFluids.METHANOL.get());
-        event.register(ModFluids.METHANOL_MODEL, ModFluids.METHANOL_FLOWING.get());
-        event.register(ModFluids.CANOLA_METHANOL_MIX_MODEL, ModFluids.CANOLA_METHANOL_MIX.get());
-        event.register(ModFluids.CANOLA_METHANOL_MIX_MODEL, ModFluids.CANOLA_METHANOL_MIX_FLOWING.get());
-        event.register(ModFluids.GLYCERIN_MODEL, ModFluids.GLYCERIN.get());
-        event.register(ModFluids.GLYCERIN_MODEL, ModFluids.GLYCERIN_FLOWING.get());
-        event.register(ModFluids.BIO_DIESEL_MODEL, ModFluids.BIO_DIESEL.get());
-        event.register(ModFluids.BIO_DIESEL_MODEL, ModFluids.BIO_DIESEL_FLOWING.get());
+        event.register(ModFluidModels.CANOLA_OIL_MODEL, ModFluids.CANOLA_OIL.get());
+        event.register(ModFluidModels.CANOLA_OIL_MODEL, ModFluids.CANOLA_OIL_FLOWING.get());
+        event.register(ModFluidModels.METHANOL_MODEL, ModFluids.METHANOL.get());
+        event.register(ModFluidModels.METHANOL_MODEL, ModFluids.METHANOL_FLOWING.get());
+        event.register(ModFluidModels.CANOLA_METHANOL_MIX_MODEL, ModFluids.CANOLA_METHANOL_MIX.get());
+        event.register(ModFluidModels.CANOLA_METHANOL_MIX_MODEL, ModFluids.CANOLA_METHANOL_MIX_FLOWING.get());
+        event.register(ModFluidModels.GLYCERIN_MODEL, ModFluids.GLYCERIN.get());
+        event.register(ModFluidModels.GLYCERIN_MODEL, ModFluids.GLYCERIN_FLOWING.get());
+        event.register(ModFluidModels.BIO_DIESEL_MODEL, ModFluids.BIO_DIESEL.get());
+        event.register(ModFluidModels.BIO_DIESEL_MODEL, ModFluids.BIO_DIESEL_FLOWING.get());
     }
 
 }
