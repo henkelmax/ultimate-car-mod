@@ -1,1 +1,1 @@
-- Fixed server crash
+- Added support for 26.1.1
