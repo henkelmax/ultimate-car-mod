@@ -12,7 +12,7 @@ import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import mezz.jei.api.recipe.types.IRecipeType;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
@@ -30,7 +30,7 @@ public class PainterRecipeCategory implements IRecipeCategory<PainterRecipe> {
     }
 
     @Override
-    public void draw(PainterRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
+    public void draw(PainterRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphicsExtractor guiGraphics, double mouseX, double mouseY) {
         background.draw(guiGraphics);
     }
 
@@ -52,7 +52,7 @@ public class PainterRecipeCategory implements IRecipeCategory<PainterRecipe> {
 
     @Override
     public Component getTitle() {
-        return ModItems.PAINTER.get().getName();
+        return ModItems.PAINTER.get().getName(new ItemStack(ModItems.PAINTER.get()));
     }
 
     @Override
