@@ -13,31 +13,32 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.neoforge.event.level.BlockEvent;
+import net.neoforged.neoforge.event.level.block.BreakBlockEvent;
 
 public class BlockEvents {
 
-    private static ResourceKey<LootTable> GRASS_LOOT_TABLE = ResourceKey.create(Registries.LOOT_TABLE, Identifier.fromNamespaceAndPath(CarMod.MODID, "blocks/grass"));
+    private static final ResourceKey<LootTable> GRASS_LOOT_TABLE = ResourceKey.create(Registries.LOOT_TABLE, Identifier.fromNamespaceAndPath(CarMod.MODID, "blocks/grass"));
 
     @SubscribeEvent
-    public void breakEvent(BlockEvent.BreakEvent event) {
+    public void breakEvent(BreakBlockEvent event) {
+        if (!(event.getPlayer().level() instanceof ServerLevel level)) {
+            return;
+        }
         if (!event.getState().getBlock().equals(Blocks.SHORT_GRASS)) {
             return;
         }
 
-        if (event.getPlayer().level() instanceof ServerLevel level) {
-            LootParams.Builder builder = new LootParams.Builder(level)
-                    .withParameter(LootContextParams.ORIGIN, new Vec3(event.getPos().getX(), event.getPos().getY(), event.getPos().getZ()))
-                    .withParameter(LootContextParams.TOOL, event.getPlayer().getMainHandItem())
-                    .withParameter(LootContextParams.THIS_ENTITY, event.getPlayer())
-                    .withParameter(LootContextParams.BLOCK_STATE, event.getState());
+        LootParams.Builder builder = new LootParams.Builder(level)
+                .withParameter(LootContextParams.ORIGIN, new Vec3(event.getPos().getX(), event.getPos().getY(), event.getPos().getZ()))
+                .withParameter(LootContextParams.TOOL, event.getPlayer().getMainHandItem())
+                .withParameter(LootContextParams.THIS_ENTITY, event.getPlayer())
+                .withParameter(LootContextParams.BLOCK_STATE, event.getState());
 
-            LootParams lootContext = builder.create(LootContextParamSets.BLOCK);
+        LootParams lootContext = builder.create(LootContextParamSets.BLOCK);
 
-            LootTable lootTable = level.getServer().reloadableRegistries().getLootTable(GRASS_LOOT_TABLE);
+        LootTable lootTable = level.getServer().reloadableRegistries().getLootTable(GRASS_LOOT_TABLE);
 
-            lootTable.getRandomItems(lootContext).forEach((stack) -> Block.popResource(level, event.getPos(), stack));
-        }
+        lootTable.getRandomItems(lootContext).forEach((stack) -> Block.popResource(level, event.getPos(), stack));
     }
 
 }
