@@ -1,1 +1,1 @@
-- Fixed crash with newer NeoForge versions
+- Removed deprecated method calls

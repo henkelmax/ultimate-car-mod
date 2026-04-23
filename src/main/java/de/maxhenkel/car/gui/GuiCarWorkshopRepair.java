@@ -99,7 +99,7 @@ public class GuiCarWorkshopRepair extends ScreenBase<ContainerCarWorkshopRepair>
     }
 
     private void drawCar(GuiGraphicsExtractor guiGraphics, EntityGenericCar car) {
-        carRenderer.render(guiGraphics, car, getGuiLeft() + 50, getGuiTop() + 16, getGuiLeft() + 126, getGuiTop() + 59, 23);
+        carRenderer.render(guiGraphics, car, getLeftPos() + 50, getTopPos() + 16, getLeftPos() + 126, getTopPos() + 59, 23);
     }
 
     public double getDamagePercent(EntityCarDamageBase car) {
