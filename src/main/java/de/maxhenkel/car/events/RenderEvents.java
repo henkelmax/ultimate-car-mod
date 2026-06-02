@@ -79,7 +79,7 @@ public class RenderEvents {
     }
 
     public static void renderSpeed(GuiGraphicsExtractor guiGraphics, float speed) {
-        Font font = mc.gui.getFont();
+        Font font = mc.font;
         String s = String.valueOf(MathUtils.round(Math.abs(speed), 2));
         int i1 = (mc.getWindow().getGuiScaledWidth() - font.width(s)) / 2;
         int j1 = mc.getWindow().getGuiScaledHeight() - 31 - 4;

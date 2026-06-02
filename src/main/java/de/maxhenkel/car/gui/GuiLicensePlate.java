@@ -37,10 +37,10 @@ public class GuiLicensePlate extends ScreenBase<ContainerLicensePlate> {
         addRenderableWidget(Button.builder(Component.translatable("button.car.submit"), button -> {
             ClientPacketDistributor.sendToServer(new MessageEditLicensePlate(player, textField.getValue()));
             MessageEditLicensePlate.setItemText(player, textField.getValue());
-            Minecraft.getInstance().setScreen(null);
+            Minecraft.getInstance().setScreenAndShow(null);
         }).bounds(leftPos + 20, topPos + imageHeight - 25, 50, 20).build());
         addRenderableWidget(Button.builder(Component.translatable("button.car.cancel"), button -> {
-            Minecraft.getInstance().setScreen(null);
+            Minecraft.getInstance().setScreenAndShow(null);
         }).bounds(leftPos + imageWidth - 50 - 15, topPos + imageHeight - 25, 50, 20).build());
 
         textField = new EditBox(font, leftPos + 30, topPos + 30, 116, 16, Component.empty());

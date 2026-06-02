@@ -1,7 +1,7 @@
 package de.maxhenkel.car.items;
 
 import de.maxhenkel.car.blocks.ModBlocks;
-import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.advancements.triggers.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerPlayer;

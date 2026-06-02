@@ -48,7 +48,7 @@ public class GuiCarWorkshopCrafting extends ScreenBase<ContainerCarWorkshopCraft
                     ClientPacketDistributor.sendToServer(new MessageSpawnCar(tile.getBlockPos()));
                 } else {
                     for (Component message : tile.getMessages()) {
-                        minecraft.gui.getChat().addClientSystemMessage(message);
+                        minecraft.gui.hud.getChat().addClientSystemMessage(message);
                     }
                 }
             }

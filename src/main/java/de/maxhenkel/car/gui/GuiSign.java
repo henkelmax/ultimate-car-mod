@@ -59,10 +59,10 @@ public class GuiSign extends ScreenBase<ContainerSign> {
         buttonSubmit = addRenderableWidget(Button.builder(Component.translatable("button.car.submit"), button -> {
             save();
             ClientPacketDistributor.sendToServer(new MessageEditSign(sign.getBlockPos(), text));
-            Minecraft.getInstance().setScreen(null);
+            Minecraft.getInstance().setScreenAndShow(null);
         }).bounds(guiLeft + 20, guiTop + imageHeight - 25, 50, 20).build());
         buttonCancel = addRenderableWidget(Button.builder(Component.translatable("button.car.cancel"), button -> {
-            Minecraft.getInstance().setScreen(null);
+            Minecraft.getInstance().setScreenAndShow(null);
         }).bounds(guiLeft + imageWidth - 50 - 15, guiTop + imageHeight - 25, 50, 20).build());
         buttonSwitch = addRenderableWidget(Button.builder(Component.translatable("gui.sign.back"), button -> {
             save();

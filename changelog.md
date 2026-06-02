@@ -1,1 +1,1 @@
-- Removed deprecated method calls
+- Updated to 26.2
