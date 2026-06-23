@@ -25,7 +25,7 @@ public class SlotPainter extends Slot {
         setPainterID(index);
         if (player.level().isClientSide()) {
             Minecraft.getInstance().execute(() -> {
-                Minecraft.getInstance().setScreenAndShow(null);
+                Minecraft.getInstance().gui.setScreen(null);
             });
         }
         return false;
