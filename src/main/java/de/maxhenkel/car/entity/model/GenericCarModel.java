@@ -51,7 +51,7 @@ public class GenericCarModel extends OBJEntityRenderer<EntityGenericCar, CarRend
 
     @Override
     protected void setupYaw(CarRenderState state, PoseStack pose) {
-        pose.mulPose(Axis.YP.rotationDegrees(180F - state.yRot));
+        pose.rotate(Axis.YP.rotationDegrees(180F - state.yRot));
     }
 
     private void drawLicensePlate(CarRenderState state, PoseStack stack, SubmitNodeCollector collector) {
@@ -74,7 +74,7 @@ public class GenericCarModel extends OBJEntityRenderer<EntityGenericCar, CarRend
 
     protected void translateLicensePlate(CarRenderState state, PoseStack matrixStack) {
         Vector3d offset = state.licensePlateOffset;
-        matrixStack.mulPose(Axis.YP.rotationDegrees(180F - state.yRot));
+        matrixStack.rotate(Axis.YP.rotationDegrees(180F - state.yRot));
         matrixStack.translate(offset.x, offset.y, offset.z);
     }
 

@@ -42,8 +42,8 @@ public class TileEntitySpecialRendererSign implements BlockEntityRenderer<TileEn
         stack.pushPose();
 
         stack.translate(0.5D, 1D, 0.5D);
-        stack.mulPose(Axis.XP.rotationDegrees(180F));
-        stack.mulPose(Axis.YP.rotationDegrees(-state.direction.toYRot()));
+        stack.rotate(Axis.XP.rotationDegrees(180F));
+        stack.rotate(Axis.YP.rotationDegrees(-state.direction.toYRot()));
 
         //----------Front-----------
         stack.pushPose();
@@ -62,7 +62,7 @@ public class TileEntitySpecialRendererSign implements BlockEntityRenderer<TileEn
         //----------Back-----------
         stack.pushPose();
 
-        stack.mulPose(Axis.YP.rotationDegrees(180F));
+        stack.rotate(Axis.YP.rotationDegrees(180F));
         stack.translate(0D, 0.27D, -0.51D / 16D);
         drawText(state.text[4], state, stack, collector);
         stack.translate(0D, 0.116D, 0D);

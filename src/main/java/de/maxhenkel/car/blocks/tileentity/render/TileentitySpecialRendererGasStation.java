@@ -58,9 +58,9 @@ public class TileentitySpecialRendererGasStation implements BlockEntityRenderer<
 
         stack.pushPose();
         stack.translate(0.5D, 1D, 0.5D);
-        stack.mulPose(Axis.XP.rotationDegrees(180F));
+        stack.rotate(Axis.XP.rotationDegrees(180F));
 
-        stack.mulPose(Axis.YP.rotationDegrees(state.direction.toYRot()));
+        stack.rotate(Axis.YP.rotationDegrees(state.direction.toYRot()));
 
         Font font = renderer.font();
 

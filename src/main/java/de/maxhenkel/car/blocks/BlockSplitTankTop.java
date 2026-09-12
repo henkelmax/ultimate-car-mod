@@ -2,6 +2,7 @@ package de.maxhenkel.car.blocks;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -23,7 +24,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 public class BlockSplitTankTop extends BlockBase {
 
     public BlockSplitTankTop(Properties properties) {
-        super(properties.mapColor(MapColor.METAL).strength(3F).sound(SoundType.STONE).pushReaction(PushReaction.BLOCK));
+        super(properties.mapColor(MapColor.METAL).strength(3F).sound(SoundType.STONE).pushReaction(PushReaction.IMMOVEABLE));
     }
 
     @Override
@@ -57,7 +58,9 @@ public class BlockSplitTankTop extends BlockBase {
     public boolean onDestroyedByPlayer(BlockState state, Level world, BlockPos pos, Player player, ItemStack toolStack, boolean willHarvest, FluidState fluid) {
         BlockState stateDown = world.getBlockState(pos.below());
         if (stateDown != null && stateDown.getBlock() != null && stateDown.getBlock().equals(ModBlocks.SPLIT_TANK.get()) && !player.getAbilities().instabuild) {
-            ModBlocks.SPLIT_TANK.get().playerDestroy(world, player, pos.below(), world.getBlockState(pos.below()), world.getBlockEntity(pos.below()), player.getMainHandItem());
+            if (world instanceof ServerLevel serverLevel && player instanceof ServerPlayer serverPlayer) {
+                ModBlocks.SPLIT_TANK.get().playerDestroy(serverLevel, serverPlayer, pos.below(), world.getBlockState(pos.below()), world.getBlockEntity(pos.below()), player.getMainHandItem());
+            }
         }
         return super.onDestroyedByPlayer(state, world, pos, player, toolStack, willHarvest, fluid);
     }

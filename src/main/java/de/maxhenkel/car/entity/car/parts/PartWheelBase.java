@@ -69,7 +69,7 @@ public class PartWheelBase extends PartModel {
 
         for (int i = 0; i < wheelOffsets.length && i < wheels.size(); i++) {
             list.add(new OBJModelInstance<>(wheels.get(i).model, new OBJModelOptions<>(wheels.get(i).texture, wheelOffsets[i], null, (state, matrixStack) -> {
-                matrixStack.mulPose(Axis.XP.rotationDegrees(-car.getWheelRotation(state.partialTick)));
+                matrixStack.rotate(Axis.XP.rotationDegrees(-car.getWheelRotation(state.partialTick)));
             })));
         }
 

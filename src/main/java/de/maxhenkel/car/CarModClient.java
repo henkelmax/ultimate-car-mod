@@ -29,7 +29,7 @@ import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.client.event.RegisterSpecialModelRendererEvent;
 import net.neoforged.neoforge.common.NeoForge;
-import org.lwjgl.glfw.GLFW;
+import org.lwjgl.sdl.SDLScancode;
 
 @Mod(value = CarMod.MODID, dist = Dist.CLIENT)
 @EventBusSubscriber(modid = CarMod.MODID, value = Dist.CLIENT)
@@ -71,14 +71,14 @@ public class CarModClient {
         KEY_CATEGORY_CAR = new KeyMapping.Category(Identifier.fromNamespaceAndPath(CarMod.MODID, "car"));
         event.registerCategory(KEY_CATEGORY_CAR);
 
-        FORWARD_KEY = new KeyMapping("key.car_forward", GLFW.GLFW_KEY_W, KEY_CATEGORY_CAR);
-        BACK_KEY = new KeyMapping("key.car_back", GLFW.GLFW_KEY_S, KEY_CATEGORY_CAR);
-        LEFT_KEY = new KeyMapping("key.car_left", GLFW.GLFW_KEY_A, KEY_CATEGORY_CAR);
-        RIGHT_KEY = new KeyMapping("key.car_right", GLFW.GLFW_KEY_D, KEY_CATEGORY_CAR);
-        CAR_GUI_KEY = new KeyMapping("key.car_gui", GLFW.GLFW_KEY_I, KEY_CATEGORY_CAR);
-        START_KEY = new KeyMapping("key.car_start", GLFW.GLFW_KEY_R, KEY_CATEGORY_CAR);
-        HORN_KEY = new KeyMapping("key.car_horn", GLFW.GLFW_KEY_H, KEY_CATEGORY_CAR);
-        CENTER_KEY = new KeyMapping("key.center_car", GLFW.GLFW_KEY_SPACE, KEY_CATEGORY_CAR);
+        FORWARD_KEY = new KeyMapping("key.car_forward", SDLScancode.SDL_SCANCODE_W, KEY_CATEGORY_CAR);
+        BACK_KEY = new KeyMapping("key.car_back", SDLScancode.SDL_SCANCODE_S, KEY_CATEGORY_CAR);
+        LEFT_KEY = new KeyMapping("key.car_left", SDLScancode.SDL_SCANCODE_A, KEY_CATEGORY_CAR);
+        RIGHT_KEY = new KeyMapping("key.car_right", SDLScancode.SDL_SCANCODE_D, KEY_CATEGORY_CAR);
+        CAR_GUI_KEY = new KeyMapping("key.car_gui", SDLScancode.SDL_SCANCODE_I, KEY_CATEGORY_CAR);
+        START_KEY = new KeyMapping("key.car_start", SDLScancode.SDL_SCANCODE_R, KEY_CATEGORY_CAR);
+        HORN_KEY = new KeyMapping("key.car_horn", SDLScancode.SDL_SCANCODE_H, KEY_CATEGORY_CAR);
+        CENTER_KEY = new KeyMapping("key.center_car", SDLScancode.SDL_SCANCODE_SPACE, KEY_CATEGORY_CAR);
 
         event.register(FORWARD_KEY);
         event.register(BACK_KEY);

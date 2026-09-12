@@ -1,6 +1,5 @@
 package de.maxhenkel.car.blocks;
 
-import com.mojang.serialization.MapCodec;
 import de.maxhenkel.car.entity.car.base.EntityGenericCar;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
@@ -20,11 +19,6 @@ public class BlockCarPressurePlate extends BasePressurePlateBlock {
     protected BlockCarPressurePlate(Properties properties) {
         super(properties.mapColor(MapColor.COLOR_BLACK).noCollision().strength(0.5F), BlockSetType.STONE);
         registerDefaultState(stateDefinition.any().setValue(POWERED, false));
-    }
-
-    @Override
-    protected MapCodec<? extends BasePressurePlateBlock> codec() {
-        return null; //TODO Add
     }
 
     @Override

@@ -4,6 +4,7 @@ import de.maxhenkel.corelib.block.DirectionalVoxelShape;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -53,7 +54,7 @@ public class BlockGasStationTop extends BlockBase {
     public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
 
     public BlockGasStationTop(Properties properties) {
-        super(properties.mapColor(MapColor.METAL).strength(4F).sound(SoundType.METAL).pushReaction(PushReaction.BLOCK));
+        super(properties.mapColor(MapColor.METAL).strength(4F).sound(SoundType.METAL).pushReaction(PushReaction.IMMOVEABLE));
         registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH));
     }
 
@@ -108,7 +109,9 @@ public class BlockGasStationTop extends BlockBase {
         BlockState stateDown = world.getBlockState(pos.below());
         stateDown.getBlock();
         if (stateDown.getBlock().equals(ModBlocks.GAS_STATION.get()) && !player.getAbilities().instabuild) {
-            ModBlocks.GAS_STATION.get().playerDestroy(world, player, pos.below(), world.getBlockState(pos.below()), world.getBlockEntity(pos.below()), player.getMainHandItem());
+            if (world instanceof ServerLevel serverLevel && player instanceof ServerPlayer serverPlayer) {
+                ModBlocks.GAS_STATION.get().playerDestroy(serverLevel, serverPlayer, pos.below(), world.getBlockState(pos.below()), world.getBlockEntity(pos.below()), player.getMainHandItem());
+            }
         }
         return super.onDestroyedByPlayer(state, world, pos, player, toolStack, willHarvest, fluid);
     }

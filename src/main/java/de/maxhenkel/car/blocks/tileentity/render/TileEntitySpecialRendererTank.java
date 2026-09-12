@@ -173,21 +173,21 @@ public class TileEntitySpecialRendererTank implements BlockEntityRenderer<TileEn
 
         switch (facing) {
             case SOUTH:
-                matrixStack.mulPose(Axis.YP.rotationDegrees(180F));
+                matrixStack.rotate(Axis.YP.rotationDegrees(180F));
                 break;
             case EAST:
-                matrixStack.mulPose(Axis.YP.rotationDegrees(270F));
+                matrixStack.rotate(Axis.YP.rotationDegrees(270F));
                 break;
             case WEST:
-                matrixStack.mulPose(Axis.YP.rotationDegrees(90F));
+                matrixStack.rotate(Axis.YP.rotationDegrees(90F));
                 break;
             case UP:
-                matrixStack.mulPose(Axis.YP.rotationDegrees(180F));
-                matrixStack.mulPose(Axis.XP.rotationDegrees(90F));
+                matrixStack.rotate(Axis.YP.rotationDegrees(180F));
+                matrixStack.rotate(Axis.XP.rotationDegrees(90F));
                 break;
             case DOWN:
-                matrixStack.mulPose(Axis.YP.rotationDegrees(180F));
-                matrixStack.mulPose(Axis.XP.rotationDegrees(270F));
+                matrixStack.rotate(Axis.YP.rotationDegrees(180F));
+                matrixStack.rotate(Axis.XP.rotationDegrees(270F));
                 break;
             case NORTH:
             default:

@@ -59,7 +59,7 @@ public class ItemGuardRail extends BlockItem {
         BlockState placed = world.getBlockState(blockpos);
         Block block = placed.getBlock();
         if (block == place.getBlock()) {
-            updateCustomBlockEntityTag(blockpos, world, playerentity, itemstack, placed);
+            updateCustomBlockEntityTag(world, playerentity, blockpos, itemstack);
             block.setPlacedBy(world, blockpos, placed, playerentity, itemstack);
             if (playerentity instanceof ServerPlayer) {
                 CriteriaTriggers.PLACED_BLOCK.trigger((ServerPlayer) playerentity, blockpos, itemstack);
