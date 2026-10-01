@@ -156,7 +156,7 @@ public class CarMod {
     public static ClientConfig CLIENT_CONFIG;
 
     public CarMod(IEventBus eventBus) {
-        SERVER_CONFIG = CommonRegistry.registerConfig(MODID, ModConfig.Type.SERVER, ServerConfig.class, true);
+        SERVER_CONFIG = CommonRegistry.registerConfig(MODID, ModConfig.Type.SYNCED, ServerConfig.class, true);
         FUEL_CONFIG = CommonRegistry.registerDynamicConfig(DynamicConfig.DynamicConfigType.SERVER, CarMod.MODID, "fuel", FuelConfig.class);
         CLIENT_CONFIG = CommonRegistry.registerConfig(MODID, ModConfig.Type.CLIENT, ClientConfig.class);
 
