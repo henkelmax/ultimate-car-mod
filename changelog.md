@@ -1,1 +1,1 @@
-- Updated to 26.2
+- Fixed empty fluid being serialized
