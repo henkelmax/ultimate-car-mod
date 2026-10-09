@@ -180,7 +180,9 @@ public abstract class EntityCarInventoryBase extends EntityCarFuelBase implement
 
         ItemUtils.saveInventory(valueOutput, "parts", partInventory);
 
-        valueOutput.store("fluid_inventory", FluidStack.CODEC, fluidInventory);
+        if (!fluidInventory.isEmpty()) {
+            valueOutput.store("fluid_inventory", FluidStack.CODEC, fluidInventory);
+        }
     }
 
     public ResourceHandler<FluidResource> getInventoryFluidHandler() {

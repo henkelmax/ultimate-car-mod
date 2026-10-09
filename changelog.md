@@ -1,2 +1,1 @@
-- Fixed compostables
-- Added Argentinian Spanish translation
+- Fixed empty fluid being serialized
