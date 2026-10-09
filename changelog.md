@@ -1,1 +1,1 @@
-- Removed deprecated method calls
+- Fixed empty fluid being serialized
