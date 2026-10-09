@@ -1,1 +1,1 @@
-- Updated NeoForge
+- Fixed empty fluid being serialized
